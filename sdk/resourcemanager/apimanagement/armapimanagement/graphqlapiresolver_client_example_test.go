@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListGraphQLApiResolvers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListGraphQLApiResolvers.json
 func ExampleGraphQLAPIResolverClient_NewListByAPIPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleGraphQLAPIResolverClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cdc"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cdc"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cdc"),
 		// 			Properties: &armapimanagement.ResolverEntityBaseContract{
 		// 				Path: to.Ptr("Query/users"),
 		// 				Description: to.Ptr("A GraphQL Resolver example"),
@@ -59,7 +59,7 @@ func ExampleGraphQLAPIResolverClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cda"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cda"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cda"),
 		// 			Properties: &armapimanagement.ResolverEntityBaseContract{
 		// 				Path: to.Ptr("Mutation/makeUser"),
 		// 				Description: to.Ptr("A GraphQL Resolver example"),
@@ -69,7 +69,7 @@ func ExampleGraphQLAPIResolverClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cd9"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cd9"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cd9"),
 		// 			Properties: &armapimanagement.ResolverEntityBaseContract{
 		// 				Path: to.Ptr("User/id"),
 		// 				Description: to.Ptr("A GraphQL Resolver example"),
@@ -80,7 +80,7 @@ func ExampleGraphQLAPIResolverClient_NewListByAPIPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadGraphQLApiResolver.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadGraphQLApiResolver.json
 func ExampleGraphQLAPIResolverClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleGraphQLAPIResolverClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGraphQLApiResolver.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetGraphQLApiResolver.json
 func ExampleGraphQLAPIResolverClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleGraphQLAPIResolverClient_Get() {
 	// res.ResolverContract = armapimanagement.ResolverContract{
 	// 	Name: to.Ptr("57d2ef278aa04f0ad01d6cdc"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cdc"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cdc"),
 	// 	Properties: &armapimanagement.ResolverEntityBaseContract{
 	// 		Path: to.Ptr("Query/users"),
 	// 		Description: to.Ptr("A GraphQL Resolver example"),
@@ -127,7 +127,7 @@ func ExampleGraphQLAPIResolverClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGraphQLApiResolver.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateGraphQLApiResolver.json
 func ExampleGraphQLAPIResolverClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleGraphQLAPIResolverClient_CreateOrUpdate() {
 	// res.ResolverContract = armapimanagement.ResolverContract{
 	// 	Name: to.Ptr("newResolver"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/someAPI/resolvers/newResolver"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/someAPI/resolvers/newResolver"),
 	// 	Properties: &armapimanagement.ResolverEntityBaseContract{
 	// 		Path: to.Ptr("Query/users"),
 	// 		Description: to.Ptr("A GraphQL Resolver example"),
@@ -163,7 +163,7 @@ func ExampleGraphQLAPIResolverClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateGraphQLApiResolver.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateGraphQLApiResolver.json
 func ExampleGraphQLAPIResolverClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleGraphQLAPIResolverClient_Update() {
 	// res.ResolverContract = armapimanagement.ResolverContract{
 	// 	Name: to.Ptr("57d2ef278aa04f0ad01d6cdc"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cdc"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/resolvers/57d2ef278aa04f0ad01d6cdc"),
 	// 	Properties: &armapimanagement.ResolverEntityBaseContract{
 	// 		Path: to.Ptr("Query/adminUsers"),
 	// 		Description: to.Ptr("A GraphQL Resolver example"),
@@ -199,7 +199,7 @@ func ExampleGraphQLAPIResolverClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGraphQLApiResolver.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteGraphQLApiResolver.json
 func ExampleGraphQLAPIResolverClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

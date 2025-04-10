@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListIdentityProviders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListIdentityProviders.json
 func ExampleIdentityProviderClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleIdentityProviderClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("Google"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/identityProviders"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/Google"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/Google"),
 		// 			Properties: &armapimanagement.IdentityProviderContractProperties{
 		// 				Type: to.Ptr(armapimanagement.IdentityProviderTypeGoogle),
 		// 				ClientID: to.Ptr("googleId"),
@@ -55,7 +55,7 @@ func ExampleIdentityProviderClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("Aad"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/identityProviders"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/Aad"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/Aad"),
 		// 			Properties: &armapimanagement.IdentityProviderContractProperties{
 		// 				Type: to.Ptr(armapimanagement.IdentityProviderTypeAAD),
 		// 				AllowedTenants: []*string{
@@ -66,7 +66,7 @@ func ExampleIdentityProviderClient_NewListByServicePager() {
 		// 			{
 		// 				Name: to.Ptr("AadB2C"),
 		// 				Type: to.Ptr("Microsoft.ApiManagement/service/identityProviders"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/AadB2C"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/AadB2C"),
 		// 				Properties: &armapimanagement.IdentityProviderContractProperties{
 		// 					Type: to.Ptr(armapimanagement.IdentityProviderTypeAADB2C),
 		// 					AllowedTenants: []*string{
@@ -80,7 +80,7 @@ func ExampleIdentityProviderClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadIdentityProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadIdentityProvider.json
 func ExampleIdentityProviderClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleIdentityProviderClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetIdentityProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetIdentityProvider.json
 func ExampleIdentityProviderClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleIdentityProviderClient_Get() {
 	// res.IdentityProviderContract = armapimanagement.IdentityProviderContract{
 	// 	Name: to.Ptr("AadB2C"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/identityProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/AadB2C"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/AadB2C"),
 	// 	Properties: &armapimanagement.IdentityProviderContractProperties{
 	// 		Type: to.Ptr(armapimanagement.IdentityProviderTypeAADB2C),
 	// 		AllowedTenants: []*string{
@@ -133,7 +133,7 @@ func ExampleIdentityProviderClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateIdentityProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateIdentityProvider.json
 func ExampleIdentityProviderClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleIdentityProviderClient_CreateOrUpdate() {
 	// res.IdentityProviderContract = armapimanagement.IdentityProviderContract{
 	// 	Name: to.Ptr("Facebook"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/identityProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/Facebook"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/Facebook"),
 	// 	Properties: &armapimanagement.IdentityProviderContractProperties{
 	// 		Type: to.Ptr(armapimanagement.IdentityProviderTypeFacebook),
 	// 		ClientID: to.Ptr("facebookid"),
@@ -167,7 +167,7 @@ func ExampleIdentityProviderClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateIdentityProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateIdentityProvider.json
 func ExampleIdentityProviderClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleIdentityProviderClient_Update() {
 	// res.IdentityProviderContract = armapimanagement.IdentityProviderContract{
 	// 	Name: to.Ptr("AadB2C"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/identityProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/AadB2C"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/identityProviders/AadB2C"),
 	// 	Properties: &armapimanagement.IdentityProviderContractProperties{
 	// 		Type: to.Ptr(armapimanagement.IdentityProviderTypeAADB2C),
 	// 		AllowedTenants: []*string{
@@ -208,7 +208,7 @@ func ExampleIdentityProviderClient_Update() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteIdentityProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteIdentityProvider.json
 func ExampleIdentityProviderClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleIdentityProviderClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementIdentityProviderListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementIdentityProviderListSecrets.json
 func ExampleIdentityProviderClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

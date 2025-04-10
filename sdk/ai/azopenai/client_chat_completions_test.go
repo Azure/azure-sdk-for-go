@@ -638,3 +638,36 @@ func TestGetChatCompletions_StructuredOutputsResponseFormat(t *testing.T) {
 		testFn(t, client, openAI.ChatCompletionsStructuredOutputs.Model)
 	})
 }
+
+func TestClient_GetChatCompletions_ReasoningEffort(t *testing.T) {
+	testFn := func(t *testing.T, epm endpointWithModel) {
+		client := newTestClient(t, epm.Endpoint)
+
+		opts := azopenai.ChatCompletionsOptions{
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent("I need to plan a trip to Europe for 10 days, visiting Paris, Rome, and London. Create a possible itinerary, including travel times and estimated costs."),
+				},
+			},
+			DeploymentName:  &epm.Model,
+			ReasoningEffort: to.Ptr(azopenai.ReasoningEffortValueLow),
+		}
+
+		resp, err := client.GetChatCompletions(context.Background(), opts, nil)
+		customRequireNoError(t, err, true)
+
+		require.NotEmpty(t, resp.Choices[0].Message.Content)
+		require.NotEmpty(t, resp.Usage.CompletionTokens)
+		require.NotEmpty(t, resp.Usage.CompletionTokensDetails.ReasoningTokens)
+		require.NotEmpty(t, resp.Usage.PromptTokens)
+		require.NotEmpty(t, resp.Usage.TotalTokens)
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		testFn(t, azureOpenAI.ChatCompletionsO1)
+	})
+
+	t.Run("OpenAI", func(t *testing.T) {
+		testFn(t, openAI.ChatCompletionsO1)
+	})
+}

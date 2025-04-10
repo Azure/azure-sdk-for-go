@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListNotifications.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListNotifications.json
 func ExampleNotificationClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,16 +47,16 @@ func ExampleNotificationClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("RequestPublisherNotificationMessage"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage"),
 		// 			Properties: &armapimanagement.NotificationContractProperties{
 		// 				Description: to.Ptr("The following email recipients and users will receive email notifications about subscription requests for API products requiring approval."),
 		// 				Recipients: &armapimanagement.RecipientsContractProperties{
 		// 					Emails: []*string{
-		// 						to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com"),
-		// 						to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/foobar!live"),
-		// 						to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/foobar@live.com")},
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/foobar!live"),
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/foobar@live.com")},
 		// 						Users: []*string{
-		// 							to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/576823d0a40f7e74ec07d642")},
+		// 							to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/576823d0a40f7e74ec07d642")},
 		// 						},
 		// 						Title: to.Ptr("Subscription requests (requiring approval)"),
 		// 					},
@@ -64,14 +64,14 @@ func ExampleNotificationClient_NewListByServicePager() {
 		// 				{
 		// 					Name: to.Ptr("PurchasePublisherNotificationMessage"),
 		// 					Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/PurchasePublisherNotificationMessage"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/PurchasePublisherNotificationMessage"),
 		// 					Properties: &armapimanagement.NotificationContractProperties{
 		// 						Description: to.Ptr("The following email recipients and users will receive email notifications about new API product subscriptions."),
 		// 						Recipients: &armapimanagement.RecipientsContractProperties{
 		// 							Emails: []*string{
-		// 								to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com")},
+		// 								to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com")},
 		// 								Users: []*string{
-		// 									to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")},
+		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")},
 		// 								},
 		// 								Title: to.Ptr("New subscriptions"),
 		// 							},
@@ -79,12 +79,12 @@ func ExampleNotificationClient_NewListByServicePager() {
 		// 						{
 		// 							Name: to.Ptr("NewApplicationNotificationMessage"),
 		// 							Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/NewApplicationNotificationMessage"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/NewApplicationNotificationMessage"),
 		// 							Properties: &armapimanagement.NotificationContractProperties{
 		// 								Description: to.Ptr("The following email recipients and users will receive email notifications when new applications are submitted to the application gallery."),
 		// 								Recipients: &armapimanagement.RecipientsContractProperties{
 		// 									Emails: []*string{
-		// 										to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com")},
+		// 										to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com")},
 		// 										Users: []*string{
 		// 										},
 		// 									},
@@ -94,7 +94,7 @@ func ExampleNotificationClient_NewListByServicePager() {
 		// 							{
 		// 								Name: to.Ptr("BCC"),
 		// 								Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/BCC"),
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/BCC"),
 		// 								Properties: &armapimanagement.NotificationContractProperties{
 		// 									Description: to.Ptr("The following recipients will receive blind carbon copies of all emails sent to developers."),
 		// 									Recipients: &armapimanagement.RecipientsContractProperties{
@@ -109,14 +109,14 @@ func ExampleNotificationClient_NewListByServicePager() {
 		// 							{
 		// 								Name: to.Ptr("NewIssuePublisherNotificationMessage"),
 		// 								Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/NewIssuePublisherNotificationMessage"),
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/NewIssuePublisherNotificationMessage"),
 		// 								Properties: &armapimanagement.NotificationContractProperties{
 		// 									Description: to.Ptr("The following email recipients and users will receive email notifications when a new issue or comment is submitted on the developer portal."),
 		// 									Recipients: &armapimanagement.RecipientsContractProperties{
 		// 										Emails: []*string{
 		// 										},
 		// 										Users: []*string{
-		// 											to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")},
+		// 											to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")},
 		// 										},
 		// 										Title: to.Ptr("New issue or comment"),
 		// 									},
@@ -124,12 +124,12 @@ func ExampleNotificationClient_NewListByServicePager() {
 		// 								{
 		// 									Name: to.Ptr("AccountClosedPublisher"),
 		// 									Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-		// 									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/AccountClosedPublisher"),
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/AccountClosedPublisher"),
 		// 									Properties: &armapimanagement.NotificationContractProperties{
 		// 										Description: to.Ptr("The following email recipients and users will receive email notifications when developer closes his account"),
 		// 										Recipients: &armapimanagement.RecipientsContractProperties{
 		// 											Emails: []*string{
-		// 												to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com")},
+		// 												to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage/recipientEmails/contoso@live.com")},
 		// 												Users: []*string{
 		// 												},
 		// 											},
@@ -139,14 +139,14 @@ func ExampleNotificationClient_NewListByServicePager() {
 		// 									{
 		// 										Name: to.Ptr("QuotaLimitApproachingPublisherNotificationMessage"),
 		// 										Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-		// 										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/QuotaLimitApproachingPublisherNotificationMessage"),
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/QuotaLimitApproachingPublisherNotificationMessage"),
 		// 										Properties: &armapimanagement.NotificationContractProperties{
 		// 											Description: to.Ptr("The following email recipients and users will receive email notifications when subscription usage gets close to usage quota."),
 		// 											Recipients: &armapimanagement.RecipientsContractProperties{
 		// 												Emails: []*string{
 		// 												},
 		// 												Users: []*string{
-		// 													to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")},
+		// 													to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")},
 		// 												},
 		// 												Title: to.Ptr("Approaching subscription quota limit"),
 		// 											},
@@ -155,7 +155,7 @@ func ExampleNotificationClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetNotification.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetNotification.json
 func ExampleNotificationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,23 +176,23 @@ func ExampleNotificationClient_Get() {
 	// res.NotificationContract = armapimanagement.NotificationContract{
 	// 	Name: to.Ptr("RequestPublisherNotificationMessage"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage"),
 	// 	Properties: &armapimanagement.NotificationContractProperties{
 	// 		Description: to.Ptr("The following email recipients and users will receive email notifications about subscription requests for API products requiring approval."),
 	// 		Recipients: &armapimanagement.RecipientsContractProperties{
 	// 			Emails: []*string{
-	// 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/contoso@live.com"),
-	// 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar!live"),
-	// 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar@live.com")},
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/contoso@live.com"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar!live"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar@live.com")},
 	// 				Users: []*string{
-	// 					to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/576823d0a40f7e74ec07d642")},
+	// 					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/576823d0a40f7e74ec07d642")},
 	// 				},
 	// 				Title: to.Ptr("Subscription requests (requiring approval)"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateNotification.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateNotification.json
 func ExampleNotificationClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,16 +213,16 @@ func ExampleNotificationClient_CreateOrUpdate() {
 	// res.NotificationContract = armapimanagement.NotificationContract{
 	// 	Name: to.Ptr("RequestPublisherNotificationMessage"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/notifications"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/notifications/RequestPublisherNotificationMessage"),
 	// 	Properties: &armapimanagement.NotificationContractProperties{
 	// 		Description: to.Ptr("The following email recipients and users will receive email notifications about subscription requests for API products requiring approval."),
 	// 		Recipients: &armapimanagement.RecipientsContractProperties{
 	// 			Emails: []*string{
-	// 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/contoso@live.com"),
-	// 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar!live"),
-	// 				to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar@live.com")},
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/contoso@live.com"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar!live"),
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/recipientEmails/foobar@live.com")},
 	// 				Users: []*string{
-	// 					to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/576823d0a40f7e74ec07d642")},
+	// 					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/576823d0a40f7e74ec07d642")},
 	// 				},
 	// 				Title: to.Ptr("Subscription requests (requiring approval)"),
 	// 			},

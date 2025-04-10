@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
 func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 				Headers: []*armapimanagement.HTTPHeader{
 					{
 						Name:  to.Ptr("Authorization"),
-						Value: to.Ptr("******"),
+						Value: to.Ptr("Bearer myPreciousToken"),
 					}},
 				ValidStatusCodes: []*int64{
 					to.Ptr[int64](200),
@@ -74,7 +74,7 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 	// 			},
 	// 			NextHopIDs: []*string{
 	// 				to.Ptr("26aa44e7-04f1-462f-aa5d-5951957b5650")},
-	// 				ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1"),
 	// 			},
 	// 			{
 	// 				Type: to.Ptr("Internet"),
@@ -92,7 +92,7 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheck.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementPerformConnectivityCheck.json
 func ExampleClient_BeginPerformConnectivityCheckAsync_tcpConnectivityCheck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_tcpConnectivityCheck() {
 	// 			},
 	// 			NextHopIDs: []*string{
 	// 				to.Ptr("75c8d819-b208-4584-a311-1aa45ce753f9")},
-	// 				ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1"),
 	// 			},
 	// 			{
 	// 				Type: to.Ptr("Internet"),

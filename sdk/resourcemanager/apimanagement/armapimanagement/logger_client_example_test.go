@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListLoggers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListLoggers.json
 func ExampleLoggerClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleLoggerClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("azuremonitor"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/loggers"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/azuremonitor"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/azuremonitor"),
 		// 			Properties: &armapimanagement.LoggerContractProperties{
 		// 				IsBuffered: to.Ptr(true),
 		// 				LoggerType: to.Ptr(armapimanagement.LoggerTypeAzureMonitor),
@@ -58,7 +58,7 @@ func ExampleLoggerClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("vvktest"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/loggers"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/vvktest"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/vvktest"),
 		// 			Properties: &armapimanagement.LoggerContractProperties{
 		// 				Credentials: map[string]*string{
 		// 					"instrumentationKey": to.Ptr("{{Logger-Credentials-5b1a17ef2b3f91153004b10d}}"),
@@ -70,7 +70,7 @@ func ExampleLoggerClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("applicationinsights"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/loggers"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/applicationinsights"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/applicationinsights"),
 		// 			Properties: &armapimanagement.LoggerContractProperties{
 		// 				Description: to.Ptr("miaoappinsight"),
 		// 				Credentials: map[string]*string{
@@ -84,7 +84,7 @@ func ExampleLoggerClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadLogger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadLogger.json
 func ExampleLoggerClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleLoggerClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetLogger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetLogger.json
 func ExampleLoggerClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleLoggerClient_Get() {
 	// res.LoggerContract = armapimanagement.LoggerContract{
 	// 	Name: to.Ptr("kloudapilogger1"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/loggers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/kloudapilogger1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/kloudapilogger1"),
 	// 	Properties: &armapimanagement.LoggerContractProperties{
 	// 		Description: to.Ptr("testeventhub3again"),
 	// 		Credentials: map[string]*string{
@@ -131,12 +131,12 @@ func ExampleLoggerClient_Get() {
 	// 		},
 	// 		IsBuffered: to.Ptr(true),
 	// 		LoggerType: to.Ptr(armapimanagement.LoggerTypeAzureEventHub),
-	// 		ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.EventHub/namespaces/eventhubapim"),
+	// 		ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.EventHub/namespaces/eventhubapim"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAILogger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateAILogger.json
 func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateAiLogger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateAiLogger() {
 	// res.LoggerContract = armapimanagement.LoggerContract{
 	// 	Name: to.Ptr("loggerId"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/loggers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/loggerId"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/loggerId"),
 	// 	Properties: &armapimanagement.LoggerContractProperties{
 	// 		Credentials: map[string]*string{
 	// 			"instrumentationKey": to.Ptr("{{5a.......2a}}"),
@@ -176,7 +176,7 @@ func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateAiLogger() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateEHLogger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateEHLogger.json
 func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateEhLogger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateEhLogger() {
 	// res.LoggerContract = armapimanagement.LoggerContract{
 	// 	Name: to.Ptr("eh1"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/loggers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/eh1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/eh1"),
 	// 	Properties: &armapimanagement.LoggerContractProperties{
 	// 		Description: to.Ptr("adding a new logger"),
 	// 		Credentials: map[string]*string{
@@ -218,7 +218,7 @@ func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateEhLogger() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateLogger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateLogger.json
 func ExampleLoggerClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleLoggerClient_Update() {
 	// res.LoggerContract = armapimanagement.LoggerContract{
 	// 	Name: to.Ptr("eh1"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/loggers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/eh1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/eh1"),
 	// 	Properties: &armapimanagement.LoggerContractProperties{
 	// 		Description: to.Ptr("updating description"),
 	// 		Credentials: map[string]*string{
@@ -256,7 +256,7 @@ func ExampleLoggerClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteLogger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteLogger.json
 func ExampleLoggerClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

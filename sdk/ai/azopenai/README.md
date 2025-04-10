@@ -60,5 +60,5 @@ comments.
 [openai_key_concepts]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#key-concepts
 [openai_on_your_data]: https://learn.microsoft.com/azure/ai-services/openai/concepts/use-your-data
 [openai_rest_docs]: https://learn.microsoft.com/azure/cognitive-services/openai/reference
-[pkggodev]: https://aka.ms/azsdk/go/azopenai/pkg
+[pkggodev]: https://aka.ms/azsdk/go/azopenaiextensions/pkg
 [repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenai

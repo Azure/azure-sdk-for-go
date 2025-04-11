@@ -19,36 +19,36 @@ import (
 	"regexp"
 )
 
-// ResourceRegionInfosServer is a fake server for instances of the armnetapp.ResourceRegionInfosClient type.
-type ResourceRegionInfosServer struct {
-	// Get is the fake for method ResourceRegionInfosClient.Get
+// ResourceUsagesServer is a fake server for instances of the armnetapp.ResourceUsagesClient type.
+type ResourceUsagesServer struct {
+	// Get is the fake for method ResourceUsagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, options *armnetapp.ResourceRegionInfosClientGetOptions) (resp azfake.Responder[armnetapp.ResourceRegionInfosClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, usageType string, options *armnetapp.ResourceUsagesClientGetOptions) (resp azfake.Responder[armnetapp.ResourceUsagesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ResourceRegionInfosClient.NewListPager
+	// NewListPager is the fake for method ResourceUsagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armnetapp.ResourceRegionInfosClientListOptions) (resp azfake.PagerResponder[armnetapp.ResourceRegionInfosClientListResponse])
+	NewListPager func(location string, options *armnetapp.ResourceUsagesClientListOptions) (resp azfake.PagerResponder[armnetapp.ResourceUsagesClientListResponse])
 }
 
-// NewResourceRegionInfosServerTransport creates a new instance of ResourceRegionInfosServerTransport with the provided implementation.
-// The returned ResourceRegionInfosServerTransport instance is connected to an instance of armnetapp.ResourceRegionInfosClient via the
+// NewResourceUsagesServerTransport creates a new instance of ResourceUsagesServerTransport with the provided implementation.
+// The returned ResourceUsagesServerTransport instance is connected to an instance of armnetapp.ResourceUsagesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewResourceRegionInfosServerTransport(srv *ResourceRegionInfosServer) *ResourceRegionInfosServerTransport {
-	return &ResourceRegionInfosServerTransport{
+func NewResourceUsagesServerTransport(srv *ResourceUsagesServer) *ResourceUsagesServerTransport {
+	return &ResourceUsagesServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armnetapp.ResourceRegionInfosClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetapp.ResourceUsagesClientListResponse]](),
 	}
 }
 
-// ResourceRegionInfosServerTransport connects instances of armnetapp.ResourceRegionInfosClient to instances of ResourceRegionInfosServer.
-// Don't use this type directly, use NewResourceRegionInfosServerTransport instead.
-type ResourceRegionInfosServerTransport struct {
-	srv          *ResourceRegionInfosServer
-	newListPager *tracker[azfake.PagerResponder[armnetapp.ResourceRegionInfosClientListResponse]]
+// ResourceUsagesServerTransport connects instances of armnetapp.ResourceUsagesClient to instances of ResourceUsagesServer.
+// Don't use this type directly, use NewResourceUsagesServerTransport instead.
+type ResourceUsagesServerTransport struct {
+	srv          *ResourceUsagesServer
+	newListPager *tracker[azfake.PagerResponder[armnetapp.ResourceUsagesClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for ResourceRegionInfosServerTransport.
-func (r *ResourceRegionInfosServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ResourceUsagesServerTransport.
+func (r *ResourceUsagesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -58,21 +58,21 @@ func (r *ResourceRegionInfosServerTransport) Do(req *http.Request) (*http.Respon
 	return r.dispatchToMethodFake(req, method)
 }
 
-func (r *ResourceRegionInfosServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (r *ResourceUsagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if resourceRegionInfosServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = resourceRegionInfosServerTransportInterceptor.Do(req)
+		if resourceUsagesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = resourceUsagesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "ResourceRegionInfosClient.Get":
+			case "ResourceUsagesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "ResourceRegionInfosClient.NewListPager":
+			case "ResourceUsagesClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -93,21 +93,25 @@ func (r *ResourceRegionInfosServerTransport) dispatchToMethodFake(req *http.Requ
 	}
 }
 
-func (r *ResourceRegionInfosServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (r *ResourceUsagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionInfos/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages/(?P<usageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Get(req.Context(), locationParam, nil)
+	usageTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("usageType")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), locationParam, usageTypeParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -115,20 +119,20 @@ func (r *ResourceRegionInfosServerTransport) dispatchGet(req *http.Request) (*ht
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegionInfoResource, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).UsageResult, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (r *ResourceRegionInfosServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (r *ResourceUsagesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionInfos`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -141,7 +145,7 @@ func (r *ResourceRegionInfosServerTransport) dispatchNewListPager(req *http.Requ
 		resp := r.srv.NewListPager(locationParam, nil)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.ResourceRegionInfosClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.ResourceUsagesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -159,8 +163,8 @@ func (r *ResourceRegionInfosServerTransport) dispatchNewListPager(req *http.Requ
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ResourceRegionInfosServerTransport
-var resourceRegionInfosServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ResourceUsagesServerTransport
+var resourceUsagesServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -1,5 +1,24 @@
 # Release History
 
+## 1.3.0-beta.3 (2025-04-11)
+### Breaking Changes
+
+- Operation `*RegistriesClient.BeginScheduleRun` has been changed to non-LRO, use `*RegistriesClient.ScheduleRun` instead.
+- Operation `*RunsClient.BeginCancel` has been changed to non-LRO, use `*RunsClient.Cancel` instead.
+- Operation `*RunsClient.BeginUpdate` has been changed to non-LRO, use `*RunsClient.Update` instead.
+- Operation `*TaskRunsClient.BeginDelete` has been changed to non-LRO, use `*TaskRunsClient.Delete` instead.
+- Operation `*TasksClient.BeginCreate` has been changed to non-LRO, use `*TasksClient.Create` instead.
+- Operation `*TasksClient.BeginDelete` has been changed to non-LRO, use `*TasksClient.Delete` instead.
+- Operation `*TasksClient.BeginUpdate` has been changed to non-LRO, use `*TasksClient.Update` instead.
+
+### Features Added
+
+- New enum type `RoleAssignmentMode` with values `RoleAssignmentModeAbacRepositoryPermissions`, `RoleAssignmentModeLegacyRegistryPermissions`
+- New field `RoleAssignmentMode` in struct `RegistryProperties`
+- New field `RoleAssignmentMode` in struct `RegistryPropertiesUpdateParameters`
+- New field `Identity` in struct `SourceRegistryCredentials`
+
+
 ## 1.3.0-beta.2 (2024-12-27)
 ### Features Added
 

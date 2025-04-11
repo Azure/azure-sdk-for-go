@@ -14,7 +14,7 @@ import (
 )
 
 func Example_embeddings() {
-	model := os.Getenv("AOAI_EMBEDDINGS_MODEL")
+	model := os.Getenv("AOAI_EMBEDDINGS_MODEL") //eg. "text-embedding-ada-002"
 
 	endpoint := os.Getenv("AOAI_EMBEDDINGS_ENDPOINT")
 

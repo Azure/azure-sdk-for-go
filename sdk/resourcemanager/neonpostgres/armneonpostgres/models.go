@@ -6,6 +6,81 @@ package armneonpostgres
 
 import "time"
 
+// Attributes - Additional attributes specific to Neon Resources
+type Attributes struct {
+	// REQUIRED; Name of the attribute
+	Name *string
+
+	// REQUIRED; Value of the attribute
+	Value *string
+}
+
+// Branch - The Branch resource type.
+type Branch struct {
+	// The resource-specific properties for this resource.
+	Properties *BranchProperties
+
+	// READ-ONLY; The name of the Branch
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BranchListResult - The response of a Branch list operation.
+type BranchListResult struct {
+	// REQUIRED; The Branch items on this page
+	Value []*Branch
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// BranchProperties - Properties specific to Branch
+type BranchProperties struct {
+	// Additional attributes for the entity
+	Attributes []*Attributes
+
+	// Database name associated with the branch
+	DatabaseName *string
+
+	// Neon Databases associated with the branch
+	Databases []*NeonDatabaseProperties
+
+	// Endpoints associated with the branch
+	Endpoints []*EndpointProperties
+
+	// Name of the resource
+	EntityName *string
+
+	// The ID of the parent branch
+	ParentID *string
+
+	// The ID of the project this branch belongs to
+	ProjectID *string
+
+	// Role name associated with the branch
+	RoleName *string
+
+	// Roles associated with the branch
+	Roles []*NeonRoleProperties
+
+	// READ-ONLY; Timestamp indicating when the entity was created
+	CreatedAt *string
+
+	// READ-ONLY; Unique identifier for the entity
+	EntityID *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}
+
 // CompanyDetails - Company details for an organization
 type CompanyDetails struct {
 	// Business phone number of the company
@@ -27,6 +102,150 @@ type CompanyDetails struct {
 	OfficeAddress *string
 }
 
+// Compute - The Compute resource type.
+type Compute struct {
+	// The resource-specific properties for this resource.
+	Properties *ComputeProperties
+
+	// READ-ONLY; The name of the Compute
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ComputeListResult - The response of a Compute list operation.
+type ComputeListResult struct {
+	// REQUIRED; The Compute items on this page
+	Value []*Compute
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ComputeProperties - Properties specific to Compute
+type ComputeProperties struct {
+	// Additional attributes for the entity
+	Attributes []*Attributes
+
+	// Number of allocated CPU cores
+	CPUCores *int32
+
+	// Name of the resource
+	EntityName *string
+
+	// Memory allocated in GB
+	Memory *int32
+
+	// Region where the compute instance is located
+	Region *string
+
+	// Current status of the compute instance
+	Status *string
+
+	// READ-ONLY; Timestamp indicating when the entity was created
+	CreatedAt *string
+
+	// READ-ONLY; Unique identifier for the entity
+	EntityID *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}
+
+// ConnectionURIProperties - Connection uri parameters for the associated database
+type ConnectionURIProperties struct {
+	// Branch Id associated with this connection
+	BranchID *string
+
+	// Database name associated with this connection
+	DatabaseName *string
+
+	// the endpoint Id with this connection
+	EndpointID *string
+
+	// Indicates if the connection is pooled
+	IsPooled *bool
+
+	// Project Id associated with this connection
+	ProjectID *string
+
+	// The role name used for authentication
+	RoleName *string
+
+	// READ-ONLY; connection uri returned for the database
+	ConnectionStringURI *string
+}
+
+// DefaultEndpointSettings - Default Endpoint Settings for the project.
+type DefaultEndpointSettings struct {
+	// REQUIRED; Maximum compute units for autoscaling.
+	AutoscalingLimitMaxCu *float32
+
+	// REQUIRED; Minimum compute units for autoscaling.
+	AutoscalingLimitMinCu *float32
+}
+
+// Endpoint - The Neon compute endpoint resource type.
+type Endpoint struct {
+	// The resource-specific properties for this resource.
+	Properties *EndpointProperties
+
+	// READ-ONLY; The name of the Endpoint
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EndpointListResult - The response of a Endpoint list operation.
+type EndpointListResult struct {
+	// REQUIRED; The Endpoint items on this page
+	Value []*Endpoint
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// EndpointProperties - Properties specific to Endpoints
+type EndpointProperties struct {
+	// Additional attributes for the entity
+	Attributes []*Attributes
+
+	// The ID of the branch this endpoint belongs to
+	BranchID *string
+
+	// The type of the endpoint
+	EndpointType *EndpointType
+
+	// Name of the resource
+	EntityName *string
+
+	// The ID of the project this endpoint belongs to
+	ProjectID *string
+
+	// READ-ONLY; Timestamp indicating when the entity was created
+	CreatedAt *string
+
+	// READ-ONLY; Unique identifier for the entity
+	EntityID *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}
+
 // MarketplaceDetails - Marketplace details for an organization
 type MarketplaceDetails struct {
 	// REQUIRED; Offer details for the marketplace that is selected by the user
@@ -37,6 +256,111 @@ type MarketplaceDetails struct {
 
 	// Marketplace subscription status
 	SubscriptionStatus *MarketplaceSubscriptionStatus
+}
+
+// NeonDatabase - The Neon Database resource type.
+type NeonDatabase struct {
+	// The resource-specific properties for this resource.
+	Properties *NeonDatabaseProperties
+
+	// READ-ONLY; The name of the NeonDatabase
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NeonDatabaseListResult - The response of a NeonDatabase list operation.
+type NeonDatabaseListResult struct {
+	// REQUIRED; The NeonDatabase items on this page
+	Value []*NeonDatabase
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NeonDatabaseProperties - Properties specific to Databases
+type NeonDatabaseProperties struct {
+	// Additional attributes for the entity
+	Attributes []*Attributes
+
+	// The ID of the branch this database belongs to
+	BranchID *string
+
+	// Name of the resource
+	EntityName *string
+
+	// The name of the role that owns the database
+	OwnerName *string
+
+	// READ-ONLY; Timestamp indicating when the entity was created
+	CreatedAt *string
+
+	// READ-ONLY; Unique identifier for the entity
+	EntityID *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}
+
+// NeonRole - The Neon Role resource type.
+type NeonRole struct {
+	// The resource-specific properties for this resource.
+	Properties *NeonRoleProperties
+
+	// READ-ONLY; The name of the NeonRole
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NeonRoleListResult - The response of a NeonRole list operation.
+type NeonRoleListResult struct {
+	// REQUIRED; The NeonRole items on this page
+	Value []*NeonRole
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NeonRoleProperties - Properties specific to Roles
+type NeonRoleProperties struct {
+	// Additional attributes for the entity
+	Attributes []*Attributes
+
+	// The ID of the branch this role belongs to
+	BranchID *string
+
+	// Name of the resource
+	EntityName *string
+
+	// Indicates whether the role has superuser privileges
+	IsSuperUser *bool
+
+	// Permissions assigned to the role
+	Permissions []*string
+
+	// READ-ONLY; Timestamp indicating when the entity was created
+	CreatedAt *string
+
+	// READ-ONLY; Unique identifier for the entity
+	EntityID *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
 }
 
 // OfferDetails - Offer details for the marketplace that is selected by the user
@@ -62,11 +386,11 @@ type OfferDetails struct {
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -109,7 +433,7 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// OrganizationProperties - Properties specific to Data Organization resource
+// OrganizationProperties - Properties specific to Neon Organization resource
 type OrganizationProperties struct {
 	// REQUIRED; Details of the company.
 	CompanyDetails *CompanyDetails
@@ -120,8 +444,11 @@ type OrganizationProperties struct {
 	// REQUIRED; Details of the user.
 	UserDetails *UserDetails
 
-	// Organization properties
+	// Neon Organization properties
 	PartnerOrganizationProperties *PartnerOrganizationProperties
+
+	// Neon Project Properties
+	ProjectProperties *ProjectProperties
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
@@ -170,6 +497,90 @@ type PartnerOrganizationProperties struct {
 
 	// Single Sign On properties for the organization
 	SingleSignOnProperties *SingleSignOnProperties
+}
+
+// PgVersion - PostgreSQL Version model
+type PgVersion struct {
+	// The major PostgreSQL version number
+	Version *int32
+}
+
+// PgVersionsResult - Response model for PostgreSQL versions
+type PgVersionsResult struct {
+	// REQUIRED; List of PostgreSQL versions
+	Versions []*PgVersion
+}
+
+// Project - The Project resource type.
+type Project struct {
+	// The resource-specific properties for this resource.
+	Properties *ProjectProperties
+
+	// READ-ONLY; The name of the Project
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProjectListResult - The response of a Project list operation.
+type ProjectListResult struct {
+	// REQUIRED; The Project items on this page
+	Value []*Project
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ProjectProperties - Properties specific to Project
+type ProjectProperties struct {
+	// Additional attributes for the entity
+	Attributes []*Attributes
+
+	// The Branch properties of the project. This is optional
+	Branch *BranchProperties
+
+	// Neon Databases associated with the project
+	Databases []*NeonDatabaseProperties
+
+	// Default endpoint settings for the project.
+	DefaultEndpointSettings *DefaultEndpointSettings
+
+	// Endpoints associated with the project
+	Endpoints []*EndpointProperties
+
+	// Name of the resource
+	EntityName *string
+
+	// The retention period for project history in seconds.
+	HistoryRetention *int32
+
+	// Postgres version for the project
+	PgVersion *int32
+
+	// Region where the project is created
+	RegionID *string
+
+	// Roles associated with the project
+	Roles []*NeonRoleProperties
+
+	// Data Storage bytes per hour for the project
+	Storage *int64
+
+	// READ-ONLY; Timestamp indicating when the entity was created
+	CreatedAt *string
+
+	// READ-ONLY; Unique identifier for the entity
+	EntityID *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
 }
 
 // SingleSignOnProperties - Properties specific to Single Sign On Resource

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListApis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApis.json
 func ExampleAPIClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,10 +51,10 @@ func ExampleAPIClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("a1"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
 		// 			Properties: &armapimanagement.APIContractProperties{
 		// 				APIRevision: to.Ptr("1"),
-		// 				APIVersionSetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/c48f96c9-1385-4e2d-b410-5ab591ce0fc4"),
+		// 				APIVersionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/c48f96c9-1385-4e2d-b410-5ab591ce0fc4"),
 		// 				IsCurrent: to.Ptr(true),
 		// 				Path: to.Ptr("api1"),
 		// 				DisplayName: to.Ptr("api1"),
@@ -66,11 +66,11 @@ func ExampleAPIClient_NewListByServicePager() {
 		// 			{
 		// 				Name: to.Ptr("5a73933b8f27f7cc82a2d533"),
 		// 				Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5a73933b8f27f7cc82a2d533"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5a73933b8f27f7cc82a2d533"),
 		// 				Properties: &armapimanagement.APIContractProperties{
 		// 					APIRevision: to.Ptr("1"),
 		// 					APIVersion: to.Ptr("v1"),
-		// 					APIVersionSetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/c48f96c9-1385-4e2d-b410-5ab591ce0fc4"),
+		// 					APIVersionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/c48f96c9-1385-4e2d-b410-5ab591ce0fc4"),
 		// 					IsCurrent: to.Ptr(true),
 		// 					Path: to.Ptr("api1"),
 		// 					DisplayName: to.Ptr("api1"),
@@ -82,7 +82,7 @@ func ExampleAPIClient_NewListByServicePager() {
 		// 				{
 		// 					Name: to.Ptr("echo-api"),
 		// 					Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
+		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
 		// 					Properties: &armapimanagement.APIContractProperties{
 		// 						APIRevision: to.Ptr("1"),
 		// 						IsCurrent: to.Ptr(true),
@@ -96,7 +96,7 @@ func ExampleAPIClient_NewListByServicePager() {
 		// 					{
 		// 						Name: to.Ptr("5a7390baa5816a110435aee0"),
 		// 						Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5a7390baa5816a110435aee0"),
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5a7390baa5816a110435aee0"),
 		// 						Properties: &armapimanagement.APIContractProperties{
 		// 							Description: to.Ptr("A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification"),
 		// 							APIRevision: to.Ptr("1"),
@@ -112,7 +112,7 @@ func ExampleAPIClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadApi.json
 func ExampleAPIClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleAPIClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiContract.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetApiContract.json
 func ExampleAPIClient_Get_apiManagementGetApiContract() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleAPIClient_Get_apiManagementGetApiContract() {
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("57d1f7558aa04f15146d9d8a"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d1f7558aa04f15146d9d8a"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIType: to.Ptr(armapimanagement.APITypeSoap),
 	// 		APIRevision: to.Ptr("1"),
@@ -184,7 +184,7 @@ func ExampleAPIClient_Get_apiManagementGetApiContract() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiRevision.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetApiRevision.json
 func ExampleAPIClient_Get_apiManagementGetApiRevisionContract() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleAPIClient_Get_apiManagementGetApiRevisionContract() {
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("echo-api;rev=3"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api;rev=3"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api;rev=3"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIRevision: to.Ptr("3"),
 	// 		APIRevisionDescription: to.Ptr("fixed bug in contract"),
@@ -237,7 +237,7 @@ func ExampleAPIClient_Get_apiManagementGetApiRevisionContract() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApi.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApi() {
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("apiid9419"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("apidescription5200"),
 	// 		APIRevision: to.Ptr("1"),
@@ -308,12 +308,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApi() {
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTP),
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiClone.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiClone.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiClone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +336,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiClone() {
 				to.Ptr(armapimanagement.ProtocolHTTP),
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
 			ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api"),
-			SourceAPIID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001"),
+			SourceAPIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -351,7 +352,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiClone() {
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("echoapi2"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoapi2"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoapi2"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("Copy of Existing Echo Api including Operations."),
 	// 		APIRevision: to.Ptr("1"),
@@ -366,12 +367,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiClone() {
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTP),
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://echoapi.cloudapp.net/api"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiNewVersionUsingExistingApi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiNewVersionUsingExistingApi.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiNewVersionUsingExistingApi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +388,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiNewVersionUsingE
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
 			Description:          to.Ptr("Create Echo API into a new Version using Existing Version Set and Copy all Operations."),
 			APIVersion:           to.Ptr("v4"),
-			APIVersionSetID:      to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
+			APIVersionSetID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
 			IsCurrent:            to.Ptr(true),
 			SubscriptionRequired: to.Ptr(true),
 			Path:                 to.Ptr("echo2"),
@@ -395,7 +397,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiNewVersionUsingE
 				to.Ptr(armapimanagement.ProtocolHTTP),
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
 			ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api"),
-			SourceAPIID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath"),
+			SourceAPIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -411,12 +413,12 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiNewVersionUsingE
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("echoapiv3"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoapiv3"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoapiv3"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("Create Echo API into a new Version using Existing Version Set and Copy all Operations."),
 	// 		APIRevision: to.Ptr("1"),
 	// 		APIVersion: to.Ptr("v4"),
-	// 		APIVersionSetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
+	// 		APIVersionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
 	// 		IsCurrent: to.Ptr(true),
 	// 		SubscriptionKeyParameterNames: &armapimanagement.SubscriptionKeyParameterNamesContract{
 	// 			Header: to.Ptr("Ocp-Apim-Subscription-Key"),
@@ -426,19 +428,20 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiNewVersionUsingE
 	// 		Path: to.Ptr("echo2"),
 	// 		APIVersionSet: &armapimanagement.APIVersionSetContractDetails{
 	// 			Name: to.Ptr("Echo API2"),
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
 	// 			VersioningScheme: to.Ptr(armapimanagement.APIVersionSetContractDetailsVersioningSchemeSegment),
 	// 		},
 	// 		DisplayName: to.Ptr("Echo API2"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTP),
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://echoapi.cloudapp.net/api"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiRevisionFromExistingApi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiRevisionFromExistingApi.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiRevisionFromExistingApi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +457,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiRevisionFromExis
 			APIRevisionDescription: to.Ptr("Creating a Revision of an existing API"),
 			Path:                   to.Ptr("echo"),
 			ServiceURL:             to.Ptr("http://echoapi.cloudapp.net/apiv3"),
-			SourceAPIID:            to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
+			SourceAPIID:            to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -470,7 +473,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiRevisionFromExis
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("echo-api;rev=3"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api;rev=3"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api;rev=3"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIRevision: to.Ptr("3"),
 	// 		APIRevisionDescription: to.Ptr("Creating a Revision of an existing API"),
@@ -483,12 +486,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiRevisionFromExis
 	// 		DisplayName: to.Ptr("Echo API"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://echoapi.cloudapp.net/apiv3"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingImportOverrideServiceUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiUsingImportOverrideServiceUrl.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingImportOverrideServiceUrl() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -520,7 +524,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingImportOverr
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("apidocs"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apidocs"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apidocs"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("This is a sample server Petstore server.  You can find out more about Swagger \n    at <a href=\"http://swagger.wordnik.com\">http://swagger.wordnik.com</a> or on irc.freenode.net, #swagger.  For this sample,\n    you can use the api key \"special-key\" to test the authorization filters"),
 	// 		APIRevision: to.Ptr("1"),
@@ -533,12 +537,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingImportOverr
 	// 		DisplayName: to.Ptr("Swagger Sample App"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://petstore.swagger.wordnik.com/api"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingOai3Import.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiUsingOai3Import.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3Import() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -569,7 +574,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3Import(
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("petstoreapi"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/petstoreapi"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/petstoreapi"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIRevision: to.Ptr("1"),
 	// 		IsCurrent: to.Ptr(true),
@@ -581,12 +586,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3Import(
 	// 		DisplayName: to.Ptr("Swagger Petstore"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://petstore.swagger.io/v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,7 +624,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3ImportW
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("petstoreapi"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/petstoreapi"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/petstoreapi"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIRevision: to.Ptr("1"),
 	// 		IsCurrent: to.Ptr(true),
@@ -630,12 +636,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3ImportW
 	// 		DisplayName: to.Ptr("Swagger Petstore"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://petstore.swagger.io/v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingSwaggerImport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiUsingSwaggerImport.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingSwaggerImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -666,7 +673,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingSwaggerImpo
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("petstoreapi"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/petstoreapi"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/petstoreapi"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters."),
 	// 		APIRevision: to.Ptr("1"),
@@ -679,12 +686,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingSwaggerImpo
 	// 		DisplayName: to.Ptr("Swagger Petstore"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTP)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://petstore.swagger.io/v2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiUsingWadlImport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiUsingWadlImport.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingWadlImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -715,7 +723,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingWadlImport(
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("collectorwadl"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/collectorwadl"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/collectorwadl"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr(""),
 	// 		APIRevision: to.Ptr("1"),
@@ -728,12 +736,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingWadlImport(
 	// 		DisplayName: to.Ptr("http://localhost:8080/collector-northbound"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://localhost:8080/collector-northbound"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiWithMultipleAuthServers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiWithMultipleAuthServers.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleAuthServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -783,7 +792,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleAuth
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("apiid9419"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("apidescription5200"),
 	// 		APIRevision: to.Ptr("1"),
@@ -813,12 +822,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleAuth
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTP),
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiWithMultipleOpenIdConnectProviders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiWithMultipleOpenIdConnectProviders.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleOpenIdConnectProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -870,7 +880,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleOpen
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("apiid9419"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("apidescription5200"),
 	// 		APIRevision: to.Ptr("1"),
@@ -903,12 +913,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleOpen
 	// 					Protocols: []*armapimanagement.Protocol{
 	// 						to.Ptr(armapimanagement.ProtocolHTTP),
 	// 						to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
 	// 						ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
 	// 					},
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiWithOpenIdConnect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiWithOpenIdConnect.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithOpenIdConnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -953,7 +964,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithOpenIdConnec
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("58da4c4ccdae970a08121230"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58da4c4ccdae970a08121230"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58da4c4ccdae970a08121230"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		Description: to.Ptr("This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters."),
 	// 		APIRevision: to.Ptr("1"),
@@ -973,12 +984,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithOpenIdConnec
 	// 			DisplayName: to.Ptr("Swagger Petstore"),
 	// 			Protocols: []*armapimanagement.Protocol{
 	// 				to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 				ProvisioningState: to.Ptr("Succeeded"),
 	// 				ServiceURL: to.Ptr("http://petstore.swagger.io/v2"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGraphQLApi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateGraphQLApi.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateGraphQlApi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1014,7 +1026,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateGraphQlApi() {
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("apiid9419"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIType: to.Ptr(armapimanagement.APITypeGraphql),
 	// 		Description: to.Ptr("apidescription5200"),
@@ -1026,12 +1038,122 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateGraphQlApi() {
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTP),
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("https://api.spacex.land/graphql"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateSoapPassThroughApiUsingWsdlImport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateGrpcApi.json
+func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateGrpcApi() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
+		Properties: &armapimanagement.APICreateOrUpdateProperties{
+			APIType:     to.Ptr(armapimanagement.APITypeGrpc),
+			Description: to.Ptr("apidescription5200"),
+			Path:        to.Ptr("grpc-api"),
+			DisplayName: to.Ptr("apiname1463"),
+			Protocols: []*armapimanagement.Protocol{
+				to.Ptr(armapimanagement.ProtocolHTTPS)},
+			ServiceURL: to.Ptr("https://your-api-hostname/samples"),
+			Format:     to.Ptr(armapimanagement.ContentFormatGrpcLink),
+			Value:      to.Ptr("https://raw.githubusercontent.com/kedacore/keda/main/pkg/scalers/externalscaler/externalscaler.proto"),
+		},
+	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.APIContract = armapimanagement.APIContract{
+	// 	Name: to.Ptr("apiid9419"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
+	// 	Properties: &armapimanagement.APIContractProperties{
+	// 		APIType: to.Ptr(armapimanagement.APITypeGrpc),
+	// 		Description: to.Ptr("apidescription5200"),
+	// 		APIRevision: to.Ptr("1"),
+	// 		IsCurrent: to.Ptr(true),
+	// 		IsOnline: to.Ptr(true),
+	// 		Path: to.Ptr("grpc-api"),
+	// 		DisplayName: to.Ptr("apiname1463"),
+	// 		Protocols: []*armapimanagement.Protocol{
+	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ServiceURL: to.Ptr("https://your-api-hostname/samples"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateODataApi.json
+func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateODataApi() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapimanagement.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
+		Properties: &armapimanagement.APICreateOrUpdateProperties{
+			APIType:     to.Ptr(armapimanagement.APITypeOData),
+			Description: to.Ptr("apidescription5200"),
+			Path:        to.Ptr("odata-api"),
+			DisplayName: to.Ptr("apiname1463"),
+			Protocols: []*armapimanagement.Protocol{
+				to.Ptr(armapimanagement.ProtocolHTTP),
+				to.Ptr(armapimanagement.ProtocolHTTPS)},
+			ServiceURL: to.Ptr("https://services.odata.org/TripPinWebApiService"),
+			Format:     to.Ptr(armapimanagement.ContentFormatODataLink),
+			Value:      to.Ptr("https://services.odata.org/TripPinWebApiService/$metadata"),
+		},
+	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.APIContract = armapimanagement.APIContract{
+	// 	Name: to.Ptr("apiid9419"),
+	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
+	// 	Properties: &armapimanagement.APIContractProperties{
+	// 		APIType: to.Ptr(armapimanagement.APITypeOData),
+	// 		Description: to.Ptr("apidescription5200"),
+	// 		APIRevision: to.Ptr("1"),
+	// 		IsCurrent: to.Ptr(true),
+	// 		IsOnline: to.Ptr(true),
+	// 		Path: to.Ptr("odata-api"),
+	// 		DisplayName: to.Ptr("apiname1463"),
+	// 		Protocols: []*armapimanagement.Protocol{
+	// 			to.Ptr(armapimanagement.ProtocolHTTP),
+	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			ServiceURL: to.Ptr("https://services.odata.org/TripPinWebApiService"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateSoapPassThroughApiUsingWsdlImport.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapPassThroughApiUsingWsdlImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1067,7 +1189,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapPassThroughApiU
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("soapApi"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/soapApi"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/soapApi"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIType: to.Ptr(armapimanagement.APITypeSoap),
 	// 		APIRevision: to.Ptr("1"),
@@ -1080,12 +1202,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapPassThroughApiU
 	// 		DisplayName: to.Ptr("CurrencyConvertor"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://www.webservicex.net"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateSoapToRestApiUsingWsdlImport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateSoapToRestApiUsingWsdlImport.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapToRestApiUsingWsdlImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1120,7 +1243,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapToRestApiUsingW
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("soapApi"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/soapApi"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/soapApi"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIRevision: to.Ptr("1"),
 	// 		IsCurrent: to.Ptr(true),
@@ -1132,12 +1255,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapToRestApiUsingW
 	// 		DisplayName: to.Ptr("CurrencyConvertor"),
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolHTTPS)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("http://www.webservicex.net"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateWebsocketApi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateWebsocketApi.json
 func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateWebSocketApi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1173,7 +1297,7 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateWebSocketApi() {
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("apiid9419"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/apiid9419"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIType: to.Ptr(armapimanagement.APITypeWebsocket),
 	// 		Description: to.Ptr("apidescription5200"),
@@ -1185,12 +1309,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateWebSocketApi() {
 	// 		Protocols: []*armapimanagement.Protocol{
 	// 			to.Ptr(armapimanagement.ProtocolWs),
 	// 			to.Ptr(armapimanagement.ProtocolWss)},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceURL: to.Ptr("wss://echo.websocket.org"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateApi.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateApi.json
 func ExampleAPIClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1217,7 +1342,7 @@ func ExampleAPIClient_Update() {
 	// res.APIContract = armapimanagement.APIContract{
 	// 	Name: to.Ptr("echo-api"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
 	// 	Properties: &armapimanagement.APIContractProperties{
 	// 		APIRevision: to.Ptr("1"),
 	// 		IsCurrent: to.Ptr(true),
@@ -1235,8 +1360,8 @@ func ExampleAPIClient_Update() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApi.json
-func ExampleAPIClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteApi.json
+func ExampleAPIClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1246,13 +1371,17 @@ func ExampleAPIClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewAPIClient().Delete(ctx, "rg1", "apimService1", "echo-api", "*", &armapimanagement.APIClientDeleteOptions{DeleteRevisions: nil})
+	poller, err := clientFactory.NewAPIClient().BeginDelete(ctx, "rg1", "apimService1", "echo-api", "*", &armapimanagement.APIClientBeginDeleteOptions{DeleteRevisions: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListApisByTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApisByTags.json
 func ExampleAPIClient_NewListByTagsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

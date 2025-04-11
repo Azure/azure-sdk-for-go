@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListPolicyDescriptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListPolicyDescriptions.json
 func ExamplePolicyDescriptionClient_ListByService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExamplePolicyDescriptionClient_ListByService() {
 	// 		{
 	// 			Name: to.Ptr("authentication-basic"),
 	// 			Type: to.Ptr("Microsoft.ApiManagement/service/policyDescriptions"),
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/policyDescriptions/authentication-basic"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/policyDescriptions/authentication-basic"),
 	// 			Properties: &armapimanagement.PolicyDescriptionContractProperties{
 	// 				Description: to.Ptr("Authenticate with the backend service using Basic authentication. Use in the inbound section at API scope."),
 	// 				Scope: to.Ptr[int64](268435471),
@@ -51,7 +51,7 @@ func ExamplePolicyDescriptionClient_ListByService() {
 	// 		{
 	// 			Name: to.Ptr("authentication-certificate"),
 	// 			Type: to.Ptr("Microsoft.ApiManagement/service/policyDescriptions"),
-	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/policyDescriptions/authentication-certificate"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/policyDescriptions/authentication-certificate"),
 	// 			Properties: &armapimanagement.PolicyDescriptionContractProperties{
 	// 				Description: to.Ptr("Authenticate with the backend service using a client certificate. Use in the inbound section at API scope."),
 	// 				Scope: to.Ptr[int64](268435471),

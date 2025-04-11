@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListDiagnostics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListDiagnostics.json
 func ExampleDiagnosticClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleDiagnosticClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("applicationinsights"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/diagnostics"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
 		// 			Properties: &armapimanagement.DiagnosticContractProperties{
 		// 				AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
 		// 				Backend: &armapimanagement.PipelineDiagnosticSettings{
@@ -86,7 +86,7 @@ func ExampleDiagnosticClient_NewListByServicePager() {
 		// 				},
 		// 				HTTPCorrelationProtocol: to.Ptr(armapimanagement.HTTPCorrelationProtocolLegacy),
 		// 				LogClientIP: to.Ptr(true),
-		// 				LoggerID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/aisamplingtest"),
+		// 				LoggerID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/aisamplingtest"),
 		// 				Sampling: &armapimanagement.SamplingSettings{
 		// 					Percentage: to.Ptr[float64](100),
 		// 					SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
@@ -97,10 +97,10 @@ func ExampleDiagnosticClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("azuremonitor"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/diagnostics"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/azuremonitor"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/azuremonitor"),
 		// 			Properties: &armapimanagement.DiagnosticContractProperties{
 		// 				LogClientIP: to.Ptr(true),
-		// 				LoggerID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/azuremonitor"),
+		// 				LoggerID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/azuremonitor"),
 		// 				Sampling: &armapimanagement.SamplingSettings{
 		// 					Percentage: to.Ptr[float64](100),
 		// 					SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
@@ -111,7 +111,7 @@ func ExampleDiagnosticClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadDiagnostic.json
 func ExampleDiagnosticClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleDiagnosticClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetDiagnostic.json
 func ExampleDiagnosticClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleDiagnosticClient_Get() {
 	// res.DiagnosticContract = armapimanagement.DiagnosticContract{
 	// 	Name: to.Ptr("applicationinsights"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/diagnostics"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
 	// 	Properties: &armapimanagement.DiagnosticContractProperties{
 	// 		AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
 	// 		Backend: &armapimanagement.PipelineDiagnosticSettings{
@@ -186,7 +186,7 @@ func ExampleDiagnosticClient_Get() {
 	// 		},
 	// 		HTTPCorrelationProtocol: to.Ptr(armapimanagement.HTTPCorrelationProtocolLegacy),
 	// 		LogClientIP: to.Ptr(true),
-	// 		LoggerID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/aisamplingtest"),
+	// 		LoggerID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/aisamplingtest"),
 	// 		Sampling: &armapimanagement.SamplingSettings{
 	// 			Percentage: to.Ptr[float64](100),
 	// 			SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
@@ -195,7 +195,7 @@ func ExampleDiagnosticClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateDiagnostic.json
 func ExampleDiagnosticClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleDiagnosticClient_CreateOrUpdate() {
 	// res.DiagnosticContract = armapimanagement.DiagnosticContract{
 	// 	Name: to.Ptr("applicationinsights"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/diagnostics"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
 	// 	Properties: &armapimanagement.DiagnosticContractProperties{
 	// 		AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
 	// 		Backend: &armapimanagement.PipelineDiagnosticSettings{
@@ -301,7 +301,7 @@ func ExampleDiagnosticClient_CreateOrUpdate() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateDiagnostic.json
 func ExampleDiagnosticClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +363,7 @@ func ExampleDiagnosticClient_Update() {
 	// res.DiagnosticContract = armapimanagement.DiagnosticContract{
 	// 	Name: to.Ptr("applicationinsights"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/diagnostics"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/diagnostics/applicationinsights"),
 	// 	Properties: &armapimanagement.DiagnosticContractProperties{
 	// 		AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
 	// 		Backend: &armapimanagement.PipelineDiagnosticSettings{
@@ -400,7 +400,7 @@ func ExampleDiagnosticClient_Update() {
 	// 						},
 	// 						HTTPCorrelationProtocol: to.Ptr(armapimanagement.HTTPCorrelationProtocolLegacy),
 	// 						LogClientIP: to.Ptr(true),
-	// 						LoggerID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/aisamplingtest"),
+	// 						LoggerID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/loggers/aisamplingtest"),
 	// 						Sampling: &armapimanagement.SamplingSettings{
 	// 							Percentage: to.Ptr[float64](50),
 	// 							SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
@@ -409,7 +409,7 @@ func ExampleDiagnosticClient_Update() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteDiagnostic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteDiagnostic.json
 func ExampleDiagnosticClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

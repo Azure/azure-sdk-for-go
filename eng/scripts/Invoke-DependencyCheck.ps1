@@ -47,7 +47,7 @@ $PackageDirectories = $PackageDirectories -split ","
 
 foreach ($sdk in $sdks)
 {
-    if ($sdk.Name -like "*internal*" -or (IsPackageDeprecated $sdk))
+    if ($sdk.Name -like "*internal*" -or (IsPackageDeprecated $sdk) -or $sdk.SdkType -eq "eng")
     {
         continue
     }

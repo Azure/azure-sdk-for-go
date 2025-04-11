@@ -153,16 +153,9 @@ extends:
               os: linux
 
             steps:
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
                 parameters:
-                  ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
-                    Paths:
-                      - "/*"
-                      - ".vscode/"
-                  ${{ else }}:
-                    Paths:
-                      - "sdk/${{ parameters.ServiceDirectory }}"
-                      - ".vscode/"
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
               - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 

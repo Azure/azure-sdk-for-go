@@ -42,7 +42,7 @@ func NewStandbyVirtualMachinePoolsClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Create a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - resource - Resource create parameters.
@@ -69,7 +69,7 @@ func (client *StandbyVirtualMachinePoolsClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Create a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 func (client *StandbyVirtualMachinePoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, standbyVirtualMachinePoolName string, resource StandbyVirtualMachinePoolResource, options *StandbyVirtualMachinePoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StandbyVirtualMachinePoolsClient.BeginCreateOrUpdate"
@@ -111,7 +111,7 @@ func (client *StandbyVirtualMachinePoolsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -124,7 +124,7 @@ func (client *StandbyVirtualMachinePoolsClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Delete a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - options - StandbyVirtualMachinePoolsClientBeginDeleteOptions contains the optional parameters for the StandbyVirtualMachinePoolsClient.BeginDelete
@@ -149,7 +149,7 @@ func (client *StandbyVirtualMachinePoolsClient) BeginDelete(ctx context.Context,
 // Delete - Delete a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 func (client *StandbyVirtualMachinePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, standbyVirtualMachinePoolName string, options *StandbyVirtualMachinePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StandbyVirtualMachinePoolsClient.BeginDelete"
@@ -191,7 +191,7 @@ func (client *StandbyVirtualMachinePoolsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *StandbyVirtualMachinePoolsClient) deleteCreateRequest(ctx context.
 // Get - Get a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - options - StandbyVirtualMachinePoolsClientGetOptions contains the optional parameters for the StandbyVirtualMachinePoolsClient.Get
@@ -247,7 +247,7 @@ func (client *StandbyVirtualMachinePoolsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +264,7 @@ func (client *StandbyVirtualMachinePoolsClient) getHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - List StandbyVirtualMachinePoolResource resources by resource group
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StandbyVirtualMachinePoolsClientListByResourceGroupOptions contains the optional parameters for the StandbyVirtualMachinePoolsClient.NewListByResourceGroupPager
 //     method.
@@ -307,7 +307,7 @@ func (client *StandbyVirtualMachinePoolsClient) listByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *StandbyVirtualMachinePoolsClient) listByResourceGroupHandleRespons
 
 // NewListBySubscriptionPager - List StandbyVirtualMachinePoolResource resources by subscription ID
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - options - StandbyVirtualMachinePoolsClientListBySubscriptionOptions contains the optional parameters for the StandbyVirtualMachinePoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *StandbyVirtualMachinePoolsClient) NewListBySubscriptionPager(options *StandbyVirtualMachinePoolsClientListBySubscriptionOptions) *runtime.Pager[StandbyVirtualMachinePoolsClientListBySubscriptionResponse] {
@@ -362,7 +362,7 @@ func (client *StandbyVirtualMachinePoolsClient) listBySubscriptionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -380,7 +380,7 @@ func (client *StandbyVirtualMachinePoolsClient) listBySubscriptionHandleResponse
 // Update - Update a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyVirtualMachinePoolName - Name of the standby virtual machine pool
 //   - properties - The resource properties to be updated.
@@ -428,7 +428,7 @@ func (client *StandbyVirtualMachinePoolsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

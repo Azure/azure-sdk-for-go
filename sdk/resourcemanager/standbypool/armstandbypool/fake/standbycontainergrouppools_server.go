@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -25,7 +25,7 @@ type StandbyContainerGroupPoolsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, resource armstandbypool.StandbyContainerGroupPoolResource, options *armstandbypool.StandbyContainerGroupPoolsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armstandbypool.StandbyContainerGroupPoolsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method StandbyContainerGroupPoolsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, options *armstandbypool.StandbyContainerGroupPoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstandbypool.StandbyContainerGroupPoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method StandbyContainerGroupPoolsClient.Get
@@ -80,27 +80,46 @@ func (s *StandbyContainerGroupPoolsServerTransport) Do(req *http.Request) (*http
 }
 
 func (s *StandbyContainerGroupPoolsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "StandbyContainerGroupPoolsClient.BeginCreateOrUpdate":
-		resp, err = s.dispatchBeginCreateOrUpdate(req)
-	case "StandbyContainerGroupPoolsClient.BeginDelete":
-		resp, err = s.dispatchBeginDelete(req)
-	case "StandbyContainerGroupPoolsClient.Get":
-		resp, err = s.dispatchGet(req)
-	case "StandbyContainerGroupPoolsClient.NewListByResourceGroupPager":
-		resp, err = s.dispatchNewListByResourceGroupPager(req)
-	case "StandbyContainerGroupPoolsClient.NewListBySubscriptionPager":
-		resp, err = s.dispatchNewListBySubscriptionPager(req)
-	case "StandbyContainerGroupPoolsClient.Update":
-		resp, err = s.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if standbyContainerGroupPoolsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = standbyContainerGroupPoolsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "StandbyContainerGroupPoolsClient.BeginCreateOrUpdate":
+				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
+			case "StandbyContainerGroupPoolsClient.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StandbyContainerGroupPoolsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "StandbyContainerGroupPoolsClient.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "StandbyContainerGroupPoolsClient.NewListBySubscriptionPager":
+				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "StandbyContainerGroupPoolsClient.Update":
+				res.resp, res.err = s.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (s *StandbyContainerGroupPoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -184,9 +203,9 @@ func (s *StandbyContainerGroupPoolsServerTransport) dispatchBeginDelete(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		s.beginDelete.remove(req)
@@ -333,4 +352,10 @@ func (s *StandbyContainerGroupPoolsServerTransport) dispatchUpdate(req *http.Req
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to StandbyContainerGroupPoolsServerTransport
+var standbyContainerGroupPoolsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

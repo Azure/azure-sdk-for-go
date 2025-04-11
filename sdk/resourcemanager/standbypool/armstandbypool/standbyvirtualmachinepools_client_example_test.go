@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool/v2"
 	"log"
 )
 
-// Generated from example definition: 2024-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
 func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01/StandbyVirtualMachinePools_Delete.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Delete.json
 func ExampleStandbyVirtualMachinePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-03-01/StandbyVirtualMachinePools_Get.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Get.json
 func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01/StandbyVirtualMachinePools_ListByResourceGroup.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_ListByResourceGroup.json
 func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,6 +171,7 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 		// 				Properties: &armstandbypool.StandbyVirtualMachinePoolResourceProperties{
 		// 					ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 		// 						MaxReadyCapacity: to.Ptr[int64](304),
+		// 						MinReadyCapacity: to.Ptr[int64](300),
 		// 					},
 		// 					VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 		// 					AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -198,7 +199,7 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-03-01/StandbyVirtualMachinePools_ListBySubscription.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_ListBySubscription.json
 func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +256,7 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-03-01/StandbyVirtualMachinePools_Update.json
+// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Update.json
 func ExampleStandbyVirtualMachinePoolsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

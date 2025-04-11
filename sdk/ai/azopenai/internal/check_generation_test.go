@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,6 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -22,75 +21,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const typeSpecDir = "../testdata/TempTypeSpecFiles/OpenAI.Inference"
-
 const modelsGoFile = "../models.go"
 
-var goModelsFiles = []string{modelsGoFile, "../custom_models.go", "../models_extra.go"}
-
-var typeSpecModelRE = regexp.MustCompile(`(?m)^model\s+([^\s]+)`)
 var goModelRE = regexp.MustCompile(`(?m)^type\s+([^\s]+)\s+struct`)
 var byteFieldRE = regexp.MustCompile(`\s+([^\s]+)\s+\[\]byte`)
-
-// Tests that all the models have been generated but doesn't check fields.
-func TestAllModelsHaveBeenGenerated(t *testing.T) {
-	// OpenAI uses a few constructs that aren't used in Azure services like
-	// unions that involve primitive types. The current emitters will silently
-	// drop those types since they can't be represented.
-	//
-	// Until we resolve all of that we just check to make sure that hasn't happened,
-	// and manually correct it. See the [TestNoUntypedFields] below for how to fix it.
-	//
-	if _, err := os.Stat(typeSpecDir); err != nil {
-		t.Skipf("Skipping model/typespec tests: %s doesn't exist - run `go generate` to create it.", typeSpecDir)
-	}
-
-	typeSpecModels, err := getAllTypeSpecModelNames()
-	require.NoError(t, err)
-	require.NotEmpty(t, typeSpecModels)
-
-	// grab all the models that we have in our project as well
-	goModels := map[string]bool{}
-
-	for _, path := range goModelsFiles {
-		models, err := getFirstCaptureForRE(path, goModelRE)
-		require.NoError(t, err)
-
-		for _, model := range models {
-			goModels[model] = true
-		}
-	}
-
-	renames := map[string]string{
-		// types that aren't used (either were subsumed into other types, or expanded into required arguments)
-		"azuremachinelearningindexchatextensionconfiguration": "", // removed
-		"azuremachinelearningindexchatextensionparameters":    "", // removed
-		"batchimagegenerationoperationresponse":               "",
-		"batchcreateresponse":                                 "",
-		"getchatcompletionsbody":                              "",
-		"getcompletionsbody":                                  "",
-		"generatespeechfromtextbody":                          "",
-		"deployment":                                          "",
-		"getembeddingsbody":                                   "",
-		"getimagegenerationsbody":                             "",
-		"openaifile":                                          "",
-		"openaipageablelistof<t>":                             "",
-	}
-
-	for _, typespecModel := range typeSpecModels {
-		v, ok := renames[typespecModel]
-
-		if v == "" {
-			if ok {
-				continue
-			}
-		} else {
-			typespecModel = v
-		}
-
-		assert.Truef(t, goModels[typespecModel], "TypeSpec name: %q", typespecModel)
-	}
-}
 
 // Tests to see if any of our fields looks like one where the generator defaulted to
 // just accepting JSON, which is typical when TypeSpec uses a union type that is
@@ -123,6 +57,59 @@ func TestNoUntypedFields(t *testing.T) {
 	require.Empty(t, withByteFields, "no new []byte fields. If this test fails see the test for details on how to fix it.")
 }
 
+func TestAllOYDModelsAreGenerated(t *testing.T) {
+	if _, err := os.Stat("../testdata/generated/openapi.json"); err != nil {
+		t.Skip("openapi.json isn't there, not doing codegen tests")
+	}
+
+	// we do a little autorest hackery to trim out models that aren't used, just check that we didn't
+	// miss something new. If we did, just add it to the "Keep only "Azure OpenAI On Your Data"
+	// models, or enhancements."
+	// yaml block.
+
+	// grab all the models that we have in our project as well
+	goModels := map[string]bool{}
+
+	models, err := getFirstCaptureForRE("../models.go", goModelRE)
+	require.NoError(t, err)
+
+	for _, model := range models {
+		goModels[model] = true
+	}
+
+	/*
+		Example:
+
+		definitions.AzureCosmosDBChatExtensionConfiguration: {
+			"allOf": [{
+				"$ref": "#/definitions/AzureChatExtensionConfiguration"
+			}],
+		}
+	*/
+
+	var openAPI *struct {
+		Definitions map[string]struct {
+			AllOf []*struct {
+				Ref string `json:"$ref"`
+			}
+		}
+	}
+
+	data, err := os.ReadFile("../testdata/generated/openapi.json")
+	require.NoError(t, err)
+
+	err = json.Unmarshal(data, &openAPI)
+	require.NoError(t, err)
+
+	for name, defn := range openAPI.Definitions {
+		if len(defn.AllOf) == 0 || len(defn.AllOf) > 1 || defn.AllOf[0].Ref != "#/definitions/AzureChatExtensionConfiguration" {
+			continue
+		}
+
+		assert.True(t, goModels[strings.ToLower(name)], "%s exists in the swagger, but didn't get generated", name)
+	}
+}
+
 func TestAPIVersionIsBumped(t *testing.T) {
 	if _, err := os.Stat("../testdata/generated/openapi.json"); err != nil {
 		t.Skip("openapi.json isn't there, not doing codegen tests")
@@ -144,13 +131,37 @@ func TestAPIVersionIsBumped(t *testing.T) {
 		// ex: const apiVersion = "2024-07-01-preview"
 		re := regexp.MustCompile(`const apiVersion = "(.+?)"`)
 
-		data, err := os.ReadFile("../custom_client.go")
+		data, err := os.ReadFile("../client_shared_test.go")
 		require.NoError(t, err)
 
 		matches := re.FindStringSubmatch(string(data))
 		require.NotEmpty(t, matches)
 
 		require.Equal(t, openAPI.Info.Version, matches[1], "update the client_shared_test.go to use the API version we just generated from")
+	})
+
+	// check examples
+	t.Run("ExamplesUseNewAPIVersion", func(t *testing.T) {
+		// ex: azure.WithEndpoint(endpoint, "2024-07-01-preview"),
+		re := regexp.MustCompile(`azure\.WithEndpoint\(.+?, "(.+?)"\),`)
+
+		paths, err := filepath.Glob("../example*.go")
+		require.NoError(t, err)
+		require.NotEmpty(t, paths)
+
+		for _, path := range paths {
+			t.Logf("Checking example %s", path)
+
+			file, err := os.ReadFile(path)
+			require.NoError(t, err)
+
+			matches := re.FindAllStringSubmatch(string(file), -1)
+			require.NotEmpty(t, matches)
+
+			for _, m := range matches {
+				assert.Equalf(t, openAPI.Info.Version, m[1], "api-version out of date in %s", path)
+			}
+		}
 	})
 }
 
@@ -205,29 +216,4 @@ func getFirstCaptureForRE(file string, re *regexp.Regexp) ([]string, error) {
 	}
 
 	return modelNames, nil
-}
-
-func getAllTypeSpecModelNames() ([]string, error) {
-	var modelNames []string
-
-	err := filepath.WalkDir(typeSpecDir, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if filepath.Ext(path) != ".tsp" {
-			return nil
-		}
-
-		models, err := getFirstCaptureForRE(path, typeSpecModelRE)
-
-		if err != nil {
-			return err
-		}
-
-		modelNames = append(modelNames, models...)
-		return nil
-	})
-
-	return modelNames, err
 }

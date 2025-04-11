@@ -9,6 +9,7 @@ param(
     [switch]$cleanGenerated,
     [switch]$format,
     [switch]$tidy,
+    [switch]$factoryGatherCommonParams,
     [string]$config,
     [string]$autorestVersion,
     [string]$goExtension,

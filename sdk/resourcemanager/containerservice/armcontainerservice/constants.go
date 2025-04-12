@@ -7,7 +7,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v6.5.0"
+	moduleVersion = "v6.6.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -541,6 +541,34 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 		NetworkPolicyCalico,
 		NetworkPolicyCilium,
 		NetworkPolicyNone,
+	}
+}
+
+// NginxIngressControllerType - Ingress type for the default NginxIngressController custom resource
+type NginxIngressControllerType string
+
+const (
+	// NginxIngressControllerTypeAnnotationControlled - The default NginxIngressController will be created. Users can edit the
+	// default NginxIngressController Custom Resource to configure load balancer annotations.
+	NginxIngressControllerTypeAnnotationControlled NginxIngressControllerType = "AnnotationControlled"
+	// NginxIngressControllerTypeExternal - The default NginxIngressController will be created and the operator will provision
+	// an external loadbalancer with it. Any annotation to make the default loadbalancer internal will be overwritten.
+	NginxIngressControllerTypeExternal NginxIngressControllerType = "External"
+	// NginxIngressControllerTypeInternal - The default NginxIngressController will be created and the operator will provision
+	// an internal loadbalancer with it. Any annotation to make the default loadbalancer external will be overwritten.
+	NginxIngressControllerTypeInternal NginxIngressControllerType = "Internal"
+	// NginxIngressControllerTypeNone - The default Ingress Controller will not be created. It will not be deleted by the system
+	// if it exists. Users should delete the default NginxIngressController Custom Resource manually if desired.
+	NginxIngressControllerTypeNone NginxIngressControllerType = "None"
+)
+
+// PossibleNginxIngressControllerTypeValues returns the possible values for the NginxIngressControllerType const type.
+func PossibleNginxIngressControllerTypeValues() []NginxIngressControllerType {
+	return []NginxIngressControllerType{
+		NginxIngressControllerTypeAnnotationControlled,
+		NginxIngressControllerTypeExternal,
+		NginxIngressControllerTypeInternal,
+		NginxIngressControllerTypeNone,
 	}
 }
 

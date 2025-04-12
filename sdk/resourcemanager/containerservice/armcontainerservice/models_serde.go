@@ -2861,12 +2861,40 @@ func (m *ManagedClusterIngressProfile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ManagedClusterIngressProfileNginx.
+func (m ManagedClusterIngressProfileNginx) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "defaultIngressControllerType", m.DefaultIngressControllerType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedClusterIngressProfileNginx.
+func (m *ManagedClusterIngressProfileNginx) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "defaultIngressControllerType":
+			err = unpopulate(val, "DefaultIngressControllerType", &m.DefaultIngressControllerType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ManagedClusterIngressProfileWebAppRouting.
 func (m ManagedClusterIngressProfileWebAppRouting) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dnsZoneResourceIds", m.DNSZoneResourceIDs)
 	populate(objectMap, "enabled", m.Enabled)
 	populate(objectMap, "identity", m.Identity)
+	populate(objectMap, "nginx", m.Nginx)
 	return json.Marshal(objectMap)
 }
 
@@ -2887,6 +2915,9 @@ func (m *ManagedClusterIngressProfileWebAppRouting) UnmarshalJSON(data []byte) e
 			delete(rawMsg, key)
 		case "identity":
 			err = unpopulate(val, "Identity", &m.Identity)
+			delete(rawMsg, key)
+		case "nginx":
+			err = unpopulate(val, "Nginx", &m.Nginx)
 			delete(rawMsg, key)
 		}
 		if err != nil {

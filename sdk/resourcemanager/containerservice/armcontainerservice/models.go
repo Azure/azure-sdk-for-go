@@ -1248,6 +1248,11 @@ type ManagedClusterIngressProfile struct {
 	WebAppRouting *ManagedClusterIngressProfileWebAppRouting
 }
 
+type ManagedClusterIngressProfileNginx struct {
+	// Ingress type for the default NginxIngressController custom resource
+	DefaultIngressControllerType *NginxIngressControllerType
+}
+
 // ManagedClusterIngressProfileWebAppRouting - Application Routing add-on settings for the ingress profile.
 type ManagedClusterIngressProfileWebAppRouting struct {
 	// Resource IDs of the DNS zones to be associated with the Application Routing add-on. Used only when Application Routing
@@ -1258,6 +1263,9 @@ type ManagedClusterIngressProfileWebAppRouting struct {
 
 	// Whether to enable the Application Routing add-on.
 	Enabled *bool
+
+	// Configuration for the default NginxIngressController. See more at https://learn.microsoft.com/en-us/azure/aks/app-routing-nginx-configuration#the-default-nginx-ingress-controller.
+	Nginx *ManagedClusterIngressProfileNginx
 
 	// READ-ONLY; Managed identity of the Application Routing add-on. This is the identity that should be granted permissions,
 	// for example, to manage the associated Azure DNS resource and get certificates from Azure

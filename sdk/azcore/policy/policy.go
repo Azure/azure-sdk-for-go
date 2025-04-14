@@ -112,13 +112,7 @@ type RetryOptions struct {
 	MaxRetryDelay time.Duration
 
 	// StatusCodes specifies the HTTP status codes that indicate the operation should be retried.
-	// A nil slice will use the following values.
-	//   http.StatusRequestTimeout      408
-	//   http.StatusTooManyRequests     429
-	//   http.StatusInternalServerError 500
-	//   http.StatusBadGateway          502
-	//   http.StatusServiceUnavailable  503
-	//   http.StatusGatewayTimeout      504
+	// A nil slice will use the values returned by DefaultRetryStatusCodes.
 	// Specifying values will replace the default values.
 	// Specifying an empty slice will disable retries for HTTP status codes.
 	StatusCodes []int

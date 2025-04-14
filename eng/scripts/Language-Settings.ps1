@@ -133,7 +133,7 @@ function ResolveSearchPaths {
   $filters = $FilterString.Split(",")
 
   foreach($filter in $filters) {
-    if ($filter.StartsWith("sdk")) {
+    if ($filter.StartsWith("sdk") -or $filter.StartsWith("eng")) {
       $resolvedPaths += (Join-Path $RepoRoot $filter)
     }
     else {

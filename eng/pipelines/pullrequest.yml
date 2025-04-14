@@ -1,0 +1,24 @@
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - hotfix/*
+    - release/*
+    - pullrequest*
+  paths:
+    include:
+    - "*"
+
+    exclude:
+    - sdk/data/azcosmos/
+
+parameters:
+  - name: Service
+    type: string
+    default: auto
+
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: ${{ parameters.Service }}

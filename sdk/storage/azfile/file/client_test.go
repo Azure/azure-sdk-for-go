@@ -33,6 +33,7 @@ import (
 	"hash/crc64"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync/atomic"
@@ -445,9 +446,11 @@ func (f *FileRecordedTestsSuite) TestCreateFileNFS() {
 	_require.NoError(err)
 	fClient := premiumShareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
 	resp, err := fClient.Create(context.Background(), 1024, &file.CreateOptions{
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(fileMode),
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
 	})
 	_require.NoError(err)
 	_require.Equal(*resp.FileMode, fileMode)
@@ -680,9 +683,11 @@ func (f *FileRecordedTestsSuite) TestFileSetHTTPHeadersNfs() {
 			CacheControl:       to.Ptr("no-transform"),
 			ContentDisposition: to.Ptr("attachment"),
 		},
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(fileMode),
+		NFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(fileMode),
+		},
 	}
 	setResp, err := fClient.SetHTTPHeaders(context.Background(), opts)
 	_require.NoError(err)
@@ -1736,11 +1741,13 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyModeCopyModeNfs() {
 	_require.NoError(err)
 
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{
-		Owner:             to.Ptr(owner),
-		Group:             to.Ptr(group),
-		FileMode:          to.Ptr(mode),
-		FileOwnerCopyMode: to.Ptr(file.OwnerCopyModeOverride),
-		FileModeCopyMode:  to.Ptr(file.ModeCopyModeOverride),
+		CopyFileNFSProperties: &file.CopyFileNFSProperties{
+			Owner:             to.Ptr(owner),
+			Group:             to.Ptr(group),
+			FileMode:          to.Ptr(mode),
+			FileOwnerCopyMode: to.Ptr(file.OwnerCopyModeOverride),
+			FileModeCopyMode:  to.Ptr(file.ModeCopyModeOverride),
+		},
 	})
 	_require.NoError(err)
 
@@ -5170,4 +5177,256 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNilOptions() {
 
 	_, err = hardLinkFileClient.CreateHardLink(context.Background(), "", nil)
 	_require.Error(err)
+}
+
+func (f *FileRecordedTestsSuite) TestCreateSymbolicLinkNFS() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a symbolic link to the source file
+	symbolicLinkFileName := testcommon.GenerateFileName("file2")
+	symbolicLinkFileClient := directoryClient.NewFileClient(symbolicLinkFileName)
+
+	linkFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := symbolicLinkFileClient.CreateSymbolicLink(context.Background(), linkFilePath, &file.CreateSymbolicLinkOptions{})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_require.Equal(*resp.NFSFileType, file.NFSFileType("SymLink"))
+	_require.NotNil(resp.FileCreationTime)
+	_require.NotNil(resp.FileLastWriteTime)
+	_require.NotNil(resp.FileChangeTime)
+	_require.NotNil(resp.ParentID)
+}
+
+func (f *FileRecordedTestsSuite) TestCreateSymbolicLinkNFSWithOptions() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	owner := "345"
+	group := "123"
+	mode := "6444"
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a symbolic link to the source file
+	symbolicLinkFileName := testcommon.GenerateFileName("file2")
+	symbolicLinkFileClient := directoryClient.NewFileClient(symbolicLinkFileName)
+
+	linkFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := symbolicLinkFileClient.CreateSymbolicLink(context.Background(), linkFilePath, &file.CreateSymbolicLinkOptions{FileNFSProperties: &file.NFSProperties{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(mode),
+	}})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_require.Equal(*resp.NFSFileType, file.NFSFileType("SymLink"))
+	_require.Equal(resp.Owner, to.Ptr("345"))
+	_require.Equal(resp.Group, to.Ptr("123"))
+	_require.NotNil(resp.FileCreationTime)
+	_require.NotNil(resp.FileLastWriteTime)
+	_require.NotNil(resp.FileChangeTime)
+}
+
+func (f *FileRecordedTestsSuite) TestGetSymbolicLinkNFS() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	owner := "345"
+	group := "123"
+	mode := "6444"
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a symbolic link to the source file
+	symbolicLinkFileName := testcommon.GenerateFileName("file2")
+	symbolicLinkFileClient := directoryClient.NewFileClient(symbolicLinkFileName)
+
+	linkFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := symbolicLinkFileClient.CreateSymbolicLink(context.Background(), linkFilePath, &file.CreateSymbolicLinkOptions{FileNFSProperties: &file.NFSProperties{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(mode),
+	}})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := symbolicLinkFileClient.GetSymbolicLink(context.Background(), &file.GetSymbolicLinkOptions{})
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Equal(*response.LinkText, url.QueryEscape(linkFilePath))
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileDownloadBufferLessCountThanData() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 15
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	count := int64(100)
+
+	destBuffer := make([]byte, fileSize)
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		Range: file.HTTPRange{
+			Count: count,
+		},
+	})
+	_require.NoError(err)
+	if count > fileSize {
+		_require.Equal(cnt, fileSize)
+	} else {
+		_require.Equal(cnt, count)
+	}
+	_require.EqualValues(destBuffer[:int(cnt)], content[:int(cnt)])
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileDownloadBufferLargeData() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 100 * 1024 * 1024
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+	count := int64(9 * 1024 * 1024)
+	destBuffer := make([]byte, fileSize)
+
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		Range: file.HTTPRange{
+			Count: int64(9 * 1024 * 1024),
+		},
+	})
+	_require.NoError(err)
+	if count > fileSize {
+		_require.Equal(cnt, fileSize)
+	} else {
+		_require.Equal(cnt, count)
+	}
+
+	_require.EqualValues(destBuffer[:int(cnt)], content[:int(cnt)])
 }

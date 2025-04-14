@@ -83,6 +83,36 @@ func (e *ErrorInfo) Error() string {
 	return string(e.data)
 }
 
+// beginPreFullRestore is a custom implementation of BeginFullRestore
+// Uses custom poller handler
+func (client *Client) beginPreFullRestore(ctx context.Context, preRestoreOperationParameters PreRestoreOperationParameters, options *BeginPreFullRestoreOptions) (*runtime.Poller[PreFullRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.preFullRestore(ctx, preRestoreOperationParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		handler, err := pollers.NewRestorePoller[PreFullRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PreFullRestoreResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Handler:       handler,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		handler, err := pollers.NewRestorePoller[PreFullRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PreFullRestoreResponse]{
+			Handler: handler,
+			Tracer:  client.internal.Tracer(),
+		})
+	}
+}
+
 // beginFullRestore is a custom implementation of BeginFullRestore
 // Uses custom poller handler
 func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*runtime.Poller[FullRestoreResponse], error) {

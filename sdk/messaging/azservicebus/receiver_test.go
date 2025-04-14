@@ -673,9 +673,12 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 
 	actualProps := messages[0].ApplicationProperties
 
-	require.Equal(t, map[string]any{
-		"timestamp": expectedTime,
+	// You can have two equivalent timestamps that have different in-memory representations so
+	// it's safer to just let the time package do the math.
+	require.Equal(t, time.Duration(0), expectedTime.Sub(actualProps["timestamp"].(time.Time)))
+	delete(actualProps, "timestamp") // remove it so we can still compare the overall property map
 
+	require.Equal(t, map[string]any{
 		"byte":   byte(128),
 		"uint8":  int8(101),
 		"uint32": int32(400),
@@ -1169,6 +1172,60 @@ SendLoop:
 	if found == 0 {
 		t.Logf("Failed to find our 'messages released' log entry: %#v", logs)
 	}
+}
+
+func TestNilPartitionKey(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendAMQPAnnotatedMessage(context.Background(), &AMQPAnnotatedMessage{
+		MessageAnnotations: map[any]any{
+			// accepted, and the values are forwarded, so we need to handle them being nil.
+			"x-opt-partition-key":     nil,
+			"x-opt-deadletter-source": nil,
+
+			// can't be set to nil, results in the service rejecting the message so no need
+			// to check them.
+			// "x-opt-scheduled-enqueue-time": nil,
+			// "x-opt-message-state": nil,
+			// "x-opt-enqueue-sequence-number": nil,
+
+			// accepted but ignored - they'll be filled out when the broker
+			// sends the message to one of our receivers.
+			"x-opt-locked-until":    nil,
+			"x-opt-sequence-number": nil,
+			"x-opt-enqueued-time":   nil,
+			"xopt-lock-token":       nil,
+		},
+		Body: AMQPAnnotatedMessageBody{
+			Value: "hello world, with a nil partition key",
+		},
+	}, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	m := messages[0]
+	require.Nil(t, m.PartitionKey)
+	require.Nil(t, m.DeadLetterSource)
+
+	// these are always set, by the broker, so nothing we set in our
+	// sent message will take effect
+	require.NotNil(t, m.LockToken)
+	require.NotNil(t, m.LockedUntil)
+	require.NotNil(t, m.SequenceNumber)
+	require.NotNil(t, m.EnqueuedTime)
+
+	require.Equal(t, "hello world, with a nil partition key", m.RawAMQPMessage.Body.Value)
+	err = receiver.CompleteMessage(context.Background(), m, nil)
+	require.NoError(t, err)
 }
 
 type receivedMessageSlice []*ReceivedMessage

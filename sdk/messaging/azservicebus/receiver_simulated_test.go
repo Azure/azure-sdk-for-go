@@ -721,7 +721,9 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 
 	// we'll return valid responses for the mgmt link since we need
 	// that to get a session receiver.
-	receiver, err := client.AcceptSessionForQueue(context.Background(), "queue", "session ID", nil)
+	receiver, err := client.AcceptSessionForQueue(
+		context.WithValue(context.Background(), emulation.SessionPropertiesCtxKey{}, map[string]any{}),
+		"queue", "session ID", nil)
 	require.NoError(t, err)
 
 	// now replace it so we get connection errors.

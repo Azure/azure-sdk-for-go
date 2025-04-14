@@ -19,8 +19,13 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy(RecordingDirectory, nil)
+		defaultOptions := getRecordingOptions(nil)
+		proxy, err := recording.StartTestProxy(RecordingDirectory, defaultOptions)
 		if err != nil {
+			panic(err)
+		}
+
+		if err = configureTestProxy(*defaultOptions); err != nil {
 			panic(err)
 		}
 
@@ -31,6 +36,8 @@ func run(m *testing.M) int {
 			}
 		}()
 	}
+	os.Setenv("AOAI_OYD_ENDPOINT", os.Getenv("AOAI_ENDPOINT_USEAST"))
+	os.Setenv("AOAI_OYD_MODEL", "gpt-4-0613")
 
 	return m.Run()
 }

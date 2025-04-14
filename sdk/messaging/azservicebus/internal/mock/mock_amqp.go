@@ -138,6 +138,20 @@ func (mr *MockAMQPReceiverMockRecorder) Prefetched() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Prefetched", reflect.TypeOf((*MockAMQPReceiver)(nil).Prefetched))
 }
 
+// Properties mocks base method.
+func (m *MockAMQPReceiver) Properties() map[string]any {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Properties")
+	ret0, _ := ret[0].(map[string]any)
+	return ret0
+}
+
+// Properties indicates an expected call of Properties.
+func (mr *MockAMQPReceiverMockRecorder) Properties() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Properties", reflect.TypeOf((*MockAMQPReceiver)(nil).Properties))
+}
+
 // Receive mocks base method.
 func (m *MockAMQPReceiver) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	m.ctrl.T.Helper()
@@ -314,6 +328,20 @@ func (m *MockAMQPReceiverCloser) Prefetched() *amqp.Message {
 func (mr *MockAMQPReceiverCloserMockRecorder) Prefetched() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Prefetched", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).Prefetched))
+}
+
+// Properties mocks base method.
+func (m *MockAMQPReceiverCloser) Properties() map[string]any {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Properties")
+	ret0, _ := ret[0].(map[string]any)
+	return ret0
+}
+
+// Properties indicates an expected call of Properties.
+func (mr *MockAMQPReceiverCloserMockRecorder) Properties() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Properties", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).Properties))
 }
 
 // Receive mocks base method.
@@ -874,6 +902,20 @@ func (m *MockgoamqpReceiver) Prefetched() *amqp.Message {
 func (mr *MockgoamqpReceiverMockRecorder) Prefetched() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Prefetched", reflect.TypeOf((*MockgoamqpReceiver)(nil).Prefetched))
+}
+
+// Properties mocks base method.
+func (m *MockgoamqpReceiver) Properties() map[string]any {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Properties")
+	ret0, _ := ret[0].(map[string]any)
+	return ret0
+}
+
+// Properties indicates an expected call of Properties.
+func (mr *MockgoamqpReceiverMockRecorder) Properties() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Properties", reflect.TypeOf((*MockgoamqpReceiver)(nil).Properties))
 }
 
 // Receive mocks base method.

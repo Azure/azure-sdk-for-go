@@ -1,8 +1,22 @@
 ## Release History
 
-### 1.3.1 (2025-02-13)
+### 1.4.0-beta.2 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
 
 #### Other Changes
+
+### 1.4.0-beta.1 (2025-04-10)
+
+#### Features Added
+* Added `BeginPreFullBackup` and `BeginPreFullRestore` operations
+
+#### Other Changes
+* Upgraded to API service version `7.6-preview.2`
 * Upgraded dependencies
 
 ### 1.3.0 (2024-11-13)

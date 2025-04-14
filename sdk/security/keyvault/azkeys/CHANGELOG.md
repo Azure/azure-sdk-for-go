@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.2-beta.1 (Unreleased)
+## 1.4.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0-beta.1 (2025-04-10)
+
+### Features Added
+* Added `GetKeyAttestation` operation
+* Added `EncryptionAlgorithmCKMAESKEYWRAP` and `EncryptionAlgorithmCKMAESKEYWRAPPAD`
+* Added `SignatureAlgorithm`, `SignatureAlgorithmHS256`, `SignatureAlgorithmHS384`, and `SignatureAlgorithmHS512`
+
+### Other Changes
+* Upgraded to API service version `7.6-preview.2`
 
 ## 1.3.1 (2025-02-13)
 

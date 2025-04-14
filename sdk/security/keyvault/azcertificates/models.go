@@ -38,6 +38,10 @@ type Certificate struct {
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string
 
+	// Specifies whether the certificate chain preserves its original order. The default value is false, which sets the leaf certificate
+	// at index 0.
+	PreserveCertOrder *bool
+
 	// Application specific metadata in the form of key-value pairs
 	Tags map[string]*string
 
@@ -96,6 +100,10 @@ type CertificateOperation struct {
 
 	// Parameters for the issuer of the X509 component of a certificate.
 	IssuerParameters *IssuerParameters
+
+	// Specifies whether the certificate chain preserves its original order. The default value is false, which sets the leaf certificate
+	// at index 0.
+	PreserveCertOrder *bool
 
 	// Identifier for the certificate operation.
 	RequestID *string
@@ -190,6 +198,10 @@ type CreateCertificateParameters struct {
 	// The management policy for the certificate.
 	CertificatePolicy *CertificatePolicy
 
+	// Specifies whether the certificate chain preserves its original order. The default value is false, which sets the leaf certificate
+	// at index 0.
+	PreserveCertOrder *bool
+
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string
 }
@@ -205,6 +217,10 @@ type DeletedCertificate struct {
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
 	ContentType *string
+
+	// Specifies whether the certificate chain preserves its original order. The default value is false, which sets the leaf certificate
+	// at index 0.
+	PreserveCertOrder *bool
 
 	// The url of the recovery object, used to identify and recover the deleted certificate.
 	RecoveryID *string
@@ -282,6 +298,10 @@ type ImportCertificateParameters struct {
 
 	// If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
 	Password *string
+
+	// Specifies whether the certificate chain preserves its original order. The default value is false, which sets the leaf certificate
+	// at index 0.
+	PreserveCertOrder *bool
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string

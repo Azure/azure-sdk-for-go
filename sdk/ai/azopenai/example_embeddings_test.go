@@ -8,31 +8,23 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/azure"
 )
 
 func Example_embeddings() {
-	model := os.Getenv("AOAI_EMBEDDINGS_MODEL") // eg. "text-embedding-ada-002"
-
-	endpoint := os.Getenv("AOAI_EMBEDDINGS_ENDPOINT")
-
-	if model == "" || endpoint == "" {
+	if !CheckRequiredEnvVars("AOAI_EMBEDDINGS_MODEL", "AOAI_EMBEDDINGS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	model := os.Getenv("AOAI_EMBEDDINGS_MODEL") // eg. "text-embedding-ada-002"
+	endpoint := os.Getenv("AOAI_EMBEDDINGS_ENDPOINT")
+
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	// Call the embeddings API
 	resp, err := client.Embeddings.New(context.TODO(), openai.EmbeddingNewParams{

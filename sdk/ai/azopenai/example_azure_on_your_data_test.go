@@ -10,34 +10,26 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/azure"
 )
 
 func Example_usingAzureOnYourData() {
-	endpoint := os.Getenv("AOAI_OYD_ENDPOINT")
-	model := os.Getenv("AOAI_OYD_MODEL")
-	cognitiveSearchEndpoint := os.Getenv("COGNITIVE_SEARCH_API_ENDPOINT") // Ex: https://<your-service>.search.windows.net
-	cognitiveSearchIndexName := os.Getenv("COGNITIVE_SEARCH_API_INDEX")
-
-	if endpoint == "" || model == "" || cognitiveSearchEndpoint == "" || cognitiveSearchIndexName == "" {
+	if !CheckRequiredEnvVars("AOAI_OYD_ENDPOINT", "AOAI_OYD_MODEL",
+		"COGNITIVE_SEARCH_API_ENDPOINT", "COGNITIVE_SEARCH_API_INDEX") {
 		fmt.Fprintf(os.Stderr, "Environment variables are not set, not \nrunning example.")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_OYD_ENDPOINT")
+	model := os.Getenv("AOAI_OYD_MODEL")
+	cognitiveSearchEndpoint := os.Getenv("COGNITIVE_SEARCH_API_ENDPOINT")
+	cognitiveSearchIndexName := os.Getenv("COGNITIVE_SEARCH_API_INDEX")
 
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	chatParams := openai.ChatCompletionNewParams{
 		Model:     openai.ChatModel(model),
@@ -118,28 +110,19 @@ func Example_usingAzureOnYourData() {
 }
 
 func Example_usingEnhancements() {
-	endpoint := os.Getenv("AOAI_OYD_ENDPOINT")
-	model := os.Getenv("AOAI_OYD_MODEL")
-	cognitiveSearchEndpoint := os.Getenv("COGNITIVE_SEARCH_API_ENDPOINT") // Ex: https://<your-service>.search.windows.net
-	cognitiveSearchIndexName := os.Getenv("COGNITIVE_SEARCH_API_INDEX")
-
-	if endpoint == "" || model == "" || cognitiveSearchEndpoint == "" || cognitiveSearchIndexName == "" {
+	if !CheckRequiredEnvVars("AOAI_OYD_ENDPOINT", "AOAI_OYD_MODEL") {
 		fmt.Fprintf(os.Stderr, "Environment variables are not set, not \nrunning example.")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_OYD_ENDPOINT")
+	model := os.Getenv("AOAI_OYD_MODEL")
 
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	chatParams := openai.ChatCompletionNewParams{
 		Model:     openai.ChatModel(model),

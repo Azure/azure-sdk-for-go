@@ -10,30 +10,24 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/azure"
 )
 
 func Example_vision() {
-	model := os.Getenv("AOAI_VISION_MODEL") // ex: gpt-4o"
-	endpoint := os.Getenv("AOAI_VISION_ENDPOINT")
-
-	if model == "" || endpoint == "" {
+	if !CheckRequiredEnvVars("AOAI_VISION_MODEL", "AOAI_VISION_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	model := os.Getenv("AOAI_VISION_MODEL") // ex: gpt-4o"
+	endpoint := os.Getenv("AOAI_VISION_ENDPOINT")
+
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
 
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)

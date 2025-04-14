@@ -9,32 +9,23 @@ import (
 	"io"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/azure"
 )
 
 func Example_audioTranscription() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_WHISPER_MODEL")
-
-	if endpoint == "" || model == "" {
+	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_WHISPER_MODEL") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_ENDPOINT")
+	model := os.Getenv("AOAI_WHISPER_MODEL")
 
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	audio_file, err := os.Open("testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
 	if err != nil {
@@ -58,24 +49,19 @@ func Example_audioTranscription() {
 }
 
 func Example_generateSpeechFromText() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_TTS_MODEL")
-
-	if endpoint == "" || model == "" {
+	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_TTS_MODEL") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_ENDPOINT")
+	model := os.Getenv("AOAI_TTS_MODEL")
+
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	audioResp, err := client.Audio.Speech.New(context.Background(), openai.AudioSpeechNewParams{
 		Model:          openai.SpeechModel(model),
@@ -103,24 +89,19 @@ func Example_generateSpeechFromText() {
 }
 
 func Example_audioTranslation() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_WHISPER_MODEL")
-
-	if endpoint == "" || model == "" {
+	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_WHISPER_MODEL") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_ENDPOINT")
+	model := os.Getenv("AOAI_WHISPER_MODEL")
+
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	audio_file, err := os.Open("testdata/sampleaudio_hindi_myVoiceIsMyPassportVerifyMe.mp3")
 	if err != nil {

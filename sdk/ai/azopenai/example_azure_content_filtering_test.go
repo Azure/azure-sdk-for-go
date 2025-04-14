@@ -9,32 +9,25 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/azure"
 )
 
 // This example demonstrates how to use Azure OpenAI extensions to extract
 // Azure-specific information from responses, such as content filter results
 func Example_usingAzureContentFiltering() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_MODEL")
-
-	if endpoint == "" || model == "" {
+	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_MODEL") {
 		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_ENDPOINT")
+	model := os.Getenv("AOAI_MODEL")
+
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	// Standard OpenAI chat completion request
 	chatParams := openai.ChatCompletionNewParams{
@@ -118,24 +111,19 @@ func Example_usingAzureContentFiltering() {
 
 // This example demonstrates how to apply Azure OpenAI prompt filtering with streaming responses
 func Example_usingAzurePromptFilteringWithStreaming() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_MODEL")
-
-	if endpoint == "" || model == "" {
+	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_MODEL") {
 		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
 		return
 	}
 
-	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_ENDPOINT")
+	model := os.Getenv("AOAI_MODEL")
+
+	client, err := CreateOpenAIClientWithToken(endpoint, "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	client := openai.NewClient(
-		azure.WithEndpoint(endpoint, "2024-08-01-preview"),
-		azure.WithTokenCredential(tokenCredential),
-	)
 
 	// Example of streaming with Azure extensions
 	fmt.Fprintf(os.Stderr, "Streaming example:\n")

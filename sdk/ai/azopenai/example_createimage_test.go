@@ -9,32 +9,24 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/azure"
 )
 
 func Example_createImage() {
-	endpoint := os.Getenv("AOAI_DALLE_ENDPOINT")
-	model := os.Getenv("AOAI_DALLE_MODEL")
-
-	if endpoint == "" || model == "" {
+	if !CheckRequiredEnvVars("AOAI_DALLE_ENDPOINT", "AOAI_DALLE_MODEL") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
 
-	// Create a token credential using Azure Identity
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	endpoint := os.Getenv("AOAI_DALLE_ENDPOINT")
+	model := os.Getenv("AOAI_DALLE_MODEL")
+
+	// Initialize OpenAI client with Azure configurations using token credential
+	client, err := CreateOpenAIClientWithToken(endpoint, "2024-12-01-preview")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-
-	// Initialize OpenAI client with Azure configurations using token credential
-	client := openai.NewClient(
-		azure.WithTokenCredential(cred),
-		azure.WithEndpoint(endpoint, "2024-12-01-preview"),
-	)
 
 	resp, err := client.Images.Generate(context.TODO(), openai.ImageGenerateParams{
 		Prompt:         "a cat",

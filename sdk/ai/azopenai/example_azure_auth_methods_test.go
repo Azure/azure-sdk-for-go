@@ -16,14 +16,14 @@ import (
 // This example demonstrates how to use different Azure authentication methods
 // with Azure OpenAI Services
 func Example_usingDefaultAzureCredential() {
-	endpoint := os.Getenv("AOAI_ENDPOINT")
-	model := os.Getenv("AOAI_MODEL")
-	tenantID := os.Getenv("AZURE_TENANT_ID")
-
-	if endpoint == "" || model == "" {
+	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_MODEL") {
 		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
 		return
 	}
+
+	endpoint := os.Getenv("AOAI_ENDPOINT")
+	model := os.Getenv("AOAI_MODEL")
+	tenantID := os.Getenv("AZURE_TENANT_ID")
 
 	// DefaultAzureCredential automatically tries different authentication methods in order:
 	// - Environment variables (AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID)

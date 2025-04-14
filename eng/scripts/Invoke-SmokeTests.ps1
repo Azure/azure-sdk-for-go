@@ -7,7 +7,7 @@ Param(
 . (Join-Path $PSScriptRoot ".." common scripts common.ps1)
 
 $packages = Get-AllPackageInfoFromRepo $filter
-$targetServices = $packages | Where-Object { $_.CIParameters.NonShipping -eq $false } | Select-Object -Property ServiceDirectory -Unique
+$targetServices = $packages | Where-Object { $_.CIParameters.NonShipping -eq $false -and $_.SdkType -ne "eng" } | Select-Object -Property ServiceDirectory -Unique
 
 $failed = $false
 

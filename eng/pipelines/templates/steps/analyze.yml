@@ -155,7 +155,13 @@ steps:
       $failed = $false
 
       foreach($packageDirectory in $changedPackages) {
+        if ($packageDirectory.startsWith('eng')) {
+          Write-Host "skipping linting on engineering-only package: '$jpackageDirectory'"
+          continue
+        }
+
         $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
+
         foreach ($md in $modDirs) {
           pushd $md
           Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"

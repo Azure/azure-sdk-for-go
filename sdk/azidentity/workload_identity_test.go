@@ -388,7 +388,8 @@ func TestWorkloadIdentityCredential_SNIPolicy(t *testing.T) {
 		t.Run("not found", func(t *testing.T) {
 			require.NoError(t, os.Remove(caFile))
 			_, err := NewWorkloadIdentityCredential(nil)
-			require.ErrorContains(t, err, "no such file")
+			require.ErrorContains(t, err, aksCAFile)
+			require.ErrorContains(t, err, caFile)
 		})
 	})
 }

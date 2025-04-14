@@ -249,7 +249,7 @@ func (a *aksTokenRequestPolicy) client() (*http.Client, error) {
 	// so we must read that file and maybe create a new client
 	b, err := os.ReadFile(a.caFile)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("couldn't parse %s: %s", aksCAFile, err)
 	}
 	if len(b) == 0 {
 		return nil, errors.New(aksCAFile + " specifies an empty file")

@@ -10,6 +10,35 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// RetentionPoliciesClientCreateOrReplaceResponse contains the response from method RetentionPoliciesClient.BeginCreateOrReplace.
+type RetentionPoliciesClientCreateOrReplaceResponse struct {
+	// A retention policy resource belonging to the scheduler
+	RetentionPolicy
+}
+
+// RetentionPoliciesClientDeleteResponse contains the response from method RetentionPoliciesClient.BeginDelete.
+type RetentionPoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RetentionPoliciesClientGetResponse contains the response from method RetentionPoliciesClient.Get.
+type RetentionPoliciesClientGetResponse struct {
+	// A retention policy resource belonging to the scheduler
+	RetentionPolicy
+}
+
+// RetentionPoliciesClientListBySchedulerResponse contains the response from method RetentionPoliciesClient.NewListBySchedulerPager.
+type RetentionPoliciesClientListBySchedulerResponse struct {
+	// The response of a RetentionPolicy list operation.
+	RetentionPolicyListResult
+}
+
+// RetentionPoliciesClientUpdateResponse contains the response from method RetentionPoliciesClient.BeginUpdate.
+type RetentionPoliciesClientUpdateResponse struct {
+	// A retention policy resource belonging to the scheduler
+	RetentionPolicy
+}
+
 // SchedulersClientCreateOrUpdateResponse contains the response from method SchedulersClient.BeginCreateOrUpdate.
 type SchedulersClientCreateOrUpdateResponse struct {
 	// A Durable Task Scheduler resource

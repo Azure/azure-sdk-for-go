@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-01-preview/Operations_List.json
+// Generated from example definition: 2025-04-01-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,16 +37,24 @@ func ExampleOperationsClient_NewListPager() {
 		// 	OperationListResult: armdurabletask.OperationListResult{
 		// 		Value: []*armdurabletask.Operation{
 		// 			{
-		// 				Name: to.Ptr("jqsgzvpbtspnikfz"),
-		// 				IsDataAction: to.Ptr(true),
 		// 				Display: &armdurabletask.OperationDisplay{
-		// 					Provider: to.Ptr("bosyazksbxugcbsdipxwmdc"),
-		// 					Resource: to.Ptr("texxqckghuv"),
-		// 					Operation: to.Ptr("cwgwrxyusyqdrcbxrlmnjzpwxatuk"),
-		// 					Description: to.Ptr("mqzopqigvcyggcvezqgvyufbd"),
+		// 					Description: to.Ptr("Create or Update Durable Task Scheduler"),
+		// 					Operation: to.Ptr("Create or Update Durable Task Scheduler"),
+		// 					Provider: to.Ptr("Durable Task Scheduler"),
+		// 					Resource: to.Ptr("Scheduler"),
 		// 				},
-		// 				Origin: to.Ptr(armdurabletask.OriginUser),
-		// 				ActionType: to.Ptr(armdurabletask.ActionTypeInternal),
+		// 				IsDataAction: to.Ptr(false),
+		// 				Name: to.Ptr("Microsoft.DurableTask/schedulers/write"),
+		// 			},
+		// 			{
+		// 				Display: &armdurabletask.OperationDisplay{
+		// 					Description: to.Ptr("Delete Durable Task Scheduler"),
+		// 					Operation: to.Ptr("Delete Durable Task Scheduler"),
+		// 					Provider: to.Ptr("Durable Task Scheduler"),
+		// 					Resource: to.Ptr("Scheduler"),
+		// 				},
+		// 				IsDataAction: to.Ptr(false),
+		// 				Name: to.Ptr("Microsoft.DurableTask/schedulers/delete"),
 		// 			},
 		// 		},
 		// 		NextLink: to.Ptr("https://microsoft.com/akpblld"),

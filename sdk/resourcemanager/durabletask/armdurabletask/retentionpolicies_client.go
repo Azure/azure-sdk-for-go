@@ -16,66 +16,66 @@ import (
 	"strings"
 )
 
-// SchedulersClient contains the methods for the Schedulers group.
-// Don't use this type directly, use NewSchedulersClient() instead.
-type SchedulersClient struct {
+// RetentionPoliciesClient contains the methods for the RetentionPolicies group.
+// Don't use this type directly, use NewRetentionPoliciesClient() instead.
+type RetentionPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSchedulersClient creates a new instance of SchedulersClient with the specified values.
+// NewRetentionPoliciesClient creates a new instance of RetentionPoliciesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewSchedulersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchedulersClient, error) {
+func NewRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RetentionPoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SchedulersClient{
+	client := &RetentionPoliciesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a Scheduler
+// BeginCreateOrReplace - Create or Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - resource - Resource create parameters.
-//   - options - SchedulersClientBeginCreateOrUpdateOptions contains the optional parameters for the SchedulersClient.BeginCreateOrUpdate
+//   - options - RetentionPoliciesClientBeginCreateOrReplaceOptions contains the optional parameters for the RetentionPoliciesClient.BeginCreateOrReplace
 //     method.
-func (client *SchedulersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, resource Scheduler, options *SchedulersClientBeginCreateOrUpdateOptions) (*runtime.Poller[SchedulersClientCreateOrUpdateResponse], error) {
+func (client *RetentionPoliciesClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, schedulerName string, resource RetentionPolicy, options *RetentionPoliciesClientBeginCreateOrReplaceOptions) (*runtime.Poller[RetentionPoliciesClientCreateOrReplaceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, schedulerName, resource, options)
+		resp, err := client.createOrReplace(ctx, resourceGroupName, schedulerName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulersClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RetentionPoliciesClientCreateOrReplaceResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulersClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RetentionPoliciesClientCreateOrReplaceResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create or update a Scheduler
+// CreateOrReplace - Create or Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-01-preview
-func (client *SchedulersClient) createOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, resource Scheduler, options *SchedulersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *RetentionPoliciesClient) createOrReplace(ctx context.Context, resourceGroupName string, schedulerName string, resource RetentionPolicy, options *RetentionPoliciesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SchedulersClient.BeginCreateOrUpdate"
+	const operationName = "RetentionPoliciesClient.BeginCreateOrReplace"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, schedulerName, resource, options)
+	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, schedulerName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -90,9 +90,9 @@ func (client *SchedulersClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, resource Scheduler, _ *SchedulersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
+// createOrReplaceCreateRequest creates the CreateOrReplace request.
+func (client *RetentionPoliciesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, resource RetentionPolicy, _ *RetentionPoliciesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -120,37 +120,38 @@ func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// BeginDelete - Delete a Scheduler
+// BeginDelete - Delete a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
-//   - options - SchedulersClientBeginDeleteOptions contains the optional parameters for the SchedulersClient.BeginDelete method.
-func (client *SchedulersClient) BeginDelete(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientBeginDeleteOptions) (*runtime.Poller[SchedulersClientDeleteResponse], error) {
+//   - options - RetentionPoliciesClientBeginDeleteOptions contains the optional parameters for the RetentionPoliciesClient.BeginDelete
+//     method.
+func (client *RetentionPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, schedulerName string, options *RetentionPoliciesClientBeginDeleteOptions) (*runtime.Poller[RetentionPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, schedulerName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulersClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RetentionPoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulersClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RetentionPoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a Scheduler
+// Delete - Delete a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-01-preview
-func (client *SchedulersClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RetentionPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, options *RetentionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SchedulersClient.BeginDelete"
+	const operationName = "RetentionPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -170,8 +171,8 @@ func (client *SchedulersClient) deleteOperation(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SchedulersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *SchedulersClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
+func (client *RetentionPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *RetentionPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -195,38 +196,38 @@ func (client *SchedulersClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// Get - Get a Scheduler
+// Get - Get a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
-//   - options - SchedulersClientGetOptions contains the optional parameters for the SchedulersClient.Get method.
-func (client *SchedulersClient) Get(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientGetOptions) (SchedulersClientGetResponse, error) {
+//   - options - RetentionPoliciesClientGetOptions contains the optional parameters for the RetentionPoliciesClient.Get method.
+func (client *RetentionPoliciesClient) Get(ctx context.Context, resourceGroupName string, schedulerName string, options *RetentionPoliciesClientGetOptions) (RetentionPoliciesClientGetResponse, error) {
 	var err error
-	const operationName = "SchedulersClient.Get"
+	const operationName = "RetentionPoliciesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, schedulerName, options)
 	if err != nil {
-		return SchedulersClientGetResponse{}, err
+		return RetentionPoliciesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SchedulersClientGetResponse{}, err
+		return RetentionPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SchedulersClientGetResponse{}, err
+		return RetentionPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *SchedulersClient) getCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *SchedulersClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
+func (client *RetentionPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *RetentionPoliciesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -251,46 +252,47 @@ func (client *SchedulersClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *SchedulersClient) getHandleResponse(resp *http.Response) (SchedulersClientGetResponse, error) {
-	result := SchedulersClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Scheduler); err != nil {
-		return SchedulersClientGetResponse{}, err
+func (client *RetentionPoliciesClient) getHandleResponse(resp *http.Response) (RetentionPoliciesClientGetResponse, error) {
+	result := RetentionPoliciesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RetentionPolicy); err != nil {
+		return RetentionPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List Schedulers by resource group
+// NewListBySchedulerPager - List Retention Policies
 //
 // Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - SchedulersClientListByResourceGroupOptions contains the optional parameters for the SchedulersClient.NewListByResourceGroupPager
+//   - schedulerName - The name of the Scheduler
+//   - options - RetentionPoliciesClientListBySchedulerOptions contains the optional parameters for the RetentionPoliciesClient.NewListBySchedulerPager
 //     method.
-func (client *SchedulersClient) NewListByResourceGroupPager(resourceGroupName string, options *SchedulersClientListByResourceGroupOptions) *runtime.Pager[SchedulersClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SchedulersClientListByResourceGroupResponse]{
-		More: func(page SchedulersClientListByResourceGroupResponse) bool {
+func (client *RetentionPoliciesClient) NewListBySchedulerPager(resourceGroupName string, schedulerName string, options *RetentionPoliciesClientListBySchedulerOptions) *runtime.Pager[RetentionPoliciesClientListBySchedulerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RetentionPoliciesClientListBySchedulerResponse]{
+		More: func(page RetentionPoliciesClientListBySchedulerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SchedulersClientListByResourceGroupResponse) (SchedulersClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SchedulersClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *RetentionPoliciesClientListBySchedulerResponse) (RetentionPoliciesClientListBySchedulerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RetentionPoliciesClient.NewListBySchedulerPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+				return client.listBySchedulerCreateRequest(ctx, resourceGroupName, schedulerName, options)
 			}, nil)
 			if err != nil {
-				return SchedulersClientListByResourceGroupResponse{}, err
+				return RetentionPoliciesClientListBySchedulerResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			return client.listBySchedulerHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SchedulersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *SchedulersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers"
+// listBySchedulerCreateRequest creates the ListByScheduler request.
+func (client *RetentionPoliciesClient) listBySchedulerCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *RetentionPoliciesClientListBySchedulerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -299,6 +301,10 @@ func (client *SchedulersClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if schedulerName == "" {
+		return nil, errors.New("parameter schedulerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -310,102 +316,48 @@ func (client *SchedulersClient) listByResourceGroupCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SchedulersClient) listByResourceGroupHandleResponse(resp *http.Response) (SchedulersClientListByResourceGroupResponse, error) {
-	result := SchedulersClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SchedulerListResult); err != nil {
-		return SchedulersClientListByResourceGroupResponse{}, err
+// listBySchedulerHandleResponse handles the ListByScheduler response.
+func (client *RetentionPoliciesClient) listBySchedulerHandleResponse(resp *http.Response) (RetentionPoliciesClientListBySchedulerResponse, error) {
+	result := RetentionPoliciesClientListBySchedulerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RetentionPolicyListResult); err != nil {
+		return RetentionPoliciesClientListBySchedulerResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List Schedulers by subscription
-//
-// Generated from API version 2025-04-01-preview
-//   - options - SchedulersClientListBySubscriptionOptions contains the optional parameters for the SchedulersClient.NewListBySubscriptionPager
-//     method.
-func (client *SchedulersClient) NewListBySubscriptionPager(options *SchedulersClientListBySubscriptionOptions) *runtime.Pager[SchedulersClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SchedulersClientListBySubscriptionResponse]{
-		More: func(page SchedulersClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SchedulersClientListBySubscriptionResponse) (SchedulersClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SchedulersClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return SchedulersClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SchedulersClient) listBySubscriptionCreateRequest(ctx context.Context, _ *SchedulersClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DurableTask/schedulers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SchedulersClient) listBySubscriptionHandleResponse(resp *http.Response) (SchedulersClientListBySubscriptionResponse, error) {
-	result := SchedulersClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SchedulerListResult); err != nil {
-		return SchedulersClientListBySubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginUpdate - Update a Scheduler
+// BeginUpdate - Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - properties - The resource properties to be updated.
-//   - options - SchedulersClientBeginUpdateOptions contains the optional parameters for the SchedulersClient.BeginUpdate method.
-func (client *SchedulersClient) BeginUpdate(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*runtime.Poller[SchedulersClientUpdateResponse], error) {
+//   - options - RetentionPoliciesClientBeginUpdateOptions contains the optional parameters for the RetentionPoliciesClient.BeginUpdate
+//     method.
+func (client *RetentionPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, schedulerName string, properties RetentionPolicy, options *RetentionPoliciesClientBeginUpdateOptions) (*runtime.Poller[RetentionPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, schedulerName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulersClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RetentionPoliciesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulersClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RetentionPoliciesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Update a Scheduler
+// Update - Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-01-preview
-func (client *SchedulersClient) update(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*http.Response, error) {
+func (client *RetentionPoliciesClient) update(ctx context.Context, resourceGroupName string, schedulerName string, properties RetentionPolicy, options *RetentionPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SchedulersClient.BeginUpdate"
+	const operationName = "RetentionPoliciesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -425,8 +377,8 @@ func (client *SchedulersClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SchedulersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, _ *SchedulersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"
+func (client *RetentionPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, properties RetentionPolicy, _ *RetentionPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}

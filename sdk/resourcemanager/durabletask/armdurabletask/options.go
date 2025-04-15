@@ -9,6 +9,38 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RetentionPoliciesClientBeginCreateOrReplaceOptions contains the optional parameters for the RetentionPoliciesClient.BeginCreateOrReplace
+// method.
+type RetentionPoliciesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RetentionPoliciesClientBeginDeleteOptions contains the optional parameters for the RetentionPoliciesClient.BeginDelete
+// method.
+type RetentionPoliciesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RetentionPoliciesClientBeginUpdateOptions contains the optional parameters for the RetentionPoliciesClient.BeginUpdate
+// method.
+type RetentionPoliciesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RetentionPoliciesClientGetOptions contains the optional parameters for the RetentionPoliciesClient.Get method.
+type RetentionPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RetentionPoliciesClientListBySchedulerOptions contains the optional parameters for the RetentionPoliciesClient.NewListBySchedulerPager
+// method.
+type RetentionPoliciesClientListBySchedulerOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SchedulersClientBeginCreateOrUpdateOptions contains the optional parameters for the SchedulersClient.BeginCreateOrUpdate
 // method.
 type SchedulersClientBeginCreateOrUpdateOptions struct {

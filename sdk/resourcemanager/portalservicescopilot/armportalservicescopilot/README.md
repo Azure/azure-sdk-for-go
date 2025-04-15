@@ -1,4 +1,4 @@
-# Azure Portalservicescopilot Module for Go
+# Azure Portal Services Copilot Module for Go
 
 The `armportalservicescopilot` module provides operations for working with Azure Portalservicescopilot.
 

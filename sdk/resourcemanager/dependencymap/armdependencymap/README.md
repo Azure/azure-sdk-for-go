@@ -1,4 +1,4 @@
-# Azure Dependencymap Module for Go
+# Azure Dependency Map Module for Go
 
 The `armdependencymap` module provides operations for working with Azure Dependencymap.
 

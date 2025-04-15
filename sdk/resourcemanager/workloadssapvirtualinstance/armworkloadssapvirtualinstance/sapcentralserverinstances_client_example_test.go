@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_Create.json
-func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServerInstancesCreate() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_Create.json
+func ExampleSAPCentralServerInstancesClient_BeginCreate_sapCentralServerInstancesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,9 +23,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServer
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "app01", armworkloadssapvirtualinstance.SAPApplicationServerInstance{
+	poller, err := clientFactory.NewSAPCentralServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.SAPCentralServerInstance{
 		Location:   to.Ptr("westcentralus"),
-		Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{},
+		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{},
 		Tags:       map[string]*string{},
 	}, nil)
 	if err != nil {
@@ -38,30 +38,52 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServer
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientCreateResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
-	// 		Name: to.Ptr("app01"),
-	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientCreateResponse{
+	// 	SAPCentralServerInstance: &armworkloadssapvirtualinstance.SAPCentralServerInstance{
+	// 		Name: to.Ptr("centralServer"),
+	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		Location: to.Ptr("westcentralus"),
-	// 		Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{
-	// 			DispatcherStatus: to.Ptr("Running"),
-	// 			GatewayPort: to.Ptr[int64](3300),
+	// 		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
+	// 			EnqueueReplicationServerProperties: &armworkloadssapvirtualinstance.EnqueueReplicationServerProperties{
+	// 				ErsVersion: to.Ptr(armworkloadssapvirtualinstance.EnqueueReplicationServerTypeEnqueueReplicator1),
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ers1"),
+	// 				InstanceNo: to.Ptr("00"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				KernelPatch: to.Ptr("patch 300"),
+	// 				KernelVersion: to.Ptr("777"),
+	// 			},
+	// 			EnqueueServerProperties: &armworkloadssapvirtualinstance.EnqueueServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				Port: to.Ptr[int64](3600),
+	// 			},
+	// 			GatewayServerProperties: &armworkloadssapvirtualinstance.GatewayServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Port: to.Ptr[int64](3300),
+	// 			},
 	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-	// 			Hostname: to.Ptr("vh-nw1"),
-	// 			IcmHTTPPort: to.Ptr[int64](3312),
-	// 			IcmHTTPSPort: to.Ptr[int64](3313),
-	// 			InstanceNo: to.Ptr("01"),
-	// 			IPAddress: to.Ptr("10.0.0.5"),
+	// 			InstanceNo: to.Ptr("00"),
 	// 			KernelPatch: to.Ptr("patch 300"),
 	// 			KernelVersion: to.Ptr("777"),
+	// 			MessageServerProperties: &armworkloadssapvirtualinstance.MessageServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				HTTPPort: to.Ptr[int64](8100),
+	// 				HTTPSPort: to.Ptr[int64](44400),
+	// 				InternalMsPort: to.Ptr[int64](3900),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				MSPort: to.Ptr[int64](3600),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 			Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
-	// 			VMDetails: []*armworkloadssapvirtualinstance.ApplicationServerVMDetails{
+	// 			VMDetails: []*armworkloadssapvirtualinstance.CentralServerVMDetails{
 	// 				{
-	// 					Type: to.Ptr(armworkloadssapvirtualinstance.ApplicationServerVirtualMachineTypeActive),
-	// 					VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/app01-vm"),
+	// 					Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
+	// 					VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/cs-vm"),
 	// 				},
 	// 			},
 	// 		},
@@ -79,8 +101,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServer
 	// }
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_CreateForHaWithAvailabilitySet.json
-func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplicationServerInstancesForHaSystemWithAvailabilitySet() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_CreateForHaWithAvailabilitySet.json
+func ExampleSAPCentralServerInstancesClient_BeginCreate_createSapCentralInstancesForHaSystemWithAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -90,9 +112,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "app01", armworkloadssapvirtualinstance.SAPApplicationServerInstance{
+	poller, err := clientFactory.NewSAPCentralServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.SAPCentralServerInstance{
 		Location:   to.Ptr("westcentralus"),
-		Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{},
+		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{},
 		Tags:       map[string]*string{},
 	}, nil)
 	if err != nil {
@@ -105,32 +127,54 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientCreateResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
-	// 		Name: to.Ptr("app01"),
-	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientCreateResponse{
+	// 	SAPCentralServerInstance: &armworkloadssapvirtualinstance.SAPCentralServerInstance{
+	// 		Name: to.Ptr("centralServer"),
+	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		Location: to.Ptr("westcentralus"),
-	// 		Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{
-	// 			DispatcherStatus: to.Ptr("Running"),
-	// 			GatewayPort: to.Ptr[int64](3300),
+	// 		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
+	// 			EnqueueReplicationServerProperties: &armworkloadssapvirtualinstance.EnqueueReplicationServerProperties{
+	// 				ErsVersion: to.Ptr(armworkloadssapvirtualinstance.EnqueueReplicationServerTypeEnqueueReplicator1),
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ers1"),
+	// 				InstanceNo: to.Ptr("00"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				KernelPatch: to.Ptr("patch 300"),
+	// 				KernelVersion: to.Ptr("777"),
+	// 			},
+	// 			EnqueueServerProperties: &armworkloadssapvirtualinstance.EnqueueServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				Port: to.Ptr[int64](3600),
+	// 			},
+	// 			GatewayServerProperties: &armworkloadssapvirtualinstance.GatewayServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Port: to.Ptr[int64](3300),
+	// 			},
 	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-	// 			Hostname: to.Ptr("vh-nw1"),
-	// 			IcmHTTPPort: to.Ptr[int64](3312),
-	// 			IcmHTTPSPort: to.Ptr[int64](3313),
-	// 			InstanceNo: to.Ptr("01"),
-	// 			IPAddress: to.Ptr("10.0.0.5"),
+	// 			InstanceNo: to.Ptr("00"),
 	// 			KernelPatch: to.Ptr("patch 300"),
 	// 			KernelVersion: to.Ptr("777"),
 	// 			LoadBalancerDetails: &armworkloadssapvirtualinstance.LoadBalancerDetails{
-	// 				ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Network/loadBalancers/cs-loadBalancer"),
+	// 				ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Network/loadBalancers/cs-ASCS-loadBalancer"),
+	// 			},
+	// 			MessageServerProperties: &armworkloadssapvirtualinstance.MessageServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				HTTPPort: to.Ptr[int64](8100),
+	// 				HTTPSPort: to.Ptr[int64](44400),
+	// 				InternalMsPort: to.Ptr[int64](3900),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				MSPort: to.Ptr[int64](3600),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 			Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
-	// 			VMDetails: []*armworkloadssapvirtualinstance.ApplicationServerVMDetails{
+	// 			VMDetails: []*armworkloadssapvirtualinstance.CentralServerVMDetails{
 	// 				{
-	// 					Type: to.Ptr(armworkloadssapvirtualinstance.ApplicationServerVirtualMachineTypeActive),
+	// 					Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
 	// 					StorageDetails: []*armworkloadssapvirtualinstance.StorageInformation{
 	// 						{
 	// 							ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Storage/storageAccounts/nfsstorageaccount"),
@@ -139,7 +183,7 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 	// 					VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/cs-vm1"),
 	// 				},
 	// 				{
-	// 					Type: to.Ptr(armworkloadssapvirtualinstance.ApplicationServerVirtualMachineTypeStandby),
+	// 					Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
 	// 					StorageDetails: []*armworkloadssapvirtualinstance.StorageInformation{
 	// 						{
 	// 							ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Storage/storageAccounts/nfsstorageaccount"),
@@ -163,8 +207,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 	// }
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_Delete.json
-func ExampleSAPApplicationServerInstancesClient_BeginDelete() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_Delete.json
+func ExampleSAPCentralServerInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -174,7 +218,7 @@ func ExampleSAPApplicationServerInstancesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginDelete(ctx, "test-rg", "X00", "app01", nil)
+	poller, err := clientFactory.NewSAPCentralServerInstancesClient().BeginDelete(ctx, "test-rg", "X00", "centralServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -184,8 +228,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_Get.json
-func ExampleSAPApplicationServerInstancesClient_Get() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_Get.json
+func ExampleSAPCentralServerInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -195,37 +239,59 @@ func ExampleSAPApplicationServerInstancesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPApplicationServerInstancesClient().Get(ctx, "test-rg", "X00", "app01", nil)
+	res, err := clientFactory.NewSAPCentralServerInstancesClient().Get(ctx, "test-rg", "X00", "centralServer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientGetResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
-	// 		Name: to.Ptr("app01"),
-	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientGetResponse{
+	// 	SAPCentralServerInstance: &armworkloadssapvirtualinstance.SAPCentralServerInstance{
+	// 		Name: to.Ptr("centralServer"),
+	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		Location: to.Ptr("westcentralus"),
-	// 		Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{
-	// 			DispatcherStatus: to.Ptr("Running"),
-	// 			GatewayPort: to.Ptr[int64](3300),
-	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-	// 			Hostname: to.Ptr("vh-nw1"),
-	// 			IcmHTTPPort: to.Ptr[int64](3312),
-	// 			IcmHTTPSPort: to.Ptr[int64](3313),
+	// 		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
+	// 			EnqueueReplicationServerProperties: &armworkloadssapvirtualinstance.EnqueueReplicationServerProperties{
+	// 				ErsVersion: to.Ptr(armworkloadssapvirtualinstance.EnqueueReplicationServerTypeEnqueueReplicator1),
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ers1"),
+	// 				InstanceNo: to.Ptr("00"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				KernelPatch: to.Ptr("patch 300"),
+	// 				KernelVersion: to.Ptr("777"),
+	// 			},
+	// 			EnqueueServerProperties: &armworkloadssapvirtualinstance.EnqueueServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				Port: to.Ptr[int64](3600),
+	// 			},
+	// 			GatewayServerProperties: &armworkloadssapvirtualinstance.GatewayServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateDegraded),
+	// 				Port: to.Ptr[int64](3300),
+	// 			},
+	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
 	// 			InstanceNo: to.Ptr("00"),
-	// 			IPAddress: to.Ptr("10.0.0.5"),
 	// 			KernelPatch: to.Ptr("patch 300"),
 	// 			KernelVersion: to.Ptr("777"),
+	// 			MessageServerProperties: &armworkloadssapvirtualinstance.MessageServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnhealthy),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				HTTPPort: to.Ptr[int64](8100),
+	// 				HTTPSPort: to.Ptr[int64](44400),
+	// 				InternalMsPort: to.Ptr[int64](3900),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				MSPort: to.Ptr[int64](3600),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 			Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
-	// 			VMDetails: []*armworkloadssapvirtualinstance.ApplicationServerVMDetails{
+	// 			VMDetails: []*armworkloadssapvirtualinstance.CentralServerVMDetails{
 	// 				{
-	// 					Type: to.Ptr(armworkloadssapvirtualinstance.ApplicationServerVirtualMachineTypeActive),
-	// 					VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/app01-vm"),
+	// 					Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
+	// 					VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/cs-vm"),
 	// 				},
 	// 			},
 	// 		},
@@ -243,8 +309,8 @@ func ExampleSAPApplicationServerInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_ListBySapVirtualInstance.json
-func ExampleSAPApplicationServerInstancesClient_NewListPager() {
+// Generated from example definition: 2024-09-01/SapCentralServerInstances_ListBySapVirtualInstance.json
+func ExampleSAPCentralServerInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -254,7 +320,7 @@ func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSAPApplicationServerInstancesClient().NewListPager("test-rg", "X00", nil)
+	pager := clientFactory.NewSAPCentralServerInstancesClient().NewListPager("test-rg", "X00", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -265,69 +331,54 @@ func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientListResponse{
-		// 	SAPApplicationServerInstanceListResult: armworkloadssapvirtualinstance.SAPApplicationServerInstanceListResult{
-		// 		Value: []*armworkloadssapvirtualinstance.SAPApplicationServerInstance{
+		// page = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientListResponse{
+		// 	SAPCentralServerInstanceListResult: armworkloadssapvirtualinstance.SAPCentralServerInstanceListResult{
+		// 		Value: []*armworkloadssapvirtualinstance.SAPCentralServerInstance{
 		// 			{
-		// 				Name: to.Ptr("app01"),
-		// 				Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
-		// 				ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+		// 				Name: to.Ptr("centralServer"),
+		// 				Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances"),
+		// 				ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 		// 				Location: to.Ptr("westcentralus"),
-		// 				Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{
-		// 					DispatcherStatus: to.Ptr("Running"),
-		// 					GatewayPort: to.Ptr[int64](3300),
-		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 					Hostname: to.Ptr("vh-nw1"),
-		// 					IcmHTTPPort: to.Ptr[int64](3312),
-		// 					IcmHTTPSPort: to.Ptr[int64](3313),
-		// 					InstanceNo: to.Ptr("00"),
-		// 					IPAddress: to.Ptr("10.0.0.5"),
-		// 					KernelPatch: to.Ptr("patch 300"),
-		// 					KernelVersion: to.Ptr("777"),
-		// 					ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-		// 					Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
-		// 					Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
-		// 					VMDetails: []*armworkloadssapvirtualinstance.ApplicationServerVMDetails{
-		// 						{
-		// 							Type: to.Ptr(armworkloadssapvirtualinstance.ApplicationServerVirtualMachineTypeActive),
-		// 							VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/app01-vm"),
-		// 						},
+		// 				Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
+		// 					EnqueueReplicationServerProperties: &armworkloadssapvirtualinstance.EnqueueReplicationServerProperties{
+		// 						ErsVersion: to.Ptr(armworkloadssapvirtualinstance.EnqueueReplicationServerTypeEnqueueReplicator1),
+		// 						Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 						Hostname: to.Ptr("vh-ers1"),
+		// 						InstanceNo: to.Ptr("00"),
+		// 						IPAddress: to.Ptr("10.0.0.5"),
+		// 						KernelPatch: to.Ptr("patch 300"),
+		// 						KernelVersion: to.Ptr("777"),
 		// 					},
-		// 				},
-		// 				SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 					CreatedBy: to.Ptr("user@xyz.com"),
-		// 					CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("user@xyz.com"),
-		// 					LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("app02"),
-		// 				Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
-		// 				ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app02"),
-		// 				Location: to.Ptr("westcentralus"),
-		// 				Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{
-		// 					DispatcherStatus: to.Ptr("Running"),
-		// 					GatewayPort: to.Ptr[int64](3300),
+		// 					EnqueueServerProperties: &armworkloadssapvirtualinstance.EnqueueServerProperties{
+		// 						Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 						Hostname: to.Ptr("vh-ascs1"),
+		// 						IPAddress: to.Ptr("10.0.0.5"),
+		// 						Port: to.Ptr[int64](3600),
+		// 					},
+		// 					GatewayServerProperties: &armworkloadssapvirtualinstance.GatewayServerProperties{
+		// 						Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 						Port: to.Ptr[int64](3300),
+		// 					},
 		// 					Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-		// 					Hostname: to.Ptr("vh-nw1"),
-		// 					IcmHTTPPort: to.Ptr[int64](3312),
-		// 					IcmHTTPSPort: to.Ptr[int64](3313),
-		// 					InstanceNo: to.Ptr("01"),
-		// 					IPAddress: to.Ptr("10.0.0.5"),
+		// 					InstanceNo: to.Ptr("00"),
 		// 					KernelPatch: to.Ptr("patch 300"),
 		// 					KernelVersion: to.Ptr("777"),
+		// 					MessageServerProperties: &armworkloadssapvirtualinstance.MessageServerProperties{
+		// 						Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+		// 						Hostname: to.Ptr("vh-ascs1"),
+		// 						HTTPPort: to.Ptr[int64](8100),
+		// 						HTTPSPort: to.Ptr[int64](44400),
+		// 						InternalMsPort: to.Ptr[int64](3900),
+		// 						IPAddress: to.Ptr("10.0.0.5"),
+		// 						MSPort: to.Ptr[int64](3600),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 		// 					Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 		// 					Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
-		// 					VMDetails: []*armworkloadssapvirtualinstance.ApplicationServerVMDetails{
+		// 					VMDetails: []*armworkloadssapvirtualinstance.CentralServerVMDetails{
 		// 						{
-		// 							Type: to.Ptr(armworkloadssapvirtualinstance.ApplicationServerVirtualMachineTypeActive),
-		// 							VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/app01-vm"),
+		// 							Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
+		// 							VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/cs-vm"),
 		// 						},
 		// 					},
 		// 				},
@@ -348,8 +399,8 @@ func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_StartInstance.json
-func ExampleSAPApplicationServerInstancesClient_BeginStart_startTheSapApplicationServerInstance() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_StartInstance.json
+func ExampleSAPCentralServerInstancesClient_BeginStart_startTheSapCentralServicesInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -359,7 +410,7 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startTheSapApplicatio
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStartOptions{
+	poller, err := clientFactory.NewSAPCentralServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "centralServer", &SAPCentralServerInstancesClientBeginStartOptions{
 		body: &armworkloadssapvirtualinstance.StartRequest{}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -371,19 +422,19 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startTheSapApplicatio
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartResponse{
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStartResponse{
 	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("app01"),
+	// 		Name: to.Ptr("centralServer"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_StartInstanceVM.json
-func ExampleSAPApplicationServerInstancesClient_BeginStart_startVirtualMachineAndTheSapApplicationServerInstanceOnIt() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_StartInstanceVM.json
+func ExampleSAPCentralServerInstancesClient_BeginStart_startTheVirtualMachineSAndTheSapCentralServicesInstanceOnIt() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -393,7 +444,7 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startVirtualMachineAn
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStartOptions{
+	poller, err := clientFactory.NewSAPCentralServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "centralServer", &SAPCentralServerInstancesClientBeginStartOptions{
 		body: &armworkloadssapvirtualinstance.StartRequest{
 			StartVM: to.Ptr(true),
 		}})
@@ -407,19 +458,19 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startVirtualMachineAn
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartResponse{
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStartResponse{
 	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("app01"),
+	// 		Name: to.Ptr("centralServer"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_StopInstance.json
-func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationServerInstance() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_StopInstance.json
+func ExampleSAPCentralServerInstancesClient_BeginStop_stopTheSapCentralServicesInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -429,9 +480,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
+	poller, err := clientFactory.NewSAPCentralServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "centralServer", &SAPCentralServerInstancesClientBeginStopOptions{
 		body: &armworkloadssapvirtualinstance.StopRequest{
-			SoftStopTimeoutSeconds: to.Ptr[int64](0),
+			SoftStopTimeoutSeconds: to.Ptr[int64](1200),
 		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -443,19 +494,19 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStopResponse{
 	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("app01"),
+	// 		Name: to.Ptr("centralServer"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_StopInstanceInfrastructure.json
-func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationServerInstanceAndItSInfrastructure() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_StopInstanceVM.json
+func ExampleSAPCentralServerInstancesClient_BeginStop_stopTheSapCentralServicesInstanceAndItsUnderlyingVirtualMachineS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -465,10 +516,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
+	poller, err := clientFactory.NewSAPCentralServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "centralServer", &SAPCentralServerInstancesClientBeginStopOptions{
 		body: &armworkloadssapvirtualinstance.StopRequest{
-			DeallocateVM:           to.Ptr(true),
-			SoftStopTimeoutSeconds: to.Ptr[int64](0),
+			DeallocateVM: to.Ptr(true),
 		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -480,92 +530,19 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientStopResponse{
 	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("app01"),
+	// 		Name: to.Ptr("centralServer"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_StopInstanceSoft.json
-func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicationServerInstance() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
-			SoftStopTimeoutSeconds: to.Ptr[int64](300),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_StopInstanceSoftInfrastructure.json
-func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicationServerInstanceAndItSInfrastructure() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
-			DeallocateVM:           to.Ptr(true),
-			SoftStopTimeoutSeconds: to.Ptr[int64](300),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapApplicationServerInstances_Update.json
-func ExampleSAPApplicationServerInstancesClient_Update() {
+// Generated from example definition: 2024-09-01/SapCentralInstances_Update.json
+func ExampleSAPCentralServerInstancesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -575,7 +552,7 @@ func ExampleSAPApplicationServerInstancesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSAPApplicationServerInstancesClient().Update(ctx, "test-rg", "X00", "app01", armworkloadssapvirtualinstance.UpdateSAPApplicationInstanceRequest{
+	res, err := clientFactory.NewSAPCentralServerInstancesClient().Update(ctx, "test-rg", "X00", "centralServer", armworkloadssapvirtualinstance.UpdateSAPCentralInstanceRequest{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
@@ -586,30 +563,52 @@ func ExampleSAPApplicationServerInstancesClient_Update() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientUpdateResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
-	// 		Name: to.Ptr("app01"),
-	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
+	// res = armworkloadssapvirtualinstance.SAPCentralServerInstancesClientUpdateResponse{
+	// 	SAPCentralServerInstance: &armworkloadssapvirtualinstance.SAPCentralServerInstance{
+	// 		Name: to.Ptr("centralServer"),
+	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/centralInstances"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/centralInstances/centralServer"),
 	// 		Location: to.Ptr("westcentralus"),
-	// 		Properties: &armworkloadssapvirtualinstance.SAPApplicationServerProperties{
-	// 			DispatcherStatus: to.Ptr("Running"),
-	// 			GatewayPort: to.Ptr[int64](3300),
+	// 		Properties: &armworkloadssapvirtualinstance.SAPCentralServerProperties{
+	// 			EnqueueReplicationServerProperties: &armworkloadssapvirtualinstance.EnqueueReplicationServerProperties{
+	// 				ErsVersion: to.Ptr(armworkloadssapvirtualinstance.EnqueueReplicationServerTypeEnqueueReplicator1),
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ers1"),
+	// 				InstanceNo: to.Ptr("00"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				KernelPatch: to.Ptr("patch 300"),
+	// 				KernelVersion: to.Ptr("777"),
+	// 			},
+	// 			EnqueueServerProperties: &armworkloadssapvirtualinstance.EnqueueServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				Port: to.Ptr[int64](3600),
+	// 			},
+	// 			GatewayServerProperties: &armworkloadssapvirtualinstance.GatewayServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Port: to.Ptr[int64](3300),
+	// 			},
 	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
-	// 			Hostname: to.Ptr("vh-nw1"),
-	// 			IcmHTTPPort: to.Ptr[int64](3312),
-	// 			IcmHTTPSPort: to.Ptr[int64](3313),
-	// 			InstanceNo: to.Ptr("01"),
-	// 			IPAddress: to.Ptr("10.0.0.5"),
+	// 			InstanceNo: to.Ptr("00"),
 	// 			KernelPatch: to.Ptr("patch 300"),
 	// 			KernelVersion: to.Ptr("777"),
+	// 			MessageServerProperties: &armworkloadssapvirtualinstance.MessageServerProperties{
+	// 				Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateHealthy),
+	// 				Hostname: to.Ptr("vh-ascs1"),
+	// 				HTTPPort: to.Ptr[int64](8100),
+	// 				HTTPSPort: to.Ptr[int64](44400),
+	// 				InternalMsPort: to.Ptr[int64](3900),
+	// 				IPAddress: to.Ptr("10.0.0.5"),
+	// 				MSPort: to.Ptr[int64](3600),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 			Subnet: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/SAP-E2ETest-rg/providers/Microsoft.Network/virtualNetworks/loop-test-vnet/subnets/loopsubnet"),
-	// 			VMDetails: []*armworkloadssapvirtualinstance.ApplicationServerVMDetails{
+	// 			VMDetails: []*armworkloadssapvirtualinstance.CentralServerVMDetails{
 	// 				{
-	// 					Type: to.Ptr(armworkloadssapvirtualinstance.ApplicationServerVirtualMachineTypeActive),
-	// 					VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/app01-vm"),
+	// 					Type: to.Ptr(armworkloadssapvirtualinstance.CentralServerVirtualMachineTypePrimary),
+	// 					VirtualMachineID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Compute/virtualMachines/cs-vm"),
 	// 				},
 	// 			},
 	// 		},

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45924e49834c4e01c0713e6b7ca21f94be17e396/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-01-01/examples/TrustedAccessRoleBindings_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b7b354f5238cfab8b22a1bfa992a12ecca42ca1b/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-01-02-preview/examples/TrustedAccessRoleBindings_List.json
 func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45924e49834c4e01c0713e6b7ca21f94be17e396/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-01-01/examples/TrustedAccessRoleBindings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b7b354f5238cfab8b22a1bfa992a12ecca42ca1b/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-01-02-preview/examples/TrustedAccessRoleBindings_Get.json
 func ExampleTrustedAccessRoleBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleTrustedAccessRoleBindingsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45924e49834c4e01c0713e6b7ca21f94be17e396/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-01-01/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b7b354f5238cfab8b22a1bfa992a12ecca42ca1b/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-01-02-preview/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
 func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/45924e49834c4e01c0713e6b7ca21f94be17e396/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-01-01/examples/TrustedAccessRoleBindings_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b7b354f5238cfab8b22a1bfa992a12ecca42ca1b/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-01-02-preview/examples/TrustedAccessRoleBindings_Delete.json
 func ExampleTrustedAccessRoleBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

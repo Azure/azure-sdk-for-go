@@ -273,8 +273,8 @@ func ExampleSAPDatabaseInstancesClient_BeginStart_startTheDatabaseInstanceOfTheS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStart(ctx, "test-rg", "X00", "db0", &SAPDatabaseInstancesClientBeginStartOptions{
-		body: &armworkloadssapvirtualinstance.StartRequest{}})
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStart(ctx, "test-rg", "X00", "db0", &armworkloadssapvirtualinstance.SAPDatabaseInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -307,8 +307,8 @@ func ExampleSAPDatabaseInstancesClient_BeginStart_startVirtualMachineAndTheDatab
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStart(ctx, "test-rg", "X00", "db0", &SAPDatabaseInstancesClientBeginStartOptions{
-		body: &armworkloadssapvirtualinstance.StartRequest{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStart(ctx, "test-rg", "X00", "db0", &armworkloadssapvirtualinstance.SAPDatabaseInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{
 			StartVM: to.Ptr(true),
 		}})
 	if err != nil {
@@ -343,8 +343,8 @@ func ExampleSAPDatabaseInstancesClient_BeginStop_stopTheDatabaseInstanceOfTheSap
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &SAPDatabaseInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &armworkloadssapvirtualinstance.SAPDatabaseInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			SoftStopTimeoutSeconds: to.Ptr[int64](0),
 		}})
 	if err != nil {
@@ -379,8 +379,8 @@ func ExampleSAPDatabaseInstancesClient_BeginStop_softStopTheDatabaseInstanceOfTh
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &SAPDatabaseInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &armworkloadssapvirtualinstance.SAPDatabaseInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			SoftStopTimeoutSeconds: to.Ptr[int64](300),
 		}})
 	if err != nil {
@@ -415,8 +415,8 @@ func ExampleSAPDatabaseInstancesClient_BeginStop_softStopTheDatabaseInstanceOfTh
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &SAPDatabaseInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &armworkloadssapvirtualinstance.SAPDatabaseInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			DeallocateVM:           to.Ptr(true),
 			SoftStopTimeoutSeconds: to.Ptr[int64](300),
 		}})
@@ -452,8 +452,8 @@ func ExampleSAPDatabaseInstancesClient_BeginStop_stopTheDatabaseInstanceOfTheSap
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &SAPDatabaseInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPDatabaseInstancesClient().BeginStop(ctx, "test-rg", "X00", "db0", &armworkloadssapvirtualinstance.SAPDatabaseInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			DeallocateVM:           to.Ptr(true),
 			SoftStopTimeoutSeconds: to.Ptr[int64](0),
 		}})

@@ -9215,8 +9215,8 @@ func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &SAPVirtualInstancesClientBeginStartOptions{
-		body: &armworkloadssapvirtualinstance.StartRequest{
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{
 			StartVM: to.Ptr(true),
 		}})
 	if err != nil {
@@ -9251,8 +9251,8 @@ func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStartWithInf
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &SAPVirtualInstancesClientBeginStartOptions{
-		body: &armworkloadssapvirtualinstance.StartRequest{
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{
 			StartVM: to.Ptr(true),
 		}})
 	if err != nil {
@@ -9287,8 +9287,8 @@ func ExampleSAPVirtualInstancesClient_BeginStop_softStopOfSapVirtualInstancesSto
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &SAPVirtualInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			SoftStopTimeoutSeconds: to.Ptr[int64](300),
 		}})
 	if err != nil {
@@ -9323,8 +9323,8 @@ func ExampleSAPVirtualInstancesClient_BeginStop_softStopTheVirtualMachineSAndThe
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &SAPVirtualInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			DeallocateVM:           to.Ptr(true),
 			SoftStopTimeoutSeconds: to.Ptr[int64](300),
 		}})
@@ -9360,8 +9360,8 @@ func ExampleSAPVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &SAPVirtualInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			SoftStopTimeoutSeconds: to.Ptr[int64](0),
 		}})
 	if err != nil {
@@ -9396,8 +9396,8 @@ func ExampleSAPVirtualInstancesClient_BeginStop_stopTheVirtualMachineSAndTheSapS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &SAPVirtualInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			DeallocateVM:           to.Ptr(true),
 			SoftStopTimeoutSeconds: to.Ptr[int64](0),
 		}})

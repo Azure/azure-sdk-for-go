@@ -359,8 +359,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startTheSapApplicatio
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStartOptions{
-		body: &armworkloadssapvirtualinstance.StartRequest{}})
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "app01", &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -393,8 +393,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startVirtualMachineAn
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStartOptions{
-		body: &armworkloadssapvirtualinstance.StartRequest{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStart(ctx, "test-rg", "X00", "app01", &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{
 			StartVM: to.Ptr(true),
 		}})
 	if err != nil {
@@ -429,8 +429,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			SoftStopTimeoutSeconds: to.Ptr[int64](0),
 		}})
 	if err != nil {
@@ -465,8 +465,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			DeallocateVM:           to.Ptr(true),
 			SoftStopTimeoutSeconds: to.Ptr[int64](0),
 		}})
@@ -502,8 +502,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			SoftStopTimeoutSeconds: to.Ptr[int64](300),
 		}})
 	if err != nil {
@@ -538,8 +538,8 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &SAPApplicationServerInstancesClientBeginStopOptions{
-		body: &armworkloadssapvirtualinstance.StopRequest{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStop(ctx, "test-rg", "X00", "app01", &armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
 			DeallocateVM:           to.Ptr(true),
 			SoftStopTimeoutSeconds: to.Ptr[int64](300),
 		}})

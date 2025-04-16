@@ -36,7 +36,7 @@ import (
 ```
 
 > [!NOTE]
-> When we speak of Azure extensions we do not mean authentication or any other basic connection difference with the OpenAI service, but rather differences that introduce new models and modify the structure of the requests or responses (e.g Azure OpenAI On Your Data)
+> When we speak of Azure extensions, we do not mean authentication or any other basic connection difference with the OpenAI service, but rather differences that introduce new models and modify the structure of the requests or responses (e.g Azure OpenAI On Your Data)
 
 ## Authentication and Client Creation
 

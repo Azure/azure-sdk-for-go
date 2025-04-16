@@ -96,6 +96,15 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 	errorBuilder := generateErrorBuilder{}
 
+	if input.SdkReleaseType != "" && input.SdkReleaseType != common.SDKReleaseTypeStable && input.SdkReleaseType != common.SDKReleaseTypePreview {
+		return nil, fmt.Errorf("invalid SDK release type:%s, only support 'stable' or 'beta'", input.SdkReleaseType)
+	}
+	if input.SdkReleaseType != "" && input.ApiVersion != "" {
+		if strings.HasSuffix(input.ApiVersion, "-preview") && input.SdkReleaseType == common.SDKReleaseTypeStable {
+			return nil, fmt.Errorf("SDK release type is stable, but API version: %s is preview", input.ApiVersion)
+		}
+	}
+
 	// create sdk repo ref
 	sdkRepo, err := repo.OpenSDKRepository(ctx.sdkRoot)
 	if err != nil {

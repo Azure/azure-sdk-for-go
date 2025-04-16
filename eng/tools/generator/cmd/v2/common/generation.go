@@ -157,7 +157,10 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 			results = append(results, singleResult)
 		}
 	}
-	return results, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpMap, commonGenerateParam.NamespaceName, errors)
+	if len(errors) > 0 {
+		return results, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpMap, commonGenerateParam.NamespaceName, errors)
+	}
+	return results, nil
 }
 
 func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {

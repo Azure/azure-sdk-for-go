@@ -9,4 +9,7 @@ const (
 	SdkRootPath           = "/sdk"
 	ReadmeFileName        = "README.md"
 	ClientFactoryFileName = "client_factory.go"
+
+	SDKReleaseTypeStable  = "stable"
+	SDKReleaseTypePreview = "beta"
 )

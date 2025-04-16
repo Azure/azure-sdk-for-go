@@ -2,11 +2,17 @@
 
 ## Overview
 
-Starting with version 0.8.0, this library has been updated to function as a companion to the [official OpenAI Go client library](https://github.com/openai/openai-go). This new approach offers several benefits:
+Starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the  [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. In that context, this library became a companion meant to enable Azure-specific extensions (e.g Azure OpenAI On Your Data). Similarly, the `azopenaiassistants` package has been completely deprecated in favor of the before mentioned official client.
+
+Although it is understood that there is cost associated to migrating from using this package to using the official library, it is also acknowledged that in the  long term the benefits outweight these costs:
 
 - Consistent API experience between Azure OpenAI and OpenAI services
 - Direct access to the latest OpenAI features through the official library
-- Azure-specific extensions available through this companion library
+
+This document is provided as a way to make this transition as smooth as possible.
+
+> [!NOTE]
+> This document is a work-in-progress and may change to reflect updates to the package. We value your feedback, please [create an issue](https://github.com/Azure/azure-sdk-for-go/issues/new/choose) to suggest any improvements or report any problems with this guide or with the package itself.
 
 ## Key Changes
 
@@ -17,9 +23,20 @@ Your projects will now need to include the official OpenAI Go client:
 ```go
 import (
     "github.com/openai/openai-go"
+)
+```
+
+If you need to use any Azure extension, you will also need to include the `azopenai` package.
+
+```go
+import (
+    "github.com/openai/openai-go"
     "github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 )
 ```
+
+> [!NOTE]
+> When we speak of Azure extensions we do not mean authentication or any other basic connection difference with the OpenAI service, but rather differences that introduce new models and modify the structure of the requests or responses (e.g Azure OpenAI On Your Data)
 
 ## Authentication and Client Creation
 

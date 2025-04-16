@@ -12,6 +12,22 @@ import (
 	"github.com/openai/openai-go"
 )
 
+// Example_createImage demonstrates how to generate images using Azure OpenAI's DALL-E model.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Configure image generation parameters including size and format
+// - Generate an image from a text prompt
+// - Verify the generated image URL is accessible
+//
+// The example uses environment variables for configuration:
+// - AOAI_DALLE_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_DALLE_MODEL: The deployment name of your DALL-E model
+//
+// Image generation is useful for:
+// - Creating custom illustrations and artwork
+// - Generating visual content for applications
+// - Prototyping design concepts
+// - Producing visual aids for documentation
 func Example_createImage() {
 	if !CheckRequiredEnvVars("AOAI_DALLE_ENDPOINT", "AOAI_DALLE_MODEL") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")

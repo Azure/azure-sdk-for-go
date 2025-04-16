@@ -13,7 +13,22 @@ import (
 	"github.com/openai/openai-go"
 )
 
-// Example_getChatCompletions demonstrates how to use the Chat Completions API.
+// Example_getChatCompletions demonstrates how to use Azure OpenAI's Chat Completions API.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Structure a multi-turn conversation with different message roles
+// - Send a chat completion request and handle the response
+// - Process multiple response choices and finish reasons
+//
+// The example uses environment variables for configuration:
+// - AOAI_CHAT_COMPLETIONS_MODEL: The deployment name of your chat model
+// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Chat completions are useful for:
+// - Building conversational AI interfaces
+// - Creating chatbots with personality
+// - Maintaining context across multiple interactions
+// - Generating human-like text responses
 func Example_getChatCompletions() {
 	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL", "AOAI_CHAT_COMPLETIONS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -93,7 +108,22 @@ func Example_getChatCompletions() {
 	}
 }
 
-// Example_chatCompletionsFunctions demonstrates how to use the Chat Completions API with function calling.
+// Example_chatCompletionsFunctions demonstrates how to use Azure OpenAI's function calling feature.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Define a function schema for weather information
+// - Request function execution through the chat API
+// - Parse and handle function call responses
+//
+// The example uses environment variables for configuration:
+// - AOAI_CHAT_COMPLETIONS_MODEL: The deployment name of your chat model
+// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Function calling is useful for:
+// - Integrating external APIs and services
+// - Structured data extraction from natural language
+// - Task automation and workflow integration
+// - Building context-aware applications
 func Example_chatCompletionsFunctions() {
 	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL", "AOAI_CHAT_COMPLETIONS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -177,7 +207,21 @@ func Example_chatCompletionsFunctions() {
 
 }
 
-// Example_chatCompletionsLegacyFunctions demonstrates using legacy-style function calling with the Chat Completions API.
+// Example_chatCompletionsLegacyFunctions demonstrates using the legacy function calling format.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Define a function schema using the legacy format
+// - Use tools API for backward compatibility
+// - Handle function calling responses
+//
+// The example uses environment variables for configuration:
+// - AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_MODEL: The deployment name of your chat model
+// - AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Legacy function support ensures:
+// - Compatibility with older implementations
+// - Smooth transition to new tools API
+// - Support for existing function-based workflows
 func Example_chatCompletionsLegacyFunctions() {
 	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_MODEL", "AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -265,7 +309,22 @@ func Example_chatCompletionsLegacyFunctions() {
 
 }
 
-// Example_chatCompletionStream demonstrates how to use the Chat Completions API with streaming responses.
+// Example_chatCompletionStream demonstrates streaming responses from the Chat Completions API.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Set up a streaming chat completion request
+// - Process incremental response chunks
+// - Handle streaming errors and completion
+//
+// The example uses environment variables for configuration:
+// - AOAI_CHAT_COMPLETIONS_MODEL: The deployment name of your chat model
+// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Streaming is useful for:
+// - Real-time response display
+// - Improved perceived latency
+// - Interactive chat interfaces
+// - Long-form content generation
 func Example_chatCompletionStream() {
 	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL", "AOAI_CHAT_COMPLETIONS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -340,7 +399,22 @@ func Example_chatCompletionStream() {
 
 }
 
-// Example_chatCompletionsStructuredOutputs demonstrates how to use the Chat Completions API with structured outputs using function calling.
+// Example_chatCompletionsStructuredOutputs demonstrates using structured outputs with function calling.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Define complex JSON schemas for structured output
+// - Request specific data structures through function calls
+// - Parse and validate structured responses
+//
+// The example uses environment variables for configuration:
+// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL: The deployment name of your chat model
+// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Structured outputs are useful for:
+// - Database query generation
+// - Data extraction and transformation
+// - API request formatting
+// - Consistent response formatting
 func Example_chatCompletionsStructuredOutputs() {
 	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL", "AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -465,8 +539,22 @@ func Example_chatCompletionsStructuredOutputs() {
 
 }
 
-// Example_structuredOutputsResponseFormat demonstrates how to use the Chat Completions API
-// with structured outputs using response format.
+// Example_structuredOutputsResponseFormat demonstrates using JSON response formatting.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Define JSON schema for response formatting
+// - Request structured mathematical solutions
+// - Parse and process formatted JSON responses
+//
+// The example uses environment variables for configuration:
+// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL: The deployment name of your chat model
+// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Response formatting is useful for:
+// - Mathematical problem solving
+// - Step-by-step explanations
+// - Structured data generation
+// - Consistent output formatting
 func Example_structuredOutputsResponseFormat() {
 	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL", "AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")

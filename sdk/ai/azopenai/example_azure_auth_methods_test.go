@@ -13,8 +13,23 @@ import (
 	"github.com/openai/openai-go/azure"
 )
 
-// This example demonstrates how to use different Azure authentication methods
-// with Azure OpenAI Services
+// Example_usingDefaultAzureCredential demonstrates how to authenticate with Azure OpenAI using Azure Active Directory credentials.
+// This example shows how to:
+// - Create an Azure OpenAI client using DefaultAzureCredential
+// - Configure authentication options with tenant ID
+// - Make a simple request to test the authentication
+//
+// The example uses environment variables for configuration:
+// - AOAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_MODEL: The deployment name of your model
+// - AZURE_TENANT_ID: Your Azure tenant ID
+// - AZURE_CLIENT_ID: (Optional) Your Azure client ID
+// - AZURE_CLIENT_SECRET: (Optional) Your Azure client secret
+//
+// DefaultAzureCredential supports multiple authentication methods including:
+// - Environment variables
+// - Managed Identity
+// - Azure CLI credentials
 func Example_usingDefaultAzureCredential() {
 	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_MODEL") {
 		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")

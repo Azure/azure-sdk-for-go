@@ -11,6 +11,22 @@ import (
 	"github.com/openai/openai-go"
 )
 
+// Example_completions demonstrates how to use Azure OpenAI's legacy Completions API.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Send a simple text completion request
+// - Handle the completion response
+// - Process the generated text output
+//
+// The example uses environment variables for configuration:
+// - AOAI_COMPLETIONS_MODEL: The deployment name of your completions model
+// - AOAI_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Legacy completions are useful for:
+// - Simple text generation tasks
+// - Completing partial text
+// - Single-turn interactions
+// - Basic language generation scenarios
 func Example_completions() {
 	if !CheckRequiredEnvVars("AOAI_COMPLETIONS_MODEL", "AOAI_COMPLETIONS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -43,9 +59,24 @@ func Example_completions() {
 		fmt.Fprintf(os.Stderr, "Result: %s\n", resp.Choices[0].Text)
 	}
 
-	// Output:
 }
 
+// Example_streamCompletions demonstrates streaming responses from the legacy Completions API.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Set up a streaming completion request
+// - Process incremental text chunks
+// - Handle streaming errors and completion
+//
+// The example uses environment variables for configuration:
+// - AOAI_COMPLETIONS_MODEL: The deployment name of your completions model
+// - AOAI_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Streaming completions are useful for:
+// - Real-time text generation display
+// - Reduced latency in responses
+// - Interactive text generation
+// - Long-form content creation
 func Example_streamCompletions() {
 	if !CheckRequiredEnvVars("AOAI_COMPLETIONS_MODEL", "AOAI_COMPLETIONS_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -81,5 +112,4 @@ func Example_streamCompletions() {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 	}
 
-	// Output:
 }

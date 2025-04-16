@@ -37,6 +37,10 @@ func CreateOpenAIClientWithToken(endpoint string, apiVersion string) (*openai.Cl
 
 // CreateOpenAIClientWithKey creates an OpenAI client with API key authentication
 func CreateOpenAIClientWithKey(endpoint string, apiKey string, apiVersion string) (*openai.Client, error) {
+	if apiKey == "" {
+		return nil, fmt.Errorf("apiKey cannot be empty")
+	}
+
 	if apiVersion == "" {
 		apiVersion = DefaultAPIVersion
 	}

@@ -13,6 +13,23 @@ import (
 	"github.com/openai/openai-go"
 )
 
+// Example_vision demonstrates how to use Azure OpenAI's Vision capabilities for image analysis.
+// This example shows how to:
+// - Create an Azure OpenAI client with token credentials
+// - Send an image URL to the model for analysis
+// - Configure the chat completion request with image content
+// - Process the model's description of the image
+//
+// The example uses environment variables for configuration:
+// - AOAI_VISION_MODEL: The deployment name of your vision-capable model (e.g., gpt-4-vision)
+// - AOAI_VISION_ENDPOINT: Your Azure OpenAI endpoint URL
+//
+// Vision capabilities are useful for:
+// - Image description and analysis
+// - Visual question answering
+// - Content moderation
+// - Accessibility features
+// - Image-based search and retrieval
 func Example_vision() {
 	if !CheckRequiredEnvVars("AOAI_VISION_MODEL", "AOAI_VISION_ENDPOINT") {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
@@ -70,6 +87,4 @@ func Example_vision() {
 		// Prints "Result: The image shows two deer standing in a field of tall, autumn-colored ferns"
 		fmt.Fprintf(os.Stderr, "Result: %s\n", resp.Choices[0].Message.Content)
 	}
-
-	// Output:
 }

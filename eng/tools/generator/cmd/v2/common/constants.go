@@ -7,4 +7,7 @@ const (
 	ChangelogFileName = "CHANGELOG.md"
 	GoModFileName     = "go.mod"
 	SdkRootPath       = "/sdk"
+
+	SDKReleaseTypeStable  = "stable"
+	SDKReleaseTypePreview = "beta"
 )

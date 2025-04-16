@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -171,19 +170,9 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 
 	var err error
 	var result *common.GenerateResult
-	var existTypeSpec bool
 	if c.flags.TypeSpecConfig != "" {
-		tsc, err := typespec.ParseTypeSpecConfig(c.flags.TypeSpecConfig)
-		if err != nil {
-			return err
-		}
-		existTypeSpec = tsc.ExistEmitOption(string(typespec.TypeSpec_GO))
-		generateCtx.TypeSpecConfig = tsc
-	}
-
-	if existTypeSpec {
 		log.Printf("Generate SDK through TypeSpec...")
-		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
+		result, err = generateCtx.GenerateFromTypeSpec(c.flags.TypeSpecConfig, &common.GenerateParam{
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			SpecificPackageTitle: c.flags.PackageTitle,
@@ -197,7 +186,13 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 		})
 	} else {
 		log.Printf("Generate SDK through AutoRest...")
-		result, err = generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
+		rpMap := make(map[string][]common.PackageInfo)
+		rpMap[c.rpName] = []common.PackageInfo{{
+			Name:     c.namespaceName,
+			Config:   c.flags.PackageConfig,
+			SpecName: c.flags.SpecRPName,
+		}}
+		results, swaggerErr := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			NamespaceConfig:      c.flags.PackageConfig,
@@ -209,7 +204,14 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:            c.flags.GoVersion,
 			ForceStableVersion:   c.flags.ForceStableVersion,
 		})
+		if swaggerErr != nil {
+			err = swaggerErr
+		}
+		if len(results) > 0 {
+			result = results[0]
+		}
 	}
+
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}

@@ -9,8 +9,8 @@ require (
 )
 
 require (
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 )
 
 replace github.com/Azure/azure-sdk-for-go/sdk/storage/azblob => ../../.

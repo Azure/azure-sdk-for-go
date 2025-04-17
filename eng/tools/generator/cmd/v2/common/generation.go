@@ -251,7 +251,7 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		tag := generateParam.NamespaceConfig
 		if generateParam.ApiVersion != "" {
-			tag = generateParam.ApiVersion
+			tag = "tag: " + generateParam.ApiVersion
 		}
 		if err := AddTagSet(autorestMdPath, tag); err != nil {
 			return err

@@ -377,13 +377,9 @@ func waitForProxyStart(cmd *exec.Cmd, options *RecordingOptions) (*TestProxyInst
 	return nil, fmt.Errorf("test proxy server did not become available in the allotted time")
 }
 
-func inCI() bool {
-	return os.Getenv("TF_BUILD") != "" || os.Getenv("GITHUB_ACTIONS") != ""
-}
-
 func StartTestProxy(pathToRecordings string, options *RecordingOptions) (*TestProxyInstance, error) {
 	manualStart := strings.ToLower(os.Getenv(proxyManualStartEnv))
-	if manualStart == "true" && !inCI() {
+	if manualStart == "true" {
 		log.Printf("%s env variable is set to true, not starting test proxy...\n", proxyManualStartEnv)
 		return nil, nil
 	}

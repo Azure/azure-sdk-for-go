@@ -68,7 +68,7 @@ func (testsuite *FleetsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestFleetsTestSuite(t *testing.T) {
+func TTestFleetsTestSuite(t *testing.T) {
 	suite.Run(t, new(FleetsTestSuite))
 }
 

@@ -149,6 +149,8 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				SpecificVersion:      commonGenerateParam.SpecificVersion,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
 				ForceStableVersion:   commonGenerateParam.ForceStableVersion,
+				ApiVersion:           commonGenerateParam.ApiVersion,
+				SdkReleaseType:       commonGenerateParam.SdkReleaseType,
 			})
 			if err != nil {
 				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))
@@ -238,10 +240,8 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 	} else {
 		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if t.UpdateSpecVersion {
-			if err := ChangeConfigWithCommitID(autorestMdPath, t.SpecRepoURL, t.SpecCommitHash, generateParam.SpecRPName); err != nil {
-				return err
-			}
+		if err := ChangeConfigWithCommitID(autorestMdPath, t.SpecRepoURL, t.SpecCommitHash, generateParam.SpecRPName); err != nil {
+			return err
 		}
 	}
 

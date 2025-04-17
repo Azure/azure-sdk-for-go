@@ -93,7 +93,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("package-config", "", "Additional config for package")
 	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
-	flagSet.Bool("update-spec-version", true, "Whether to update the commit id, the default is true")
 	flagSet.Bool("force-stable-version", false, "Even if input-files contains preview files, they are forced to be generated as stable versions. At the same time, the tag must not contain preview.")
 	flagSet.String("tsp-config", "", "The path of the typespec tspconfig.yaml")
 	flagSet.String("tsp-option", "", "Emit typespec-go options, only valid when tsp-config is configured. e: option1=value1;option2=value2")
@@ -157,11 +156,10 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash string) error {
 	log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
 	generateCtx := common.GenerateContext{
-		SDKPath:           sdkRepo.Root(),
-		SDKRepo:           &sdkRepo,
-		SpecCommitHash:    specCommitHash,
-		SpecRepoURL:       c.flags.SwaggerRepo,
-		UpdateSpecVersion: c.flags.UpdateSpecVersion,
+		SDKPath:        sdkRepo.Root(),
+		SDKRepo:        &sdkRepo,
+		SpecCommitHash: specCommitHash,
+		SpecRepoURL:    c.flags.SwaggerRepo,
 	}
 
 	if c.flags.SpecRPName == "" {

@@ -2,9 +2,9 @@
 
 ## Overview
 
-Starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the  [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. In that context, this library became a companion meant to enable Azure-specific extensions (e.g Azure OpenAI On Your Data). Similarly, the `azopenaiassistants` package has been completely deprecated in favor of the before mentioned official client.
+Starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. In that context, this library became a companion meant to enable Azure-specific extensions (e.g., Azure OpenAI On Your Data). Similarly, the `azopenaiassistants` package has been completely deprecated in favor of the aforementioned official client.
 
-Although it is understood that there is cost associated to migrating from using this package to using the official library, it is also acknowledged that in the  long term the benefits outweight these costs:
+Although it is understood that there is cost associated to migrating from using this package to using the official library, it is also acknowledged that in the long term the benefits outweigh these costs:
 
 - Consistent API experience between Azure OpenAI and OpenAI services
 - Direct access to the latest OpenAI features through the official library
@@ -36,7 +36,7 @@ import (
 ```
 
 > [!NOTE]
-> When we speak of Azure extensions, we do not mean authentication or any other basic connection difference with the OpenAI service, but rather differences that introduce new models and modify the structure of the requests or responses (e.g Azure OpenAI On Your Data)
+> When we speak of Azure extensions, we do not mean authentication or any other basic connection differences between the OpenAI and AzureOpenAI services, but rather differences that introduce new models and modify the structure of the requests or responses (e.g., Azure OpenAI On Your Data)
 
 ## Authentication and Client Creation
 
@@ -287,7 +287,7 @@ for _, choice := range resp.Choices {
 
     // Access citations if available
     if context := choice.Message.Context; context != nil {
-        for _, citation := context.Citations {
+        for _, citation := range context.Citations {
             // Process each citation
             // citation.Content contains the citation text
         }
@@ -329,7 +329,7 @@ for _, choice := range resp.Choices {
     azureChatCompletionMessage := azopenai.ChatCompletionMessage(choice.Message)
     context, err := azureChatCompletionMessage.Context()
     if err == nil {
-        for _, citation := context.Citations {
+        for _, citation := range context.Citations {
             if citation.Content != nil {
                 // Process each citation
                 // citation.Content contains the citation text

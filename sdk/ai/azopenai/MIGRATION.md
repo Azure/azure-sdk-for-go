@@ -122,6 +122,27 @@ client := openai.NewClient(
 
 ### API Changes
 
+One of the key API differences when moving from using the clients provided by the `azopenai` and `azopenaiassistants` packages is that, instead of all operations being available in a flat fashion in the client, the official OpenAI Go client provides subclients for each category of service.
+
+Concretely this means
+
+| Service               | Description |
+| --                    | --          |
+| `client.Completions`  |
+| `client.Chat`         |
+| `client.Embeddings`   |
+| `client.Files`        |
+| `client.Images`       |
+| `client.Audio`        |
+| `client.Moderations`  |
+| `client.Models`       |
+| `client.FineTuning`   |
+| `client.VectorStores` |
+| `client.Beta`         | Provides access to beta features. At the time of this writing the `Assistants` and `Threads` APIs are under this classification.
+| `client.Batches`      |
+| `client.Uploads`      |
+| `client.Responses`    | Provides access to the `Responses` API
+
 Please refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go) for details on the standard API operations.
 
 For Azure-specific extensions provided by this companion library, see the reference documentation and examples.

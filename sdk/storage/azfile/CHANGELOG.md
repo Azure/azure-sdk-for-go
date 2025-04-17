@@ -3,7 +3,7 @@
 ## 1.5.1 (2025-04-16)
 
 ### Bugs Fixed
-* Fixed return value of DownloadBuffer when the HTTPRange count given is greater than the data length. Fixes [#23884](https://github.com/Azure/azure-sdk-for-go/issues/23884)
+* Fixed return value of DownloadBuffer when the HTTPRange count given is greater than the data length. 
 
 ### Other Changes
 * Updated `azidentity` version to `1.9.0`

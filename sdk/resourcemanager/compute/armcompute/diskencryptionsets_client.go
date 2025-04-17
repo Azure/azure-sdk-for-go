@@ -25,8 +25,7 @@ type DiskEncryptionSetsClient struct {
 }
 
 // NewDiskEncryptionSetsClient creates a new instance of DiskEncryptionSetsClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiskEncryptionSetsClient, error) {
@@ -45,7 +44,7 @@ func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenC
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
 //     name length is 80 characters.
@@ -59,7 +58,8 @@ func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context,
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskEncryptionSetsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -127,7 +127,7 @@ func (client *DiskEncryptionSetsClient) createOrUpdateCreateRequest(ctx context.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
 //     name length is 80 characters.
@@ -140,7 +140,8 @@ func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourc
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskEncryptionSetsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -205,7 +206,7 @@ func (client *DiskEncryptionSetsClient) deleteCreateRequest(ctx context.Context,
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
 //     name length is 80 characters.
@@ -325,7 +326,7 @@ func (client *DiskEncryptionSetsClient) listHandleResponse(resp *http.Response) 
 // NewListAssociatedResourcesPager - Lists all resources that are encrypted with this disk encryption set.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
 //     name length is 80 characters.
@@ -392,7 +393,7 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(re
 // NewListByResourceGroupPager - Lists all the disk encryption sets under a resource group.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DiskEncryptionSetsClientListByResourceGroupOptions contains the optional parameters for the DiskEncryptionSetsClient.NewListByResourceGroupPager
 //     method.
 func (client *DiskEncryptionSetsClient) NewListByResourceGroupPager(resourceGroupName string, options *DiskEncryptionSetsClientListByResourceGroupOptions) *runtime.Pager[DiskEncryptionSetsClientListByResourceGroupResponse] {
@@ -453,7 +454,7 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupHandleResponse(resp *
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskEncryptionSetName - The name of the disk encryption set that is being created. The name can't be changed after the
 //     disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
 //     name length is 80 characters.
@@ -467,7 +468,8 @@ func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourc
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskEncryptionSetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {

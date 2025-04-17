@@ -25,8 +25,7 @@ type DiskAccessesClient struct {
 }
 
 // NewDiskAccessesClient creates a new instance of DiskAccessesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDiskAccessesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiskAccessesClient, error) {
@@ -45,7 +44,7 @@ func NewDiskAccessesClient(subscriptionID string, credential azcore.TokenCredent
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -59,7 +58,8 @@ func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resou
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskAccessesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -127,7 +127,7 @@ func (client *DiskAccessesClient) createOrUpdateCreateRequest(ctx context.Contex
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -140,7 +140,8 @@ func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroup
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskAccessesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -205,7 +206,7 @@ func (client *DiskAccessesClient) deleteCreateRequest(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -219,7 +220,8 @@ func (client *DiskAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx cont
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -288,7 +290,7 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -354,7 +356,7 @@ func (client *DiskAccessesClient) getHandleResponse(resp *http.Response) (DiskAc
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -426,7 +428,7 @@ func (client *DiskAccessesClient) getAPrivateEndpointConnectionHandleResponse(re
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -456,7 +458,7 @@ func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, r
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
 func (client *DiskAccessesClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, diskAccessName string, _ *DiskAccessesClientGetPrivateLinkResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privateLinkResources"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskAccesses/{diskAccessName}/privatelinkresources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -546,7 +548,7 @@ func (client *DiskAccessesClient) listHandleResponse(resp *http.Response) (DiskA
 // NewListByResourceGroupPager - Lists all the disk access resources under a resource group.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DiskAccessesClientListByResourceGroupOptions contains the optional parameters for the DiskAccessesClient.NewListByResourceGroupPager
 //     method.
 func (client *DiskAccessesClient) NewListByResourceGroupPager(resourceGroupName string, options *DiskAccessesClientListByResourceGroupOptions) *runtime.Pager[DiskAccessesClientListByResourceGroupResponse] {
@@ -606,7 +608,7 @@ func (client *DiskAccessesClient) listByResourceGroupHandleResponse(resp *http.R
 // NewListPrivateEndpointConnectionsPager - List information about private endpoint connections under a disk access resource
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -674,7 +676,7 @@ func (client *DiskAccessesClient) listPrivateEndpointConnectionsHandleResponse(r
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -688,7 +690,8 @@ func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroup
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskAccessesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -757,7 +760,7 @@ func (client *DiskAccessesClient) updateCreateRequest(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-02
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diskAccessName - The name of the disk access resource that is being created. The name can't be changed after the disk encryption
 //     set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
 //     maximum name length is 80 characters.
@@ -773,7 +776,8 @@ func (client *DiskAccessesClient) BeginUpdateAPrivateEndpointConnection(ctx cont
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {

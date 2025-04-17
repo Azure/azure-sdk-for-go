@@ -1,5 +1,20 @@
 # Release History
 
+## 0.2.0-beta.1 (2025-04-17)
+### Breaking Changes
+
+- Type of `StorageTaskAssignmentClientListOptions.Maxpagesize` has been changed from `*string` to `*int32`
+- Type of `StorageTaskOperation.OnFailure` has been changed from `*string` to `*OnFailure`
+- Type of `StorageTaskOperation.OnSuccess` has been changed from `*string` to `*OnSuccess`
+- Type of `StorageTasksReportClientListOptions.Maxpagesize` has been changed from `*string` to `*int32`
+
+### Features Added
+
+- New value `ProvisioningStateAccepted` added to enum type `ProvisioningState`
+- New enum type `OnFailure` with values `OnFailureBreak`
+- New enum type `OnSuccess` with values `OnSuccessContinue`
+
+
 ## 0.1.0 (2024-03-08)
 ### Other Changes
 

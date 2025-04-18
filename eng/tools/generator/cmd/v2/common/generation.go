@@ -117,7 +117,6 @@ func (ctx *GenerateContext) GenerateFromTypeSpec(tspconfigPath string, commonGen
 		log.Printf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to `https://aka.ms/azsdk/tspconfig-sample-mpg` to configure it", tspconfigPath)
 		return nil, nil
 	}
-	log.Printf("Start to process typespec project: %s", tspconfigPath)
 	ctx.TypeSpecConfig = tsc
 	// reuse the same param for all typespec projects
 	generateParam := commonGenerateParam
@@ -125,11 +124,10 @@ func (ctx *GenerateContext) GenerateFromTypeSpec(tspconfigPath string, commonGen
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("Finish processing typespec project: %s", tspconfigPath)
 	return namespaceResult, nil
 }
 
-func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, commonGenerateParam *GenerateParam) ([]*GenerateResult, error) {
+func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, commonGenerateParam *GenerateParam) ([]*GenerateResult, []error) {
 	// autorest
 	errors := make([]error, 0)
 	results := make([]*GenerateResult, 0)
@@ -156,12 +154,10 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				continue
 			}
 			results = append(results, singleResult)
+			log.Printf("Finish processing rp: %s, namespace: %s", rpName, packageInfo.Name)
 		}
 	}
-	if len(errors) > 0 {
-		return results, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpMap, commonGenerateParam.NamespaceName, errors)
-	}
-	return results, nil
+	return results, errors
 }
 
 func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {

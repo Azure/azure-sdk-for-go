@@ -370,11 +370,12 @@ func TestGlobalEndpointManagerResolveEndpointMultiMasterMetadataOperation(t *tes
 	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
 }
 
-type contextCapturePolicy struct {
+// A policy that captures all requests made.
+type requestCollector struct {
 	CapturedRequests []*policy.Request
 }
 
-func (p *contextCapturePolicy) Do(req *policy.Request) (*http.Response, error) {
+func (p *requestCollector) Do(req *policy.Request) (*http.Response, error) {
 	p.CapturedRequests = append(p.CapturedRequests, req)
 	return req.Next()
 }
@@ -387,7 +388,7 @@ func TestRequestToUpdateGEMPreservesIncomingContextWithoutCancellation(t *testin
 	gemServer.SetResponse(mock.WithStatusCode(200))
 
 	// The GEM needs it's own pipeline that doesn't have the GEM policy in it to avoid deadlocking.
-	capturePolicy := &contextCapturePolicy{}
+	capturePolicy := &requestCollector{}
 	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer, PerCallPolicies: []policy.Policy{capturePolicy}})
 	mockGem := &globalEndpointManager{
 		clientEndpoint:      gemServer.URL(),
@@ -401,12 +402,13 @@ func TestRequestToUpdateGEMPreservesIncomingContextWithoutCancellation(t *testin
 		gem: mockGem,
 	}
 
+	// For the "main" pipeline under test, we can insert the GEM policy, which will cause GEM updates to run (through the GEM pipeline).
 	testPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer, PerCallPolicies: []policy.Policy{gemPolicy}})
 
-	// Create a context so we can track that it flows through
+	// Create a context so we can track that it flows through.
+	// The context has a test value which SHOULD be preserved, and then we cancel it before even issuing the request.
+	// This allows us to verify that the GEM update proceeds, even if the request is canceled.
 	ctx, cancel := context.WithCancel(context.WithValue(context.Background(), contextKey("test"), "testValue"))
-
-	// Cancel the context right away
 	cancel()
 
 	// Issue a test request
@@ -415,30 +417,30 @@ func TestRequestToUpdateGEMPreservesIncomingContextWithoutCancellation(t *testin
 		t.Fatalf("failed to create request: %v", err)
 	}
 	_, err = testPipeline.Do(req)
+
+	// The _main_ request should correctly have been canceled.
+	// If the GEM request had been cancelled, the error would be the "failed to retrieve account properties" error GEM returns.
 	if err != context.Canceled {
 		t.Fatalf("expected context to be canceled, got %v", err)
 	}
 
+	// Make sure we actually got a request to get account properties
 	if len(capturePolicy.CapturedRequests) != 1 {
 		t.Fatalf("expected to capture the request to the GEM, got %d requests", len(capturePolicy.CapturedRequests))
 	}
-
 	capturedReq := capturePolicy.CapturedRequests[0]
-
-	// Check that this is the right request
 	if capturedReq.Raw().URL.String() != gemServer.URL() {
 		t.Fatalf("expected the captured request to be to the account metadata endpoint, got %s", capturedReq.Raw().URL.String())
 	}
-
 	if capturedReq.Raw().Method != http.MethodGet {
 		t.Fatalf("expected the captured request to be a GET, got %s", capturedReq.Raw().Method)
 	}
 
+	// Validate that the context of THAT request is non-canceled and has our test value.
 	capturedContext := capturedReq.Raw().Context()
 	if _, ok := capturedContext.Deadline(); !ok {
 		t.Fatalf("expected the context to not have a deadline")
 	}
-
 	value := capturedContext.Value(contextKey("test"))
 	if value != "testValue" {
 		t.Fatalf("expected a captured context to contain test=testValue, got test=%v", value)

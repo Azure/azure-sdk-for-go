@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-01-preview/Schedulers_CreateOrUpdate.json
+// Generated from example definition: 2025-04-01-preview/Schedulers_CreateOrUpdate.json
 func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,8 +34,8 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 			},
 		},
 		Tags: map[string]*string{
-			"key7131": to.Ptr("ryohwcoiccwsnewjigfmijz"),
-			"key2138": to.Ptr("fjaeecgnvqd"),
+			"department":  to.Ptr("research"),
+			"development": to.Ptr("true"),
 		},
 	}, nil)
 	if err != nil {
@@ -64,12 +64,12 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key7131": to.Ptr("ryohwcoiccwsnewjigfmijz"),
-	// 			"key2138": to.Ptr("fjaeecgnvqd"),
+	// 			"department": to.Ptr("research"),
+	// 			"development": to.Ptr("true"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.DurableTask/schedulers/testscheduler"),
-	// 		Name: to.Ptr("fwxpolhofploqzwdooyg"),
-	// 		Type: to.Ptr("vwqdbpynxwfhiopdypuabwvfohnr"),
+	// 		Name: to.Ptr("testscheduler"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers"),
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
@@ -82,7 +82,7 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-10-01-preview/Schedulers_Delete.json
+// Generated from example definition: 2025-04-01-preview/Schedulers_Delete.json
 func ExampleSchedulersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSchedulersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-10-01-preview/Schedulers_Get.json
+// Generated from example definition: 2025-04-01-preview/Schedulers_Get.json
 func ExampleSchedulersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,12 +137,12 @@ func ExampleSchedulersClient_Get() {
 	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key7131": to.Ptr("ryohwcoiccwsnewjigfmijz"),
-	// 			"key2138": to.Ptr("fjaeecgnvqd"),
+	// 			"department": to.Ptr("research"),
+	// 			"development": to.Ptr("true"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.DurableTask/schedulers/testscheduler"),
 	// 		Name: to.Ptr("testscheduler"),
-	// 		Type: to.Ptr("vwqdbpynxwfhiopdypuabwvfohnr"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers"),
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
@@ -155,7 +155,7 @@ func ExampleSchedulersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-10-01-preview/Schedulers_ListByResourceGroup.json
+// Generated from example definition: 2025-04-01-preview/Schedulers_ListByResourceGroup.json
 func ExampleSchedulersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,10 +196,11 @@ func ExampleSchedulersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2138": to.Ptr("fjaeecgnvqd"),
+		// 					"department": to.Ptr("research"),
+		// 					"development": to.Ptr("true"),
 		// 				},
 		// 				Name: to.Ptr("testscheduler"),
-		// 				Type: to.Ptr("tglszobjxdhauglzxuqozeg"),
+		// 				Type: to.Ptr("Microsoft.DurableTask/schedulers"),
 		// 				SystemData: &armdurabletask.SystemData{
 		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
@@ -216,7 +217,7 @@ func ExampleSchedulersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-01-preview/Schedulers_ListBySubscription.json
+// Generated from example definition: 2025-04-01-preview/Schedulers_ListBySubscription.json
 func ExampleSchedulersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,10 +258,11 @@ func ExampleSchedulersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2138": to.Ptr("fjaeecgnvqd"),
+		// 					"department": to.Ptr("research"),
+		// 					"development": to.Ptr("true"),
 		// 				},
 		// 				Name: to.Ptr("testscheduler"),
-		// 				Type: to.Ptr("tglszobjxdhauglzxuqozeg"),
+		// 				Type: to.Ptr("Microsoft.DurableTask/schedulers"),
 		// 				SystemData: &armdurabletask.SystemData{
 		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
@@ -277,7 +279,7 @@ func ExampleSchedulersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-01-preview/Schedulers_Update.json
+// Generated from example definition: 2025-04-01-preview/Schedulers_Update.json
 func ExampleSchedulersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +292,7 @@ func ExampleSchedulersClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewSchedulersClient().BeginUpdate(ctx, "rgopenapi", "testscheduler", armdurabletask.SchedulerUpdate{
 		Tags: map[string]*string{
-			"key8653": to.Ptr("lr"),
+			"hello": to.Ptr("world"),
 		},
 		Properties: &armdurabletask.SchedulerPropertiesUpdate{
 			IPAllowlist: []*string{
@@ -298,7 +300,7 @@ func ExampleSchedulersClient_BeginUpdate() {
 			},
 			SKU: &armdurabletask.SchedulerSKUUpdate{
 				Name:     to.Ptr("Dedicated"),
-				Capacity: to.Ptr[int32](10),
+				Capacity: to.Ptr[int32](3),
 			},
 		},
 	}, nil)
@@ -328,12 +330,13 @@ func ExampleSchedulersClient_BeginUpdate() {
 	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key7131": to.Ptr("ryohwcoiccwsnewjigfmijz"),
-	// 			"key2138": to.Ptr("fjaeecgnvqd"),
+	// 			"department": to.Ptr("research"),
+	// 			"development": to.Ptr("true"),
+	// 			"hello": to.Ptr("world"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.DurableTask/schedulers/testscheduler"),
 	// 		Name: to.Ptr("testscheduler"),
-	// 		Type: to.Ptr("vwqdbpynxwfhiopdypuabwvfohnr"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers"),
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),

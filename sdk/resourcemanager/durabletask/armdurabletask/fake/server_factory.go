@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// RetentionPoliciesServer contains the fakes for client RetentionPoliciesClient
+	RetentionPoliciesServer RetentionPoliciesServer
+
 	// SchedulersServer contains the fakes for client SchedulersClient
 	SchedulersServer SchedulersServer
 
@@ -37,11 +40,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdurabletask.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trOperationsServer *OperationsServerTransport
-	trSchedulersServer *SchedulersServerTransport
-	trTaskHubsServer   *TaskHubsServerTransport
+	srv                       *ServerFactory
+	trMu                      sync.Mutex
+	trOperationsServer        *OperationsServerTransport
+	trRetentionPoliciesServer *RetentionPoliciesServerTransport
+	trSchedulersServer        *SchedulersServerTransport
+	trTaskHubsServer          *TaskHubsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -60,6 +64,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "RetentionPoliciesClient":
+		initServer(s, &s.trRetentionPoliciesServer, func() *RetentionPoliciesServerTransport {
+			return NewRetentionPoliciesServerTransport(&s.srv.RetentionPoliciesServer)
+		})
+		resp, err = s.trRetentionPoliciesServer.Do(req)
 	case "SchedulersClient":
 		initServer(s, &s.trSchedulersServer, func() *SchedulersServerTransport { return NewSchedulersServerTransport(&s.srv.SchedulersServer) })
 		resp, err = s.trSchedulersServer.Do(req)

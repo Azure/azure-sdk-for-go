@@ -1,24 +1,40 @@
 # Migration Guide from Azure OpenAI SDK v0.7.x to v0.8.0
 
+## Table of Contents
+- [Overview](#overview)
+- [Summary of Major Changes](#summary-of-major-changes)
+- [Key Changes](#key-changes)
+- [Authentication and Client Creation](#authentication-and-client-creation)
+- [API Changes](#api-changes)
+- [Common Migration Scenarios](#common-migration-scenarios)
+- [Additional Resources](#additional-resources)
+
 ## Overview
 
-Starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. In that context, this library became a companion meant to enable Azure-specific extensions (e.g., Azure OpenAI On Your Data). Similarly, the `azopenaiassistants` package has been completely deprecated in favor of the aforementioned official client.
+Starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
 
-Although it is understood that there is cost associated to migrating from using this package to using the official library, it is also acknowledged that in the long term the benefits outweigh these costs:
-
-- Consistent API experience between Azure OpenAI and OpenAI services
-- Direct access to the latest OpenAI features through the official library
-
-This document is provided as a way to make this transition as smooth as possible.
+Migrating to the official client offers:
+- Consistent API experience between Azure OpenAI and OpenAI services.
+- Direct access to the latest OpenAI features.
 
 > [!NOTE]
-> This document is a work-in-progress and may change to reflect updates to the package. We value your feedback, please [create an issue](https://github.com/Azure/azure-sdk-for-go/issues/new/choose) to suggest any improvements or report any problems with this guide or with the package itself.
+> This document is a work-in-progress and may change to reflect updates to the package. We value your feedback—please [create an issue](https://github.com/Azure/azure-sdk-for-go/issues/new/choose) to suggest improvements or report problems with this guide or the package.
+
+## Summary of Major Changes
+
+| Area                | v0.7.x Approach                | v0.8.0+ Approach (Recommended)         |
+|---------------------|--------------------------------|----------------------------------------|
+| Client              | `azopenai.Client`              | `openai.Client`                        |
+| Assistants          | `azopenaiassistants`           | `openai.Client.Beta.Assistants`        |
+| Azure Extensions    | Built-in                       | Use `azopenai` as a companion          |
+| API Structure       | Flat methods                   | Subclients per service category        |
+| Authentication      | Azure-specific                 | Use `azure.With...` options            |
 
 ## Key Changes
 
 ### New Dependency
 
-Your projects will now need to include the official OpenAI Go client:
+Your projects must now include the official OpenAI Go client:
 
 ```go
 import (
@@ -26,7 +42,7 @@ import (
 )
 ```
 
-If you need to use any Azure extension, you will also need to include the `azopenai` package.
+If you need Azure-specific extensions, also include the `azopenai` package:
 
 ```go
 import (
@@ -36,18 +52,17 @@ import (
 ```
 
 > [!NOTE]
-> When we speak of Azure extensions, we do not mean authentication or any other basic connection differences between the OpenAI and AzureOpenAI services, but rather differences that introduce new models and modify the structure of the requests or responses (e.g., Azure OpenAI On Your Data)
+> **Azure extensions** refer to features unique to Azure OpenAI, such as new request/response structures (e.g., Azure OpenAI On Your Data), not basic authentication or connection differences.
 
 ## Authentication and Client Creation
 
 Instead of using the Azure OpenAI client directly for all operations, you'll now:
-
-1. Create an OpenAI client configured for Azure
-2. Use the Azure OpenAI companion library for Azure-specific extensions
+- Create an OpenAI client configured for Azure.
+- Use the Azure OpenAI companion library for Azure-specific extensions.
 
 ### Azure OpenAI with API Key
 
-Before:
+**Before:**
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 key := os.Getenv("AZURE_OPENAI_API_KEY")
@@ -57,7 +72,7 @@ if err != nil {
 }
 ```
 
-After:
+**After:**
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 api_version := os.Getenv("AZURE_OPENAI_API_VERSION")
@@ -71,7 +86,7 @@ client := openai.NewClient(
 
 ### Azure OpenAI with Token Credentials
 
-Before:
+**Before:**
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 
@@ -85,7 +100,7 @@ if err != nil {
 }
 ```
 
-After:
+**After:**
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 api_version := os.Getenv("AZURE_OPENAI_API_VERSION")
@@ -102,7 +117,7 @@ client := openai.NewClient(
 
 ### OpenAI (not Azure)
 
-Before:
+**Before:**
 ```go
 key := os.Getenv("OPENAI_API_KEY")
 
@@ -112,7 +127,7 @@ if err != nil {
 }
 ```
 
-After:
+**After:**
 ```go
 key := os.Getenv("OPENAI_API_KEY")
 client := openai.NewClient(
@@ -120,38 +135,36 @@ client := openai.NewClient(
 )
 ```
 
-### API Changes
+## API Changes
 
-One of the key API differences when moving from using the clients provided by the `azopenai` and `azopenaiassistants` packages is that, instead of all operations being available in a flat fashion in the client, the official OpenAI Go client provides subclients for each category of service.
-
-Concretely this means
+The official OpenAI Go client organizes operations into subclients for each service category, rather than providing all operations as flat methods.
 
 | Service               | Description |
-| --                    | --          |
-| `client.Completions`  |
-| `client.Chat`         |
-| `client.Embeddings`   |
-| `client.Files`        |
-| `client.Images`       |
-| `client.Audio`        |
-| `client.Moderations`  |
-| `client.Models`       |
-| `client.FineTuning`   |
-| `client.VectorStores` |
-| `client.Beta`         | Provides access to beta features. At the time of this writing the `Assistants` and `Threads` APIs are under this classification.
-| `client.Batches`      |
-| `client.Uploads`      |
-| `client.Responses`    | Provides access to the `Responses` API
+|-----------------------|-------------|
+| `client.Completions`  | [Completions API](https://platform.openai.com/docs/api-reference/completions) |
+| `client.Chat`         | [Chat Completions API](https://platform.openai.com/docs/api-reference/chat) |
+| `client.Embeddings`   | [Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) |
+| `client.Files`        | [Files API](https://platform.openai.com/docs/api-reference/files) |
+| `client.Images`       | [Images API](https://platform.openai.com/docs/api-reference/images) |
+| `client.Audio`        | [Audio API](https://platform.openai.com/docs/api-reference/audio) |
+| `client.Moderations`  | [Moderations API](https://platform.openai.com/docs/api-reference/moderations) |
+| `client.Models`       | [Models API](https://platform.openai.com/docs/api-reference/models) |
+| `client.FineTuning`   | [Fine-tuning API](https://platform.openai.com/docs/api-reference/fine-tuning) |
+| `client.VectorStores` | [Vector Stores API](https://platform.openai.com/docs/api-reference/vector-stores) |
+| `client.Beta`         | Beta features (e.g., [Assistants](https://platform.openai.com/docs/api-reference/assistants), [Threads](https://platform.openai.com/docs/api-reference/threads)) |
+| `client.Batches`      | [Batch API](https://platform.openai.com/docs/api-reference/batch) |
+| `client.Uploads`      | [Uploads API](https://platform.openai.com/docs/api-reference/uploads) |
+| `client.Responses`    | [Responses API](https://platform.openai.com/docs/api-reference/responses) |
 
-Please refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go) for details on the standard API operations.
+Refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go) for details.
 
-For Azure-specific extensions provided by this companion library, see the reference documentation and examples.
+For Azure-specific extensions, see the reference documentation and examples in this companion library.
 
 ## Common Migration Scenarios
 
 ### Chat Completions
 
-Before:
+**Before:**
 ```go
 resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
     // DeploymentName: "gpt-4o", // This only applies for the OpenAI service.
@@ -170,7 +183,7 @@ for _, choice := range resp.Choices {
 }
 ```
 
-After:
+**After:**
 ```go
 deployment := os.Getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 resp, err := client.Chat.Completions.New(context.TODO(), openai.ChatCompletionNewParams{
@@ -199,7 +212,7 @@ for _, choice := range resp.Choices {
 
 #### Streaming Chat Completions
 
-Before:
+**Before:**
 ```go
 resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsStreamOptions{
     // DeploymentName: "gpt-4o", // This only applies for the OpenAI service.
@@ -232,7 +245,7 @@ for {
 }
 ```
 
-After:
+**After:**
 ```go
 deployment := os.Getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 stream := client.Chat.Completions.NewStreaming(context.TODO(), openai.ChatCompletionNewParams{
@@ -261,7 +274,7 @@ for stream.Next() {
 
 ### Chat Completions (On Your Data)
 
-Before:
+**Before:**
 ```go
 resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
     Messages: []azopenai.ChatRequestMessageClassification{
@@ -295,7 +308,7 @@ for _, choice := range resp.Choices {
 }
 ```
 
-After:
+**After:**
 ```go
 // Create Azure Search data source configuration
 azureSearchDataSource := &azopenai.AzureSearchChatExtensionConfiguration{
@@ -341,7 +354,7 @@ for _, choice := range resp.Choices {
 
 ### Embeddings
 
-Before:
+**Before:**
 ```go
 resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
     // DeploymentName: to.Ptr("text-embedding-3-large"), // This only applies for the OpenAI service.
@@ -356,7 +369,7 @@ for _, embedding := range resp.Data {
 }
 ```
 
-After:
+**After:**
 ```go
 resp, err := client.Embeddings.New(context.TODO(), openai.EmbeddingNewParams{
     Model: openai.EmbeddingModel("my-deployment"), // Azure deployment name here

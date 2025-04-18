@@ -9,8 +9,11 @@ import "time"
 // ContainerGroupInstanceCountSummary - Displays the counts of container groups in each state, as known by the StandbyPool
 // resource provider.
 type ContainerGroupInstanceCountSummary struct {
-	// REQUIRED; The count of pooled resources in each state.
-	InstanceCountsByState []*PoolResourceStateCount
+	// REQUIRED; The count of pooled container groups in each state for the given zone.
+	InstanceCountsByState []*PoolContainerGroupStateCount
+
+	// The zone that the provided counts are in. It will not have a value if zones are not enabled.
+	Zone *int64
 }
 
 // ContainerGroupProfile - Details of the ContainerGroupProfile.
@@ -33,11 +36,11 @@ type ContainerGroupProperties struct {
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -80,13 +83,33 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// PoolResourceStateCount - Displays the counts of pooled resources in each state, as known by the StandbyPool resource provider.
-type PoolResourceStateCount struct {
-	// REQUIRED; The count of pooled resources in the given state.
+// PoolContainerGroupStateCount - Displays the counts of pooled container groups in each state, as known by the StandbyPool
+// resource provider.
+type PoolContainerGroupStateCount struct {
+	// REQUIRED; The count of pooled container groups in the given state.
 	Count *int64
 
-	// REQUIRED; The state that the pooled resources count is for.
-	State *string
+	// REQUIRED; The state that the pooled container groups count is for.
+	State *PoolContainerGroupState
+}
+
+// PoolStatus - Displays StandbyPool status.
+type PoolStatus struct {
+	// READ-ONLY; Displays the healthy state of the StandbyPool.
+	Code *HealthStateCode
+
+	// READ-ONLY; Displays the StandbyPool health state details.
+	Message *string
+}
+
+// PoolVirtualMachineStateCount - Displays the counts of pooled virtual machines in each state, as known by the StandbyPool
+// resource provider.
+type PoolVirtualMachineStateCount struct {
+	// REQUIRED; The count of pooled virtual machines in the given state.
+	Count *int64
+
+	// REQUIRED; The state that the pooled virtual machines count is for.
+	State *PoolVirtualMachineState
 }
 
 // StandbyContainerGroupPoolElasticityProfile - Specifies the elasticity profile of the standby container group pools.
@@ -96,6 +119,24 @@ type StandbyContainerGroupPoolElasticityProfile struct {
 
 	// Specifies refill policy of the pool.
 	RefillPolicy *RefillPolicy
+}
+
+// StandbyContainerGroupPoolForecastValues - Displays the forecast information of the standby pool.
+type StandbyContainerGroupPoolForecastValues struct {
+	// READ-ONLY; Displays the predicted count of instances to be requested from the standby pool.
+	InstancesRequestedCount []*int64
+}
+
+// StandbyContainerGroupPoolPrediction - Displays prediction information of the standby pool.
+type StandbyContainerGroupPoolPrediction struct {
+	// READ-ONLY; Displays additional information for the prediction of the standby pool.
+	ForecastInfo *string
+
+	// READ-ONLY; Displays the UTC timestamp of when the prediction was retrieved for the standby pool.
+	ForecastStartTime *time.Time
+
+	// READ-ONLY; Displays the forecast information of the standby pool.
+	ForecastValues *StandbyContainerGroupPoolForecastValues
 }
 
 // StandbyContainerGroupPoolResource - A StandbyContainerGroupPoolResource.
@@ -139,6 +180,9 @@ type StandbyContainerGroupPoolResourceProperties struct {
 	// REQUIRED; Specifies elasticity profile of standby container group pools.
 	ElasticityProfile *StandbyContainerGroupPoolElasticityProfile
 
+	// Specifies zones of standby container group pools.
+	Zones []*string
+
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
 }
@@ -159,6 +203,9 @@ type StandbyContainerGroupPoolResourceUpdateProperties struct {
 
 	// Specifies elasticity profile of standby container group pools.
 	ElasticityProfile *StandbyContainerGroupPoolElasticityProfile
+
+	// Specifies zones of standby container group pools.
+	Zones []*string
 }
 
 // StandbyContainerGroupPoolRuntimeViewResource - Contains information about a standby container group pool as last known
@@ -198,8 +245,14 @@ type StandbyContainerGroupPoolRuntimeViewResourceProperties struct {
 	// provider.
 	InstanceCountSummary []*ContainerGroupInstanceCountSummary
 
+	// READ-ONLY; Displays prediction information of the standby pool
+	Prediction *StandbyContainerGroupPoolPrediction
+
 	// READ-ONLY; Displays the provisioning state of the standby pool
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Display status of the standby pool
+	Status *PoolStatus
 }
 
 // StandbyVirtualMachinePoolElasticityProfile - Details of the elasticity profile.
@@ -210,6 +263,24 @@ type StandbyVirtualMachinePoolElasticityProfile struct {
 	// Specifies the desired minimum number of virtual machines in the standby virtual machine pool. MinReadyCapacity cannot exceed
 	// MaxReadyCapacity.
 	MinReadyCapacity *int64
+}
+
+// StandbyVirtualMachinePoolForecastValues - Displays the forecast information of the standby pool.
+type StandbyVirtualMachinePoolForecastValues struct {
+	// READ-ONLY; Displays the predicted count of instances to be requested from the standby pool.
+	InstancesRequestedCount []*int64
+}
+
+// StandbyVirtualMachinePoolPrediction - Displays prediction information of the standby pool.
+type StandbyVirtualMachinePoolPrediction struct {
+	// READ-ONLY; Displays additional information for the prediction of the standby pool.
+	ForecastInfo *string
+
+	// READ-ONLY; Displays the UTC timestamp of when the prediction was retrieved for the standby pool.
+	ForecastStartTime *time.Time
+
+	// READ-ONLY; Displays the forecast information of the standby pool.
+	ForecastValues *StandbyVirtualMachinePoolForecastValues
 }
 
 // StandbyVirtualMachinePoolResource - A StandbyVirtualMachinePoolResource.
@@ -315,14 +386,18 @@ type StandbyVirtualMachinePoolRuntimeViewResourceListResult struct {
 // StandbyPool resource provider.
 type StandbyVirtualMachinePoolRuntimeViewResourceProperties struct {
 	// READ-ONLY; A list containing the counts of virtual machines in each possible power state for each zone if enabled, as known
-	// by the StandbyPool resource provider.
-	// If zones are not enabled on the attached VMSS, the list will contain a single entry with null zone values.
-	// Note: any updates to pool resources outside of StandbyPoolRP (i.e deleting a VM through portal) are not reflected here.
-	// Note: any resources in the Running state may still be installing extensions / not fully provisioned.
+	// by the StandbyPool resource provider. If zones are not enabled on the attached VMSS, the list will contain a single entry
+	// without zone values. Note: any resources in the Running state may still be installing extensions / not fully provisioned.
 	InstanceCountSummary []*VirtualMachineInstanceCountSummary
+
+	// READ-ONLY; Displays prediction information of the standby pool
+	Prediction *StandbyVirtualMachinePoolPrediction
 
 	// READ-ONLY; Displays the provisioning state of the standby pool
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Display status of the standby pool
+	Status *PoolStatus
 }
 
 // StandbyVirtualMachineResource - Concrete proxy resource types can be created by aliasing this type using a specific property
@@ -390,13 +465,12 @@ type SystemData struct {
 }
 
 // VirtualMachineInstanceCountSummary - Contains the counts of VMs in each power state in a given zone, fault domain, as known
-// by the StandbyPool resource provider.
-// Note: any updates to pool resources outside of StandbyPoolRP (i.e deleting a VM through portal) are not reflected here.
-// Note: any resources in the Running state may still be installing extensions / not fully provisioned.
+// by the StandbyPool resource provider. Note: any resources in the Running state may still be installing extensions / not
+// fully provisioned.
 type VirtualMachineInstanceCountSummary struct {
-	// REQUIRED; The count of pooled resources in each state for the given zone.
-	InstanceCountsByState []*PoolResourceStateCount
+	// REQUIRED; The count of pooled virtual machines in each state for the given zone.
+	InstanceCountsByState []*PoolVirtualMachineStateCount
 
-	// The zone that the provided counts are in. This is null if zones are not enabled on the attached VMSS.
+	// The zone that the provided counts are in. It will not have a value if zones are not enabled on the attached VMSS.
 	Zone *int64
 }

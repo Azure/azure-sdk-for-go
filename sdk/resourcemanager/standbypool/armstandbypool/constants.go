@@ -6,7 +6,7 @@ package armstandbypool
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -48,6 +48,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// HealthStateCode - StandbyPool health state.
+type HealthStateCode string
+
+const (
+	// HealthStateCodeDegraded - StandbyPool is in degraded state.
+	HealthStateCodeDegraded HealthStateCode = "HealthState/degraded"
+	// HealthStateCodeHealthy - StandbyPool is in healthy state.
+	HealthStateCodeHealthy HealthStateCode = "HealthState/healthy"
+)
+
+// PossibleHealthStateCodeValues returns the possible values for the HealthStateCode const type.
+func PossibleHealthStateCodeValues() []HealthStateCode {
+	return []HealthStateCode{
+		HealthStateCodeDegraded,
+		HealthStateCodeHealthy,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -67,6 +85,67 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// PoolContainerGroupState - The state of the pooled container groups.
+type PoolContainerGroupState string
+
+const (
+	// PoolContainerGroupStateCreating - The container group is creating.
+	PoolContainerGroupStateCreating PoolContainerGroupState = "Creating"
+	// PoolContainerGroupStateDeleting - The container group is deleting.
+	PoolContainerGroupStateDeleting PoolContainerGroupState = "Deleting"
+	// PoolContainerGroupStateRunning - The container group is up and running.
+	PoolContainerGroupStateRunning PoolContainerGroupState = "Running"
+)
+
+// PossiblePoolContainerGroupStateValues returns the possible values for the PoolContainerGroupState const type.
+func PossiblePoolContainerGroupStateValues() []PoolContainerGroupState {
+	return []PoolContainerGroupState{
+		PoolContainerGroupStateCreating,
+		PoolContainerGroupStateDeleting,
+		PoolContainerGroupStateRunning,
+	}
+}
+
+// PoolVirtualMachineState - The state of the pooled virtual machines.
+type PoolVirtualMachineState string
+
+const (
+	// PoolVirtualMachineStateCreating - The virtual machine is creating.
+	PoolVirtualMachineStateCreating PoolVirtualMachineState = "Creating"
+	// PoolVirtualMachineStateDeallocated - The virtual machine has released the lease on the underlying hardware and is powered
+	// off.
+	PoolVirtualMachineStateDeallocated PoolVirtualMachineState = "Deallocated"
+	// PoolVirtualMachineStateDeallocating - The virtual machine is releasing the lease on the underlying hardware and is powered
+	// off.
+	PoolVirtualMachineStateDeallocating PoolVirtualMachineState = "Deallocating"
+	// PoolVirtualMachineStateDeleting - The virtual machine is deleting.
+	PoolVirtualMachineStateDeleting PoolVirtualMachineState = "Deleting"
+	// PoolVirtualMachineStateHibernated - The virtual machine has released the lease on the underlying hardware and is powered
+	// off. Memory contents of the VM are stored in the OS disk. When started again, applications and processes that were previously
+	// running in your VM resume from the state prior to hibernation.
+	PoolVirtualMachineStateHibernated PoolVirtualMachineState = "Hibernated"
+	// PoolVirtualMachineStateHibernating - The virtual machine is hibernating.
+	PoolVirtualMachineStateHibernating PoolVirtualMachineState = "Hibernating"
+	// PoolVirtualMachineStateRunning - The virtual machine is up and running.
+	PoolVirtualMachineStateRunning PoolVirtualMachineState = "Running"
+	// PoolVirtualMachineStateStarting - The virtual machine is starting.
+	PoolVirtualMachineStateStarting PoolVirtualMachineState = "Starting"
+)
+
+// PossiblePoolVirtualMachineStateValues returns the possible values for the PoolVirtualMachineState const type.
+func PossiblePoolVirtualMachineStateValues() []PoolVirtualMachineState {
+	return []PoolVirtualMachineState{
+		PoolVirtualMachineStateCreating,
+		PoolVirtualMachineStateDeallocated,
+		PoolVirtualMachineStateDeallocating,
+		PoolVirtualMachineStateDeleting,
+		PoolVirtualMachineStateHibernated,
+		PoolVirtualMachineStateHibernating,
+		PoolVirtualMachineStateRunning,
+		PoolVirtualMachineStateStarting,
 	}
 }
 
@@ -115,6 +194,10 @@ type VirtualMachineState string
 const (
 	// VirtualMachineStateDeallocated - The virtual machine has released the lease on the underlying hardware and is powered off.
 	VirtualMachineStateDeallocated VirtualMachineState = "Deallocated"
+	// VirtualMachineStateHibernated - The virtual machine has released the lease on the underlying hardware and is powered off.
+	// Memory contents of the VM are stored in the OS disk. When started again, applications and processes that were previously
+	// running in your VM resume from the state prior to hibernation.
+	VirtualMachineStateHibernated VirtualMachineState = "Hibernated"
 	// VirtualMachineStateRunning - The virtual machine is up and running.
 	VirtualMachineStateRunning VirtualMachineState = "Running"
 )
@@ -123,6 +206,7 @@ const (
 func PossibleVirtualMachineStateValues() []VirtualMachineState {
 	return []VirtualMachineState{
 		VirtualMachineStateDeallocated,
+		VirtualMachineStateHibernated,
 		VirtualMachineStateRunning,
 	}
 }

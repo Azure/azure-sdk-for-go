@@ -1,5 +1,28 @@
 # Release History
 
+## 1.2.0-beta.2 (2025-04-24)
+### Features Added
+
+- New value `ProvisioningStatesDeleted`, `ProvisioningStatesRestoring`, `ProvisioningStatesSoftDeleting` added to enum type `ProvisioningStates`
+- New enum type `DeleteType` with values `DeleteTypePermanent`
+- New enum type `PolicyState` with values `PolicyStateDisabled`, `PolicyStateEnabled`
+- New enum type `XMSAccessSoftDeletedResources` with values `XMSAccessSoftDeletedResourcesFalse`, `XMSAccessSoftDeletedResourcesTrue`
+- New function `*ClientFactory.NewManagementClient() *ManagementClient`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagementClient, error)`
+- New function `*ManagementClient.BeginRestoreVolume(context.Context, string, string, string, string, *ManagementClientBeginRestoreVolumeOptions) (*runtime.Poller[ManagementClientRestoreVolumeResponse], error)`
+- New function `*VolumesClient.BeginPreBackup(context.Context, string, string, string, VolumeNameList, *VolumesClientBeginPreBackupOptions) (*runtime.Poller[VolumesClientPreBackupResponse], error)`
+- New function `*VolumesClient.BeginPreRestore(context.Context, string, string, string, DiskSnapshotList, *VolumesClientBeginPreRestoreOptions) (*runtime.Poller[VolumesClientPreRestoreResponse], error)`
+- New struct `DeleteRetentionPolicy`
+- New struct `DiskSnapshotList`
+- New struct `PreValidationResponse`
+- New struct `VolumeNameList`
+- New field `DeleteRetentionPolicy` in struct `VolumeGroupProperties`
+- New field `DeleteRetentionPolicy` in struct `VolumeGroupUpdateProperties`
+- New field `XMSAccessSoftDeletedResources` in struct `VolumeGroupsClientListByElasticSanOptions`
+- New field `DeleteType` in struct `VolumesClientBeginDeleteOptions`
+- New field `XMSAccessSoftDeletedResources` in struct `VolumesClientListByVolumeGroupOptions`
+
+
 ## 1.2.0-beta.1 (2024-10-23)
 ### Features Added
 

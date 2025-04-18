@@ -123,18 +123,19 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	// process all typespec projects
 	typeSpecNamespaceResults := make(map[string]*common.GenerateResult)
 	for _, tspProjectFolder := range input.RelatedTypeSpecProjectFolder {
+		log.Printf("Start to process typespec project: %s", tspProjectFolder)
 		result, err := generateCtx.GenerateFromTypeSpec(filepath.Join(input.SpecFolder, tspProjectFolder, "tspconfig.yaml"), &common.GenerateParam{
 			GoVersion:        ctx.goVersion,
 			TspClientOptions: []string{"--debug"},
 			ApiVersion:       input.ApiVersion,
 			SdkReleaseType:   input.SdkReleaseType,
-		},
-		)
+		})
 		if err != nil {
 			errorBuilder.add(err)
 			continue
 		}
 		typeSpecNamespaceResults[tspProjectFolder] = result
+		log.Printf("Finish processing typespec project: %s", tspProjectFolder)
 	}
 	// process result
 	for tspProjectFolder, namespaceResult := range typeSpecNamespaceResults {
@@ -149,23 +150,23 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 	swaggerNamespaceResults := make(map[string][]*common.GenerateResult)
 	for _, readme := range input.RelatedReadmeMdFiles {
-		log.Printf("Start to process autorest project: %s", readme)
+		log.Printf("Start to process swagger project: %s", readme)
 		rpMap, err := ctx.getRPMap(readme)
 		if err != nil {
 			errorBuilder.add(err)
 			continue
 		}
-		result, err := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
+		result, errs := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
 			GoVersion:      ctx.goVersion,
 			ApiVersion:     input.ApiVersion,
 			SdkReleaseType: input.SdkReleaseType,
 		})
-		if err != nil {
-			errorBuilder.add(err)
+		if len(errs) > 0 {
+			errorBuilder.add(errs...)
 			continue
 		}
 		swaggerNamespaceResults[readme] = result
-		log.Printf("Finish processing readme file: %s", readme)
+		log.Printf("Finish processing swagger project: %s", readme)
 	}
 	// process result
 	for readme, namespaceResults := range swaggerNamespaceResults {

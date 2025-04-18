@@ -183,14 +183,14 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			TspClientOptions:     c.flags.TspClientOption,
 		})
 	} else {
-		log.Printf("Generate SDK through AutoRest...")
+		log.Printf("Generate SDK through Swagger...")
 		rpMap := make(map[string][]common.PackageInfo)
 		rpMap[c.rpName] = []common.PackageInfo{{
 			Name:     c.namespaceName,
 			Config:   c.flags.PackageConfig,
 			SpecName: c.flags.SpecRPName,
 		}}
-		results, swaggerErr := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
+		results, errs := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			NamespaceConfig:      c.flags.PackageConfig,
@@ -202,8 +202,8 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:            c.flags.GoVersion,
 			ForceStableVersion:   c.flags.ForceStableVersion,
 		})
-		if swaggerErr != nil {
-			err = swaggerErr
+		if len(errs) > 0 {
+			err = errs[0]
 		}
 		if len(results) > 0 {
 			result = results[0]

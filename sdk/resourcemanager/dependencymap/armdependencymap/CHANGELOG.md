@@ -1,6 +1,6 @@
 # Release History
 
-## 0.1.0 (2025-04-15)
+## 0.1.0 (2025-04-18)
 ### Other Changes
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dependencymap/armdependencymap` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).

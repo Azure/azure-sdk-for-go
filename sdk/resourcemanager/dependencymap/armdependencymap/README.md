@@ -1,6 +1,6 @@
-# Azure Dependency Map Module for Go
+# Azure Dependencymap Module for Go
 
-The `armdependencymap` module provides operations for working with Azure Dependency Map.
+The `armdependencymap` module provides operations for working with Azure Dependencymap.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/dependencymap/armdependencymap)
 
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dependencymap/armde
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Dependency Map.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Dependencymap.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)

@@ -1,6 +1,6 @@
 # Azure Portal Services Copilot Module for Go
 
-The `armportalservicescopilot` module provides operations for working with Azure Portalservicescopilot.
+The `armportalservicescopilot` module provides operations for working with Azure Portal Services Copilot.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/portalservicescopilot/armportalservicescopilot)
 
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portalservicescopil
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Portalservicescopilot.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Portal Services Copilot.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Portalservicescopilot module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Portal Services Copilot module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armportalservicescopilot.NewClientFactory(<subscription ID>, cred, nil)

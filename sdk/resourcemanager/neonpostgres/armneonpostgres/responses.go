@@ -4,6 +4,151 @@
 
 package armneonpostgres
 
+// BranchesClientCreateOrUpdateResponse contains the response from method BranchesClient.BeginCreateOrUpdate.
+type BranchesClientCreateOrUpdateResponse struct {
+	// The Branch resource type.
+	Branch
+}
+
+// BranchesClientDeleteResponse contains the response from method BranchesClient.Delete.
+type BranchesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BranchesClientGetResponse contains the response from method BranchesClient.Get.
+type BranchesClientGetResponse struct {
+	// The Branch resource type.
+	Branch
+}
+
+// BranchesClientListResponse contains the response from method BranchesClient.NewListPager.
+type BranchesClientListResponse struct {
+	// The response of a Branch list operation.
+	BranchListResult
+}
+
+// BranchesClientUpdateResponse contains the response from method BranchesClient.BeginUpdate.
+type BranchesClientUpdateResponse struct {
+	// The Branch resource type.
+	Branch
+}
+
+// ComputesClientCreateOrUpdateResponse contains the response from method ComputesClient.BeginCreateOrUpdate.
+type ComputesClientCreateOrUpdateResponse struct {
+	// The Compute resource type.
+	Compute
+}
+
+// ComputesClientDeleteResponse contains the response from method ComputesClient.Delete.
+type ComputesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ComputesClientGetResponse contains the response from method ComputesClient.Get.
+type ComputesClientGetResponse struct {
+	// The Compute resource type.
+	Compute
+}
+
+// ComputesClientListResponse contains the response from method ComputesClient.NewListPager.
+type ComputesClientListResponse struct {
+	// The response of a Compute list operation.
+	ComputeListResult
+}
+
+// ComputesClientUpdateResponse contains the response from method ComputesClient.BeginUpdate.
+type ComputesClientUpdateResponse struct {
+	// The Compute resource type.
+	Compute
+}
+
+// EndpointsClientCreateOrUpdateResponse contains the response from method EndpointsClient.BeginCreateOrUpdate.
+type EndpointsClientCreateOrUpdateResponse struct {
+	// The Neon compute endpoint resource type.
+	Endpoint
+}
+
+// EndpointsClientDeleteResponse contains the response from method EndpointsClient.Delete.
+type EndpointsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EndpointsClientGetResponse contains the response from method EndpointsClient.Get.
+type EndpointsClientGetResponse struct {
+	// The Neon compute endpoint resource type.
+	Endpoint
+}
+
+// EndpointsClientListResponse contains the response from method EndpointsClient.NewListPager.
+type EndpointsClientListResponse struct {
+	// The response of a Endpoint list operation.
+	EndpointListResult
+}
+
+// EndpointsClientUpdateResponse contains the response from method EndpointsClient.BeginUpdate.
+type EndpointsClientUpdateResponse struct {
+	// The Neon compute endpoint resource type.
+	Endpoint
+}
+
+// NeonDatabasesClientCreateOrUpdateResponse contains the response from method NeonDatabasesClient.BeginCreateOrUpdate.
+type NeonDatabasesClientCreateOrUpdateResponse struct {
+	// The Neon Database resource type.
+	NeonDatabase
+}
+
+// NeonDatabasesClientDeleteResponse contains the response from method NeonDatabasesClient.Delete.
+type NeonDatabasesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NeonDatabasesClientGetResponse contains the response from method NeonDatabasesClient.Get.
+type NeonDatabasesClientGetResponse struct {
+	// The Neon Database resource type.
+	NeonDatabase
+}
+
+// NeonDatabasesClientListResponse contains the response from method NeonDatabasesClient.NewListPager.
+type NeonDatabasesClientListResponse struct {
+	// The response of a NeonDatabase list operation.
+	NeonDatabaseListResult
+}
+
+// NeonDatabasesClientUpdateResponse contains the response from method NeonDatabasesClient.BeginUpdate.
+type NeonDatabasesClientUpdateResponse struct {
+	// The Neon Database resource type.
+	NeonDatabase
+}
+
+// NeonRolesClientCreateOrUpdateResponse contains the response from method NeonRolesClient.BeginCreateOrUpdate.
+type NeonRolesClientCreateOrUpdateResponse struct {
+	// The Neon Role resource type.
+	NeonRole
+}
+
+// NeonRolesClientDeleteResponse contains the response from method NeonRolesClient.Delete.
+type NeonRolesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NeonRolesClientGetResponse contains the response from method NeonRolesClient.Get.
+type NeonRolesClientGetResponse struct {
+	// The Neon Role resource type.
+	NeonRole
+}
+
+// NeonRolesClientListResponse contains the response from method NeonRolesClient.NewListPager.
+type NeonRolesClientListResponse struct {
+	// The response of a NeonRole list operation.
+	NeonRoleListResult
+}
+
+// NeonRolesClientUpdateResponse contains the response from method NeonRolesClient.BeginUpdate.
+type NeonRolesClientUpdateResponse struct {
+	// The Neon Role resource type.
+	NeonRole
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -19,6 +164,12 @@ type OrganizationsClientCreateOrUpdateResponse struct {
 // OrganizationsClientDeleteResponse contains the response from method OrganizationsClient.BeginDelete.
 type OrganizationsClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// OrganizationsClientGetPostgresVersionsResponse contains the response from method OrganizationsClient.GetPostgresVersions.
+type OrganizationsClientGetPostgresVersionsResponse struct {
+	// Response model for PostgreSQL versions
+	PgVersionsResult
 }
 
 // OrganizationsClientGetResponse contains the response from method OrganizationsClient.Get.
@@ -43,4 +194,39 @@ type OrganizationsClientListBySubscriptionResponse struct {
 type OrganizationsClientUpdateResponse struct {
 	// Organization Resource by Neon
 	OrganizationResource
+}
+
+// ProjectsClientCreateOrUpdateResponse contains the response from method ProjectsClient.BeginCreateOrUpdate.
+type ProjectsClientCreateOrUpdateResponse struct {
+	// The Project resource type.
+	Project
+}
+
+// ProjectsClientDeleteResponse contains the response from method ProjectsClient.Delete.
+type ProjectsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ProjectsClientGetConnectionURIResponse contains the response from method ProjectsClient.GetConnectionURI.
+type ProjectsClientGetConnectionURIResponse struct {
+	// Connection uri parameters for the associated database
+	ConnectionURIProperties
+}
+
+// ProjectsClientGetResponse contains the response from method ProjectsClient.Get.
+type ProjectsClientGetResponse struct {
+	// The Project resource type.
+	Project
+}
+
+// ProjectsClientListResponse contains the response from method ProjectsClient.NewListPager.
+type ProjectsClientListResponse struct {
+	// The response of a Project list operation.
+	ProjectListResult
+}
+
+// ProjectsClientUpdateResponse contains the response from method ProjectsClient.BeginUpdate.
+type ProjectsClientUpdateResponse struct {
+	// The Project resource type.
+	Project
 }

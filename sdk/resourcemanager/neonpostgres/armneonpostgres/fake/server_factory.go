@@ -15,11 +15,29 @@ import (
 
 // ServerFactory is a fake server for instances of the armneonpostgres.ClientFactory type.
 type ServerFactory struct {
+	// BranchesServer contains the fakes for client BranchesClient
+	BranchesServer BranchesServer
+
+	// ComputesServer contains the fakes for client ComputesClient
+	ComputesServer ComputesServer
+
+	// EndpointsServer contains the fakes for client EndpointsClient
+	EndpointsServer EndpointsServer
+
+	// NeonDatabasesServer contains the fakes for client NeonDatabasesClient
+	NeonDatabasesServer NeonDatabasesServer
+
+	// NeonRolesServer contains the fakes for client NeonRolesClient
+	NeonRolesServer NeonRolesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
 	// OrganizationsServer contains the fakes for client OrganizationsClient
 	OrganizationsServer OrganizationsServer
+
+	// ProjectsServer contains the fakes for client ProjectsClient
+	ProjectsServer ProjectsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,8 +54,14 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                   *ServerFactory
 	trMu                  sync.Mutex
+	trBranchesServer      *BranchesServerTransport
+	trComputesServer      *ComputesServerTransport
+	trEndpointsServer     *EndpointsServerTransport
+	trNeonDatabasesServer *NeonDatabasesServerTransport
+	trNeonRolesServer     *NeonRolesServerTransport
 	trOperationsServer    *OperationsServerTransport
 	trOrganizationsServer *OrganizationsServerTransport
+	trProjectsServer      *ProjectsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -53,6 +77,23 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "BranchesClient":
+		initServer(s, &s.trBranchesServer, func() *BranchesServerTransport { return NewBranchesServerTransport(&s.srv.BranchesServer) })
+		resp, err = s.trBranchesServer.Do(req)
+	case "ComputesClient":
+		initServer(s, &s.trComputesServer, func() *ComputesServerTransport { return NewComputesServerTransport(&s.srv.ComputesServer) })
+		resp, err = s.trComputesServer.Do(req)
+	case "EndpointsClient":
+		initServer(s, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
+		resp, err = s.trEndpointsServer.Do(req)
+	case "NeonDatabasesClient":
+		initServer(s, &s.trNeonDatabasesServer, func() *NeonDatabasesServerTransport {
+			return NewNeonDatabasesServerTransport(&s.srv.NeonDatabasesServer)
+		})
+		resp, err = s.trNeonDatabasesServer.Do(req)
+	case "NeonRolesClient":
+		initServer(s, &s.trNeonRolesServer, func() *NeonRolesServerTransport { return NewNeonRolesServerTransport(&s.srv.NeonRolesServer) })
+		resp, err = s.trNeonRolesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -61,6 +102,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewOrganizationsServerTransport(&s.srv.OrganizationsServer)
 		})
 		resp, err = s.trOrganizationsServer.Do(req)
+	case "ProjectsClient":
+		initServer(s, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
+		resp, err = s.trProjectsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

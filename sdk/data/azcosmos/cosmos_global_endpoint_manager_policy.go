@@ -19,11 +19,15 @@ type globalEndpointManagerPolicy struct {
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {
 	var err error
 	p.once.Do(func() {
-		err = p.gem.Update(context.Background(), true)
+		// Use the same context, but without the cancellation signal.
+		// We DO want to preserve things like context values, but the GEM update needs to complete fully, even if the user cancels the triggering request.
+		err = p.gem.Update(context.WithoutCancel(req.Raw().Context()), true)
 	})
 	if p.gem.ShouldRefresh() {
 		go func() {
-			_ = p.gem.Update(context.Background(), false)
+			// Use the same context, but without the cancellation signal.
+			// We DO want to preserve things like context values, but the GEM update needs to complete fully, even if the user cancels the triggering request.
+			_ = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
 		}()
 	}
 	if err != nil {

@@ -258,6 +258,12 @@ func (t *SwaggerCommonGenerator) GenChangeLog(oriExports *exports.Content, newEx
 }
 
 func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
+	log.Printf("Update README.md ClientFactory...")
+	err := UpdateReadmeClientFactory(t.PackagePath)
+	if err != nil {
+		// only log error, avoid breaking the process
+		log.Printf("Update README.md ClientFactory failed! err: %v", err)
+	}
 	return nil, nil
 }
 
@@ -309,6 +315,10 @@ func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
 			return nil, err
 		}
+	}
+
+	if _, err := t.SwaggerCommonGenerator.AfterGenerate(generateParam, changelog, newExports); err != nil {
+		return nil, err
 	}
 
 	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
@@ -473,6 +483,10 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
 			return nil, err
 		}
+	}
+
+	if _, err := t.SwaggerCommonGenerator.AfterGenerate(generateParam, changelog, newExports); err != nil {
+		return nil, err
 	}
 
 	return &GenerateResult{
@@ -647,6 +661,13 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)
 	if err := ExecuteGo(modulePath, "mod", "tidy"); err != nil {
 		return nil, err
+	}
+
+	log.Printf("Update README.md ClientFactory...")
+	err := UpdateReadmeClientFactory(t.PackagePath)
+	if err != nil {
+		// only log error, avoid breaking the process
+		log.Printf("Failed to run common AfterGenerate: %v", err)
 	}
 	return nil, nil
 }

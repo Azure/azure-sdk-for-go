@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_ListBySubscription.json
 func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,6 +73,10 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 		// 					IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
 		// 				},
 		// 				ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 				ConsoleExtendedLocation: &armnetworkcloud.ExtendedLocation{
+		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/consoleCustomLocationName"),
+		// 					Type: to.Ptr("CustomLocation"),
+		// 				},
 		// 				CPUCores: to.Ptr[int64](2),
 		// 				DetailedStatus: to.Ptr(armnetworkcloud.VirtualMachineDetailedStatusAvailable),
 		// 				DetailedStatusMessage: to.Ptr("VM is up and healthy"),
@@ -125,7 +129,7 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_ListByResourceGroup.json
 func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,6 +184,10 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 		// 					IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
 		// 				},
 		// 				ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+		// 				ConsoleExtendedLocation: &armnetworkcloud.ExtendedLocation{
+		// 					Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/consoleCustomLocationName"),
+		// 					Type: to.Ptr("CustomLocation"),
+		// 				},
 		// 				CPUCores: to.Ptr[int64](2),
 		// 				DetailedStatus: to.Ptr(armnetworkcloud.VirtualMachineDetailedStatusAvailable),
 		// 				DetailedStatusMessage: to.Ptr("VM is up and healthy"),
@@ -232,7 +240,7 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_Get.json
 func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,6 +289,10 @@ func ExampleVirtualMachinesClient_Get() {
 	// 			IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
 	// 		},
 	// 		ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 		ConsoleExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/consoleCustomLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
 	// 		CPUCores: to.Ptr[int64](2),
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.VirtualMachineDetailedStatusAvailable),
 	// 		DetailedStatusMessage: to.Ptr("VM is up and healthy"),
@@ -331,7 +343,7 @@ func ExampleVirtualMachinesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_Create.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,6 +454,10 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// 			IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
 	// 		},
 	// 		ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 		ConsoleExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/consoleCustomLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
 	// 		CPUCores: to.Ptr[int64](2),
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.VirtualMachineDetailedStatusAvailable),
 	// 		DetailedStatusMessage: to.Ptr("VM is up and healthy"),
@@ -492,7 +508,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_Delete.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,7 +529,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_Patch.json
 func ExampleVirtualMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -578,6 +594,10 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	// 			IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
 	// 		},
 	// 		ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 		ConsoleExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/consoleCustomLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
 	// 		CPUCores: to.Ptr[int64](2),
 	// 		DetailedStatus: to.Ptr(armnetworkcloud.VirtualMachineDetailedStatusAvailable),
 	// 		DetailedStatusMessage: to.Ptr("VM is up and healthy"),
@@ -628,7 +648,7 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_PowerOff.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_PowerOff.json
 func ExampleVirtualMachinesClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,7 +672,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_Reimage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_Reimage.json
 func ExampleVirtualMachinesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +693,7 @@ func ExampleVirtualMachinesClient_BeginReimage() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_Restart.json
 func ExampleVirtualMachinesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -694,7 +714,7 @@ func ExampleVirtualMachinesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0a12a75b702054cf1e7fcd8c014d0fc116dea6e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/VirtualMachines_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/VirtualMachines_Start.json
 func ExampleVirtualMachinesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

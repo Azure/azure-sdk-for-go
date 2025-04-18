@@ -99,9 +99,3 @@ type ListHandlesSegmentResponse = generated.ListHandlesResponse
 
 // CreateHardLinkResponse contains response from method Client.CreateHardLink
 type CreateHardLinkResponse = generated.FileClientCreateHardLinkResponse
-
-// CreateSymbolicLinkResponse contains response from method Client.CreateSymbolicLink
-type CreateSymbolicLinkResponse = generated.FileClientCreateSymbolicLinkResponse
-
-// GetSymbolicLinkResponse contains response from method Client.GetSymbolicLink
-type GetSymbolicLinkResponse = generated.FileClientGetSymbolicLinkResponse

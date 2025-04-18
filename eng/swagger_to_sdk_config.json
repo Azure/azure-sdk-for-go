@@ -10,7 +10,8 @@
         "scriptWarning": "^\\[WARNING\\]"
       },
       "stdout": {
-        "showInComment": "(Start to|\\[ERROR\\]).*"
+        "showInComment": "(Start to|\\[ERROR\\]).*",
+        "scriptError": "\\[error\\]"
       }
     }
   },

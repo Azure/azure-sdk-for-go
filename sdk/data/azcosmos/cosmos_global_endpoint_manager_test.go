@@ -370,6 +370,81 @@ func TestGlobalEndpointManagerResolveEndpointMultiMasterMetadataOperation(t *tes
 	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
 }
 
+type contextCapturePolicy struct {
+	CapturedRequests []*policy.Request
+}
+
+func (p *contextCapturePolicy) Do(req *policy.Request) (*http.Response, error) {
+	p.CapturedRequests = append(p.CapturedRequests, req)
+	return req.Next()
+}
+
+func TestRequestToUpdateGEMPreservesIncomingContextWithoutCancellation(t *testing.T) {
+	type contextKey string
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	// The GEM needs it's own pipeline that doesn't have the GEM policy in it to avoid deadlocking.
+	capturePolicy := &contextCapturePolicy{}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer, PerCallPolicies: []policy.Policy{capturePolicy}})
+	mockGem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"Central US"},
+		locationCache:       &locationCache{},
+		refreshTimeInterval: 5 * time.Minute,
+	}
+
+	gemPolicy := &globalEndpointManagerPolicy{
+		gem: mockGem,
+	}
+
+	testPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer, PerCallPolicies: []policy.Policy{gemPolicy}})
+
+	// Create a context so we can track that it flows through
+	ctx, cancel := context.WithCancel(context.WithValue(context.Background(), contextKey("test"), "testValue"))
+
+	// Cancel the context right away
+	cancel()
+
+	// Issue a test request
+	req, err := azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	_, err = testPipeline.Do(req)
+	if err != context.Canceled {
+		t.Fatalf("expected context to be canceled, got %v", err)
+	}
+
+	if len(capturePolicy.CapturedRequests) != 1 {
+		t.Fatalf("expected to capture the request to the GEM, got %d requests", len(capturePolicy.CapturedRequests))
+	}
+
+	capturedReq := capturePolicy.CapturedRequests[0]
+
+	// Check that this is the right request
+	if capturedReq.Raw().URL.String() != gemServer.URL() {
+		t.Fatalf("expected the captured request to be to the account metadata endpoint, got %s", capturedReq.Raw().URL.String())
+	}
+
+	if capturedReq.Raw().Method != http.MethodGet {
+		t.Fatalf("expected the captured request to be a GET, got %s", capturedReq.Raw().Method)
+	}
+
+	capturedContext := capturedReq.Raw().Context()
+	if _, ok := capturedContext.Deadline(); !ok {
+		t.Fatalf("expected the context to not have a deadline")
+	}
+
+	value := capturedContext.Value(contextKey("test"))
+	if value != "testValue" {
+		t.Fatalf("expected a captured context to contain test=testValue, got test=%v", value)
+	}
+}
+
 func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	availableWriteLocs := []string{"East US"}
 	if isMultiMaster {

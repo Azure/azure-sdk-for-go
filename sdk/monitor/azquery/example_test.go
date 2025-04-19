@@ -18,7 +18,6 @@ import (
 
 var logsClient azquery.LogsClient
 var metricsClient azquery.MetricsClient
-var metricsBatchClient azquery.MetricsBatchClient
 var kustoQuery1 string
 var kustoQuery2 string
 var kustoQuery3 string
@@ -50,23 +49,6 @@ func ExampleNewMetricsClient() {
 	}
 
 	client, err := azquery.NewMetricsClient(cred, nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	_ = client
-}
-
-func ExampleNewMetricsBatchClient() {
-	// The regional endpoint to use. The region should match the region of the requested resources.
-	// For global resources, the region should be 'global'
-	endpoint := "https://eastus.metrics.monitor.azure.com"
-
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		//TODO: handle error
-	}
-
-	client, err := azquery.NewMetricsBatchClient(endpoint, cred, nil)
 	if err != nil {
 		//TODO: handle error
 	}
@@ -293,45 +275,6 @@ func ExampleMetricsClient_NewListNamespacesPager() {
 		for _, v := range nextResult.Value {
 			// TODO: use page item
 			_ = v
-		}
-	}
-}
-
-func ExampleMetricsBatchClient_QueryBatch() {
-	// This sample uses the MetricsBatchClient to retrieve the "Ingress"
-	// metric along with the "Average" aggregation type for multiple resources.
-	// The query will execute over a timespan of 2 hours with a interval (granularity) of 5 minutes.
-
-	// In this example, storage account resource URIs are queried for metrics.
-	resourceURI1 := "/subscriptions/<id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<account-1>"
-	resourceURI2 := "/subscriptions/<id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<account-2>"
-
-	res, err := metricsBatchClient.QueryBatch(
-		context.Background(),
-		subscriptionID,
-		"Microsoft.Storage/storageAccounts",
-		[]string{"Ingress"},
-		azquery.ResourceIDList{ResourceIDs: to.SliceOfPtrs(resourceURI1, resourceURI2)},
-		&azquery.MetricsBatchClientQueryBatchOptions{
-			Aggregation: to.SliceOfPtrs(azquery.AggregationTypeAverage),
-			StartTime:   to.Ptr("2023-11-15"),
-			EndTime:     to.Ptr("2023-11-16"),
-			Interval:    to.Ptr("PT5M"),
-		},
-	)
-	if err != nil {
-		//TODO: handle error
-	}
-
-	// Print out results
-	for _, result := range res.Values {
-		for _, metric := range result.Values {
-			fmt.Println(*metric.Name.Value + ": " + *metric.DisplayDescription)
-			for _, timeSeriesElement := range metric.TimeSeries {
-				for _, metricValue := range timeSeriesElement.Data {
-					fmt.Printf("The ingress at %v is %v.\n", metricValue.TimeStamp.String(), *metricValue.Average)
-				}
-			}
 		}
 	}
 }

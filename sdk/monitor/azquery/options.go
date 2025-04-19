@@ -25,45 +25,6 @@ type LogsClientQueryWorkspaceOptions struct {
 	Options *LogsQueryOptions
 }
 
-// MetricsBatchClientQueryBatchOptions contains the optional parameters for the MetricsBatchClient.QueryBatch method.
-type MetricsBatchClientQueryBatchOptions struct {
-	// The list of aggregation types to retrieve
-	Aggregation []*AggregationType
-
-	// The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-	EndTime *string
-
-	// The filter is used to reduce the set of metric data returned.
-	// Example:
-	// Metric contains metadata A, B and C.
-	// - Return all time series of C where A = a1 and B = b1 or b2
-	// filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
-	// - Invalid variant:
-	// filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
-	// This is invalid because the logical or operator cannot separate two different metadata names.
-	// - Return all time series where A = a1, B = b1 and C = c1:
-	// filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
-	// - Return all time series where A = a1
-	// filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
-	Filter *string
-
-	// The interval (i.e. timegrain) of the query.Examples: PT15M, PT1H, P1D
-	Interval *string
-
-	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified.Examples: sum
-	// asc
-	OrderBy *string
-
-	// The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you have specified the endtime
-	// parameter, then this parameter is required. If only starttime is specified, then
-	// endtime defaults to the current time. If no time interval is specified, the default is 1 hour.
-	StartTime *string
-
-	// The maximum number of records to retrieve per resource ID in the request. Valid only if filter is specified. Defaults to
-	// 10.
-	Top *int32
-}
-
 // MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager method.
 type MetricsClientListDefinitionsOptions struct {
 	// Metric namespace to query metric definitions for.

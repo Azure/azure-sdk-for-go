@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -94,7 +93,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("package-config", "", "Additional config for package")
 	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
-	flagSet.Bool("update-spec-version", true, "Whether to update the commit id, the default is true")
 	flagSet.Bool("force-stable-version", false, "Even if input-files contains preview files, they are forced to be generated as stable versions. At the same time, the tag must not contain preview.")
 	flagSet.String("tsp-config", "", "The path of the typespec tspconfig.yaml")
 	flagSet.String("tsp-option", "", "Emit typespec-go options, only valid when tsp-config is configured. e: option1=value1;option2=value2")
@@ -158,11 +156,10 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash string) error {
 	log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
 	generateCtx := common.GenerateContext{
-		SDKPath:           sdkRepo.Root(),
-		SDKRepo:           &sdkRepo,
-		SpecCommitHash:    specCommitHash,
-		SpecRepoURL:       c.flags.SwaggerRepo,
-		UpdateSpecVersion: c.flags.UpdateSpecVersion,
+		SDKPath:        sdkRepo.Root(),
+		SDKRepo:        &sdkRepo,
+		SpecCommitHash: specCommitHash,
+		SpecRepoURL:    c.flags.SwaggerRepo,
 	}
 
 	if c.flags.SpecRPName == "" {
@@ -171,19 +168,9 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 
 	var err error
 	var result *common.GenerateResult
-	var existTypeSpec bool
 	if c.flags.TypeSpecConfig != "" {
-		tsc, err := typespec.ParseTypeSpecConfig(c.flags.TypeSpecConfig)
-		if err != nil {
-			return err
-		}
-		existTypeSpec = tsc.ExistEmitOption(string(typespec.TypeSpec_GO))
-		generateCtx.TypeSpecConfig = tsc
-	}
-
-	if existTypeSpec {
 		log.Printf("Generate SDK through TypeSpec...")
-		result, err = generateCtx.GenerateForTypeSpec(&common.GenerateParam{
+		result, err = generateCtx.GenerateFromTypeSpec(c.flags.TypeSpecConfig, &common.GenerateParam{
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			SpecificPackageTitle: c.flags.PackageTitle,
@@ -196,8 +183,14 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			TspClientOptions:     c.flags.TspClientOption,
 		})
 	} else {
-		log.Printf("Generate SDK through AutoRest...")
-		result, err = generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
+		log.Printf("Generate SDK through Swagger...")
+		rpMap := make(map[string][]common.PackageInfo)
+		rpMap[c.rpName] = []common.PackageInfo{{
+			Name:     c.namespaceName,
+			Config:   c.flags.PackageConfig,
+			SpecName: c.flags.SpecRPName,
+		}}
+		results, errs := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			NamespaceConfig:      c.flags.PackageConfig,
@@ -209,7 +202,14 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:            c.flags.GoVersion,
 			ForceStableVersion:   c.flags.ForceStableVersion,
 		})
+		if len(errs) > 0 {
+			err = errs[0]
+		}
+		if len(results) > 0 {
+			result = results[0]
+		}
 	}
+
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}

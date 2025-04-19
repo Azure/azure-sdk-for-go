@@ -8,10 +8,11 @@ input-file:
     - https://github.com/Azure/azure-rest-api-specs/blob/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
+module-version: 0.1.0
 openapi-type: "data-plane"
 output-folder: ../azquery
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.61"
+use: "@autorest/go@4.0.0-preview.71"
 inject-spans: true
 version: "^3.0.0"
 

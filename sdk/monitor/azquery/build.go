@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 //go:generate autorest ./autorest.md --rawjson-as-bytes
 //go:generate gofmt -w .
 

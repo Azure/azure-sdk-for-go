@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListGatewayHostnameConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListGatewayHostnameConfigurations.json
 func ExampleGatewayHostnameConfigurationClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,9 +48,9 @@ func ExampleGatewayHostnameConfigurationClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/gateways/hostnameConfigurations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/default"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/default"),
 		// 			Properties: &armapimanagement.GatewayHostnameConfigurationContractProperties{
-		// 				CertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+		// 				CertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 		// 				Hostname: to.Ptr("*"),
 		// 				NegotiateClientCertificate: to.Ptr(false),
 		// 			},
@@ -58,9 +58,9 @@ func ExampleGatewayHostnameConfigurationClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/gateways/hostnameConfigurations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/hostname1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/hostname1"),
 		// 			Properties: &armapimanagement.GatewayHostnameConfigurationContractProperties{
-		// 				CertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert2"),
+		// 				CertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert2"),
 		// 				Hostname: to.Ptr("foo.bar.com"),
 		// 				NegotiateClientCertificate: to.Ptr(true),
 		// 			},
@@ -69,7 +69,7 @@ func ExampleGatewayHostnameConfigurationClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadGatewayHostnameConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadGatewayHostnameConfiguration.json
 func ExampleGatewayHostnameConfigurationClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleGatewayHostnameConfigurationClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGatewayHostnameConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetGatewayHostnameConfiguration.json
 func ExampleGatewayHostnameConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,16 +107,16 @@ func ExampleGatewayHostnameConfigurationClient_Get() {
 	// res.GatewayHostnameConfigurationContract = armapimanagement.GatewayHostnameConfigurationContract{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/gateways/hostnameConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/default"),
 	// 	Properties: &armapimanagement.GatewayHostnameConfigurationContractProperties{
-	// 		CertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+	// 		CertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 	// 		Hostname: to.Ptr("*"),
 	// 		NegotiateClientCertificate: to.Ptr(false),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGatewayHostnameConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateGatewayHostnameConfiguration.json
 func ExampleGatewayHostnameConfigurationClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleGatewayHostnameConfigurationClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewGatewayHostnameConfigurationClient().CreateOrUpdate(ctx, "rg1", "apimService1", "gw1", "default", armapimanagement.GatewayHostnameConfigurationContract{
 		Properties: &armapimanagement.GatewayHostnameConfigurationContractProperties{
-			CertificateID:              to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+			CertificateID:              to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 			Hostname:                   to.Ptr("*"),
 			HTTP2Enabled:               to.Ptr(true),
 			NegotiateClientCertificate: to.Ptr(false),
@@ -146,9 +146,9 @@ func ExampleGatewayHostnameConfigurationClient_CreateOrUpdate() {
 	// res.GatewayHostnameConfigurationContract = armapimanagement.GatewayHostnameConfigurationContract{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/gateways/hostnameConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/gateways/gw1/hostnameConfigurations/default"),
 	// 	Properties: &armapimanagement.GatewayHostnameConfigurationContractProperties{
-	// 		CertificateID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
+	// 		CertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1"),
 	// 		Hostname: to.Ptr("*"),
 	// 		HTTP2Enabled: to.Ptr(true),
 	// 		NegotiateClientCertificate: to.Ptr(false),
@@ -158,7 +158,7 @@ func ExampleGatewayHostnameConfigurationClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGatewayHostnameConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteGatewayHostnameConfiguration.json
 func ExampleGatewayHostnameConfigurationClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

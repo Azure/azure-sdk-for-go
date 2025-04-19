@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListDocumentations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListDocumentations.json
 func ExampleDocumentationClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleDocumentationClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("test"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/documentations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/test"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/test"),
 		// 			Properties: &armapimanagement.DocumentationContractProperties{
 		// 				Content: to.Ptr("Test content "),
 		// 				Title: to.Ptr("test"),
@@ -57,7 +57,7 @@ func ExampleDocumentationClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("test2"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/documentations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/test2"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/test2"),
 		// 			Properties: &armapimanagement.DocumentationContractProperties{
 		// 				Content: to.Ptr("Test content "),
 		// 				Title: to.Ptr("test"),
@@ -66,7 +66,7 @@ func ExampleDocumentationClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("test3"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/documentations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/test3"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/test3"),
 		// 			Properties: &armapimanagement.DocumentationContractProperties{
 		// 				Content: to.Ptr("Test content "),
 		// 				Title: to.Ptr("test"),
@@ -76,7 +76,7 @@ func ExampleDocumentationClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadDocumentation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadDocumentation.json
 func ExampleDocumentationClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleDocumentationClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetDocumentation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetDocumentation.json
 func ExampleDocumentationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleDocumentationClient_Get() {
 	// res.DocumentationContract = armapimanagement.DocumentationContract{
 	// 	Name: to.Ptr("57d1f7558aa04f15146d9d8a"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/documentations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/57d1f7558aa04f15146d9d8a"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/57d1f7558aa04f15146d9d8a"),
 	// 	Properties: &armapimanagement.DocumentationContractProperties{
 	// 		Content: to.Ptr("content"),
 	// 		Title: to.Ptr("Title"),
@@ -122,7 +122,7 @@ func ExampleDocumentationClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateDocumentation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateDocumentation.json
 func ExampleDocumentationClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleDocumentationClient_CreateOrUpdate() {
 	// res.DocumentationContract = armapimanagement.DocumentationContract{
 	// 	Name: to.Ptr("57d1f7558aa04f15146d9d8a"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/documentations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/57d1f7558aa04f15146d9d8a"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/57d1f7558aa04f15146d9d8a"),
 	// 	Properties: &armapimanagement.DocumentationContractProperties{
 	// 		Content: to.Ptr("content"),
 	// 		Title: to.Ptr("Title"),
@@ -156,7 +156,7 @@ func ExampleDocumentationClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateDocumentation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateDocumentation.json
 func ExampleDocumentationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleDocumentationClient_Update() {
 	// res.DocumentationContract = armapimanagement.DocumentationContract{
 	// 	Name: to.Ptr("57d1f7558aa04f15146d9d8a"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/documentations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/57d1f7558aa04f15146d9d8a"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/documentations/57d1f7558aa04f15146d9d8a"),
 	// 	Properties: &armapimanagement.DocumentationContractProperties{
 	// 		Content: to.Ptr("content updated"),
 	// 		Title: to.Ptr("Title updated"),
@@ -190,7 +190,7 @@ func ExampleDocumentationClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteDocumentation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteDocumentation.json
 func ExampleDocumentationClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

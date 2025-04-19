@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -487,6 +487,7 @@ func (testsuite *ApimapisTestSuite) Cleanup() {
 	fmt.Println("Call operation: Api_Delete")
 	aPIClient, err := armapimanagement.NewAPIClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = aPIClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, "*", &armapimanagement.APIClientDeleteOptions{DeleteRevisions: nil})
+	_, err = aPIClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, "*", &armapimanagement.APIClientBeginDeleteOptions{DeleteRevisions: nil})
 	testsuite.Require().NoError(err)
+
 }

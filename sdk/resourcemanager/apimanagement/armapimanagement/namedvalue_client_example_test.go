@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListNamedValues.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListNamedValues.json
 func ExampleNamedValueClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleNamedValueClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("592f1174cc83890dc4f32686"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/592f1174cc83890dc4f32686"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/592f1174cc83890dc4f32686"),
 		// 			Properties: &armapimanagement.NamedValueContractProperties{
 		// 				Secret: to.Ptr(false),
 		// 				DisplayName: to.Ptr("Logger-Credentials-592f1174cc83890dc4f32687"),
@@ -60,7 +60,7 @@ func ExampleNamedValueClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("testprop6"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
 		// 			Properties: &armapimanagement.NamedValueContractProperties{
 		// 				Secret: to.Ptr(true),
 		// 				Tags: []*string{
@@ -81,7 +81,7 @@ func ExampleNamedValueClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadNamedValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadNamedValue.json
 func ExampleNamedValueClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleNamedValueClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetNamedValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetNamedValue.json
 func ExampleNamedValueClient_Get_apiManagementGetNamedValue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleNamedValueClient_Get_apiManagementGetNamedValue() {
 	// res.NamedValueContract = armapimanagement.NamedValueContract{
 	// 	Name: to.Ptr("testarmTemplateproperties2"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testarmTemplateproperties2"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testarmTemplateproperties2"),
 	// 	Properties: &armapimanagement.NamedValueContractProperties{
 	// 		Secret: to.Ptr(false),
 	// 		Tags: []*string{
@@ -131,7 +131,7 @@ func ExampleNamedValueClient_Get_apiManagementGetNamedValue() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetNamedValueWithKeyVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetNamedValueWithKeyVault.json
 func ExampleNamedValueClient_Get_apiManagementGetNamedValueWithKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleNamedValueClient_Get_apiManagementGetNamedValueWithKeyVault() {
 	// res.NamedValueContract = armapimanagement.NamedValueContract{
 	// 	Name: to.Ptr("testprop6"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
 	// 	Properties: &armapimanagement.NamedValueContractProperties{
 	// 		Secret: to.Ptr(true),
 	// 		Tags: []*string{
@@ -171,7 +171,7 @@ func ExampleNamedValueClient_Get_apiManagementGetNamedValueWithKeyVault() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateNamedValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateNamedValue.json
 func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,19 +205,20 @@ func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValue()
 	// res.NamedValueContract = armapimanagement.NamedValueContract{
 	// 	Name: to.Ptr("testprop2"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop2"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop2"),
 	// 	Properties: &armapimanagement.NamedValueContractProperties{
 	// 		Secret: to.Ptr(false),
 	// 		Tags: []*string{
 	// 			to.Ptr("foo"),
 	// 			to.Ptr("bar")},
 	// 			DisplayName: to.Ptr("prop3name"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Value: to.Ptr("propValue"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateNamedValueWithKeyVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateNamedValueWithKeyVault.json
 func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValueWithKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +255,7 @@ func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValueWi
 	// res.NamedValueContract = armapimanagement.NamedValueContract{
 	// 	Name: to.Ptr("testprop6"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
 	// 	Properties: &armapimanagement.NamedValueContractProperties{
 	// 		Secret: to.Ptr(true),
 	// 		Tags: []*string{
@@ -269,11 +270,12 @@ func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValueWi
 	// 					TimeStampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-11T00:54:31.802Z"); return t}()),
 	// 				},
 	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateNamedValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateNamedValue.json
 func ExampleNamedValueClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +308,7 @@ func ExampleNamedValueClient_BeginUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NamedValueContract = armapimanagement.NamedValueContract{
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop2"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop2"),
 	// 	Properties: &armapimanagement.NamedValueContractProperties{
 	// 		Secret: to.Ptr(false),
 	// 		Tags: []*string{
@@ -318,7 +320,7 @@ func ExampleNamedValueClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteNamedValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteNamedValue.json
 func ExampleNamedValueClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +337,7 @@ func ExampleNamedValueClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementNamedValueListValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementNamedValueListValue.json
 func ExampleNamedValueClient_ListValue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +360,7 @@ func ExampleNamedValueClient_ListValue() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementRefreshNamedValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementRefreshNamedValue.json
 func ExampleNamedValueClient_BeginRefreshSecret() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +385,7 @@ func ExampleNamedValueClient_BeginRefreshSecret() {
 	// res.NamedValueContract = armapimanagement.NamedValueContract{
 	// 	Name: to.Ptr("testprop6"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/namedValues"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/namedValues/testprop6"),
 	// 	Properties: &armapimanagement.NamedValueContractProperties{
 	// 		Secret: to.Ptr(true),
 	// 		Tags: []*string{

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListGlobalSchemas.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListGlobalSchemas.json
 func ExampleGlobalSchemaClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleGlobalSchemaClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("schema1"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/schemas"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
 		// 			Properties: &armapimanagement.GlobalSchemaContractProperties{
 		// 				Description: to.Ptr("sample schema description"),
 		// 				SchemaType: to.Ptr(armapimanagement.SchemaTypeXML),
@@ -59,7 +59,7 @@ func ExampleGlobalSchemaClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("schema2"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/schemas"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema2"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema2"),
 		// 			Properties: &armapimanagement.GlobalSchemaContractProperties{
 		// 				Description: to.Ptr("sample schema description"),
 		// 				Document: map[string]any{
@@ -90,7 +90,7 @@ func ExampleGlobalSchemaClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadGlobalSchema.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadGlobalSchema.json
 func ExampleGlobalSchemaClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleGlobalSchemaClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGlobalSchema1.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetGlobalSchema1.json
 func ExampleGlobalSchemaClient_Get_apiManagementGetSchema1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleGlobalSchemaClient_Get_apiManagementGetSchema1() {
 	// res.GlobalSchemaContract = armapimanagement.GlobalSchemaContract{
 	// 	Name: to.Ptr("schema1"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/schemas"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
 	// 	Properties: &armapimanagement.GlobalSchemaContractProperties{
 	// 		Description: to.Ptr("sample schema description"),
 	// 		SchemaType: to.Ptr(armapimanagement.SchemaTypeXML),
@@ -137,7 +137,7 @@ func ExampleGlobalSchemaClient_Get_apiManagementGetSchema1() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGlobalSchema2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetGlobalSchema2.json
 func ExampleGlobalSchemaClient_Get_apiManagementGetSchema2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleGlobalSchemaClient_Get_apiManagementGetSchema2() {
 	// res.GlobalSchemaContract = armapimanagement.GlobalSchemaContract{
 	// 	Name: to.Ptr("schema2"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/schemas"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema2"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema2"),
 	// 	Properties: &armapimanagement.GlobalSchemaContractProperties{
 	// 		Description: to.Ptr("sample schema description"),
 	// 		Document: map[string]any{
@@ -187,7 +187,7 @@ func ExampleGlobalSchemaClient_Get_apiManagementGetSchema2() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGlobalSchema1.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateGlobalSchema1.json
 func ExampleGlobalSchemaClient_BeginCreateOrUpdate_apiManagementCreateSchema1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,16 +218,17 @@ func ExampleGlobalSchemaClient_BeginCreateOrUpdate_apiManagementCreateSchema1() 
 	// res.GlobalSchemaContract = armapimanagement.GlobalSchemaContract{
 	// 	Name: to.Ptr("schema1"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/schemas"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
 	// 	Properties: &armapimanagement.GlobalSchemaContractProperties{
 	// 		Description: to.Ptr("sample schema description"),
+	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		SchemaType: to.Ptr(armapimanagement.SchemaTypeXML),
 	// 		Value: "<xsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\r\n           xmlns:tns=\"http://tempuri.org/PurchaseOrderSchema.xsd\"\r\n           targetNamespace=\"http://tempuri.org/PurchaseOrderSchema.xsd\"\r\n           elementFormDefault=\"qualified\">\r\n <xsd:element name=\"PurchaseOrder\" type=\"tns:PurchaseOrderType\"/>\r\n <xsd:complexType name=\"PurchaseOrderType\">\r\n  <xsd:sequence>\r\n   <xsd:element name=\"ShipTo\" type=\"tns:USAddress\" maxOccurs=\"2\"/>\r\n   <xsd:element name=\"BillTo\" type=\"tns:USAddress\"/>\r\n  </xsd:sequence>\r\n  <xsd:attribute name=\"OrderDate\" type=\"xsd:date\"/>\r\n </xsd:complexType>\r\n\r\n <xsd:complexType name=\"USAddress\">\r\n  <xsd:sequence>\r\n   <xsd:element name=\"name\"   type=\"xsd:string\"/>\r\n   <xsd:element name=\"street\" type=\"xsd:string\"/>\r\n   <xsd:element name=\"city\"   type=\"xsd:string\"/>\r\n   <xsd:element name=\"state\"  type=\"xsd:string\"/>\r\n   <xsd:element name=\"zip\"    type=\"xsd:integer\"/>\r\n  </xsd:sequence>\r\n  <xsd:attribute name=\"country\" type=\"xsd:NMTOKEN\" fixed=\"US\"/>\r\n </xsd:complexType>\r\n</xsd:schema>",
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGlobalSchema2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateGlobalSchema2.json
 func ExampleGlobalSchemaClient_BeginCreateOrUpdate_apiManagementCreateSchema2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +279,7 @@ func ExampleGlobalSchemaClient_BeginCreateOrUpdate_apiManagementCreateSchema2() 
 	// res.GlobalSchemaContract = armapimanagement.GlobalSchemaContract{
 	// 	Name: to.Ptr("schema1"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/schemas"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/schemas/schema1"),
 	// 	Properties: &armapimanagement.GlobalSchemaContractProperties{
 	// 		Description: to.Ptr("sample schema description"),
 	// 		Document: map[string]any{
@@ -302,12 +303,13 @@ func ExampleGlobalSchemaClient_BeginCreateOrUpdate_apiManagementCreateSchema2() 
 	// 			},
 	// 			"title": "Person",
 	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		SchemaType: to.Ptr(armapimanagement.SchemaTypeJSON),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGlobalSchema.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteGlobalSchema.json
 func ExampleGlobalSchemaClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -15,10 +15,6 @@ Azure OpenAI has adopted the official OpenAI library for Go as its supported cli
 
 The `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
 
-Migrating to the official client offers:
-- Consistent API experience between Azure OpenAI and OpenAI services.
-- Direct access to the latest OpenAI features.
-
 > [!NOTE]
 > This document is a work-in-progress and may change to reflect updates to the package. We value your feedback—please [create an issue](https://github.com/Azure/azure-sdk-for-go/issues/new/choose) to suggest improvements or report problems with this guide or the package.
 

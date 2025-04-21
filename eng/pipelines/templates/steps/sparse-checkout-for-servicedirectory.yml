@@ -13,6 +13,7 @@ steps:
           - ".vscode/"
       ${{ else }}:
         Paths:
+          - ".vscode/"
           - ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
             - ${{ replace(parameters.ServiceDirectory, '../', '') }}
             # this is a workaround for the eng packages that have integration tests that rely on keyvault
@@ -20,7 +21,10 @@ steps:
             - "sdk/security"
           - ${{ else }}:
             - "sdk/${{ parameters.ServiceDirectory }}"
-          - ".vscode/"
+            # TODO: Remove this after we migrate fully to unified pull requests
+            # Currently the verify links step will fail if all markdown files are not checked out
+            # (since we attempt to resolve each file in the diff)
+            - 'sdk/**/*.md'
 
   - pwsh: |
       Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse | % { Write-Host $_.FullName }

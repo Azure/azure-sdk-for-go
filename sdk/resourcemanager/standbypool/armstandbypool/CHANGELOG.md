@@ -1,5 +1,32 @@
 # Release History
 
+## 2.0.0 (2025-04-07)
+### Breaking Changes
+
+- Type of `ContainerGroupInstanceCountSummary.InstanceCountsByState` has been changed from `[]*PoolResourceStateCount` to `[]*PoolContainerGroupStateCount`
+- Type of `VirtualMachineInstanceCountSummary.InstanceCountsByState` has been changed from `[]*PoolResourceStateCount` to `[]*PoolVirtualMachineStateCount`
+- Struct `PoolResourceStateCount` has been removed
+
+### Features Added
+
+- New value `VirtualMachineStateHibernated` added to enum type `VirtualMachineState`
+- New enum type `HealthStateCode` with values `HealthStateCodeDegraded`, `HealthStateCodeHealthy`
+- New enum type `PoolContainerGroupState` with values `PoolContainerGroupStateCreating`, `PoolContainerGroupStateDeleting`, `PoolContainerGroupStateRunning`
+- New enum type `PoolVirtualMachineState` with values `PoolVirtualMachineStateCreating`, `PoolVirtualMachineStateDeallocated`, `PoolVirtualMachineStateDeallocating`, `PoolVirtualMachineStateDeleting`, `PoolVirtualMachineStateHibernated`, `PoolVirtualMachineStateHibernating`, `PoolVirtualMachineStateRunning`, `PoolVirtualMachineStateStarting`
+- New struct `PoolContainerGroupStateCount`
+- New struct `PoolStatus`
+- New struct `PoolVirtualMachineStateCount`
+- New struct `StandbyContainerGroupPoolForecastValues`
+- New struct `StandbyContainerGroupPoolPrediction`
+- New struct `StandbyVirtualMachinePoolForecastValues`
+- New struct `StandbyVirtualMachinePoolPrediction`
+- New field `Zone` in struct `ContainerGroupInstanceCountSummary`
+- New field `Zones` in struct `StandbyContainerGroupPoolResourceProperties`
+- New field `Zones` in struct `StandbyContainerGroupPoolResourceUpdateProperties`
+- New field `Prediction`, `Status` in struct `StandbyContainerGroupPoolRuntimeViewResourceProperties`
+- New field `Prediction`, `Status` in struct `StandbyVirtualMachinePoolRuntimeViewResourceProperties`
+
+
 ## 1.0.0 (2024-09-26)
 ### Breaking Changes
 

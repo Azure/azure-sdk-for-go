@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool/v2"
 	"log"
 )
 
-// Generated from example definition: 2024-03-01/StandbyContainerGroupPools_CreateOrUpdate.json
+// Generated from example definition: 2025-03-01/StandbyContainerGroupPools_CreateOrUpdate.json
 func ExampleStandbyContainerGroupPoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,6 +39,11 @@ func ExampleStandbyContainerGroupPoolsClient_BeginCreateOrUpdate() {
 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet"),
 					},
 				},
+			},
+			Zones: []*string{
+				to.Ptr("1"),
+				to.Ptr("2"),
+				to.Ptr("3"),
 			},
 		},
 		Tags:     map[string]*string{},
@@ -73,6 +78,11 @@ func ExampleStandbyContainerGroupPoolsClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Zones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3"),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -92,7 +102,7 @@ func ExampleStandbyContainerGroupPoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01/StandbyContainerGroupPools_Delete.json
+// Generated from example definition: 2025-03-01/StandbyContainerGroupPools_Delete.json
 func ExampleStandbyContainerGroupPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +123,7 @@ func ExampleStandbyContainerGroupPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-03-01/StandbyContainerGroupPools_Get.json
+// Generated from example definition: 2025-03-01/StandbyContainerGroupPools_Get.json
 func ExampleStandbyContainerGroupPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,6 +160,11 @@ func ExampleStandbyContainerGroupPoolsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Zones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3"),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -169,7 +184,7 @@ func ExampleStandbyContainerGroupPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01/StandbyContainerGroupPools_ListByResourceGroup.json
+// Generated from example definition: 2025-03-01/StandbyContainerGroupPools_ListByResourceGroup.json
 func ExampleStandbyContainerGroupPoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,6 +227,11 @@ func ExampleStandbyContainerGroupPoolsClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					Zones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -235,7 +255,7 @@ func ExampleStandbyContainerGroupPoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-03-01/StandbyContainerGroupPools_ListBySubscription.json
+// Generated from example definition: 2025-03-01/StandbyContainerGroupPools_ListBySubscription.json
 func ExampleStandbyContainerGroupPoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,6 +298,11 @@ func ExampleStandbyContainerGroupPoolsClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					Zones: []*string{
+		// 						to.Ptr("1"),
+		// 						to.Ptr("2"),
+		// 						to.Ptr("3"),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -301,7 +326,7 @@ func ExampleStandbyContainerGroupPoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-03-01/StandbyContainerGroupPools_Update.json
+// Generated from example definition: 2025-03-01/StandbyContainerGroupPools_Update.json
 func ExampleStandbyContainerGroupPoolsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,6 +355,11 @@ func ExampleStandbyContainerGroupPoolsClient_Update() {
 					},
 				},
 			},
+			Zones: []*string{
+				to.Ptr("1"),
+				to.Ptr("2"),
+				to.Ptr("3"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -356,6 +386,11 @@ func ExampleStandbyContainerGroupPoolsClient_Update() {
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet"),
 	// 					},
 	// 				},
+	// 			},
+	// 			Zones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 				to.Ptr("3"),
 	// 			},
 	// 		},
 	// 		Tags: map[string]*string{

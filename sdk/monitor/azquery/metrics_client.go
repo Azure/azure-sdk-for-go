@@ -7,12 +7,13 @@ package azquery
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MetricsClient contains the methods for the Metrics group.
@@ -24,7 +25,7 @@ type MetricsClient struct {
 
 // NewListDefinitionsPager - Lists the metric definitions for the resource.
 //
-// Generated from API version 2018-01-01
+// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager
 //     method.
@@ -60,7 +61,7 @@ func (client *MetricsClient) listDefinitionsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-01-01")
+	reqQP.Set("api-version", "2024-02-01")
 	if options != nil && options.MetricNamespace != nil {
 		reqQP.Set("metricnamespace", *options.MetricNamespace)
 	}
@@ -80,7 +81,7 @@ func (client *MetricsClient) listDefinitionsHandleResponse(resp *http.Response) 
 
 // NewListNamespacesPager - Lists the metric namespaces for the resource.
 //
-// Generated from API version 2017-12-01-preview
+// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.NewListNamespacesPager
 //     method.
@@ -116,7 +117,7 @@ func (client *MetricsClient) listNamespacesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-12-01-preview")
+	reqQP.Set("api-version", "2024-02-01")
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}
@@ -137,7 +138,7 @@ func (client *MetricsClient) listNamespacesHandleResponse(resp *http.Response) (
 // QueryResource - Lists the metric values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-01-01
+// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
 func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (MetricsClientQueryResourceResponse, error) {
@@ -172,10 +173,16 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	if options != nil && options.AutoAdjustTimegrain != nil {
+		reqQP.Set("AutoAdjustTimegrain", strconv.FormatBool(*options.AutoAdjustTimegrain))
+	}
+	if options != nil && options.ValidateDimensions != nil {
+		reqQP.Set("ValidateDimensions", strconv.FormatBool(*options.ValidateDimensions))
+	}
 	if options != nil && options.Aggregation != nil {
 		reqQP.Set("aggregation", aggregationTypeToString(options.Aggregation))
 	}
-	reqQP.Set("api-version", "2018-01-01")
+	reqQP.Set("api-version", "2024-02-01")
 	if options != nil && options.Interval != nil {
 		reqQP.Set("interval", *options.Interval)
 	}
@@ -190,6 +197,9 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	}
 	if options != nil && options.ResultType != nil {
 		reqQP.Set("resultType", string(*options.ResultType))
+	}
+	if options != nil && options.RollUpBy != nil {
+		reqQP.Set("rollupby", *options.RollUpBy)
 	}
 	if options != nil && options.Timespan != nil {
 		reqQP.Set("timespan", string(*options.Timespan))

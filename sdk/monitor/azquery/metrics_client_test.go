@@ -45,12 +45,8 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 		&azquery.MetricsClientQueryResourceOptions{
 			Timespan:        to.Ptr(timespan),
 			Interval:        to.Ptr("PT1M"),
-			MetricNames:     nil,
 			Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
-			Top:             nil,
 			OrderBy:         to.Ptr("Average asc"),
-			Filter:          nil,
-			ResultType:      nil,
 			MetricNamespace: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 		})
 	require.NoError(t, err)

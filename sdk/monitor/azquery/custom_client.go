@@ -29,11 +29,6 @@ type LogsClientOptions struct {
 	azcore.ClientOptions
 }
 
-// MetricsBatchClientOptions contains optional settings for MetricsBatchClient.
-type MetricsBatchClientOptions struct {
-	azcore.ClientOptions
-}
-
 // NewLogsClient creates a client that accesses Azure Monitor logs data.
 func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) (*LogsClient, error) {
 	if options == nil {

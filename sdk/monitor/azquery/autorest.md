@@ -221,7 +221,6 @@ directive:
     transform: return $.replace(/Aggregation \*string/g, "Aggregation []*AggregationType");
   - from: 
         - metrics_client.go
-        - metricsbatch_client.go
     where: $
     transform: return $.replace(/\*options.Aggregation/g, "aggregationTypeToString(options.Aggregation)");
   - from: swagger-document

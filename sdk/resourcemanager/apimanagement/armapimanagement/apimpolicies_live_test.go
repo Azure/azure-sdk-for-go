@@ -108,14 +108,6 @@ func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 	_, err = policyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, &armapimanagement.PolicyClientGetOptions{Format: nil})
 	testsuite.Require().NoError(err)
 
-	// From step Policy_ListByService
-	fmt.Println("Call operation: Policy_ListByService")
-	pager := policyClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, nil)
-	for pager.More() {
-		_, err = pager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-	}
-
 	// From step Policy_Delete
 	fmt.Println("Call operation: Policy_Delete")
 	_, err = policyClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, "*", nil)

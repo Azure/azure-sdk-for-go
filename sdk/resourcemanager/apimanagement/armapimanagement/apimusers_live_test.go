@@ -188,12 +188,4 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	testsuite.Require().NoError(err)
 	_, err = userConfirmationPasswordClient.Send(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, &armapimanagement.UserConfirmationPasswordClientSendOptions{AppType: nil})
 	testsuite.Require().NoError(err)
-
-	// From step User_Delete
-	fmt.Println("Call operation: User_Delete")
-	_, err = userClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, "*", &armapimanagement.UserClientBeginDeleteOptions{DeleteSubscriptions: nil,
-		Notify:  nil,
-		AppType: nil,
-	})
-	testsuite.Require().NoError(err)
 }

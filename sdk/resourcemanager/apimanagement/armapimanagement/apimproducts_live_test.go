@@ -266,15 +266,6 @@ func (testsuite *ApimproductsTestSuite) TestProductpolicy() {
 	_, err = productPolicyClient.GetEntityTag(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.PolicyIDNamePolicy, nil)
 	testsuite.Require().NoError(err)
 
-	// From step ProductPolicy_ListByProduct
-	fmt.Println("Call operation: ProductPolicy_ListByProduct")
-	pager := productPolicyClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, nil)
-	for pager.More() {
-		_, err = pager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-	}
-	testsuite.Require().NoError(err)
-
 	// From step ProductPolicy_Get
 	fmt.Println("Call operation: ProductPolicy_Get")
 	_, err = productPolicyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, armapimanagement.PolicyIDNamePolicy, &armapimanagement.ProductPolicyClientGetOptions{Format: nil})

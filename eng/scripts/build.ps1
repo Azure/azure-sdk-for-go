@@ -13,7 +13,7 @@ param(
     [switch]$removeUnreferencedTypes,
     [switch]$factoryGatherCommonParams,
     [string]$config = "autorest.md",
-    [string]$goExtension = "C:\Users\jiaqzhang\work\autorest.go\packages\autorest.go",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.72",
     [string]$filePrefix,
     [string]$outputFolder
 )

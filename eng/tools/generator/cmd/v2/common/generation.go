@@ -133,7 +133,7 @@ func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string
 				RPName:              rpName,
 				NamespaceName:       packageInfo.Name,
 				SpecRPName:          specRPName,
-				SkipGenerateExample: false,
+				SkipGenerateExample: true,
 				NamespaceConfig:     packageInfo.Config,
 				GoVersion:           goVersion,
 				RemoveTagSet:        true,

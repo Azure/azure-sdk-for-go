@@ -19,7 +19,7 @@ function Invoke-MgmtTestgen ()
         [switch]$factoryGatherCommonParams,
         [string]$autorestPath = "",
         [string]$config = "autorest.md",
-        [string]$goExtension = "C:\Users\jiaqzhang\work\autorest.go\packages\autorest.go",
+        [string]$goExtension = "@autorest/go@4.0.0-preview.72",
         [string]$testExtension = "@autorest/gotest@4.7.4",
         [string]$outputFolder
     )

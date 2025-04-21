@@ -12,7 +12,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v2"
@@ -45,10 +44,8 @@ func TestRedisenterpriseOperatopnsTestSuite(t *testing.T) {
 }
 
 func (testsuite *RedisenterpriseOperationsTestSuite) TestNewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	testsuite.options.APIVersion = "2024-11-01"
-	testsuite.Require().NoError(err)
-	clientFactory, err := armredisenterprise.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
+	clientFactory, err := armredisenterprise.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	pager := clientFactory.NewOperationsClient().NewListPager(nil)
 	for pager.More() {

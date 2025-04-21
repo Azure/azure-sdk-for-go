@@ -11,7 +11,9 @@
 
 ## Overview
 
-Starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
+As of April 2025, Azure OpenAI has adopted the official OpenAI library for Go as its recommended and supported client library for the Go programming language. This shift ensures maximum code reuse, the fastest possible access to new models and features, and clear integration points between Azure-specific components and OpenAI API capabilities.
+
+To serve this switch, starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
 
 Migrating to the official client offers:
 - Consistent API experience between Azure OpenAI and OpenAI services.
@@ -52,12 +54,12 @@ import (
 ```
 
 > [!NOTE]
-> **Azure extensions** refer to features unique to Azure OpenAI, such as new request/response structures (e.g., Azure OpenAI On Your Data), not basic authentication or connection differences.
+> **Azure extensions** refer to features unique to the Azure OpenAI Service, such as new request/response structures (e.g., Azure OpenAI On Your Data), not basic authentication or connection differences.
 
 ## Authentication and Client Creation
 
 Instead of using the Azure OpenAI client directly for all operations, you'll now:
-- Create an OpenAI client configured for Azure.
+- Create an OpenAI client configured for the Azure OpenAI Service.
 - Use the Azure OpenAI companion library for Azure-specific extensions.
 
 ### Azure OpenAI with API Key
@@ -115,7 +117,7 @@ client := openai.NewClient(
 )
 ```
 
-### OpenAI (not Azure)
+### OpenAI v1 (not using Azure OpenAI Service)
 
 **Before:**
 ```go

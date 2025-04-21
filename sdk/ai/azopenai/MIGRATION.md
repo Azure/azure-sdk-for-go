@@ -77,6 +77,7 @@ if err != nil {
 **After:**
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
+// Information on Azure OpenAI API versions can be found here: https://aka.ms/oai/docs/api-lifecycle
 api_version := os.Getenv("AZURE_OPENAI_API_VERSION")
 key := os.Getenv("AZURE_OPENAI_API_KEY")
 
@@ -105,6 +106,7 @@ if err != nil {
 **After:**
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
+// Information on Azure OpenAI API versions can be found here: https://aka.ms/oai/docs/api-lifecycle
 api_version := os.Getenv("AZURE_OPENAI_API_VERSION")
 
 credential, err := azidentity.NewDefaultAzureCredential(nil)

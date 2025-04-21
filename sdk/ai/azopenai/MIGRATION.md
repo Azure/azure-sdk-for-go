@@ -11,9 +11,9 @@
 
 ## Overview
 
-As of April 2025, Azure OpenAI has adopted the official OpenAI library for Go as its recommended and supported client library for the Go programming language. This shift ensures maximum code reuse, the fastest possible access to new models and features, and clear integration points between Azure-specific components and OpenAI API capabilities.
+Azure OpenAI has adopted the official OpenAI library for Go as its supported client library for the Go programming language. This shift ensures maximum code reuse, the fastest possible access to new models and features, and clear integration points between Azure-specific components and OpenAI API capabilities.
 
-To serve this switch, starting with version 0.8.0, the `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
+The `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
 
 Migrating to the official client offers:
 - Consistent API experience between Azure OpenAI and OpenAI services.
@@ -44,7 +44,7 @@ import (
 )
 ```
 
-If you need Azure-specific extensions, also include the `azopenai` package:
+If you need Azure-specific extensions (for instance, Azure OpenAI On Your Data or content filtering), also include the `azopenai` package:
 
 ```go
 import (
@@ -54,7 +54,7 @@ import (
 ```
 
 > [!NOTE]
-> **Azure extensions** refer to features unique to the Azure OpenAI Service, such as new request/response structures (e.g., Azure OpenAI On Your Data), not basic authentication or connection differences.
+> **Azure extensions** refer to features unique to the Azure OpenAI Service (e.g., Azure OpenAI On Your Data, or content filtering). Authentication for Azure resources is available in the `openai-go` package, and does not require this package.
 
 ## Authentication and Client Creation
 
@@ -139,7 +139,7 @@ client := openai.NewClient(
 
 ## API Changes
 
-The official OpenAI Go client organizes operations into subclients for each service category, rather than providing all operations as flat methods.
+The official OpenAI Go client organizes operations into subclients for each service category, rather than providing all operations on a single client.
 
 | Service               | Description |
 |-----------------------|-------------|

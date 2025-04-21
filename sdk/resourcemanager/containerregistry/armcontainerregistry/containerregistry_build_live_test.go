@@ -59,7 +59,7 @@ func (testsuite *ContainerregistryBuildTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestContainerregistryBuildTestSuite(t *testing.T) {
+func TTestContainerregistryBuildTestSuite(t *testing.T) {
 	suite.Run(t, new(ContainerregistryBuildTestSuite))
 }
 

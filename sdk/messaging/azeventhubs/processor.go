@@ -13,7 +13,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh"
 )
 
 // processorOwnerLevel is the owner level we assign to every ProcessorPartitionClient
@@ -53,7 +55,9 @@ type ProcessorOptions struct {
 
 	// StartPositions are the default start positions (configurable per partition, or with an overall
 	// default value) if a checkpoint is not found in the CheckpointStore.
-	// The default position is Latest.
+	//
+	// - If the Event Hubs namespace has geo-replication enabled, the default is Earliest.
+	// - If the Event Hubs namespace does NOT have geo-replication enabled, the default position is Latest
 	StartPositions StartPositions
 
 	// Prefetch represents the size of the internal prefetch buffer for each ProcessorPartitionClient
@@ -361,7 +365,7 @@ func (p *Processor) dispatch(ctx context.Context, eventHubProperties EventHubPro
 		go func(o Ownership) {
 			defer wg.Done()
 
-			err := p.addPartitionClient(ctx, o, getCheckpoints, consumers)
+			err := p.addPartitionClient(ctx, o, getCheckpoints, p.openPartitionClientImpl, consumers)
 
 			if err != nil {
 				azlog.Writef(EventConsumer, "failed to create partition client for partition '%s': %s", o.PartitionID, err.Error())
@@ -374,8 +378,34 @@ func (p *Processor) dispatch(ctx context.Context, eventHubProperties EventHubPro
 	return nil
 }
 
+// openPartitionClient creates a PartitionClient and initializes it, causing it to open AMQP links.
+// Implemented by [Processor.openPartitionClientImpl]
+type openPartitionClient func(ctx context.Context, partitionID string, startPosition StartPosition) (partitionClient *PartitionClient, err error)
+
+// openPartitionClientImpl creates a PartitionClient and initializes it, causing it to open AMQP links.
+func (p *Processor) openPartitionClientImpl(ctx context.Context, partitionID string, startPosition StartPosition) (partitionClient *PartitionClient, err error) {
+	partitionClient, err = p.consumerClient.NewPartitionClient(partitionID, &PartitionClientOptions{
+		StartPosition: startPosition,
+		OwnerLevel:    processorOwnerLevel,
+		Prefetch:      p.prefetch,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	// make sure we create the link _now_ - if we're stealing we want to stake a claim _now_, rather than
+	// later when the user actually calls ReceiveEvents(), since the acquisition of the link is lazy.
+	if err := partitionClient.init(ctx); err != nil {
+		_ = partitionClient.Close(ctx) // ignore close error here, we're just cleaning up after a failed init()
+		return nil, err
+	}
+
+	return partitionClient, nil
+}
+
 // addPartitionClient creates a ProcessorPartitionClient
-func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership, getCheckpoints getCheckpoints, consumers *sync.Map) error {
+func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership, getCheckpoints getCheckpoints, openPartitionClient openPartitionClient, consumers *sync.Map) error {
 	processorPartClient := &ProcessorPartitionClient{
 		consumerClientDetails: p.consumerClientDetails,
 		checkpointStore:       p.checkpointStore,
@@ -390,28 +420,25 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 		return nil
 	}
 
-	startPosition, err := p.getStartPosition(getCheckpoints, ownership)
+	preferredStartPosition, err := p.getStartPosition(getCheckpoints, ownership)
 
 	if err != nil {
 		return err
 	}
 
-	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &PartitionClientOptions{
-		StartPosition: startPosition,
-		OwnerLevel:    processorOwnerLevel,
-		Prefetch:      p.prefetch,
-	})
+	partClient, err := openPartitionClient(ctx, ownership.PartitionID, preferredStartPosition)
+
+	if eh.IsGeoReplicationOffsetError(err) {
+		log.Writef(EventConsumer, "Event Hub is in geo-replication mode and we only have an integer offset, will fallback to starting at earliest+inclusive: %s", err.Error())
+
+		partClient, err = openPartitionClient(ctx, ownership.PartitionID, StartPosition{
+			Earliest:  to.Ptr(true),
+			Inclusive: true,
+		})
+	}
 
 	if err != nil {
 		consumers.Delete(ownership.PartitionID)
-		return err
-	}
-
-	// make sure we create the link _now_ - if we're stealing we want to stake a claim _now_, rather than
-	// later when the user actually calls ReceiveEvents(), since the acquisition of the link is lazy.
-	if err := partClient.init(ctx); err != nil {
-		consumers.Delete(ownership.PartitionID)
-		_ = partClient.Close(ctx)
 		return err
 	}
 
@@ -426,6 +453,8 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 	}
 }
 
+// getStartPosition gets the start position, preferring a stored Checkpoint, then falling back to per-partition defaults
+// and then the global default position.
 func (p *Processor) getStartPosition(getCheckpoints getCheckpoints, ownership Ownership) (StartPosition, error) {
 	checkpoints, err := getCheckpoints()
 

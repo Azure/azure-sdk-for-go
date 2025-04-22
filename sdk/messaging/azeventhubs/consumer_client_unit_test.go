@@ -65,11 +65,11 @@ func TestUnit_getOffsetExpression(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset >= '@latest'", expr)
 
-		expr, err = getStartExpression(StartPosition{Offset: to.Ptr(int64(101))})
+		expr, err = getStartExpression(StartPosition{Offset: to.Ptr("101")})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset > '101'", expr)
 
-		expr, err = getStartExpression(StartPosition{Offset: to.Ptr(int64(101)), Inclusive: true})
+		expr, err = getStartExpression(StartPosition{Offset: to.Ptr("101"), Inclusive: true})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset >= '101'", expr)
 
@@ -99,13 +99,13 @@ func TestUnit_getOffsetExpression(t *testing.T) {
 
 		expr, err := getStartExpression(StartPosition{
 			EnqueuedTime: &enqueueTime,
-			Offset:       to.Ptr[int64](101),
+			Offset:       to.Ptr("101"),
 		})
 		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 
 		expr, err = getStartExpression(StartPosition{
-			Offset: to.Ptr[int64](202),
+			Offset: to.Ptr("202"),
 			Latest: to.Ptr(true),
 		})
 		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")

@@ -99,6 +99,9 @@ type ConnectionParamsForTest struct {
 	EventHubName          string
 	EventHubLinksOnlyName string
 	EventHubNamespace     string
+	GeoDRNamespace        string // optional: resource requires special setup to create, so it's manual
+	GeoDRHubName          string // optional: resource requires special setup to create, so it's manual
+	GeoDRStorageEndpoint  string // optional: resource requires special setup to create, so it's manual
 	StorageEndpoint       string
 	ResourceGroup         string
 	SubscriptionID        string
@@ -150,6 +153,9 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 		EventHubName:          envVars["EVENTHUB_NAME"],
 		EventHubLinksOnlyName: envVars["EVENTHUB_LINKSONLY_NAME"],
 		EventHubNamespace:     envVars["EVENTHUB_NAMESPACE"],
+		GeoDRNamespace:        os.Getenv("EVENTHUBS_GEODR_NAMESPACE"),
+		GeoDRHubName:          os.Getenv("EVENTHUBS_GEODR_HUBNAME"),
+		GeoDRStorageEndpoint:  os.Getenv("EVENTHUBS_GEODR_CHECKPOINTSTORE_STORAGE_ENDPOINT"),
 		ResourceGroup:         envVars["RESOURCE_GROUP"],
 		StorageEndpoint:       envVars["CHECKPOINTSTORE_STORAGE_ENDPOINT"],
 		SubscriptionID:        envVars["AZURE_SUBSCRIPTION_ID"],

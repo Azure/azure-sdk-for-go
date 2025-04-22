@@ -79,9 +79,10 @@ func (e RPCError) RPCCode() int {
 }
 
 type RPCLinkArgs struct {
-	Client   amqpwrap.AMQPClient
-	Address  string
-	LogEvent azlog.Event
+	Client              amqpwrap.AMQPClient
+	Address             string
+	LogEvent            azlog.Event
+	DesiredCapabilities []string
 }
 
 // NewRPCLink will build a new request response link
@@ -115,7 +116,9 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		ctx,
 		args.Address,
 		"",
-		nil,
+		&amqp.SenderOptions{
+			DesiredCapabilities: args.DesiredCapabilities,
+		},
 	)
 	if err != nil {
 		_ = session.Close(ctx)
@@ -129,6 +132,8 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		// set our receiver link into the "receive and delete" mode - messages arrive pre-settled.
 		SettlementMode:            amqp.ReceiverSettleModeFirst.Ptr(),
 		RequestedSenderSettleMode: amqp.SenderSettleModeSettled.Ptr(),
+
+		DesiredCapabilities: args.DesiredCapabilities,
 	}
 
 	if link.sessionID != nil {

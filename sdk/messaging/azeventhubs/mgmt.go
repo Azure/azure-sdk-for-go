@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -17,11 +16,19 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
-// EventHubProperties represents properties of the Event Hub, like the number of partitions.
+// EventHubProperties represents properties of an event hub, like the number of partitions.
 type EventHubProperties struct {
-	CreatedOn    time.Time
-	Name         string
+	// CreatedOn is the time when the event hub was created.
+	CreatedOn time.Time
+
+	// Name of the event hub
+	Name string
+
+	// PartitionIDs for the event hub
 	PartitionIDs []string
+
+	// GeoReplicationEnabled is true if the event hub has geo-replication enabled.
+	GeoReplicationEnabled bool
 }
 
 // GetEventHubPropertiesOptions contains optional parameters for the GetEventHubProperties function
@@ -64,7 +71,7 @@ func getEventHubPropertiesInternal(ctx context.Context, ns internal.NamespaceFor
 		},
 	}
 
-	resp, err := rpcLink.RPC(context.Background(), amqpMsg)
+	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
 	if err != nil {
 		return EventHubProperties{}, err
@@ -88,7 +95,7 @@ type PartitionProperties struct {
 	IsEmpty bool
 
 	// LastEnqueuedOffset is the offset of latest enqueued event.
-	LastEnqueuedOffset int64
+	LastEnqueuedOffset string
 
 	// LastEnqueuedOn is the date of latest enqueued event.
 	LastEnqueuedOn time.Time
@@ -164,25 +171,32 @@ func newEventHubProperties(amqpValue any) (EventHubProperties, error) {
 	partitionIDs, ok := m["partition_ids"].([]string)
 
 	if !ok {
-		return EventHubProperties{}, fmt.Errorf("invalid message format")
+		return EventHubProperties{}, fmt.Errorf("invalid value for partition_ids")
 	}
 
 	name, ok := m["name"].(string)
 
 	if !ok {
-		return EventHubProperties{}, fmt.Errorf("invalid message format")
+		return EventHubProperties{}, fmt.Errorf("invalid value for name")
 	}
 
 	createdOn, ok := m["created_at"].(time.Time)
 
 	if !ok {
-		return EventHubProperties{}, fmt.Errorf("invalid message format")
+		return EventHubProperties{}, fmt.Errorf("invalid value for created_at")
+	}
+
+	geoFactor, ok := eh.ConvertToInt64(m["georeplication_factor"])
+
+	if !ok {
+		return EventHubProperties{}, fmt.Errorf("invalid value for georeplication_factor")
 	}
 
 	return EventHubProperties{
-		Name:         name,
-		CreatedOn:    createdOn,
-		PartitionIDs: partitionIDs,
+		Name:                  name,
+		CreatedOn:             createdOn,
+		PartitionIDs:          partitionIDs,
+		GeoReplicationEnabled: geoFactor > 1,
 	}, nil
 }
 
@@ -223,12 +237,6 @@ func newPartitionProperties(amqpValue any) (PartitionProperties, error) {
 		return PartitionProperties{}, errors.New("invalid message format")
 	}
 
-	lastEnqueuedOffset, err := strconv.ParseInt(lastEnqueuedOffsetStr, 10, 64)
-
-	if err != nil {
-		return PartitionProperties{}, fmt.Errorf("invalid message format: %w", err)
-	}
-
 	lastEnqueuedTime, ok := m["last_enqueued_time_utc"].(time.Time)
 
 	if !ok {
@@ -244,7 +252,7 @@ func newPartitionProperties(amqpValue any) (PartitionProperties, error) {
 	return PartitionProperties{
 		BeginningSequenceNumber:    beginningSequenceNumber,
 		LastEnqueuedSequenceNumber: lastEnqueuedSequenceNumber,
-		LastEnqueuedOffset:         lastEnqueuedOffset,
+		LastEnqueuedOffset:         lastEnqueuedOffsetStr,
 		LastEnqueuedOn:             lastEnqueuedTime,
 		IsEmpty:                    isEmpty,
 		PartitionID:                partition,

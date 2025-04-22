@@ -294,7 +294,7 @@ func initCheckpointStore(ctx context.Context, containerName string, testData *st
 		}
 
 		if partProps.IsEmpty {
-			newCheckpoint.Offset = to.Ptr[int64](-1)
+			newCheckpoint.Offset = to.Ptr("-1")
 			newCheckpoint.SequenceNumber = to.Ptr[int64](0)
 		} else {
 			newCheckpoint.Offset = &partProps.LastEnqueuedOffset

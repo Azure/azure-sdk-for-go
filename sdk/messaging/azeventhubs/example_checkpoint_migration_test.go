@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
@@ -93,13 +92,7 @@ func Example_migrateCheckpoints() {
 			PartitionID:             oldCheckpoint.PartitionID,
 		}
 
-		offset, err := strconv.ParseInt(oldCheckpoint.Checkpoint.Offset, 10, 64)
-
-		if err != nil {
-			panic(err)
-		}
-
-		newCheckpoint.Offset = &offset
+		newCheckpoint.Offset = &oldCheckpoint.Checkpoint.Offset
 		newCheckpoint.SequenceNumber = &oldCheckpoint.Checkpoint.SequenceNumber
 
 		if err := newCheckpointStore.SetCheckpoint(context.Background(), newCheckpoint, nil); err != nil {

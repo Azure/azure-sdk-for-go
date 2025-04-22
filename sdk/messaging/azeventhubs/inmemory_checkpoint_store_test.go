@@ -5,6 +5,7 @@ package azeventhubs
 import (
 	"context"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -29,7 +30,7 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 			EventHubName:            "eh",
 			ConsumerGroup:           "cg",
 			PartitionID:             "100",
-			Offset:                  to.Ptr(i),
+			Offset:                  to.Ptr(strconv.Itoa(int(i))),
 			SequenceNumber:          to.Ptr(i + 1),
 		}, nil)
 		require.NoError(t, err)
@@ -43,7 +44,7 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 				EventHubName:            "eh",
 				ConsumerGroup:           "cg",
 				PartitionID:             "100",
-				Offset:                  to.Ptr(i),
+				Offset:                  to.Ptr(strconv.Itoa(int(i))),
 				SequenceNumber:          to.Ptr(i + 1),
 			},
 		}, checkpoints)

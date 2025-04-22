@@ -25,6 +25,9 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amq
 		Client:   client,
 		Address:  managementPath,
 		LogEvent: exported.EventProducer,
+		DesiredCapabilities: []string{
+			CapabilityGeoDRReplication,
+		},
 	})
 
 	if err != nil {

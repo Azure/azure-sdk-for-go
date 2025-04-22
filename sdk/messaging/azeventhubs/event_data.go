@@ -5,7 +5,6 @@ package azeventhubs
 
 import (
 	"errors"
-	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -52,7 +51,7 @@ type ReceivedEventData struct {
 	PartitionKey *string
 
 	// Offset is the offset of the event.
-	Offset int64
+	Offset string
 
 	// RawAMQPMessage is the AMQP message, as received by the client. This can be useful to get access
 	// to properties that are not exposed by ReceivedEventData such as payloads encoded into the
@@ -176,10 +175,8 @@ func updateFromAMQPAnnotations(src *amqp.Message, dest *ReceivedEventData) error
 			return errors.New("enqueued time cannot be converted to a time.Time")
 		case offsetNumberAnnotation:
 			if offsetStr, ok := v.(string); ok {
-				if offset, err := strconv.ParseInt(offsetStr, 10, 64); err == nil {
-					dest.Offset = offset
-					continue
-				}
+				dest.Offset = offsetStr
+				continue
 			}
 			return errors.New("offset cannot be converted to an int64")
 		default:

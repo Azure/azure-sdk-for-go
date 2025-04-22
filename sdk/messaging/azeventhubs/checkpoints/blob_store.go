@@ -324,13 +324,7 @@ func updateCheckpoint(metadata map[string]*string, destCheckpoint *azeventhubs.C
 		return errors.New("offset is missing from metadata")
 	}
 
-	offset, err := strconv.ParseInt(*offsetStr, 10, 64)
-
-	if err != nil {
-		return fmt.Errorf("offset could not be parsed as an int64: %s", err.Error())
-	}
-
-	destCheckpoint.Offset = &offset
+	destCheckpoint.Offset = offsetStr
 	destCheckpoint.SequenceNumber = &sequenceNumber
 	return nil
 }
@@ -343,7 +337,7 @@ func newCheckpointBlobMetadata(cpd azeventhubs.Checkpoint) map[string]*string {
 	}
 
 	if cpd.Offset != nil {
-		m["offset"] = to.Ptr(strconv.FormatInt(*cpd.Offset, 10))
+		m["offset"] = cpd.Offset
 	}
 
 	return m

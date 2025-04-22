@@ -1,5 +1,13 @@
 # Release History
 
+## 6.6.0 (2025-04-22)
+### Features Added
+
+- New enum type `NginxIngressControllerType` with values `NginxIngressControllerTypeAnnotationControlled`, `NginxIngressControllerTypeExternal`, `NginxIngressControllerTypeInternal`, `NginxIngressControllerTypeNone`
+- New struct `ManagedClusterIngressProfileNginx`
+- New field `Nginx` in struct `ManagedClusterIngressProfileWebAppRouting`
+
+
 ## 7.0.0-beta.1 (2025-04-15)
 ### Breaking Changes
 

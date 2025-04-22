@@ -1,14 +1,16 @@
 # Release History
 
-## 0.6.2 (Unreleased)
+## 0.6.2 (2025-05-06)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- New system events have been added:
+  - ACSCallEndedEventData
+  - ACSCallParticipantAdded
+  - ACSCallParticipantRemoved
+  - ACSCallStarted
+  - ACSChatAzureBotCommandReceivedInThread
+  - ACSChatTypingIndicatorReceivedInThread
 
 ## 0.6.1 (2025-02-20)
 

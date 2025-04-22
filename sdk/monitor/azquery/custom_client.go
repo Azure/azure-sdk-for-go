@@ -72,7 +72,14 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
-	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	pipelineOptions := runtime.PipelineOptions{
+		APIVersion: runtime.APIVersionOptions{
+			Location: runtime.APIVersionLocationQueryParam,
+			Name:     "api-version",
+		},
+		PerRetry: []policy.Policy{authPolicy},
+	}
+	azcoreClient, err := azcore.NewClient(moduleName, version, pipelineOptions, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

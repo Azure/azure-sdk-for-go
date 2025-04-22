@@ -139,9 +139,9 @@ func (m *MockQueryPipeline) IsComplete() bool {
 }
 
 // NextBatch returns the next batch of items from the pipeline, as well as any requests needed to collect more data.
-func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, error) {
+func (m *MockQueryPipeline) Run() (*queryengine.PipelineResult, error) {
 	if m.IsClosed {
-		return nil, nil, fmt.Errorf("pipeline is closed")
+		return nil, fmt.Errorf("pipeline is closed")
 	}
 
 	items := make([][]byte, 0)
@@ -154,7 +154,11 @@ func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, e
 		for i := range m.partitionState {
 			// If any partition hasn't started yet, we can't return any items.
 			if !m.partitionState[i].started {
-				return nil, m.getRequests(), nil
+				return &queryengine.PipelineResult{
+					IsCompleted: false,
+					Items:       nil,
+					Requests:    m.getRequests(),
+				}, nil
 			}
 
 			if m.partitionState[i].IsExhausted() {
@@ -175,7 +179,7 @@ func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, e
 			// Add the item to the result set and remove it from the queue.
 			item, err := lowestPartition.PopItem()
 			if err != nil {
-				return nil, nil, err
+				return nil, err
 			}
 			items = append(items, item)
 		}
@@ -190,7 +194,11 @@ func (m *MockQueryPipeline) NextBatch() ([][]byte, []queryengine.QueryRequest, e
 		m.completed = true
 	}
 
-	return items, requests, nil
+	return &queryengine.PipelineResult{
+		IsCompleted: false,
+		Items:       items,
+		Requests:    requests,
+	}, nil
 }
 
 // getRequests returns a list of all the QueryRequests that are needed to get the next batch of items.

@@ -122,7 +122,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					}, nil
 				}
 				// Fetch more data from the pipeline
-				items, requests, err := queryPipeline.NextBatch()
+				result, err := queryPipeline.Run()
 				if err != nil {
 					queryPipeline.Close()
 					return QueryItemsResponse{}, err
@@ -130,16 +130,16 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 
 				// If we got items, we can return them, and we should do so now, to avoid making unnecessary requests.
 				// Even if there are requests in the queue, the pipeline should return the same requests again on the next call to NextBatch.
-				if len(items) > 0 {
+				if len(result.Items) > 0 {
 					return QueryItemsResponse{
 						Response: lastResponse,
-						Items:    items,
+						Items:    result.Items,
 					}, nil
 				}
 
 				// If we didn't have any items to return, we need to make requests for the items in the queue.
 				// If there are no requests, the pipeline should return true for IsComplete, so we'll stop on the next iteration.
-				for _, request := range requests {
+				for _, request := range result.Requests {
 					// Make the single-partition query request
 					qryRequest := queryRequest(request) // Cast to our type, which has toHeaders defined on it.
 					azResponse, err := c.database.client.sendQueryRequest(

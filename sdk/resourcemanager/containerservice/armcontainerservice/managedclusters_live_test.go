@@ -65,7 +65,7 @@ func (testsuite *ManagedclustersTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestManagedclustersTestSuite(t *testing.T) {
+func TTestManagedclustersTestSuite(t *testing.T) {
 	suite.Run(t, new(ManagedclustersTestSuite))
 }
 

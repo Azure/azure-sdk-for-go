@@ -39,6 +39,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewRetentionPoliciesClient creates a new instance of RetentionPoliciesClient.
+func (c *ClientFactory) NewRetentionPoliciesClient() *RetentionPoliciesClient {
+	return &RetentionPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSchedulersClient creates a new instance of SchedulersClient.
 func (c *ClientFactory) NewSchedulersClient() *SchedulersClient {
 	return &SchedulersClient{

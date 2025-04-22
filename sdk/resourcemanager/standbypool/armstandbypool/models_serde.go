@@ -15,6 +15,7 @@ import (
 func (c ContainerGroupInstanceCountSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "instanceCountsByState", c.InstanceCountsByState)
+	populate(objectMap, "zone", c.Zone)
 	return json.Marshal(objectMap)
 }
 
@@ -29,6 +30,9 @@ func (c *ContainerGroupInstanceCountSummary) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "instanceCountsByState":
 			err = unpopulate(val, "InstanceCountsByState", &c.InstanceCountsByState)
+			delete(rawMsg, key)
+		case "zone":
+			err = unpopulate(val, "Zone", &c.Zone)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -213,16 +217,78 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PoolResourceStateCount.
-func (p PoolResourceStateCount) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type PoolContainerGroupStateCount.
+func (p PoolContainerGroupStateCount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "count", p.Count)
 	populate(objectMap, "state", p.State)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type PoolResourceStateCount.
-func (p *PoolResourceStateCount) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type PoolContainerGroupStateCount.
+func (p *PoolContainerGroupStateCount) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "count":
+			err = unpopulate(val, "Count", &p.Count)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &p.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PoolStatus.
+func (p PoolStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", p.Code)
+	populate(objectMap, "message", p.Message)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PoolStatus.
+func (p *PoolStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+			err = unpopulate(val, "Code", &p.Code)
+			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &p.Message)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PoolVirtualMachineStateCount.
+func (p PoolVirtualMachineStateCount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "count", p.Count)
+	populate(objectMap, "state", p.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PoolVirtualMachineStateCount.
+func (p *PoolVirtualMachineStateCount) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", p, err)
@@ -266,6 +332,68 @@ func (s *StandbyContainerGroupPoolElasticityProfile) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "refillPolicy":
 			err = unpopulate(val, "RefillPolicy", &s.RefillPolicy)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StandbyContainerGroupPoolForecastValues.
+func (s StandbyContainerGroupPoolForecastValues) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "instancesRequestedCount", s.InstancesRequestedCount)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StandbyContainerGroupPoolForecastValues.
+func (s *StandbyContainerGroupPoolForecastValues) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "instancesRequestedCount":
+			err = unpopulate(val, "InstancesRequestedCount", &s.InstancesRequestedCount)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StandbyContainerGroupPoolPrediction.
+func (s StandbyContainerGroupPoolPrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "forecastInfo", s.ForecastInfo)
+	populateDateTimeRFC3339(objectMap, "forecastStartTime", s.ForecastStartTime)
+	populate(objectMap, "forecastValues", s.ForecastValues)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StandbyContainerGroupPoolPrediction.
+func (s *StandbyContainerGroupPoolPrediction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "forecastInfo":
+			err = unpopulate(val, "ForecastInfo", &s.ForecastInfo)
+			delete(rawMsg, key)
+		case "forecastStartTime":
+			err = unpopulateDateTimeRFC3339(val, "ForecastStartTime", &s.ForecastStartTime)
+			delete(rawMsg, key)
+		case "forecastValues":
+			err = unpopulate(val, "ForecastValues", &s.ForecastValues)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -363,6 +491,7 @@ func (s StandbyContainerGroupPoolResourceProperties) MarshalJSON() ([]byte, erro
 	populate(objectMap, "containerGroupProperties", s.ContainerGroupProperties)
 	populate(objectMap, "elasticityProfile", s.ElasticityProfile)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "zones", s.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -383,6 +512,9 @@ func (s *StandbyContainerGroupPoolResourceProperties) UnmarshalJSON(data []byte)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, "Zones", &s.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -428,6 +560,7 @@ func (s StandbyContainerGroupPoolResourceUpdateProperties) MarshalJSON() ([]byte
 	objectMap := make(map[string]any)
 	populate(objectMap, "containerGroupProperties", s.ContainerGroupProperties)
 	populate(objectMap, "elasticityProfile", s.ElasticityProfile)
+	populate(objectMap, "zones", s.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -445,6 +578,9 @@ func (s *StandbyContainerGroupPoolResourceUpdateProperties) UnmarshalJSON(data [
 			delete(rawMsg, key)
 		case "elasticityProfile":
 			err = unpopulate(val, "ElasticityProfile", &s.ElasticityProfile)
+			delete(rawMsg, key)
+		case "zones":
+			err = unpopulate(val, "Zones", &s.Zones)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -532,7 +668,9 @@ func (s *StandbyContainerGroupPoolRuntimeViewResourceListResult) UnmarshalJSON(d
 func (s StandbyContainerGroupPoolRuntimeViewResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "instanceCountSummary", s.InstanceCountSummary)
+	populate(objectMap, "prediction", s.Prediction)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "status", s.Status)
 	return json.Marshal(objectMap)
 }
 
@@ -548,8 +686,14 @@ func (s *StandbyContainerGroupPoolRuntimeViewResourceProperties) UnmarshalJSON(d
 		case "instanceCountSummary":
 			err = unpopulate(val, "InstanceCountSummary", &s.InstanceCountSummary)
 			delete(rawMsg, key)
+		case "prediction":
+			err = unpopulate(val, "Prediction", &s.Prediction)
+			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &s.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -581,6 +725,68 @@ func (s *StandbyVirtualMachinePoolElasticityProfile) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "minReadyCapacity":
 			err = unpopulate(val, "MinReadyCapacity", &s.MinReadyCapacity)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StandbyVirtualMachinePoolForecastValues.
+func (s StandbyVirtualMachinePoolForecastValues) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "instancesRequestedCount", s.InstancesRequestedCount)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StandbyVirtualMachinePoolForecastValues.
+func (s *StandbyVirtualMachinePoolForecastValues) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "instancesRequestedCount":
+			err = unpopulate(val, "InstancesRequestedCount", &s.InstancesRequestedCount)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StandbyVirtualMachinePoolPrediction.
+func (s StandbyVirtualMachinePoolPrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "forecastInfo", s.ForecastInfo)
+	populateDateTimeRFC3339(objectMap, "forecastStartTime", s.ForecastStartTime)
+	populate(objectMap, "forecastValues", s.ForecastValues)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StandbyVirtualMachinePoolPrediction.
+func (s *StandbyVirtualMachinePoolPrediction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "forecastInfo":
+			err = unpopulate(val, "ForecastInfo", &s.ForecastInfo)
+			delete(rawMsg, key)
+		case "forecastStartTime":
+			err = unpopulateDateTimeRFC3339(val, "ForecastStartTime", &s.ForecastStartTime)
+			delete(rawMsg, key)
+		case "forecastValues":
+			err = unpopulate(val, "ForecastValues", &s.ForecastValues)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -855,7 +1061,9 @@ func (s *StandbyVirtualMachinePoolRuntimeViewResourceListResult) UnmarshalJSON(d
 func (s StandbyVirtualMachinePoolRuntimeViewResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "instanceCountSummary", s.InstanceCountSummary)
+	populate(objectMap, "prediction", s.Prediction)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "status", s.Status)
 	return json.Marshal(objectMap)
 }
 
@@ -871,8 +1079,14 @@ func (s *StandbyVirtualMachinePoolRuntimeViewResourceProperties) UnmarshalJSON(d
 		case "instanceCountSummary":
 			err = unpopulate(val, "InstanceCountSummary", &s.InstanceCountSummary)
 			delete(rawMsg, key)
+		case "prediction":
+			err = unpopulate(val, "Prediction", &s.Prediction)
+			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &s.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {

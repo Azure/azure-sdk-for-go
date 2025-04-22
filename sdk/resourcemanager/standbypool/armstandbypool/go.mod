@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool/v2
 
 go 1.23.0
 

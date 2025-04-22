@@ -1,5 +1,21 @@
 # Release History
 
+## 1.3.0-beta.1 (2025-04-07)
+### Features Added
+
+- New value `OsDiskCreateOptionPersistent` added to enum type `OsDiskCreateOption`
+- New value `StorageApplianceDetailedStatusDegraded` added to enum type `StorageApplianceDetailedStatus`
+- New value `VirtualMachineDeviceModelTypeT3` added to enum type `VirtualMachineDeviceModelType`
+- New enum type `VulnerabilityScanningSettingsContainerScan` with values `VulnerabilityScanningSettingsContainerScanDisabled`, `VulnerabilityScanningSettingsContainerScanEnabled`
+- New struct `AnalyticsOutputSettings`
+- New struct `SecretArchiveSettings`
+- New struct `VulnerabilityScanningSettings`
+- New struct `VulnerabilityScanningSettingsPatch`
+- New field `AnalyticsOutputSettings`, `SecretArchiveSettings`, `VulnerabilityScanningSettings` in struct `ClusterPatchProperties`
+- New field `AnalyticsOutputSettings`, `SecretArchiveSettings`, `VulnerabilityScanningSettings` in struct `ClusterProperties`
+- New field `ConsoleExtendedLocation` in struct `VirtualMachineProperties`
+
+
 ## 1.2.0 (2025-02-11)
 ### Features Added
 

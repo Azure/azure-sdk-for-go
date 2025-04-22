@@ -6,11 +6,11 @@
 
 - New system events have been added:
   - ACSCallEndedEventData
-  - ACSCallParticipantAdded
-  - ACSCallParticipantRemoved
-  - ACSCallStarted
-  - ACSChatAzureBotCommandReceivedInThread
-  - ACSChatTypingIndicatorReceivedInThread
+  - ACSCallParticipantAddedEventData
+  - ACSCallParticipantRemovedEventData
+  - ACSCallStartedEventData
+  - ACSChatAzureBotCommandReceivedInThreadEventData
+  - ACSChatTypingIndicatorReceivedInThreadEventData
 
 ## 0.6.1 (2025-02-20)
 

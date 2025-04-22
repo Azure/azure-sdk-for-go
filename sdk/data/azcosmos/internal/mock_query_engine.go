@@ -195,7 +195,7 @@ func (m *MockQueryPipeline) Run() (*queryengine.PipelineResult, error) {
 	}
 
 	return &queryengine.PipelineResult{
-		IsCompleted: false,
+		IsCompleted: m.completed,
 		Items:       items,
 		Requests:    requests,
 	}, nil

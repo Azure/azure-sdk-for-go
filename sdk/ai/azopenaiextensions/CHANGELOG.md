@@ -2,15 +2,9 @@
 
 ## 0.1.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
-- Updating to `v0.1.0-alpha.37` of the [OpenAI go module](https://github.com/openai/openai-go).
+- This module is now DEPRECATED. The latest supported version of this module is at [github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions)
 
 ## 0.1.0 (2024-10-14)
 

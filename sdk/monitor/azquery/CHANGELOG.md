@@ -7,7 +7,7 @@
 * Added `AutoAdjustTimegrain`, `RollUpBy`, and `ValidateDimensions` options to `MetricsClient.QueryResource`
 
 ### Breaking Changes
-* Removed `MetricsBatchClient`
+* Removed `MetricsBatchClient`. For data plane metrics, including batch metrics, see the azmetrics module (https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics).
 
 ### Bugs Fixed
 

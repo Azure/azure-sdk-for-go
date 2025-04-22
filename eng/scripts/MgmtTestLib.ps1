@@ -16,10 +16,11 @@ function Invoke-MgmtTestgen ()
         [switch]$cleanGenerated,
         [switch]$format,
         [switch]$tidy,
+        [switch]$factoryGatherCommonParams,
         [string]$autorestPath = "",
         [string]$config = "autorest.md",
-        [string]$goExtension = "@autorest/go@4.0.0-preview.63",
-        [string]$testExtension = "@autorest/gotest@4.7.1",
+        [string]$goExtension = "@autorest/go@4.0.0-preview.72",
+        [string]$testExtension = "@autorest/gotest@4.7.4",
         [string]$outputFolder
     )
     if ($clean)
@@ -59,7 +60,11 @@ function Invoke-MgmtTestgen ()
         {
             $mockTestFlag = "false"
         }
-        
+        $factoryGatherAllParamsFlag = "true"
+        if ($factoryGatherCommonParams)
+        {
+            $factoryGatherAllParamsFlag = "false"
+        }
         $honorBodyPlacement = "true"
         if (Get-ChildItem "build.go" | Select-String -Pattern "alwaysSetBodyParamRequired")
         {
@@ -72,8 +77,8 @@ function Invoke-MgmtTestgen ()
             $removeUnreferencedTypesFlag = "true"
         }
 
-        Write-Host "autorest --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath"
-        npx autorest --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag $autorestPath
+        Write-Host "autorest --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath"
+        npx autorest --use=$goExtension --use=$testExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --generate-sdk=false --testmodeler.generate-mock-test=$mockTestFlag --testmodeler.generate-sdk-example=$exampleFlag --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath
         if ($LASTEXITCODE)
         {
             Write-Host "##[error]Error running autorest.gotest"

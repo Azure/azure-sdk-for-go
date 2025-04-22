@@ -1,6 +1,6 @@
 # Release History
 
-## 6.6.0 (2025-04-18)
+## 6.6.0 (2025-04-22)
 ### Features Added
 
 - New enum type `NginxIngressControllerType` with values `NginxIngressControllerTypeAnnotationControlled`, `NginxIngressControllerTypeExternal`, `NginxIngressControllerTypeInternal`, `NginxIngressControllerTypeNone`

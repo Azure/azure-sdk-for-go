@@ -7,6 +7,7 @@
 package azsystemevents_test
 
 import (
+	"os"
 	"testing"
 	"time"
 
@@ -628,4 +629,83 @@ func TestConsumeCloudEventAPICenter(t *testing.T) {
 			Version: to.Ptr("3.0.1"),
 		},
 	}, updatedEvent)
+}
+
+func TestConsumeCloudEventACS_2025_05(t *testing.T) {
+	t.Run("ACSCallEndedEventData", func(t *testing.T) {
+		contents, err := os.ReadFile("testdata/examples/call_ended.json")
+		require.NoError(t, err)
+
+		ce := parseCloudEvent(t, string(contents))
+		callEnded := deserializeSystemEvent[azsystemevents.ACSCallEndedEventData](t, ce.Data)
+
+		require.Equal(t, float64(10), *callEnded.CallDurationInSeconds)
+		require.Equal(t,
+			"8:acs:d9ff4983-39e7-4420-8d54-f6354ed06ccd_7a668e62-08f4-4ac1-b29e-f01010f57475",
+			*callEnded.StartedBy.CommunicationIdentifier.CommunicationUser.ID)
+		require.Equal(t, "055d13d6-8161-43c8-af88-2110373e1e4a", *callEnded.Group.ID)
+	})
+
+	t.Run("ACSCallParticipantAddedEventData", func(t *testing.T) {
+		contents, err := os.ReadFile("testdata/examples/call_participant_added.json")
+		require.NoError(t, err)
+
+		ce := parseCloudEvent(t, string(contents))
+		participantAdded := deserializeSystemEvent[azsystemevents.ACSCallParticipantAddedEventData](t, ce.Data)
+
+		require.NotNil(t, participantAdded)
+		require.Equal(t,
+			"8:acs:d9ff4983-39e7-4420-8d54-f6354ed06ccd_7a668e62-08f4-4ac1-b29e-f01010f57475",
+			*participantAdded.StartedBy.CommunicationIdentifier.CommunicationUser.ID)
+	})
+
+	t.Run("ACSCallParticipantRemovedEventData", func(t *testing.T) {
+		contents, err := os.ReadFile("testdata/examples/call_participant_removed.json")
+		require.NoError(t, err)
+
+		ce := parseCloudEvent(t, string(contents))
+		participantRemoved := deserializeSystemEvent[azsystemevents.ACSCallParticipantRemovedEventData](t, ce.Data)
+
+		require.NotNil(t, participantRemoved)
+		require.Equal(t,
+			"8:acs:d9ff4983-39e7-4420-8d54-f6354ed06ccd_7a668e62-08f4-4ac1-b29e-f01010f57475",
+			*participantRemoved.StartedBy.CommunicationIdentifier.CommunicationUser.ID)
+	})
+
+	t.Run("ACSCallStartedEventData", func(t *testing.T) {
+		contents, err := os.ReadFile("testdata/examples/call_started.json")
+		require.NoError(t, err)
+
+		ce := parseCloudEvent(t, string(contents))
+		callStarted := deserializeSystemEvent[azsystemevents.ACSCallStartedEventData](t, ce.Data)
+
+		require.NotNil(t, callStarted)
+		require.Equal(t,
+			"8:acs:d9ff4983-39e7-4420-8d54-f6354ed06ccd_7a668e62-08f4-4ac1-b29e-f01010f57475",
+			*callStarted.StartedBy.CommunicationIdentifier.CommunicationUser.ID)
+	})
+
+	t.Run("ACSChatAzureBotCommandReceivedInThreadEventData", func(t *testing.T) {
+		contents, err := os.ReadFile("testdata/examples/chat_azure_bot_command_received_in_thread.json")
+		require.NoError(t, err)
+
+		ce := parseCloudEvent(t, string(contents))
+		botCommand := deserializeSystemEvent[azsystemevents.ACSChatAzureBotCommandReceivedInThreadEventData](t, ce.Data)
+
+		require.NotNil(t, botCommand)
+		require.Equal(t, "John", *botCommand.SenderDisplayName)
+	})
+
+	t.Run("ACSChatTypingIndicatorReceivedInThreadEventData", func(t *testing.T) {
+		contents, err := os.ReadFile("testdata/examples/chat_typing_indicator_received_in_thread.json")
+		require.NoError(t, err)
+
+		ce := parseCloudEvent(t, string(contents))
+		typingIndicator := deserializeSystemEvent[azsystemevents.ACSChatTypingIndicatorReceivedInThreadEventData](t, ce.Data)
+
+		require.NotNil(t, typingIndicator)
+		require.Equal(t,
+			"oh+LGB2dUUadMcTAdRWQxQ.1.1.1.1.1827536918.1.7",
+			*typingIndicator.TransactionID)
+	})
 }

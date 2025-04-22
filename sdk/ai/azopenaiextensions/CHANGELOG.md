@@ -4,7 +4,7 @@
 
 ### Other Changes
 
-- This module is now DEPRECATED. The latest supported version of this module is at [github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions)
+- This module is now DEPRECATED. See [Migration Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai/MIGRATION.md) for more details.
 
 ## 0.1.0 (2024-10-14)
 

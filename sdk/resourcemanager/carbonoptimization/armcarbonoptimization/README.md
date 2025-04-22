@@ -1,4 +1,4 @@
-# Azure Carbonoptimization Module for Go
+# Azure Carbon Optimization Module for Go
 
 The `armcarbonoptimization` module provides operations for working with Azure Carbonoptimization.
 
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Carbonoptimization.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Carbon Optimization.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)

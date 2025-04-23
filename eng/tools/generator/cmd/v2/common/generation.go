@@ -669,7 +669,7 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	err := UpdateReadmeClientFactory(t.PackagePath)
 	if err != nil {
 		// only log error, avoid breaking the process
-		log.Printf("Failed to run common AfterGenerate: %v", err)
+		log.Printf("Update README.md ClientFactory failed! err: %v", err)
 	}
 	return nil, nil
 }

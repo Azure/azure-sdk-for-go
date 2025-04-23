@@ -67,9 +67,6 @@ parameters:
   - name: IncludeRelease
     type: boolean
     default: false
-  - name: ExcludeGoNMinus2
-    type: boolean
-    default: false
   - name: UsePipelineProxy
     type: boolean
     default: true
@@ -88,6 +85,14 @@ parameters:
   - name: PersistOidcToken
     type: boolean
     default: false
+  # This is a list of paths that will trigger the pipeline when changed. The paths can be absolute or relative to the location of this file.
+  # it is a way to trigger individual packages if another path is changed within go - pullrequest
+  # TriggeringPaths:
+  # - /an/absolute/repo/triggerpath
+  # - a/triggerpath/relative/to/this.ci.yml/
+  - name: TriggeringPaths
+    type: object
+    default: []
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -103,16 +108,30 @@ extends:
             parameters:
               JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
               MatrixConfigs:
-                - ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
-                    - Name: ci_test_base
-                      Path: eng/pipelines/templates/stages/ci-platform-matrix-complete.json
-                      Selection: all
-                      GenerateVMJobs: true
-                - ${{ else }}:
-                    - Name: ci_test_base
-                      Path: eng/pipelines/templates/stages/ci-platform-matrix.json
-                      Selection: all
-                      GenerateVMJobs: true
+                - ${{ each config in parameters.MatrixConfigs }}:
+                    - ${{ config }}
+                - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                    - ${{ config }}
+              MatrixFilters:
+                - ${{ parameters.MatrixFilters }}
+              MatrixReplace:
+                - ${{ parameters.MatrixReplace }}
+              ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+                SparseCheckoutPaths:
+                  - "/*"
+                EnablePRGeneration: true
+                PRMatrixSetting: Packages
+                PRJobBatchSize: 20
+                PRMatrixSparseIndirect: false
+                PreGenerationSteps:
+                  # in other languages, will publish the package properties from this prestep location, then download
+                  # the artifact on the given test step. However, for go, discovering package properties is FAR faster than
+                  # taking the time to upload, scan, and download the artifact. We will just invoke save-package-properties
+                  # on the test step directly, then filter it by the batch package names during the run of the test batch
+                  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+                    parameters:
+                      ServiceDirectory: ${{parameters.ServiceDirectory}}
+                      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
               AdditionalParameters:
                 EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
@@ -134,6 +153,10 @@ extends:
               os: linux
 
             steps:
+              - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
+                parameters:
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
               - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 
               - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0

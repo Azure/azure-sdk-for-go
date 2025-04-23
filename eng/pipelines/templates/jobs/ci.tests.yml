@@ -52,13 +52,17 @@ jobs:
     os: ${{ parameters.OSName }}
 
   steps:
+  - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
+    parameters:
+      ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
       AgentImage: ${{ parameters.OSName }}
 
   - task: GoTool@0
     inputs:
-      version: '$(go.version)'
+      version: '$(GoVersion)'
     displayName: "Select Go Version"
 
   - template: ../steps/create-go-workspace.yml
@@ -67,7 +71,7 @@ jobs:
     parameters:
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
       Image: $(OSVmImage)
-      GoVersion: $(go.version)
+      GoVersion: $(GoVersion)
       TestProxy: ${{ parameters.UsePipelineProxy }}
       TestRunTime: ${{ parameters.TestRunTime }}
       EnableRaceDetector: ${{ parameters.EnableRaceDetector }}

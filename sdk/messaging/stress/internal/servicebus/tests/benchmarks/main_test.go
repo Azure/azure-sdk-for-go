@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"stress/internal/sb/shared"
+	"stress/internal/servicebus/shared"
 )
 
 func TestMain(m *testing.M) {

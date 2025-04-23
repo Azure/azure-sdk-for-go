@@ -3,4 +3,4 @@ sb-stress*
 Dockerfile
 *.go
 *.log
-*.json
+

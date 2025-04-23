@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_ListBySubscription.json
 func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,6 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 				WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 		// 					{
 		// 						Name: to.Ptr("My-GP-01"),
-		// 						EnableFips: to.Ptr(true),
 		// 						MaximumCount: to.Ptr[int32](12),
 		// 						MinimumCount: to.Ptr[int32](3),
 		// 						WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -100,13 +99,6 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armappcontainers.ManagedEnvironmentProperties{
-		// 				AppLogsConfiguration: &armappcontainers.AppLogsConfiguration{
-		// 					Destination: to.Ptr("log-analytics"),
-		// 					LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
-		// 						CustomerID: to.Ptr("9ccccd4a-268f-4a9a-8d03-9bfe77c3fbd2"),
-		// 						DynamicJSONColumns: to.Ptr(true),
-		// 					},
-		// 				},
 		// 				CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 					CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 					DNSSuffix: to.Ptr("www.my-name2.com"),
@@ -129,7 +121,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_ListByResourceGroup.json
 func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +171,6 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 				WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 		// 					{
 		// 						Name: to.Ptr("My-GP-01"),
-		// 						EnableFips: to.Ptr(true),
 		// 						MaximumCount: to.Ptr[int32](12),
 		// 						MinimumCount: to.Ptr[int32](3),
 		// 						WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -233,7 +224,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_Get.json
 func ExampleManagedEnvironmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +284,6 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 			{
 	// 				Name: to.Ptr("My-GP-01"),
-	// 				EnableFips: to.Ptr(true),
 	// 				MaximumCount: to.Ptr[int32](12),
 	// 				MinimumCount: to.Ptr[int32](3),
 	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -319,7 +309,7 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
 func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithCustomInfrastructureResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +342,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 				{
 					Name:                to.Ptr("My-GP-01"),
-					EnableFips:          to.Ptr(true),
 					MaximumCount:        to.Ptr[int32](12),
 					MinimumCount:        to.Ptr[int32](3),
 					WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -415,7 +404,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 			{
 	// 				Name: to.Ptr("My-GP-01"),
-	// 				EnableFips: to.Ptr(true),
 	// 				MaximumCount: to.Ptr[int32](12),
 	// 				MinimumCount: to.Ptr[int32](3),
 	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -441,7 +429,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_CreateOrUpdate.json
 func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,14 +449,10 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 			},
 		},
 		Properties: &armappcontainers.ManagedEnvironmentProperties{
-			AppInsightsConfiguration: &armappcontainers.AppInsightsConfiguration{
-				ConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/"),
-			},
 			AppLogsConfiguration: &armappcontainers.AppLogsConfiguration{
 				LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
-					CustomerID:         to.Ptr("string"),
-					DynamicJSONColumns: to.Ptr(true),
-					SharedKey:          to.Ptr("string"),
+					CustomerID: to.Ptr("string"),
+					SharedKey:  to.Ptr("string"),
 				},
 			},
 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
@@ -477,39 +461,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 				DNSSuffix:           to.Ptr("www.my-name.com"),
 			},
 			DaprAIConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/"),
-			OpenTelemetryConfiguration: &armappcontainers.OpenTelemetryConfiguration{
-				DestinationsConfiguration: &armappcontainers.DestinationsConfiguration{
-					DataDogConfiguration: &armappcontainers.DataDogConfiguration{
-						Key:  to.Ptr("000000000000000000000000"),
-						Site: to.Ptr("string"),
-					},
-					OtlpConfigurations: []*armappcontainers.OtlpConfiguration{
-						{
-							Name:     to.Ptr("dashboard"),
-							Endpoint: to.Ptr("dashboard.k8s.region.azurecontainerapps.io:80"),
-							Headers: []*armappcontainers.Header{
-								{
-									Key:   to.Ptr("api-key"),
-									Value: to.Ptr("xxxxxxxxxxx"),
-								}},
-							Insecure: to.Ptr(true),
-						}},
-				},
-				LogsConfiguration: &armappcontainers.LogsConfiguration{
-					Destinations: []*string{
-						to.Ptr("appInsights")},
-				},
-				MetricsConfiguration: &armappcontainers.MetricsConfiguration{
-					Destinations: []*string{
-						to.Ptr("dataDog")},
-					IncludeKeda: to.Ptr(true),
-				},
-				TracesConfiguration: &armappcontainers.TracesConfiguration{
-					Destinations: []*string{
-						to.Ptr("appInsights")},
-					IncludeDapr: to.Ptr(true),
-				},
-			},
 			PeerAuthentication: &armappcontainers.ManagedEnvironmentPropertiesPeerAuthentication{
 				Mtls: &armappcontainers.Mtls{
 					Enabled: to.Ptr(true),
@@ -526,7 +477,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 				{
 					Name:                to.Ptr("My-GP-01"),
-					EnableFips:          to.Ptr(true),
 					MaximumCount:        to.Ptr[int32](12),
 					MinimumCount:        to.Ptr[int32](3),
 					WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -580,7 +530,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 		AppLogsConfiguration: &armappcontainers.AppLogsConfiguration{
 	// 			LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
 	// 				CustomerID: to.Ptr("string"),
-	// 				DynamicJSONColumns: to.Ptr(true),
 	// 			},
 	// 		},
 	// 		CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
@@ -593,71 +542,45 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 		DefaultDomain: to.Ptr("testcontainerenv.k4apps.io"),
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
 	// 		InfrastructureResourceGroup: to.Ptr("capp-svc-testcontainerenv-eastus"),
-	// 		OpenTelemetryConfiguration: &armappcontainers.OpenTelemetryConfiguration{
-	// 			DestinationsConfiguration: &armappcontainers.DestinationsConfiguration{
-	// 				DataDogConfiguration: &armappcontainers.DataDogConfiguration{
-	// 					Site: to.Ptr("datadoghq.com"),
-	// 				},
-	// 				OtlpConfigurations: []*armappcontainers.OtlpConfiguration{
-	// 					{
-	// 						Name: to.Ptr("dashboard"),
-	// 						Endpoint: to.Ptr("dashboard.k8s.region.azurecontainerapps.io:80"),
-	// 						Insecure: to.Ptr(true),
-	// 				}},
+	// 		PeerAuthentication: &armappcontainers.ManagedEnvironmentPropertiesPeerAuthentication{
+	// 			Mtls: &armappcontainers.Mtls{
+	// 				Enabled: to.Ptr(true),
 	// 			},
-	// 			LogsConfiguration: &armappcontainers.LogsConfiguration{
-	// 				Destinations: []*string{
-	// 					to.Ptr("appInsights")},
-	// 				},
-	// 				MetricsConfiguration: &armappcontainers.MetricsConfiguration{
-	// 					Destinations: []*string{
-	// 						to.Ptr("dataDog")},
-	// 					},
-	// 					TracesConfiguration: &armappcontainers.TracesConfiguration{
-	// 						Destinations: []*string{
-	// 							to.Ptr("appInsights")},
-	// 						},
-	// 					},
-	// 					PeerAuthentication: &armappcontainers.ManagedEnvironmentPropertiesPeerAuthentication{
-	// 						Mtls: &armappcontainers.Mtls{
-	// 							Enabled: to.Ptr(true),
-	// 						},
-	// 					},
-	// 					ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
-	// 					StaticIP: to.Ptr("1.2.3.4"),
-	// 					VnetConfiguration: &armappcontainers.VnetConfiguration{
-	// 						InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
-	// 					},
-	// 					WorkloadProfiles: []*armappcontainers.WorkloadProfile{
-	// 						{
-	// 							Name: to.Ptr("My-GP-01"),
-	// 							EnableFips: to.Ptr(true),
-	// 							MaximumCount: to.Ptr[int32](12),
-	// 							MinimumCount: to.Ptr[int32](3),
-	// 							WorkloadProfileType: to.Ptr("GeneralPurpose"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("My-MO-01"),
-	// 							MaximumCount: to.Ptr[int32](6),
-	// 							MinimumCount: to.Ptr[int32](3),
-	// 							WorkloadProfileType: to.Ptr("MemoryOptimized"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("My-CO-01"),
-	// 							MaximumCount: to.Ptr[int32](6),
-	// 							MinimumCount: to.Ptr[int32](3),
-	// 							WorkloadProfileType: to.Ptr("ComputeOptimized"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("My-consumption-01"),
-	// 							WorkloadProfileType: to.Ptr("Consumption"),
-	// 					}},
-	// 					ZoneRedundant: to.Ptr(true),
-	// 				},
-	// 			}
+	// 		},
+	// 		ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
+	// 		StaticIP: to.Ptr("1.2.3.4"),
+	// 		VnetConfiguration: &armappcontainers.VnetConfiguration{
+	// 			InfrastructureSubnetID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/RGName/providers/Microsoft.Network/virtualNetworks/VNetName/subnets/subnetName1"),
+	// 		},
+	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
+	// 			{
+	// 				Name: to.Ptr("My-GP-01"),
+	// 				MaximumCount: to.Ptr[int32](12),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-MO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("MemoryOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-CO-01"),
+	// 				MaximumCount: to.Ptr[int32](6),
+	// 				MinimumCount: to.Ptr[int32](3),
+	// 				WorkloadProfileType: to.Ptr("ComputeOptimized"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("My-consumption-01"),
+	// 				WorkloadProfileType: to.Ptr("Consumption"),
+	// 		}},
+	// 		ZoneRedundant: to.Ptr(true),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_Delete.json
 func ExampleManagedEnvironmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -678,7 +601,7 @@ func ExampleManagedEnvironmentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_Patch.json
 func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +652,6 @@ func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	// 		WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 			{
 	// 				Name: to.Ptr("My-GP-01"),
-	// 				EnableFips: to.Ptr(true),
 	// 				MaximumCount: to.Ptr[int32](12),
 	// 				MinimumCount: to.Ptr[int32](3),
 	// 				WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -755,7 +677,7 @@ func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_GetAuthToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_GetAuthToken.json
 func ExampleManagedEnvironmentsClient_GetAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +707,7 @@ func ExampleManagedEnvironmentsClient_GetAuthToken() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_ListWorkloadProfileStates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_ListWorkloadProfileStates.json
 func ExampleManagedEnvironmentsClient_NewListWorkloadProfileStatesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

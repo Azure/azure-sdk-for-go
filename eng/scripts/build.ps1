@@ -1,5 +1,6 @@
 #Requires -Version 7.0
 param(
+    # filter = service filter
     [string]$filter,
     [switch]$clean,
     [switch]$vet,
@@ -10,9 +11,9 @@ param(
     [switch]$tidy,
     [switch]$alwaysSetBodyParamRequired,
     [switch]$removeUnreferencedTypes,
-    [switch]$factoryGatherAllParams,
+    [switch]$factoryGatherCommonParams,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.70",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.72",
     [string]$filePrefix,
     [string]$outputFolder
 )
@@ -39,7 +40,7 @@ function Process-Sdk ()
     {
         Write-Host "##[command]Executing autorest.go in " $currentDirectory
         $autorestPath = "./" + $config
-        
+
         if ($outputFolder -eq '')
         {
             $outputFolder = $currentDirectory
@@ -56,11 +57,11 @@ function Process-Sdk ()
         {
             $removeUnreferencedTypesFlag = "true"
         }
-        
-        $factoryGatherAllParamsFlag = "false"
-        if ($factoryGatherAllParams)
+
+        $factoryGatherAllParamsFlag = "true"
+        if ($factoryGatherCommonParams)
         {
-            $factoryGatherAllParamsFlag = "true"
+            $factoryGatherAllParamsFlag = "false"
         }
 
         if ($filePrefix)
@@ -73,7 +74,7 @@ function Process-Sdk ()
             Write-Host "autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath"
             autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=$honorBodyPlacement --remove-unreferenced-types=$removeUnreferencedTypesFlag --factory-gather-all-params=$factoryGatherAllParamsFlag $autorestPath
         }
-        
+
         if ($LASTEXITCODE)
         {
             Write-Host "##[error]Error running autorest.go"
@@ -113,9 +114,11 @@ function Process-Sdk ()
 try
 {
     $startingDirectory = Get-Location
+    $sdks = @()
 
     $sdks = Get-AllPackageInfoFromRepo $filter
 
+    Write-Host "Successfully found $($sdks.Count) go modules to build."
     foreach ($sdk in $sdks)
     {
         Push-Location $sdk.DirectoryPath

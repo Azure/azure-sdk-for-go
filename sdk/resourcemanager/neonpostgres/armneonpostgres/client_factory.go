@@ -32,6 +32,46 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewBranchesClient creates a new instance of BranchesClient.
+func (c *ClientFactory) NewBranchesClient() *BranchesClient {
+	return &BranchesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewComputesClient creates a new instance of ComputesClient.
+func (c *ClientFactory) NewComputesClient() *ComputesClient {
+	return &ComputesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEndpointsClient creates a new instance of EndpointsClient.
+func (c *ClientFactory) NewEndpointsClient() *EndpointsClient {
+	return &EndpointsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNeonDatabasesClient creates a new instance of NeonDatabasesClient.
+func (c *ClientFactory) NewNeonDatabasesClient() *NeonDatabasesClient {
+	return &NeonDatabasesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNeonRolesClient creates a new instance of NeonRolesClient.
+func (c *ClientFactory) NewNeonRolesClient() *NeonRolesClient {
+	return &NeonRolesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -42,6 +82,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewOrganizationsClient creates a new instance of OrganizationsClient.
 func (c *ClientFactory) NewOrganizationsClient() *OrganizationsClient {
 	return &OrganizationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewProjectsClient creates a new instance of ProjectsClient.
+func (c *ClientFactory) NewProjectsClient() *ProjectsClient {
+	return &ProjectsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

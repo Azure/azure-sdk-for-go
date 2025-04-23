@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -21,10 +21,12 @@ func TestClient_GetCompletions(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Completions.Endpoint)
 
 	resp, err := client.Completions.New(context.Background(), openai.CompletionNewParams{
-		Prompt:      openai.F[openai.CompletionNewParamsPromptUnion](openai.CompletionNewParamsPromptArrayOfStrings{"What is Azure OpenAI?"}),
+		Prompt: openai.CompletionNewParamsPromptUnion{
+			OfArrayOfStrings: []string{"What is Azure OpenAI?"},
+		},
 		MaxTokens:   openai.Int(2048 - 127),
 		Temperature: openai.Float(0.0),
-		Model:       openai.F(openai.CompletionNewParamsModel(azureOpenAI.Completions.Model)),
+		Model:       openai.CompletionNewParamsModel(azureOpenAI.Completions.Model),
 	})
 	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
@@ -59,12 +61,12 @@ func TestGetCompletionsStream(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Completions.Endpoint)
 
 	stream := client.Completions.NewStreaming(context.TODO(), openai.CompletionNewParams{
-		Model:       openai.F(openai.CompletionNewParamsModel(azureOpenAI.Completions.Model)),
+		Model:       openai.CompletionNewParamsModel(azureOpenAI.Completions.Model),
 		MaxTokens:   openai.Int(2048),
 		Temperature: openai.Float(0.0),
-		Prompt: openai.F[openai.CompletionNewParamsPromptUnion](
-			openai.CompletionNewParamsPromptArrayOfStrings{"What is Azure OpenAI?"},
-		),
+		Prompt: openai.CompletionNewParamsPromptUnion{
+			OfArrayOfStrings: []string{"What is Azure OpenAI?"},
+		},
 	})
 
 	t.Cleanup(func() {

@@ -481,6 +481,17 @@ func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
 	return "", nil
 }
 
+func GetFactoryGatherAllParamsFlag(path string) (string, error) {
+	buildGo, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	if strings.Contains(string(buildGo), "-factoryGatherCommonParams") {
+		return "-factoryGatherCommonParams", nil
+	}
+	return "", nil
+}
+
 // AddTagSet add tag in file
 func AddTagSet(path, tag string) error {
 	b, err := os.ReadFile(path)

@@ -1,5 +1,63 @@
 # Release History
 
+## 0.10.0 (2025-03-18)
+### Features Added
+
+- New function `*ClientFactory.NewDefinitionVersionsClient() *DefinitionVersionsClient`
+- New function `*ClientFactory.NewSetDefinitionVersionsClient() *SetDefinitionVersionsClient`
+- New function `NewDefinitionVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DefinitionVersionsClient, error)`
+- New function `*DefinitionVersionsClient.CreateOrUpdate(context.Context, string, string, DefinitionVersion, *DefinitionVersionsClientCreateOrUpdateOptions) (DefinitionVersionsClientCreateOrUpdateResponse, error)`
+- New function `*DefinitionVersionsClient.CreateOrUpdateAtManagementGroup(context.Context, string, string, string, DefinitionVersion, *DefinitionVersionsClientCreateOrUpdateAtManagementGroupOptions) (DefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse, error)`
+- New function `*DefinitionVersionsClient.Delete(context.Context, string, string, *DefinitionVersionsClientDeleteOptions) (DefinitionVersionsClientDeleteResponse, error)`
+- New function `*DefinitionVersionsClient.DeleteAtManagementGroup(context.Context, string, string, string, *DefinitionVersionsClientDeleteAtManagementGroupOptions) (DefinitionVersionsClientDeleteAtManagementGroupResponse, error)`
+- New function `*DefinitionVersionsClient.Get(context.Context, string, string, *DefinitionVersionsClientGetOptions) (DefinitionVersionsClientGetResponse, error)`
+- New function `*DefinitionVersionsClient.GetAtManagementGroup(context.Context, string, string, string, *DefinitionVersionsClientGetAtManagementGroupOptions) (DefinitionVersionsClientGetAtManagementGroupResponse, error)`
+- New function `*DefinitionVersionsClient.GetBuiltIn(context.Context, string, string, *DefinitionVersionsClientGetBuiltInOptions) (DefinitionVersionsClientGetBuiltInResponse, error)`
+- New function `*DefinitionVersionsClient.ListAll(context.Context, *DefinitionVersionsClientListAllOptions) (DefinitionVersionsClientListAllResponse, error)`
+- New function `*DefinitionVersionsClient.ListAllAtManagementGroup(context.Context, string, *DefinitionVersionsClientListAllAtManagementGroupOptions) (DefinitionVersionsClientListAllAtManagementGroupResponse, error)`
+- New function `*DefinitionVersionsClient.ListAllBuiltins(context.Context, *DefinitionVersionsClientListAllBuiltinsOptions) (DefinitionVersionsClientListAllBuiltinsResponse, error)`
+- New function `*DefinitionVersionsClient.NewListBuiltInPager(string, *DefinitionVersionsClientListBuiltInOptions) *runtime.Pager[DefinitionVersionsClientListBuiltInResponse]`
+- New function `*DefinitionVersionsClient.NewListByManagementGroupPager(string, string, *DefinitionVersionsClientListByManagementGroupOptions) *runtime.Pager[DefinitionVersionsClientListByManagementGroupResponse]`
+- New function `*DefinitionVersionsClient.NewListPager(string, *DefinitionVersionsClientListOptions) *runtime.Pager[DefinitionVersionsClientListResponse]`
+- New function `NewSetDefinitionVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SetDefinitionVersionsClient, error)`
+- New function `*SetDefinitionVersionsClient.CreateOrUpdate(context.Context, string, string, SetDefinitionVersion, *SetDefinitionVersionsClientCreateOrUpdateOptions) (SetDefinitionVersionsClientCreateOrUpdateResponse, error)`
+- New function `*SetDefinitionVersionsClient.CreateOrUpdateAtManagementGroup(context.Context, string, string, string, SetDefinitionVersion, *SetDefinitionVersionsClientCreateOrUpdateAtManagementGroupOptions) (SetDefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse, error)`
+- New function `*SetDefinitionVersionsClient.Delete(context.Context, string, string, *SetDefinitionVersionsClientDeleteOptions) (SetDefinitionVersionsClientDeleteResponse, error)`
+- New function `*SetDefinitionVersionsClient.DeleteAtManagementGroup(context.Context, string, string, string, *SetDefinitionVersionsClientDeleteAtManagementGroupOptions) (SetDefinitionVersionsClientDeleteAtManagementGroupResponse, error)`
+- New function `*SetDefinitionVersionsClient.Get(context.Context, string, string, *SetDefinitionVersionsClientGetOptions) (SetDefinitionVersionsClientGetResponse, error)`
+- New function `*SetDefinitionVersionsClient.GetAtManagementGroup(context.Context, string, string, string, *SetDefinitionVersionsClientGetAtManagementGroupOptions) (SetDefinitionVersionsClientGetAtManagementGroupResponse, error)`
+- New function `*SetDefinitionVersionsClient.GetBuiltIn(context.Context, string, string, *SetDefinitionVersionsClientGetBuiltInOptions) (SetDefinitionVersionsClientGetBuiltInResponse, error)`
+- New function `*SetDefinitionVersionsClient.ListAll(context.Context, *SetDefinitionVersionsClientListAllOptions) (SetDefinitionVersionsClientListAllResponse, error)`
+- New function `*SetDefinitionVersionsClient.ListAllAtManagementGroup(context.Context, string, *SetDefinitionVersionsClientListAllAtManagementGroupOptions) (SetDefinitionVersionsClientListAllAtManagementGroupResponse, error)`
+- New function `*SetDefinitionVersionsClient.ListAllBuiltins(context.Context, *SetDefinitionVersionsClientListAllBuiltinsOptions) (SetDefinitionVersionsClientListAllBuiltinsResponse, error)`
+- New function `*SetDefinitionVersionsClient.NewListBuiltInPager(string, *SetDefinitionVersionsClientListBuiltInOptions) *runtime.Pager[SetDefinitionVersionsClientListBuiltInResponse]`
+- New function `*SetDefinitionVersionsClient.NewListByManagementGroupPager(string, string, *SetDefinitionVersionsClientListByManagementGroupOptions) *runtime.Pager[SetDefinitionVersionsClientListByManagementGroupResponse]`
+- New function `*SetDefinitionVersionsClient.NewListPager(string, *SetDefinitionVersionsClientListOptions) *runtime.Pager[SetDefinitionVersionsClientListResponse]`
+- New struct `DefinitionVersion`
+- New struct `DefinitionVersionListResult`
+- New struct `DefinitionVersionProperties`
+- New struct `SetDefinitionVersion`
+- New struct `SetDefinitionVersionListResult`
+- New struct `SetDefinitionVersionProperties`
+- New field `DefinitionVersion`, `EffectiveDefinitionVersion`, `LatestDefinitionVersion` in struct `AssignmentProperties`
+- New field `Expand` in struct `AssignmentsClientGetByIDOptions`
+- New field `Expand` in struct `AssignmentsClientGetOptions`
+- New field `Expand` in struct `AssignmentsClientListForManagementGroupOptions`
+- New field `Expand` in struct `AssignmentsClientListForResourceGroupOptions`
+- New field `Expand` in struct `AssignmentsClientListForResourceOptions`
+- New field `Expand` in struct `AssignmentsClientListOptions`
+- New field `Version`, `Versions` in struct `DefinitionProperties`
+- New field `DefinitionVersion`, `EffectiveDefinitionVersion`, `LatestDefinitionVersion` in struct `DefinitionReference`
+- New field `Schema` in struct `ParameterDefinitionsValue`
+- New field `Version`, `Versions` in struct `SetDefinitionProperties`
+- New field `Expand` in struct `SetDefinitionsClientGetAtManagementGroupOptions`
+- New field `Expand` in struct `SetDefinitionsClientGetBuiltInOptions`
+- New field `Expand` in struct `SetDefinitionsClientGetOptions`
+- New field `Expand` in struct `SetDefinitionsClientListBuiltInOptions`
+- New field `Expand` in struct `SetDefinitionsClientListByManagementGroupOptions`
+- New field `Expand` in struct `SetDefinitionsClientListOptions`
+
+
 ## 0.9.0 (2023-11-24)
 ### Features Added
 

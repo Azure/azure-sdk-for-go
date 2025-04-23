@@ -57,6 +57,11 @@ const (
 	TypeRedisScalingCompleted                                         = "Microsoft.Cache.ScalingCompleted"                                                     // maps to RedisScalingCompletedEventData
 	TypeACSMessageDeliveryStatusUpdated                               = "Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated"                         // maps to ACSMessageDeliveryStatusUpdatedEventData
 	TypeACSMessageReceived                                            = "Microsoft.Communication.AdvancedMessageReceived"                                      // maps to ACSMessageReceivedEventData
+	TypeACSCallEnded                                                  = "Microsoft.Communication.CallEnded"                                                    // maps to ACSCallEndedEventData
+	TypeACSCallParticipantAdded                                       = "Microsoft.Communication.CallParticipantAdded"                                         // maps to ACSCallParticipantAddedEventData
+	TypeACSCallParticipantRemoved                                     = "Microsoft.Communication.CallParticipantRemoved"                                       // maps to ACSCallParticipantRemovedEventData
+	TypeACSCallStarted                                                = "Microsoft.Communication.CallStarted"                                                  // maps to ACSCallStartedEventData
+	TypeACSChatAzureBotCommandReceivedInThread                        = "Microsoft.Communication.ChatAzureBotCommandReceivedInThread"                          // maps to ACSChatAzureBotCommandReceivedInThreadEventData
 	TypeACSChatMessageDeleted                                         = "Microsoft.Communication.ChatMessageDeleted"                                           // maps to ACSChatMessageDeletedEventData
 	TypeACSChatMessageDeletedInThread                                 = "Microsoft.Communication.ChatMessageDeletedInThread"                                   // maps to ACSChatMessageDeletedInThreadEventData
 	TypeACSChatMessageEdited                                          = "Microsoft.Communication.ChatMessageEdited"                                            // maps to ACSChatMessageEditedEventData
@@ -73,6 +78,7 @@ const (
 	TypeACSChatThreadPropertiesUpdated                                = "Microsoft.Communication.ChatThreadPropertiesUpdated"                                  // maps to ACSChatThreadPropertiesUpdatedEventData
 	TypeACSChatThreadPropertiesUpdatedPerUser                         = "Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser"                           // maps to ACSChatThreadPropertiesUpdatedPerUserEventData
 	TypeACSChatThreadWithUserDeleted                                  = "Microsoft.Communication.ChatThreadWithUserDeleted"                                    // maps to ACSChatThreadWithUserDeletedEventData
+	TypeACSChatTypingIndicatorReceivedInThread                        = "Microsoft.Communication.ChatTypingIndicatorReceivedInThread"                          // maps to ACSChatTypingIndicatorReceivedInThreadEventData
 	TypeACSEmailDeliveryReportReceived                                = "Microsoft.Communication.EmailDeliveryReportReceived"                                  // maps to ACSEmailDeliveryReportReceivedEventData
 	TypeACSEmailEngagementTrackingReportReceived                      = "Microsoft.Communication.EmailEngagementTrackingReportReceived"                        // maps to ACSEmailEngagementTrackingReportReceivedEventData
 	TypeACSIncomingCall                                               = "Microsoft.Communication.IncomingCall"                                                 // maps to ACSIncomingCallEventData

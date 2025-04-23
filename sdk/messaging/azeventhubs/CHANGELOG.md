@@ -1,5 +1,21 @@
 # Release History
 
+## 1.3.3-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.2 (2025-04-08)
+
+### Bugs Fixed
+
+- Processor now only lists checkpoints when it needs to start a new partition client, avoiding wasted calls to the checkpoint store. (PR#24383)
+
 ## 1.3.1 (2025-03-11)
 
 ### Bugs Fixed

@@ -4,6 +4,24 @@
 
 package azsystemevents
 
+// ACSCallEndedByKind - Call ended participant kind.
+type ACSCallEndedByKind string
+
+const (
+	// ACSCallEndedByKindMicrosoftInternal - MicrosoftInternal
+	ACSCallEndedByKindMicrosoftInternal ACSCallEndedByKind = "MicrosoftInternal"
+	// ACSCallEndedByKindParticipant - Participant
+	ACSCallEndedByKindParticipant ACSCallEndedByKind = "Participant"
+)
+
+// PossibleACSCallEndedByKindValues returns the possible values for the ACSCallEndedByKind const type.
+func PossibleACSCallEndedByKindValues() []ACSCallEndedByKind {
+	return []ACSCallEndedByKind{
+		ACSCallEndedByKindMicrosoftInternal,
+		ACSCallEndedByKindParticipant,
+	}
+}
+
 // ACSEmailDeliveryReportStatus - The status of the email. Any value other than Delivered is considered failed.
 type ACSEmailDeliveryReportStatus string
 

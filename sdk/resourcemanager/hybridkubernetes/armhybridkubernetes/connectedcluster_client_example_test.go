@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/CreateClusterExample.json
-func ExampleConnectedClusterClient_BeginCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/CreateClusterAgentless_KindAWSExample.json
+func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterAgentlessKindAwsExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,76 @@ func ExampleConnectedClusterClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewConnectedClusterClient().BeginCreate(ctx, "k8sc-rg", "testCluster", armhybridkubernetes.ConnectedCluster{
+	poller, err := clientFactory.NewConnectedClusterClient().BeginCreateOrReplace(ctx, "k8sc-rg", "testCluster", armhybridkubernetes.ConnectedCluster{
+		Location: to.Ptr("East US"),
+		Tags:     map[string]*string{},
+		Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+			Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeNone),
+		},
+		Kind: to.Ptr(armhybridkubernetes.ConnectedClusterKindAWS),
+		Properties: &armhybridkubernetes.ConnectedClusterProperties{
+			AgentPublicKeyCertificate: to.Ptr(""),
+			Distribution:              to.Ptr("eks"),
+			Infrastructure:            to.Ptr("aws"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectedCluster = armhybridkubernetes.ConnectedCluster{
+	// 	Name: to.Ptr("connectedCluster1"),
+	// 	Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
+	// 	ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+	// 		Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeNone),
+	// 	},
+	// 	Kind: to.Ptr(armhybridkubernetes.ConnectedClusterKindAWS),
+	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
+	// 		AADProfile: &armhybridkubernetes.AADProfile{
+	// 		},
+	// 		AgentPublicKeyCertificate: to.Ptr(""),
+	// 		ArcAgentProfile: &armhybridkubernetes.ArcAgentProfile{
+	// 		},
+	// 		AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 		ConnectivityStatus: to.Ptr(armhybridkubernetes.ConnectivityStatusAgentNotInstalled),
+	// 		Distribution: to.Ptr("eks"),
+	// 		Infrastructure: to.Ptr("aws"),
+	// 		PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateDisabled),
+	// 		ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
+	// 	},
+	// 	SystemData: &armhybridkubernetes.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 		CreatedBy: to.Ptr("sikasire@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armhybridkubernetes.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("sikasire@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armhybridkubernetes.LastModifiedByTypeUser),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/CreateClusterExample.json
+func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridkubernetes.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConnectedClusterClient().BeginCreateOrReplace(ctx, "k8sc-rg", "testCluster", armhybridkubernetes.ConnectedCluster{
 		Location: to.Ptr("East US"),
 		Tags:     map[string]*string{},
 		Identity: &armhybridkubernetes.ConnectedClusterIdentity{
@@ -37,6 +106,9 @@ func ExampleConnectedClusterClient_BeginCreate() {
 		},
 		Properties: &armhybridkubernetes.ConnectedClusterProperties{
 			AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
+			AzureHybridBenefit:        to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+			Distribution:              to.Ptr("AKS"),
+			DistributionVersion:       to.Ptr("1.0"),
 		},
 	}, nil)
 	if err != nil {
@@ -62,6 +134,9 @@ func ExampleConnectedClusterClient_BeginCreate() {
 	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
 	// 		AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
 	// 		AgentVersion: to.Ptr("0.1.0"),
+	// 		AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 		Distribution: to.Ptr("AKS"),
+	// 		DistributionVersion: to.Ptr("1.0"),
 	// 		KubernetesVersion: to.Ptr("1.17.0"),
 	// 		ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
 	// 		TotalNodeCount: to.Ptr[int32](2),
@@ -77,7 +152,257 @@ func ExampleConnectedClusterClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/UpdateClusterExample.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/CreateClusterPrivateLinkExample.json
+func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterPrivateLinkExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridkubernetes.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConnectedClusterClient().BeginCreateOrReplace(ctx, "k8sc-rg", "testCluster", armhybridkubernetes.ConnectedCluster{
+		Location: to.Ptr("East US"),
+		Tags:     map[string]*string{},
+		Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+			Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeSystemAssigned),
+		},
+		Properties: &armhybridkubernetes.ConnectedClusterProperties{
+			AgentPublicKeyCertificate:  to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
+			AzureHybridBenefit:         to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+			Distribution:               to.Ptr("AKS"),
+			DistributionVersion:        to.Ptr("1.0"),
+			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+			PrivateLinkState:           to.Ptr(armhybridkubernetes.PrivateLinkStateEnabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectedCluster = armhybridkubernetes.ConnectedCluster{
+	// 	Name: to.Ptr("connectedCluster1"),
+	// 	Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
+	// 	ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+	// 		Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeSystemAssigned),
+	// 	},
+	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
+	// 		AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
+	// 		AgentVersion: to.Ptr("0.1.0"),
+	// 		AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 		Distribution: to.Ptr("AKS"),
+	// 		DistributionVersion: to.Ptr("1.0"),
+	// 		KubernetesVersion: to.Ptr("1.17.0"),
+	// 		PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 		PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateEnabled),
+	// 		ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
+	// 		TotalNodeCount: to.Ptr[int32](2),
+	// 	},
+	// 	SystemData: &armhybridkubernetes.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 		CreatedBy: to.Ptr("sikasire@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armhybridkubernetes.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("sikasire@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armhybridkubernetes.LastModifiedByTypeUser),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/CreateCluster_KindExample.json
+func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterKindExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridkubernetes.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConnectedClusterClient().BeginCreateOrReplace(ctx, "k8sc-rg", "testCluster", armhybridkubernetes.ConnectedCluster{
+		Location: to.Ptr("East US"),
+		Tags:     map[string]*string{},
+		Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+			Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeSystemAssigned),
+		},
+		Kind: to.Ptr(armhybridkubernetes.ConnectedClusterKindProvisionedCluster),
+		Properties: &armhybridkubernetes.ConnectedClusterProperties{
+			AADProfile: &armhybridkubernetes.AADProfile{
+				AdminGroupObjectIDs: []*string{
+					to.Ptr("56f988bf-86f1-41af-91ab-2d7cd011db47")},
+				EnableAzureRBAC: to.Ptr(true),
+				TenantID:        to.Ptr("82f988bf-86f1-41af-91ab-2d7cd011db47"),
+			},
+			AgentPublicKeyCertificate: to.Ptr(""),
+			ArcAgentProfile: &armhybridkubernetes.ArcAgentProfile{
+				AgentAutoUpgrade:    to.Ptr(armhybridkubernetes.AutoUpgradeOptionsEnabled),
+				DesiredAgentVersion: to.Ptr("0.1.0"),
+				SystemComponents: []*armhybridkubernetes.SystemComponent{
+					{
+						Type:                 to.Ptr("Strato"),
+						MajorVersion:         to.Ptr[int32](0),
+						UserSpecifiedVersion: to.Ptr("0.1.1"),
+					}},
+			},
+			AzureHybridBenefit:  to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+			Distribution:        to.Ptr("AKS"),
+			DistributionVersion: to.Ptr("1.0"),
+			OidcIssuerProfile: &armhybridkubernetes.OidcIssuerProfile{
+				Enabled: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectedCluster = armhybridkubernetes.ConnectedCluster{
+	// 	Name: to.Ptr("connectedCluster1"),
+	// 	Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
+	// 	ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+	// 		Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeSystemAssigned),
+	// 	},
+	// 	Kind: to.Ptr(armhybridkubernetes.ConnectedClusterKindProvisionedCluster),
+	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
+	// 		AADProfile: &armhybridkubernetes.AADProfile{
+	// 			AdminGroupObjectIDs: []*string{
+	// 				to.Ptr("56f988bf-86f1-41af-91ab-2d7cd011db47")},
+	// 				EnableAzureRBAC: to.Ptr(true),
+	// 				TenantID: to.Ptr("82f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 			},
+	// 			AgentPublicKeyCertificate: to.Ptr(""),
+	// 			AgentVersion: to.Ptr("0.1.0"),
+	// 			ArcAgentProfile: &armhybridkubernetes.ArcAgentProfile{
+	// 				AgentAutoUpgrade: to.Ptr(armhybridkubernetes.AutoUpgradeOptionsEnabled),
+	// 				AgentState: to.Ptr("Succeeded"),
+	// 				DesiredAgentVersion: to.Ptr("0.1.0"),
+	// 				SystemComponents: []*armhybridkubernetes.SystemComponent{
+	// 					{
+	// 						Type: to.Ptr("Strato"),
+	// 						CurrentVersion: to.Ptr("0.1.0"),
+	// 						MajorVersion: to.Ptr[int32](0),
+	// 						UserSpecifiedVersion: to.Ptr("0.1.1"),
+	// 				}},
+	// 			},
+	// 			AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 			Distribution: to.Ptr("AKS"),
+	// 			DistributionVersion: to.Ptr("1.0"),
+	// 			KubernetesVersion: to.Ptr("1.17.0"),
+	// 			OidcIssuerProfile: &armhybridkubernetes.OidcIssuerProfile{
+	// 				Enabled: to.Ptr(true),
+	// 				IssuerURL: to.Ptr("https://oidcdiscovery-northamerica-endpoint-gbcge4adgqebgxev.z01.azurefd.net/885hc665-0g4a-4a4b-732b-e4950new3bed/"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
+	// 			TotalNodeCount: to.Ptr[int32](2),
+	// 		},
+	// 		SystemData: &armhybridkubernetes.SystemData{
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 			CreatedBy: to.Ptr("sikasire@microsoft.com"),
+	// 			CreatedByType: to.Ptr(armhybridkubernetes.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("sikasire@microsoft.com"),
+	// 			LastModifiedByType: to.Ptr(armhybridkubernetes.LastModifiedByTypeUser),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/UpdateClusterByPutExample.json
+func ExampleConnectedClusterClient_BeginCreateOrReplace_updateClusterByPutExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridkubernetes.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConnectedClusterClient().BeginCreateOrReplace(ctx, "k8sc-rg", "testCluster", armhybridkubernetes.ConnectedCluster{
+		Location: to.Ptr("East US"),
+		Tags:     map[string]*string{},
+		Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+			Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeSystemAssigned),
+		},
+		Properties: &armhybridkubernetes.ConnectedClusterProperties{
+			AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
+			AzureHybridBenefit:        to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+			Distribution:              to.Ptr("AKS"),
+			DistributionVersion:       to.Ptr("1.0"),
+			Gateway: &armhybridkubernetes.Gateway{
+				Enabled:    to.Ptr(true),
+				ResourceID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.HybridCompute/gateways/gateway1"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectedCluster = armhybridkubernetes.ConnectedCluster{
+	// 	Name: to.Ptr("connectedCluster1"),
+	// 	Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
+	// 	ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+	// 		Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeSystemAssigned),
+	// 	},
+	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
+	// 		AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
+	// 		AgentVersion: to.Ptr("0.1.0"),
+	// 		AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 		Distribution: to.Ptr("AKS"),
+	// 		DistributionVersion: to.Ptr("1.0"),
+	// 		Gateway: &armhybridkubernetes.Gateway{
+	// 			Enabled: to.Ptr(true),
+	// 			ResourceID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.HybridCompute/gateways/gateway1"),
+	// 		},
+	// 		KubernetesVersion: to.Ptr("1.17.0"),
+	// 		ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
+	// 		TotalNodeCount: to.Ptr[int32](2),
+	// 	},
+	// 	SystemData: &armhybridkubernetes.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 		CreatedBy: to.Ptr("sikasire@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armhybridkubernetes.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("sikasire@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armhybridkubernetes.LastModifiedByTypeUser),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/UpdateClusterByPatchExample.json
 func ExampleConnectedClusterClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,6 +414,11 @@ func ExampleConnectedClusterClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewConnectedClusterClient().Update(ctx, "k8sc-rg", "testCluster", armhybridkubernetes.ConnectedClusterPatch{
+		Properties: &armhybridkubernetes.ConnectedClusterPatchProperties{
+			AzureHybridBenefit:  to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+			Distribution:        to.Ptr("AKS"),
+			DistributionVersion: to.Ptr("1.0"),
+		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -113,7 +443,14 @@ func ExampleConnectedClusterClient_Update() {
 	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
 	// 		AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
 	// 		AgentVersion: to.Ptr("0.1.0"),
+	// 		AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 		Distribution: to.Ptr("AKS"),
+	// 		DistributionVersion: to.Ptr("1.0"),
 	// 		KubernetesVersion: to.Ptr("1.17.0"),
+	// 		MiscellaneousProperties: map[string]*string{
+	// 			"createCorrelationId": to.Ptr("8e42616e-74dc-4117-9aaa-71ad5d0180d8"),
+	// 			"infrastructureVersion": to.Ptr("1.1"),
+	// 		},
 	// 		ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
 	// 		TotalNodeCount: to.Ptr[int32](2),
 	// 	},
@@ -128,8 +465,8 @@ func ExampleConnectedClusterClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/GetClusterExample.json
-func ExampleConnectedClusterClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/GetClusterExample.json
+func ExampleConnectedClusterClient_Get_getClusterExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -161,8 +498,43 @@ func ExampleConnectedClusterClient_Get() {
 	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
 	// 		AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
 	// 		AgentVersion: to.Ptr("0.1.0"),
+	// 		ArcAgentProfile: &armhybridkubernetes.ArcAgentProfile{
+	// 			AgentAutoUpgrade: to.Ptr(armhybridkubernetes.AutoUpgradeOptionsEnabled),
+	// 			AgentErrors: []*armhybridkubernetes.AgentError{
+	// 				{
+	// 					Component: to.Ptr("Strato"),
+	// 					Message: to.Ptr("Upgrade failed for agent extension Strato, version not found"),
+	// 					Severity: to.Ptr("Error"),
+	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:14:58.865Z"); return t}()),
+	// 			}},
+	// 			AgentState: to.Ptr("Failed"),
+	// 			DesiredAgentVersion: to.Ptr("0.1.0"),
+	// 			SystemComponents: []*armhybridkubernetes.SystemComponent{
+	// 				{
+	// 					Type: to.Ptr("Strato"),
+	// 					CurrentVersion: to.Ptr("0.1.0"),
+	// 					UserSpecifiedVersion: to.Ptr("0.1.1"),
+	// 			}},
+	// 		},
+	// 		AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 		Distribution: to.Ptr("AKS"),
+	// 		DistributionVersion: to.Ptr("1.0"),
 	// 		KubernetesVersion: to.Ptr("1.17.0"),
+	// 		MiscellaneousProperties: map[string]*string{
+	// 			"createCorrelationId": to.Ptr("8e42616e-74dc-4117-9aaa-71ad5d0180d8"),
+	// 			"infrastructureVersion": to.Ptr("1.1"),
+	// 		},
+	// 		OidcIssuerProfile: &armhybridkubernetes.OidcIssuerProfile{
+	// 			Enabled: to.Ptr(true),
+	// 			IssuerURL: to.Ptr("https://oidcdiscovery-northamerica-endpoint-gbcge4adgqebgxev.z01.azurefd.net/885hc665-0g4a-4a4b-732b-e4950new3bed/"),
+	// 		},
+	// 		PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateDisabled),
 	// 		ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
+	// 		SecurityProfile: &armhybridkubernetes.SecurityProfile{
+	// 			WorkloadIdentity: &armhybridkubernetes.SecurityProfileWorkloadIdentity{
+	// 				Enabled: to.Ptr(true),
+	// 			},
+	// 		},
 	// 		TotalNodeCount: to.Ptr[int32](2),
 	// 	},
 	// 	SystemData: &armhybridkubernetes.SystemData{
@@ -176,7 +548,82 @@ func ExampleConnectedClusterClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/DeleteClusterExample.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/GetProvisionedClusterExample.json
+func ExampleConnectedClusterClient_Get_getProvisionedClusterExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridkubernetes.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConnectedClusterClient().Get(ctx, "k8sc-rg", "testCluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ConnectedCluster = armhybridkubernetes.ConnectedCluster{
+	// 	Name: to.Ptr("connectedCluster1"),
+	// 	Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
+	// 	ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Identity: &armhybridkubernetes.ConnectedClusterIdentity{
+	// 		Type: to.Ptr(armhybridkubernetes.ResourceIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("d8cd1fd9-154f-4da7-b348-595f283c13a3"),
+	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 	},
+	// 	Kind: to.Ptr(armhybridkubernetes.ConnectedClusterKindProvisionedCluster),
+	// 	Properties: &armhybridkubernetes.ConnectedClusterProperties{
+	// 		AADProfile: &armhybridkubernetes.AADProfile{
+	// 			AdminGroupObjectIDs: []*string{
+	// 				to.Ptr("56f988bf-86f1-41af-91ab-2d7cd011db47")},
+	// 				EnableAzureRBAC: to.Ptr(true),
+	// 				TenantID: to.Ptr("82f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 			},
+	// 			AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
+	// 			AgentVersion: to.Ptr("0.1.0"),
+	// 			ArcAgentProfile: &armhybridkubernetes.ArcAgentProfile{
+	// 				AgentAutoUpgrade: to.Ptr(armhybridkubernetes.AutoUpgradeOptionsEnabled),
+	// 				AgentState: to.Ptr("Succeeded"),
+	// 				DesiredAgentVersion: to.Ptr("0.1.0"),
+	// 				SystemComponents: []*armhybridkubernetes.SystemComponent{
+	// 					{
+	// 						Type: to.Ptr("Strato"),
+	// 						CurrentVersion: to.Ptr("0.1.0"),
+	// 						MajorVersion: to.Ptr[int32](0),
+	// 						UserSpecifiedVersion: to.Ptr("0.1.1"),
+	// 				}},
+	// 			},
+	// 			AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+	// 			Distribution: to.Ptr("AKS"),
+	// 			DistributionVersion: to.Ptr("1.0"),
+	// 			KubernetesVersion: to.Ptr("1.17.0"),
+	// 			MiscellaneousProperties: map[string]*string{
+	// 				"createCorrelationId": to.Ptr("8e42616e-74dc-4117-9aaa-71ad5d0180d8"),
+	// 				"infrastructureVersion": to.Ptr("1.1"),
+	// 			},
+	// 			PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateDisabled),
+	// 			ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
+	// 			TotalNodeCount: to.Ptr[int32](2),
+	// 		},
+	// 		SystemData: &armhybridkubernetes.SystemData{
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:06:33.917Z"); return t}()),
+	// 			CreatedBy: to.Ptr("sikasire@microsoft.com"),
+	// 			CreatedByType: to.Ptr(armhybridkubernetes.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-17T07:14:58.865Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("2d2a754c-cade-4935-83d4-ce413c5a3910"),
+	// 			LastModifiedByType: to.Ptr(armhybridkubernetes.LastModifiedByTypeApplication),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/DeleteClusterExample.json
 func ExampleConnectedClusterClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +644,7 @@ func ExampleConnectedClusterClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/ConnectedClustersListClusterCredentialResultHPAAD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/ConnectedClustersListClusterCredentialResultHPAAD.json
 func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCredentialCspExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,12 +669,12 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	// 	Kubeconfigs: []*armhybridkubernetes.CredentialResult{
 	// 		{
 	// 			Name: to.Ptr("credentialName1"),
-	// 			Value: []byte("YXBpVmVyc2lvbjogdjENCmNsdXN0ZXJzOg0KLSBjbHVzdGVyOg0KICAgIGNlcnRpZmljYXRlLWF1dGhvcml0eS1kYXRhOiBMUzB0TFMxQ1JVZEpUaUJEUlZKVVNVWkpRMEZVUlMwdExTMHRDazFKU1VWNGVrTkRRWEVyWjBGM1NVSkJaMGxSVTJ0dVdsWnZaekp1VmpKVmNYZEtjblZYTTFCSGVrRk9RbWRyY1docmFVYzVkekJDUVZGelJrRkVRVTRLVFZGemQwTlJXVVJXVVZGRVJYZEthbGVsSlEwbHFRVTVDWjJ0eGFHdHBSemwzTUVKQlVVVkdRVUZQUTBGbk9FRk5TVWxEUTJkTFEwRm5SVUUwV1hCNUNsUmtUMVJSU1dNdmVsaERlR3hTZWtVMF"),
+	// 			Value: []byte("WVhCcFZtVnljMmx2YmpvZ2RqRU5DbU5zZFhOMFpYSnpPZzBLTFNCamJIVnpkR1Z5T2cwS0lDQWdJR05sY25ScFptbGpZWFJsTFdGMWRHaHZjbWwwZVMxa1lYUmhPaUJNVXpCMFRGTXhRMUpWWkVwVWFVSkVVbFpLVlZOVldrcFJNRVpWVWxNd2RFeFRNSFJEYXpGS1UxVldOR1ZyVGtSUldFVnlXakJHTTFOVlNrSmFNR3hTVlRKMGRWZHNXblphZWtwMVZtcEtWbU5ZWkV0amJsWllUVEZDU0dWclJrOVJiV1J5WTFkb2NtRlZZelZrZWtKRFVWWkdlbEpyUmtWUlZUUkxWRlpHZW1Rd1RsSlhWVkpYVlZaR1JWSllaRXRoYkdWc1NsRXdiSEZSVlRWRFdqSjBlR0ZIZEhCU2Vtd3pUVVZLUWxWVlZrZFJWVVpRVVRCR2JrOUZSazVUVld4RVVUSmtURkV3Um01U1ZVVXdWMWhDTlVOc1VtdFVNVkpTVTFkTmRtVnNhRVJsUjNoVFpXdFZNRg=="),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/ConnectedClustersListClusterCredentialResultCSPAAD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/ConnectedClustersListClusterCredentialResultCSPAAD.json
 func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCredentialExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,17 +700,19 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	// 		ExpirationTime: to.Ptr[int64](1631196183),
 	// 		HybridConnectionName: to.Ptr("microsoft.kubernetes/connectedclusters/229dc73f7b07196c79a93d4362d9c7fc4ed34df3e95290d27c56cec2dbb82865/1631185383340987904"),
 	// 		Relay: to.Ptr("azgnrelay-ph0-l1"),
+	// 		RelayTid: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+	// 		RelayType: to.Ptr("byor"),
 	// 		Token: to.Ptr("SharedAccessSignature 123456789034675890pbduwegiavifkuw647o02423bbhfouseb"),
 	// 	},
 	// 	Kubeconfigs: []*armhybridkubernetes.CredentialResult{
 	// 		{
 	// 			Name: to.Ptr("credentialName1"),
-	// 			Value: []byte("YXBpVmVyc2lvbjogdjENCmNsdXN0ZXJzOg0KLSBjbHVzdGVyOg0KICAgIGNlcnRpZmljYXRlLWF1dGhvcml0eS1kYXRhOiBMUzB0TFMxQ1JVZEpUaUJEUlZKVVNVWkpRMEZVUlMwdExTMHRDazFKU1VWNGVrTkRRWEVyWjBGM1NVSkJaMGxSVTJ0dVdsWnZaekp1VmpKVmNYZEtjblZYTTFCSGVrRk9RbWRyY1docmFVYzVkekJDUVZGelJrRkVRVTRLVFZGemQwTlJXVVJXVVZGRVJYZEthbGVsSlEwbHFRVTVDWjJ0eGFHdHBSemwzTUVKQlVVVkdRVUZQUTBGbk9FRk5TVWxEUTJkTFEwRm5SVUUwV1hCNUNsUmtUMVJSU1dNdmVsaERlR3hTZWtVMF"),
+	// 			Value: []byte("WVhCcFZtVnljMmx2YmpvZ2RqRU5DbU5zZFhOMFpYSnpPZzBLTFNCamJIVnpkR1Z5T2cwS0lDQWdJR05sY25ScFptbGpZWFJsTFdGMWRHaHZjbWwwZVMxa1lYUmhPaUJNVXpCMFRGTXhRMUpWWkVwVWFVSkVVbFpLVlZOVldrcFJNRVpWVWxNd2RFeFRNSFJEYXpGS1UxVldOR1ZyVGtSUldFVnlXakJHTTFOVlNrSmFNR3hTVlRKMGRWZHNXblphZWtwMVZtcEtWbU5ZWkV0amJsWllUVEZDU0dWclJrOVJiV1J5WTFkb2NtRlZZelZrZWtKRFVWWkdlbEpyUmtWUlZUUkxWRlpHZW1Rd1RsSlhWVkpYVlZaR1JWSllaRXRoYkdWc1NsRXdiSEZSVlRWRFdqSjBlR0ZIZEhCU2Vtd3pUVVZLUWxWVlZrZFJWVVpRVVRCR2JrOUZSazVUVld4RVVUSmtURkV3Um01U1ZVVXdWMWhDTlVOc1VtdFVNVkpTVTFkTmRtVnNhRVJsUjNoVFpXdFZNRg=="),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/ConnectedClustersListClusterCredentialResultHPToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/ConnectedClustersListClusterCredentialResultHPToken.json
 func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCredentialNonAadCspExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,12 +737,12 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	// 	Kubeconfigs: []*armhybridkubernetes.CredentialResult{
 	// 		{
 	// 			Name: to.Ptr("credentialName1"),
-	// 			Value: []byte("YXBpVmVyc2lvbjogdjEKY2x1c3RlcnM6CiAgLSBjbHVzdGVyOgogICAgICBjZXJ0aWZpY2F0ZS1hdXRob3JpdHktZGF0YTogTFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVaDJWRU5EUW1GWFowRjNTVUpCWjBsVVlYZEJRVUV5VkhWQlRYaEJhVWx5UldsQlFVRkJRVUZFV2tSQlRrSm5hM0ZvYTJsSE9YY3dRa0ZSYzBaQlJFSlFUVkZ6ZDBOUldVUldVVkZIUlhkS1ZsVjZSV1ZOUW5kSFFURlZSVU5vVFZaVVYyeHFZMjA1ZW1JeVdqQkpSVTUyWTI1Q2RtTnRSakJoVnpsMVRWTkJkMGhuV1VSV1VWRkVSWGhrVG1GWFRubGlNMDUyV201UloxVnNUa0pKUmxKTlZYbENSRkZUUVhkTlZFRmxSbmN3ZVUxRVFUUk5hbU40VFdwTmVFNVVXbUZHZHpCNVRWUkJORTFxWTNoTmFrMTRUbFJhWVUxRFdYaEtSRUZwUW1kT1ZrSkJUVTFIZVc5MVlYcG9lbGt5T1hWaWJWWnFaRU0xTUZwWVRqQk1iVVkyWkZoS2JFeHRUblppVkVORFFWTkpkMFJSV1VwTGIxcEphSFpqVGtGUlJVSkNVVUZFWjJkRlVFRkVRME5CVVc5RFoyZEZRa0ZOU0VwVU0wZEtXbWhMTm5KaVVHSm9XRWN6V21SU05HVlhNSGhSVmxVclIwTjVXSEFyY0VwRFNtUjBhbGgyTjNwMFEzTnJRV0ZaZDJobmQyMHpOMGhFVkVWamNFVlFjR1p6TDJSSFdsQktiek5vU0ZOemVGaENUMUJXYUVsVVRHZFBSa1E0YW5BMVlWZG1kVXA0WWsxUFNqZ3dObWxST0VkT1NVdEZURGM1ZDFkMVNWcG5MemhCWTBZeVNEWnJTMDlWVVhJdmVFMWFjVWx1WW5sQk1XVmhPVW8xTmpKbVNVODRUbEp2YWxORVRFUlBWRzFyWTFaYVdHcHlTaTlsYW1wclVVMUhiV0YyT1hreE9EQjJUVkZ5TTBjM2FXZ3Jkell2VFZocGVWWkpLMGxhY3pSaGVXVTJhREo0VDA5VlNYQnRWVTQ0UlhVNWIwY3ZTSGRHV2swemJHWnBkR0ZQZUhsblEydHBNV2R0VFRsd09FcHhNMVIyVVRSbU9YSnBRVWRUVFhaWWVsSlpTa2hOU2toVVRtZFZhV1pZVjFWb1VFWTJWMkZGTWxwbFdVWkdOV1ozU0U5MlVYRnFSa2tyUlZWS1JscE1kekJEUVhkRlFVRmhUME5CTjJ0M1oyZFBNVTFKU1VKQmQxbExTM2RaUWtKQlNGZGxVVWxGUVdkVFFqbEJVMEk0VVVSMlFVaFZRVGxzZVZWTU9VWXpUVU5KVlZaQ1owbE5TbEpYYW5WT1RrVjRhM3AyT1RoTlRIbEJUSHBGTjNoYVQwMUJRVUZHTUV3dlFuTjNRVUZCUWtGTlFWSnFRa1ZCYVVJMFpWSlVTMHhZY1hsM09HazFMeTlyVmtaNWNrTlhZMFZtY0VaV2NGUlZSVFIzYlVNME1rZHhSMkpCU1dkTkswVllkRWhtV0Rrd05WVklZall3Y1hKUlEzUTRibkZhTkUxamRVUjNOMlJaZVhwdGJFc3pja05SUVdSblFtTXpSVTlUTDNWaGNsSlZVM2hZY0hKVlZuVlpVVTR2ZGxZcmEyWmpiMWhQVlhOc04yMDVjMk5QZVdkQlFVRllVWFk0UjNwd1FVRkJSVUYzUWtoTlJWVkRTVVZZYTFwcWMyOUNVamhWZEc5blQwbFhWeXQyVTFOQ2NWcEViRGxIVEVRME1uWXdNR0ZXTkRVMVF6RkJhVVZCZDI1aE4zaDVWRUZJUTBJemNqVTBSSG93WnpKMVJHWktNa2ROUVdod2RuRnJiSGN5YXpka1VrMVdZM2RLZDFsS1MzZFpRa0pCUjBOT2VGVkxRa0p2ZDBkRVFVdENaMmR5UW1kRlJrSlJZMFJCVkVGTFFtZG5ja0puUlVaQ1VXTkVRV3BCSzBKbmEzSkNaMFZGUVZsSk0wWlJZMFZOVkVGMlFtbGpja0puUlVWQldVa3pSbEZwU0RKdldqRm5LemRhUVZsTVNtaFNkVUowV2pWb2FHWlVjbGxKUm1Sb1dXRlBVVmxtUTIxR1FVTkJWMUZEUVZOVmQyZFpZMGREUTNOSFFWRlZSa0ozUlVKQ1NITjNaVlJDVkVKblozSkNaMFZHUWxGamQwRnZXa2hoU0ZJd1kwUnZka3d6WkROa2VUVjBZVmRPZVdJelRuWmFibEYxV1RJNWRFd3pRbkpoVXpsMFl6Sk9kbU51UVhaVVYyeHFZMjA1ZW1JeVdqQktWRWwzVld4T1FrcFVTWGRXUlhoVVNsUkpkMUV3Uld4TmFrRjNUVk0xYW1OdVVYZEpaMWxKUzNkWlFrSlJWVWhOUVVkSFJtMW9NR1JJUVRaTWVUbDJXVE5PZDB4dE1YcGlNazU2WTBNMWFtSXlNSGRJVVZsRVZsSXdUMEpDV1VWR1N6ZFZhQ3M1WkdnNUwxRjFZM0ZKTlVFNVJHc3djMlpzTTFsVFRVRnpSMEV4VldSRWQxRkZRWGRKUlhORVFrSkNaMDVXU0ZKRlJVOXFRVFJuYUhOeFRHMXpOR015VG5aaWJUVnNXVE5SZFdSSFZucGtRelZvWlc1V2VWcFROV3BpTWpKRFIxZHpOR015VG5aaWJUVnNXVE5SZFdSSFZucGtRelZvWlc1V2VWcFROV3BpTWpCM1oySkJSMEV4VldSSWQxTkNjVVJEUW5CVVEwSnZjVU5DYmpaRFFtNUpXazVoU0ZJd1kwUnZka3d5TVhwWk0wcHpURzB4Y0ZrelNuWmpNamx0WkVNMWFtSXlNSFpqUjNSd1RESXhlbGt5T1hsalF6bHFZMjEzZGxSWGJHcGpiVGw2WWpKYU1FcFVTWGRWYkU1Q1NsUkpkMVpGZUZSS1ZFbDNVVEJGYkUxcVFYZE5VelZxWTIxNVIxTXlhREJrU0VFMlRIazVhbU50ZDNWaVYyeHFZMjA1ZW1JeVdqQk1iVTUyWWxNNWQyRXlhM1ppV0U1cVlqTktkMHd5VG5saVF6bE9ZVmRPZVdJelRuWmFibEZzVFdwQ1UxVXdSV3hOYWtKVlZFWk5iRTFxUWtSUlUxVjVUVVJCZUV4dFRubGlSRUpZUW1kT1ZraFRRVVZWUkVKUFRVVkpSME5UYzBkQlVWRkNaMnBqY1VGVVFURk5SRTFIUTBOelIwRlJWVVpDZDBsQ1JtbGtiMlJJVW5kUGFUaDJaRE5rTTB4dE1YQlpNMHAyWXpJNWJXUkROV3BpTWpCMlkwZDBjRXd5TVhwWk1qbDVZME01YW1OSVRYZERRVmxIV2pSRlRVRlJTVUpOUWpoSFFURlZaRWwzVVZsTlFtRkJSa3hXTWtSRVFWSjZjMlZUVVdzeFRYZ3hkM041UzJ0Tk5rRjBhMDFDTUVkQk1WVmtTbEZSVjAxQ1VVZERRM05IUVZGVlJrSjNUVUpDWjJkeVFtZEZSa0pSWTBSQmFrRk9RbWRyY1docmFVYzVkekJDUVZGelJrRkJUME5CWjBWQlJWZHRUVmRzWjJ3NGQzSlRUWHBQTW1Ob1pVbHZhbkZRVjBNd2FVVlVkSGRZYVVreWRqVmtWVkV5ZG01eWMydFVZM1ZzV1ZJNFExSllRemxXY0hWTU5YZDJUbEJaWlVzNWFtRjRhRXhGZW14YUt6aENTaTlhSzA5Q1NsRlBiV0k0VDIxRkwzcEVha1o1WVU5WWIzUXZNMEl3ZG5CcE9FWk1NalZNUkhGbGVuZExSeXN5VHpSVVJWQkhha1pGTmxONVRqWmlVR2d5ZG1Vck4wSTJLemQwVWpWeWVEZEtlU3RVY2pGcE9XdDBkV1p6UVhGWk5HSmtaMmd4Y2xWTGFsSkZVemRLVjNWek9HZDNVWG80YmtkSGMzaEhXbVJuU25oYVpISlJjVlZJUzNFMFlWcDJVVEZtWmtrM1RUbHVXWGhOVFM5VFNURkRlbTkxWkd0NmFHVnFSRXgzYW5vdk5UZHRaR04xYVdZck56TkpUbUZDVG5KRFprRXljemM1T1hwV1lVeDNkbXBMTlhRcmEwOVNSelI0TkZoWVpTdFphelZhV2pWQlkyMUZVa05NWnpSTGJHVkpiRFJJY3pSeGRYSkxhbGMxTjI1SFRYTnhLMHBXVGpBd2FFWXhXR1pETkZCVlpYbFJObFJPTUcxNlVGRXhia2RaZENzcmJVSTFWV053TURkWVRuVnpWR1JoTW05SGF6SlNOak5PVWsxWWIzcHRTbkYxVnlzNGRFVlVMMUJLUzNGUGFrVlNRalJXZHpOQ1IwUnZWRTVYVTNwb1dIbDRTVlp0TVhOT1dUSkJUVlpYYUdOYVkzRXpPVWRYVUc5UVp6RXpSbW80VDFsc2NFRm1SR1o2YURGaWRYWkdVbVpwVFZVME1sbHROa3c1YlROVVMwUjRlVXdyTWxKVmVESlNNbUo1VUZWTVQyVXdSMnd4T1hKelUyWlpjeTlvYjNkb1dWSnNXWEp1T0dKYVJFTkhiRFUzTDFGTWVHcEJXWFJVVWtZdlZFaHZLM1JOYTJSVmFTOWhUV2xVU0hoMlltcGtZeTlsYWxocVVISjRTbUp5UzFCVU1tUkVXRVk0ZG5aRGQzZGFRazAwUjFGWlNGaDViRFV6VTB4cU1VdHJRMjlvVlZKTkwzcDBlVEZpVTJOWWRIcE5aMDFJVmpWUFRYVkthVVZYVVhKV1NpOUhWRzlNVGxsUVNHMWxORXROY21jOUNpMHRMUzB0UlU1RUlFTkZVbFJKUmtsRFFWUkZMUzB0TFMwPQogICAgICBzZXJ2ZXI6IGh0dHBzOi8vYTljNDMzYzMtNjhlMS00NTY2LWI2MzMtODM0NzUyOWYzNjIwLms4c2Nvbm5lY3QudGVzdC5henVyZS5jb20KICAgIG5hbWU6IGNsdXN0ZXIKY29udGV4dHM6CiAgLSBjb250ZXh0OgogICAgICBjbHVzdGVyOiBjbHVzdGVyCiAgICAgIHVzZXI6IGNsdXN0ZXJVc2VyX3Rlc3RfY2x1c3RlcgogICAgbmFtZTogY2x1c3RlcgpjdXJyZW50LWNvbnRleHQ6IGNsdXN0ZXIKa2luZDogQ29uZmlnCnByZWZlcmVuY2VzOiBudWxsCnVzZXJzOgogIC0gbmFtZTogY2x1c3RlclVzZXJfdGVzdF9jbHVzdGVyCiAgICB1c2VyOgogICAgICB0b2tlbjogMmM2NGZyMmQ2MWRhZmZkODY4NGJkYTc3M2Y2YTQ3OGUxZTU4NzlhZTE1ZmRkM2Q1NDU4NGNkNTM1MGM2YWUxMzlhMGI3OTk4YTc2ZjFhOTdlOGI3Y2EwNTJiYjIwZWY0ZjljZTAzN2Q5YTMyM2ZjMTYxZmI0MGI4OTVlOWIwZjM="),
+	// 			Value: []byte("WVhCcFZtVnljMmx2YmpvZ2RqRU5DbU5zZFhOMFpYSnpPZzBLTFNCamJIVnpkR1Z5T2cwS0lDQWdJR05sY25ScFptbGpZWFJsTFdGMWRHaHZjbWwwZVMxa1lYUmhPaUJNVXpCMFRGTXhRMUpWWkVwVWFVSkVVbFpLVlZOVldrcFJNRVpWVWxNd2RFeFRNSFJEYXpGS1UxVldOR1ZyVGtSUldFVnlXakJHTTFOVlNrSmFNR3hTVlRKMGRWZHNXblphZWtwMVZtcEtWbU5ZWkV0amJsWllUVEZDU0dWclJrOVJiV1J5WTFkb2NtRlZZelZrZWtKRFVWWkdlbEpyUmtWUlZUUkxWRlpHZW1Rd1RsSlhWVkpYVlZaR1JWSllaRXRoYkdWc1NsRXdiSEZSVlRWRFdqSjBlR0ZIZEhCU2Vtd3pUVVZLUWxWVlZrZFJWVVpRVVRCR2JrOUZSazVUVld4RVVUSmtURkV3Um01U1ZVVXdWMWhDTlVOc1VtdFVNVkpTVTFkTmRtVnNhRVJsUjNoVFpXdFZNRg=="),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/ConnectedClustersListClusterCredentialResultCSPToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/ConnectedClustersListClusterCredentialResultCSPToken.json
 func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCredentialNonAadExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,17 +768,19 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	// 		ExpirationTime: to.Ptr[int64](1631196183),
 	// 		HybridConnectionName: to.Ptr("microsoft.kubernetes/connectedclusters/229dc73f7b07196c79a93d4362d9c7fc4ed34df3e95290d27c56cec2dbb82865/1631185383340987904"),
 	// 		Relay: to.Ptr("azgnrelay-ph0-l1"),
+	// 		RelayTid: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+	// 		RelayType: to.Ptr("byor"),
 	// 		Token: to.Ptr("SharedAccessSignature 123456789034675890pbduwegiavifkuw647o02423bbhfouseb"),
 	// 	},
 	// 	Kubeconfigs: []*armhybridkubernetes.CredentialResult{
 	// 		{
 	// 			Name: to.Ptr("credentialName1"),
-	// 			Value: []byte("YXBpVmVyc2lvbjogdjEKY2x1c3RlcnM6CiAgLSBjbHVzdGVyOgogICAgICBjZXJ0aWZpY2F0ZS1hdXRob3JpdHktZGF0YTogTFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVaDJWRU5EUW1GWFowRjNTVUpCWjBsVVlYZEJRVUV5VkhWQlRYaEJhVWx5UldsQlFVRkJRVUZFV2tSQlRrSm5hM0ZvYTJsSE9YY3dRa0ZSYzBaQlJFSlFUVkZ6ZDBOUldVUldVVkZIUlhkS1ZsVjZSV1ZOUW5kSFFURlZSVU5vVFZaVVYyeHFZMjA1ZW1JeVdqQkpSVTUyWTI1Q2RtTnRSakJoVnpsMVRWTkJkMGhuV1VSV1VWRkVSWGhrVG1GWFRubGlNMDUyV201UloxVnNUa0pKUmxKTlZYbENSRkZUUVhkTlZFRmxSbmN3ZVUxRVFUUk5hbU40VFdwTmVFNVVXbUZHZHpCNVRWUkJORTFxWTNoTmFrMTRUbFJhWVUxRFdYaEtSRUZwUW1kT1ZrSkJUVTFIZVc5MVlYcG9lbGt5T1hWaWJWWnFaRU0xTUZwWVRqQk1iVVkyWkZoS2JFeHRUblppVkVORFFWTkpkMFJSV1VwTGIxcEphSFpqVGtGUlJVSkNVVUZFWjJkRlVFRkVRME5CVVc5RFoyZEZRa0ZOU0VwVU0wZEtXbWhMTm5KaVVHSm9XRWN6V21SU05HVlhNSGhSVmxVclIwTjVXSEFyY0VwRFNtUjBhbGgyTjNwMFEzTnJRV0ZaZDJobmQyMHpOMGhFVkVWamNFVlFjR1p6TDJSSFdsQktiek5vU0ZOemVGaENUMUJXYUVsVVRHZFBSa1E0YW5BMVlWZG1kVXA0WWsxUFNqZ3dObWxST0VkT1NVdEZURGM1ZDFkMVNWcG5MemhCWTBZeVNEWnJTMDlWVVhJdmVFMWFjVWx1WW5sQk1XVmhPVW8xTmpKbVNVODRUbEp2YWxORVRFUlBWRzFyWTFaYVdHcHlTaTlsYW1wclVVMUhiV0YyT1hreE9EQjJUVkZ5TTBjM2FXZ3Jkell2VFZocGVWWkpLMGxhY3pSaGVXVTJhREo0VDA5VlNYQnRWVTQ0UlhVNWIwY3ZTSGRHV2swemJHWnBkR0ZQZUhsblEydHBNV2R0VFRsd09FcHhNMVIyVVRSbU9YSnBRVWRUVFhaWWVsSlpTa2hOU2toVVRtZFZhV1pZVjFWb1VFWTJWMkZGTWxwbFdVWkdOV1ozU0U5MlVYRnFSa2tyUlZWS1JscE1kekJEUVhkRlFVRmhUME5CTjJ0M1oyZFBNVTFKU1VKQmQxbExTM2RaUWtKQlNGZGxVVWxGUVdkVFFqbEJVMEk0VVVSMlFVaFZRVGxzZVZWTU9VWXpUVU5KVlZaQ1owbE5TbEpYYW5WT1RrVjRhM3AyT1RoTlRIbEJUSHBGTjNoYVQwMUJRVUZHTUV3dlFuTjNRVUZCUWtGTlFWSnFRa1ZCYVVJMFpWSlVTMHhZY1hsM09HazFMeTlyVmtaNWNrTlhZMFZtY0VaV2NGUlZSVFIzYlVNME1rZHhSMkpCU1dkTkswVllkRWhtV0Rrd05WVklZall3Y1hKUlEzUTRibkZhTkUxamRVUjNOMlJaZVhwdGJFc3pja05SUVdSblFtTXpSVTlUTDNWaGNsSlZVM2hZY0hKVlZuVlpVVTR2ZGxZcmEyWmpiMWhQVlhOc04yMDVjMk5QZVdkQlFVRllVWFk0UjNwd1FVRkJSVUYzUWtoTlJWVkRTVVZZYTFwcWMyOUNVamhWZEc5blQwbFhWeXQyVTFOQ2NWcEViRGxIVEVRME1uWXdNR0ZXTkRVMVF6RkJhVVZCZDI1aE4zaDVWRUZJUTBJemNqVTBSSG93WnpKMVJHWktNa2ROUVdod2RuRnJiSGN5YXpka1VrMVdZM2RLZDFsS1MzZFpRa0pCUjBOT2VGVkxRa0p2ZDBkRVFVdENaMmR5UW1kRlJrSlJZMFJCVkVGTFFtZG5ja0puUlVaQ1VXTkVRV3BCSzBKbmEzSkNaMFZGUVZsSk0wWlJZMFZOVkVGMlFtbGpja0puUlVWQldVa3pSbEZwU0RKdldqRm5LemRhUVZsTVNtaFNkVUowV2pWb2FHWlVjbGxKUm1Sb1dXRlBVVmxtUTIxR1FVTkJWMUZEUVZOVmQyZFpZMGREUTNOSFFWRlZSa0ozUlVKQ1NITjNaVlJDVkVKblozSkNaMFZHUWxGamQwRnZXa2hoU0ZJd1kwUnZka3d6WkROa2VUVjBZVmRPZVdJelRuWmFibEYxV1RJNWRFd3pRbkpoVXpsMFl6Sk9kbU51UVhaVVYyeHFZMjA1ZW1JeVdqQktWRWwzVld4T1FrcFVTWGRXUlhoVVNsUkpkMUV3Uld4TmFrRjNUVk0xYW1OdVVYZEpaMWxKUzNkWlFrSlJWVWhOUVVkSFJtMW9NR1JJUVRaTWVUbDJXVE5PZDB4dE1YcGlNazU2WTBNMWFtSXlNSGRJVVZsRVZsSXdUMEpDV1VWR1N6ZFZhQ3M1WkdnNUwxRjFZM0ZKTlVFNVJHc3djMlpzTTFsVFRVRnpSMEV4VldSRWQxRkZRWGRKUlhORVFrSkNaMDVXU0ZKRlJVOXFRVFJuYUhOeFRHMXpOR015VG5aaWJUVnNXVE5SZFdSSFZucGtRelZvWlc1V2VWcFROV3BpTWpKRFIxZHpOR015VG5aaWJUVnNXVE5SZFdSSFZucGtRelZvWlc1V2VWcFROV3BpTWpCM1oySkJSMEV4VldSSWQxTkNjVVJEUW5CVVEwSnZjVU5DYmpaRFFtNUpXazVoU0ZJd1kwUnZka3d5TVhwWk0wcHpURzB4Y0ZrelNuWmpNamx0WkVNMWFtSXlNSFpqUjNSd1RESXhlbGt5T1hsalF6bHFZMjEzZGxSWGJHcGpiVGw2WWpKYU1FcFVTWGRWYkU1Q1NsUkpkMVpGZUZSS1ZFbDNVVEJGYkUxcVFYZE5VelZxWTIxNVIxTXlhREJrU0VFMlRIazVhbU50ZDNWaVYyeHFZMjA1ZW1JeVdqQk1iVTUyWWxNNWQyRXlhM1ppV0U1cVlqTktkMHd5VG5saVF6bE9ZVmRPZVdJelRuWmFibEZzVFdwQ1UxVXdSV3hOYWtKVlZFWk5iRTFxUWtSUlUxVjVUVVJCZUV4dFRubGlSRUpZUW1kT1ZraFRRVVZWUkVKUFRVVkpSME5UYzBkQlVWRkNaMnBqY1VGVVFURk5SRTFIUTBOelIwRlJWVVpDZDBsQ1JtbGtiMlJJVW5kUGFUaDJaRE5rTTB4dE1YQlpNMHAyWXpJNWJXUkROV3BpTWpCMlkwZDBjRXd5TVhwWk1qbDVZME01YW1OSVRYZERRVmxIV2pSRlRVRlJTVUpOUWpoSFFURlZaRWwzVVZsTlFtRkJSa3hXTWtSRVFWSjZjMlZUVVdzeFRYZ3hkM041UzJ0Tk5rRjBhMDFDTUVkQk1WVmtTbEZSVjAxQ1VVZERRM05IUVZGVlJrSjNUVUpDWjJkeVFtZEZSa0pSWTBSQmFrRk9RbWRyY1docmFVYzVkekJDUVZGelJrRkJUME5CWjBWQlJWZHRUVmRzWjJ3NGQzSlRUWHBQTW1Ob1pVbHZhbkZRVjBNd2FVVlVkSGRZYVVreWRqVmtWVkV5ZG01eWMydFVZM1ZzV1ZJNFExSllRemxXY0hWTU5YZDJUbEJaWlVzNWFtRjRhRXhGZW14YUt6aENTaTlhSzA5Q1NsRlBiV0k0VDIxRkwzcEVha1o1WVU5WWIzUXZNMEl3ZG5CcE9FWk1NalZNUkhGbGVuZExSeXN5VHpSVVJWQkhha1pGTmxONVRqWmlVR2d5ZG1Vck4wSTJLemQwVWpWeWVEZEtlU3RVY2pGcE9XdDBkV1p6UVhGWk5HSmtaMmd4Y2xWTGFsSkZVemRLVjNWek9HZDNVWG80YmtkSGMzaEhXbVJuU25oYVpISlJjVlZJUzNFMFlWcDJVVEZtWmtrM1RUbHVXWGhOVFM5VFNURkRlbTkxWkd0NmFHVnFSRXgzYW5vdk5UZHRaR04xYVdZck56TkpUbUZDVG5KRFprRXljemM1T1hwV1lVeDNkbXBMTlhRcmEwOVNSelI0TkZoWVpTdFphelZhV2pWQlkyMUZVa05NWnpSTGJHVkpiRFJJY3pSeGRYSkxhbGMxTjI1SFRYTnhLMHBXVGpBd2FFWXhXR1pETkZCVlpYbFJObFJPTUcxNlVGRXhia2RaZENzcmJVSTFWV053TURkWVRuVnpWR1JoTW05SGF6SlNOak5PVWsxWWIzcHRTbkYxVnlzNGRFVlVMMUJLUzNGUGFrVlNRalJXZHpOQ1IwUnZWRTVYVTNwb1dIbDRTVlp0TVhOT1dUSkJUVlpYYUdOYVkzRXpPVWRYVUc5UVp6RXpSbW80VDFsc2NFRm1SR1o2YURGaWRYWkdVbVpwVFZVME1sbHROa3c1YlROVVMwUjRlVXdyTWxKVmVESlNNbUo1VUZWTVQyVXdSMnd4T1hKelUyWlpjeTlvYjNkb1dWSnNXWEp1T0dKYVJFTkhiRFUzTDFGTWVHcEJXWFJVVWtZdlZFaHZLM1JOYTJSVmFTOWhUV2xVU0hoMlltcGtZeTlsYWxocVVISjRTbUp5UzFCVU1tUkVXRVk0ZG5aRGQzZGFRazAwUjFGWlNGaDViRFV6VTB4cU1VdHJRMjlvVlZKTkwzcDBlVEZpVTJOWWRIcE5aMDFJVmpWUFRYVkthVVZYVVhKV1NpOUhWRzlNVGxsUVNHMWxORXROY21jOUNpMHRMUzB0UlU1RUlFTkZVbFJKUmtsRFFWUkZMUzB0TFMwPQogICAgICBzZXJ2ZXI6IGh0dHBzOi8vYTljNDMzYzMtNjhlMS00NTY2LWI2MzMtODM0NzUyOWYzNjIwLms4c2Nvbm5lY3QudGVzdC5henVyZS5jb20KICAgIG5hbWU6IGNsdXN0ZXIKY29udGV4dHM6CiAgLSBjb250ZXh0OgogICAgICBjbHVzdGVyOiBjbHVzdGVyCiAgICAgIHVzZXI6IGNsdXN0ZXJVc2VyX3Rlc3RfY2x1c3RlcgogICAgbmFtZTogY2x1c3RlcgpjdXJyZW50LWNvbnRleHQ6IGNsdXN0ZXIKa2luZDogQ29uZmlnCnByZWZlcmVuY2VzOiBudWxsCnVzZXJzOgogIC0gbmFtZTogY2x1c3RlclVzZXJfdGVzdF9jbHVzdGVyCiAgICB1c2VyOgogICAgICB0b2tlbjogMmM2NGZyMmQ2MWRhZmZkODY4NGJkYTc3M2Y2YTQ3OGUxZTU4NzlhZTE1ZmRkM2Q1NDU4NGNkNTM1MGM2YWUxMzlhMGI3OTk4YTc2ZjFhOTdlOGI3Y2EwNTJiYjIwZWY0ZjljZTAzN2Q5YTMyM2ZjMTYxZmI0MGI4OTVlOWIwZjM="),
+	// 			Value: []byte("WVhCcFZtVnljMmx2YmpvZ2RqRU5DbU5zZFhOMFpYSnpPZzBLTFNCamJIVnpkR1Z5T2cwS0lDQWdJR05sY25ScFptbGpZWFJsTFdGMWRHaHZjbWwwZVMxa1lYUmhPaUJNVXpCMFRGTXhRMUpWWkVwVWFVSkVVbFpLVlZOVldrcFJNRVpWVWxNd2RFeFRNSFJEYXpGS1UxVldOR1ZyVGtSUldFVnlXakJHTTFOVlNrSmFNR3hTVlRKMGRWZHNXblphZWtwMVZtcEtWbU5ZWkV0amJsWllUVEZDU0dWclJrOVJiV1J5WTFkb2NtRlZZelZrZWtKRFVWWkdlbEpyUmtWUlZUUkxWRlpHZW1Rd1RsSlhWVkpYVlZaR1JWSllaRXRoYkdWc1NsRXdiSEZSVlRWRFdqSjBlR0ZIZEhCU2Vtd3pUVVZLUWxWVlZrZFJWVVpRVVRCR2JrOUZSazVUVld4RVVUSmtURkV3Um01U1ZVVXdWMWhDTlVOc1VtdFVNVkpTVTFkTmRtVnNhRVJsUjNoVFpXdFZNRg=="),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/GetClustersByResourceGroupExample.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/GetClustersByResourceGroupExample.json
 func ExampleConnectedClusterClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -368,7 +819,15 @@ func ExampleConnectedClusterClient_NewListByResourceGroupPager() {
 		// 			Properties: &armhybridkubernetes.ConnectedClusterProperties{
 		// 				AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
 		// 				AgentVersion: to.Ptr("0.1.0"),
+		// 				AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+		// 				Distribution: to.Ptr("AKS"),
+		// 				DistributionVersion: to.Ptr("1.0"),
 		// 				KubernetesVersion: to.Ptr("1.17.0"),
+		// 				MiscellaneousProperties: map[string]*string{
+		// 					"createCorrelationId": to.Ptr("8e42616e-74dc-4117-9aaa-71ad5d0180d8"),
+		// 					"infrastructureVersion": to.Ptr("1.1"),
+		// 				},
+		// 				PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateDisabled),
 		// 				ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
 		// 				TotalNodeCount: to.Ptr[int32](2),
 		// 			},
@@ -396,7 +855,16 @@ func ExampleConnectedClusterClient_NewListByResourceGroupPager() {
 		// 			Properties: &armhybridkubernetes.ConnectedClusterProperties{
 		// 				AgentPublicKeyCertificate: to.Ptr("XIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
 		// 				AgentVersion: to.Ptr("0.1.0"),
+		// 				AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+		// 				Distribution: to.Ptr("AKS"),
+		// 				DistributionVersion: to.Ptr("1.0"),
 		// 				KubernetesVersion: to.Ptr("1.1"),
+		// 				MiscellaneousProperties: map[string]*string{
+		// 					"createCorrelationId": to.Ptr("8e42616e-74dc-4117-9aaa-71ad5d0180d8"),
+		// 					"infrastructureVersion": to.Ptr("1.1"),
+		// 				},
+		// 				PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 				PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateEnabled),
 		// 				ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
 		// 				TotalNodeCount: to.Ptr[int32](2),
 		// 			},
@@ -413,7 +881,7 @@ func ExampleConnectedClusterClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/GetClustersBySubscriptionExample.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/GetClustersBySubscriptionExample.json
 func ExampleConnectedClusterClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,7 +920,15 @@ func ExampleConnectedClusterClient_NewListBySubscriptionPager() {
 		// 			Properties: &armhybridkubernetes.ConnectedClusterProperties{
 		// 				AgentPublicKeyCertificate: to.Ptr("MIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
 		// 				AgentVersion: to.Ptr("0.1.0"),
+		// 				AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+		// 				Distribution: to.Ptr("AKS"),
+		// 				DistributionVersion: to.Ptr("1.0"),
 		// 				KubernetesVersion: to.Ptr("1.17.0"),
+		// 				MiscellaneousProperties: map[string]*string{
+		// 					"createCorrelationId": to.Ptr("8e42616e-74dc-4117-9aaa-71ad5d0180d8"),
+		// 					"infrastructureVersion": to.Ptr("1.1"),
+		// 				},
+		// 				PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateDisabled),
 		// 				ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
 		// 				TotalNodeCount: to.Ptr[int32](2),
 		// 			},
@@ -468,7 +944,7 @@ func ExampleConnectedClusterClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("connectedCluster2"),
 		// 			Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
-		// 			ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
+		// 			ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster2"),
 		// 			Location: to.Ptr("East US"),
 		// 			Tags: map[string]*string{
 		// 			},
@@ -480,7 +956,16 @@ func ExampleConnectedClusterClient_NewListBySubscriptionPager() {
 		// 			Properties: &armhybridkubernetes.ConnectedClusterProperties{
 		// 				AgentPublicKeyCertificate: to.Ptr("XIICYzCCAcygAwIBAgIBADANBgkqhkiG9w0BAQUFADAuMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDSUJNMREwDwYDVQQLEwhMb2NhbCBDQTAeFw05OTEyMjIwNTAwMDBaFw0wMDEyMjMwNDU5NTlaMC4xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNJQk0xETAPBgNVBAsTCExvY2FsIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2bZEo7xGaX2/0GHkrNFZvlxBou9v1Jmt/PDiTMPve8r9FeJAQ0QdvFST/0JPQYD20rH0bimdDLgNdNynmyRoS2S/IInfpmf69iyc2G0TPyRvmHIiOZbdCd+YBHQi1adkj17NDcWj6S14tVurFX73zx0sNoMS79q3tuXKrDsxeuwIDAQABo4GQMIGNMEsGCVUdDwGG+EIBDQQ+EzxHZW5lcmF0ZWQgYnkgdGhlIFNlY3VyZVdheSBTZWN1cml0eSBTZXJ2ZXIgZm9yIE9TLzM5MCAoUkFDRikwDgYDVR0PAQH/BAQDAgAGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFJ3+ocRyCTJw067dLSwr/nalx6YMMA0GCSqGSIb3DQEBBQUAA4GBAMaQzt+zaj1GU77yzlr8iiMBXgdQrwsZZWJo5exnAucJAEYQZmOfyLiM D6oYq+ZnfvM0n8G/Y79q8nhwvuxpYOnRSAXFp6xSkrIOeZtJMY1h00LKp/JX3Ng1svZ2agE126JHsQ0bhzN5TKsYfbwfTwfjdWAGy6Vf1nYi/rO+ryMO"),
 		// 				AgentVersion: to.Ptr("0.1.0"),
+		// 				AzureHybridBenefit: to.Ptr(armhybridkubernetes.AzureHybridBenefitNotApplicable),
+		// 				Distribution: to.Ptr("AKS"),
+		// 				DistributionVersion: to.Ptr("1.0"),
 		// 				KubernetesVersion: to.Ptr("1.16.3"),
+		// 				MiscellaneousProperties: map[string]*string{
+		// 					"createCorrelationId": to.Ptr("8e42616e-74dc-4117-9aaa-71ad5d0180d8"),
+		// 					"infrastructureVersion": to.Ptr("1.1"),
+		// 				},
+		// 				PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 				PrivateLinkState: to.Ptr(armhybridkubernetes.PrivateLinkStateEnabled),
 		// 				ProvisioningState: to.Ptr(armhybridkubernetes.ProvisioningStateSucceeded),
 		// 				TotalNodeCount: to.Ptr[int32](4),
 		// 			},

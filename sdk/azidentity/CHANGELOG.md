@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.3-beta.1 (Unreleased)
+## 1.9.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,10 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.9.0 (2025-04-08)
+
+### Features Added
+* `GetToken()` sets `AccessToken.RefreshOn` when the token provider specifies a value
+
+### Other Changes
 * `NewManagedIdentityCredential` logs the configured user-assigned identity, if any
 * Deprecated `UsernamePasswordCredential` because it can't support multifactor
   authentication (MFA), which Microsoft Entra ID requires for most tenants. See
   https://aka.ms/azsdk/identity/mfa for migration guidance.
+* Updated dependencies
 
 ## 1.8.2 (2025-02-12)
 

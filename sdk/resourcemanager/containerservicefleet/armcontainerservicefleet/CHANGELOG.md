@@ -1,5 +1,50 @@
 # Release History
 
+## 2.0.0 (2025-04-15)
+### Breaking Changes
+
+- Type of `ErrorAdditionalInfo.Info` has been changed from `any` to `*ErrorAdditionalInfoInfo`
+- `ManagedServiceIdentityTypeSystemAssignedUserAssigned` from enum `ManagedServiceIdentityType` has been removed
+- Function `*FleetMembersClient.BeginUpdate` has been removed
+- Function `*FleetsClient.BeginCreateOrUpdate` has been removed
+- Function `*FleetsClient.BeginUpdate` has been removed
+
+### Features Added
+
+- New value `ManagedServiceIdentityTypeSystemAndUserAssigned` added to enum type `ManagedServiceIdentityType`
+- New value `NodeImageSelectionTypeCustom` added to enum type `NodeImageSelectionType`
+- New enum type `AutoUpgradeLastTriggerStatus` with values `AutoUpgradeLastTriggerStatusFailed`, `AutoUpgradeLastTriggerStatusSucceeded`
+- New enum type `AutoUpgradeNodeImageSelectionType` with values `AutoUpgradeNodeImageSelectionTypeConsistent`, `AutoUpgradeNodeImageSelectionTypeLatest`
+- New enum type `AutoUpgradeProfileProvisioningState` with values `AutoUpgradeProfileProvisioningStateCanceled`, `AutoUpgradeProfileProvisioningStateFailed`, `AutoUpgradeProfileProvisioningStateSucceeded`
+- New enum type `UpgradeChannel` with values `UpgradeChannelNodeImage`, `UpgradeChannelRapid`, `UpgradeChannelStable`
+- New function `NewAutoUpgradeProfileOperationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AutoUpgradeProfileOperationsClient, error)`
+- New function `*AutoUpgradeProfileOperationsClient.BeginGenerateUpdateRun(context.Context, string, string, string, *AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions) (*runtime.Poller[AutoUpgradeProfileOperationsClientGenerateUpdateRunResponse], error)`
+- New function `NewAutoUpgradeProfilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AutoUpgradeProfilesClient, error)`
+- New function `*AutoUpgradeProfilesClient.BeginCreateOrUpdate(context.Context, string, string, string, AutoUpgradeProfile, *AutoUpgradeProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[AutoUpgradeProfilesClientCreateOrUpdateResponse], error)`
+- New function `*AutoUpgradeProfilesClient.BeginDelete(context.Context, string, string, string, *AutoUpgradeProfilesClientBeginDeleteOptions) (*runtime.Poller[AutoUpgradeProfilesClientDeleteResponse], error)`
+- New function `*AutoUpgradeProfilesClient.Get(context.Context, string, string, string, *AutoUpgradeProfilesClientGetOptions) (AutoUpgradeProfilesClientGetResponse, error)`
+- New function `*AutoUpgradeProfilesClient.NewListByFleetPager(string, string, *AutoUpgradeProfilesClientListByFleetOptions) *runtime.Pager[AutoUpgradeProfilesClientListByFleetResponse]`
+- New function `*ClientFactory.NewAutoUpgradeProfileOperationsClient() *AutoUpgradeProfileOperationsClient`
+- New function `*ClientFactory.NewAutoUpgradeProfilesClient() *AutoUpgradeProfilesClient`
+- New function `*FleetMembersClient.BeginUpdateAsync(context.Context, string, string, string, FleetMemberUpdate, *FleetMembersClientBeginUpdateAsyncOptions) (*runtime.Poller[FleetMembersClientUpdateAsyncResponse], error)`
+- New function `*FleetsClient.BeginCreate(context.Context, string, string, Fleet, *FleetsClientBeginCreateOptions) (*runtime.Poller[FleetsClientCreateResponse], error)`
+- New function `*FleetsClient.BeginUpdateAsync(context.Context, string, string, FleetPatch, *FleetsClientBeginUpdateAsyncOptions) (*runtime.Poller[FleetsClientUpdateAsyncResponse], error)`
+- New struct `AutoUpgradeNodeImageSelection`
+- New struct `AutoUpgradeProfile`
+- New struct `AutoUpgradeProfileListResult`
+- New struct `AutoUpgradeProfileProperties`
+- New struct `AutoUpgradeProfileStatus`
+- New struct `ErrorAdditionalInfoInfo`
+- New struct `FleetMemberStatus`
+- New struct `FleetStatus`
+- New struct `GenerateResponse`
+- New field `EnableVnetIntegration`, `SubnetID` in struct `APIServerAccessProfile`
+- New field `Status` in struct `FleetMemberProperties`
+- New field `Status` in struct `FleetProperties`
+- New field `CustomNodeImageVersions` in struct `NodeImageSelection`
+- New field `AutoUpgradeProfileID` in struct `UpdateRunProperties`
+
+
 ## 1.3.0-beta.1 (2024-10-25)
 ### Features Added
 

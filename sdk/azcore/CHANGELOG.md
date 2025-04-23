@@ -1,20 +1,8 @@
 # Release History
 
-## 1.18.0-beta.1 (Unreleased)
+## 1.18.1-beta.1 (Unreleased)
 
 ### Features Added
-
-* Added field `NewPropagatorFn` to `tracing.ProviderOptions` to support custom propagators.
-* Added type `SpanContext` to the `tracing` package to support Span Context.
-* Added method `SpanContext()` to `tracing.Span` to support Span Context.
-* Added func `NewSpanContext()` to the `tracing` package to support Span Context.
-* Added type `Link` to the `tracing` package to support Span Links.
-* Added method `LinkFromContext()` to `tracing.Tracer` to support Span Links.
-* Added method `AddLink()` to `tracing.Span` to support Span Links.
-* Added field `Links` to `runtime.StartSpanOptions` to support Span Links.
-* Added type `Propagator` to the `tracing` package to support context propagation.
-* Added type `Carrier` to the `tracing` package to support context propagation.
-* Added method `NewPropagator()` to type `tracing.Provider` to support context propagation.
 
 ### Breaking Changes
 
@@ -22,7 +10,19 @@
 
 ### Other Changes
 
-* Added Span Attribute `error.type` to report an error when ending a span with `runtime.StartSpan`.
+## 1.18.0 (2025-04-03)
+
+### Features Added
+
+* Added `AccessToken.RefreshOn` and updated `BearerTokenPolicy` to consider nonzero values of it when deciding whether to request a new token
+
+
+## 1.17.1 (2025-03-20)
+
+### Other Changes
+
+* Upgraded to Go 1.23
+* Upgraded dependencies
 
 ## 1.17.0 (2025-01-07)
 

@@ -8,11 +8,14 @@ package azquery_test
 
 import (
 	"context"
+	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
 )
@@ -155,4 +158,32 @@ func TestNewListNamespacesPager_Failure(t *testing.T) {
 		t.Fatal("no response")
 	}
 
+}
+
+func TestMetricsAPIVersion(t *testing.T) {
+	apiVersion := "2023-10-01"
+	var requireVersion = func(t *testing.T) func(req *http.Request) bool {
+		return func(r *http.Request) bool {
+			version := r.URL.Query().Get("api-version")
+			require.Equal(t, version, apiVersion)
+			return true
+		}
+	}
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithStatusCode(200),
+		mock.WithPredicate(requireVersion(t)),
+	)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	opts := &azquery.MetricsClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:  srv,
+			APIVersion: apiVersion,
+		},
+	}
+	client, err := azquery.NewMetricsClient(&azcred.Fake{}, opts)
+	require.NoError(t, err)
+	_, err = client.QueryResource(context.Background(), resourceURI, nil)
+	require.NoError(t, err)
 }

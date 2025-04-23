@@ -3,6 +3,7 @@
 ## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added API Version support for `MetricsClient`. Users can now change the default API Version by setting `MetricsClientOptions.APIVersion`.
 
 ### Breaking Changes
 

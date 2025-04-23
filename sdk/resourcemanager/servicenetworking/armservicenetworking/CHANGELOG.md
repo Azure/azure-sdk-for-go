@@ -1,5 +1,21 @@
 # Release History
 
+## 1.2.0-beta.1 (2025-04-23)
+### Features Added
+
+- New value `PolicyTypeIPAccessRules` added to enum type `PolicyType`
+- New enum type `IPAccessRuleAction` with values `IPAccessRuleActionAllow`, `IPAccessRuleActionDeny`
+- New struct `FrontendUpdateProperties`
+- New struct `IPAccessRule`
+- New struct `IPAccessRulesPolicy`
+- New struct `IPAccessRulesSecurityPolicy`
+- New field `SecurityPolicyConfigurations` in struct `FrontendProperties`
+- New field `Properties` in struct `FrontendUpdate`
+- New field `IPAccessRulesSecurityPolicy` in struct `SecurityPolicyConfigurations`
+- New field `IPAccessRulesPolicy` in struct `SecurityPolicyProperties`
+- New field `IPAccessRulesPolicy` in struct `SecurityPolicyUpdateProperties`
+
+
 ## 1.1.0 (2025-01-23)
 ### Features Added
 

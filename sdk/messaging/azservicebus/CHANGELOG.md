@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added a new azservicebus.Code value, `CodeNotFound`, which indicates the queue, topic or subscription doesn't exist. (PR#TBD)
+
 ### Breaking Changes
 
 ### Bugs Fixed

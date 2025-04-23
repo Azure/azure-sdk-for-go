@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
@@ -27,7 +27,7 @@ type LegacyCheckpoint struct {
 }
 
 // Shows how to migrate from the older `github.com/Azure/azure-event-hubs-go` checkpointer to to
-// the format used by this package, `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints/BlobStore`
+// the format used by this package, `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/checkpoints/BlobStore`
 //
 // NOTE: This example is not safe to run while either the old or new checkpoint store is in-use as it doesn't
 // respect locking or ownership.

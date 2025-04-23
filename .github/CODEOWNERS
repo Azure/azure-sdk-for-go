@@ -30,7 +30,7 @@
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %OpenAI
 # PRLabel: %OpenAI
-/sdk/ai/azopenai                       @richardpark-msft @jhendrixMSFT @chlowell @achauhan-scc @PratibhaShrivastav18 @kingernupur @glecaros
+/sdk/ai/azopenai                       @richardpark-msft @achauhan-scc @PratibhaShrivastav18 @kingernupur @glecaros
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Internal

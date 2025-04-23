@@ -566,18 +566,6 @@ func TestNewClientUnitTests(t *testing.T) {
 	})
 }
 
-func assertRPCNotFound(t *testing.T, err error) {
-	require.NotNil(t, err)
-
-	var rpcError interface {
-		RPCCode() int
-		error
-	}
-
-	require.ErrorAs(t, err, &rpcError)
-	require.Equal(t, http.StatusNotFound, rpcError.RPCCode())
-}
-
 func forceManagementSettlement(messages []*ReceivedMessage) {
 	for _, m := range messages {
 		m.settleOnMgmtLink = true

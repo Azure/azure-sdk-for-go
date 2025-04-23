@@ -10,7 +10,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/test"
 	"github.com/Azure/go-amqp"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"

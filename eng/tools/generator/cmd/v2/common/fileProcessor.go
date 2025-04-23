@@ -844,8 +844,8 @@ func UpdateReadmeClientFactory(path string) error {
 	if err != nil {
 		return err
 	}
-	noOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\([^,]+,\s*cred,\s*nil\)`)
-	withOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\([^,]+,\s*cred,\s*&options\)`)
+	noOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\((.*?)(?:,\s*)?cred,\s*nil\)`)
+	withOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\((.*?)(?:,\s*)?cred,\s*&options\)`)
 	oldnoOptionalFactory := noOptionalFactoryReg.FindString(string(readmeFile))
 	oldwithOptionalFactory := withOptionalFactoryReg.FindString(string(readmeFile))
 	if oldnoOptionalFactory == "" && oldwithOptionalFactory == "" {

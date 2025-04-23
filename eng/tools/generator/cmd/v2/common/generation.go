@@ -56,6 +56,7 @@ type GenerateParam struct {
 	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
+	ReleasedTags         []string
 }
 
 type Generator interface {
@@ -170,7 +171,16 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &SwaggerOnBoardGenerator{SwaggerCommonGenerator: commonGenerator}
 	} else {
-		generator = &SwaggerUpdateGenerator{SwaggerCommonGenerator: commonGenerator}
+		tags, err := GetAllVersionTags(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName))
+		if err != nil {
+			return nil, err
+		}
+		if len(tags) == 0 {
+			generator = &SwaggerOnBoardGenerator{SwaggerCommonGenerator: commonGenerator}
+		} else {
+			generateParam.ReleasedTags = tags
+			generator = &SwaggerUpdateGenerator{SwaggerCommonGenerator: commonGenerator}
+		}
 	}
 
 	err = generator.PreGenerate(generateParam)
@@ -393,14 +403,7 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 
 	log.Printf("Get ori exports for changelog generation...")
 
-	tags, err := GetAllVersionTags(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName))
-	if err != nil {
-		return nil, err
-	}
-
-	if len(tags) == 0 {
-		return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s hasn't been released, it's supposed to OnBoard", generateParam.RPName, generateParam.NamespaceName)
-	}
+	tags := generateParam.ReleasedTags
 
 	previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
@@ -567,7 +570,16 @@ func (ctx *GenerateContext) GenerateForTypeSpec(generateParam *GenerateParam) (*
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &TypeSpecOnBoardGenerator{TypeSpecCommonGenerator: commonGenerator}
 	} else {
-		generator = &TypeSpecUpdateGeneraor{TypeSpecCommonGenerator: commonGenerator}
+		tags, err := GetAllVersionTags(moduleRelativePath)
+		if err != nil {
+			return nil, err
+		}
+		if len(tags) == 0 {
+			generator = &TypeSpecOnBoardGenerator{TypeSpecCommonGenerator: commonGenerator}
+		} else {
+			generateParam.ReleasedTags = tags
+			generator = &TypeSpecUpdateGeneraor{TypeSpecCommonGenerator: commonGenerator}
+		}
 	}
 
 	err = generator.PreGenerate(generateParam)
@@ -736,7 +748,6 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 	var err error
 	version := t.Version
 	packagePath := t.PackagePath
-	moduleRelativePath := t.ModuleRelativePath
 
 	previousVersion := ""
 	isCurrentPreview := false
@@ -755,14 +766,7 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 
 	log.Printf("Get ori exports for changelog generation...")
 
-	tags, err := GetAllVersionTags(moduleRelativePath)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(tags) == 0 {
-		return nil, fmt.Errorf("github.com/Azure/azure-sdk-for-go/%s hasn't been released, it's supposed to OnBoard", moduleRelativePath)
-	}
+	tags := generateParam.ReleasedTags
 
 	previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 

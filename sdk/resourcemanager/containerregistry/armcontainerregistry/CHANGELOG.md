@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.3 (2025-04-11)
+## 1.3.0-beta.3 (2025-04-24)
 ### Breaking Changes
 
 - Operation `*RegistriesClient.BeginScheduleRun` has been changed to non-LRO, use `*RegistriesClient.ScheduleRun` instead.

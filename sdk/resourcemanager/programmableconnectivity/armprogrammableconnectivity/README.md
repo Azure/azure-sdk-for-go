@@ -1,4 +1,4 @@
-# Azure Programmableconnectivity Module for Go
+# Azure Programmable Connectivity Module for Go
 
 The `armprogrammableconnectivity` module provides operations for working with Azure Programmableconnectivity.
 
@@ -15,7 +15,7 @@ The `armprogrammableconnectivity` module provides operations for working with Az
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Programmableconnectivity module:
+Install the Azure Programmable Connectivity module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/programmableconnectivity/armprogrammableconnectivity
@@ -33,10 +33,10 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Programmableconnectivity module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Programmable Connectivity module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
-clientFactory, err := armprogrammableconnectivity.NewClientFactory(<subscription ID>, cred, nil)
+clientFactory, err := armprogrammableconnectivity.NewClientFactory(cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -47,7 +47,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-clientFactory, err := armprogrammableconnectivity.NewClientFactory(<subscription ID>, cred, &options)
+clientFactory, err := armprogrammableconnectivity.NewClientFactory(cred, &options)
 ```
 
 ## Clients

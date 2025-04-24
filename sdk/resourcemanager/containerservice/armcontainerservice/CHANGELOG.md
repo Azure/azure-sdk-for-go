@@ -1,5 +1,37 @@
 # Release History
 
+## 7.0.0-beta.2 (2025-04-24)
+### Breaking Changes
+
+- Struct `AutoScaleProfile` has been removed
+- Field `OSDiskSizeGB`, `OSDiskType`, `Sizes` of struct `ManualScaleProfile` has been removed
+
+### Features Added
+
+- Type of `ScaleProfile.Autoscale` has been changed from `[]*AutoScaleProfile` to `any`
+- New enum type `AdoptionPolicy` with values `AdoptionPolicyAlways`, `AdoptionPolicyIfIdentical`, `AdoptionPolicyNever`
+- New enum type `AdvancedNetworkPolicies` with values `AdvancedNetworkPoliciesFQDN`, `AdvancedNetworkPoliciesL7`, `AdvancedNetworkPoliciesNone`
+- New enum type `DeletePolicy` with values `DeletePolicyDelete`, `DeletePolicyKeep`
+- New enum type `NamespaceProvisioningState` with values `NamespaceProvisioningStateCanceled`, `NamespaceProvisioningStateCreating`, `NamespaceProvisioningStateDeleting`, `NamespaceProvisioningStateFailed`, `NamespaceProvisioningStateSucceeded`, `NamespaceProvisioningStateUpdating`
+- New enum type `PolicyRule` with values `PolicyRuleAllowAll`, `PolicyRuleAllowSameNamespace`, `PolicyRuleDenyAll`
+- New enum type `TransitEncryption` with values `TransitEncryptionNone`, `TransitEncryptionWireGuard`
+- New function `*ClientFactory.NewNamespacesClient() *NamespacesClient`
+- New function `NewNamespacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NamespacesClient, error)`
+- New function `*NamespacesClient.BeginCreateOrUpdate(context.Context, string, string, string, Namespace, *NamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- New function `*NamespacesClient.BeginDelete(context.Context, string, string, string, *NamespacesClientBeginDeleteOptions) (*runtime.Poller[NamespacesClientDeleteResponse], error)`
+- New function `*NamespacesClient.Get(context.Context, string, string, string, *NamespacesClientGetOptions) (NamespacesClientGetResponse, error)`
+- New function `*NamespacesClient.NewListByManagedClusterPager(string, string, *NamespacesClientListByManagedClusterOptions) *runtime.Pager[NamespacesClientListByManagedClusterResponse]`
+- New function `*NamespacesClient.ListCredential(context.Context, string, string, string, *NamespacesClientListCredentialOptions) (NamespacesClientListCredentialResponse, error)`
+- New function `*NamespacesClient.Update(context.Context, string, string, string, TagsObject, *NamespacesClientUpdateOptions) (NamespacesClientUpdateResponse, error)`
+- New struct `Namespace`
+- New struct `NamespaceListResult`
+- New struct `NamespaceProperties`
+- New struct `NetworkPolicies`
+- New struct `ResourceQuota`
+- New field `AdvancedNetworkPolicies`, `TransitEncryption` in struct `AdvancedNetworkingSecurity`
+- New field `Size` in struct `ManualScaleProfile`
+
+
 ## 6.6.0 (2025-04-22)
 ### Features Added
 

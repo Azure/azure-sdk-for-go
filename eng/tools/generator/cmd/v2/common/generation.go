@@ -53,7 +53,6 @@ type GenerateParam struct {
 	SkipGenerateExample  bool
 	GoVersion            string
 	RemoveTagSet         bool
-	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
 	ReleasedTags         []string
@@ -146,7 +145,6 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
 				SpecificVersion:      commonGenerateParam.SpecificVersion,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
-				ForceStableVersion:   commonGenerateParam.ForceStableVersion,
 				ApiVersion:           commonGenerateParam.ApiVersion,
 				SdkReleaseType:       commonGenerateParam.SdkReleaseType,
 			})
@@ -411,21 +409,6 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 	}
 	if generateParam.SdkReleaseType == SDKReleaseTypePreview {
 		isCurrentPreview = true
-	}
-	if generateParam.SdkReleaseType == SDKReleaseTypeStable {
-		generateParam.ForceStableVersion = true
-	}
-
-	if isCurrentPreview && generateParam.ForceStableVersion {
-		tag, err := GetTag(filepath.Join(packagePath, "autorest.md"))
-		if err != nil {
-			return nil, err
-		}
-		if tag != "" {
-			if !strings.Contains(tag, "preview") {
-				isCurrentPreview = false
-			}
-		}
 	}
 
 	log.Printf("Get ori exports for changelog generation...")

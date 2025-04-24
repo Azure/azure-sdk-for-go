@@ -4,6 +4,7 @@ package azeventhubs
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"sync/atomic"
@@ -12,15 +13,16 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/exported"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
 func TestUnit_Processor_loadBalancing(t *testing.T) {
 	cps := newCheckpointStoreForTest()
-	firstProcessor := newProcessorForTest(t, "first-processor", cps)
+	firstProcessor := newProcessorForTest(t, "first-processor", cps, nil)
 	newTestOwnership := func(base Ownership) Ownership {
 		base.ConsumerGroup = "consumer-group"
 		base.EventHubName = "event-hub"
@@ -80,7 +82,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	// 1 of those partitions is owned by our client ("first-processor")
 	// 2 are still available.
 
-	secondProcessor := newProcessorForTest(t, "second-processor", cps)
+	secondProcessor := newProcessorForTest(t, "second-processor", cps, nil)
 
 	// when we ask for available partitions we take into account the owners that are
 	// present in the checkpoint store and ourselves, since we're about to try to claim
@@ -279,7 +281,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 
 func TestUnit_Processor_RunCancelledQuickly(t *testing.T) {
 	cps := newCheckpointStoreForTest()
-	processor := newProcessorForTest(t, "processor", cps)
+	processor := newProcessorForTest(t, "processor", cps, nil)
 
 	precancelledContext, cancel := context.WithCancel(context.Background())
 	cancel()
@@ -323,6 +325,282 @@ func TestUnit_Processor_Run_cancellation(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestUnit_Processor_getStartPosition_checkpointStore(t *testing.T) {
+	ignoredSP := StartPosition{Offset: to.Ptr("IGNORED: checkpoint wins")}
+
+	checkpointTests := []struct {
+		Name           string
+		Checkpoint     Checkpoint
+		StartPositions StartPositions
+		Actual         StartPosition
+	}{
+		{
+			Name:           "Offset wins over Sequence, when present",
+			Checkpoint:     Checkpoint{SequenceNumber: to.Ptr[int64](123), Offset: to.Ptr("offset from checkpoint")},
+			StartPositions: StartPositions{Default: ignoredSP},
+			Actual:         StartPosition{Offset: to.Ptr("offset from checkpoint")},
+		},
+		{
+			Name:           "Use SequenceNumber, if no offset",
+			Checkpoint:     Checkpoint{SequenceNumber: to.Ptr[int64](123)},
+			StartPositions: StartPositions{Default: ignoredSP},
+			Actual:         StartPosition{SequenceNumber: to.Ptr[int64](123)},
+		},
+		{
+			Name:           "Overrides Default",
+			Checkpoint:     Checkpoint{Offset: to.Ptr("offset from checkpoint")},
+			StartPositions: StartPositions{Default: ignoredSP},
+			Actual:         StartPosition{Offset: to.Ptr("offset from checkpoint")},
+		},
+		{
+			Name:       "Overrides Partition Default",
+			Checkpoint: Checkpoint{Offset: to.Ptr("offset from checkpoint")},
+			StartPositions: StartPositions{
+				PerPartition: map[string]StartPosition{"a": {Offset: to.Ptr("IGNORED: checkpoint wins")}},
+			},
+			Actual: StartPosition{Offset: to.Ptr("offset from checkpoint")},
+		},
+	}
+
+	for _, td := range checkpointTests {
+		cps := newCheckpointStoreForTest()
+		td.Checkpoint.ConsumerGroup = "cg"
+		td.Checkpoint.EventHubName = "eh"
+		td.Checkpoint.FullyQualifiedNamespace = "ns"
+		td.Checkpoint.PartitionID = "a"
+
+		err := cps.SetCheckpoint(context.Background(), td.Checkpoint, nil)
+		require.NoError(t, err)
+
+		processor := newProcessorForTest(t, "client-id", cps, &ProcessorOptions{
+			StartPositions: td.StartPositions,
+		})
+
+		called := false
+
+		actualStartPosition, err := processor.getStartPosition(func() (map[string]Checkpoint, error) {
+			called = true
+			return processor.getCheckpointsMap(context.Background())
+		}, Ownership{PartitionID: "a"})
+		require.NoError(t, err)
+
+		require.True(t, called)
+		require.Equal(t, td.Actual, actualStartPosition)
+	}
+
+	t.Run("InvalidCheckpoint", func(t *testing.T) {
+		cps := newCheckpointStoreForTest()
+
+		err := cps.SetCheckpoint(context.Background(), Checkpoint{
+			ConsumerGroup: "cg", EventHubName: "eh", FullyQualifiedNamespace: "ns", PartitionID: "a",
+			// no offset or sequence number set
+		}, nil)
+		require.NoError(t, err)
+
+		processor := newProcessorForTest(t, "client-id", cps, &ProcessorOptions{
+			StartPositions: StartPositions{Default: ignoredSP},
+		})
+
+		called := false
+
+		actualStartPosition, err := processor.getStartPosition(func() (map[string]Checkpoint, error) {
+			called = true
+			return processor.getCheckpointsMap(context.Background())
+		}, Ownership{PartitionID: "a"})
+		require.Empty(t, actualStartPosition)
+		require.Error(t, err)
+		require.True(t, called)
+	})
+}
+
+func TestUnit_Processor_getStartPosition_noCheckpoint(t *testing.T) {
+	t.Run("PartitionPreferredOverDefault", func(t *testing.T) {
+		cps := newCheckpointStoreForTest()
+		called := false
+
+		processor := newProcessorForTest(t, "client-id", cps, &ProcessorOptions{
+			StartPositions: StartPositions{
+				Default: StartPosition{
+					Offset: to.Ptr("default start position"),
+				},
+				PerPartition: map[string]StartPosition{
+					"a": {
+						Offset: to.Ptr("a partition start position"),
+					},
+				},
+			},
+		})
+
+		actualStartPosition, err := processor.getStartPosition(func() (map[string]Checkpoint, error) {
+			called = true
+			return processor.getCheckpointsMap(context.Background())
+		}, Ownership{PartitionID: "a"})
+		require.NoError(t, err)
+		require.True(t, called)
+		require.Equal(t, StartPosition{Offset: to.Ptr("a partition start position")}, actualStartPosition)
+	})
+
+	t.Run("DefaultUsedOtherwise_HasPartitionMap", func(t *testing.T) {
+		cps := newCheckpointStoreForTest()
+		called := false
+
+		processor := newProcessorForTest(t, "client-id", cps, &ProcessorOptions{
+			StartPositions: StartPositions{
+				Default: StartPosition{
+					Offset: to.Ptr("default start position"),
+				},
+				PerPartition: map[string]StartPosition{
+					"not-our-partition": {
+						Offset: to.Ptr("ignored, doesn't match partition"),
+					},
+				},
+			},
+		})
+
+		actualStartPosition, err := processor.getStartPosition(func() (map[string]Checkpoint, error) {
+			called = true
+			return processor.getCheckpointsMap(context.Background())
+		}, Ownership{PartitionID: "a"})
+		require.NoError(t, err)
+		require.True(t, called)
+		require.Equal(t, StartPosition{Offset: to.Ptr("default start position")}, actualStartPosition)
+	})
+
+	t.Run("DefaultUsedOtherwise_NoPartitionMap", func(t *testing.T) {
+		cps := newCheckpointStoreForTest()
+		called := false
+
+		processor := newProcessorForTest(t, "client-id", cps, &ProcessorOptions{
+			StartPositions: StartPositions{
+				Default: StartPosition{
+					Offset: to.Ptr("default start position"),
+				},
+			},
+		})
+
+		actualStartPosition, err := processor.getStartPosition(func() (map[string]Checkpoint, error) {
+			called = true
+			return processor.getCheckpointsMap(context.Background())
+		}, Ownership{PartitionID: "a"})
+		require.NoError(t, err)
+		require.True(t, called)
+		require.Equal(t, StartPosition{Offset: to.Ptr("default start position")}, actualStartPosition)
+	})
+}
+
+func TestUnit_Processor_addPartitionClient(t *testing.T) {
+	cps := newCheckpointStoreForTest()
+
+	err := cps.SetCheckpoint(context.Background(), Checkpoint{
+		ConsumerGroup: "cg", EventHubName: "eh", FullyQualifiedNamespace: "fqdn", PartitionID: "0",
+		Offset: to.Ptr("100"), // ie, a legacy offset
+	}, nil)
+	require.NoError(t, err)
+
+	processor := newProcessorForTest(t, "client-id", cps, &ProcessorOptions{})
+
+	getCheckpoints := func() (map[string]Checkpoint, error) {
+		return processor.getCheckpointsMap(context.Background())
+	}
+
+	geodrErr := &amqp.Error{
+		Condition:   amqp.ErrCond("com.microsoft:georeplication:invalid-offset"),
+		Description: "The supplied offset '1' is invalid for geo replication enabled namespace (current epoch:'1') (lots of other error text)",
+	}
+
+	t.Run("GeoDRFallback", func(t *testing.T) {
+		processor.nextClients = make(chan *ProcessorPartitionClient, 1)
+
+		gotGeodrFailure := false
+		called := 0
+		consumers := &sync.Map{}
+
+		openPartitionClient := func(ctx context.Context, partitionID string, startPosition StartPosition) (partitionClient *PartitionClient, err error) {
+			called++
+
+			if startPosition.Offset != nil {
+				gotGeodrFailure = true
+				return nil, geodrErr
+			}
+
+			return &PartitionClient{}, nil
+		}
+
+		err = processor.addPartitionClient(context.Background(), Ownership{PartitionID: "0"}, getCheckpoints, openPartitionClient, consumers)
+		require.NoError(t, err)
+		require.True(t, gotGeodrFailure)
+		require.Equal(t, 2, called)
+
+		pc, _ := consumers.Load("0")
+		require.NotNil(t, pc)
+	})
+
+	t.Run("Normal", func(t *testing.T) {
+		processor.nextClients = make(chan *ProcessorPartitionClient, 1)
+
+		called := 0
+		consumers := &sync.Map{}
+
+		openPartitionClient := func(ctx context.Context, partitionID string, startPosition StartPosition) (partitionClient *PartitionClient, err error) {
+			called++
+			return &PartitionClient{}, nil
+		}
+
+		err = processor.addPartitionClient(context.Background(), Ownership{PartitionID: "0"}, getCheckpoints, openPartitionClient, consumers)
+		require.NoError(t, err)
+		require.Equal(t, 1, called)
+
+		pc, _ := consumers.Load("0")
+		require.NotNil(t, pc)
+	})
+
+	t.Run("Failure", func(t *testing.T) {
+		processor.nextClients = make(chan *ProcessorPartitionClient, 1)
+
+		called := 0
+		consumers := &sync.Map{}
+
+		openPartitionClient := func(ctx context.Context, partitionID string, startPosition StartPosition) (partitionClient *PartitionClient, err error) {
+			called++
+			return nil, errors.New("any other error aborts immediately")
+		}
+
+		err = processor.addPartitionClient(context.Background(), Ownership{PartitionID: "0"}, getCheckpoints, openPartitionClient, consumers)
+		require.EqualError(t, err, "any other error aborts immediately")
+		require.Equal(t, 1, called, "We don't fall back if the error is not the specific GeoDR failure")
+
+		pc, _ := consumers.Load("0")
+		require.Nil(t, pc)
+	})
+
+	t.Run("GeoDR failure", func(t *testing.T) {
+		processor.nextClients = make(chan *ProcessorPartitionClient, 1)
+
+		called := 0
+		consumers := &sync.Map{}
+		gotGeodrFailure := false
+
+		openPartitionClient := func(ctx context.Context, partitionID string, startPosition StartPosition) (partitionClient *PartitionClient, err error) {
+			called++
+
+			if startPosition.Offset != nil {
+				gotGeodrFailure = true
+				return nil, geodrErr
+			}
+
+			return nil, errors.New("error trying to open geodr partition client")
+		}
+
+		err = processor.addPartitionClient(context.Background(), Ownership{PartitionID: "0"}, getCheckpoints, openPartitionClient, consumers)
+		require.EqualError(t, err, "error trying to open geodr partition client")
+		require.Equal(t, 2, called)
+		require.True(t, gotGeodrFailure)
+
+		pc, _ := consumers.Load("0")
+		require.Nil(t, pc)
+	})
+}
+
 // updateDynamicData updates the passed in `expected` Ownership with any fields that are
 // dynamically or randomly chosen. It returns the updated value.
 func updateDynamicData(t *testing.T, src Ownership, expected Ownership, allPartitionIDs []string) Ownership {
@@ -340,7 +618,15 @@ func updateDynamicData(t *testing.T, src Ownership, expected Ownership, allParti
 	return expected
 }
 
-func newProcessorForTest(t *testing.T, clientID string, cps CheckpointStore) *Processor {
+func newProcessorForTest(t *testing.T, clientID string, cps CheckpointStore, userOptions *ProcessorOptions) *Processor {
+	var options ProcessorOptions
+
+	if userOptions != nil {
+		options = *userOptions
+	}
+
+	options.PartitionExpirationDuration = time.Hour
+
 	processor, err := newProcessorImpl(&fakeConsumerClient{
 		details: consumerClientDetails{
 			ConsumerGroup:           "consumer-group",
@@ -348,9 +634,7 @@ func newProcessorForTest(t *testing.T, clientID string, cps CheckpointStore) *Pr
 			FullyQualifiedNamespace: "fqdn",
 			ClientID:                clientID,
 		},
-	}, cps, &ProcessorOptions{
-		PartitionExpirationDuration: time.Hour,
-	})
+	}, cps, &options)
 	require.NoError(t, err)
 	return processor
 }

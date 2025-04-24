@@ -9,7 +9,7 @@ package mock
 import (
 	reflect "reflect"
 
-	auth "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/auth"
+	auth "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/auth"
 	gomock "github.com/golang/mock/gomock"
 )
 

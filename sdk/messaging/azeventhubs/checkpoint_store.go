@@ -45,8 +45,8 @@ type Checkpoint struct {
 	FullyQualifiedNamespace string
 	PartitionID             string
 
-	Offset         *int64 // the last succesfully processed Offset.
-	SequenceNumber *int64 // the last succesfully processed SequenceNumber.
+	Offset         *string // the last succesfully processed Offset.
+	SequenceNumber *int64  // the last succesfully processed SequenceNumber.
 }
 
 // ListCheckpointsOptions contains optional parameters for the ListCheckpoints function

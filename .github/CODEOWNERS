@@ -27,6 +27,11 @@
 # PRLabel: %OpenAI
 /sdk/ai                       @richardpark-msft @jhendrixMSFT @chlowell
 
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %OpenAI
+# PRLabel: %OpenAI
+/sdk/ai/azopenai                       @richardpark-msft @achauhan-scc @kingernupur @glecaros
+
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Internal
 # PRLabel: %Internal
@@ -89,8 +94,9 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @tanyasethi-msft
-# ServiceLabel: %Azure.Core
+# ServiceOwners: @tanyasethi-msft
+# ServiceLabel: %Storage
+
 # PRLabel: %Storage
 /sdk/storage/                 @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 

@@ -10,8 +10,9 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/eh"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/exported"
 	"github.com/Azure/go-amqp"
 )
 
@@ -142,6 +143,7 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrCond]RecoveryKind{
 	amqp.ErrCond("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
 	amqp.ErrCond("com.microsoft:argument-out-of-range"):    RecoveryKindFatal, // asked for a partition ID that doesn't exist
 	errorConditionLockLost:                                 RecoveryKindFatal,
+	eh.ErrCondGeoReplicationOffset:                         RecoveryKindFatal,
 }
 
 // GetRecoveryKind determines the recovery type for non-session based links.

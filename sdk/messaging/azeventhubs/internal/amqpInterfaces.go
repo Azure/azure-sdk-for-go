@@ -6,7 +6,7 @@ package internal
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
 )
 
 type AMQPReceiver = amqpwrap.AMQPReceiver

@@ -436,6 +436,10 @@ for _, choice := range resp.Choices {
 
 **Before:**
 ```go
+mp3Bytes, err := os.ReadFile("")
+if err != nil {
+    // Handle error
+}
 resp, err := client.GetAudioTranscription(context.TODO(), azopenai.AudioTranscriptionOptions{
     File: mp3Bytes,
 
@@ -454,6 +458,10 @@ if err != nil {
 
 **After:**
 ```go
+audio_file, err := os.Open("")
+if err != nil {
+    // Handle error
+}
 resp, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{
     Model:          openai.AudioModel(model), // Azure deployment name here
     File:           audio_file, // Notice actual file object is passed here
@@ -566,14 +574,25 @@ if err != nil {
 }
 
 for _, generatedImage := range resp.Data {
-    resp, err := http.Head(*generatedImage.URL)
-
+    resp, err := http.Get(*generatedImage.URL)
     if err != nil {
         // Handle error
     }
+    defer resp.Body.Close()
 
-    _ = resp.Body.Close()
-    // Access Image URL request statuscode as resp.StatusCode
+    if resp.StatusCode != http.StatusOK {
+        // Handle non-200 status code
+        continue
+    }
+
+    imageData, err := io.ReadAll(resp.Body)
+    if err != nil {
+        // Handle error reading image data
+    }
+
+    // Use imageData byte slice for the downloaded image
+    // For example, save to file:
+    // err = io.WriteFile("generated_image.png", imageData, 0644)
 }
 ```
 
@@ -591,13 +610,25 @@ if err != nil {
 }
 
 for _, generatedImage := range resp.Data {
-    resp, err := http.Head(generatedImage.URL)
+    resp, err := http.Get(generatedImage.URL)
     if err != nil {
         // Handle error
     }
+    defer resp.Body.Close()
 
-    _ = resp.Body.Close()
-    // Access Image URL request statuscode as resp.StatusCode
+    if resp.StatusCode != http.StatusOK {
+        // Handle non-200 status code
+        continue
+    }
+
+    imageData, err := io.ReadAll(resp.Body)
+    if err != nil {
+        // Handle error reading image data
+    }
+
+    // Use imageData byte slice for the downloaded image
+    // For example, save to file:
+    // err = io.WriteFile("generated_image.png", imageData, 0644)
 }
 ```
 

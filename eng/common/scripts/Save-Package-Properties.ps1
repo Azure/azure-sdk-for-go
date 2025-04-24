@@ -177,6 +177,8 @@ foreach ($pkg in $allPackageProperties)
   }
 }
 
+Write-Host "I am about to dump the contents of the $outDirectory directory)"
+
 $fileNames = (Get-ChildItem -Path $outDirectory).Name
 Write-Host "`nFiles written to $outDirectory`:"
 Write-Host "  $($fileNames -join "`n  ")"

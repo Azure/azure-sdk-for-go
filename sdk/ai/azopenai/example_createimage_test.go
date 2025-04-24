@@ -61,22 +61,28 @@ func Example_createImage() {
 	for _, generatedImage := range resp.Data {
 		resp, err := http.Get(generatedImage.URL)
 		if err != nil {
-			// Handle error
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
 		}
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
 			// Handle non-200 status code
-			continue
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
 		}
 
 		imageData, err := io.ReadAll(resp.Body)
 		if err != nil {
-			// Handle error reading image data
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
 		}
 
-		// Use imageData byte slice for the downloaded image
-		// For example, save to file:
-		// err = io.WriteFile("generated_image.png", imageData, 0644)
+		// Save the generated image to a file
+		err = os.WriteFile("generated_image.png", imageData, 0644)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
+		}
 	}
 }

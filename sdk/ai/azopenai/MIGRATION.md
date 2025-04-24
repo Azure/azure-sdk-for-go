@@ -592,7 +592,7 @@ for _, generatedImage := range resp.Data {
 
     // Use imageData byte slice for the downloaded image
     // For example, save to file:
-    // err = io.WriteFile("generated_image.png", imageData, 0644)
+    // err = os.WriteFile("generated_image.png", imageData, 0644)
 }
 ```
 
@@ -628,7 +628,7 @@ for _, generatedImage := range resp.Data {
 
     // Use imageData byte slice for the downloaded image
     // For example, save to file:
-    // err = io.WriteFile("generated_image.png", imageData, 0644)
+    // err = os.WriteFile("generated_image.png", imageData, 0644)
 }
 ```
 

@@ -21,7 +21,7 @@ function Get-GoModuleVersionInfo($modPath)
 
     # finding where the version number are
     if ($content -match $VERSION_LINE_REGEX) {
-        return "$($matches["version"])", $versionFile.Path.ToString()
+        return "$($matches["version"])", $versionFile.ToString()
     }
 
     # This is an easy mistake to make (X.Y.Z instead of vX.Y.Z) so add a very clear error log to make debugging easier

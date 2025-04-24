@@ -482,8 +482,7 @@ function Get-PrPkgProperties([string]$InputDiffJson) {
     # now pass along the set of packages we've identified, the diff itself, and the full set of package properties
     # to locate any additional packages that should be included for validation
     if ($AdditionalValidationPackagesFromPackageSetFn -and (Test-Path "Function:$AdditionalValidationPackagesFromPackageSetFn")) {
-        $additionalPackages = &$AdditionalValidationPackagesFromPackageSetFn $packagesWithChanges $diff $allPackageProperties
-        $packagesWithChanges += $additionalPackages
+        $packagesWithChanges += &$AdditionalValidationPackagesFromPackageSetFn $packagesWithChanges $diff $allPackageProperties
     }
 
     # finally, if we have gotten all the way here and we still don't have any packages, we should include the template service

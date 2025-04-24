@@ -1,6 +1,6 @@
 # Azure Programmable Connectivity Module for Go
 
-The `armprogrammableconnectivity` module provides operations for working with Azure Programmableconnectivity.
+The `armprogrammableconnectivity` module provides operations for working with Azure Programmable Connectivity.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/programmableconnectivity/armprogrammableconnectivity)
 
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/programmableconnect
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Programmableconnectivity.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Programmable Connectivity.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)

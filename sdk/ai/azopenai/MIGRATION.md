@@ -389,6 +389,304 @@ for _, embedding := range resp.Data {
 }
 ```
 
+### Legacy Completions
+
+**Before:**
+```go
+resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
+    Prompt:         []string{"What is Azure OpenAI, in 20 words or less"},
+    MaxTokens:      to.Ptr(int32(2048)),
+    Temperature:    to.Ptr(float32(0.0)),
+    DeploymentName: to.Ptr("gpt-3.5-turbo-instruct"),
+}, nil)
+
+if err != nil {
+    // Handle error
+}
+
+for _, choice := range resp.Choices {
+    // Process each choice in the response
+    // *choice.Text() contains the generated text
+}
+```
+
+**After:**
+```go
+resp, err := client.Completions.New(context.TODO(), openai.CompletionNewParams{
+    Model: openai.CompletionNewParamsModel(model), // Azure deployment name here
+    Prompt: openai.CompletionNewParamsPromptUnion{
+        OfString: openai.String("What is Azure OpenAI, in 20 words or less"),
+    },
+    Temperature: openai.Float(0.0),
+})
+
+if err != nil {
+    // Handle error
+}
+
+for _, choice := range resp.Choices {
+    // Process each choice in the response
+    // choice.Text contains the generated text
+}
+```
+
+### Audio
+
+#### Transcription
+
+**Before:**
+```go
+resp, err := client.GetAudioTranscription(context.TODO(), azopenai.AudioTranscriptionOptions{
+    File: mp3Bytes,
+
+    ResponseFormat: to.Ptr(azopenai.AudioTranscriptionFormatText),
+
+    // DeploymentName: &modelDeploymentID,
+}, nil)
+
+if err != nil {
+    // Handle error
+}
+
+// Access response as *resp.Text
+
+```
+
+**After:**
+```go
+resp, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{
+    Model:          openai.AudioModel(model), // Azure deployment name here
+    File:           audio_file, // Notice actual file object is passed here
+    ResponseFormat: openai.AudioResponseFormatJSON,
+})
+
+if err != nil {
+    // Handle error
+}
+
+// Access response as resp.Text
+
+```
+
+#### Text to speech
+
+**Before:**
+```go
+audioResp, err := client.GenerateSpeechFromText(context.Background(), azopenai.SpeechGenerationOptions{
+    Input:          to.Ptr("i am a computer"),
+    Voice:          to.Ptr(azopenai.SpeechVoiceAlloy),
+    ResponseFormat: to.Ptr(azopenai.SpeechGenerationResponseFormatFlac),
+    DeploymentName: to.Ptr("tts-1"),
+}, nil)
+
+if err != nil {
+    // Handle error
+}
+
+defer audioResp.Body.Close()
+
+audioBytes, err := io.ReadAll(audioResp.Body)
+
+if err != nil {
+    // Handle error
+}
+
+// Got length of audio : len(audioBytes)
+```
+
+**After:**
+```go
+audioResp, err := client.Audio.Speech.New(context.Background(), openai.AudioSpeechNewParams{
+    Model:          openai.SpeechModel(model),
+    Input:          "i am a computer",
+    Voice:          openai.AudioSpeechNewParamsVoiceAlloy,
+    ResponseFormat: openai.AudioSpeechNewParamsResponseFormatFLAC,
+})
+
+if err != nil {
+    // Handle error
+}
+
+defer audioResp.Body.Close()
+
+audioBytes, err := io.ReadAll(audioResp.Body)
+
+if err != nil {
+    // Handle error
+}
+
+// Got length of audio : len(audioBytes)
+
+```
+
+#### Translation
+
+**Before:**
+```go
+resp, err := client.GetAudioTranslation(context.TODO(), azopenai.AudioTranslationOptions{
+    File:           mp3Bytes,
+    DeploymentName: &modelDeploymentID,
+    Prompt:         to.Ptr("Translate the following Hindi audio to English"),
+}, nil)
+
+if err != nil {
+    // Handle error
+}
+
+// Access response as *resp.Text
+```
+
+**After:**
+```go
+resp, err := client.Audio.Translations.New(context.TODO(), openai.AudioTranslationNewParams{
+    Model:  openai.AudioModel(model),
+    File:   audio_file,
+    Prompt: openai.String("Translate the following Hindi audio to English"),
+})
+
+if err != nil {
+    // Handle error
+}
+
+// Access translated text as resp.Text
+```
+
+### Image
+
+**Before:**
+```go
+resp, err := client.GetImageGenerations(context.TODO(), azopenai.ImageGenerationOptions{
+    Prompt:         to.Ptr("a cat"),
+    ResponseFormat: to.Ptr(azopenai.ImageGenerationResponseFormatURL),
+    DeploymentName: &azureDeployment,
+}, nil)
+
+if err != nil {
+    // Handle error
+}
+
+for _, generatedImage := range resp.Data {
+    resp, err := http.Head(*generatedImage.URL)
+
+    if err != nil {
+        // Handle error
+    }
+
+    _ = resp.Body.Close()
+    // Access Image URL request statuscode as resp.StatusCode
+}
+```
+
+**After:**
+```go
+resp, err := client.Images.Generate(context.TODO(), openai.ImageGenerateParams{
+    Prompt:         "a cat",
+    Model:          openai.ImageModel(model),
+    ResponseFormat: openai.ImageGenerateParamsResponseFormatURL,
+    Size:           openai.ImageGenerateParamsSize1024x1024,
+})
+
+if err != nil {
+    // Handle error
+}
+
+for _, generatedImage := range resp.Data {
+    resp, err := http.Head(generatedImage.URL)
+    if err != nil {
+        // Handle error
+    }
+
+    _ = resp.Body.Close()
+    // Access Image URL request statuscode as resp.StatusCode
+}
+```
+
+### Vision
+
+**Before:**
+```go
+imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
+
+content := azopenai.NewChatRequestUserMessageContent([]azopenai.ChatCompletionRequestMessageContentPartClassification{
+    &azopenai.ChatCompletionRequestMessageContentPartText{
+        Text: to.Ptr("Describe this image"),
+    },
+    &azopenai.ChatCompletionRequestMessageContentPartImage{
+        ImageURL: &azopenai.ChatCompletionRequestMessageContentPartImageURL{
+            URL: &imageURL,
+        },
+    },
+})
+
+ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+defer cancel()
+
+resp, err := client.GetChatCompletions(ctx, azopenai.ChatCompletionsOptions{
+    Messages: []azopenai.ChatRequestMessageClassification{
+        &azopenai.ChatRequestUserMessage{
+            Content: content,
+        },
+    },
+    MaxTokens:      to.Ptr[int32](512),
+    DeploymentName: to.Ptr(modelDeployment),
+}, nil)
+
+if err != nil {
+    // Handle error
+}
+
+for _, choice := range resp.Choices {
+    if choice.Message != nil && choice.Message.Content != nil {
+        // Access result as *choice.Message.Content
+    }
+}
+```
+
+**After:**
+```go
+imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
+
+ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+defer cancel()
+
+resp, err := client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
+    Model: openai.ChatModel(model),
+    Messages: []openai.ChatCompletionMessageParamUnion{
+        {
+            OfUser: &openai.ChatCompletionUserMessageParam{
+                Content: openai.ChatCompletionUserMessageParamContentUnion{
+                    OfArrayOfContentParts: []openai.ChatCompletionContentPartUnionParam{
+                        {
+                            OfText: &openai.ChatCompletionContentPartTextParam{
+                                Text: "Describe this image",
+                            },
+                        },
+                        {
+                            OfImageURL: &openai.ChatCompletionContentPartImageParam{
+                                ImageURL: openai.ChatCompletionContentPartImageImageURLParam{
+                                    URL: imageURL,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+    MaxTokens: openai.Int(512),
+})
+
+if err != nil {
+    // Handle error
+}
+
+for _, choice := range resp.Choices {
+    if choice.Message != nil && choice.Message.Content != nil {
+        // Access result as choice.Message.Content
+    }
+}
+```
+
 ## Additional Resources
 
 - [OpenAI Go Client Documentation](https://github.com/openai/openai-go)

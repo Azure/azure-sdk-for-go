@@ -436,7 +436,7 @@ for _, choice := range resp.Choices {
 
 **Before:**
 ```go
-mp3Bytes, err := os.ReadFile("")
+mp3Bytes, err := os.ReadFile("audio.mp3")
 if err != nil {
     // Handle error
 }
@@ -458,7 +458,7 @@ if err != nil {
 
 **After:**
 ```go
-audio_file, err := os.Open("")
+audio_file, err := os.Open("audio.mp3")
 if err != nil {
     // Handle error
 }

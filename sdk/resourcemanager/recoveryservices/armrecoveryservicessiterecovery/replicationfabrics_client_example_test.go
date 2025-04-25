@@ -123,7 +123,7 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewReplicationFabricsClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "cloud1", armrecoveryservicessiterecovery.FabricCreationInput{
 		Properties: &armrecoveryservicessiterecovery.FabricCreationInputProperties{
-			CustomDetails: &armrecoveryservicessiterecovery.FabricSpecificCreationInputClassification{},
+			CustomDetails: nil,
 		},
 	}, nil)
 	if err != nil {

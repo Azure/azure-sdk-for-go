@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListApiOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApiOperations.json
 func ExampleAPIOperationClient_NewListByAPIPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleAPIOperationClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cdc"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdc"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdc"),
 		// 			Properties: &armapimanagement.OperationContractProperties{
 		// 				Method: to.Ptr("POST"),
 		// 				DisplayName: to.Ptr("CancelOrder"),
@@ -60,7 +60,7 @@ func ExampleAPIOperationClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cda"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cda"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cda"),
 		// 			Properties: &armapimanagement.OperationContractProperties{
 		// 				Method: to.Ptr("POST"),
 		// 				DisplayName: to.Ptr("GetMostRecentOrder"),
@@ -70,7 +70,7 @@ func ExampleAPIOperationClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cd9"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cd9"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cd9"),
 		// 			Properties: &armapimanagement.OperationContractProperties{
 		// 				Method: to.Ptr("POST"),
 		// 				DisplayName: to.Ptr("GetOpenOrders"),
@@ -80,7 +80,7 @@ func ExampleAPIOperationClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cdb"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdb"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdb"),
 		// 			Properties: &armapimanagement.OperationContractProperties{
 		// 				Method: to.Ptr("POST"),
 		// 				DisplayName: to.Ptr("GetOrder"),
@@ -90,7 +90,7 @@ func ExampleAPIOperationClient_NewListByAPIPager() {
 		// 		{
 		// 			Name: to.Ptr("57d2ef278aa04f0ad01d6cd8"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cd8"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cd8"),
 		// 			Properties: &armapimanagement.OperationContractProperties{
 		// 				Method: to.Ptr("POST"),
 		// 				DisplayName: to.Ptr("submitOrder"),
@@ -101,7 +101,7 @@ func ExampleAPIOperationClient_NewListByAPIPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadApiOperation.json
 func ExampleAPIOperationClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleAPIOperationClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetApiOperation.json
 func ExampleAPIOperationClient_Get_apiManagementGetApiOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleAPIOperationClient_Get_apiManagementGetApiOperation() {
 	// res.OperationContract = armapimanagement.OperationContract{
 	// 	Name: to.Ptr("57d2ef278aa04f0ad01d6cdc"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdc"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdc"),
 	// 	Properties: &armapimanagement.OperationContractProperties{
 	// 		TemplateParameters: []*armapimanagement.ParameterContract{
 	// 		},
@@ -176,7 +176,7 @@ func ExampleAPIOperationClient_Get_apiManagementGetApiOperation() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiOperationPetStore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetApiOperationPetStore.json
 func ExampleAPIOperationClient_Get_apiManagementGetApiOperationPetStore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleAPIOperationClient_Get_apiManagementGetApiOperationPetStore() {
 	// res.OperationContract = armapimanagement.OperationContract{
 	// 	Name: to.Ptr("loginUser"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/swagger-petstore/operations/loginUser"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/swagger-petstore/operations/loginUser"),
 	// 	Properties: &armapimanagement.OperationContractProperties{
 	// 		Description: to.Ptr(""),
 	// 		TemplateParameters: []*armapimanagement.ParameterContract{
@@ -276,7 +276,7 @@ func ExampleAPIOperationClient_Get_apiManagementGetApiOperationPetStore() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateApiOperation.json
 func ExampleAPIOperationClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -329,7 +329,7 @@ func ExampleAPIOperationClient_CreateOrUpdate() {
 	// res.OperationContract = armapimanagement.OperationContract{
 	// 	Name: to.Ptr("newoperations"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/PetStoreTemplate2/operations/newoperations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/PetStoreTemplate2/operations/newoperations"),
 	// 	Properties: &armapimanagement.OperationContractProperties{
 	// 		Description: to.Ptr("This can only be done by the logged in user."),
 	// 		TemplateParameters: []*armapimanagement.ParameterContract{
@@ -368,7 +368,7 @@ func ExampleAPIOperationClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateApiOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementUpdateApiOperation.json
 func ExampleAPIOperationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -421,7 +421,7 @@ func ExampleAPIOperationClient_Update() {
 	// res.OperationContract = armapimanagement.OperationContract{
 	// 	Name: to.Ptr("57d2ef278aa04f0ad01d6cdc"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/operations"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdc"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/57d2ef278aa04f0888cba3f3/operations/57d2ef278aa04f0ad01d6cdc"),
 	// 	Properties: &armapimanagement.OperationContractProperties{
 	// 		TemplateParameters: []*armapimanagement.ParameterContract{
 	// 		},
@@ -458,7 +458,7 @@ func ExampleAPIOperationClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteApiOperation.json
 func ExampleAPIOperationClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

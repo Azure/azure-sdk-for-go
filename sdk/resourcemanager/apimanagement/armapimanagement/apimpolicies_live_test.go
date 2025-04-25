@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -106,11 +106,6 @@ func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 	// From step Policy_Get
 	fmt.Println("Call operation: Policy_Get")
 	_, err = policyClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, &armapimanagement.PolicyClientGetOptions{Format: nil})
-	testsuite.Require().NoError(err)
-
-	// From step Policy_ListByService
-	fmt.Println("Call operation: Policy_ListByService")
-	_, err = policyClient.ListByService(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Policy_Delete

@@ -678,7 +678,7 @@ func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	}
 	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginDelete(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "c0c14913-3d7a-48ea-9531-cc99e0e686e6", armrecoveryservicessiterecovery.DisableProtectionInput{
 		Properties: &armrecoveryservicessiterecovery.DisableProtectionInputProperties{
-			ReplicationProviderInput: &armrecoveryservicessiterecovery.DisableProtectionProviderSpecificInputClassification{},
+			ReplicationProviderInput: nil,
 		},
 	}, nil)
 	if err != nil {

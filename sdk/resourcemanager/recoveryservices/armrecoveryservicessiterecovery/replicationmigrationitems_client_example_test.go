@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
 func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContai
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationMigrationItemsClient().NewListByReplicationProtectionContainersPager("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions{SkipToken: nil,
+	pager := clientFactory.NewReplicationMigrationItemsClient().NewListByReplicationProtectionContainersPager("resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions{SkipToken: nil,
 		TakeToken: nil,
 		Filter:    nil,
 	})
@@ -76,7 +76,7 @@ func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_Get.json
 func ExampleReplicationMigrationItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleReplicationMigrationItemsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationMigrationItemsClient().Get(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", nil)
+	res, err := clientFactory.NewReplicationMigrationItemsClient().Get(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -123,7 +123,7 @@ func ExampleReplicationMigrationItemsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_Create.json
 func ExampleReplicationMigrationItemsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginCreate(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.EnableMigrationInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginCreate(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.EnableMigrationInput{
 		Properties: &armrecoveryservicessiterecovery.EnableMigrationInputProperties{
 			PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtEnableMigrationInput{
@@ -193,7 +193,7 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_Delete.json
 func ExampleReplicationMigrationItemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginDelete(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginDeleteOptions{DeleteOption: nil})
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginDelete(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginDeleteOptions{DeleteOption: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -214,7 +214,7 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_Update.json
 func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginUpdate(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.UpdateMigrationItemInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginUpdate(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.UpdateMigrationItemInput{
 		Properties: &armrecoveryservicessiterecovery.UpdateMigrationItemInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtUpdateMigrationItemInput{
 				InstanceType: to.Ptr("VMwareCbt"),
@@ -271,7 +271,7 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_Migrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_Migrate.json
 func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginMigrate(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.MigrateInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginMigrate(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.MigrateInput{
 		Properties: &armrecoveryservicessiterecovery.MigrateInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrateInput{
 				InstanceType:    to.Ptr("VMwareCbt"),
@@ -329,7 +329,7 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_PauseReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_PauseReplication.json
 func ExampleReplicationMigrationItemsClient_BeginPauseReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleReplicationMigrationItemsClient_BeginPauseReplication() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginPauseReplication(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.PauseReplicationInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginPauseReplication(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.PauseReplicationInput{
 		Properties: &armrecoveryservicessiterecovery.PauseReplicationInputProperties{
 			InstanceType: to.Ptr("VMwareCbt"),
 		},
@@ -381,7 +381,7 @@ func ExampleReplicationMigrationItemsClient_BeginPauseReplication() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_ResumeReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_ResumeReplication.json
 func ExampleReplicationMigrationItemsClient_BeginResumeReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,7 +392,7 @@ func ExampleReplicationMigrationItemsClient_BeginResumeReplication() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginResumeReplication(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.ResumeReplicationInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginResumeReplication(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.ResumeReplicationInput{
 		Properties: &armrecoveryservicessiterecovery.ResumeReplicationInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtResumeReplicationInput{
 				InstanceType:             to.Ptr("VMwareCbt"),
@@ -436,7 +436,7 @@ func ExampleReplicationMigrationItemsClient_BeginResumeReplication() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_Resync.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_Resync.json
 func ExampleReplicationMigrationItemsClient_BeginResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +447,7 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginResync(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.ResyncInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginResync(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.ResyncInput{
 		Properties: &armrecoveryservicessiterecovery.ResyncInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtResyncInput{
 				InstanceType: to.Ptr("VMwareCbt"),
@@ -494,7 +494,7 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_TestMigrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_TestMigrate.json
 func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,12 +505,13 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginTestMigrate(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.TestMigrateInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginTestMigrate(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.TestMigrateInput{
 		Properties: &armrecoveryservicessiterecovery.TestMigrateInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtTestMigrateInput{
-				InstanceType:    to.Ptr("VMwareCbt"),
-				NetworkID:       to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1"),
-				RecoveryPointID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/9e737191-317e-43d0-8c83-e32ac3b34686"),
+				InstanceType:     to.Ptr("VMwareCbt"),
+				NetworkID:        to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1"),
+				OSUpgradeVersion: to.Ptr("Microsoft Windows Server 2019 (64-bit)"),
+				RecoveryPointID:  to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/9e737191-317e-43d0-8c83-e32ac3b34686"),
 			},
 		},
 	}, nil)
@@ -553,7 +554,7 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
 func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +565,7 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginTestMigrateCleanup(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.TestMigrateCleanupInput{
+	poller, err := clientFactory.NewReplicationMigrationItemsClient().BeginTestMigrateCleanup(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1", armrecoveryservicessiterecovery.TestMigrateCleanupInput{
 		Properties: &armrecoveryservicessiterecovery.TestMigrateCleanupInputProperties{
 			Comments: to.Ptr("Test Failover Cleanup"),
 		},
@@ -608,7 +609,7 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationMigrationItems_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationMigrationItems_List.json
 func ExampleReplicationMigrationItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -619,7 +620,7 @@ func ExampleReplicationMigrationItemsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationMigrationItemsClient().NewListPager("migrationvault", "resourcegroup1", &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions{SkipToken: nil,
+	pager := clientFactory.NewReplicationMigrationItemsClient().NewListPager("resourcegroup1", "migrationvault", &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions{SkipToken: nil,
 		TakeToken: nil,
 		Filter:    nil,
 	})

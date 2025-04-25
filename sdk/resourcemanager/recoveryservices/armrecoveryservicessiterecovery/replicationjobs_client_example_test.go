@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationJobs_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationJobs_List.json
 func ExampleReplicationJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationJobsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationJobsClient().NewListPager("vault1", "resourceGroupPS1", &armrecoveryservicessiterecovery.ReplicationJobsClientListOptions{Filter: nil})
+	pager := clientFactory.NewReplicationJobsClient().NewListPager("resourceGroupPS1", "vault1", &armrecoveryservicessiterecovery.ReplicationJobsClientListOptions{Filter: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -109,7 +109,7 @@ func ExampleReplicationJobsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationJobs_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationJobs_Get.json
 func ExampleReplicationJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleReplicationJobsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationJobsClient().Get(ctx, "vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d", nil)
+	res, err := clientFactory.NewReplicationJobsClient().Get(ctx, "resourceGroupPS1", "vault1", "58776d0b-3141-48b2-a377-9ad863eb160d", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -177,7 +177,7 @@ func ExampleReplicationJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationJobs_Cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationJobs_Cancel.json
 func ExampleReplicationJobsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleReplicationJobsClient_BeginCancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationJobsClient().BeginCancel(ctx, "vault1", "resourceGroupPS1", "2653c648-fc72-4316-86f3-fdf8eaa0066b", nil)
+	poller, err := clientFactory.NewReplicationJobsClient().BeginCancel(ctx, "resourceGroupPS1", "vault1", "2653c648-fc72-4316-86f3-fdf8eaa0066b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -242,7 +242,7 @@ func ExampleReplicationJobsClient_BeginCancel() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationJobs_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationJobs_Restart.json
 func ExampleReplicationJobsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleReplicationJobsClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationJobsClient().BeginRestart(ctx, "vault1", "resourceGroupPS1", "0664564c-353e-401a-ab0c-722257c10e25", nil)
+	poller, err := clientFactory.NewReplicationJobsClient().BeginRestart(ctx, "resourceGroupPS1", "vault1", "0664564c-353e-401a-ab0c-722257c10e25", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -309,7 +309,7 @@ func ExampleReplicationJobsClient_BeginRestart() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationJobs_Resume.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationJobs_Resume.json
 func ExampleReplicationJobsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleReplicationJobsClient_BeginResume() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationJobsClient().BeginResume(ctx, "vault1", "resourceGroupPS1", "58776d0b-3141-48b2-a377-9ad863eb160d", armrecoveryservicessiterecovery.ResumeJobParams{
+	poller, err := clientFactory.NewReplicationJobsClient().BeginResume(ctx, "resourceGroupPS1", "vault1", "58776d0b-3141-48b2-a377-9ad863eb160d", armrecoveryservicessiterecovery.ResumeJobParams{
 		Properties: &armrecoveryservicessiterecovery.ResumeJobParamsProperties{
 			Comments: to.Ptr(" "),
 		},
@@ -394,7 +394,7 @@ func ExampleReplicationJobsClient_BeginResume() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationJobs_Export.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationJobs_Export.json
 func ExampleReplicationJobsClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExampleReplicationJobsClient_BeginExport() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationJobsClient().BeginExport(ctx, "vault1", "resourceGroupPS1", armrecoveryservicessiterecovery.JobQueryParameter{
+	poller, err := clientFactory.NewReplicationJobsClient().BeginExport(ctx, "resourceGroupPS1", "vault1", armrecoveryservicessiterecovery.JobQueryParameter{
 		AffectedObjectTypes: to.Ptr(""),
 		EndTime:             to.Ptr("2017-05-04T14:26:51.9161395Z"),
 		JobStatus:           to.Ptr(""),

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_List.json
 func ExampleReplicationRecoveryPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationRecoveryPlansClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationRecoveryPlansClient().NewListPager("vault1", "resourceGroupPS1", nil)
+	pager := clientFactory.NewReplicationRecoveryPlansClient().NewListPager("resourceGroupPS1", "vault1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -67,7 +67,7 @@ func ExampleReplicationRecoveryPlansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_Get.json
 func ExampleReplicationRecoveryPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleReplicationRecoveryPlansClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationRecoveryPlansClient().Get(ctx, "vault1", "resourceGroupPS1", "RPtest1", nil)
+	res, err := clientFactory.NewReplicationRecoveryPlansClient().Get(ctx, "resourceGroupPS1", "vault1", "RPtest1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -149,7 +149,7 @@ func ExampleReplicationRecoveryPlansClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_Create.json
 func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginCreate(ctx, "vault1", "resourceGroupPS1", "RPtest1", armrecoveryservicessiterecovery.CreateRecoveryPlanInput{
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "RPtest1", armrecoveryservicessiterecovery.CreateRecoveryPlanInput{
 		Properties: &armrecoveryservicessiterecovery.CreateRecoveryPlanInputProperties{
 			FailoverDeploymentModel: to.Ptr(armrecoveryservicessiterecovery.FailoverDeploymentModelResourceManager),
 			Groups: []*armrecoveryservicessiterecovery.RecoveryPlanGroup{
@@ -240,7 +240,7 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_Delete.json
 func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginDelete(ctx, "vault1", "resourceGroupPS1", "RPtest1", nil)
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginDelete(ctx, "resourceGroupPS1", "vault1", "RPtest1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -261,7 +261,7 @@ func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_Update.json
 func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginUpdate(ctx, "vault1", "resourceGroupPS1", "RPtest1", armrecoveryservicessiterecovery.UpdateRecoveryPlanInput{
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginUpdate(ctx, "resourceGroupPS1", "vault1", "RPtest1", armrecoveryservicessiterecovery.UpdateRecoveryPlanInput{
 		Properties: &armrecoveryservicessiterecovery.UpdateRecoveryPlanInputProperties{
 			Groups: []*armrecoveryservicessiterecovery.RecoveryPlanGroup{
 				{
@@ -383,7 +383,7 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -394,7 +394,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginFailoverCancel(ctx, "vault1", "resourceGroupPS1", "RPtest1", nil)
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginFailoverCancel(ctx, "resourceGroupPS1", "vault1", "RPtest1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -435,7 +435,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginFailoverCommit(ctx, "vault1", "resourceGroupPS1", "RPtest1", nil)
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginFailoverCommit(ctx, "resourceGroupPS1", "vault1", "RPtest1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -530,7 +530,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,7 +541,7 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginPlannedFailover(ctx, "vault1", "resourceGroupPS1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanPlannedFailoverInput{
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginPlannedFailover(ctx, "resourceGroupPS1", "vault1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanPlannedFailoverInput{
 		Properties: &armrecoveryservicessiterecovery.RecoveryPlanPlannedFailoverInputProperties{
 			FailoverDirection: to.Ptr(armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery),
 			ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{
@@ -634,7 +634,7 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_Reprotect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_Reprotect.json
 func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -645,7 +645,7 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginReprotect(ctx, "vault1", "resourceGroupPS1", "RPtest1", nil)
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginReprotect(ctx, "resourceGroupPS1", "vault1", "RPtest1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -729,7 +729,7 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_TestFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_TestFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -740,7 +740,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginTestFailover(ctx, "vault1", "resourceGroupPS1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanTestFailoverInput{
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginTestFailover(ctx, "resourceGroupPS1", "vault1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanTestFailoverInput{
 		Properties: &armrecoveryservicessiterecovery.RecoveryPlanTestFailoverInputProperties{
 			FailoverDirection: to.Ptr(armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery),
 			NetworkID:         to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai"),
@@ -830,7 +830,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -841,7 +841,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginTestFailoverCleanup(ctx, "vault1", "resourceGroupPS1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanTestFailoverCleanupInput{
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginTestFailoverCleanup(ctx, "resourceGroupPS1", "vault1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanTestFailoverCleanupInput{
 		Properties: &armrecoveryservicessiterecovery.RecoveryPlanTestFailoverCleanupInputProperties{
 			Comments: to.Ptr("Test Failover Cleanup"),
 		},
@@ -929,7 +929,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -940,7 +940,7 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginUnplannedFailover(ctx, "vault1", "resourceGroupPS1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanUnplannedFailoverInput{
+	poller, err := clientFactory.NewReplicationRecoveryPlansClient().BeginUnplannedFailover(ctx, "resourceGroupPS1", "vault1", "RPtest1", armrecoveryservicessiterecovery.RecoveryPlanUnplannedFailoverInput{
 		Properties: &armrecoveryservicessiterecovery.RecoveryPlanUnplannedFailoverInputProperties{
 			FailoverDirection: to.Ptr(armrecoveryservicessiterecovery.PossibleOperationsDirectionsPrimaryToRecovery),
 			ProviderSpecificDetails: []armrecoveryservicessiterecovery.RecoveryPlanProviderSpecificFailoverInputClassification{

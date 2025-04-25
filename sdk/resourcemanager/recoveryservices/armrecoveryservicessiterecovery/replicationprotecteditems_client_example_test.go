@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
 func ExampleReplicationProtectedItemsClient_NewListByReplicationProtectionContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationProtectedItemsClient_NewListByReplicationProtectionContai
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationProtectedItemsClient().NewListByReplicationProtectionContainersPager("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
+	pager := clientFactory.NewReplicationProtectedItemsClient().NewListByReplicationProtectionContainersPager("resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -84,7 +84,7 @@ func ExampleReplicationProtectedItemsClient_NewListByReplicationProtectionContai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_Get.json
 func ExampleReplicationProtectedItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleReplicationProtectedItemsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationProtectedItemsClient().Get(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
+	res, err := clientFactory.NewReplicationProtectedItemsClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -142,7 +142,7 @@ func ExampleReplicationProtectedItemsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_Create.json
 func ExampleReplicationProtectedItemsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleReplicationProtectedItemsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginCreate(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.EnableProtectionInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.EnableProtectionInput{
 		Properties: &armrecoveryservicessiterecovery.EnableProtectionInputProperties{
 			PolicyID:          to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
 			ProtectableItemID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectableItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -212,7 +212,7 @@ func ExampleReplicationProtectedItemsClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Purge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_Purge.json
 func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginPurge(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "c0c14913-3d7a-48ea-9531-cc99e0e686e6", nil)
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginPurge(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "c0c14913-3d7a-48ea-9531-cc99e0e686e6", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -233,7 +233,7 @@ func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_Update.json
 func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdate(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdate(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInput{
 		Properties: &armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInputProperties{
 			LicenseType: to.Ptr(armrecoveryservicessiterecovery.LicenseTypeWindowsServer),
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureUpdateReplicationProtectedItemInput{
@@ -317,7 +317,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_AddDisks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_AddDisks.json
 func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +328,7 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginAddDisks(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.AddDisksInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginAddDisks(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.AddDisksInput{
 		Properties: &armrecoveryservicessiterecovery.AddDisksInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2AAddDisksInput{
 				InstanceType: to.Ptr("A2A"),
@@ -394,7 +394,7 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
 func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginApplyRecoveryPoint(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.ApplyRecoveryPointInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginApplyRecoveryPoint(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.ApplyRecoveryPointInput{
 		Properties: &armrecoveryservicessiterecovery.ApplyRecoveryPointInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureApplyRecoveryPointInput{
 				InstanceType: to.Ptr("HyperVReplicaAzure"),
@@ -466,7 +466,7 @@ func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_FailoverCancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_FailoverCancel.json
 func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginFailoverCancel(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginFailoverCancel(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -529,7 +529,7 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_FailoverCommit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_FailoverCommit.json
 func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginFailoverCommit(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginFailoverCommit(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -593,7 +593,7 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_PlannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_PlannedFailover.json
 func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -604,7 +604,7 @@ func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginPlannedFailover(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.PlannedFailoverInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginPlannedFailover(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.PlannedFailoverInput{
 		Properties: &armrecoveryservicessiterecovery.PlannedFailoverInputProperties{
 			FailoverDirection: to.Ptr("PrimaryToRecovery"),
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzurePlannedFailoverProviderInput{
@@ -665,7 +665,7 @@ func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_Delete.json
 func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,11 +676,9 @@ func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginDelete(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "c0c14913-3d7a-48ea-9531-cc99e0e686e6", armrecoveryservicessiterecovery.DisableProtectionInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginDelete(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "c0c14913-3d7a-48ea-9531-cc99e0e686e6", armrecoveryservicessiterecovery.DisableProtectionInput{
 		Properties: &armrecoveryservicessiterecovery.DisableProtectionInputProperties{
-			ReplicationProviderInput: &armrecoveryservicessiterecovery.DisableProtectionProviderSpecificInput{
-				InstanceType: to.Ptr("DisableProtectionProviderSpecificInput"),
-			},
+			ReplicationProviderInput: &armrecoveryservicessiterecovery.DisableProtectionProviderSpecificInputClassification{},
 		},
 	}, nil)
 	if err != nil {
@@ -692,7 +690,7 @@ func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_RemoveDisks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_RemoveDisks.json
 func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -703,7 +701,7 @@ func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginRemoveDisks(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.RemoveDisksInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginRemoveDisks(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.RemoveDisksInput{
 		Properties: &armrecoveryservicessiterecovery.RemoveDisksInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2ARemoveDisksInput{
 				InstanceType: to.Ptr("A2A"),
@@ -765,7 +763,7 @@ func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_RepairReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_RepairReplication.json
 func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -776,7 +774,7 @@ func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginRepairReplication(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginRepairReplication(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -827,7 +825,7 @@ func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_Reprotect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_Reprotect.json
 func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -838,7 +836,7 @@ func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginReprotect(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.ReverseReplicationInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginReprotect(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.ReverseReplicationInput{
 		Properties: &armrecoveryservicessiterecovery.ReverseReplicationInputProperties{
 			FailoverDirection: to.Ptr("PrimaryToRecovery"),
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureReprotectInput{
@@ -899,7 +897,7 @@ func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
 func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -910,7 +908,7 @@ func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginResolveHealthErrors(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.ResolveHealthInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginResolveHealthErrors(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.ResolveHealthInput{
 		Properties: &armrecoveryservicessiterecovery.ResolveHealthInputProperties{
 			HealthErrors: []*armrecoveryservicessiterecovery.ResolveHealthError{
 				{
@@ -971,7 +969,7 @@ func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_SwitchProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_SwitchProvider.json
 func ExampleReplicationProtectedItemsClient_BeginSwitchProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -982,7 +980,7 @@ func ExampleReplicationProtectedItemsClient_BeginSwitchProvider() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginSwitchProvider(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.SwitchProviderInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginSwitchProvider(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.SwitchProviderInput{
 		Properties: &armrecoveryservicessiterecovery.SwitchProviderInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.InMageAzureV2SwitchProviderInput{
 				InstanceType:      to.Ptr("InMageAzureV2"),
@@ -1046,7 +1044,7 @@ func ExampleReplicationProtectedItemsClient_BeginSwitchProvider() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_TestFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_TestFailover.json
 func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1057,7 +1055,7 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginTestFailover(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.TestFailoverInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginTestFailover(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.TestFailoverInput{
 		Properties: &armrecoveryservicessiterecovery.TestFailoverInputProperties{
 			FailoverDirection: to.Ptr("PrimaryToRecovery"),
 			NetworkID:         to.Ptr("/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai"),
@@ -1115,7 +1113,7 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
 func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1126,7 +1124,7 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginTestFailoverCleanup(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.TestFailoverCleanupInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginTestFailoverCleanup(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.TestFailoverCleanupInput{
 		Properties: &armrecoveryservicessiterecovery.TestFailoverCleanupInputProperties{
 			Comments: to.Ptr("Test Failover Cleanup"),
 		},
@@ -1184,7 +1182,7 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_UnplannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_UnplannedFailover.json
 func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1195,7 +1193,7 @@ func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUnplannedFailover(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.UnplannedFailoverInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUnplannedFailover(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b", armrecoveryservicessiterecovery.UnplannedFailoverInput{
 		Properties: &armrecoveryservicessiterecovery.UnplannedFailoverInputProperties{
 			FailoverDirection: to.Ptr("PrimaryToRecovery"),
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.HyperVReplicaAzureUnplannedFailoverInput{
@@ -1257,7 +1255,7 @@ func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_UpdateAppliance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_UpdateAppliance.json
 func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1268,7 +1266,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdateAppliance(ctx, "Ayan-0106-SA-Vault", "Ayan-0106-SA-RG", "Ayan-0106-SA-Vaultreplicationfabric", "Ayan-0106-SA-Vaultreplicationcontainer", "idclab-vcen67_50158124-8857-3e08-0893-2ddf8ebb8c1f", armrecoveryservicessiterecovery.UpdateApplianceForReplicationProtectedItemInput{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdateAppliance(ctx, "Ayan-0106-SA-RG", "Ayan-0106-SA-Vault", "Ayan-0106-SA-Vaultreplicationfabric", "Ayan-0106-SA-Vaultreplicationcontainer", "idclab-vcen67_50158124-8857-3e08-0893-2ddf8ebb8c1f", armrecoveryservicessiterecovery.UpdateApplianceForReplicationProtectedItemInput{
 		Properties: &armrecoveryservicessiterecovery.UpdateApplianceForReplicationProtectedItemInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.InMageRcmUpdateApplianceForReplicationProtectedItemInput{
 				InstanceType:   to.Ptr("InMageRcm"),
@@ -1330,7 +1328,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
 func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1341,7 +1339,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdateMobilityService(ctx, "WCUSVault", "wcusValidations", "WIN-JKKJ31QI8U2", "cloud_c6780228-83bd-4f3e-a70e-cb46b7da33a0", "79dd20ab-2b40-11e7-9791-0050568f387e", armrecoveryservicessiterecovery.UpdateMobilityServiceRequest{
+	poller, err := clientFactory.NewReplicationProtectedItemsClient().BeginUpdateMobilityService(ctx, "wcusValidations", "WCUSVault", "WIN-JKKJ31QI8U2", "cloud_c6780228-83bd-4f3e-a70e-cb46b7da33a0", "79dd20ab-2b40-11e7-9791-0050568f387e", armrecoveryservicessiterecovery.UpdateMobilityServiceRequest{
 		Properties: &armrecoveryservicessiterecovery.UpdateMobilityServiceRequestProperties{
 			RunAsAccountID: to.Ptr("2"),
 		},
@@ -1395,7 +1393,7 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectedItems_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectedItems_List.json
 func ExampleReplicationProtectedItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1406,7 +1404,7 @@ func ExampleReplicationProtectedItemsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationProtectedItemsClient().NewListPager("vault1", "resourceGroupPS1", &armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListOptions{SkipToken: nil,
+	pager := clientFactory.NewReplicationProtectedItemsClient().NewListPager("resourceGroupPS1", "vault1", &armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListOptions{SkipToken: nil,
 		Filter: nil,
 	})
 	for pager.More() {

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_List.json
 func ExampleReplicationFabricsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationFabricsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationFabricsClient().NewListPager("vault1", "resourceGroupPS1", nil)
+	pager := clientFactory.NewReplicationFabricsClient().NewListPager("resourceGroupPS1", "vault1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -68,7 +68,7 @@ func ExampleReplicationFabricsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_Get.json
 func ExampleReplicationFabricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleReplicationFabricsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationFabricsClient().Get(ctx, "vault1", "resourceGroupPS1", "cloud1", &armrecoveryservicessiterecovery.ReplicationFabricsClientGetOptions{Filter: nil})
+	res, err := clientFactory.NewReplicationFabricsClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", &armrecoveryservicessiterecovery.ReplicationFabricsClientGetOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -110,7 +110,7 @@ func ExampleReplicationFabricsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_Create.json
 func ExampleReplicationFabricsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,11 +121,9 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationFabricsClient().BeginCreate(ctx, "vault1", "resourceGroupPS1", "cloud1", armrecoveryservicessiterecovery.FabricCreationInput{
+	poller, err := clientFactory.NewReplicationFabricsClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "cloud1", armrecoveryservicessiterecovery.FabricCreationInput{
 		Properties: &armrecoveryservicessiterecovery.FabricCreationInputProperties{
-			CustomDetails: &armrecoveryservicessiterecovery.FabricSpecificCreationInput{
-				InstanceType: to.Ptr("FabricSpecificCreationInput"),
-			},
+			CustomDetails: &armrecoveryservicessiterecovery.FabricSpecificCreationInputClassification{},
 		},
 	}, nil)
 	if err != nil {
@@ -162,7 +160,7 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_Purge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_Purge.json
 func ExampleReplicationFabricsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +171,7 @@ func ExampleReplicationFabricsClient_BeginPurge() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationFabricsClient().BeginPurge(ctx, "vault1", "resourceGroupPS1", "cloud1", nil)
+	poller, err := clientFactory.NewReplicationFabricsClient().BeginPurge(ctx, "resourceGroupPS1", "vault1", "cloud1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -183,7 +181,7 @@ func ExampleReplicationFabricsClient_BeginPurge() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_CheckConsistency.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_CheckConsistency.json
 func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +192,7 @@ func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationFabricsClient().BeginCheckConsistency(ctx, "vault1", "resourceGroupPS1", "cloud1", nil)
+	poller, err := clientFactory.NewReplicationFabricsClient().BeginCheckConsistency(ctx, "resourceGroupPS1", "vault1", "cloud1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -229,7 +227,7 @@ func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_MigrateToAad.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_MigrateToAad.json
 func ExampleReplicationFabricsClient_BeginMigrateToAAD() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +238,7 @@ func ExampleReplicationFabricsClient_BeginMigrateToAAD() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationFabricsClient().BeginMigrateToAAD(ctx, "vault1", "resourceGroupPS1", "cloud1", nil)
+	poller, err := clientFactory.NewReplicationFabricsClient().BeginMigrateToAAD(ctx, "resourceGroupPS1", "vault1", "cloud1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -250,7 +248,7 @@ func ExampleReplicationFabricsClient_BeginMigrateToAAD() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_ReassociateGateway.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_ReassociateGateway.json
 func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +259,7 @@ func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationFabricsClient().BeginReassociateGateway(ctx, "MadhaviVault", "MadhaviVRG", "GRACE-V2A-1", armrecoveryservicessiterecovery.FailoverProcessServerRequest{
+	poller, err := clientFactory.NewReplicationFabricsClient().BeginReassociateGateway(ctx, "MadhaviVRG", "MadhaviVault", "GRACE-V2A-1", armrecoveryservicessiterecovery.FailoverProcessServerRequest{
 		Properties: &armrecoveryservicessiterecovery.FailoverProcessServerRequestProperties{
 			ContainerName:         to.Ptr("cloud_1f3c15af-2256-4568-9e06-e1ef4f728f75"),
 			SourceProcessServerID: to.Ptr("AFA0EC54-1894-4E44-9CAB02DB8854B117"),
@@ -306,7 +304,7 @@ func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_Delete.json
 func ExampleReplicationFabricsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +315,7 @@ func ExampleReplicationFabricsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationFabricsClient().BeginDelete(ctx, "vault1", "resourceGroupPS1", "cloud1", nil)
+	poller, err := clientFactory.NewReplicationFabricsClient().BeginDelete(ctx, "resourceGroupPS1", "vault1", "cloud1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -327,7 +325,7 @@ func ExampleReplicationFabricsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationFabrics_RenewCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationFabrics_RenewCertificate.json
 func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,7 +336,7 @@ func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationFabricsClient().BeginRenewCertificate(ctx, "vault1", "resourceGroupPS1", "cloud1", armrecoveryservicessiterecovery.RenewCertificateInput{
+	poller, err := clientFactory.NewReplicationFabricsClient().BeginRenewCertificate(ctx, "resourceGroupPS1", "vault1", "cloud1", armrecoveryservicessiterecovery.RenewCertificateInput{
 		Properties: &armrecoveryservicessiterecovery.RenewCertificateInputProperties{
 			RenewCertificateType: to.Ptr("Cloud"),
 		},
@@ -377,7 +375,7 @@ func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationInfrastructure_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationInfrastructure_Delete.json
 func ExampleReplicationFabricsClient_BeginRemoveInfra() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

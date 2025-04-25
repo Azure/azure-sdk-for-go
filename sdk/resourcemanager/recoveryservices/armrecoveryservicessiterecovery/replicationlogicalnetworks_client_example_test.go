@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
 func ExampleReplicationLogicalNetworksClient_NewListByReplicationFabricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleReplicationLogicalNetworksClient_NewListByReplicationFabricsPager() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationLogicalNetworksClient().NewListByReplicationFabricsPager("vault1", "resourceGroupPS1", "cloud1", nil)
+	pager := clientFactory.NewReplicationLogicalNetworksClient().NewListByReplicationFabricsPager("resourceGroupPS1", "vault1", "cloud1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -67,7 +67,7 @@ func ExampleReplicationLogicalNetworksClient_NewListByReplicationFabricsPager() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationLogicalNetworks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationLogicalNetworks_Get.json
 func ExampleReplicationLogicalNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleReplicationLogicalNetworksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationLogicalNetworksClient().Get(ctx, "vault1", "resourceGroupPS1", "cloud1", "87ab394f-165f-4aa9-bd84-b018500b4509", nil)
+	res, err := clientFactory.NewReplicationLogicalNetworksClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "87ab394f-165f-4aa9-bd84-b018500b4509", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

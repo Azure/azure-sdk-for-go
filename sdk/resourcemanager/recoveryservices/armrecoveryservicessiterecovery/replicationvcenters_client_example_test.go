@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationvCenters_ListByReplicationFabrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationvCenters_ListByReplicationFabrics.json
 func ExampleReplicationvCentersClient_NewListByReplicationFabricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationvCentersClient_NewListByReplicationFabricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationvCentersClient().NewListByReplicationFabricsPager("MadhaviVault", "MadhaviVRG", "MadhaviFabric", nil)
+	pager := clientFactory.NewReplicationvCentersClient().NewListByReplicationFabricsPager("MadhaviVRG", "MadhaviVault", "MadhaviFabric", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -61,7 +61,7 @@ func ExampleReplicationvCentersClient_NewListByReplicationFabricsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationvCenters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationvCenters_Get.json
 func ExampleReplicationvCentersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleReplicationvCentersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationvCentersClient().Get(ctx, "MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", nil)
+	res, err := clientFactory.NewReplicationvCentersClient().Get(ctx, "MadhaviVRG", "MadhaviVault", "MadhaviFabric", "esx-78", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -96,7 +96,7 @@ func ExampleReplicationvCentersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationvCenters_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationvCenters_Create.json
 func ExampleReplicationvCentersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleReplicationvCentersClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationvCentersClient().BeginCreate(ctx, "MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", armrecoveryservicessiterecovery.AddVCenterRequest{
+	poller, err := clientFactory.NewReplicationvCentersClient().BeginCreate(ctx, "MadhaviVRG", "MadhaviVault", "MadhaviFabric", "esx-78", armrecoveryservicessiterecovery.AddVCenterRequest{
 		Properties: &armrecoveryservicessiterecovery.AddVCenterRequestProperties{
 			FriendlyName:    to.Ptr("esx-78"),
 			IPAddress:       to.Ptr("inmtest78"),
@@ -143,7 +143,7 @@ func ExampleReplicationvCentersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationvCenters_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationvCenters_Delete.json
 func ExampleReplicationvCentersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleReplicationvCentersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationvCentersClient().BeginDelete(ctx, "MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", nil)
+	poller, err := clientFactory.NewReplicationvCentersClient().BeginDelete(ctx, "MadhaviVRG", "MadhaviVault", "MadhaviFabric", "esx-78", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -164,7 +164,7 @@ func ExampleReplicationvCentersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationvCenters_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationvCenters_Update.json
 func ExampleReplicationvCentersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleReplicationvCentersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationvCentersClient().BeginUpdate(ctx, "MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", armrecoveryservicessiterecovery.UpdateVCenterRequest{
+	poller, err := clientFactory.NewReplicationvCentersClient().BeginUpdate(ctx, "MadhaviVRG", "MadhaviVault", "MadhaviFabric", "esx-78", armrecoveryservicessiterecovery.UpdateVCenterRequest{
 		Properties: &armrecoveryservicessiterecovery.UpdateVCenterRequestProperties{
 			IPAddress: to.Ptr("10.150.109.25"),
 		},
@@ -207,7 +207,7 @@ func ExampleReplicationvCentersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationvCenters_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationvCenters_List.json
 func ExampleReplicationvCentersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleReplicationvCentersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationvCentersClient().NewListPager("MadhaviVault", "MadhaviVRG", nil)
+	pager := clientFactory.NewReplicationvCentersClient().NewListPager("MadhaviVRG", "MadhaviVault", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

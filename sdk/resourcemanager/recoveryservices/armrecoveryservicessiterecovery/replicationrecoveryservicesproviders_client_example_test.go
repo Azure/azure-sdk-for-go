@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
 func ExampleReplicationRecoveryServicesProvidersClient_NewListByReplicationFabricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_NewListByReplicationFabri
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationRecoveryServicesProvidersClient().NewListByReplicationFabricsPager("vault1", "resourceGroupPS1", "cloud1", nil)
+	pager := clientFactory.NewReplicationRecoveryServicesProvidersClient().NewListByReplicationFabricsPager("resourceGroupPS1", "vault1", "cloud1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,7 +64,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_NewListByReplicationFabri
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryServicesProviders_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryServicesProviders_Get.json
 func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().Get(ctx, "vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
+	res, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,7 +102,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryServicesProviders_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryServicesProviders_Create.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginCreate(ctx, "migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareprovider1", armrecoveryservicessiterecovery.AddRecoveryServicesProviderInput{
+	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginCreate(ctx, "resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareprovider1", armrecoveryservicessiterecovery.AddRecoveryServicesProviderInput{
 		Properties: &armrecoveryservicessiterecovery.AddRecoveryServicesProviderInputProperties{
 			AuthenticationIdentityInput: &armrecoveryservicessiterecovery.IdentityProviderInput{
 				AADAuthority:  to.Ptr("https://login.microsoftonline.com"),
@@ -162,7 +162,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryServicesProviders_Purge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryServicesProviders_Purge.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginPurge() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginPurge(ctx, "vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
+	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginPurge(ctx, "resourceGroupPS1", "vault1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -183,7 +183,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginPurge() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginRefreshProvider(ctx, "vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
+	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginRefreshProvider(ctx, "resourceGroupPS1", "vault1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -225,7 +225,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryServicesProviders_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryServicesProviders_Delete.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginDelete(ctx, "vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
+	poller, err := clientFactory.NewReplicationRecoveryServicesProvidersClient().BeginDelete(ctx, "resourceGroupPS1", "vault1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -246,7 +246,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationRecoveryServicesProviders_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationRecoveryServicesProviders_List.json
 func ExampleReplicationRecoveryServicesProvidersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationRecoveryServicesProvidersClient().NewListPager("vault1", "resourceGroupPS1", nil)
+	pager := clientFactory.NewReplicationRecoveryServicesProvidersClient().NewListPager("resourceGroupPS1", "vault1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

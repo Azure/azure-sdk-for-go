@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionContainers_ListByReplicationFabrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_ListByReplicationFabrics.json
 func ExampleReplicationProtectionContainersClient_NewListByReplicationFabricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleReplicationProtectionContainersClient_NewListByReplicationFabricsPag
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationProtectionContainersClient().NewListByReplicationFabricsPager("vault1", "resourceGroupPS1", "cloud1", nil)
+	pager := clientFactory.NewReplicationProtectionContainersClient().NewListByReplicationFabricsPager("resourceGroupPS1", "vault1", "cloud1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -59,7 +59,7 @@ func ExampleReplicationProtectionContainersClient_NewListByReplicationFabricsPag
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionContainers_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_Get.json
 func ExampleReplicationProtectionContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleReplicationProtectionContainersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReplicationProtectionContainersClient().Get(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
+	res, err := clientFactory.NewReplicationProtectionContainersClient().Get(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -92,7 +92,7 @@ func ExampleReplicationProtectionContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionContainers_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_Create.json
 func ExampleReplicationProtectionContainersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,12 +103,10 @@ func ExampleReplicationProtectionContainersClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginCreate(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", armrecoveryservicessiterecovery.CreateProtectionContainerInput{
+	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", armrecoveryservicessiterecovery.CreateProtectionContainerInput{
 		Properties: &armrecoveryservicessiterecovery.CreateProtectionContainerInputProperties{
 			ProviderSpecificInput: []armrecoveryservicessiterecovery.ReplicationProviderSpecificContainerCreationInputClassification{
-				&armrecoveryservicessiterecovery.ReplicationProviderSpecificContainerCreationInput{
-					InstanceType: to.Ptr("ReplicationProviderSpecificContainerCreationInput"),
-				}},
+				&armrecoveryservicessiterecovery.ReplicationProviderSpecificContainerCreationInputClassification{}},
 		},
 	}, nil)
 	if err != nil {
@@ -136,7 +134,7 @@ func ExampleReplicationProtectionContainersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionContainers_DiscoverProtectableItem.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_DiscoverProtectableItem.json
 func ExampleReplicationProtectionContainersClient_BeginDiscoverProtectableItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +145,7 @@ func ExampleReplicationProtectionContainersClient_BeginDiscoverProtectableItem()
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginDiscoverProtectableItem(ctx, "MadhaviVault", "MadhaviVRG", "V2A-W2K12-660", "cloud_7328549c-5c37-4459-a3c2-e35f9ef6893c", armrecoveryservicessiterecovery.DiscoverProtectableItemRequest{
+	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginDiscoverProtectableItem(ctx, "MadhaviVRG", "MadhaviVault", "V2A-W2K12-660", "cloud_7328549c-5c37-4459-a3c2-e35f9ef6893c", armrecoveryservicessiterecovery.DiscoverProtectableItemRequest{
 		Properties: &armrecoveryservicessiterecovery.DiscoverProtectableItemRequestProperties{
 			FriendlyName: to.Ptr("Test"),
 			IPAddress:    to.Ptr("10.150.2.3"),
@@ -179,7 +177,7 @@ func ExampleReplicationProtectionContainersClient_BeginDiscoverProtectableItem()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionContainers_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_Delete.json
 func ExampleReplicationProtectionContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +188,7 @@ func ExampleReplicationProtectionContainersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginDelete(ctx, "vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
+	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginDelete(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -200,7 +198,74 @@ func ExampleReplicationProtectionContainersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionContainers_SwitchProtection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_SwitchClusterProtection.json
+func ExampleReplicationProtectionContainersClient_BeginSwitchClusterProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginSwitchClusterProtection(ctx, "resourceGroupPS1", "vault1", "fabric-pri-eastus", "pri-cloud-eastus", armrecoveryservicessiterecovery.SwitchClusterProtectionInput{
+		Properties: &armrecoveryservicessiterecovery.SwitchClusterProtectionInputProperties{
+			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2ASwitchClusterProtectionInput{
+				InstanceType: to.Ptr("A2A"),
+				PolicyID:     to.Ptr("/Subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/klncksan"),
+				ProtectedItemsDetail: []*armrecoveryservicessiterecovery.A2AProtectedItemDetail{
+					{
+						RecoveryResourceGroupID:      to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/ClusterTestRG-19-01-asr"),
+						ReplicationProtectedItemName: to.Ptr("yNdYnDYKZ7hYU7zyVeBychFBCyAbEkrJcJNUarDrXio"),
+						VMManagedDisks: []*armrecoveryservicessiterecovery.A2AVMManagedDiskInputDetails{
+							{
+								DiskID:                              to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourcegroups/clustertestrg-19-01/providers/microsoft.compute/disks/sdgql0-osdisk"),
+								PrimaryStagingAzureStorageAccountID: to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/clustertestrg-19-01/providers/Microsoft.Storage/storageAccounts/ix701lvaasrcache"),
+								RecoveryResourceGroupID:             to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/ClusterTestRG-19-01-asr"),
+							}},
+					},
+					{
+						RecoveryResourceGroupID:      to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/ClusterTestRG-19-01-asr"),
+						ReplicationProtectedItemName: to.Ptr("kdUdWvpVnm3QgOQPHoVMX8YAtAO8OC4kKNjt40ERSr4"),
+						VMManagedDisks: []*armrecoveryservicessiterecovery.A2AVMManagedDiskInputDetails{
+							{
+								DiskID:                              to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourcegroups/clustertestrg-19-01/providers/microsoft.compute/disks/sdgql1-osdisk"),
+								PrimaryStagingAzureStorageAccountID: to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/clustertestrg-19-01/providers/Microsoft.Storage/storageAccounts/ix701lvaasrcache"),
+								RecoveryResourceGroupID:             to.Ptr("/subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/ClusterTestRG-19-01-asr"),
+							}},
+					}},
+				RecoveryContainerID: to.Ptr("/Subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/fabric-rec-westus/replicationProtectionContainers/rec-cloud-westus"),
+			},
+			ReplicationProtectionClusterName: to.Ptr("testcluster"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ProtectionContainer = armrecoveryservicessiterecovery.ProtectionContainer{
+	// 	Name: to.Ptr("pri-cloud-eastus"),
+	// 	Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers"),
+	// 	ID: to.Ptr("/Subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/fabric-pri-eastus/replicationProtectionContainers/pri-cloud-eastus"),
+	// 	Properties: &armrecoveryservicessiterecovery.ProtectionContainerProperties{
+	// 		FabricFriendlyName: to.Ptr("East US"),
+	// 		FabricType: to.Ptr("Azure"),
+	// 		FriendlyName: to.Ptr("pri-cloud-eastus"),
+	// 		PairingStatus: to.Ptr("Paired"),
+	// 		ProtectedItemCount: to.Ptr[int32](13),
+	// 		Role: to.Ptr("Primary"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_SwitchProtection.json
 func ExampleReplicationProtectionContainersClient_BeginSwitchProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +276,7 @@ func ExampleReplicationProtectionContainersClient_BeginSwitchProtection() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginSwitchProtection(ctx, "priyanponeboxvault", "priyanprg", "CentralUSCanSite", "CentralUSCancloud", armrecoveryservicessiterecovery.SwitchProtectionInput{
+	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginSwitchProtection(ctx, "priyanprg", "priyanponeboxvault", "CentralUSCanSite", "CentralUSCancloud", armrecoveryservicessiterecovery.SwitchProtectionInput{
 		Properties: &armrecoveryservicessiterecovery.SwitchProtectionInputProperties{
 			ProviderSpecificDetails: &armrecoveryservicessiterecovery.A2ASwitchProtectionInput{
 				InstanceType: to.Ptr("A2A"),
@@ -244,7 +309,7 @@ func ExampleReplicationProtectionContainersClient_BeginSwitchProtection() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/ReplicationProtectionContainers_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/ReplicationProtectionContainers_List.json
 func ExampleReplicationProtectionContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +320,7 @@ func ExampleReplicationProtectionContainersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicationProtectionContainersClient().NewListPager("vault1", "resourceGroupPS1", nil)
+	pager := clientFactory.NewReplicationProtectionContainersClient().NewListPager("resourceGroupPS1", "vault1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

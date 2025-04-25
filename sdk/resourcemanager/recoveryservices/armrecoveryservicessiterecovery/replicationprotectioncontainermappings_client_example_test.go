@@ -116,7 +116,7 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginCreate() {
 	poller, err := clientFactory.NewReplicationProtectionContainerMappingsClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "cloud1protectionprofile1", armrecoveryservicessiterecovery.CreateProtectionContainerMappingInput{
 		Properties: &armrecoveryservicessiterecovery.CreateProtectionContainerMappingInputProperties{
 			PolicyID:                    to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationPolicies/protectionprofile1"),
-			ProviderSpecificInput:       &armrecoveryservicessiterecovery.ReplicationProviderSpecificContainerMappingInputClassification{},
+			ProviderSpecificInput:       nil,
 			TargetProtectionContainerID: to.Ptr("Microsoft Azure"),
 		},
 	}, nil)

@@ -106,7 +106,7 @@ func ExampleReplicationProtectionContainersClient_BeginCreate() {
 	poller, err := clientFactory.NewReplicationProtectionContainersClient().BeginCreate(ctx, "resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", armrecoveryservicessiterecovery.CreateProtectionContainerInput{
 		Properties: &armrecoveryservicessiterecovery.CreateProtectionContainerInputProperties{
 			ProviderSpecificInput: []armrecoveryservicessiterecovery.ReplicationProviderSpecificContainerCreationInputClassification{
-				&armrecoveryservicessiterecovery.ReplicationProviderSpecificContainerCreationInputClassification{}},
+			},
 		},
 	}, nil)
 	if err != nil {

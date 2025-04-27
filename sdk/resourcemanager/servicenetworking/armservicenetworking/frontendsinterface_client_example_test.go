@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/FrontendPut.json
+// Generated from example definition: 2025-03-01-preview/FrontendPut.json
 func ExampleFrontendsInterfaceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,13 +45,18 @@ func ExampleFrontendsInterfaceClient_BeginCreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 	// 		Properties: &armservicenetworking.FrontendProperties{
 	// 			Fqdn: to.Ptr("test.net"),
+	// 			SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+	// 				IPAccessRulesSecurityPolicy: &armservicenetworking.IPAccessRulesSecurityPolicy{
+	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FrontendDelete.json
+// Generated from example definition: 2025-03-01-preview/FrontendDelete.json
 func ExampleFrontendsInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +77,7 @@ func ExampleFrontendsInterfaceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/FrontendGet.json
+// Generated from example definition: 2025-03-01-preview/FrontendGet.json
 func ExampleFrontendsInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,13 +103,18 @@ func ExampleFrontendsInterfaceClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 	// 		Properties: &armservicenetworking.FrontendProperties{
 	// 			Fqdn: to.Ptr("test.net"),
+	// 			SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+	// 				IPAccessRulesSecurityPolicy: &armservicenetworking.IPAccessRulesSecurityPolicy{
+	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01/FrontendsGet.json
+// Generated from example definition: 2025-03-01-preview/FrontendsGet.json
 func ExampleFrontendsInterfaceClient_NewListByTrafficControllerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,6 +146,11 @@ func ExampleFrontendsInterfaceClient_NewListByTrafficControllerPager() {
 		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 		// 				Properties: &armservicenetworking.FrontendProperties{
 		// 					Fqdn: to.Ptr("test.net"),
+		// 					SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+		// 						IPAccessRulesSecurityPolicy: &armservicenetworking.IPAccessRulesSecurityPolicy{
+		// 							ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
+		// 						},
+		// 					},
 		// 					ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -145,7 +160,7 @@ func ExampleFrontendsInterfaceClient_NewListByTrafficControllerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/FrontendPatch.json
+// Generated from example definition: 2025-03-01-preview/FrontendPatch.json
 func ExampleFrontendsInterfaceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,6 +186,11 @@ func ExampleFrontendsInterfaceClient_Update() {
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/frontends/fe1"),
 	// 		Properties: &armservicenetworking.FrontendProperties{
 	// 			Fqdn: to.Ptr("test.net"),
+	// 			SecurityPolicyConfigurations: &armservicenetworking.SecurityPolicyConfigurations{
+	// 				IPAccessRulesSecurityPolicy: &armservicenetworking.IPAccessRulesSecurityPolicy{
+	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
 	// 		},
 	// 	},

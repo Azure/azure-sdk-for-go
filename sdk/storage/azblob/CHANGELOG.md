@@ -3,6 +3,7 @@
 ## 1.6.1-beta.2 (Unreleased)
 
 ### Features Added
+* Add support for x-ms-file-request-intent header for blob copy APIs.
 
 ### Breaking Changes
 

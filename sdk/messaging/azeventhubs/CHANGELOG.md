@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Support for Event Hubs Geo-Replication.
+- Support for Event Hubs Geo-Replication (PR#24477)
 
 ### Breaking Changes
 

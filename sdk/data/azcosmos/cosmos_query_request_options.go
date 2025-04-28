@@ -46,9 +46,9 @@ type QueryOptions struct {
 	// If set to false, cross-partition queries will be rejected.
 	// The default value, if this is not set, is true.
 	EnableCrossPartitionQuery *bool
-	// UnstablePreviewQueryEngine is used to enable the use of an external query engine for processing cross-partition queries.
-	// This is an unstable preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes in minor releases.
-	UnstablePreviewQueryEngine queryengine.QueryEngine
+	// QueryEngine can be set to enable the use of an external query engine for processing cross-partition queries.
+	// This is a preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes.
+	QueryEngine queryengine.QueryEngine
 }
 
 func (options *QueryOptions) toHeaders() *map[string]string {

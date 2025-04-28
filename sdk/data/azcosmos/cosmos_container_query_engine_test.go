@@ -84,7 +84,7 @@ func TestQueryViaQueryEngine(t *testing.T) {
 	}
 
 	options := &QueryOptions{
-		UnstablePreviewQueryEngine: azcosmosinternal.NewMockQueryEngine(),
+		QueryEngine: azcosmosinternal.NewMockQueryEngine(),
 	}
 	pager := container.NewQueryItemsPager("SELECT * FROM c ORDER BY c.mergeOrder", NewPartitionKey(), options)
 

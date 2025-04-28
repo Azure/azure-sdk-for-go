@@ -6,6 +6,7 @@ package azopenai_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 
@@ -58,13 +59,30 @@ func Example_createImage() {
 	}
 
 	for _, generatedImage := range resp.Data {
-		resp, err := http.Head(generatedImage.URL)
+		resp, err := http.Get(generatedImage.URL)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			// Handle non-200 status code
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
+		}
+
+		imageData, err := io.ReadAll(resp.Body)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 			return
 		}
 
-		_ = resp.Body.Close()
-		fmt.Fprintf(os.Stderr, "Image generated, HEAD request on URL returned %d\n", resp.StatusCode)
+		// Save the generated image to a file
+		err = os.WriteFile("generated_image.png", imageData, 0644)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+			return
+		}
 	}
 }

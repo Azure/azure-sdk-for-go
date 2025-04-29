@@ -342,6 +342,9 @@
 # ServiceLabel: %Digital Twins
 #/<NotInRepo>/          @sourabhguha @inesk-vt
 
+# ServiceLabel: %Durable Task Scheduler
+#/<NotInRepo>/          @berndverst @kaibocai @torosent @RyanLettieri @philliphoff @cgillum
+
 # ServiceLabel: %Functions
 #/<NotInRepo>/          @ahmedelnably @fabiocav
 

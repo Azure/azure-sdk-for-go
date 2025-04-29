@@ -64,7 +64,7 @@ func Example_responsesApiTextGeneration() {
 	// Process the response
 	fmt.Fprintf(os.Stderr, "Response ID: %s\n", resp.ID)
 	fmt.Fprintf(os.Stderr, "Model: %s\n", resp.Model)
-	
+
 	// Print the text content from the output
 	for _, output := range resp.Output {
 		if output.Type == "message" {
@@ -154,7 +154,7 @@ func Example_responsesApiChaining() {
 	}
 
 	fmt.Fprintf(os.Stderr, "Second response ID: %s\n", secondResponse.ID)
-	
+
 	// Print the text content from the second response
 	for _, output := range secondResponse.Output {
 		if output.Type == "message" {
@@ -312,18 +312,18 @@ func Example_responsesApiFunctionCalling() {
 		secondResp, err := client.Responses.New(
 			context.TODO(),
 			responses.ResponseNewParams{
-			Model:              model,
-			PreviousResponseID: openai.String(resp.ID),
-			Input: responses.ResponseNewParamsInputUnion{
-				OfInputItemList: []responses.ResponseInputItemUnionParam{
-				{
-					OfFunctionCallOutput: &responses.ResponseInputItemFunctionCallOutputParam{
-						CallID: functionCallID,
-						Output: functionOutput,
+				Model:              model,
+				PreviousResponseID: openai.String(resp.ID),
+				Input: responses.ResponseNewParamsInputUnion{
+					OfInputItemList: []responses.ResponseInputItemUnionParam{
+						{
+							OfFunctionCallOutput: &responses.ResponseInputItemFunctionCallOutputParam{
+								CallID: functionCallID,
+								Output: functionOutput,
+							},
+						},
 					},
 				},
-				},
-			},
 			},
 		)
 
@@ -358,7 +358,7 @@ func Example_responsesApiFunctionCalling() {
 // - AZURE_OPENAI_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AZURE_OPENAI_MODEL: The deployment name of your model (e.g., "gpt-4o")
 //
-// Note: This example fetches and encodes an image from a URL because there is a known issue with image url 
+// Note: This example fetches and encodes an image from a URL because there is a known issue with image url
 // based image input. Currently only base64 encoded images are supported.
 func Example_responsesApiImageInput() {
 	if !CheckRequiredEnvVars("AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_MODEL") {
@@ -378,7 +378,7 @@ func Example_responsesApiImageInput() {
 
 	// Image URL to fetch and encode, you can also use a local file path
 	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
-	
+
 	// Fetch the image from the URL and encode it to Base64
 	httpClient := &http.Client{Timeout: 30 * time.Second}
 	httpResp, err := httpClient.Get(imageURL)
@@ -387,17 +387,17 @@ func Example_responsesApiImageInput() {
 		return
 	}
 	defer httpResp.Body.Close()
-	
+
 	imgBytes, err := io.ReadAll(httpResp.Body)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR reading image: %s\n", err)
 		return
 	}
-	
+
 	// Encode the image to Base64
 	base64Image := base64.StdEncoding.EncodeToString(imgBytes)
 	fmt.Fprintf(os.Stderr, "Successfully encoded image from URL\n")
-	
+
 	// Determine content type based on image data or response headers
 	contentType := httpResp.Header.Get("Content-Type")
 	if contentType == "" {
@@ -441,7 +441,7 @@ func Example_responsesApiImageInput() {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-	
+
 	// Print the text content from the output
 	for _, output := range resp.Output {
 		if output.Type == "message" {
@@ -501,7 +501,7 @@ func Example_responsesApiReasoning() {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-	
+
 	// Print the text content from the output
 	for _, output := range resp.Output {
 		if output.Type == "message" {

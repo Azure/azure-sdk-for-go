@@ -52,12 +52,11 @@ func TestClient_ResponsesTextGeneration(t *testing.T) {
 }
 
 func TestClient_ResponsesChaining(t *testing.T) {
-	// Since response id is sanitized, this creates a mismatch between the test and the recording
-	// body for previous response id in second request, hence only run in live mode.
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skip("Skipping test in playback mode")
-	}
 	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
+
+	// Disable the sanitizer for the response ID to allow chaining
+	recording.RemoveRegisteredSanitizers([]string{"AZSDK3430"}, getRecordingOptions(t))
+
 	model := azureOpenAI.Assistants.Model
 
 	// Create the first response

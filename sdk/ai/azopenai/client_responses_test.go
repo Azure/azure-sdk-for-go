@@ -8,10 +8,10 @@ package azopenai_test
 
 import (
 	"context"
-	"fmt"
-	"testing"
 	"encoding/base64"
+	"fmt"
 	"os"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go"
@@ -226,7 +226,7 @@ func TestClient_ResponsesFunctionCalling(t *testing.T) {
 				}
 			}
 		}
-		
+
 		require.NotEmpty(t, finalResponse, "Final response should not be empty")
 		require.Contains(t, finalResponse, "72 degrees", "Final response should include function output")
 	}
@@ -239,10 +239,10 @@ func TestClient_ResponsesImageInput(t *testing.T) {
 	// Load the sample image file of two deer
 	imageBytes, err := os.ReadFile("testdata/sampleimage_two_deers.jpg")
 	require.NoError(t, err)
-	
+
 	// Create a base64 encoded data URL for the image
 	encodedImage := base64.StdEncoding.EncodeToString(imageBytes)
-	dataURL := fmt.Sprintf("data:image/jpeg;base64,%s", encodedImage)	
+	dataURL := fmt.Sprintf("data:image/jpeg;base64,%s", encodedImage)
 
 	// Create a response with the image input
 	resp, err := client.Responses.New(
@@ -272,7 +272,7 @@ func TestClient_ResponsesImageInput(t *testing.T) {
 			},
 		},
 	)
-	
+
 	customRequireNoError(t, err)
 
 	// Check the response for image description
@@ -287,7 +287,7 @@ func TestClient_ResponsesImageInput(t *testing.T) {
 			}
 		}
 	}
-	
+
 	require.NotEmpty(t, imageDescription, "Image description should not be empty")
 }
 
@@ -322,6 +322,6 @@ func TestClient_ResponsesReasoning(t *testing.T) {
 			}
 		}
 	}
-	
+
 	require.NotEmpty(t, solution, "Solution should not be empty")
 }

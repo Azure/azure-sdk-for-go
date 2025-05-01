@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/ListCapabilities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Capabilities_List.json
 func ExampleCapabilitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,6 +45,10 @@ func ExampleCapabilitiesClient_NewListPager() {
 		// 			Name: to.Ptr("Shutdown-1.0"),
 		// 			Type: to.Ptr("Microsoft.Chaos/targets/capabilities"),
 		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0"),
+		// 			SystemData: &armchaos.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
+		// 			},
 		// 			Properties: &armchaos.CapabilityProperties{
 		// 				Description: to.Ptr("Shutdown an Azure Virtual Machine for a defined period of time."),
 		// 				ParametersSchema: to.Ptr("https://schema.centralus.chaos-prod.azure.com/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0.json"),
@@ -52,16 +56,12 @@ func ExampleCapabilitiesClient_NewListPager() {
 		// 				TargetType: to.Ptr("VirtualMachine"),
 		// 				Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 		// 			},
-		// 			SystemData: &armchaos.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/GetCapability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Capabilities_Get.json
 func ExampleCapabilitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,6 +83,10 @@ func ExampleCapabilitiesClient_Get() {
 	// 	Name: to.Ptr("Shutdown-1.0"),
 	// 	Type: to.Ptr("Microsoft.Chaos/targets/capabilities"),
 	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0"),
+	// 	SystemData: &armchaos.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
+	// 	},
 	// 	Properties: &armchaos.CapabilityProperties{
 	// 		Description: to.Ptr("Shutdown an Azure Virtual Machine for a defined period of time."),
 	// 		ParametersSchema: to.Ptr("https://schema.centralus.chaos-prod.azure.com/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0.json"),
@@ -90,31 +94,10 @@ func ExampleCapabilitiesClient_Get() {
 	// 		TargetType: to.Ptr("VirtualMachine"),
 	// 		Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 	},
-	// 	SystemData: &armchaos.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/DeleteCapability.json
-func ExampleCapabilitiesClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewCapabilitiesClient().Delete(ctx, "exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", "Microsoft-VirtualMachine", "Shutdown-1.0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/CreateUpdateCapability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Capabilities_CreateOrUpdate.json
 func ExampleCapabilitiesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,6 +121,10 @@ func ExampleCapabilitiesClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("Shutdown-1.0"),
 	// 	Type: to.Ptr("Microsoft.Chaos/targets/capabilities"),
 	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0"),
+	// 	SystemData: &armchaos.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
+	// 	},
 	// 	Properties: &armchaos.CapabilityProperties{
 	// 		Description: to.Ptr("Shutdown an Azure Virtual Machine for a defined period of time."),
 	// 		ParametersSchema: to.Ptr("https://schema.centralus.chaos-prod.azure.com/targets/Microsoft-VirtualMachine/capabilities/Shutdown-1.0.json"),
@@ -145,9 +132,22 @@ func ExampleCapabilitiesClient_CreateOrUpdate() {
 	// 		TargetType: to.Ptr("VirtualMachine"),
 	// 		Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 	},
-	// 	SystemData: &armchaos.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.466Z"); return t}()),
-	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Capabilities_Delete.json
+func ExampleCapabilitiesClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewCapabilitiesClient().Delete(ctx, "exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", "Microsoft-VirtualMachine", "Shutdown-1.0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
 }

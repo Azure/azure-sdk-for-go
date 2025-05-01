@@ -7,6 +7,45 @@ package armsearch
 
 import "time"
 
+// AccessRule - Access rule in a network security perimeter configuration profile
+type AccessRule struct {
+	// Name of the access rule
+	Name *string
+
+	// Properties of Access Rule
+	Properties *AccessRuleProperties
+}
+
+// AccessRuleProperties - Properties of Access Rule
+type AccessRuleProperties struct {
+	// Address prefixes in the CIDR format for inbound rules
+	AddressPrefixes []*string
+
+	// Direction of Access Rule
+	Direction *AccessRuleDirection
+
+	// Email addresses for outbound rules
+	EmailAddresses []*string
+
+	// Fully qualified domain names (FQDN) for outbound rules
+	FullyQualifiedDomainNames []*string
+
+	// Network security perimeters for inbound rules
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeter
+
+	// Phone numbers for outbound rules
+	PhoneNumbers []*string
+
+	// Subscriptions for inbound rules
+	Subscriptions []*AccessRulePropertiesSubscriptionsItem
+}
+
+// AccessRulePropertiesSubscriptionsItem - Subscription identifiers
+type AccessRulePropertiesSubscriptionsItem struct {
+	// The fully qualified Azure resource ID of the subscription e.g. ('/subscriptions/00000000-0000-0000-0000-000000000000')
+	ID *string
+}
+
 // AdminKeyResult - Response containing the primary and secondary admin API keys for a given Azure AI Search service.
 type AdminKeyResult struct {
 	// READ-ONLY; The primary admin API key of the search service.
@@ -73,11 +112,6 @@ type EncryptionWithCmk struct {
 	EncryptionComplianceStatus *SearchEncryptionComplianceStatus
 }
 
-type FeatureOffering struct {
-	// The name of the feature offered in this region.
-	Name *FeatureName
-}
-
 // IPRule - The IP restriction rule of the Azure AI Search service.
 type IPRule struct {
 	// Value corresponding to a single IPv4 address (eg., 123.1.2.3) or an IP range in CIDR format (eg., 123.1.2.3/24) to be allowed.
@@ -94,7 +128,7 @@ type Identity struct {
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// IDs in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserAssignedManagedIdentity
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The principal ID of the system-assigned identity of the search service.
 	PrincipalID *string
@@ -113,68 +147,6 @@ type ListQueryKeysResult struct {
 	Value []*QueryKey
 }
 
-// NSPConfigAccessRule - An access rule for a network security perimeter configuration.
-type NSPConfigAccessRule struct {
-	Name *string
-
-	// The properties for the access rules in a network security perimeter configuration.
-	Properties *NSPConfigAccessRuleProperties
-}
-
-// NSPConfigAccessRuleProperties - The properties for the access rules in a network security perimeter configuration.
-type NSPConfigAccessRuleProperties struct {
-	AddressPrefixes           []*string
-	Direction                 *string
-	FullyQualifiedDomainNames []*string
-	NetworkSecurityPerimeters []*NSPConfigNetworkSecurityPerimeterRule
-	Subscriptions             []*string
-}
-
-// NSPConfigAssociation - The resource association for the network security perimeter.
-type NSPConfigAssociation struct {
-	AccessMode *string
-	Name       *string
-}
-
-// NSPConfigNetworkSecurityPerimeterRule - The network security perimeter properties present in a configuration rule.
-type NSPConfigNetworkSecurityPerimeterRule struct {
-	ID            *string
-	Location      *string
-	PerimeterGUID *string
-}
-
-// NSPConfigPerimeter - The perimeter for a network security perimeter configuration.
-type NSPConfigPerimeter struct {
-	ID            *string
-	Location      *string
-	PerimeterGUID *string
-}
-
-// NSPConfigProfile - The profile for a network security perimeter configuration.
-type NSPConfigProfile struct {
-	AccessRules        []*NSPConfigAccessRule
-	AccessRulesVersion *string
-	Name               *string
-}
-
-// NSPProvisioningIssue - An object to describe any issues with provisioning network security perimeters to a search service.
-type NSPProvisioningIssue struct {
-	Name *string
-
-	// The properties to describe any issues with provisioning network security perimeters to a search service.
-	Properties *NSPProvisioningIssueProperties
-}
-
-// NSPProvisioningIssueProperties - The properties to describe any issues with provisioning network security perimeters to
-// a search service.
-type NSPProvisioningIssueProperties struct {
-	Description          *string
-	IssueType            *string
-	Severity             *string
-	SuggestedAccessRules []*string
-	SuggestedResourceIDs []*string
-}
-
 // NetworkRuleSet - Network specific rules that determine how the Azure AI Search service may be reached.
 type NetworkRuleSet struct {
 	// Possible origins of inbound traffic that can bypass the rules defined in the 'ipRules' section.
@@ -188,106 +160,117 @@ type NetworkRuleSet struct {
 	IPRules []*IPRule
 }
 
-// NetworkSecurityPerimeterConfiguration - Network security perimeter configuration for a server.
+// NetworkSecurityPerimeter - Information about a network security perimeter (NSP)
+type NetworkSecurityPerimeter struct {
+	// Fully qualified Azure resource ID of the NSP resource
+	ID *string
+
+	// Location of the network security perimeter
+	Location *string
+
+	// Universal unique ID (UUID) of the network security perimeter
+	PerimeterGUID *string
+}
+
+// NetworkSecurityPerimeterConfiguration - Network security perimeter (NSP) configuration resource
 type NetworkSecurityPerimeterConfiguration struct {
-	// Resource properties.
+	// Network security configuration properties.
 	Properties *NetworkSecurityPerimeterConfigurationProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// NetworkSecurityPerimeterConfigurationListResult - A list of network security perimeter configurations for a server.
+// NetworkSecurityPerimeterConfigurationListResult - Result of a list NSP (network security perimeter) configurations request.
 type NetworkSecurityPerimeterConfigurationListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
+	// The link used to get the next page of results.
 	NextLink *string
 
-	// READ-ONLY; Array of results.
+	// Array of network security perimeter results.
 	Value []*NetworkSecurityPerimeterConfiguration
 }
 
-// NetworkSecurityPerimeterConfigurationProperties - The properties of a network security perimeter configuration.
+// NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.
 type NetworkSecurityPerimeterConfigurationProperties struct {
-	// The perimeter for a network security perimeter configuration.
-	NetworkSecurityPerimeter *NSPConfigPerimeter
+	// Information about a network security perimeter (NSP)
+	NetworkSecurityPerimeter *NetworkSecurityPerimeter
 
-	// The profile for a network security perimeter configuration.
-	Profile            *NSPConfigProfile
-	ProvisioningIssues []*NSPProvisioningIssue
+	// Network security perimeter configuration profile
+	Profile *NetworkSecurityProfile
 
-	// The resource association for the network security perimeter.
-	ResourceAssociation *NSPConfigAssociation
+	// Information about resource association
+	ResourceAssociation *ResourceAssociation
 
-	// READ-ONLY
-	ProvisioningState *string
+	// READ-ONLY; List of provisioning issues, if any
+	ProvisioningIssues []*ProvisioningIssue
+
+	// READ-ONLY; Provisioning state of a network security perimeter configuration that is being created or updated.
+	ProvisioningState *NetworkSecurityPerimeterConfigurationProvisioningState
 }
 
-type OfferingsByRegion struct {
-	// The list of features offered in this region.
-	Features []*FeatureOffering
+// NetworkSecurityProfile - Network security perimeter configuration profile
+type NetworkSecurityProfile struct {
+	// List of Access Rules
+	AccessRules []*AccessRule
 
-	// The name of the region.
-	RegionName *string
+	// Current access rules version
+	AccessRulesVersion *int32
 
-	// The list of SKUs offered in this region.
-	SKUs []*SKUOffering
+	// Current diagnostic settings version
+	DiagnosticSettingsVersion *int32
+
+	// List of log categories that are enabled
+	EnabledLogCategories []*string
+
+	// Name of the profile
+	Name *string
 }
 
-// OfferingsListResult - The response containing a list of features and SKUs offered in various regions.
-type OfferingsListResult struct {
-	// The list of regions with their respective features and SKUs offered.
-	Value []*OfferingsByRegion
-
-	// READ-ONLY; The URL to get the next set of offerings, if any.
-	NextLink *string
-}
-
-// Operation - Describes a REST API operation.
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// READ-ONLY; The object that describes the operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-	// READ-ONLY; Describes if the specified operation is a data plane API operation. Operations where this value is not true
-	// are supported directly by the resource provider.
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool
 
-	// READ-ONLY; The name of the operation. This name is of the form {provider}/{resource}/{operation}.
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
-	// READ-ONLY; Describes which originating entities are allowed to invoke this operation.
-	Origin *string
-
-	// READ-ONLY; Describes additional properties for this operation.
-	Properties *OperationProperties
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
-// OperationAvailability - Describes a particular availability for the metric specification.
-type OperationAvailability struct {
-	// READ-ONLY; The blob duration for the dimension.
-	BlobDuration *string
-
-	// READ-ONLY; The time grain for the dimension.
-	TimeGrain *string
-}
-
-// OperationDisplay - The object that describes the operation.
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// READ-ONLY; The friendly name of the operation.
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// READ-ONLY; The operation type: read, write, delete, listKeys/action, etc.
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// READ-ONLY; The friendly name of the resource provider.
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// READ-ONLY; The resource type on which the operation is performed.
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
@@ -302,76 +285,19 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// OperationLogsSpecification - Specifications of one type of log for this operation.
-type OperationLogsSpecification struct {
-	// READ-ONLY; The blob duration for the log specification.
-	BlobDuration *string
-
-	// READ-ONLY; The display name of the log specification.
-	DisplayName *string
-
-	// READ-ONLY; The name of the log specification.
-	Name *string
-}
-
-// OperationMetricDimension - Describes a particular dimension for the metric specification.
-type OperationMetricDimension struct {
-	// READ-ONLY; The display name of the dimension.
-	DisplayName *string
-
-	// READ-ONLY; The name of the dimension.
-	Name *string
-}
-
-// OperationMetricsSpecification - Specifications of one type of metric for this operation.
-type OperationMetricsSpecification struct {
-	// READ-ONLY; The type of aggregation for the metric specification.
-	AggregationType *string
-
-	// READ-ONLY; Availabilities for the metric specification.
-	Availabilities []*OperationAvailability
-
-	// READ-ONLY; Dimensions for the metric specification.
-	Dimensions []*OperationMetricDimension
-
-	// READ-ONLY; The display description of the metric specification.
-	DisplayDescription *string
-
-	// READ-ONLY; The display name of the metric specification.
-	DisplayName *string
-
-	// READ-ONLY; The name of the metric specification.
-	Name *string
-
-	// READ-ONLY; The unit for the metric specification.
-	Unit *string
-}
-
-// OperationProperties - Describes additional properties for this operation.
-type OperationProperties struct {
-	// READ-ONLY; Specifications of the service for this operation.
-	ServiceSpecification *OperationServiceSpecification
-}
-
-// OperationServiceSpecification - Specifications of the service for this operation.
-type OperationServiceSpecification struct {
-	// READ-ONLY; Specifications of logs for this operation.
-	LogSpecifications []*OperationLogsSpecification
-
-	// READ-ONLY; Specifications of metrics for this operation.
-	MetricSpecifications []*OperationMetricsSpecification
-}
-
 // PrivateEndpointConnection - Describes an existing private endpoint connection to the Azure AI Search service.
 type PrivateEndpointConnection struct {
 	// Describes the properties of an existing private endpoint connection to the Azure AI Search service.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -425,7 +351,7 @@ type PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState struct
 
 // PrivateLinkResource - Describes a supported private link resource for the Azure AI Search service.
 type PrivateLinkResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -433,6 +359,9 @@ type PrivateLinkResource struct {
 
 	// READ-ONLY; Describes the properties of a supported private link resource for the Azure AI Search service.
 	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -459,6 +388,38 @@ type PrivateLinkResourceProperties struct {
 type PrivateLinkResourcesResult struct {
 	// READ-ONLY; The list of supported Private Link Resources.
 	Value []*PrivateLinkResource
+}
+
+// ProvisioningIssue - Describes a provisioning issue for a network security perimeter configuration
+type ProvisioningIssue struct {
+	// READ-ONLY; Name of the issue
+	Name *string
+
+	// READ-ONLY; Details of a provisioning issue for a network security perimeter (NSP) configuration. Resource providers should
+	// generate separate provisioning issue elements for each separate issue detected, and
+	// include a meaningful and distinctive description, as well as any appropriate suggestedResourceIds and suggestedAccessRules
+	Properties *ProvisioningIssueProperties
+}
+
+// ProvisioningIssueProperties - Details of a provisioning issue for a network security perimeter (NSP) configuration. Resource
+// providers should generate separate provisioning issue elements for each separate issue detected, and
+// include a meaningful and distinctive description, as well as any appropriate suggestedResourceIds and suggestedAccessRules
+type ProvisioningIssueProperties struct {
+	// READ-ONLY; Description of the issue
+	Description *string
+
+	// READ-ONLY; Type of issue
+	IssueType *IssueType
+
+	// READ-ONLY; Severity of the issue.
+	Severity *Severity
+
+	// READ-ONLY; Access rules that can be added to the network security profile (NSP) to remediate the issue.
+	SuggestedAccessRules []*AccessRule
+
+	// READ-ONLY; Fully qualified resource IDs of suggested resources that can be associated to the network security perimeter
+	// (NSP) to remediate the issue.
+	SuggestedResourceIDs []*string
 }
 
 // QueryKey - Describes an API key for a given Azure AI Search service that conveys read-only permissions on the docs collection
@@ -509,6 +470,15 @@ type QuotaUsagesListResult struct {
 	Value []*QuotaUsageResult
 }
 
+// ResourceAssociation - Information about resource association
+type ResourceAssociation struct {
+	// Access mode of the resource association
+	AccessMode *ResourceAssociationAccessMode
+
+	// Name of the resource association
+	Name *string
+}
+
 // SKU - Defines the SKU of a search service, which determines billing rate and capacity limits.
 type SKU struct {
 	// The SKU of the search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas.
@@ -519,38 +489,6 @@ type SKU struct {
 	// partitions. 'storageoptimizedl2': Supports 2TB per partition, up to 12
 	// partitions.'
 	Name *SKUName
-}
-
-type SKUOffering struct {
-	// The limits associated with this SKU offered in this region.
-	Limits *SKUOfferingLimits
-
-	// Defines the SKU of a search service, which determines billing rate and capacity limits.
-	SKU *SKU
-}
-
-// SKUOfferingLimits - The limits associated with this SKU offered in this region.
-type SKUOfferingLimits struct {
-	// The maximum number of indexers available for this SKU.
-	Indexers *int32
-
-	// The maximum number of indexes available for this SKU.
-	Indexes *int32
-
-	// The maximum storage size in Gigabytes available for this SKU per partition.
-	PartitionStorageInGigabytes *float32
-
-	// The maximum vector storage size in Gigabytes available for this SKU per partition.
-	PartitionVectorStorageInGigabytes *float32
-
-	// The maximum number of partitions available for this SKU.
-	Partitions *int32
-
-	// The maximum number of replicas available for this SKU.
-	Replicas *int32
-
-	// The maximum number of search units available for this SKU.
-	SearchUnits *int32
 }
 
 // Service - Describes an Azure AI Search service and its current state.
@@ -571,13 +509,13 @@ type Service struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata of the search service containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -600,17 +538,17 @@ type ServiceProperties struct {
 	// is set to true.
 	AuthOptions *DataPlaneAuthOptions
 
-	// Configure this property to support the search service using either the default compute or Azure Confidential Compute.
+	// Configure this property to support the search service using either the Default Compute or Azure Confidential Compute.
 	ComputeType *ComputeType
-
-	// When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot
-	// be set to true if 'dataPlaneAuthOptions' are defined.
-	DisableLocalAuth *bool
 
 	// A list of data exfiltration scenarios that are explicitly disallowed for the search service. Currently, the only supported
 	// value is 'All' to disable all possible data export scenarios with more fine
 	// grained controls planned for the future.
-	DisabledDataExfiltrationOptions []*SearchDisabledDataExfiltrationOption
+	DataExfiltrationProtections []*SearchDataExfiltrationProtection
+
+	// When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This cannot
+	// be set to true if 'dataPlaneAuthOptions' are defined.
+	DisableLocalAuth *bool
 
 	// Specifies any policy regarding encryption of resources (such as indexes) using customer manager keys within a search service.
 	EncryptionWithCmk *EncryptionWithCmk
@@ -645,6 +583,9 @@ type ServiceProperties struct {
 	// Search SKUs in certain locations.
 	SemanticSearch *SearchSemanticSearch
 
+	// Indicates if the search service has an upgrade available.
+	UpgradeAvailable *UpgradeAvailable
+
 	// READ-ONLY; A system generated property representing the service's etag that can be for optimistic concurrency control during
 	// updates.
 	ETag *string
@@ -663,7 +604,7 @@ type ServiceProperties struct {
 
 	// READ-ONLY; The date and time the search service was last upgraded. This field will be null until the service gets upgraded
 	// for the first time.
-	ServiceUpgradeDate *time.Time
+	ServiceUpgradedAt *time.Time
 
 	// READ-ONLY; The list of shared private link resources managed by the Azure AI Search service.
 	SharedPrivateLinkResources []*SharedPrivateLinkResource
@@ -682,9 +623,6 @@ type ServiceProperties struct {
 
 	// READ-ONLY; The details of the search service status.
 	StatusDetails *string
-
-	// READ-ONLY; Indicates whether or not the search service has an upgrade available.
-	UpgradeAvailable *bool
 }
 
 // ServiceUpdate - The parameters used to update an Azure AI Search service.
@@ -707,7 +645,7 @@ type ServiceUpdate struct {
 	// Tags to help categorize the resource in the Azure portal.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -752,11 +690,14 @@ type SharedPrivateLinkResource struct {
 	// Describes the properties of a shared private link resource managed by the Azure AI Search service.
 	Properties *SharedPrivateLinkResourceProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -816,11 +757,11 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// UserAssignedManagedIdentity - The details of the user assigned managed identity assigned to the search service.
-type UserAssignedManagedIdentity struct {
-	// READ-ONLY; The client ID of user assigned identity.
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
 	ClientID *string
 
-	// READ-ONLY; The principal ID of user assigned identity.
+	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }

@@ -68,6 +68,43 @@ Security issues and bugs should be reported privately, via email, to the Microso
 * File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues)
 * Check [previous questions](https://stackoverflow.com/questions/tagged/azure+go) or ask new ones on StackOverflow using `azure` and `go` tags.
 
+## Telemetry Configuration
+
+Telemetry collection is on by default.
+
+The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described below. You can learn more about data collection and use in the help documentation and Microsoft’s [privacy statement](https://go.microsoft.com/fwlink/?LinkID=824704).
+
+To opt out, follow these steps. You can replace `azblob` in the example with the package you are using.
+
+```go
+package main
+
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+)
+
+func main() {
+	// authenticate with Azure Active Directory
+	cred, _ := azidentity.NewAzureCLICredential(nil)
+	// TODO: handle error
+
+	opts := azblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Telemetry: policy.TelemetryOptions{
+				Disabled: true,
+			},
+		},
+	}
+
+	// create a client for the specified storage account
+	client, _ := azblob.NewClient(account, cred, &opts)
+	// TODO: handle error
+  // TODO: do something with the client
+}
+```
+
 ## Community
 
 * Chat with us in the **[#Azure SDK

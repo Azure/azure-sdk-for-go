@@ -28,5 +28,5 @@ extends:
     Location: brazilsouth
     RunLiveTests: true
     ServiceDirectory: batch/azbatch
-    TimeOutInMinutes: 20
+    TimeOutInMinutes: 25
     UsePipelineProxy: false

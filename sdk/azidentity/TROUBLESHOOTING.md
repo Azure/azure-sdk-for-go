@@ -20,7 +20,6 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [Azure App Service and Azure Functions managed identity](#azure-app-service-and-azure-functions-managed-identity)
   - [Azure Kubernetes Service managed identity](#azure-kubernetes-service-managed-identity)
   - [Azure Virtual Machine managed identity](#azure-virtual-machine-managed-identity)
-- [Troubleshoot UsernamePasswordCredential authentication issues](#troubleshoot-usernamepasswordcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Get additional help](#get-additional-help)
 
@@ -110,13 +109,6 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |---|---|---|
 |AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the application registration as described in [Microsoft Entra ID documentation](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal#option-1-upload-a-certificate).|
 |AADSTS700016|The specified application wasn't found in the specified tenant.|Ensure the client and tenant IDs provided to the credential constructor are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the [Microsoft Entra ID instructions](https://learn.microsoft.com/entra/identity-platform/howto-create-service-principal-portal).|
-
-<a id="username-password"></a>
-## Troubleshoot UsernamePasswordCredential authentication issues
-
-| Error Code | Issue | Mitigation |
-|---|---|---|
-|AADSTS50126|The provided username or password is invalid.|Ensure the username and password provided to the credential constructor are valid.|
 
 <a id="managed-id"></a>
 ## Troubleshoot ManagedIdentityCredential authentication issues

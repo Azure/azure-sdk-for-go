@@ -48,14 +48,17 @@ func TestClient_ResponsesTextGeneration(t *testing.T) {
 			}
 		}
 	}
-	require.True(t, hasTextContent, "Response should contain text content")
+	require.True(t, hasTextContent, "Response should contain text content output with message type and output_text content type")
 }
 
 func TestClient_ResponsesChaining(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
 
 	// Disable the sanitizer for the response ID to allow chaining
-	recording.RemoveRegisteredSanitizers([]string{"AZSDK3430"}, getRecordingOptions(t))
+	err := recording.RemoveRegisteredSanitizers([]string{"AZSDK3430"}, getRecordingOptions(t))
+	if err != nil {
+		t.Fatalf("Failed to remove registered sanitizers: %v", err)
+	}
 
 	model := azureOpenAI.Assistants.Model
 
@@ -136,10 +139,16 @@ func TestClient_ResponsesFunctionCalling(t *testing.T) {
 	model := azureOpenAI.Assistants.Model
 
 	// Disable the sanitizer for the response ID to allow chaining
-	recording.RemoveRegisteredSanitizers([]string{"AZSDK3430"}, getRecordingOptions(t))
+	err := recording.RemoveRegisteredSanitizers([]string{"AZSDK3430"}, getRecordingOptions(t))
+	if err != nil {
+		t.Fatalf("Failed to remove registered sanitizers: %v", err)
+	}
 
 	// Disable the sanitizer for the function name
-	recording.RemoveRegisteredSanitizers([]string{"AZSDK3493"}, getRecordingOptions(t))
+	err = recording.RemoveRegisteredSanitizers([]string{"AZSDK3493"}, getRecordingOptions(t))
+	if err != nil {
+		t.Fatalf("Failed to remove registered sanitizers: %v", err)
+	}
 
 	// Define the get_weather function parameters as a JSON schema
 	paramSchema := map[string]interface{}{

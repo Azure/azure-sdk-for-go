@@ -25,6 +25,7 @@ extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     EnableRaceDetector: true
+    # the test subscription has the required batch account and CPU core quotas in brazilsouth
     Location: brazilsouth
     RunLiveTests: true
     ServiceDirectory: batch/azbatch

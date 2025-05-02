@@ -86,7 +86,7 @@ import (
 )
 
 func main() {
-	// authenticate with Azure Active Directory
+	// authenticate with Microsoft Entra ID
 	cred, _ := azidentity.NewAzureCLICredential(nil)
 	// TODO: handle error
 

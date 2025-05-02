@@ -107,14 +107,6 @@ func main() {
 	cred, err := azidentity.NewManagedIdentityCredential(&credOpts)
 	// TODO: handle error
 
-	opts := azblob.ClientOptions{
-		ClientOptions: policy.ClientOptions{
-			Telemetry: policy.TelemetryOptions{
-				Disabled: true,
-			},
-		},
-	}
-
 	// create a client for the specified storage account
 	client, err := azblob.NewClient(account, cred, &azblobOpts)
 	// TODO: handle error

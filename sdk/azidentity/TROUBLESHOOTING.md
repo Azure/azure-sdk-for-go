@@ -181,6 +181,7 @@ curl "$IDENTITY_ENDPOINT?resource=https://management.core.windows.net&api-versio
 |---|---|---|
 |Azure CLI not found on path|The Azure CLI isn’t installed or isn't on the application's path.|<ul><li>Ensure the Azure CLI is installed as described in [Azure CLI documentation](https://learn.microsoft.com/cli/azure/install-azure-cli).</li><li>Validate the installation location is in the application's `PATH` environment variable.</li></ul>|
 |Please run 'az login' to set up account|No account is currently logged into the Azure CLI, or the login has expired.|<ul><li>Run `az login` to log into the Azure CLI. More information about Azure CLI authentication is available in the [Azure CLI documentation](https://learn.microsoft.com/cli/azure/authenticate-azure-cli).</li><li>Verify that the Azure CLI can obtain tokens. See [below](#verify-the-azure-cli-can-obtain-tokens) for instructions.</li></ul>|
+|Subscription "[your subscription]" contains invalid characters. If this is the name of a subscription, use its ID instead|The subscription name contains a character that may not be safe in a command line.|Use the subscription's ID instead of its name. You can get this from the Azure CLI: `az account show --name "[your subscription]" --query "id"`
 
 #### Verify the Azure CLI can obtain tokens
 

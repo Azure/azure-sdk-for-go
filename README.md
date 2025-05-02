@@ -74,7 +74,9 @@ Telemetry collection is on by default.
 
 The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described below. You can learn more about data collection and use in the help documentation and Microsoft’s [privacy statement](https://go.microsoft.com/fwlink/?LinkID=824704).
 
-To opt out, follow these steps. You can replace `azblob` in the example with the package you are using.
+To opt out, you can disable telemetry at client construction. Set `Disabled` to true in `ClientOptions.Telemetry`. This will disable telemetry for all methods in the client. Do this for every new client created.
+
+The example below uses the `azblob` module. In your code, you can replace `azblob` with the package you are using.
 
 ```go
 package main

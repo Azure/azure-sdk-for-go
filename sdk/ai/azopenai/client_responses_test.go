@@ -135,6 +135,12 @@ func TestClient_ResponsesFunctionCalling(t *testing.T) {
 	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
 	model := azureOpenAI.Assistants.Model
 
+	// Disable the sanitizer for the response ID to allow chaining
+	recording.RemoveRegisteredSanitizers([]string{"AZSDK3430"}, getRecordingOptions(t))
+
+	// Disable the sanitizer for the function name
+	recording.RemoveRegisteredSanitizers([]string{"AZSDK3493"}, getRecordingOptions(t))
+
 	// Define the get_weather function parameters as a JSON schema
 	paramSchema := map[string]interface{}{
 		"type": "object",
@@ -186,49 +192,44 @@ func TestClient_ResponsesFunctionCalling(t *testing.T) {
 	require.NotEmpty(t, functionCallID, "Function call ID should not be empty")
 	require.Contains(t, functionArgs, "San Francisco", "Arguments should contain San Francisco")
 
-	// Since response id is sanitized, this creates a mismatch between the test and the recording
-	// body for previous response id in second request, hence execute the rest only run in live mode.
-	if recording.GetRecordMode() == recording.LiveMode {
+	require.Equal(t, "get_weather", functionName, "Function name should be get_weather")
 
-		require.Equal(t, "get_weather", functionName, "Function name should be get_weather")
-
-		// If a function call was found, provide the function output back to the model
-		functionOutput := `{"temperature": "72 degrees", "condition": "sunny"}`
-		secondResp, err := client.Responses.New(
-			context.TODO(),
-			responses.ResponseNewParams{
-				Model:              model,
-				PreviousResponseID: openai.String(resp.ID),
-				Input: responses.ResponseNewParamsInputUnion{
-					OfInputItemList: []responses.ResponseInputItemUnionParam{
-						{
-							OfFunctionCallOutput: &responses.ResponseInputItemFunctionCallOutputParam{
-								CallID: functionCallID,
-								Output: functionOutput,
-							},
+	// If a function call was found, provide the function output back to the model
+	functionOutput := `{"temperature": "72 degrees", "condition": "sunny"}`
+	secondResp, err := client.Responses.New(
+		context.TODO(),
+		responses.ResponseNewParams{
+			Model:              model,
+			PreviousResponseID: openai.String(resp.ID),
+			Input: responses.ResponseNewParamsInputUnion{
+				OfInputItemList: []responses.ResponseInputItemUnionParam{
+					{
+						OfFunctionCallOutput: &responses.ResponseInputItemFunctionCallOutputParam{
+							CallID: functionCallID,
+							Output: functionOutput,
 						},
 					},
 				},
 			},
-		)
-		customRequireNoError(t, err)
+		},
+	)
+	customRequireNoError(t, err)
 
-		// Check if there's a final text response that uses the function output
-		var finalResponse string
-		for _, output := range secondResp.Output {
-			if output.Type == "message" {
-				for _, content := range output.Content {
-					if content.Type == "output_text" {
-						finalResponse = content.Text
-						break
-					}
+	// Check if there's a final text response that uses the function output
+	var finalResponse string
+	for _, output := range secondResp.Output {
+		if output.Type == "message" {
+			for _, content := range output.Content {
+				if content.Type == "output_text" {
+					finalResponse = content.Text
+					break
 				}
 			}
 		}
-
-		require.NotEmpty(t, finalResponse, "Final response should not be empty")
-		require.Contains(t, finalResponse, "72 degrees", "Final response should include function output")
 	}
+
+	require.NotEmpty(t, finalResponse, "Final response should not be empty")
+	require.Contains(t, finalResponse, "72 degrees", "Final response should include function output")
 }
 
 func TestClient_ResponsesImageInput(t *testing.T) {

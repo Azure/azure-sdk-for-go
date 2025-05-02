@@ -68,11 +68,11 @@ Security issues and bugs should be reported privately, via email, to the Microso
 * File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues)
 * Check [previous questions](https://stackoverflow.com/questions/tagged/azure+go) or ask new ones on StackOverflow using `azure` and `go` tags.
 
-## Telemetry Configuration
-
-Telemetry collection is on by default.
-
+## Data Collection
 The software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described below. You can learn more about data collection and use in the help documentation and Microsoft’s [privacy statement](https://go.microsoft.com/fwlink/?LinkID=824704).
+
+### Telemetry Configuration
+Telemetry collection is on by default.
 
 To opt out, you can disable telemetry at client construction. Set `Disabled` to true in `ClientOptions.Telemetry`. This will disable telemetry for all methods in the client. Do this for every new client created.
 

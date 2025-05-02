@@ -103,7 +103,7 @@ func main() {
 	// create a client for the specified storage account
 	client, _ := azblob.NewClient(account, cred, &opts)
 	// TODO: handle error
-  // TODO: do something with the client
+  	// TODO: do something with the client
 }
 ```
 

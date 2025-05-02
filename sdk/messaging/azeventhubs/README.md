@@ -130,5 +130,3 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventhubs
 [godoc]: https://aka.ms/azsdk/go/eventhubs/pkg
 [godoc_examples]: https://aka.ms/azsdk/go/eventhubs/pkg#pkg-examples
-
-

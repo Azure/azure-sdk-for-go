@@ -74,7 +74,7 @@ The software may collect information about you and your use of the software and 
 ### Telemetry Configuration
 Telemetry collection is on by default.
 
-To opt out, you can disable telemetry at client construction. Set `Disabled` to true in `ClientOptions.Telemetry`. This will disable telemetry for all methods in the client. Do this for every new client created.
+To opt out, you can disable telemetry at client and credential construction. Set `Disabled` to true in `ClientOptions.Telemetry`. This will disable telemetry for all methods in the client. Do this for every new client and credential created.
 
 The example below uses the `azblob` module. In your code, you can replace `azblob` with the package you are using.
 
@@ -88,8 +88,23 @@ import (
 )
 
 func main() {
+	// set http client options
+	clientOpts := policy.ClientOptions{
+		Telemetry: policy.TelemetryOptions{
+			Disabled: true,
+		},
+	}
+	// set identity client options
+	credOpts := azidentity.ManagedIdentityCredentialOptions{
+		ClientOptions: clientOpts,
+	}
+	// set service client options
+	azblobOpts := azblob.ClientOptions{
+		ClientOptions: clientOpts,
+	}
+
 	// authenticate with Microsoft Entra ID
-	cred, _ := azidentity.NewAzureCLICredential(nil)
+	cred, err := azidentity.NewManagedIdentityCredential(&credOpts)
 	// TODO: handle error
 
 	opts := azblob.ClientOptions{
@@ -101,11 +116,14 @@ func main() {
 	}
 
 	// create a client for the specified storage account
-	client, _ := azblob.NewClient(account, cred, &opts)
+	client, err := azblob.NewClient(account, cred, &azblobOpts)
 	// TODO: handle error
   	// TODO: do something with the client
 }
 ```
+> [!NOTE]
+> Please note that `AzureDeveloperCLICredential` and `AzureCLICredential` do not include `ClientOptions.Telemetry`. Therefore, it is unnecessary to set options in these credentials.
+
 
 ## Community
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2025-05-06)
 
 ### Features Added
 * Added API Version support for `MetricsClient`. Users can now change the default API Version by setting `MetricsClientOptions.APIVersion`.
@@ -8,8 +8,6 @@
 
 ### Breaking Changes
 * Removed `MetricsBatchClient`. For data plane metrics, including batch metrics, see the azmetrics module (https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics).
-
-### Bugs Fixed
 
 ### Other Changes
 * Upgrade ARM metrics API version to `2024-02-01`

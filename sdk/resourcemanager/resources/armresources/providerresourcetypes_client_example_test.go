@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/GetProviderResourceTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/GetProviderResourceTypes.json
 func ExampleProviderResourceTypesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

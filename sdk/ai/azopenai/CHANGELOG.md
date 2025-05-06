@@ -1,15 +1,21 @@
 # Release History
 
-## 0.7.3 (Unreleased)
+## 0.8.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
+This library has been updated to function as a companion to the [official OpenAI Go client library](https://github.com/openai/openai-go). It provides types and functions that allow interaction with Azure-specific extensions available in the Azure OpenAI service.
+
+See the [migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai/MIGRATION.md) for details on how to update your code to use this library alongside the official OpenAI Go client.
+
 ### Bugs Fixed
-- Fixed a problem that filename would be empty if not explicitly specified in the `UploadFile` operation. (PR#24171)
 
 ### Other Changes
+
+- Updating to `v0.1.0-beta.7` of the [OpenAI go module](https://github.com/openai/openai-go).
+- Added samples for responses API.
 
 ## 0.7.2 (2025-02-05)
 

@@ -1,5 +1,22 @@
 # Release History
 
+## 2.0.0-beta.1 (2025-05-06)
+
+### Features Added
+
+- Support for Event Hubs Geo-Replication (PR#24477)
+
+### Breaking Changes
+
+- This package is compatible with azeventhubs v1, with one difference - Checkpoint.Offset and ReceivedEventData.Offset's type have been changed to a string (from an integer). 
+  This change does NOT affect any stored checkpoints. Most customers will be unaffected by this change and can safely upgrade.
+
+## 1.3.2 (2025-04-08)
+
+### Bugs Fixed
+
+- Processor now only lists checkpoints when it needs to start a new partition client, avoiding wasted calls to the checkpoint store. (PR#24383)
+
 ## 1.3.1 (2025-03-11)
 
 ### Bugs Fixed

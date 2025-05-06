@@ -13,9 +13,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
@@ -33,7 +33,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
-		Offset:                  to.Ptr[int64](101),
+		Offset:                  to.Ptr("101"),
 		SequenceNumber:          to.Ptr[int64](202),
 	}, nil)
 	require.NoError(t, err)
@@ -46,7 +46,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
-		Offset:                  to.Ptr[int64](101),
+		Offset:                  to.Ptr("101"),
 		SequenceNumber:          to.Ptr[int64](202),
 	}, checkpoints[0])
 
@@ -57,7 +57,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
-		Offset:                  to.Ptr[int64](102),
+		Offset:                  to.Ptr("102"),
 		SequenceNumber:          to.Ptr[int64](203),
 	}, nil)
 	require.NoError(t, err)
@@ -70,7 +70,7 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 		EventHubName:            "event-hub-name",
 		FullyQualifiedNamespace: "ns.servicebus.windows.net",
 		PartitionID:             "partition-id",
-		Offset:                  to.Ptr[int64](102),
+		Offset:                  to.Ptr("102"),
 		SequenceNumber:          to.Ptr[int64](203),
 	}, checkpoints[0])
 }

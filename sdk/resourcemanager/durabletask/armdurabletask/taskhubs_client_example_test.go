@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-01-preview/TaskHubs_CreateOrUpdate.json
+// Generated from example definition: 2025-04-01-preview/TaskHubs_CreateOrUpdate.json
 func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.DurableTask/schedulers/testscheduler/taskHubs/testtaskhub"),
 	// 		Name: to.Ptr("testtaskhub"),
-	// 		Type: to.Ptr("afoounwhp"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers/taskHubs"),
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
@@ -56,7 +56,7 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-10-01-preview/TaskHubs_Delete.json
+// Generated from example definition: 2025-04-01-preview/TaskHubs_Delete.json
 func ExampleTaskHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleTaskHubsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewTaskHubsClient().BeginDelete(ctx, "rgopenapi", "testscheduler", "testtuskhub", nil)
+	poller, err := clientFactory.NewTaskHubsClient().BeginDelete(ctx, "rgopenapi", "testscheduler", "testtaskhub", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,7 +77,7 @@ func ExampleTaskHubsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-10-01-preview/TaskHubs_Get.json
+// Generated from example definition: 2025-04-01-preview/TaskHubs_Get.json
 func ExampleTaskHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleTaskHubsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTaskHubsClient().Get(ctx, "rgopenapi", "testscheduler", "testtuskhub", nil)
+	res, err := clientFactory.NewTaskHubsClient().Get(ctx, "rgopenapi", "testscheduler", "testtaskhub", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -103,7 +103,7 @@ func ExampleTaskHubsClient_Get() {
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/EE9BD735-67CE-4A90-89C4-439D3F6A4C93/resourceGroups/rgopenapi/providers/Microsoft.DurableTask/schedulers/testscheduler/taskHubs/testtaskhub"),
 	// 		Name: to.Ptr("testtaskhub"),
-	// 		Type: to.Ptr("afoounwhp"),
+	// 		Type: to.Ptr("Microsoft.DurableTask/schedulers/taskHubs"),
 	// 		SystemData: &armdurabletask.SystemData{
 	// 			CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 	// 			CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),
@@ -116,7 +116,7 @@ func ExampleTaskHubsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-10-01-preview/TaskHubs_ListByScheduler.json
+// Generated from example definition: 2025-04-01-preview/TaskHubs_ListByScheduler.json
 func ExampleTaskHubsClient_NewListBySchedulerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleTaskHubsClient_NewListBySchedulerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewTaskHubsClient().NewListBySchedulerPager("rgopenapi", "testtaskhub", nil)
+	pager := clientFactory.NewTaskHubsClient().NewListBySchedulerPager("rgopenapi", "testscheduler", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -148,7 +148,7 @@ func ExampleTaskHubsClient_NewListBySchedulerPager() {
 		// 					DashboardURL: to.Ptr("https://test-db.northcentralus.1.durabletask.io/taskhubs/testtaskhub"),
 		// 				},
 		// 				Name: to.Ptr("testtaskhub"),
-		// 				Type: to.Ptr("enkfjxsqktqyeiibofppkxruyb"),
+		// 				Type: to.Ptr("Microsoft.DurableTask/schedulers/taskHubs"),
 		// 				SystemData: &armdurabletask.SystemData{
 		// 					CreatedBy: to.Ptr("tenmbevaunjzikxowqexrsx"),
 		// 					CreatedByType: to.Ptr(armdurabletask.CreatedByTypeUser),

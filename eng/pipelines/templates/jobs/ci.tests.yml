@@ -52,6 +52,10 @@ jobs:
     os: ${{ parameters.OSName }}
 
   steps:
+  - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
+    parameters:
+      ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
       AgentImage: ${{ parameters.OSName }}

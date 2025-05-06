@@ -55,6 +55,51 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// RetentionPolicy - A retention policy resource belonging to the scheduler
+type RetentionPolicy struct {
+	// The resource-specific properties for this resource.
+	Properties *RetentionPolicyProperties
+
+	// READ-ONLY; The name of the RetentionPolicy
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RetentionPolicyDetails - The properties of a retention policy
+type RetentionPolicyDetails struct {
+	// REQUIRED; The retention period in days after which the orchestration will be purged automatically
+	RetentionPeriodInDays *int32
+
+	// The orchestration state to which this policy applies. If omitted, the policy applies to all purgeable orchestration states.
+	OrchestrationState *PurgeableOrchestrationState
+}
+
+// RetentionPolicyListResult - The response of a RetentionPolicy list operation.
+type RetentionPolicyListResult struct {
+	// REQUIRED; The RetentionPolicy items on this page
+	Value []*RetentionPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// RetentionPolicyProperties - The retention policy settings for the resource
+type RetentionPolicyProperties struct {
+	// The orchestration retention policies
+	RetentionPolicies []*RetentionPolicyDetails
+
+	// READ-ONLY; The status of the last operation
+	ProvisioningState *ProvisioningState
+}
+
 // Scheduler - A Durable Task Scheduler resource
 type Scheduler struct {
 	// REQUIRED; The geo-location where the resource lives

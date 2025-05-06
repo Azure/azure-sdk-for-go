@@ -673,9 +673,12 @@ func TestReceiverAMQPDataTypes(t *testing.T) {
 
 	actualProps := messages[0].ApplicationProperties
 
-	require.Equal(t, map[string]any{
-		"timestamp": expectedTime,
+	// You can have two equivalent timestamps that have different in-memory representations so
+	// it's safer to just let the time package do the math.
+	require.Equal(t, time.Duration(0), expectedTime.Sub(actualProps["timestamp"].(time.Time)))
+	delete(actualProps, "timestamp") // remove it so we can still compare the overall property map
 
+	require.Equal(t, map[string]any{
 		"byte":   byte(128),
 		"uint8":  int8(101),
 		"uint32": int32(400),

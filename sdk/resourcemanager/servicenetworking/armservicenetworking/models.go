@@ -59,7 +59,7 @@ type AssociationSubnet struct {
 
 // AssociationSubnetUpdate - Association Subnet.
 type AssociationSubnetUpdate struct {
-	// REQUIRED; Association ID.
+	// Association ID.
 	ID *string
 }
 
@@ -116,6 +116,9 @@ type FrontendListResult struct {
 
 // FrontendProperties - Frontend Properties.
 type FrontendProperties struct {
+	// Frontend Security Policy Configuration
+	SecurityPolicyConfigurations *SecurityPolicyConfigurations
+
 	// READ-ONLY; The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller frontend.
 	Fqdn *string
 
@@ -125,8 +128,45 @@ type FrontendProperties struct {
 
 // FrontendUpdate - The type used for update operations of the Frontend.
 type FrontendUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *FrontendUpdateProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// FrontendUpdateProperties - The updatable properties of the Frontend.
+type FrontendUpdateProperties struct {
+	// Frontend Security Policy Configuration
+	SecurityPolicyConfigurations *SecurityPolicyConfigurations
+}
+
+// IPAccessRule - Ip Access Policy Rules
+type IPAccessRule struct {
+	// REQUIRED; Action of the Rule
+	Action *IPAccessRuleAction
+
+	// REQUIRED; Name of the Ip Access Rule
+	Name *string
+
+	// REQUIRED; The priority of the rule. The value can be between 1 and 500. The priority number must be unique for each rule
+	// in the collection. The lower the priority number, the higher the priority of the rule.
+	Priority *int32
+
+	// REQUIRED; Source Address Prefixed Applied by the Rule. Asterisk '*' can also be used to match all source IPs.
+	SourceAddressPrefixes []*string
+}
+
+// IPAccessRulesPolicy - Ip Access Policy
+type IPAccessRulesPolicy struct {
+	// Ip Access Policy Rules List
+	Rules []*IPAccessRule
+}
+
+// IPAccessRulesSecurityPolicy - IpAccessRules Security Policy
+type IPAccessRulesSecurityPolicy struct {
+	// REQUIRED; Resource ID of the Ip Access Rules Security Policy
+	ID *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -210,7 +250,10 @@ type SecurityPolicy struct {
 
 // SecurityPolicyConfigurations Subresource of Traffic Controller.
 type SecurityPolicyConfigurations struct {
-	// Contains reference to a WAF-type security policy that is applied at the Traffic Controller level.
+	// Contains reference to a IpAccessRules-type security policy.
+	IPAccessRulesSecurityPolicy *IPAccessRulesSecurityPolicy
+
+	// Contains reference to a WAF-type security policy.
 	WafSecurityPolicy *WafSecurityPolicy
 }
 
@@ -225,7 +268,11 @@ type SecurityPolicyListResult struct {
 
 // SecurityPolicyProperties - SecurityPolicy Properties.
 type SecurityPolicyProperties struct {
-	// Web Application Firewall Policy of the Traffic Controller Security Policy
+	// Ip Access Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy type set.
+	IPAccessRulesPolicy *IPAccessRulesPolicy
+
+	// Web Application Firewall Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy
+	// type set.
 	WafPolicy *WafPolicy
 
 	// READ-ONLY; Type of the Traffic Controller Security Policy
@@ -246,7 +293,11 @@ type SecurityPolicyUpdate struct {
 
 // SecurityPolicyUpdateProperties - The updatable properties of the SecurityPolicy.
 type SecurityPolicyUpdateProperties struct {
-	// Web Application Firewall Policy of the Traffic Controller Security Policy
+	// Ip Access Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy type set.
+	IPAccessRulesPolicy *IPAccessRulesPolicy
+
+	// Web Application Firewall Policy of the Traffic Controller Security Policy. Single Security Policy can have only one policy
+	// type set.
 	WafPolicy *WafPolicy
 }
 

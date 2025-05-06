@@ -588,6 +588,85 @@ func TestBearerTokenPolicy_RewindsBeforeRetry(t *testing.T) {
 	}
 }
 
+func TestBearerTokenPolicy_ShouldRefresh(t *testing.T) {
+	now := time.Now()
+	for _, test := range []struct {
+		desc     string
+		expected bool
+		tk       exported.AccessToken
+	}{
+		{
+			desc: "distant RefreshOn/distant ExpiresOn",
+			tk: exported.AccessToken{
+				ExpiresOn: now.Add(2 * time.Hour).UTC(),
+				RefreshOn: now.Add(time.Hour).UTC(),
+			},
+		},
+		{
+			desc: "zero RefreshOn/distant ExpiresOn",
+			tk: exported.AccessToken{
+				ExpiresOn: now.Add(time.Hour).UTC(),
+			},
+		},
+		{
+			desc: "zero RefreshOn/imminent ExpiresOn",
+			tk: exported.AccessToken{
+				ExpiresOn: now.Add(4 * time.Minute).UTC(),
+			},
+			expected: true,
+		},
+		{
+			desc: "zero RefreshOn/past ExpiresOn",
+			tk: exported.AccessToken{
+				ExpiresOn: now.Add(-time.Minute).UTC(),
+			},
+			expected: true,
+		},
+		{
+			desc: "past RefreshOn",
+			tk: exported.AccessToken{
+				ExpiresOn: now.Add(time.Hour).UTC(),
+				RefreshOn: now.Add(-time.Minute).UTC(),
+			},
+			expected: true,
+		},
+	} {
+		t.Run(test.desc, func(t *testing.T) {
+			actual := shouldRefresh(test.tk, acquiringResourceState{})
+			require.Equal(t, test.expected, actual)
+		})
+	}
+	t.Run("called", func(t *testing.T) {
+		expected := exported.AccessToken{Token: "***", ExpiresOn: now.Add(time.Hour).UTC(), RefreshOn: now.Add(-time.Minute).UTC()}
+		called := false
+		before := shouldRefresh
+		defer func() { shouldRefresh = before }()
+		shouldRefresh = func(tk exported.AccessToken, state acquiringResourceState) bool {
+			require.Equal(t, expected, tk)
+			called = true
+			return false
+		}
+		c := mockCredential{
+			getTokenImpl: func(context.Context, policy.TokenRequestOptions) (exported.AccessToken, error) {
+				return expected, nil
+			},
+		}
+		p := NewBearerTokenPolicy(c, []string{scope}, nil)
+		srv, close := mock.NewTLSServer()
+		defer close()
+		pl := newTestPipeline(&policy.ClientOptions{PerRetryPolicies: []policy.Policy{p}, Transport: srv})
+		for range 2 {
+			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+			require.NoError(t, err)
+			res, err := pl.Do(req)
+			require.NoError(t, err)
+			require.Equal(t, http.StatusOK, res.StatusCode)
+		}
+		require.True(t, called, "temporal.Resource should have called shouldRefresh")
+	})
+}
+
 func TestCheckHTTPSForAuth(t *testing.T) {
 	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
 	require.NoError(t, err)

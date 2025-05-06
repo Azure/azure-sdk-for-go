@@ -27,9 +27,3 @@ param (
 
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true
-
-if ($CI) {
-    az cloud set -n $Environment
-    az login --federated-token $env:ARM_OIDC_TOKEN --service-principal -t $TenantId -u $TestApplicationId
-    az account set --subscription $SubscriptionId
-}

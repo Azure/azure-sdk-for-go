@@ -28,6 +28,17 @@ parameters:
     default: ''
 
 steps:
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+      IncludeIndirect: true
+
   - task: Powershell@2
     displayName: Use azcore from main
     condition: eq(variables.UseAzcoreFromMain, 'true')
@@ -37,7 +48,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/Replace-azcore.ps1
-      arguments: '${{ parameters.ServiceDirectory }}'
+      arguments: '-ServiceDirectory "$(ChangedServices)"'
 
   - task: Powershell@2
     displayName: Build
@@ -47,7 +58,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/build.ps1
-      arguments: -filter '${{ parameters.ServiceDirectory }}'
+      arguments: -filter "$(Packages)"
 
   - task: Powershell@2
     displayName: Vet
@@ -57,7 +68,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/build.ps1
-      arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
+      arguments: -vet -skipBuild -filter '$(Packages)'
 
   - pwsh: |
       go install github.com/jstemmer/go-junit-report/v2@v2.1.0
@@ -74,9 +85,12 @@ steps:
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
+  # we do not need to change any conditional activation for this section, as it is only activated when
+  # invoking a livetest run, which will never be the case for PRs. Devs will /azp run go - <service>
+  # to get access to this section of the pipeline
   - ${{ if parameters.UseFederatedAuth }}:
     - task: AzurePowerShell@5
-      displayName: Run Tests (Federated Auth)
+      displayName: Run Tests - v$(GoVersion) (Federated Auth)
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
         azurePowerShellVersion: LatestVersion
@@ -116,11 +130,11 @@ steps:
 
   - ${{ else }}:
     - task: PowerShell@2
-      displayName: 'Run Tests'
+      displayName: Run Tests - v$(GoVersion)
       inputs:
         targetType: 'filePath'
         filePath: ./eng/scripts/run_tests.ps1
-        arguments: '${{ parameters.ServiceDirectory }} ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
+        arguments: '"$(Packages)" ${{ parameters.TestRunTime }} $${{ parameters.EnableRaceDetector }}'
         pwsh: true
       env:
         GO111MODULE: 'on'
@@ -134,7 +148,7 @@ steps:
       inputs:
         targetType: 'filePath'
         filePath: ./eng/scripts/Build_Perf.ps1
-        arguments: '${{ parameters.ServiceDirectory }} $$(UseAzcoreFromMain)'
+        arguments: '"$(Packages)" $$(UseAzcoreFromMain)'
         pwsh: true
 
   - ${{ if eq(parameters.TestProxy, true) }}:
@@ -144,6 +158,7 @@ steps:
       displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
 
+  # todo: combine test results into a test results file, this will be broken for now.
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListGraphQLApiResolverPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListGraphQLApiResolverPolicies.json
 func ExampleGraphQLAPIResolverPolicyClient_NewListByResolverPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleGraphQLAPIResolverPolicyClient_NewListByResolverPager() {
 		// 		{
 		// 			Name: to.Ptr("policy"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers/policies"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/599e2953193c3c0bd0b3e2fa/resolvers/599e29ab193c3c0bd0b3e2fb/policies/policy"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/599e2953193c3c0bd0b3e2fa/resolvers/599e29ab193c3c0bd0b3e2fb/policies/policy"),
 		// 			Properties: &armapimanagement.PolicyContractProperties{
 		// 				Value: to.Ptr("<!--\r\n    IMPORTANT:\r\n    - Resolver elements can appear only within the <http-request>, <http-response>, <backend> section elements.\r\n    - Only the <forward-request> policy element can appear within the <backend> section element.\r\n    - To apply a policy to the query request (before it is forwarded to the backend service), place a corresponding policy element within the <http-request> section element.\r\n    - To apply a policy to the resolver response (before it is sent back to the document executor), place a corresponding policy element within the <http-response> section element.\r\n    - To add a policy position the cursor at the desired insertion point and click on the round button associated with the policy.\r\n    - To remove a policy, delete the corresponding policy statement from the policy document.\r\n  - Policies are applied in the order of their appearance, from the top down.\r\n-->\r\n<http-data-source>\r\n  <http-request>\r\n    <set-method>GET</set-method>\r\n<set-backend-service base-url=\"https://some.service.com\" />\r\n<set-url>/api/users</set-url>  </http-request>\r\n  <backend>\r\n    <forward-request />\r\n  </backend>\r\n  <http-response>\r\n    <set-body template=\"liquid\">\r\n { \"id\": \"{{body.id}}\" }  </http-response>\r\n</http-data-source>"),
 		// 			},
@@ -55,7 +55,7 @@ func ExampleGraphQLAPIResolverPolicyClient_NewListByResolverPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadGraphQLApiResolverPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadGraphQLApiResolverPolicy.json
 func ExampleGraphQLAPIResolverPolicyClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleGraphQLAPIResolverPolicyClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGraphQLApiResolverPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetGraphQLApiResolverPolicy.json
 func ExampleGraphQLAPIResolverPolicyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,14 +93,14 @@ func ExampleGraphQLAPIResolverPolicyClient_Get() {
 	// res.PolicyContract = armapimanagement.PolicyContract{
 	// 	Name: to.Ptr("policy"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers/policies"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5600b539c53f5b0062040001/resolvers/5600b53ac53f5b0062080006/policies/policy"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5600b539c53f5b0062040001/resolvers/5600b53ac53f5b0062080006/policies/policy"),
 	// 	Properties: &armapimanagement.PolicyContractProperties{
 	// 		Value: to.Ptr("<http-data-source>\r\n  <http-request>\r\n   <set-method>GET</set-method>\r\n<set-backend-service base-url=\"https://some.service.com\" />\r\n<set-url>/api/users</set-url>\r\n</http-request>\r\n</http-data-source>"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGraphQLApiResolverPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateGraphQLApiResolverPolicy.json
 func ExampleGraphQLAPIResolverPolicyClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,14 +126,14 @@ func ExampleGraphQLAPIResolverPolicyClient_CreateOrUpdate() {
 	// res.PolicyContract = armapimanagement.PolicyContract{
 	// 	Name: to.Ptr("policy"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/apis/resolvers/policies"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5600b57e7e8880006a040001/resolvers/5600b57e7e8880006a080001/policies/policy"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/5600b57e7e8880006a040001/resolvers/5600b57e7e8880006a080001/policies/policy"),
 	// 	Properties: &armapimanagement.PolicyContractProperties{
 	// 		Value: to.Ptr("<http-data-source>\r\n  <http-request>\r\n   <set-method>GET</set-method>\r\n<set-backend-service base-url=\"https://some.service.com\" />\r\n<set-url>/api/users</set-url>\r\n</http-request>\r\n</http-data-source>"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGraphQLApiResolverPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteGraphQLApiResolverPolicy.json
 func ExampleGraphQLAPIResolverPolicyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

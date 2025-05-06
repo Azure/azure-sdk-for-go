@@ -6,7 +6,7 @@ package armdurabletask
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdurabletask"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -100,6 +100,30 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateProvisioning,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
+	}
+}
+
+// PurgeableOrchestrationState - Purgeable orchestration state to be used in retention policies
+type PurgeableOrchestrationState string
+
+const (
+	// PurgeableOrchestrationStateCanceled - The orchestration is terminated
+	PurgeableOrchestrationStateCanceled PurgeableOrchestrationState = "Canceled"
+	// PurgeableOrchestrationStateCompleted - The orchestration is completed
+	PurgeableOrchestrationStateCompleted PurgeableOrchestrationState = "Completed"
+	// PurgeableOrchestrationStateFailed - The orchestration is failed
+	PurgeableOrchestrationStateFailed PurgeableOrchestrationState = "Failed"
+	// PurgeableOrchestrationStateTerminated - The orchestration is terminated
+	PurgeableOrchestrationStateTerminated PurgeableOrchestrationState = "Terminated"
+)
+
+// PossiblePurgeableOrchestrationStateValues returns the possible values for the PurgeableOrchestrationState const type.
+func PossiblePurgeableOrchestrationStateValues() []PurgeableOrchestrationState {
+	return []PurgeableOrchestrationState{
+		PurgeableOrchestrationStateCanceled,
+		PurgeableOrchestrationStateCompleted,
+		PurgeableOrchestrationStateFailed,
+		PurgeableOrchestrationStateTerminated,
 	}
 }
 

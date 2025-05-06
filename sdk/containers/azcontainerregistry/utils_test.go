@@ -157,7 +157,7 @@ func buildImage(t *testing.T) (string, string) {
 				cmd := exec.CommandContext(ctx, "az", "acr", "build", "-r", testConfig.registryName, "--image", repository, "--build-arg", "ID="+repository, ".")
 				cmd.Dir = "testdata"
 				out, err = cmd.CombinedOutput()
-				if err == nil {
+				if err == nil || strings.Contains(string(out), "az login") {
 					return
 				}
 			}

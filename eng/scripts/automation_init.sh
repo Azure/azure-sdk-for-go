@@ -78,4 +78,4 @@ else
 fi
 
 echo Install tsp-client
-sudo npm install -g @azure-tools/typespec-client-generator-cli@v0.10.0 2>&1
+npm install -g @azure-tools/typespec-client-generator-cli@v0.21.0 2>&1

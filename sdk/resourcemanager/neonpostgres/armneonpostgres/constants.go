@@ -6,7 +6,7 @@ package armneonpostgres
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -45,6 +45,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// EndpointType - The compute endpoint type. Either read_write or read_only.
+type EndpointType string
+
+const (
+	// EndpointTypeReadOnly - ReadOnly compute endpoint type
+	EndpointTypeReadOnly EndpointType = "read_only"
+	// EndpointTypeReadWrite - ReadWrite compute endpoint type
+	EndpointTypeReadWrite EndpointType = "read_write"
+)
+
+// PossibleEndpointTypeValues returns the possible values for the EndpointType const type.
+func PossibleEndpointTypeValues() []EndpointType {
+	return []EndpointType{
+		EndpointTypeReadOnly,
+		EndpointTypeReadWrite,
 	}
 }
 

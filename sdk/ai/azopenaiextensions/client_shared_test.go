@@ -9,16 +9,19 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/azure"
+	"github.com/openai/openai-go/option"
 	"github.com/stretchr/testify/require"
 )
 
@@ -54,16 +57,35 @@ type endpointWithModel struct {
 
 // getEnvVariable is recording.GetEnvVariable but it panics if the
 // value isn't found, rather than falling back to the playback value.
-func getEnvVariable(varName string) string {
+func getEnvVariable(varName string, playbackValue string) string {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return playbackValue
+	}
+
 	val := os.Getenv(varName)
 
 	if val == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic(fmt.Sprintf("Missing required environment variable %s", varName))
-		}
+		panic(fmt.Sprintf("Missing required environment variable %s", varName))
 	}
 
 	return val
+}
+
+func getEndpoint(ev string, azure bool) string {
+	fakeEP := fakeAzureEndpoint
+
+	if !azure {
+		fakeEP = fakeOpenAIEndpoint
+	}
+
+	v := getEnvVariable(ev, fakeEP)
+
+	if !strings.HasSuffix(v, "/") {
+		// (this just makes recording replacement easier)
+		v += "/"
+	}
+
+	return v
 }
 
 var azureOpenAI = func() testVars {
@@ -75,23 +97,23 @@ var azureOpenAI = func() testVars {
 		OpenAI         endpoint
 	}{
 		USEast: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_USEAST"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_USEAST2"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
-			URL:    getEnvVariable("AOAI_ENDPOINT_SWECENTRAL"),
-			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY"),
+			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL", true),
+			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 	}
@@ -152,8 +174,8 @@ var azureOpenAI = func() testVars {
 			},
 			Cognitive: azopenaiextensions.AzureSearchChatExtensionConfiguration{
 				Parameters: &azopenaiextensions.AzureSearchChatExtensionParameters{
-					Endpoint:       to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT")),
-					IndexName:      to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_INDEX")),
+					Endpoint:       to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_ENDPOINT", fakeCognitiveEndpoint)),
+					IndexName:      to.Ptr(getEnvVariable("COGNITIVE_SEARCH_API_INDEX", fakeCognitiveIndexName)),
 					Authentication: &azopenaiextensions.OnYourDataSystemAssignedManagedIdentityAuthenticationOptions{},
 				},
 			},
@@ -191,19 +213,101 @@ type stainlessTestClientOptions struct {
 	UseAPIKey bool
 }
 
+func getRecordingOptions(t *testing.T) *recording.RecordingOptions {
+	var port int
+	val := os.Getenv("PROXY_PORT")
+
+	if len(val) > 0 {
+		parsedPort, err := strconv.ParseInt(val, 10, 0)
+		if err != nil {
+			panic(fmt.Sprintf("Invalid proxy port %s", val))
+		}
+		port = int(parsedPort)
+	} else {
+		port = os.Getpid()%10000 + 20000
+	}
+	return &recording.RecordingOptions{
+		UseHTTPS:     true,
+		ProxyPort:    int(port),
+		TestInstance: t,
+	}
+}
+
 func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
 	return newStainlessTestClientWithOptions(t, ep, nil)
 }
 
+const fakeAzureEndpoint = "https://Sanitized.openai.azure.com/"
+const fakeOpenAIEndpoint = "https://Sanitized.openai.com/v1"
+const fakeAPIKey = "redacted"
+const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
+const fakeCognitiveIndexName = "index"
+
+// newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
+// involve UUIDs that would make the response/request inconsistent.
+func newRecordingTransporter(t *testing.T) policy.Transporter {
+	defaultOptions := getRecordingOptions(t)
+	t.Logf("Using test proxy on port %d", defaultOptions.ProxyPort)
+
+	transport, err := recording.NewRecordingHTTPClient(t, defaultOptions)
+	require.NoError(t, err)
+
+	err = recording.Start(t, RecordingDirectory, defaultOptions)
+	require.NoError(t, err)
+
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", defaultOptions)
+		require.NoError(t, err)
+
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", defaultOptions)
+		require.NoError(t, err)
+
+		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", defaultOptions)
+		require.NoError(t, err)
+
+		err = recording.AddGeneralRegexSanitizer(
+			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
+			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Endpoint), defaultOptions)
+		require.NoError(t, err)
+
+		err = recording.AddGeneralRegexSanitizer(
+			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
+			`"index_name":\s*".+?"`, defaultOptions)
+		require.NoError(t, err)
+	}
+
+	t.Cleanup(func() {
+		err := recording.Stop(t, defaultOptions)
+		require.NoError(t, err)
+	})
+
+	return transport
+}
+
+type recordingRoundTripper struct {
+	transport policy.Transporter
+}
+
+func (d *recordingRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	return d.transport.Do(req)
+}
+
 func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) openai.Client {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip("Skipping tests in playback mode")
+	var client *http.Client
+	if recording.GetRecordMode() == recording.LiveMode {
+		client = &http.Client{}
+	} else {
+		transport := newRecordingTransporter(t)
+		client = &http.Client{
+			Transport: &recordingRoundTripper{transport: transport},
+		}
 	}
 
 	if options != nil && options.UseAPIKey {
 		return openai.NewClient(
 			azure.WithEndpoint(ep.URL, apiVersion),
 			azure.WithAPIKey(ep.APIKey),
+			option.WithHTTPClient(client),
 		)
 	}
 
@@ -213,11 +317,12 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 	return openai.NewClient(
 		azure.WithEndpoint(ep.URL, apiVersion),
 		azure.WithTokenCredential(tokenCredential),
+		option.WithHTTPClient(client),
 	)
 }
 
 func newStainlessChatCompletionService(t *testing.T, ep endpoint) openai.ChatCompletionService {
-	if recording.GetRecordMode() == recording.PlaybackMode {
+	if recording.GetRecordMode() != recording.LiveMode {
 		t.Skip("Skipping tests in playback mode")
 	}
 

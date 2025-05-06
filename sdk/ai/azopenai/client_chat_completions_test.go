@@ -1,5 +1,5 @@
-//go:build go1.18
-// +build go1.18
+//go:build go1.21
+// +build go1.21
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,183 +8,116 @@ package azopenai_test
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
-	"io"
-	"net/http"
-	"os"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
+	"github.com/openai/openai-go"
 	"github.com/stretchr/testify/require"
 )
 
-func newTestChatCompletionOptions(deployment string) azopenai.ChatCompletionsOptions {
-	return azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{
-				Content: azopenai.NewChatRequestUserMessageContent("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
-			},
-		},
-		MaxTokens:      to.Ptr(int32(1024)),
-		Temperature:    to.Ptr(float32(0.0)),
-		DeploymentName: &deployment,
-	}
-}
+func newStainlessTestChatCompletionOptions(deployment string) openai.ChatCompletionNewParams {
+	message := "Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."
 
-func newTestChatCompletionStreamOptions(deployment string) azopenai.ChatCompletionsStreamOptions {
-	return azopenai.ChatCompletionsStreamOptions{
-		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{
-				Content: azopenai.NewChatRequestUserMessageContent("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+	return openai.ChatCompletionNewParams{
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String(message),
+				},
 			},
-		},
-		MaxTokens:      to.Ptr(int32(1024)),
-		Temperature:    to.Ptr(float32(0.0)),
-		DeploymentName: &deployment,
+		}},
+		MaxTokens:   openai.Int(1024),
+		Temperature: openai.Float(0.0),
+		Model:       openai.ChatModel(deployment),
 	}
 }
 
 var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
-var expectedRole = azopenai.ChatRoleAssistant
+var expectedRole = openai.MessageRoleAssistant
 
 func TestClient_GetChatCompletions(t *testing.T) {
-	testFn := func(t *testing.T, client *azopenai.Client, deployment string, returnedModel string, checkRAI bool) {
-		expected := azopenai.ChatCompletions{
-			Choices: []azopenai.ChatChoice{
-				{
-					Message: &azopenai.ChatResponseMessage{
-						Role:    &expectedRole,
-						Content: &expectedContent,
-					},
-					Index:        to.Ptr(int32(0)),
-					FinishReason: to.Ptr(azopenai.CompletionsFinishReason("stop")),
-				},
-			},
-			Usage: &azopenai.CompletionsUsage{
-				// these change depending on which model you use. These #'s work for gpt-4, which is
-				// what I'm using for these tests.
-				CompletionTokens: to.Ptr(int32(29)),
-				PromptTokens:     to.Ptr(int32(42)),
-				TotalTokens:      to.Ptr(int32(71)),
-				CompletionTokensDetails: &azopenai.CompletionsUsageCompletionTokensDetails{
-					ReasoningTokens: to.Ptr(int32(0)),
-				},
-				PromptTokensDetails: &azopenai.CompletionsUsagePromptTokensDetails{
-					CachedTokens: to.Ptr(int32(0)),
-				},
-			},
-			Model: &returnedModel,
-		}
-
-		if checkRAI {
-			// There is a discrepancy in how these are returned between Azure and OpenAI.
-			expected.Usage.CompletionTokensDetails = nil
-			expected.Usage.PromptTokensDetails = nil
-		}
-
-		resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(deployment), nil)
-		customRequireNoError(t, err, true)
+	testFn := func(t *testing.T, client *openai.ChatCompletionService, deployment string, returnedModel string, checkRAI bool) {
+		resp, err := client.New(context.Background(), newStainlessTestChatCompletionOptions(deployment))
+		skipNowIfThrottled(t, err)
+		require.NoError(t, err)
 
 		require.NotEmpty(t, resp.ID)
 		require.NotEmpty(t, resp.Created)
 
-		expected.ID = resp.ID
-		expected.Created = resp.Created
+		t.Logf("isAzure: %t, deployment: %s, returnedModel: %s", checkRAI, deployment, resp.Model)
 
-		t.Logf("isAzure: %t, deployment: %s, returnedModel: %s", checkRAI, deployment, *resp.ChatCompletions.Model)
+		require.Equal(t, returnedModel, resp.Model)
 
-		// Content filtering results are proving too difficult to make predictable.
-		resp.ChatCompletions.PromptFilterResults = nil
+		// check Choices
+		require.Equal(t, 1, len(resp.Choices))
+		choice := resp.Choices[0]
 
-		for i := 0; i < len(resp.ChatCompletions.Choices); i++ {
-			resp.ChatCompletions.Choices[i].ContentFilterResults = nil
-		}
+		t.Logf("Content = %s", choice.Message.Content)
 
-		// Exclude Usage field from comparison as they can change
-		expectedUsage := expected.Usage
-		actualUsage := resp.ChatCompletions.Usage
-		expected.Usage = nil
-		resp.ChatCompletions.Usage = nil
+		require.Zero(t, choice.Index)
+		require.EqualValues(t, "assistant", choice.Message.Role)
+		require.NotEmpty(t, choice.Message.Content)
+		require.Equal(t, "stop", choice.FinishReason)
 
-		require.Equal(t, expected, resp.ChatCompletions)
-
-		// Compare the usage numbers, but allow for a small margin of error
-		require.InDelta(t, *expectedUsage.CompletionTokens, *actualUsage.CompletionTokens, 5)
-		require.InDelta(t, *expectedUsage.PromptTokens, *actualUsage.PromptTokens, 5)
-		require.InDelta(t, *expectedUsage.TotalTokens, *actualUsage.TotalTokens, 5)
+		require.Equal(t, openai.CompletionUsage{
+			// these change depending on which model you use. These #'s work for gpt-4, which is
+			// what I'm using for these tests.
+			CompletionTokens: 29,
+			PromptTokens:     42,
+			TotalTokens:      71,
+		}, openai.CompletionUsage{
+			CompletionTokens: resp.Usage.CompletionTokens,
+			PromptTokens:     resp.Usage.PromptTokens,
+			TotalTokens:      resp.Usage.TotalTokens,
+		})
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
-		client := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-		testFn(t, client, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4", true)
+		client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
+
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4", true)
 	})
 
-	t.Run("AzureOpenAI.TokenCredential", func(t *testing.T) {
-		if recording.GetRecordMode() == recording.PlaybackMode {
-			t.Skipf("Not running this test in playback (for now)")
-		}
-
-		if os.Getenv("USE_TOKEN_CREDS") != "true" {
-			t.Skipf("USE_TOKEN_CREDS is not true, disabling token credential tests")
-		}
-
-		recordingTransporter := newRecordingTransporter(t)
-
-		cred, err := credential.New(nil)
-		require.NoError(t, err)
-
-		chatClient, err := azopenai.NewClient(azureOpenAI.ChatCompletions.Endpoint.URL, cred, &azopenai.ClientOptions{
-			ClientOptions: policy.ClientOptions{Transport: recordingTransporter},
-		})
-		require.NoError(t, err)
-
-		testFn(t, chatClient, azureOpenAI.ChatCompletions.Model, "gpt-4", true)
-	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, openAI.ChatCompletions.Endpoint)
-		testFn(t, chatClient, openAI.ChatCompletions.Model, "gpt-4-0613", false)
+	t.Run("AzureOpenAI.DefaultAzureCredential", func(t *testing.T) {
+		client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletions.Model, "gpt-4", true)
 	})
 }
 
 func TestClient_GetChatCompletions_LogProbs(t *testing.T) {
-	testFn := func(t *testing.T, epm endpointWithModel) {
-		client := newTestClient(t, epm.Endpoint)
-
-		opts := azopenai.ChatCompletionsOptions{
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestUserMessage{
-					Content: azopenai.NewChatRequestUserMessageContent("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+	testFn := func(t *testing.T, client *openai.ChatCompletionService, model string) {
+		opts := openai.ChatCompletionNewParams{
+			Messages: []openai.ChatCompletionMessageParamUnion{{
+				OfUser: &openai.ChatCompletionUserMessageParam{
+					Content: openai.ChatCompletionUserMessageParamContentUnion{
+						OfString: openai.String("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+					},
 				},
-			},
-			MaxTokens:      to.Ptr(int32(1024)),
-			Temperature:    to.Ptr(float32(0.0)),
-			DeploymentName: &epm.Model,
-			LogProbs:       to.Ptr(true),
-			TopLogProbs:    to.Ptr(int32(5)),
+			}},
+			MaxTokens:   openai.Int(1024),
+			Temperature: openai.Float(0.0),
+			Model:       openai.ChatModel(model),
+			Logprobs:    openai.Bool(true),
+			TopLogprobs: openai.Int(5),
 		}
 
-		resp, err := client.GetChatCompletions(context.Background(), opts, nil)
-		customRequireNoError(t, err, true)
+		resp, err := client.New(context.Background(), opts)
+		require.NoError(t, err)
 
 		for _, choice := range resp.Choices {
-			require.NotEmpty(t, choice.LogProbs)
+			require.NotEmpty(t, choice.Logprobs)
 		}
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
-		testFn(t, azureOpenAI.ChatCompletions)
+		client := newStainlessTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletions.Model)
 	})
 
-	t.Run("OpenAI", func(t *testing.T) {
-		testFn(t, openAI.ChatCompletions)
+	t.Run("AzureOpenAI.Service", func(t *testing.T) {
+		client := newStainlessChatCompletionService(t, azureOpenAI.ChatCompletions.Endpoint)
+		testFn(t, &client, azureOpenAI.ChatCompletions.Model)
 	})
 }
 
@@ -194,447 +127,133 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 	// https://help.openai.com/en/articles/5247780-using-logit-bias-to-alter-token-probability-with-the-openai-api
 
 	testFn := func(t *testing.T, epm endpointWithModel) {
-		client := newTestClient(t, epm.Endpoint)
+		client := newStainlessTestClient(t, epm.Endpoint)
 
-		opts := azopenai.ChatCompletionsOptions{
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestUserMessage{
-					Content: azopenai.NewChatRequestUserMessageContent("Briefly, what are some common roles for people at a circus, names only, one per line?"),
+		body := openai.ChatCompletionNewParams{
+			Messages: []openai.ChatCompletionMessageParamUnion{{
+				OfUser: &openai.ChatCompletionUserMessageParam{
+					Content: openai.ChatCompletionUserMessageParamContentUnion{
+						OfString: openai.String("Briefly, what are some common roles for people at a circus, names only, one per line?"),
+					},
 				},
-			},
-			MaxTokens:      to.Ptr(int32(200)),
-			Temperature:    to.Ptr(float32(0.0)),
-			DeploymentName: &epm.Model,
-			LogitBias: map[string]*int32{
+			}},
+			MaxTokens:   openai.Int(200),
+			Temperature: openai.Float(0.0),
+			Model:       openai.ChatModel(epm.Model),
+			LogitBias: map[string]int64{
 				// you can calculate these tokens using OpenAI's online tool:
 				// https://platform.openai.com/tokenizer?view=bpe
 				// These token IDs are all variations of "Clown", which I want to exclude from the response.
-				"25":    to.Ptr(int32(-100)),
-				"220":   to.Ptr(int32(-100)),
-				"1206":  to.Ptr(int32(-100)),
-				"2493":  to.Ptr(int32(-100)),
-				"5176":  to.Ptr(int32(-100)),
-				"43456": to.Ptr(int32(-100)),
-				"99423": to.Ptr(int32(-100)),
+				"25":    -100,
+				"220":   -100,
+				"1206":  -100,
+				"2493":  -100,
+				"5176":  -100,
+				"43456": -100,
+				"99423": -100,
 			},
 		}
 
-		resp, err := client.GetChatCompletions(context.Background(), opts, nil)
-		customRequireNoError(t, err, true)
+		resp, err := client.Chat.Completions.New(context.Background(), body)
+		require.NoError(t, err)
 
 		for _, choice := range resp.Choices {
-			if choice.Message == nil || choice.Message.Content == nil {
-				continue
-			}
-
-			require.NotContains(t, *choice.Message.Content, "clown")
-			require.NotContains(t, *choice.Message.Content, "Clown")
+			require.NotContains(t, choice.Message.Content, "clown")
+			require.NotContains(t, choice.Message.Content, "Clown")
 		}
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		testFn(t, azureOpenAI.ChatCompletions)
 	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		testFn(t, openAI.ChatCompletions)
-	})
 }
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
-	testFn := func(t *testing.T, client *azopenai.Client, deployment string, returnedDeployment string) {
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionStreamOptions(deployment), nil)
+	chatClient := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
+	returnedDeployment := "gpt-4"
+	stream := chatClient.Chat.Completions.NewStreaming(context.Background(), newStainlessTestChatCompletionOptions(azureOpenAI.ChatCompletionsRAI.Model))
 
-		if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
-			t.Skipf("OpenAI resource overloaded, skipping this test")
+	// the data comes back differently for streaming
+	// 1. the text comes back in the ChatCompletion.Delta field
+	// 2. the role is only sent on the first streamed ChatCompletion
+	// check that the role came back as well.
+	var choices []openai.ChatCompletionChunkChoice
+
+	modelWasReturned := false
+
+	for stream.Next() {
+		chunk := stream.Current()
+
+		// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
+		// by convention) but if this fails because they _don't_ match we can just adjust the test.
+		if returnedDeployment == chunk.Model {
+			modelWasReturned = true
 		}
 
+		azureChunk := azopenai.ChatCompletionChunk(chunk)
+
+		// NOTE: prompt filter results are non-deterministic as they're based on their own criteria, which
+		// can change over time. We'll check that we can safely attempt to deserialize it.
+		_, err := azureChunk.PromptFilterResults()
 		require.NoError(t, err)
 
-		// the data comes back differently for streaming
-		// 1. the text comes back in the ChatCompletion.Delta field
-		// 2. the role is only sent on the first streamed ChatCompletion
-		// check that the role came back as well.
-		var choices []azopenai.ChatChoice
-
-		modelWasReturned := false
-
-		for {
-			completion, err := streamResp.ChatCompletionsStream.Read()
-
-			if errors.Is(err, io.EOF) {
-				break
-			}
-
-			// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
-			// by convention) but if this fails because they _don't_ match we can just adjust the test.
-			if returnedDeployment == *completion.Model {
-				modelWasReturned = true
-			}
-
-			require.NoError(t, err)
-
-			if len(completion.Choices) == 0 {
-				// you can get empty entries that contain just metadata (ie, prompt annotations)
-				continue
-			}
-
-			require.Equal(t, 1, len(completion.Choices))
-			choices = append(choices, completion.Choices[0])
+		if len(chunk.Choices) == 0 {
+			// you can get empty entries that contain just metadata (ie, prompt annotations)
+			continue
 		}
 
-		require.True(t, modelWasReturned)
-
-		var message string
-
-		for _, choice := range choices {
-			if choice.Delta.Content == nil {
-				continue
-			}
-
-			message += *choice.Delta.Content
-		}
-
-		require.Equal(t, expectedContent, message, "Ultimately, the same result as GetChatCompletions(), just sent across the .Delta field instead")
-		require.Equal(t, azopenai.ChatRoleAssistant, expectedRole)
+		require.Equal(t, 1, len(chunk.Choices))
+		choices = append(choices, chunk.Choices[0])
 	}
 
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-		testFn(t, chatClient, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4")
-	})
+	require.NoError(t, stream.Err())
 
-	t.Run("OpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, openAI.ChatCompletions.Endpoint)
-		testFn(t, chatClient, openAI.ChatCompletions.Model, openAI.ChatCompletions.Model)
-	})
-}
+	require.True(t, modelWasReturned)
 
-func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		t.Skip()
+	var message string
+
+	for _, choice := range choices {
+		message += choice.Delta.Content
 	}
 
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		client := newBogusAzureOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionStreamOptions(azureOpenAI.ChatCompletions.Model), nil)
-		require.Empty(t, streamResp)
-		assertResponseIsError(t, err)
-	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		client := newBogusOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionStreamOptions(openAI.ChatCompletions.Model), nil)
-		require.Empty(t, streamResp)
-		assertResponseIsError(t, err)
-	})
+	require.Equal(t, expectedContent, message)
+	require.Equal(t, openai.MessageRoleAssistant, expectedRole)
 }
 
 func TestClient_GetChatCompletions_Vision(t *testing.T) {
-	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string, azure bool) {
-		imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
+	// testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string, azure bool) {
+	chatClient := newStainlessTestClient(t, azureOpenAI.Vision.Endpoint)
 
-		content := azopenai.NewChatRequestUserMessageContent([]azopenai.ChatCompletionRequestMessageContentPartClassification{
-			&azopenai.ChatCompletionRequestMessageContentPartText{
-				Text: to.Ptr("Describe this image"),
-			},
-			&azopenai.ChatCompletionRequestMessageContentPartImage{
-				ImageURL: &azopenai.ChatCompletionRequestMessageContentPartImageURL{
-					URL: &imageURL,
-				},
-			},
-		})
+	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 
-		ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
-		defer cancel()
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+	defer cancel()
 
-		resp, err := chatClient.GetChatCompletions(ctx, azopenai.ChatCompletionsOptions{
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestUserMessage{
-					Content: content,
-				},
-			},
-			DeploymentName: to.Ptr(deploymentName),
-			MaxTokens:      to.Ptr[int32](512),
-		}, nil)
-
-		// vision is a bit of an oversubscribed Azure resource. Allow 429, but mark the test as skipped.
-		customRequireNoError(t, err, azure)
-		require.NotEmpty(t, resp.Choices[0].Message.Content)
-
-		t.Logf("Content = %s", *resp.Choices[0].Message.Content)
-	}
-
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, azureOpenAI.Vision.Endpoint)
-		testFn(t, chatClient, azureOpenAI.Vision.Model, true)
-	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, openAI.Vision.Endpoint)
-		testFn(t, chatClient, openAI.Vision.Model, false)
-	})
-}
-
-func TestGetChatCompletions_usingResponseFormatForJSON(t *testing.T) {
-	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
-		body := azopenai.ChatCompletionsOptions{
-			DeploymentName: &deploymentName,
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestSystemMessage{Content: azopenai.NewChatRequestSystemMessageContent("You are a helpful assistant designed to output JSON.")},
-				&azopenai.ChatRequestUserMessage{
-					Content: azopenai.NewChatRequestUserMessageContent("List capital cities and their states"),
-				},
-			},
-			// Without this format directive you end up getting JSON, but with a non-JSON preamble, like this:
-			// "I'm happy to help! Here are some examples of capital cities and their corresponding states:\n\n```json\n{\n" (etc)
-			ResponseFormat: &azopenai.ChatCompletionsJSONResponseFormat{},
-			Temperature:    to.Ptr[float32](0.0),
-		}
-
-		resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
-		customRequireNoError(t, err, true)
-
-		// validate that it came back as JSON data
-		var v any
-		err = json.Unmarshal([]byte(*resp.Choices[0].Message.Content), &v)
-		require.NoError(t, err)
-		require.NotEmpty(t, v)
-	}
-
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, azureOpenAI.ChatCompletionsWithJSONResponseFormat.Endpoint)
-		testFn(t, chatClient, azureOpenAI.ChatCompletionsWithJSONResponseFormat.Model)
-	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		chatClient := newTestClient(t, openAI.ChatCompletionsWithJSONResponseFormat.Endpoint)
-		testFn(t, chatClient, openAI.ChatCompletionsWithJSONResponseFormat.Model)
-	})
-}
-
-func TestGetChatCompletions_StructuredOutputs(t *testing.T) {
-	// structured outputs require a 'o' model, like gpt4o.
-	// https://openai.com/index/introducing-structured-outputs-in-the-api/
-
-	// There are two ways to activate this feature:
-	// 1. Function calling: Structured Outputs via tools is available by setting strict: true
-	// 2. A new option for the response_format parameter: developers can now supply a JSON Schema via json_schema, a new option for the response_format parameter.
-	//    This is useful when the model is not calling a tool, but rather, responding to the user in a structured way.
-
-	// from this article: https://openai.com/index/introducing-structured-outputs-in-the-api/
-	structuredJSONToolDefParams := []byte(`{
-		"type": "object",
-		"properties": {
-			"table_name": {
-				"type": "string",
-				"enum": [
-					"orders"
-				]
-			},
-			"columns": {
-				"type": "array",
-				"items": {
-					"type": "string",
-					"enum": [
-						"id",
-						"status",
-						"expected_delivery_date",
-						"delivered_at",
-						"shipped_at",
-						"ordered_at",
-						"canceled_at"
-					]
-				}
-			},
-			"conditions": {
-				"type": "array",
-				"items": {
-					"type": "object",
-					"properties": {
-						"column": {
-							"type": "string"
+	resp, err := chatClient.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfArrayOfContentParts: []openai.ChatCompletionContentPartUnionParam{{
+						OfText: &openai.ChatCompletionContentPartTextParam{
+							Text: "Describe this image",
 						},
-						"operator": {
-							"type": "string",
-							"enum": [
-								"=",
-								">",
-								"<",
-								">=",
-								"<=",
-								"!="
-							]
+					}, {
+						OfImageURL: &openai.ChatCompletionContentPartImageParam{
+							ImageURL: openai.ChatCompletionContentPartImageImageURLParam{
+								URL: imageURL,
+							},
 						},
-						"value": {
-							"anyOf": [
-								{
-									"type": "string"
-								},
-								{
-									"type": "number"
-								},
-								{
-									"type": "object",
-									"properties": {
-										"column_name": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"column_name"
-									],
-									"additionalProperties": false
-								}
-							]
-						}
-					},
-					"required": [
-						"column",
-						"operator",
-						"value"
-					],
-					"additionalProperties": false
-				}
-			},
-			"order_by": {
-				"type": "string",
-				"enum": [
-					"asc",
-					"desc"
-				]
-			}
-		},
-		"required": [
-			"table_name",
-			"columns",
-			"conditions",
-			"order_by"
-		],
-		"additionalProperties": false
-	}`)
-
-	testFn := func(t *testing.T, client *azopenai.Client, model string) {
-		resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-			DeploymentName: &model,
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestAssistantMessage{
-					Content: azopenai.NewChatRequestAssistantMessageContent("You are a helpful assistant. The current date is August 6, 2024. You help users query for the data they are looking for by calling the query function."),
-				},
-				&azopenai.ChatRequestUserMessage{
-					Content: azopenai.NewChatRequestUserMessageContent("look up all my orders in may of last year that were fulfilled but not delivered on time"),
+					}},
 				},
 			},
-			Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
-				&azopenai.ChatCompletionsFunctionToolDefinition{
-					Function: &azopenai.ChatCompletionsFunctionToolDefinitionFunction{
-						Strict:     to.Ptr(true),
-						Name:       to.Ptr("query"),
-						Parameters: structuredJSONToolDefParams,
-					},
-				},
-			},
-		}, nil)
-		customRequireNoError(t, err, true)
-
-		// and now the results should contain proper JSON for the arguments, every time.
-		fn := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
-
-		expectedFunctionName := "query"
-
-		if recording.GetRecordMode() == "playback" {
-			expectedFunctionName = recording.SanitizedValue
-		}
-
-		require.Equal(t, expectedFunctionName, *fn.Name)
-
-		obj := map[string]any{}
-
-		require.NoError(t, json.Unmarshal([]byte(*fn.Arguments), &obj))
-		require.Equal(t, "orders", obj["table_name"], "sanity check one of the fields from the JSON")
-	}
-
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		client := newTestClient(t, azureOpenAI.ChatCompletionsStructuredOutputs.Endpoint)
-		testFn(t, client, azureOpenAI.ChatCompletionsStructuredOutputs.Model)
+		}},
+		Model:     openai.ChatModel(azureOpenAI.Vision.Model),
+		MaxTokens: openai.Int(512),
 	})
 
-	t.Run("OpenAI", func(t *testing.T) {
-		client := newTestClient(t, openAI.ChatCompletionsStructuredOutputs.Endpoint)
-		testFn(t, client, openAI.ChatCompletionsStructuredOutputs.Model)
-	})
-}
+	// vision is a bit of an oversubscribed Azure resource. Allow 429, but mark the test as skipped.
+	customRequireNoError(t, err)
+	require.NotEmpty(t, resp.Choices[0].Message.Content)
 
-func TestGetChatCompletions_StructuredOutputsResponseFormat(t *testing.T) {
-	structuredOutputJSONSchema := []byte(`{
-		"type": "object",
-		"properties": {
-			"steps": {
-				"type": "array",
-				"items": {
-					"type": "object",
-					"properties": {
-						"explanation": {
-							"type": "string"
-						},
-						"output": {
-							"type": "string"
-						}
-					},
-					"required": [
-						"explanation",
-						"output"
-					],
-					"additionalProperties": false
-				}
-			},
-			"final_answer": {
-				"type": "string"
-			}
-		},
-		"required": [
-			"steps",
-			"final_answer"
-		],
-		"additionalProperties": false
-	}`)
-
-	testFn := func(t *testing.T, client *azopenai.Client, model string) {
-		resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
-			DeploymentName: &model,
-			Messages: []azopenai.ChatRequestMessageClassification{
-				&azopenai.ChatRequestAssistantMessage{
-					Content: azopenai.NewChatRequestAssistantMessageContent("You are a helpful math tutor."),
-				},
-				&azopenai.ChatRequestUserMessage{
-					Content: azopenai.NewChatRequestUserMessageContent("solve 8x + 31 = 2"),
-				},
-			},
-			ResponseFormat: &azopenai.ChatCompletionsJSONSchemaResponseFormat{
-				JSONSchema: &azopenai.ChatCompletionsJSONSchemaResponseFormatJSONSchema{
-					Name:   to.Ptr("math_response"),
-					Strict: to.Ptr(true),
-					Schema: structuredOutputJSONSchema,
-				},
-			},
-		}, nil)
-		customRequireNoError(t, err, true)
-
-		jsonText := *resp.Choices[0].Message.Content
-
-		obj := map[string]any{}
-		err = json.Unmarshal([]byte(jsonText), &obj)
-		require.NoError(t, err)
-		require.NotEmpty(t, obj["steps"], "sanity check one of the fields from the JSON")
-	}
-
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		client := newTestClient(t, azureOpenAI.ChatCompletionsStructuredOutputs.Endpoint)
-		testFn(t, client, azureOpenAI.ChatCompletionsStructuredOutputs.Model)
-	})
-
-	t.Run("OpenAI", func(t *testing.T) {
-		client := newTestClient(t, openAI.ChatCompletionsStructuredOutputs.Endpoint)
-		testFn(t, client, openAI.ChatCompletionsStructuredOutputs.Model)
-	})
+	t.Logf("Content: %s", resp.Choices[0].Message.Content)
 }

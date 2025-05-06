@@ -23,8 +23,8 @@ func ExampleDeploymentPreflightClient_Post() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDeploymentPreflightClient().Post(ctx, "rgswagger_2024-09-01", "lnfcwsmlowbwkndkztzvaj", &DeploymentPreflightClientPostOptions{
-		body: &armrecoveryservicesdatareplication.DeploymentPreflightModel{
+	res, err := clientFactory.NewDeploymentPreflightClient().Post(ctx, "rgswagger_2024-09-01", "lnfcwsmlowbwkndkztzvaj", &armrecoveryservicesdatareplication.DeploymentPreflightClientPostOptions{
+		Body: &armrecoveryservicesdatareplication.DeploymentPreflightModel{
 			Resources: []*armrecoveryservicesdatareplication.DeploymentPreflightResource{
 				{
 					Name:       to.Ptr("xtgugoflfc"),

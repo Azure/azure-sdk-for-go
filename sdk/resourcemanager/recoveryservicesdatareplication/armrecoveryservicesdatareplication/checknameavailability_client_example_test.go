@@ -23,8 +23,8 @@ func ExampleCheckNameAvailabilityClient_Post() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCheckNameAvailabilityClient().Post(ctx, "trfqtbtmusswpibw", &CheckNameAvailabilityClientPostOptions{
-		body: &armrecoveryservicesdatareplication.CheckNameAvailabilityModel{
+	res, err := clientFactory.NewCheckNameAvailabilityClient().Post(ctx, "trfqtbtmusswpibw", &armrecoveryservicesdatareplication.CheckNameAvailabilityClientPostOptions{
+		Body: &armrecoveryservicesdatareplication.CheckNameAvailabilityModel{
 			Name: to.Ptr("updkdcixs"),
 			Type: to.Ptr("gngmcancdauwhdixjjvqnfkvqc"),
 		}})

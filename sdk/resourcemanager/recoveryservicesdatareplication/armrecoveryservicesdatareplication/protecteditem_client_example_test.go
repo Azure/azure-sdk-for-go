@@ -164,8 +164,8 @@ func ExampleProtectedItemClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewProtectedItemClient().BeginDelete(ctx, "rgrecoveryservicesdatareplication", "4", "d", &ProtectedItemClientBeginDeleteOptions{
-		forceDelete: to.Ptr(true)})
+	poller, err := clientFactory.NewProtectedItemClient().BeginDelete(ctx, "rgrecoveryservicesdatareplication", "4", "d", &armrecoveryservicesdatareplication.ProtectedItemClientBeginDeleteOptions{
+		ForceDelete: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

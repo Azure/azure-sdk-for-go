@@ -208,8 +208,8 @@ func ExampleFabricClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFabricClient().NewListPager("rgswagger_2024-09-01", &FabricClientListOptions{
-		continuationToken: to.Ptr("jw")})
+	pager := clientFactory.NewFabricClient().NewListPager("rgswagger_2024-09-01", &armrecoveryservicesdatareplication.FabricClientListOptions{
+		ContinuationToken: to.Ptr("jw")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

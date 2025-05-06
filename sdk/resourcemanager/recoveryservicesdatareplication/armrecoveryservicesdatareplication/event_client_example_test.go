@@ -103,8 +103,8 @@ func ExampleEventClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewEventClient().NewListPager("rgswagger_2024-09-01", "4", &EventClientListOptions{
-		continuationToken: to.Ptr("gabpzsxrifposvleqqcjnvofz")})
+	pager := clientFactory.NewEventClient().NewListPager("rgswagger_2024-09-01", "4", &armrecoveryservicesdatareplication.EventClientListOptions{
+		ContinuationToken: to.Ptr("gabpzsxrifposvleqqcjnvofz")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

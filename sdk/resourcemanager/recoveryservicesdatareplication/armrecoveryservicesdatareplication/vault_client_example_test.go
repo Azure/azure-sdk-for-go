@@ -144,8 +144,8 @@ func ExampleVaultClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVaultClient().NewListPager("rgrecoveryservicesdatareplication", &VaultClientListOptions{
-		continuationToken: to.Ptr("mwculdaqndp")})
+	pager := clientFactory.NewVaultClient().NewListPager("rgrecoveryservicesdatareplication", &armrecoveryservicesdatareplication.VaultClientListOptions{
+		ContinuationToken: to.Ptr("mwculdaqndp")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

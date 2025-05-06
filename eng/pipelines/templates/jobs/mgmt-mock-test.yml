@@ -46,6 +46,17 @@ jobs:
         filePath: $(Build.SourcesDirectory)/eng/scripts/Invoke-MgmtTestgen.ps1
         arguments: -filter '${{ parameters.ServiceDirectory }}' -vet
 
+    - task: Powershell@2
+      displayName: 'Mock Test'
+      continueOnError: true
+      env:
+        GO111MODULE: 'on'
+      inputs:
+        targetType: filePath
+        pwsh: true
+        filePath: $(Build.SourcesDirectory)/eng/scripts/Invoke-MgmtMockTest.ps1
+        arguments: -filter '${{ parameters.ServiceDirectory }}'
+
     - task: ArchiveFiles@2
       continueOnError: true
       inputs:

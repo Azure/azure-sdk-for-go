@@ -4,17 +4,17 @@
 
 When a user reports a bug with the description "JSON unmarshal error," follow these steps to resolve the issue:
 
-- **Step 1: Check the response body**
-  - Suggest the user open the logger to view the response body. This will allow us to inspect the details returned by the API and determine if the issue is related to the SDK.
-  
-  Example:  
-  If the SDK's unmarshaling result differs from the API response, the issue may lie with the SDK's handling of the data.
-
-- **Step 2: Verify the SDK version**
+- **Step 1: Verify the SDK version**
   - Check the reported SDK version. If it is not the latest, suggest the user try the latest version locally. If the latest version resolves the issue, recommend upgrading to the latest version.
   
   Example:  
   If the issue is fixed with the latest version, suggest upgrading to that version.
+
+- **Step 2: Check the response body**
+  - Suggest the user open the logger to view the response body. This will allow us to inspect the details returned by the API and determine if the issue is related to the SDK.
+  
+  Example:  
+  If the SDK's unmarshaling result differs from the API response, the issue may lie with the SDK's handling of the data.
 
 - **Step 3: Add 'service-attention' label**
   - If the issue persists, label the ticket with `service-attention`.

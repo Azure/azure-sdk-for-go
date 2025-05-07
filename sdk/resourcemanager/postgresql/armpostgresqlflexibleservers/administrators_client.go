@@ -43,11 +43,11 @@ func NewAdministratorsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreate - Creates a new server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - objectID - Guid of the objectId for the administrator.
-//   - parameters - The required parameters for adding an active directory administrator for a server.
+//   - parameters - The required parameters for adding an Microsoft Entra Administrator for a server.
 //   - options - AdministratorsClientBeginCreateOptions contains the optional parameters for the AdministratorsClient.BeginCreate
 //     method.
 func (client *AdministratorsClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters ActiveDirectoryAdministratorAdd, options *AdministratorsClientBeginCreateOptions) (*runtime.Poller[AdministratorsClientCreateResponse], error) {
@@ -71,7 +71,7 @@ func (client *AdministratorsClient) BeginCreate(ctx context.Context, resourceGro
 // Create - Creates a new server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 func (client *AdministratorsClient) create(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters ActiveDirectoryAdministratorAdd, options *AdministratorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdministratorsClient.BeginCreate"
@@ -117,7 +117,7 @@ func (client *AdministratorsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,10 +126,10 @@ func (client *AdministratorsClient) createCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// BeginDelete - Deletes an Active Directory Administrator associated with the server.
+// BeginDelete - Deletes an Microsoft Entra Administrator associated with the server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - objectID - Guid of the objectId for the administrator.
@@ -153,10 +153,10 @@ func (client *AdministratorsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes an Active Directory Administrator associated with the server.
+// Delete - Deletes an Microsoft Entra Administrator associated with the server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 func (client *AdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdministratorsClient.BeginDelete"
@@ -202,7 +202,7 @@ func (client *AdministratorsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *AdministratorsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Gets information about a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - objectID - Guid of the objectId for the administrator.
@@ -262,7 +262,7 @@ func (client *AdministratorsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +279,7 @@ func (client *AdministratorsClient) getHandleResponse(resp *http.Response) (Admi
 
 // NewListByServerPager - List all the AAD administrators for a given server.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - AdministratorsClientListByServerOptions contains the optional parameters for the AdministratorsClient.NewListByServerPager
@@ -327,7 +327,7 @@ func (client *AdministratorsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

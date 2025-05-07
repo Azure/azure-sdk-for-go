@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/CapabilitiesByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/CapabilitiesByLocation.json
 func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,6 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 			FastProvisioningSupported: to.Ptr(armpostgresqlflexibleservers.FastProvisioningSupportedEnumEnabled),
 		// 			GeoBackupSupported: to.Ptr(armpostgresqlflexibleservers.GeoBackupSupportedEnumEnabled),
 		// 			OnlineResizeSupported: to.Ptr(armpostgresqlflexibleservers.OnlineResizeSupportedEnumEnabled),
-		// 			Restricted: to.Ptr(armpostgresqlflexibleservers.RestrictedEnumDisabled),
 		// 			StorageAutoGrowthSupported: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowthSupportedEnumEnabled),
 		// 			SupportedFastProvisioningEditions: []*armpostgresqlflexibleservers.FastProvisioningEditionCapability{
 		// 				{
@@ -188,6 +187,82 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 					SupportedSKU: to.Ptr("standard_e2ds_v4"),
 		// 					SupportedStorageGb: to.Ptr[int32](512),
 		// 					SupportedTier: to.Ptr("MemoryOptimized"),
+		// 				},
+		// 				{
+		// 					ServerCount: to.Ptr[int32](0),
+		// 					SupportedServerVersions: to.Ptr("16"),
+		// 					SupportedSKU: to.Ptr("standard_b1ms"),
+		// 					SupportedStorageGb: to.Ptr[int32](32),
+		// 					SupportedTier: to.Ptr("Burstable"),
+		// 				},
+		// 				{
+		// 					ServerCount: to.Ptr[int32](0),
+		// 					SupportedServerVersions: to.Ptr("16"),
+		// 					SupportedSKU: to.Ptr("standard_b2s"),
+		// 					SupportedStorageGb: to.Ptr[int32](32),
+		// 					SupportedTier: to.Ptr("Burstable"),
+		// 				},
+		// 				{
+		// 					ServerCount: to.Ptr[int32](0),
+		// 					SupportedServerVersions: to.Ptr("16"),
+		// 					SupportedSKU: to.Ptr("standard_d2s_v3"),
+		// 					SupportedStorageGb: to.Ptr[int32](128),
+		// 					SupportedTier: to.Ptr("GeneralPurpose"),
+		// 				},
+		// 				{
+		// 					ServerCount: to.Ptr[int32](0),
+		// 					SupportedServerVersions: to.Ptr("16"),
+		// 					SupportedSKU: to.Ptr("standard_d2ds_v4"),
+		// 					SupportedStorageGb: to.Ptr[int32](128),
+		// 					SupportedTier: to.Ptr("GeneralPurpose"),
+		// 				},
+		// 				{
+		// 					ServerCount: to.Ptr[int32](0),
+		// 					SupportedServerVersions: to.Ptr("16"),
+		// 					SupportedSKU: to.Ptr("standard_e2ds_v4"),
+		// 					SupportedStorageGb: to.Ptr[int32](512),
+		// 					SupportedTier: to.Ptr("MemoryOptimized"),
+		// 			}},
+		// 			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 				{
+		// 					Name: to.Ptr("FastProvisioning"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("ZoneRedundantHa"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("GeoBackup"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("ZoneRedundantHaAndGeoBackup"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("StorageAutoGrowth"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("OnlineResize"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("OfferRestricted"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumDisabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("IndexTuning"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("Clusters"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumEnabled),
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("ConfigTuning"),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.SupportedFeatureStatusEnumDisabled),
 		// 			}},
 		// 			SupportedServerEditions: []*armpostgresqlflexibleservers.FlexibleServerEditionCapability{
 		// 				{
@@ -196,6 +271,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 					SupportedServerSKUs: []*armpostgresqlflexibleservers.ServerSKUCapability{
 		// 						{
 		// 							Name: to.Ptr("Standard_B1ms"),
+		// 							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 							},
 		// 							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -209,6 +286,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 								},
 		// 								{
 		// 									Name: to.Ptr("Standard_B2s"),
+		// 									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 									},
 		// 									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -222,6 +301,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 										},
 		// 										{
 		// 											Name: to.Ptr("Standard_B2ms"),
+		// 											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 											},
 		// 											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -235,6 +316,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 												},
 		// 												{
 		// 													Name: to.Ptr("Standard_B4ms"),
+		// 													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 													},
 		// 													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -248,6 +331,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 														},
 		// 														{
 		// 															Name: to.Ptr("Standard_B8ms"),
+		// 															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 															},
 		// 															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -261,6 +346,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																},
 		// 																{
 		// 																	Name: to.Ptr("Standard_B12ms"),
+		// 																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																	},
 		// 																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -274,6 +361,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																		},
 		// 																		{
 		// 																			Name: to.Ptr("Standard_B16ms"),
+		// 																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																			},
 		// 																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -287,6 +376,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																				},
 		// 																				{
 		// 																					Name: to.Ptr("Standard_B20ms"),
+		// 																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																					},
 		// 																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -570,10 +661,12 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																				},
 		// 																				{
 		// 																					Name: to.Ptr("GeneralPurpose"),
-		// 																					DefaultSKUName: to.Ptr("Standard_D4ads_v5"),
+		// 																					DefaultSKUName: to.Ptr("Standard_D4ds_v5"),
 		// 																					SupportedServerSKUs: []*armpostgresqlflexibleservers.ServerSKUCapability{
 		// 																						{
 		// 																							Name: to.Ptr("Standard_D2s_v3"),
+		// 																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																							},
 		// 																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -587,6 +680,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																								},
 		// 																								{
 		// 																									Name: to.Ptr("Standard_D4s_v3"),
+		// 																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																									},
 		// 																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -600,6 +695,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																										},
 		// 																										{
 		// 																											Name: to.Ptr("Standard_D8s_v3"),
+		// 																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																											},
 		// 																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -613,6 +710,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																												},
 		// 																												{
 		// 																													Name: to.Ptr("Standard_D16s_v3"),
+		// 																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																													},
 		// 																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -626,6 +725,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																														},
 		// 																														{
 		// 																															Name: to.Ptr("Standard_D32s_v3"),
+		// 																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																															},
 		// 																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -639,6 +740,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																},
 		// 																																{
 		// 																																	Name: to.Ptr("Standard_D48s_v3"),
+		// 																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																	},
 		// 																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -652,6 +755,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																		},
 		// 																																		{
 		// 																																			Name: to.Ptr("Standard_D64s_v3"),
+		// 																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																			},
 		// 																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -665,6 +770,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																				},
 		// 																																				{
 		// 																																					Name: to.Ptr("Standard_D2ds_v4"),
+		// 																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																					},
 		// 																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -678,6 +785,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																						},
 		// 																																						{
 		// 																																							Name: to.Ptr("Standard_D4ds_v4"),
+		// 																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																							},
 		// 																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -691,6 +800,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																								},
 		// 																																								{
 		// 																																									Name: to.Ptr("Standard_D8ds_v4"),
+		// 																																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																									},
 		// 																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -704,6 +815,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																										},
 		// 																																										{
 		// 																																											Name: to.Ptr("Standard_D16ds_v4"),
+		// 																																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																											},
 		// 																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -717,6 +830,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																												},
 		// 																																												{
 		// 																																													Name: to.Ptr("Standard_D32ds_v4"),
+		// 																																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																													},
 		// 																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -730,6 +845,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																														},
 		// 																																														{
 		// 																																															Name: to.Ptr("Standard_D48ds_v4"),
+		// 																																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																															},
 		// 																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -743,6 +860,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																},
 		// 																																																{
 		// 																																																	Name: to.Ptr("Standard_D64ds_v4"),
+		// 																																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																	},
 		// 																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -756,6 +875,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																		},
 		// 																																																		{
 		// 																																																			Name: to.Ptr("Standard_D2ads_v5"),
+		// 																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																			},
 		// 																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -769,6 +890,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																				},
 		// 																																																				{
 		// 																																																					Name: to.Ptr("Standard_D4ads_v5"),
+		// 																																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																					},
 		// 																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -782,6 +905,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																						},
 		// 																																																						{
 		// 																																																							Name: to.Ptr("Standard_D8ads_v5"),
+		// 																																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																							},
 		// 																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -795,6 +920,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																								},
 		// 																																																								{
 		// 																																																									Name: to.Ptr("Standard_D16ads_v5"),
+		// 																																																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																									},
 		// 																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -808,6 +935,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																										},
 		// 																																																										{
 		// 																																																											Name: to.Ptr("Standard_D32ads_v5"),
+		// 																																																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																											},
 		// 																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -821,6 +950,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																												},
 		// 																																																												{
 		// 																																																													Name: to.Ptr("Standard_D48ads_v5"),
+		// 																																																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																													},
 		// 																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -834,6 +965,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																														},
 		// 																																																														{
 		// 																																																															Name: to.Ptr("Standard_D64ads_v5"),
+		// 																																																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																															},
 		// 																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -847,6 +980,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																},
 		// 																																																																{
 		// 																																																																	Name: to.Ptr("Standard_D96ads_v5"),
+		// 																																																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																	},
 		// 																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -860,6 +995,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																		},
 		// 																																																																		{
 		// 																																																																			Name: to.Ptr("Standard_D2ds_v5"),
+		// 																																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																			},
 		// 																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -873,6 +1010,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																				},
 		// 																																																																				{
 		// 																																																																					Name: to.Ptr("Standard_D4ds_v5"),
+		// 																																																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																					},
 		// 																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -886,6 +1025,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																						},
 		// 																																																																						{
 		// 																																																																							Name: to.Ptr("Standard_D8ds_v5"),
+		// 																																																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																							},
 		// 																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -899,6 +1040,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																								},
 		// 																																																																								{
 		// 																																																																									Name: to.Ptr("Standard_D16ds_v5"),
+		// 																																																																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																									},
 		// 																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -912,6 +1055,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																										},
 		// 																																																																										{
 		// 																																																																											Name: to.Ptr("Standard_D32ds_v5"),
+		// 																																																																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																											},
 		// 																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -925,6 +1070,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																												},
 		// 																																																																												{
 		// 																																																																													Name: to.Ptr("Standard_D48ds_v5"),
+		// 																																																																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																													},
 		// 																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -938,6 +1085,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																														},
 		// 																																																																														{
 		// 																																																																															Name: to.Ptr("Standard_D64ds_v5"),
+		// 																																																																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																															},
 		// 																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -951,6 +1100,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																},
 		// 																																																																																{
 		// 																																																																																	Name: to.Ptr("Standard_D96ds_v5"),
+		// 																																																																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																	},
 		// 																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1230,14 +1381,35 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																					SupportedMaximumThroughput: to.Ptr[int32](1200),
 		// 																																																																																					SupportedThroughput: to.Ptr[int32](125),
 		// 																																																																																			}},
+		// 																																																																																		},
+		// 																																																																																		{
+		// 																																																																																			Name: to.Ptr("UltraDisk"),
+		// 																																																																																			DefaultStorageSizeMb: to.Ptr[int64](65536),
+		// 																																																																																			SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																				{
+		// 																																																																																					DefaultIopsTier: to.Ptr("None"),
+		// 																																																																																					MaximumStorageSizeMb: to.Ptr[int64](67108864),
+		// 																																																																																					StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																																					SupportedIops: to.Ptr[int32](4800),
+		// 																																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																						{
+		// 																																																																																							Name: to.Ptr("None"),
+		// 																																																																																							Iops: to.Ptr[int32](0),
+		// 																																																																																					}},
+		// 																																																																																					SupportedMaximumIops: to.Ptr[int32](400000),
+		// 																																																																																					SupportedMaximumThroughput: to.Ptr[int32](10000),
+		// 																																																																																					SupportedThroughput: to.Ptr[int32](1200),
+		// 																																																																																			}},
 		// 																																																																																	}},
 		// 																																																																																},
 		// 																																																																																{
 		// 																																																																																	Name: to.Ptr("MemoryOptimized"),
-		// 																																																																																	DefaultSKUName: to.Ptr("Standard_E4ads_v5"),
+		// 																																																																																	DefaultSKUName: to.Ptr("Standard_E4ds_v5"),
 		// 																																																																																	SupportedServerSKUs: []*armpostgresqlflexibleservers.ServerSKUCapability{
 		// 																																																																																		{
 		// 																																																																																			Name: to.Ptr("Standard_E2s_v3"),
+		// 																																																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																			},
 		// 																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1251,6 +1423,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																				},
 		// 																																																																																				{
 		// 																																																																																					Name: to.Ptr("Standard_E4s_v3"),
+		// 																																																																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																					},
 		// 																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1264,6 +1438,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																						},
 		// 																																																																																						{
 		// 																																																																																							Name: to.Ptr("Standard_E8s_v3"),
+		// 																																																																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																							},
 		// 																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1277,6 +1453,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																								},
 		// 																																																																																								{
 		// 																																																																																									Name: to.Ptr("Standard_E16s_v3"),
+		// 																																																																																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																									},
 		// 																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1290,6 +1468,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																										},
 		// 																																																																																										{
 		// 																																																																																											Name: to.Ptr("Standard_E32s_v3"),
+		// 																																																																																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																											},
 		// 																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1303,6 +1483,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																												},
 		// 																																																																																												{
 		// 																																																																																													Name: to.Ptr("Standard_E48s_v3"),
+		// 																																																																																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																													},
 		// 																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1316,6 +1498,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																														},
 		// 																																																																																														{
 		// 																																																																																															Name: to.Ptr("Standard_E64s_v3"),
+		// 																																																																																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																															},
 		// 																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1329,6 +1513,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																},
 		// 																																																																																																{
 		// 																																																																																																	Name: to.Ptr("Standard_E2ds_v4"),
+		// 																																																																																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																	},
 		// 																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1342,6 +1528,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																		},
 		// 																																																																																																		{
 		// 																																																																																																			Name: to.Ptr("Standard_E4ds_v4"),
+		// 																																																																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																			},
 		// 																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1355,6 +1543,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																				},
 		// 																																																																																																				{
 		// 																																																																																																					Name: to.Ptr("Standard_E8ds_v4"),
+		// 																																																																																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																					},
 		// 																																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1368,6 +1558,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																						},
 		// 																																																																																																						{
 		// 																																																																																																							Name: to.Ptr("Standard_E16ds_v4"),
+		// 																																																																																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																							},
 		// 																																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1381,6 +1573,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																								},
 		// 																																																																																																								{
 		// 																																																																																																									Name: to.Ptr("Standard_E20ds_v4"),
+		// 																																																																																																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																									},
 		// 																																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1394,6 +1588,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																										},
 		// 																																																																																																										{
 		// 																																																																																																											Name: to.Ptr("Standard_E32ds_v4"),
+		// 																																																																																																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																											},
 		// 																																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1407,6 +1603,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																												},
 		// 																																																																																																												{
 		// 																																																																																																													Name: to.Ptr("Standard_E48ds_v4"),
+		// 																																																																																																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																													},
 		// 																																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1420,6 +1618,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																														},
 		// 																																																																																																														{
 		// 																																																																																																															Name: to.Ptr("Standard_E64ds_v4"),
+		// 																																																																																																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																															},
 		// 																																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1433,6 +1633,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																},
 		// 																																																																																																																{
 		// 																																																																																																																	Name: to.Ptr("Standard_E2ads_v5"),
+		// 																																																																																																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																	},
 		// 																																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1446,6 +1648,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																		},
 		// 																																																																																																																		{
 		// 																																																																																																																			Name: to.Ptr("Standard_E4ads_v5"),
+		// 																																																																																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																			},
 		// 																																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1459,6 +1663,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																				},
 		// 																																																																																																																				{
 		// 																																																																																																																					Name: to.Ptr("Standard_E8ads_v5"),
+		// 																																																																																																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																					},
 		// 																																																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1472,6 +1678,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																						},
 		// 																																																																																																																						{
 		// 																																																																																																																							Name: to.Ptr("Standard_E16ads_v5"),
+		// 																																																																																																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																							},
 		// 																																																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1485,6 +1693,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																								},
 		// 																																																																																																																								{
 		// 																																																																																																																									Name: to.Ptr("Standard_E20ads_v5"),
+		// 																																																																																																																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																									},
 		// 																																																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1498,6 +1708,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																										},
 		// 																																																																																																																										{
 		// 																																																																																																																											Name: to.Ptr("Standard_E32ads_v5"),
+		// 																																																																																																																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																											},
 		// 																																																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1511,6 +1723,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																												},
 		// 																																																																																																																												{
 		// 																																																																																																																													Name: to.Ptr("Standard_E48ads_v5"),
+		// 																																																																																																																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																													},
 		// 																																																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1524,6 +1738,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																														},
 		// 																																																																																																																														{
 		// 																																																																																																																															Name: to.Ptr("Standard_E64ads_v5"),
+		// 																																																																																																																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																															},
 		// 																																																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1537,6 +1753,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																},
 		// 																																																																																																																																{
 		// 																																																																																																																																	Name: to.Ptr("Standard_E96ads_v5"),
+		// 																																																																																																																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																	},
 		// 																																																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1550,6 +1768,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																		},
 		// 																																																																																																																																		{
 		// 																																																																																																																																			Name: to.Ptr("Standard_E2ds_v5"),
+		// 																																																																																																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																			},
 		// 																																																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1563,6 +1783,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																				},
 		// 																																																																																																																																				{
 		// 																																																																																																																																					Name: to.Ptr("Standard_E4ds_v5"),
+		// 																																																																																																																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																					},
 		// 																																																																																																																																					SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																						to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1576,6 +1798,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																						},
 		// 																																																																																																																																						{
 		// 																																																																																																																																							Name: to.Ptr("Standard_E8ds_v5"),
+		// 																																																																																																																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																							},
 		// 																																																																																																																																							SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																								to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1589,6 +1813,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																								},
 		// 																																																																																																																																								{
 		// 																																																																																																																																									Name: to.Ptr("Standard_E16ds_v5"),
+		// 																																																																																																																																									SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																									},
 		// 																																																																																																																																									SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																										to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1602,6 +1828,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																										},
 		// 																																																																																																																																										{
 		// 																																																																																																																																											Name: to.Ptr("Standard_E20ds_v5"),
+		// 																																																																																																																																											SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																											},
 		// 																																																																																																																																											SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																												to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1615,6 +1843,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																												},
 		// 																																																																																																																																												{
 		// 																																																																																																																																													Name: to.Ptr("Standard_E32ds_v5"),
+		// 																																																																																																																																													SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																													},
 		// 																																																																																																																																													SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																														to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1628,6 +1858,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																														},
 		// 																																																																																																																																														{
 		// 																																																																																																																																															Name: to.Ptr("Standard_E48ds_v5"),
+		// 																																																																																																																																															SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																															},
 		// 																																																																																																																																															SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																																to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1641,6 +1873,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																																},
 		// 																																																																																																																																																{
 		// 																																																																																																																																																	Name: to.Ptr("Standard_E64ds_v5"),
+		// 																																																																																																																																																	SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																	},
 		// 																																																																																																																																																	SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																																		to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1654,6 +1888,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																																		},
 		// 																																																																																																																																																		{
 		// 																																																																																																																																																			Name: to.Ptr("Standard_E96ds_v5"),
+		// 																																																																																																																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																			},
 		// 																																																																																																																																																			SupportedHaMode: []*armpostgresqlflexibleservers.HaMode{
 		// 																																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeSameZone),
 		// 																																																																																																																																																				to.Ptr(armpostgresqlflexibleservers.HaModeZoneRedundant)},
@@ -1933,11 +2169,32 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																																							SupportedMaximumThroughput: to.Ptr[int32](1200),
 		// 																																																																																																																																																							SupportedThroughput: to.Ptr[int32](125),
 		// 																																																																																																																																																					}},
+		// 																																																																																																																																																				},
+		// 																																																																																																																																																				{
+		// 																																																																																																																																																					Name: to.Ptr("UltraDisk"),
+		// 																																																																																																																																																					DefaultStorageSizeMb: to.Ptr[int64](131072),
+		// 																																																																																																																																																					SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																																																																																						{
+		// 																																																																																																																																																							DefaultIopsTier: to.Ptr("None"),
+		// 																																																																																																																																																							MaximumStorageSizeMb: to.Ptr[int64](67108864),
+		// 																																																																																																																																																							StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																																																																																																							SupportedIops: to.Ptr[int32](4800),
+		// 																																																																																																																																																							SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																																																								{
+		// 																																																																																																																																																									Name: to.Ptr("None"),
+		// 																																																																																																																																																									Iops: to.Ptr[int32](0),
+		// 																																																																																																																																																							}},
+		// 																																																																																																																																																							SupportedMaximumIops: to.Ptr[int32](400000),
+		// 																																																																																																																																																							SupportedMaximumThroughput: to.Ptr[int32](10000),
+		// 																																																																																																																																																							SupportedThroughput: to.Ptr[int32](1200),
+		// 																																																																																																																																																					}},
 		// 																																																																																																																																																			}},
 		// 																																																																																																																																																	}},
 		// 																																																																																																																																																	SupportedServerVersions: []*armpostgresqlflexibleservers.ServerVersionCapability{
 		// 																																																																																																																																																		{
 		// 																																																																																																																																																			Name: to.Ptr("11"),
+		// 																																																																																																																																																			SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																			},
 		// 																																																																																																																																																			SupportedVersionsToUpgrade: []*string{
 		// 																																																																																																																																																				to.Ptr("12"),
 		// 																																																																																																																																																				to.Ptr("13"),
@@ -1947,6 +2204,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																																			},
 		// 																																																																																																																																																			{
 		// 																																																																																																																																																				Name: to.Ptr("12"),
+		// 																																																																																																																																																				SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																				},
 		// 																																																																																																																																																				SupportedVersionsToUpgrade: []*string{
 		// 																																																																																																																																																					to.Ptr("13"),
 		// 																																																																																																																																																					to.Ptr("14"),
@@ -1955,6 +2214,8 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																																				},
 		// 																																																																																																																																																				{
 		// 																																																																																																																																																					Name: to.Ptr("13"),
+		// 																																																																																																																																																					SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																					},
 		// 																																																																																																																																																					SupportedVersionsToUpgrade: []*string{
 		// 																																																																																																																																																						to.Ptr("14"),
 		// 																																																																																																																																																						to.Ptr("15"),
@@ -1962,17 +2223,30 @@ func ExampleLocationBasedCapabilitiesClient_NewExecutePager() {
 		// 																																																																																																																																																					},
 		// 																																																																																																																																																					{
 		// 																																																																																																																																																						Name: to.Ptr("14"),
+		// 																																																																																																																																																						SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																						},
 		// 																																																																																																																																																						SupportedVersionsToUpgrade: []*string{
 		// 																																																																																																																																																							to.Ptr("15"),
 		// 																																																																																																																																																							to.Ptr("16")},
 		// 																																																																																																																																																						},
 		// 																																																																																																																																																						{
 		// 																																																																																																																																																							Name: to.Ptr("15"),
+		// 																																																																																																																																																							SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																							},
 		// 																																																																																																																																																							SupportedVersionsToUpgrade: []*string{
 		// 																																																																																																																																																								to.Ptr("16")},
 		// 																																																																																																																																																							},
 		// 																																																																																																																																																							{
 		// 																																																																																																																																																								Name: to.Ptr("16"),
+		// 																																																																																																																																																								SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																								SupportedVersionsToUpgrade: []*string{
+		// 																																																																																																																																																								},
+		// 																																																																																																																																																							},
+		// 																																																																																																																																																							{
+		// 																																																																																																																																																								Name: to.Ptr("17"),
+		// 																																																																																																																																																								SupportedFeatures: []*armpostgresqlflexibleservers.SupportedFeature{
+		// 																																																																																																																																																								},
 		// 																																																																																																																																																								SupportedVersionsToUpgrade: []*string{
 		// 																																																																																																																																																								},
 		// 																																																																																																																																																						}},

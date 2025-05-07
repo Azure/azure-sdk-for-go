@@ -64,7 +64,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -118,7 +118,7 @@ func (client *ServiceClient) ListSharesSegmentCreateRequest(ctx context.Context,
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}
@@ -179,7 +179,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if client.fileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*client.fileRequestIntent)}
 	}

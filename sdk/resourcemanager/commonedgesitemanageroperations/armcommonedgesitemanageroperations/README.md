@@ -1,6 +1,6 @@
-# Azure Commonedgesitemanageroperations Module for Go
+# Azure Common Edge Site Manager Operations Module for Go
 
-The `armcommonedgesitemanageroperations` module provides operations for working with Azure Commonedgesitemanageroperations.
+The `armcommonedgesitemanageroperations` module provides operations for working with Azure Common Edge Site Manager Operations.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/commonedgesitemanageroperations/armcommonedgesitemanageroperations)
 
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commonedgesitemanag
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Commonedgesitemanageroperations.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Common Edge Site Manager Operations.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Commonedgesitemanageroperations module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Common Edge Site Manager Operations module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcommonedgesitemanageroperations.NewClientFactory(<subscription ID>, cred, nil)

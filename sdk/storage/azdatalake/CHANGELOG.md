@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed source file encoding in rename API. Fixes [#23831](https://github.com/Azure/azure-sdk-for-go/issues/23831)
 
 ### Other Changes
 

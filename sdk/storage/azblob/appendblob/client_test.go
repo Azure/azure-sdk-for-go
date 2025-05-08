@@ -532,7 +532,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURWithLRequestIntent
 	// Append block from URL.
 	_, err = destBlob.Create(context.Background(), nil)
 	_require.NoError(err)
-	requestIntent := blob.FileShareTokenIntentBackup
+	requestIntent := blob.FileRequestIntentTypeBackup
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendblob.AppendBlockFromURLOptions{
 		SourceContentValidation: blob.SourceContentValidationTypeMD5(contentMD5[:]),
 		FileRequestIntent:       &requestIntent,

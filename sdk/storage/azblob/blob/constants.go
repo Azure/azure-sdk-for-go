@@ -238,12 +238,12 @@ var _ SourceContentValidationType = (SourceContentValidationTypeMD5)(nil)
 type FileRequestIntentType = generated.FileShareTokenIntent
 
 const (
-	FileShareTokenIntentBackup FileRequestIntentType = "backup"
+	FileRequestIntentTypeBackup FileRequestIntentType = "backup"
 )
 
 // PossibleFileShareTokenIntentValues returns the possible values for the FileRequestIntentType const type.
 func PossibleFileShareTokenIntentValues() []FileRequestIntentType {
 	return []FileRequestIntentType{
-		FileShareTokenIntentBackup,
+		FileRequestIntentTypeBackup,
 	}
 }

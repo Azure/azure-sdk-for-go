@@ -83,7 +83,7 @@ type UploadBlobFromURLOptions struct {
 	CopySourceAuthorization *string
 
 	// Valid value is backup
-	FileRequestIntent *blob.FileShareTokenIntent
+	FileRequestIntent *blob.FileRequestIntentType
 
 	// Optional, default is true. Indicates if properties from the source blob should be copied.
 	CopySourceBlobProperties *bool
@@ -169,7 +169,7 @@ type StageBlockFromURLOptions struct {
 	SourceContentValidation blob.SourceContentValidationType
 
 	// File request Intent. Valid value is backup.
-	FileRequestIntent *blob.FileShareTokenIntent
+	FileRequestIntent *blob.FileRequestIntentType
 
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range blob.HTTPRange

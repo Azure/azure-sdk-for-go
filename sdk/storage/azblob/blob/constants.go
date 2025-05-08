@@ -234,16 +234,16 @@ func (SourceContentValidationTypeMD5) notPubliclyImplementable() {}
 
 var _ SourceContentValidationType = (SourceContentValidationTypeMD5)(nil)
 
-// FileShareTokenIntent is file request intent with  valid value as Backup
-type FileShareTokenIntent = generated.FileShareTokenIntent
+// FileRequestIntentType is file request intent with  valid value as Backup
+type FileRequestIntentType = generated.FileShareTokenIntent
 
 const (
-	FileShareTokenIntentBackup FileShareTokenIntent = "backup"
+	FileRequestIntentTypeBackup FileRequestIntentType = "backup"
 )
 
-// PossibleFileShareTokenIntentValues returns the possible values for the FileShareTokenIntent const type.
-func PossibleFileShareTokenIntentValues() []FileShareTokenIntent {
-	return []FileShareTokenIntent{
-		FileShareTokenIntentBackup,
+// PossibleFileRequestIntentTypeValues returns the possible values for the FileRequestIntentType const type.
+func PossibleFileRequestIntentTypeValues() []FileRequestIntentType {
+	return []FileRequestIntentType{
+		FileRequestIntentTypeBackup,
 	}
 }

@@ -311,7 +311,7 @@ func (s *BlobUnrecordedTestsSuite) TestCopyBlobFromUrlOptions() {
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 
-	requestIntent := blob.FileShareTokenIntentBackup
+	requestIntent := blob.FileRequestIntentTypeBackup
 
 	// Invoke CopyFromURL.
 	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{

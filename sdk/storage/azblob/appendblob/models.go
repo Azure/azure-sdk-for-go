@@ -112,7 +112,7 @@ type AppendBlockFromURLOptions struct {
 
 	CPKScopeInfo *blob.CPKScopeInfo
 
-	FileRequestIntent *blob.FileShareTokenIntent
+	FileRequestIntent *blob.FileRequestIntentType
 
 	SourceModifiedAccessConditions *blob.SourceModifiedAccessConditions
 

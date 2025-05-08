@@ -1,14 +1,9 @@
 # Release History
 
-## 1.5.2-beta.1 (Unreleased)
+## 1.5.2-beta.1 (2025-05-08)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added new API for create symbolic link for NFS Over Rest.
 
 ## 1.5.1 (2025-04-16)
 

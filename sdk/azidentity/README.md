@@ -21,7 +21,7 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.18
+- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
 
 ### Authenticating during local development
 

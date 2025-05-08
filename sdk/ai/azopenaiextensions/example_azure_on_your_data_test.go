@@ -40,14 +40,15 @@ func Example_usingAzureOnYourData() {
 	)
 
 	chatParams := openai.ChatCompletionNewParams{
-		Model:     openai.F(model),
+		Model:     openai.ChatModel(model),
 		MaxTokens: openai.Int(512),
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.ChatCompletionMessageParam{
-				Role:    openai.F(openai.ChatCompletionMessageParamRoleUser),
-				Content: openai.F[any]("What does the OpenAI package do?"),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String("What does the OpenAI package do?"),
+				},
 			},
-		}),
+		}},
 	}
 
 	// There are other types of data sources available. Examples:
@@ -141,14 +142,15 @@ func Example_usingEnhancements() {
 	)
 
 	chatParams := openai.ChatCompletionNewParams{
-		Model:     openai.F(model),
+		Model:     openai.ChatModel(model),
 		MaxTokens: openai.Int(512),
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.ChatCompletionMessageParam{
-				Role:    openai.F(openai.ChatCompletionMessageParamRoleUser),
-				Content: openai.F[any]("What does the OpenAI package do?"),
+		Messages: []openai.ChatCompletionMessageParamUnion{{
+			OfUser: &openai.ChatCompletionUserMessageParam{
+				Content: openai.ChatCompletionUserMessageParamContentUnion{
+					OfString: openai.String("What does the OpenAI package do?"),
+				},
 			},
-		}),
+		}},
 	}
 
 	resp, err := client.Chat.Completions.New(

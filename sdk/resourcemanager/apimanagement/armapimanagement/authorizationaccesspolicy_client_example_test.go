@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListAuthorizationAccessPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListAuthorizationAccessPolicies.json
 func ExampleAuthorizationAccessPolicyClient_NewListByAuthorizationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,26 +48,30 @@ func ExampleAuthorizationAccessPolicyClient_NewListByAuthorizationPager() {
 		// 		{
 		// 			Name: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders/authorizations/accessPolicies"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
 		// 			Properties: &armapimanagement.AuthorizationAccessPolicyContractProperties{
-		// 				ObjectID: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
-		// 				TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
+		// 				AppIDs: []*string{
+		// 					to.Ptr("d5f04bb0-ba78-4878-a43e-35a0b74fe315")},
+		// 					ObjectID: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
+		// 					TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
+		// 				},
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("5585d6cd-2289-42e9-ab9b-3e2e23d74b4a"),
-		// 			Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders/authorizations/accessPolicies"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
-		// 			Properties: &armapimanagement.AuthorizationAccessPolicyContractProperties{
-		// 				ObjectID: to.Ptr("5585d6cd-2289-42e9-ab9b-3e2e23d74b4a"),
-		// 				TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
-		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("5585d6cd-2289-42e9-ab9b-3e2e23d74b4a"),
+		// 				Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders/authorizations/accessPolicies"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
+		// 				Properties: &armapimanagement.AuthorizationAccessPolicyContractProperties{
+		// 					AppIDs: []*string{
+		// 						to.Ptr("d5f04bb0-ba78-4878-a43e-35a0b74fe315")},
+		// 						ObjectID: to.Ptr("5585d6cd-2289-42e9-ab9b-3e2e23d74b4a"),
+		// 						TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetAuthorizationAccessPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetAuthorizationAccessPolicy.json
 func ExampleAuthorizationAccessPolicyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,15 +92,17 @@ func ExampleAuthorizationAccessPolicyClient_Get() {
 	// res.AuthorizationAccessPolicyContract = armapimanagement.AuthorizationAccessPolicyContract{
 	// 	Name: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders/authorizations/accessPolicies"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
 	// 	Properties: &armapimanagement.AuthorizationAccessPolicyContractProperties{
-	// 		ObjectID: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
-	// 		TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
-	// 	},
-	// }
+	// 		AppIDs: []*string{
+	// 			to.Ptr("d5f04bb0-ba78-4878-a43e-35a0b74fe315")},
+	// 			ObjectID: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
+	// 			TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationAccessPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateAuthorizationAccessPolicy.json
 func ExampleAuthorizationAccessPolicyClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,6 +115,8 @@ func ExampleAuthorizationAccessPolicyClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewAuthorizationAccessPolicyClient().CreateOrUpdate(ctx, "rg1", "apimService1", "aadwithauthcode", "authz1", "fe0bed83-631f-4149-bd0b-0464b1bc7cab", armapimanagement.AuthorizationAccessPolicyContract{
 		Properties: &armapimanagement.AuthorizationAccessPolicyContractProperties{
+			AppIDs: []*string{
+				to.Ptr("d5f04bb0-ba78-4878-a43e-35a0b74fe315")},
 			ObjectID: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
 			TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
 		},
@@ -122,15 +130,17 @@ func ExampleAuthorizationAccessPolicyClient_CreateOrUpdate() {
 	// res.AuthorizationAccessPolicyContract = armapimanagement.AuthorizationAccessPolicyContract{
 	// 	Name: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders/authorizations/accessPolicies"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode/authorizations/authz1/accessPolicies"),
 	// 	Properties: &armapimanagement.AuthorizationAccessPolicyContractProperties{
-	// 		ObjectID: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
-	// 		TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
-	// 	},
-	// }
+	// 		AppIDs: []*string{
+	// 			to.Ptr("d5f04bb0-ba78-4878-a43e-35a0b74fe315")},
+	// 			ObjectID: to.Ptr("fe0bed83-631f-4149-bd0b-0464b1bc7cab"),
+	// 			TenantID: to.Ptr("13932a0d-5c63-4d37-901d-1df9c97722ff"),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteAuthorizationAccessPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteAuthorizationAccessPolicy.json
 func ExampleAuthorizationAccessPolicyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,12 +1,16 @@
 # Release History
 
-## 0.2.3 (Unreleased)
+## 0.2.4 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 0.2.3 (2025-04-15)
 
 ### Other Changes
 * Default audience of Azure Container Registry of all clouds to https://containerregistry.azure.net

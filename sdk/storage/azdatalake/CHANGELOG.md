@@ -9,7 +9,12 @@
 ### Bugs Fixed
 * Fixed source file encoding in rename API. Fixes [#23831](https://github.com/Azure/azure-sdk-for-go/issues/23831)
 
+## 1.4.1 (2025-04-28)
+
 ### Other Changes
+* Updated `azidentity` version to `1.9.0`
+* Updated `azcore` version to `1.18.0`
+* Updated `azblob` version to `v1.6.1`
 
 ## 1.4.1-beta.1 (2025-02-12)
 

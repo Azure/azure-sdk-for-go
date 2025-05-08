@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d4205894880b989ede35d62d97c8e901ed14fb5a/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples/SupportedOperatingSystems_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4fc983fb08e5fd8a7a821eb6491f5338ce52a9cf/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples/SupportedOperatingSystems_Get.json
 func ExampleSupportedOperatingSystemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleSupportedOperatingSystemsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSupportedOperatingSystemsClient().Get(ctx, "vault1", "resourceGroupPS1", &armrecoveryservicessiterecovery.SupportedOperatingSystemsClientGetOptions{InstanceType: nil})
+	res, err := clientFactory.NewSupportedOperatingSystemsClient().Get(ctx, "resourceGroupPS1", "vault1", &armrecoveryservicessiterecovery.SupportedOperatingSystemsClientGetOptions{InstanceType: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

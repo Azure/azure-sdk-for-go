@@ -45,6 +45,7 @@ func GetAllVersionTags(moduleRelativePath string) ([]string, error) {
 	result := []map[string]interface{}{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
+		log.Printf("Failed to unmarshal response body: %s, error: %v", string(body), err)
 		return nil, err
 	}
 	var tags []string

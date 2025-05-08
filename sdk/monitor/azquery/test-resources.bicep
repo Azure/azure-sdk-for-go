@@ -46,6 +46,9 @@ resource app_config 'Microsoft.AppConfiguration/configurationStores@2022-05-01' 
   sku: {
     name: appSku
   }
+  properties: {
+    disableLocalAuth: true 
+  }
 }
 
 output WORKSPACE_ID string = log_analytics1.properties.customerId

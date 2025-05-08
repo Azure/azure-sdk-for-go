@@ -36,7 +36,7 @@ type DefaultAzureCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// TenantID sets the default tenant for authentication via the Azure CLI and workload identity.
+	// TenantID sets the default tenant for authentication via the Azure CLI, Azure Developer CLI, and workload identity.
 	TenantID string
 }
 

@@ -54,7 +54,7 @@ func (client *ServiceClient) ListFileSystemsCreateRequest(ctx context.Context, o
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2025-05-05"}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 

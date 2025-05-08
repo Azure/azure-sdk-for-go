@@ -309,9 +309,11 @@ func Example_client_CreateDirectoryNFS() {
 	dirClient := shareClient.NewDirectoryClient(dirName)
 
 	_, err = dirClient.Create(context.Background(), &directory.CreateOptions{
-		Owner:    to.Ptr("123"),
-		Group:    to.Ptr("345"),
-		FileMode: to.Ptr("7774"),
+		FileNFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr("123"),
+			Group:    to.Ptr("345"),
+			FileMode: to.Ptr("7774"),
+		},
 	})
 	handleError(err)
 }
@@ -351,9 +353,11 @@ func Example_client_SetHTTPHeadersNFS() {
 
 	// Set the custom permissions
 	_, err = dirClient.SetProperties(context.Background(), &directory.SetPropertiesOptions{
-		Owner:    to.Ptr(owner),
-		Group:    to.Ptr(group),
-		FileMode: to.Ptr(mode),
+		FileNFSProperties: &file.NFSProperties{
+			Owner:    to.Ptr(owner),
+			Group:    to.Ptr(group),
+			FileMode: to.Ptr(mode),
+		},
 	})
 	handleError(err)
 }

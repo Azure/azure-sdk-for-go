@@ -8,41 +8,64 @@ parameters:
   ArtifactName: packages
 
 steps:
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
-      arguments: >
-        -ServiceDirectory ${{parameters.ServiceDirectory}}
-        -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
-      pwsh: true
-      workingDirectory: $(Pipeline.Workspace)
-    displayName: Dump Package properties
-    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+      IncludeIndirect: false
 
   - pwsh: |
+      . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
       . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+
+      $pkgs = Get-PackagesFromPackageInfo -PackageInfoFolder "$(Build.ArtifactStagingDirectory)/PackageInfo" `
+        -IncludeIndirect $false -CustomCompareFunction { param($pkgProp) { return $pkgProp.CIParameters.IsSdkLibrary } }
+
+      $apiviewEnabledPackages = @()
+      if ($pkgs) {
+        $apiviewEnabledPackages = $pkgs | ForEach-Object { $_.Name } | Sort-Object -Unique
+      }
+      else {
+        Write-Host "No sdk packages were found in package set. Skipping APIView generation."
+        exit 0
+      }
+
+      $failed = $false
       $directoryToPublish = Join-Path -Path $(Build.ArtifactStagingDirectory) ${{ parameters.ArtifactName }}
 
-      New-APIViewArtifacts `
-        -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
-        -OutputDirectory $(Build.ArtifactStagingDirectory) `
-        -DirectoryToPublish $directoryToPublish
+      foreach($serviceDirectory in $apiviewEnabledPackages) {
+        New-APIViewArtifacts `
+          -ServiceDirectory $serviceDirectory `
+          -OutputDirectory $(Build.ArtifactStagingDirectory) `
+          -DirectoryToPublish $directoryToPublish
+      }
 
       Copy-Item "$(Build.ArtifactStagingDirectory)/PackageInfo" -Destination $directoryToPublish -Recurse
     displayName: 'Create Go APIView Artifact'
 
-  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-    parameters:
-      ArtifactName: ${{ parameters.ArtifactName }}
-      ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
-      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+  - ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+    # in a PR context, always publish the artifacts, even if they are not shipping
+    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      parameters:
+        ArtifactName: ${{ parameters.ArtifactName }}
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
+  - ${{ else }}:
+    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      parameters:
+        ArtifactName: ${{ parameters.ArtifactName }}
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
+        CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
-  # Second publish of PackageInfo to avoid breakng release pipeline, should be cleaned up once release pipeline is updated
-  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-    parameters:
-      ArtifactName: "PackageInfo"
-      ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
-      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      parameters:
+        ArtifactName: PackageInfo
+        ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
+        CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
@@ -63,6 +86,8 @@ steps:
 
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+      parameters:
+        Condition: ${{ parameters.IsSdkLibrary }}
 
   - ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), eq(variables['System.TeamProject'], 'internal')) }}:
     - pwsh: |
@@ -110,136 +135,207 @@ steps:
           not(endsWith(variables['Build.Repository.Name'], '-pr'))
         )
 
-  - task: Powershell@2
-    displayName: 'Dependency Check'
+  - pwsh: |
+      ./eng/scripts/Invoke-DependencyCheck.ps1 "$(Packages)"
+    displayName: Dependency Check
     condition: ne(variables['Skip.DependencyCheck'], 'true')
     env:
       GO111MODULE: 'on'
-    inputs:
-      targetType: filePath
-      pwsh: true
-      filePath: eng/scripts/Invoke-DependencyCheck.ps1
-      arguments: 'sdk/${{ parameters.ServiceDirectory }}'
 
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version
     displayName: 'Install GoLintCLI and dependencies.'
+    condition: succeededOrFailed()
     workingDirectory: $(System.DefaultWorkingDirectory)
     retryCountOnTaskFailure: 3
 
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
-        golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
+      $changedPackages = "$(Packages)" -split ","
+      $failed = $false
+
+      foreach($packageDirectory in $changedPackages) {
+        if ($packageDirectory.startsWith('eng')) {
+          Write-Host "skipping linting on engineering-only package: '$jpackageDirectory'"
+          continue
+        }
+
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
+
+        foreach ($md in $modDirs) {
+          pushd $md
+          Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
+          golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
+
+          if ($LASTEXITCODE) {
+            Write-Host "golangci-lint for $packageDirectory failed. Check above output for details."
+            $failed = $true
+          }
+        }
+      }
+
+      if ($failed) {
+        Write-Host "golangci-lint failed. Check above output for details."
+        exit 1
       }
     displayName: 'Lint'
-    failOnStderr: false
     workingDirectory: $(System.DefaultWorkingDirectory)
+    condition: succeededOrFailed()
 
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go get -u all in $md"
-        go get -u all
-        $diff = (git diff -w .)
-        Write-Host ($diff -join "`n")
-        if ($diff.Length -gt 0) {
-          exit 1
+      $changedPackages = "$(Packages)" -split ","
+      $failed = $false
+
+      foreach($packageDirectory in $changedPackages) {
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
+        foreach ($md in $modDirs) {
+          pushd $md
+          Write-Host "##[command]Executing go get -u all in $md"
+          go get -u all
+          $diff = (git diff -w .)
+          Write-Host ($diff -join "`n")
+          if ($diff.Length -gt 0) {
+            Write-Host "Failed to go get $packageDirectory"
+            $failed = $true
+          }
         }
+      }
+
+      if ($failed) {
+        Write-Host "go get failed. Check above output for details."
+        exit 1
       }
     displayName: 'go get -u all'
     condition: eq(variables.SkipGoGetUAll, 'false')
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        pushd $md
-        Write-Host "##[command]Executing go mod tidy in $md"
-        go mod tidy
-        $diff = (git diff -w .)
-        Write-Host ($diff -join "`n")
-        if ($diff.Length -gt 0) {
-          exit 1
+      $changedPackages = "$(Packages)" -split ","
+      $failed = $false
+
+      foreach($packageDirectory in $changedPackages) {
+        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
+        foreach ($md in $modDirs) {
+          pushd $md
+          Write-Host "##[command]Executing go mod tidy in $md"
+          go mod tidy
+          $diff = (git diff -w .)
+          Write-Host ($diff -join "`n")
+          if ($diff.Length -gt 0) {
+            $failed = $true
+            Write-Host "Failed to go mod tidy $packageDirectory"
+          }
         }
+      }
+
+      if ($failed) {
+        Write-Host "go mod tidy failed. Check above output for details."
+        exit 1
       }
     displayName: 'go mod tidy'
     workingDirectory: $(System.DefaultWorkingDirectory)
+    condition: succeededOrFailed()
 
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-      foreach ($md in $modDirs) {
-        if (-Not $md -Match "/arm") {
-          Get-ChildItem $md/doc.go
+      $packages = "$(Packages)" -split ","
+      foreach($packageDir in $packages) {
+        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$packageDir"
+        foreach ($md in $modDirs) {
+          if (-Not $md -Match "/arm") {
+            Get-ChildItem $md/doc.go
+          }
         }
       }
     displayName: 'Verify doc.go'
     workingDirectory: $(System.DefaultWorkingDirectory)
-
-  - script: |
-      echo scanning copyright headers in $(pwd)
-      grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
-    displayName: 'Copyright Header Check'
     condition: succeededOrFailed()
-    failOnStderr: true
-    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
-  - ${{ if eq(parameters.LicenseCheck, 'true') }}:
-    - pwsh: |
-        Write-Host "ensuring $(pwd)/LICENSE.txt file exists"
-        if (Test-Path LICENSE.txt) {
-          $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
-          if ($patternMatches.Length -eq 0) {
-            Write-Host "LICENSE.txt file is invalid"
-            exit 1
-          }
-        } else {
-          Write-Host "Could not find a LICENSE.txt file"
-          exit 1
-        }
-      displayName: 'LICENSE.txt Check'
-      condition: succeededOrFailed()
-      workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
+      arguments: >
+        -Packages '$(Packages)'
+      pwsh: true
+    displayName: 'Copyright header Check'
+    condition: succeededOrFailed()
 
-  - script: |
-      echo Check source file formatting in $(pwd)
-      gofmt -s -l -d . | tee >&2
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
+      arguments: >
+        -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
+      pwsh: true
+    displayName: 'LICENSE.txt Check'
+    condition: succeededOrFailed()
+
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
+      arguments: >
+        -Packages '$(Packages)'
+      pwsh: true
     displayName: 'Format Check'
     condition: succeededOrFailed()
-    failOnStderr: true
-    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
     parameters:
-      Directory: sdk/${{ parameters.ServiceDirectory }}
+      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+        Directory: ''
+        Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+      ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+        Directory: sdk/${{ parameters.ServiceDirectory }}
       CheckLinkGuidance: $true
+      Condition: succeededOrFailed()
 
-  - script: |
-      go run . --directory '$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}'
+  - pwsh: |
+      if (-not "$(Packages)") {
+        Write-Host "No services were changed build. Skipping doccheck."
+        exit 0
+      }
+
+      $changedServices = "$(Packages)" -split ","
+      $failed = $false
+
+      foreach ($service in $changedServices) {
+        go run . --directory "$(System.DefaultWorkingDirectory)/$service"
+        if ($LASTEXITCODE -ne 0) {
+          $failed = $true
+        }
+      }
+
+      if ($failed) {
+        Write-Host "Doccheck failed. Check above output for details."
+        exit 1
+      }
     displayName: 'Validate Documentation'
     condition: succeededOrFailed()
     workingDirectory: 'eng/tools/doccheck'
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  - ${{if eq(parameters.NonShipping, 'false')}}:
-    - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-      parameters:
-        ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
-          PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
-        ${{ else }}:
-          PackageName: 'sdk/${{parameters.ServiceDirectory}}'
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        ForRelease: false
-
-  - task: PowerShell@2
+  - pwsh: |
+      ./eng/scripts/Invoke-SmokeTests.ps1 "$(Packages)"
     displayName: 'Run Nightly SmokeTests'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./eng/scripts/Smoke_Tests_Nightly.ps1
-      pwsh: true
-      arguments: '${{ parameters.ServiceDirectory }}'
+
+  # There are no more checks after this one, so simply removing all packageInfo that aren't shipping
+  # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.
+  - pwsh: |
+      # remove the manifest files that were dropped into this directory due to publishing of the 1es artifact.
+      # we don't need them around anymore and they will break the verify-changelogs step.
+
+      if (Test-Path -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest) {
+        Remove-Item -Recurse -Force -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest
+      }
+
+      Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/PackageInfo -Recurse -Filter *.json `
+        | ForEach-Object {
+          $json = Get-Content -Path $_.FullName -Raw | ConvertFrom-Json
+          if ($json.CIParameters.NonShipping) {
+            Remove-Item -Path $_.FullName -Force
+          }
+        }
+    displayName: Clean up Non-Shipping Artifacts
+
+  - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+    parameters:
+      PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo

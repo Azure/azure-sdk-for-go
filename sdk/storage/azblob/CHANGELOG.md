@@ -1,15 +1,24 @@
 # Release History
 
-## 1.6.1-beta.2 (Unreleased)
+## 1.6.2-beta.1 (Unreleased)
 
 ### Features Added
+* Add support for x-ms-file-request-intent header for blob copy APIs.
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.6.1 (2025-04-16)
 
 ### Bugs Fixed
 * Fixed return value of DownloadBuffer when the HTTPRange count given is greater than the data length. Fixes [#23884](https://github.com/Azure/azure-sdk-for-go/issues/23884)
 
 ### Other Changes
+* Updated `azidentity` version to `1.9.0`
+* Updated `azcore` version to `1.18.0`
 
 ## 1.6.1-beta.1 (2025-02-12)
 

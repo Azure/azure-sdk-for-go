@@ -27,6 +27,12 @@
 # PRLabel: %OpenAI
 /sdk/ai                       @richardpark-msft @jhendrixMSFT @chlowell
 
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %OpenAI
+# ServiceOwner: @glecaros
+# PRLabel: %OpenAI
+/sdk/ai/azopenai                       @richardpark-msft @achauhan-scc @PratibhaShrivastav18 @kingernupur @glecaros
+
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceLabel: %Internal
 # PRLabel: %Internal
@@ -68,6 +74,16 @@
 # PRLabel: %Event Hubs
 /sdk/messaging/azeventhubs/   @richardpark-msft @chlowell @jhendrixMSFT
 
+# AzureSDKOwners: @vicancy
+# ServiceLabel: %WebPubSub
+# PRLabel: %WebPubSub
+/sdk/messaging/azwebpubsub/  @vicancy @chenkennt @jhendrixMSFT
+
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %Service Bus
+# PRLabel: %Service Bus
+/sdk/messaging/stress/   @richardpark-msft @chlowell @jhendrixMSFT
+
 # AzureSDKOwners: @gracewilcox
 # ServiceLabel: %Monitor
 # PRLabel: %Monitor
@@ -79,8 +95,9 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # AzureSDKOwners: @jhendrixMSFT
-# ServiceOwner: @tanyasethi-msft
-# ServiceLabel: %Azure.Core
+# ServiceOwners: @tanyasethi-msft
+# ServiceLabel: %Storage
+
 # PRLabel: %Storage
 /sdk/storage/                 @souravgupta-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
@@ -158,7 +175,7 @@
 #/<NotInRepo>/          @divka78 @amitchat @aishu
 
 # ServiceLabel: %Azure Stack
-#/<NotInRepo>/          @sijuman @sarathys @bganapa @rakku-ms
+#/<NotInRepo>/          @sarathys @bganapa @rakku-ms
 
 # ServiceLabel: %Batch
 #/<NotInRepo>/          @mksuni @bgklein @mscurrell @dpwatrous @gingi @paterasMSFT @cRui861

@@ -9,6 +9,10 @@
             "CoverageGoal": 0.19
         },
         {
+            "Name": "azbatch",
+            "CoverageGoal": 0.70
+        },
+        {
             "Name": "azblob",
             "CoverageGoal": 0.30
         },
@@ -140,7 +144,7 @@
         },
         {
             "Name": "monitor/query/azmetrics",
-            "CoverageGoal": 0.75
+            "CoverageGoal": 0.60
         }
     ]
 }

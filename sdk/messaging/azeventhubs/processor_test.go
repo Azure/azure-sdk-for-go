@@ -14,10 +14,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/checkpoints"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/stretchr/testify/require"
 )
@@ -223,7 +223,7 @@ func TestProcessor_Contention(t *testing.T) {
 }
 
 func TestProcessor_RunNotConcurrent(t *testing.T) {
-	newProc := setupProcessorTest(t)
+	newProc := setupProcessorTest(t, false).Create
 	proc := newProc(nil)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -258,7 +258,7 @@ func TestProcessor_RunNotConcurrent(t *testing.T) {
 
 func TestProcessor_Run(t *testing.T) {
 	t.Run("VariationsWithoutCallingNextPartitionClient", func(t *testing.T) {
-		newProc := setupProcessorTest(t)
+		newProc := setupProcessorTest(t, false).Create
 
 		processor := newProc(&azeventhubs.ProcessorOptions{
 			UpdateInterval:        time.Millisecond,
@@ -285,7 +285,7 @@ func TestProcessor_Run(t *testing.T) {
 	})
 
 	t.Run("NextPartitionClient quits properly when Run is stopped.", func(t *testing.T) {
-		newProc := setupProcessorTest(t)
+		newProc := setupProcessorTest(t, false).Create
 
 		processor := newProc(&azeventhubs.ProcessorOptions{
 			UpdateInterval:        time.Millisecond,
@@ -328,7 +328,7 @@ func TestProcessor_Run(t *testing.T) {
 	})
 
 	t.Run("Run stopped quickly", func(t *testing.T) {
-		newProc := setupProcessorTest(t)
+		newProc := setupProcessorTest(t, false).Create
 
 		processor := newProc(&azeventhubs.ProcessorOptions{
 			UpdateInterval:        time.Millisecond,
@@ -399,11 +399,24 @@ func newNextPartitionCounter(t *testing.T, processor *azeventhubs.Processor) str
 	}
 }
 
-func setupProcessorTest(t *testing.T) func(*azeventhubs.ProcessorOptions) *azeventhubs.Processor {
+type processorTestData struct {
+	Create          func(*azeventhubs.ProcessorOptions) *azeventhubs.Processor
+	CheckpointStore azeventhubs.CheckpointStore
+}
+
+func setupProcessorTest(t *testing.T, geoDR bool) *processorTestData {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	containerName := test.RandomString("proctest", 10)
-	cc, err := container.NewClient(test.URLJoinPaths(testParams.StorageEndpoint, containerName), testParams.Cred, nil)
+
+	storageEndpoint := testParams.StorageEndpoint
+
+	if geoDR {
+		storageEndpoint = testParams.GeoDRStorageEndpoint
+	}
+
+	cc, err := container.NewClient(test.URLJoinPaths(storageEndpoint, containerName), testParams.Cred, nil)
+
 	require.NoError(t, err)
 
 	t.Logf("Creating storage container %s", containerName)
@@ -422,8 +435,14 @@ func setupProcessorTest(t *testing.T) func(*azeventhubs.ProcessorOptions) *azeve
 	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
 	require.NoError(t, err)
 
+	namespace, eventHubName := testParams.EventHubNamespace, testParams.EventHubName
+
+	if geoDR {
+		namespace, eventHubName = testParams.GeoDRNamespace, testParams.GeoDRHubName
+	}
+
 	t.Logf("Consumer client created")
-	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
+	consumerClient, err := azeventhubs.NewConsumerClient(namespace, eventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
@@ -431,12 +450,17 @@ func setupProcessorTest(t *testing.T) func(*azeventhubs.ProcessorOptions) *azeve
 		require.NoError(t, err)
 	})
 
-	return func(options *azeventhubs.ProcessorOptions) *azeventhubs.Processor {
+	mustCreateProcessor := func(options *azeventhubs.ProcessorOptions) *azeventhubs.Processor {
 		t.Logf("Processor created")
 		processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, options)
 		require.NoError(t, err)
 
 		return processor
+	}
+
+	return &processorTestData{
+		Create:          mustCreateProcessor,
+		CheckpointStore: checkpointStore,
 	}
 }
 
@@ -509,6 +533,16 @@ func testPartitionAcquisition(t *testing.T, loadBalancerStrategy azeventhubs.Pro
 	<-processorClosed
 }
 
+type countingCheckpointStore struct {
+	*checkpoints.BlobStore
+	listed int
+}
+
+func (c *countingCheckpointStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
+	c.listed++
+	return c.BlobStore.ListCheckpoints(ctx, fullyQualifiedNamespace, eventHubName, consumerGroup, options)
+}
+
 func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.ProcessorStrategy) {
 	testParams := test.GetConnectionParamsForTest(t)
 
@@ -529,8 +563,13 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	// Create the checkpoint store
 	// NOTE: the container must exist before the checkpoint store can be used.
 	t.Logf("Checkpoint store created")
-	checkpointStore, err := checkpoints.NewBlobStore(cc, nil)
-	require.NoError(t, err)
+	var checkpointStore *countingCheckpointStore
+	{
+		inner, err := checkpoints.NewBlobStore(cc, nil)
+		require.NoError(t, err)
+
+		checkpointStore = &countingCheckpointStore{BlobStore: inner, listed: 0}
+	}
 
 	t.Logf("Consumer client created")
 	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
@@ -589,6 +628,15 @@ func testWithLoadBalancer(t *testing.T, loadBalancerStrategy azeventhubs.Process
 	t.Logf("Starting processor in separate goroutine")
 	err = processor.Run(runCtx)
 	require.NoError(t, err)
+
+	if loadBalancerStrategy == azeventhubs.ProcessorStrategyGreedy {
+		// with greedy we do one dispatch, so all 'x' number of partition clients will use/reuse
+		// the one ListCheckpoints() call's results.
+		require.Equal(t, 1, checkpointStore.listed)
+	} else {
+		// with balanced, we do a dispatch round _per_ partition, so we'll see 'x' number of requests
+		require.Equal(t, len(ehProps.PartitionIDs), checkpointStore.listed)
+	}
 }
 
 func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClient, partitionClient *azeventhubs.ProcessorPartitionClient) error {

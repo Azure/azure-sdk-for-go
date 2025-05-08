@@ -10,6 +10,12 @@ Push-Location $repoRoot/eng/tools/smoketests
 
 # create a smoketests directory
 $smoketestsDir = Join-Path $repoRoot sdk smoketests
+
+If (Test-Path -Path $smoketestsDir) {
+    Write-Host "Removing existing smoketests directory at $smoketestsDir"
+    Remove-Item -Path $smoketestsDir -Recurse -Force
+}
+
 Write-Host "Creating a new directory for smoketests at $smoketestsDir"
 New-Item -Path $smoketestsDir -ItemType Directory
 

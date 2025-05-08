@@ -67,8 +67,12 @@ func (testsuite *PostgresqlflexibleserversOperationsTestSuite) TestOperationsNew
 	testsuite.Require().NoError(err)
 	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = clientFactory.NewOperationsClient().List(testsuite.ctx, nil)
+	pager := clientFactory.NewOperationsClient().NewListPager(nil)
 	testsuite.Require().NoError(err)
+	for pager.More() {
+		_, err = pager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+	}
 }
 
 func (testsuite *PostgresqlflexibleserversOperationsTestSuite) Prepare() {

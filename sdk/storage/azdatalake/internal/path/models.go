@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"net/url"
 	"time"
 )
 
@@ -47,9 +48,11 @@ type RenameOptions struct {
 func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions, *generated.CPKInfo) {
 	// we don't need sourceModAccCond since this is not rename
 	mode := generated.PathRenameModeLegacy
+	renameSourcePath := path
+	renameSource := url.PathEscape(renameSourcePath)
 	createOpts := &generated.PathClientCreateOptions{
 		Mode:         &mode,
-		RenameSource: &path,
+		RenameSource: &renameSource,
 	}
 	if o == nil {
 		return nil, nil, nil, createOpts, nil

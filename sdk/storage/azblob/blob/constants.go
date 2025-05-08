@@ -241,8 +241,8 @@ const (
 	FileRequestIntentTypeBackup FileRequestIntentType = "backup"
 )
 
-// PossibleFileShareTokenIntentValues returns the possible values for the FileRequestIntentType const type.
-func PossibleFileShareTokenIntentValues() []FileRequestIntentType {
+// PossibleFileRequestIntentTypeValues returns the possible values for the FileRequestIntentType const type.
+func PossibleFileRequestIntentTypeValues() []FileRequestIntentType {
 	return []FileRequestIntentType{
 		FileRequestIntentTypeBackup,
 	}

@@ -2,10 +2,6 @@
 
 ## 1.4.1-beta.2 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 * Fixed source file encoding in rename API. Fixes [#23831](https://github.com/Azure/azure-sdk-for-go/issues/23831)
 

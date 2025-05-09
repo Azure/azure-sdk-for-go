@@ -74,7 +74,6 @@ type Flags struct {
 	PackageConfig       string
 	GoVersion           string
 	Token               string
-	UpdateSpecVersion   bool
 	ForceStableVersion  bool
 	TypeSpecConfig      string
 	TypeSpecGoOption    string
@@ -111,7 +110,6 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		PackageConfig:       flags.GetString(flagSet, "package-config"),
 		GoVersion:           flags.GetString(flagSet, "go-version"),
 		Token:               flags.GetString(flagSet, "token"),
-		UpdateSpecVersion:   flags.GetBool(flagSet, "update-spec-version"),
 		TypeSpecConfig:      flags.GetString(flagSet, "tsp-config"),
 		TypeSpecGoOption:    flags.GetString(flagSet, "tsp-option"),
 		TspClientOption:     flags.GetStringSlice(flagSet, "tsp-client-option"),

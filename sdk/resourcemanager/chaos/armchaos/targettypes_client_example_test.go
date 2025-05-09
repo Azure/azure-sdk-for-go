@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/ListTargetTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/TargetTypes_List.json
 func ExampleTargetTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,6 @@ func ExampleTargetTypesClient_NewListPager() {
 		// 			Name: to.Ptr("Microsoft-Agent"),
 		// 			Type: to.Ptr("Microsoft.Chaos/locations/targetTypes"),
 		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes/Microsoft-Agent"),
-		// 			Location: to.Ptr("centraluseuap"),
 		// 			Properties: &armchaos.TargetTypeProperties{
 		// 				Description: to.Ptr("A target represents Chaos Agent."),
 		// 				DisplayName: to.Ptr("Chaos Agent"),
@@ -59,7 +58,7 @@ func ExampleTargetTypesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/GetTargetType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/TargetTypes_Get.json
 func ExampleTargetTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +80,6 @@ func ExampleTargetTypesClient_Get() {
 	// 	Name: to.Ptr("Microsoft-Agent"),
 	// 	Type: to.Ptr("Microsoft.Chaos/locations/targetTypes"),
 	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes/Microsoft-Agent"),
-	// 	Location: to.Ptr("centraluseuap"),
 	// 	Properties: &armchaos.TargetTypeProperties{
 	// 		Description: to.Ptr("A target represents Chaos Agent."),
 	// 		DisplayName: to.Ptr("Chaos Agent"),

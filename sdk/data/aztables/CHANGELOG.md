@@ -1,8 +1,9 @@
 # Release History
 
-## 1.3.1 (Unreleased)
+## 1.4.0 (Unreleased)
 
 ### Features Added
+* Added support for sovereign clouds.
 
 ### Breaking Changes
 

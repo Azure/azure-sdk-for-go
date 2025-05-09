@@ -13,6 +13,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
@@ -55,6 +57,34 @@ func ExampleNewServiceClient() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(client)
+}
+
+func ExampleNewServiceClient_sovereignCloud() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := accountName + ".table.core.windows.net"
+
+	cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud: cloud.AzureChina,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := aztables.NewServiceClient(serviceURL, cred, &aztables.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud: cloud.AzureChina,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Println(client)
 }
 

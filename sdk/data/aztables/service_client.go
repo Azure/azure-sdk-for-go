@@ -7,18 +7,15 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"reflect"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
-)
-
-var (
-	storageScope = []string{"https://storage.azure.com/.default"}
-	cosmosScope  = []string{"https://cosmos.azure.com/.default"}
 )
 
 // ServiceClient represents a client to the table service. It can be used to query
@@ -32,14 +29,23 @@ type ServiceClient struct {
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
-	scope := storageScope
+	cl := cloud.AzurePublic
+	if options != nil && !reflect.ValueOf(options.Cloud).IsZero() {
+		cl = options.Cloud
+	}
 
+	cfg, ok := cl.Services[ServiceName]
+	if !ok || cfg.Audience == "" {
+		return nil, errors.New("cloud configuration is missing for Azure Tables")
+	}
+
+	audience := cfg.Audience
 	if isCosmosEndpoint(serviceURL) {
-		scope = cosmosScope
+		audience = strings.Replace(audience, "storage", "cosmos", 1)
 	}
 
 	plOpts := runtime.PipelineOptions{
-		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, scope, nil)},
+		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, []string{audience + "/.default"}, nil)},
 	}
 	client, err := newClient(serviceURL, plOpts, options)
 	if err != nil {

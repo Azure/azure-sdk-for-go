@@ -109,11 +109,11 @@ type OrganizationProperties struct {
 	// REQUIRED; Marketplace details of the resource.
 	Marketplace *MarketplaceDetails
 
+	// REQUIRED; partner properties
+	PartnerProperties *PartnerProperties
+
 	// REQUIRED; Details of the user.
 	User *UserDetails
-
-	// partner properties
-	PartnerProperties *PartnerProperties
 
 	// Single sign-on properties
 	SingleSignOnProperties *SingleSignOnPropertiesV2

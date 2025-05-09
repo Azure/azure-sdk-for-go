@@ -17,62 +17,62 @@ import (
 	"strings"
 )
 
-// LtrBackupOperationsClient contains the methods for the LtrBackupOperations group.
-// Don't use this type directly, use NewLtrBackupOperationsClient() instead.
-type LtrBackupOperationsClient struct {
+// TuningOptionsClient contains the methods for the TuningOptions group.
+// Don't use this type directly, use NewTuningOptionsClient() instead.
+type TuningOptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewLtrBackupOperationsClient creates a new instance of LtrBackupOperationsClient with the specified values.
+// NewTuningOptionsClient creates a new instance of TuningOptionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewLtrBackupOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LtrBackupOperationsClient, error) {
+func NewTuningOptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TuningOptionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &LtrBackupOperationsClient{
+	client := &TuningOptionsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Gets the result of the give long term retention backup operation for the flexible server.
+// Get - Retrieve the tuning option on a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - backupName - The name of the backup.
-//   - options - LtrBackupOperationsClientGetOptions contains the optional parameters for the LtrBackupOperationsClient.Get method.
-func (client *LtrBackupOperationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *LtrBackupOperationsClientGetOptions) (LtrBackupOperationsClientGetResponse, error) {
+//   - tuningOption - The name of the tuning option.
+//   - options - TuningOptionsClientGetOptions contains the optional parameters for the TuningOptionsClient.Get method.
+func (client *TuningOptionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, tuningOption TuningOptionEnum, options *TuningOptionsClientGetOptions) (TuningOptionsClientGetResponse, error) {
 	var err error
-	const operationName = "LtrBackupOperationsClient.Get"
+	const operationName = "TuningOptionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, backupName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, tuningOption, options)
 	if err != nil {
-		return LtrBackupOperationsClientGetResponse{}, err
+		return TuningOptionsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return LtrBackupOperationsClientGetResponse{}, err
+		return TuningOptionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return LtrBackupOperationsClientGetResponse{}, err
+		return TuningOptionsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *LtrBackupOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, _ *LtrBackupOperationsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/ltrBackupOperations/{backupName}"
+func (client *TuningOptionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, tuningOption TuningOptionEnum, _ *TuningOptionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/tuningOptions/{tuningOption}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -85,10 +85,10 @@ func (client *LtrBackupOperationsClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if backupName == "" {
-		return nil, errors.New("parameter backupName cannot be empty")
+	if tuningOption == "" {
+		return nil, errors.New("parameter tuningOption cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	urlPath = strings.ReplaceAll(urlPath, "{tuningOption}", url.PathEscape(string(tuningOption)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -101,28 +101,28 @@ func (client *LtrBackupOperationsClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *LtrBackupOperationsClient) getHandleResponse(resp *http.Response) (LtrBackupOperationsClientGetResponse, error) {
-	result := LtrBackupOperationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LtrServerBackupOperation); err != nil {
-		return LtrBackupOperationsClientGetResponse{}, err
+func (client *TuningOptionsClient) getHandleResponse(resp *http.Response) (TuningOptionsClientGetResponse, error) {
+	result := TuningOptionsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TuningOptionsResource); err != nil {
+		return TuningOptionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByServerPager - Gets the result of the give long term retention backup operations for the flexible server.
+// NewListByServerPager - Retrieve the list of available tuning options.
 //
 // Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - options - LtrBackupOperationsClientListByServerOptions contains the optional parameters for the LtrBackupOperationsClient.NewListByServerPager
+//   - options - TuningOptionsClientListByServerOptions contains the optional parameters for the TuningOptionsClient.NewListByServerPager
 //     method.
-func (client *LtrBackupOperationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *LtrBackupOperationsClientListByServerOptions) *runtime.Pager[LtrBackupOperationsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LtrBackupOperationsClientListByServerResponse]{
-		More: func(page LtrBackupOperationsClientListByServerResponse) bool {
+func (client *TuningOptionsClient) NewListByServerPager(resourceGroupName string, serverName string, options *TuningOptionsClientListByServerOptions) *runtime.Pager[TuningOptionsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TuningOptionsClientListByServerResponse]{
+		More: func(page TuningOptionsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *LtrBackupOperationsClientListByServerResponse) (LtrBackupOperationsClientListByServerResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LtrBackupOperationsClient.NewListByServerPager")
+		Fetcher: func(ctx context.Context, page *TuningOptionsClientListByServerResponse) (TuningOptionsClientListByServerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TuningOptionsClient.NewListByServerPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -131,7 +131,7 @@ func (client *LtrBackupOperationsClient) NewListByServerPager(resourceGroupName 
 				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 			}, nil)
 			if err != nil {
-				return LtrBackupOperationsClientListByServerResponse{}, err
+				return TuningOptionsClientListByServerResponse{}, err
 			}
 			return client.listByServerHandleResponse(resp)
 		},
@@ -140,8 +140,8 @@ func (client *LtrBackupOperationsClient) NewListByServerPager(resourceGroupName 
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *LtrBackupOperationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *LtrBackupOperationsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/ltrBackupOperations"
+func (client *TuningOptionsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *TuningOptionsClientListByServerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/tuningOptions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -166,10 +166,10 @@ func (client *LtrBackupOperationsClient) listByServerCreateRequest(ctx context.C
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *LtrBackupOperationsClient) listByServerHandleResponse(resp *http.Response) (LtrBackupOperationsClientListByServerResponse, error) {
-	result := LtrBackupOperationsClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LtrServerBackupOperationList); err != nil {
-		return LtrBackupOperationsClientListByServerResponse{}, err
+func (client *TuningOptionsClient) listByServerHandleResponse(resp *http.Response) (TuningOptionsClientListByServerResponse, error) {
+	result := TuningOptionsClientListByServerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TuningOptionsListResult); err != nil {
+		return TuningOptionsClientListByServerResponse{}, err
 	}
 	return result, nil
 }

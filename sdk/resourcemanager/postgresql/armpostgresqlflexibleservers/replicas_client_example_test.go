@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				"ElasticServer": to.Ptr("1"),
 		// 			},
 		// 			Properties: &armpostgresqlflexibleservers.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("cloudsa"),
+		// 				AdministratorLogin: to.Ptr("login"),
 		// 				AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
 		// 					ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumDisabled),
 		// 					PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
@@ -58,7 +58,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				AvailabilityZone: to.Ptr("2"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.727Z"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-03T00:28:17.727Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -93,10 +93,10 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					StorageSizeGB: to.Ptr[int32](512),
 		// 					Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP20),
 		// 				},
-		// 				Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+		// 				Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionSixteen),
 		// 			},
 		// 			SKU: &armpostgresqlflexibleservers.SKU{
-		// 				Name: to.Ptr("Standard_D4s_v3"),
+		// 				Name: to.Ptr("Standard_D4ds_v5"),
 		// 				Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 			},
 		// 	}},

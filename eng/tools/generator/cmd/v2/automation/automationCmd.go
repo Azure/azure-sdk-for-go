@@ -160,6 +160,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			GoVersion:      ctx.goVersion,
 			ApiVersion:     input.ApiVersion,
 			SdkReleaseType: input.SdkReleaseType,
+			RemoveTagSet:   true,
 		})
 		if len(errs) > 0 {
 			errorBuilder.add(errs...)

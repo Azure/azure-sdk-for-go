@@ -145,8 +145,6 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
 				SpecificVersion:      commonGenerateParam.SpecificVersion,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
-				ApiVersion:           commonGenerateParam.ApiVersion,
-				SdkReleaseType:       commonGenerateParam.SdkReleaseType,
 			})
 			if err != nil {
 				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))
@@ -240,14 +238,10 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 	}
 
 	// add tag set
-	if !generateParam.RemoveTagSet && (generateParam.NamespaceConfig != "" || generateParam.ApiVersion != "") {
+	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" {
 		log.Printf("Add tag in `autorest.md`...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		tag := generateParam.NamespaceConfig
-		if generateParam.ApiVersion != "" {
-			tag = "tag: " + generateParam.ApiVersion
-		}
-		if err := AddTagSet(autorestMdPath, tag); err != nil {
+		if err := AddTagSet(autorestMdPath, generateParam.NamespaceConfig); err != nil {
 			return err
 		}
 	}
@@ -406,9 +400,6 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 	isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 	if err != nil {
 		return nil, err
-	}
-	if generateParam.SdkReleaseType == SDKReleaseTypePreview {
-		isCurrentPreview = true
 	}
 
 	log.Printf("Get ori exports for changelog generation...")

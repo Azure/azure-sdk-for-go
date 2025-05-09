@@ -1,5 +1,18 @@
 # Release History
 
+## 2.1.0 (2025-05-06)
+### Features Added
+
+- New enum type `ExtensionConfigPropertyType` with values `ExtensionConfigPropertyTypeArray`, `ExtensionConfigPropertyTypeBool`, `ExtensionConfigPropertyTypeInt`, `ExtensionConfigPropertyTypeObject`, `ExtensionConfigPropertyTypeSecureObject`, `ExtensionConfigPropertyTypeSecureString`, `ExtensionConfigPropertyTypeString`
+- New struct `DeploymentExtensionConfigItem`
+- New struct `DeploymentExtensionDefinition`
+- New field `ExtensionConfigs` in struct `DeploymentProperties`
+- New field `Extensions` in struct `DeploymentPropertiesExtended`
+- New field `ExtensionConfigs` in struct `DeploymentWhatIfProperties`
+- New field `APIVersion`, `Extension`, `Identifiers`, `ResourceType` in struct `ResourceReference`
+- New field `APIVersion`, `Extension`, `Identifiers`, `SymbolicName` in struct `TargetResource`
+
+
 ## 2.0.0 (2025-02-13)
 ### Breaking Changes
 

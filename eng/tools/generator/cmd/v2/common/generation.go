@@ -293,6 +293,12 @@ func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam, cha
 			return nil, err
 		}
 	}
+	log.Printf("Update README.md ClientFactory...")
+	err := UpdateReadmeClientFactory(t.PackagePath)
+	if err != nil {
+		// only log error, avoid breaking the process
+		log.Printf("Update README.md ClientFactory failed! err: %v", err)
+	}
 	return nil, nil
 }
 
@@ -669,6 +675,13 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)
 	if err := ExecuteGo(modulePath, "mod", "tidy"); err != nil {
 		return nil, err
+	}
+
+	log.Printf("Update README.md ClientFactory...")
+	err := UpdateReadmeClientFactory(t.PackagePath)
+	if err != nil {
+		// only log error, avoid breaking the process
+		log.Printf("Update README.md ClientFactory failed! err: %v", err)
 	}
 	return nil, nil
 }

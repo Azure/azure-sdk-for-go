@@ -837,3 +837,57 @@ func FindModuleDirByGoMod(root string) (string, error) {
 	}
 	return "", fmt.Errorf("module not found, package path:%s", root)
 }
+
+func UpdateReadmeClientFactory(path string) error {
+	readmePath := filepath.Join(path, ReadmeFileName)
+	readmeFile, err := os.ReadFile(readmePath)
+	if err != nil {
+		return err
+	}
+	noOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\((.*?)(?:,\s*)?cred,\s*nil\)`)
+	withOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\((.*?)(?:,\s*)?cred,\s*&options\)`)
+	oldnoOptionalFactory := noOptionalFactoryReg.FindString(string(readmeFile))
+	oldwithOptionalFactory := withOptionalFactoryReg.FindString(string(readmeFile))
+	if oldnoOptionalFactory == "" && oldwithOptionalFactory == "" {
+		return nil
+	}
+	clientFactoryFile, err := os.ReadFile(filepath.Join(path, ClientFactoryFileName))
+	if err != nil {
+		return err
+	}
+	re := regexp.MustCompile(`func\s+NewClientFactory\(([^)]+)\)`)
+	matches := re.FindStringSubmatch(string(clientFactoryFile))
+	if len(matches) <= 1 {
+		return nil
+	}
+	var factoryParams []string
+	params := strings.Split(matches[1], ",")
+	for param := range params {
+		params[param] = strings.TrimSpace(params[param])
+		paramDefinition := strings.Split(params[param], " ")
+		if len(paramDefinition) != 2 {
+			continue
+		}
+		paramName := paramDefinition[0]
+		if paramName == "credential" || paramName == "options" {
+			// fixed params, no need to process
+			continue
+		}
+		if paramName == "subscriptionID" {
+			// compatible with old version
+			factoryParams = append(factoryParams, "<subscription ID>")
+			continue
+		}
+		factoryParams = append(factoryParams, fmt.Sprintf("<%s>", paramName))
+	}
+	noOptionsParams := append(factoryParams, []string{"cred", "nil"}...)
+	withOptionsParams := append(factoryParams, []string{"cred", "&options"}...)
+	newNoOptionalFactory := fmt.Sprintf("NewClientFactory(%s)", strings.Join(noOptionsParams, ", "))
+	newWithOptionalFactory := fmt.Sprintf("NewClientFactory(%s)", strings.Join(withOptionsParams, ", "))
+	if oldnoOptionalFactory == newNoOptionalFactory && oldwithOptionalFactory == newWithOptionalFactory {
+		return nil
+	}
+	content := strings.ReplaceAll(string(readmeFile), oldnoOptionalFactory, newNoOptionalFactory)
+	content = strings.ReplaceAll(content, oldwithOptionalFactory, newWithOptionalFactory)
+	return os.WriteFile(readmePath, []byte(content), 0644)
+}

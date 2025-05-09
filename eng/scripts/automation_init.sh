@@ -52,6 +52,7 @@ echo "Install generator..."
 go build 2>&1
 
 cp generator $GOPATH/bin/
+rm generator
 export PATH=$GOPATH/bin:$PATH
 cd $DIRECTORY
 

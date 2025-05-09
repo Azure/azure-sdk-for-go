@@ -140,3 +140,49 @@ func TestFindModule(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "sdk/security/keyvault/azadmin", filepath.ToSlash(moduleRelativePath))
 }
+
+func TestUpdateReadMeClientFactory(t *testing.T) {
+	// Create temporary test directory
+	tmpDir, err := os.MkdirTemp("", "tmp")
+	assert.NoError(t, err)
+	defer os.RemoveAll(tmpDir)
+
+	err = os.WriteFile(filepath.Join(tmpDir, "README.md"), []byte(`
+	clientFactory, err := NewClientFactory(<subscription ID>, cred, nil)
+	clientFactory, err := NewClientFactory(<subscription ID>, cred, &options)
+	`), 0644)
+	assert.NoError(t, err)
+
+	// Test case 1: without subscription ID
+	err = os.WriteFile(filepath.Join(tmpDir, "client_factory.go"), []byte(`
+	func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) *ClientFactory {
+	`), 0644)
+	assert.NoError(t, err)
+
+	err = UpdateReadmeClientFactory(tmpDir)
+	assert.NoError(t, err)
+
+	noSubContent, err := os.ReadFile(filepath.Join(tmpDir, "README.md"))
+	assert.NoError(t, err)
+	assert.Contains(t, string(noSubContent), "NewClientFactory(cred, nil)")
+	assert.Contains(t, string(noSubContent), "NewClientFactory(cred, &options)")
+
+	// Test case 2: with subscription ID
+	err = os.WriteFile(filepath.Join(tmpDir, "README.md"), []byte(`
+	clientFactory, err := NewClientFactory(cred, nil)
+	clientFactory, err := NewClientFactory(cred, &options)
+	`), 0644)
+	assert.NoError(t, err)
+	err = os.WriteFile(filepath.Join(tmpDir, "client_factory.go"), []byte(`
+	func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClientFactory {
+	`), 0644)
+	assert.NoError(t, err)
+
+	err = UpdateReadmeClientFactory(tmpDir)
+	assert.NoError(t, err)
+
+	withSubContent, err := os.ReadFile(filepath.Join(tmpDir, "README.md"))
+	assert.NoError(t, err)
+	assert.Contains(t, string(withSubContent), `NewClientFactory(<subscription ID>, cred, nil)`)
+	assert.Contains(t, string(withSubContent), `NewClientFactory(<subscription ID>, cred, &options)`)
+}

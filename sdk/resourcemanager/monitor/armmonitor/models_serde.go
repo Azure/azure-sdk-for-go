@@ -1799,6 +1799,8 @@ func (a AzureMonitorWorkspaceResourceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "defaultIngestionSettings", a.DefaultIngestionSettings)
 	populate(objectMap, "metrics", a.Metrics)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
+	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
 	return json.Marshal(objectMap)
 }
 
@@ -1822,6 +1824,12 @@ func (a *AzureMonitorWorkspaceResourceProperties) UnmarshalJSON(data []byte) err
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, "PublicNetworkAccess", &a.PublicNetworkAccess)
+			delete(rawMsg, key)
+		case "privateEndpointConnections":
+			err = unpopulate(val, "PrivateEndpointConnections", &a.PrivateEndpointConnections)
 			delete(rawMsg, key)
 		}
 		if err != nil {

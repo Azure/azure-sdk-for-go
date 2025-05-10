@@ -709,6 +709,12 @@ type AzureMonitorWorkspaceResourceProperties struct {
 
 	// READ-ONLY; The provisioning state of the Azure Monitor workspace. Set to Succeeded if everything is healthy.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; This determines if traffic is allowed over public network. By default it is enabled.
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// READ-ONLY; List of private endpoint connections.
+	PrivateEndpointConnections []*PrivateEndpointConnection
 }
 
 // AzureResource - An azure resource object

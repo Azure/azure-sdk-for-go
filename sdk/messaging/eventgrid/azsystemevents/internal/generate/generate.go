@@ -65,6 +65,7 @@ func deleteUnneededTypes() error {
 		"ACSRouterJobEventData",
 		"ACSRouterWorkerEventData",
 		"ACSSmsEventBaseProperties",
+		"ACSSMSEventBaseProperties",
 		"AppConfigurationSnapshotEventData",
 		"AVSClusterEventData",
 		"AVSPrivateCloudEventData",
@@ -80,10 +81,6 @@ func deleteUnneededTypes() error {
 		"MapsGeofenceEventProperties",
 		"ResourceNotificationsResourceDeletedEventData",
 		"ResourceNotificationsResourceUpdatedEventData",
-		"ACSChatEventBaseProperties",
-		"ACSChatMessageEventBaseProperties",
-		"ACSChatMessageEventInThreadBaseProperties",
-		"ACSSMSEventBaseProperties",
 	}
 
 	for _, typeToDelete := range typesToDelete {

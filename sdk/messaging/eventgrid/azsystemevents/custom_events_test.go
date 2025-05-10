@@ -77,7 +77,7 @@ func TestUnmarshalInternalACSRouterCommunicationError(t *testing.T) {
 	})
 }
 
-func TestUnmarshalInternalAcsRouterCCSmunicationErrorRecursive(t *testing.T) {
+func TestUnmarshalInternalAcsRouterCommunicationErrorRecursive(t *testing.T) {
 	text := `[
 		{
 			"code": "Root.Failure",
@@ -89,24 +89,24 @@ func TestUnmarshalInternalAcsRouterCCSmunicationErrorRecursive(t *testing.T) {
 					"code": "Root->Inner->Inner.Failure",
 					"message": "Root->Inner->Inner.Message"
 				},
-				"details": [
+				"errors": [
 					{
-						"code": "Root->Inner->Details[0].Failure",
-						"message": "Root->Inner->Details[0].Message",
+						"code": "Root->Inner->Errors[0].Failure",
+						"message": "Root->Inner->Errors[0].Message",
 						"innererror": {
-							"code": "Root->Inner->Details[0].Inner.Failure",
-							"message": "Root->Inner->Details[0].Inner.Message"
+							"code": "Root->Inner->Errors[0].Inner.Failure",
+							"message": "Root->Inner->Errors[0].Inner.Message"
 						}
 					}
 				]
 			},
-			"details": [
+			"errors": [
 				{
-					"code": "Root->Details[0].Failure",
-					"message": "Root->Details[0].Message",
+					"code": "Root->Errors[0].Failure",
+					"message": "Root->Errors[0].Message",
 					"innererror": {
-						"code": "Root->Details[0]->Inner.Failure",
-						"message": "Root->Details[0]->Inner.Message"
+						"code": "Root->Errors[0]->Inner.Failure",
+						"message": "Root->Errors[0]->Inner.Message"
 					}
 				}
 			]
@@ -122,21 +122,21 @@ func TestUnmarshalInternalAcsRouterCCSmunicationErrorRecursive(t *testing.T) {
 
 	expectedMsg := "Code: Root.Failure\n" +
 		"Message: Root.Message\n" +
-		"Details[0]:\n" +
-		"  Code: Root->Details[0].Failure\n" +
-		"  Message: Root->Details[0].Message\n" +
+		"Errors[0]:\n" +
+		"  Code: Root->Errors[0].Failure\n" +
+		"  Message: Root->Errors[0].Message\n" +
 		"  InnerError:\n" +
-		"    Code: Root->Details[0]->Inner.Failure\n" +
-		"    Message: Root->Details[0]->Inner.Message\n" +
+		"    Code: Root->Errors[0]->Inner.Failure\n" +
+		"    Message: Root->Errors[0]->Inner.Message\n" +
 		"InnerError:\n" +
 		"  Code: Root->Inner.Failure\n" +
 		"  Message: Root->Inner.Message\n" +
-		"  Details[0]:\n" +
-		"    Code: Root->Inner->Details[0].Failure\n" +
-		"    Message: Root->Inner->Details[0].Message\n" +
+		"  Errors[0]:\n" +
+		"    Code: Root->Inner->Errors[0].Failure\n" +
+		"    Message: Root->Inner->Errors[0].Message\n" +
 		"    InnerError:\n" +
-		"      Code: Root->Inner->Details[0].Inner.Failure\n" +
-		"      Message: Root->Inner->Details[0].Inner.Message\n" +
+		"      Code: Root->Inner->Errors[0].Inner.Failure\n" +
+		"      Message: Root->Inner->Errors[0].Inner.Message\n" +
 		"  InnerError:\n" +
 		"    Code: Root->Inner->Inner.Failure\n" +
 		"    Message: Root->Inner->Inner.Message\n"
@@ -200,18 +200,18 @@ func TestFormattingErrors(t *testing.T) {
 		msg := unpackMsg(internalACSRouterCommunicationError{
 			Code:    to.Ptr("code"),
 			Message: to.Ptr("message"),
-			Details: []internalACSRouterCommunicationError{
+			Errors: []internalACSRouterCommunicationError{
 				{
-					Code:    to.Ptr("details[0].code"),
-					Message: to.Ptr("details[0].message"),
-					Details: []internalACSRouterCommunicationError{
+					Code:    to.Ptr("errors[0].code"),
+					Message: to.Ptr("errors[0].message"),
+					Errors: []internalACSRouterCommunicationError{
 						{
-							Code:    to.Ptr("details[0]->details[0].code"),
-							Message: to.Ptr("details[0]->details[0].message"),
+							Code:    to.Ptr("errors[0]->errors[0].code"),
+							Message: to.Ptr("errors[0]->errors[0].message"),
 						},
 						{
-							Code:    to.Ptr("details[0]->details[1].code"),
-							Message: to.Ptr("details[0]->details[1].message"),
+							Code:    to.Ptr("errors[0]->errors[1].code"),
+							Message: to.Ptr("errors[0]->errors[1].message"),
 						},
 					}},
 			},
@@ -219,14 +219,14 @@ func TestFormattingErrors(t *testing.T) {
 
 		require.Equal(t, "Code: code\n"+
 			"Message: message\n"+
-			"Details[0]:\n"+
-			"  Code: details[0].code\n"+
-			"  Message: details[0].message\n"+
-			"  Details[0]:\n"+
-			"    Code: details[0]->details[0].code\n"+
-			"    Message: details[0]->details[0].message\n"+
-			"  Details[1]:\n"+
-			"    Code: details[0]->details[1].code\n"+
-			"    Message: details[0]->details[1].message\n", msg)
+			"Errors[0]:\n"+
+			"  Code: errors[0].code\n"+
+			"  Message: errors[0].message\n"+
+			"  Errors[0]:\n"+
+			"    Code: errors[0]->errors[0].code\n"+
+			"    Message: errors[0]->errors[0].message\n"+
+			"  Errors[1]:\n"+
+			"    Code: errors[0]->errors[1].code\n"+
+			"    Message: errors[0]->errors[1].message\n", msg)
 	})
 }

@@ -80,6 +80,10 @@ func deleteUnneededTypes() error {
 		"MapsGeofenceEventProperties",
 		"ResourceNotificationsResourceDeletedEventData",
 		"ResourceNotificationsResourceUpdatedEventData",
+		"ACSChatEventBaseProperties",
+		"ACSChatMessageEventBaseProperties",
+		"ACSChatMessageEventInThreadBaseProperties",
+		"ACSSMSEventBaseProperties",
 	}
 
 	for _, typeToDelete := range typesToDelete {

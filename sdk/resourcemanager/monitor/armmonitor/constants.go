@@ -7,7 +7,7 @@ package armmonitor
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
-	moduleVersion = "v0.12.0-beta.1"
+	moduleVersion = "v0.12.0"
 )
 
 // AccessMode - Access mode types.

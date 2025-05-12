@@ -129,8 +129,8 @@ func (testsuite *ExperimentsTestSuite) TestExperiments() {
 	testsuite.Require().NoError(err)
 	experimentsClientCreateOrUpdateResponsePoller, err := experimentsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.experimentName, armchaos.Experiment{
 		Location: to.Ptr(testsuite.location),
-		Identity: &armchaos.ResourceIdentity{
-			Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
+		Identity: &armchaos.ManagedServiceIdentity{
+			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armchaos.ExperimentProperties{
 			Selectors: []armchaos.TargetSelectorClassification{
@@ -152,7 +152,7 @@ func (testsuite *ExperimentsTestSuite) TestExperiments() {
 							Actions: []armchaos.ExperimentActionClassification{
 								&armchaos.ContinuousAction{
 									Name:     to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-									Type:     to.Ptr("continuous"),
+									// Type:     to.Ptr("continuous"),
 									Duration: to.Ptr("PT10M"),
 									Parameters: []*armchaos.KeyValuePair{
 										{

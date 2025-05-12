@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/createOrUpdateTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/37a849b656ecfb33424822b9f245aebff2ae994f/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-05-01-preview/examples/createOrUpdateTenantActionGroup.json
 func ExampleTenantActionGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleTenantActionGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/getTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/37a849b656ecfb33424822b9f245aebff2ae994f/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-05-01-preview/examples/getTenantActionGroup.json
 func ExampleTenantActionGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleTenantActionGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/deleteTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/37a849b656ecfb33424822b9f245aebff2ae994f/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-05-01-preview/examples/deleteTenantActionGroup.json
 func ExampleTenantActionGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleTenantActionGroupsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/patchTenantActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/37a849b656ecfb33424822b9f245aebff2ae994f/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-05-01-preview/examples/patchTenantActionGroup.json
 func ExampleTenantActionGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,7 +337,7 @@ func ExampleTenantActionGroupsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-03-01-preview/examples/listTenantActionGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/37a849b656ecfb33424822b9f245aebff2ae994f/specification/monitor/resource-manager/Microsoft.Insights/preview/2023-05-01-preview/examples/listTenantActionGroups.json
 func ExampleTenantActionGroupsClient_NewListByManagementGroupIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

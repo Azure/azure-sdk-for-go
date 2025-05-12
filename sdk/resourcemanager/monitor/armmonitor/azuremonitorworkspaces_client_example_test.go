@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Monitor/preview/2021-06-03-preview/examples/AzureMonitorWorkspacesListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Monitor/stable/2023-04-03/examples/AzureMonitorWorkspacesListByResourceGroup.json
 func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,45 +70,85 @@ func ExampleAzureMonitorWorkspacesClient_NewListByResourceGroupPager() {
 		// 					InternalID: to.Ptr("mac_2df515bf-c3ce-4920-84d4-1d9d16542d9f"),
 		// 					PrometheusQueryEndpoint: to.Ptr("https://myAzureMonitorWorkspace-abcd.eastus.prometheus.monitor.azure.com"),
 		// 				},
-		// 				ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("herAzureMonitorWorkspace"),
-		// 			Type: to.Ptr("Microsoft.Monitor/accounts"),
-		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/herAzureMonitorWorkspace"),
-		// 			SystemData: &armmonitor.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			Tags: map[string]*string{
-		// 				"tag1": to.Ptr("A"),
-		// 				"tag2": to.Ptr("B"),
-		// 			},
-		// 			Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-		// 			Properties: &armmonitor.AzureMonitorWorkspaceResourceProperties{
-		// 				AccountID: to.Ptr("823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
-		// 				DefaultIngestionSettings: &armmonitor.AzureMonitorWorkspaceDefaultIngestionSettings{
-		// 					DataCollectionEndpointResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionEndpoints/herAzureMonitorWorkspace"),
-		// 					DataCollectionRuleResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionRules/herAzureMonitorWorkspace"),
+		// 				PrivateEndpointConnections: []*armmonitor.PrivateEndpointConnection{
+		// 					{
+		// 						Name: to.Ptr("myPrivateEndpointConnection"),
+		// 						Type: to.Ptr("Microsoft.Monitor/accounts/privateEndpointConnections"),
+		// 						ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/privateEndpointConnections/myPrivateEndpointConnection"),
+		// 						Properties: &armmonitor.PrivateEndpointConnectionProperties{
+		// 							GroupIDs: []*string{
+		// 								to.Ptr("prometheusMetrics")},
+		// 								PrivateEndpoint: &armmonitor.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointConnection"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("Auto-approved"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+		// 							},
+		// 					}},
+		// 					ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),
 		// 				},
-		// 				Metrics: &armmonitor.AzureMonitorWorkspaceMetrics{
-		// 					InternalID: to.Ptr("mac_823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
-		// 					PrometheusQueryEndpoint: to.Ptr("https://herAzureMonitorWorkspace-xywz.eastus.prometheus.monitor.azure.com"),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
 		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("herAzureMonitorWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Monitor/accounts"),
+		// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/herAzureMonitorWorkspace"),
+		// 				SystemData: &armmonitor.SystemData{
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("user2"),
+		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Tags: map[string]*string{
+		// 					"tag1": to.Ptr("A"),
+		// 					"tag2": to.Ptr("B"),
+		// 				},
+		// 				Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
+		// 				Properties: &armmonitor.AzureMonitorWorkspaceResourceProperties{
+		// 					AccountID: to.Ptr("823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
+		// 					DefaultIngestionSettings: &armmonitor.AzureMonitorWorkspaceDefaultIngestionSettings{
+		// 						DataCollectionEndpointResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionEndpoints/herAzureMonitorWorkspace"),
+		// 						DataCollectionRuleResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionRules/herAzureMonitorWorkspace"),
+		// 					},
+		// 					Metrics: &armmonitor.AzureMonitorWorkspaceMetrics{
+		// 						InternalID: to.Ptr("mac_823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
+		// 						PrometheusQueryEndpoint: to.Ptr("https://herAzureMonitorWorkspace-xywz.eastus.prometheus.monitor.azure.com"),
+		// 					},
+		// 					PrivateEndpointConnections: []*armmonitor.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("myPrivateEndpointConnection"),
+		// 							Type: to.Ptr("Microsoft.Monitor/accounts/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/privateEndpointConnections/myPrivateEndpointConnection"),
+		// 							Properties: &armmonitor.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("prometheusMetrics")},
+		// 									PrivateEndpoint: &armmonitor.PrivateEndpoint{
+		// 										ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointConnection"),
+		// 									},
+		// 									PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+		// 										Description: to.Ptr("Auto-approved"),
+		// 										ActionsRequired: to.Ptr("None"),
+		// 										Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+		// 									},
+		// 									ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+		// 								},
+		// 						}},
+		// 						ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
+		// 						PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Monitor/preview/2021-06-03-preview/examples/AzureMonitorWorkspacesListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Monitor/stable/2023-04-03/examples/AzureMonitorWorkspacesListBySubscription.json
 func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,45 +200,85 @@ func ExampleAzureMonitorWorkspacesClient_NewListBySubscriptionPager() {
 		// 					InternalID: to.Ptr("mac_2df515bf-c3ce-4920-84d4-1d9d16542d9f"),
 		// 					PrometheusQueryEndpoint: to.Ptr("https://myAzureMonitorWorkspace-v8hx.eastus.prometheus.monitor.azure.com"),
 		// 				},
-		// 				ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("herAzureMonitorWorkspace"),
-		// 			Type: to.Ptr("Microsoft.Monitor/accounts"),
-		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/herResourceGroup/providers/Microsoft.Monitor/accounts/herAzureMonitorWorkspace"),
-		// 			SystemData: &armmonitor.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
-		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
-		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 			},
-		// 			Location: to.Ptr("westus"),
-		// 			Tags: map[string]*string{
-		// 				"tag1": to.Ptr("A"),
-		// 				"tag2": to.Ptr("B"),
-		// 			},
-		// 			Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-		// 			Properties: &armmonitor.AzureMonitorWorkspaceResourceProperties{
-		// 				AccountID: to.Ptr("823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
-		// 				DefaultIngestionSettings: &armmonitor.AzureMonitorWorkspaceDefaultIngestionSettings{
-		// 					DataCollectionEndpointResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionEndpoints/herAzureMonitorWorkspace"),
-		// 					DataCollectionRuleResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionRules/herAzureMonitorWorkspace"),
+		// 				PrivateEndpointConnections: []*armmonitor.PrivateEndpointConnection{
+		// 					{
+		// 						Name: to.Ptr("myPrivateEndpointConnection"),
+		// 						Type: to.Ptr("Microsoft.Monitor/accounts/privateEndpointConnections"),
+		// 						ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/privateEndpointConnections/myPrivateEndpointConnection"),
+		// 						Properties: &armmonitor.PrivateEndpointConnectionProperties{
+		// 							GroupIDs: []*string{
+		// 								to.Ptr("prometheusMetrics")},
+		// 								PrivateEndpoint: &armmonitor.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointConnection"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("Auto-approved"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+		// 							},
+		// 					}},
+		// 					ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),
 		// 				},
-		// 				Metrics: &armmonitor.AzureMonitorWorkspaceMetrics{
-		// 					InternalID: to.Ptr("mac_823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
-		// 					PrometheusQueryEndpoint: to.Ptr("https://herazuremonitorworkspace-xywz.eastus.prometheus.monitor.azure.com"),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
 		// 			},
-		// 	}},
-		// }
+		// 			{
+		// 				Name: to.Ptr("herAzureMonitorWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Monitor/accounts"),
+		// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/herResourceGroup/providers/Microsoft.Monitor/accounts/herAzureMonitorWorkspace"),
+		// 				SystemData: &armmonitor.SystemData{
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("user2"),
+		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Tags: map[string]*string{
+		// 					"tag1": to.Ptr("A"),
+		// 					"tag2": to.Ptr("B"),
+		// 				},
+		// 				Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
+		// 				Properties: &armmonitor.AzureMonitorWorkspaceResourceProperties{
+		// 					AccountID: to.Ptr("823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
+		// 					DefaultIngestionSettings: &armmonitor.AzureMonitorWorkspaceDefaultIngestionSettings{
+		// 						DataCollectionEndpointResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionEndpoints/herAzureMonitorWorkspace"),
+		// 						DataCollectionRuleResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/MA_herAzureMonitorWorkspace_eastus_managed/providers/Microsoft.Insights/dataCollectionRules/herAzureMonitorWorkspace"),
+		// 					},
+		// 					Metrics: &armmonitor.AzureMonitorWorkspaceMetrics{
+		// 						InternalID: to.Ptr("mac_823220c6-0415-44d8-bfb2-d5c1c9ea1172"),
+		// 						PrometheusQueryEndpoint: to.Ptr("https://herazuremonitorworkspace-xywz.eastus.prometheus.monitor.azure.com"),
+		// 					},
+		// 					PrivateEndpointConnections: []*armmonitor.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("myPrivateEndpointConnection"),
+		// 							Type: to.Ptr("Microsoft.Monitor/accounts/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/privateEndpointConnections/myPrivateEndpointConnection"),
+		// 							Properties: &armmonitor.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("prometheusMetrics")},
+		// 									PrivateEndpoint: &armmonitor.PrivateEndpoint{
+		// 										ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointConnection"),
+		// 									},
+		// 									PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+		// 										Description: to.Ptr("Auto-approved"),
+		// 										ActionsRequired: to.Ptr("None"),
+		// 										Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+		// 									},
+		// 									ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+		// 								},
+		// 						}},
+		// 						ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
+		// 						PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Monitor/preview/2021-06-03-preview/examples/AzureMonitorWorkspacesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Monitor/stable/2023-04-03/examples/AzureMonitorWorkspacesGet.json
 func ExampleAzureMonitorWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,12 +324,32 @@ func ExampleAzureMonitorWorkspacesClient_Get() {
 	// 			InternalID: to.Ptr("mac_2df515bf-c3ce-4920-84d4-1d9d16542d9f"),
 	// 			PrometheusQueryEndpoint: to.Ptr("https://myAzureMonitorWorkspace-v8hx.eastus.prometheus.monitor.azure.com"),
 	// 		},
-	// 		ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
-	// 	},
-	// }
+	// 		PrivateEndpointConnections: []*armmonitor.PrivateEndpointConnection{
+	// 			{
+	// 				Name: to.Ptr("myPrivateEndpointConnection"),
+	// 				Type: to.Ptr("Microsoft.Monitor/accounts/privateEndpointConnections"),
+	// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/privateEndpointConnections/myPrivateEndpointConnection"),
+	// 				Properties: &armmonitor.PrivateEndpointConnectionProperties{
+	// 					GroupIDs: []*string{
+	// 						to.Ptr("prometheusMetrics")},
+	// 						PrivateEndpoint: &armmonitor.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointConnection"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("Auto-approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 							Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 					},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Monitor/preview/2021-06-03-preview/examples/AzureMonitorWorkspacesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Monitor/stable/2023-04-03/examples/AzureMonitorWorkspacesCreate.json
 func ExampleAzureMonitorWorkspacesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,12 +397,32 @@ func ExampleAzureMonitorWorkspacesClient_Create() {
 	// 			InternalID: to.Ptr("mac_2df515bf-c3ce-4920-84d4-1d9d16542d9f"),
 	// 			PrometheusQueryEndpoint: to.Ptr("https://myAzureMonitorWorkspace-v8hx.eastus.prometheus.monitor.azure.com"),
 	// 		},
-	// 		ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
-	// 	},
-	// }
+	// 		PrivateEndpointConnections: []*armmonitor.PrivateEndpointConnection{
+	// 			{
+	// 				Name: to.Ptr("myPrivateEndpointConnection"),
+	// 				Type: to.Ptr("Microsoft.Monitor/accounts/privateEndpointConnections"),
+	// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/privateEndpointConnections/myPrivateEndpointConnection"),
+	// 				Properties: &armmonitor.PrivateEndpointConnectionProperties{
+	// 					GroupIDs: []*string{
+	// 						to.Ptr("prometheusMetrics")},
+	// 						PrivateEndpoint: &armmonitor.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointConnection"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("Auto-approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 							Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 					},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Monitor/preview/2021-06-03-preview/examples/AzureMonitorWorkspacesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Monitor/stable/2023-04-03/examples/AzureMonitorWorkspacesUpdate.json
 func ExampleAzureMonitorWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,13 +476,33 @@ func ExampleAzureMonitorWorkspacesClient_Update() {
 	// 			InternalID: to.Ptr("mac_2df515bf-c3ce-4920-84d4-1d9d16542d9f"),
 	// 			PrometheusQueryEndpoint: to.Ptr("https://myAzureMonitorWorkspace-v8hx.eastus.prometheus.monitor.azure.com"),
 	// 		},
-	// 		ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
-	// 	},
-	// }
+	// 		PrivateEndpointConnections: []*armmonitor.PrivateEndpointConnection{
+	// 			{
+	// 				Name: to.Ptr("myPrivateEndpointConnection"),
+	// 				Type: to.Ptr("Microsoft.Monitor/accounts/privateEndpointConnections"),
+	// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/privateEndpointConnections/myPrivateEndpointConnection"),
+	// 				Properties: &armmonitor.PrivateEndpointConnectionProperties{
+	// 					GroupIDs: []*string{
+	// 						to.Ptr("prometheusMetrics")},
+	// 						PrivateEndpoint: &armmonitor.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpointConnection"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("Auto-approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 							Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 					},
+	// 			}},
+	// 			ProvisioningState: to.Ptr(armmonitor.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armmonitor.PublicNetworkAccessEnabled),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Monitor/preview/2021-06-03-preview/examples/AzureMonitorWorkspacesDelete.json
-func ExampleAzureMonitorWorkspacesClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Monitor/stable/2023-04-03/examples/AzureMonitorWorkspacesDelete.json
+func ExampleAzureMonitorWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -372,8 +512,12 @@ func ExampleAzureMonitorWorkspacesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewAzureMonitorWorkspacesClient().Delete(ctx, "myResourceGroup", "myAzureMonitorWorkspace", nil)
+	poller, err := clientFactory.NewAzureMonitorWorkspacesClient().BeginDelete(ctx, "myResourceGroup", "myAzureMonitorWorkspace", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

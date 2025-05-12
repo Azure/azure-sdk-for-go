@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMultiResourceMetricDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/examples/GetMultiResourceMetricDefinitions.json
 func ExampleMetricDefinitionsClient_NewListAtSubscriptionScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3176,7 +3176,7 @@ func ExampleMetricDefinitionsClient_NewListAtSubscriptionScopePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsApplicationInsights.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/examples/GetMetricDefinitionsApplicationInsights.json
 func ExampleMetricDefinitionsClient_NewListPager_getApplicationInsightsMetricDefinitionsWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5043,7 +5043,7 @@ func ExampleMetricDefinitionsClient_NewListPager_getApplicationInsightsMetricDef
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/examples/GetMetricDefinitions.json
 func ExampleMetricDefinitionsClient_NewListPager_getMetricDefinitionsWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5983,7 +5983,7 @@ func ExampleMetricDefinitionsClient_NewListPager_getMetricDefinitionsWithoutFilt
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsMetricClass.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/examples/GetMetricDefinitionsMetricClass.json
 func ExampleMetricDefinitionsClient_NewListPager_getStorageCacheMetricDefinitionsWithMetricClass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

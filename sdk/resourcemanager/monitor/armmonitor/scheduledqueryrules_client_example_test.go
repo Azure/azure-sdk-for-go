@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/listScheduledQueryRulesBySubscription.json
 func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,6 +52,10 @@ func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 		// 				Actions: &armmonitor.Actions{
 		// 					ActionGroups: []*string{
 		// 						to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+		// 						ActionProperties: map[string]*string{
+		// 							"Icm.Title": to.Ptr("Custom title in ICM"),
+		// 							"Icm.TsgId": to.Ptr("https://tsg.url"),
+		// 						},
 		// 						CustomProperties: map[string]*string{
 		// 							"key11": to.Ptr("value11"),
 		// 							"key12": to.Ptr("value12"),
@@ -90,7 +94,7 @@ func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 		// 							EvaluationFrequency: to.Ptr("PT5M"),
 		// 							IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 		// 							MuteActionsDuration: to.Ptr("PT30M"),
-		// 							RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+		// 							ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 		// 								AutoResolved: to.Ptr(true),
 		// 								TimeToResolve: to.Ptr("PT10M"),
 		// 							},
@@ -115,6 +119,10 @@ func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 		// 									Actions: &armmonitor.Actions{
 		// 										ActionGroups: []*string{
 		// 											to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+		// 											ActionProperties: map[string]*string{
+		// 												"Icm.Title": to.Ptr("Custom title in ICM"),
+		// 												"Icm.TsgId": to.Ptr("https://tsg.url"),
+		// 											},
 		// 											CustomProperties: map[string]*string{
 		// 												"key11": to.Ptr("value11"),
 		// 												"key12": to.Ptr("value12"),
@@ -140,7 +148,7 @@ func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 		// 										EvaluationFrequency: to.Ptr("PT5M"),
 		// 										IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 		// 										MuteActionsDuration: to.Ptr("PT30M"),
-		// 										RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+		// 										ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 		// 											AutoResolved: to.Ptr(true),
 		// 											TimeToResolve: to.Ptr("PT10M"),
 		// 										},
@@ -159,7 +167,7 @@ func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/listScheduledQueryRulesByResourceGroup.json
 func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,6 +201,10 @@ func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 		// 				Actions: &armmonitor.Actions{
 		// 					ActionGroups: []*string{
 		// 						to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+		// 						ActionProperties: map[string]*string{
+		// 							"Icm.Title": to.Ptr("Custom title in ICM"),
+		// 							"Icm.TsgId": to.Ptr("https://tsg.url"),
+		// 						},
 		// 						CustomProperties: map[string]*string{
 		// 							"key11": to.Ptr("value11"),
 		// 							"key12": to.Ptr("value12"),
@@ -231,7 +243,7 @@ func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 		// 							EvaluationFrequency: to.Ptr("PT5M"),
 		// 							IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 		// 							MuteActionsDuration: to.Ptr("PT30M"),
-		// 							RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+		// 							ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 		// 								AutoResolved: to.Ptr(true),
 		// 								TimeToResolve: to.Ptr("PT10M"),
 		// 							},
@@ -256,6 +268,10 @@ func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 		// 									Actions: &armmonitor.Actions{
 		// 										ActionGroups: []*string{
 		// 											to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+		// 											ActionProperties: map[string]*string{
+		// 												"Icm.Title": to.Ptr("Custom title in ICM"),
+		// 												"Icm.TsgId": to.Ptr("https://tsg.url"),
+		// 											},
 		// 											CustomProperties: map[string]*string{
 		// 												"key11": to.Ptr("value11"),
 		// 												"key12": to.Ptr("value12"),
@@ -281,7 +297,7 @@ func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 		// 										EvaluationFrequency: to.Ptr("PT5M"),
 		// 										IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 		// 										MuteActionsDuration: to.Ptr("PT30M"),
-		// 										RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+		// 										ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 		// 											AutoResolved: to.Ptr(true),
 		// 											TimeToResolve: to.Ptr("PT10M"),
 		// 										},
@@ -300,7 +316,7 @@ func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/getScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/getScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,6 +344,10 @@ func ExampleScheduledQueryRulesClient_Get() {
 	// 		Actions: &armmonitor.Actions{
 	// 			ActionGroups: []*string{
 	// 				to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+	// 				ActionProperties: map[string]*string{
+	// 					"Icm.Title": to.Ptr("Custom title in ICM"),
+	// 					"Icm.TsgId": to.Ptr("https://tsg.url"),
+	// 				},
 	// 				CustomProperties: map[string]*string{
 	// 					"key11": to.Ptr("value11"),
 	// 					"key12": to.Ptr("value12"),
@@ -366,7 +386,7 @@ func ExampleScheduledQueryRulesClient_Get() {
 	// 					EvaluationFrequency: to.Ptr("PT5M"),
 	// 					IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 	// 					MuteActionsDuration: to.Ptr("PT30M"),
-	// 					RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+	// 					ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 	// 						AutoResolved: to.Ptr(true),
 	// 						TimeToResolve: to.Ptr("PT10M"),
 	// 					},
@@ -381,7 +401,7 @@ func ExampleScheduledQueryRulesClient_Get() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/createOrUpdateScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -399,6 +419,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Actions: &armmonitor.Actions{
 				ActionGroups: []*string{
 					to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+				ActionProperties: map[string]*string{
+					"Icm.Title": to.Ptr("Custom title in ICM"),
+					"Icm.TsgId": to.Ptr("https://tsg.url"),
+				},
 				CustomProperties: map[string]*string{
 					"key11": to.Ptr("value11"),
 					"key12": to.Ptr("value12"),
@@ -436,7 +460,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Enabled:             to.Ptr(true),
 			EvaluationFrequency: to.Ptr("PT5M"),
 			MuteActionsDuration: to.Ptr("PT30M"),
-			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+			ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 				AutoResolved:  to.Ptr(true),
 				TimeToResolve: to.Ptr("PT10M"),
 			},
@@ -463,6 +487,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 		Actions: &armmonitor.Actions{
 	// 			ActionGroups: []*string{
 	// 				to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+	// 				ActionProperties: map[string]*string{
+	// 					"Icm.Title": to.Ptr("Custom title in ICM"),
+	// 					"Icm.TsgId": to.Ptr("https://tsg.url"),
+	// 				},
 	// 				CustomProperties: map[string]*string{
 	// 					"key11": to.Ptr("value11"),
 	// 					"key12": to.Ptr("value12"),
@@ -501,7 +529,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 					EvaluationFrequency: to.Ptr("PT5M"),
 	// 					IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 	// 					MuteActionsDuration: to.Ptr("PT30M"),
-	// 					RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+	// 					ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 	// 						AutoResolved: to.Ptr(true),
 	// 						TimeToResolve: to.Ptr("PT10M"),
 	// 					},
@@ -516,7 +544,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleOnResourceGroupS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -534,6 +562,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Actions: &armmonitor.Actions{
 				ActionGroups: []*string{
 					to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+				ActionProperties: map[string]*string{
+					"Icm.Title": to.Ptr("Custom title in ICM"),
+					"Icm.TsgId": to.Ptr("https://tsg.url"),
+				},
 				CustomProperties: map[string]*string{
 					"key11": to.Ptr("value11"),
 					"key12": to.Ptr("value12"),
@@ -557,7 +589,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Enabled:             to.Ptr(true),
 			EvaluationFrequency: to.Ptr("PT5M"),
 			MuteActionsDuration: to.Ptr("PT30M"),
-			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+			ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 				AutoResolved:  to.Ptr(true),
 				TimeToResolve: to.Ptr("PT10M"),
 			},
@@ -586,6 +618,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 		Actions: &armmonitor.Actions{
 	// 			ActionGroups: []*string{
 	// 				to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+	// 				ActionProperties: map[string]*string{
+	// 					"Icm.Title": to.Ptr("Custom title in ICM"),
+	// 					"Icm.TsgId": to.Ptr("https://tsg.url"),
+	// 				},
 	// 				CustomProperties: map[string]*string{
 	// 					"key11": to.Ptr("value11"),
 	// 					"key12": to.Ptr("value12"),
@@ -611,7 +647,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 			EvaluationFrequency: to.Ptr("PT5M"),
 	// 			IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 	// 			MuteActionsDuration: to.Ptr("PT30M"),
-	// 			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+	// 			ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 	// 				AutoResolved: to.Ptr(true),
 	// 				TimeToResolve: to.Ptr("PT10M"),
 	// 			},
@@ -628,7 +664,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/createOrUpdateScheduledQueryRuleSubscription.json
 func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQueryRuleOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,6 +682,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Actions: &armmonitor.Actions{
 				ActionGroups: []*string{
 					to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+				ActionProperties: map[string]*string{
+					"Icm.Title": to.Ptr("Custom title in ICM"),
+					"Icm.TsgId": to.Ptr("https://tsg.url"),
+				},
 				CustomProperties: map[string]*string{
 					"key11": to.Ptr("value11"),
 					"key12": to.Ptr("value12"),
@@ -683,7 +723,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 			Enabled:             to.Ptr(true),
 			EvaluationFrequency: to.Ptr("PT5M"),
 			MuteActionsDuration: to.Ptr("PT30M"),
-			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+			ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 				AutoResolved:  to.Ptr(true),
 				TimeToResolve: to.Ptr("PT10M"),
 			},
@@ -712,6 +752,10 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 		Actions: &armmonitor.Actions{
 	// 			ActionGroups: []*string{
 	// 				to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+	// 				ActionProperties: map[string]*string{
+	// 					"Icm.Title": to.Ptr("Custom title in ICM"),
+	// 					"Icm.TsgId": to.Ptr("https://tsg.url"),
+	// 				},
 	// 				CustomProperties: map[string]*string{
 	// 					"key11": to.Ptr("value11"),
 	// 					"key12": to.Ptr("value12"),
@@ -750,7 +794,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 					EvaluationFrequency: to.Ptr("PT5M"),
 	// 					IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 	// 					MuteActionsDuration: to.Ptr("PT30M"),
-	// 					RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+	// 					ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 	// 						AutoResolved: to.Ptr(true),
 	// 						TimeToResolve: to.Ptr("PT10M"),
 	// 					},
@@ -767,7 +811,7 @@ func ExampleScheduledQueryRulesClient_CreateOrUpdate_createOrUpdateAScheduledQue
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/patchScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/patchScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -799,6 +843,10 @@ func ExampleScheduledQueryRulesClient_Update() {
 	// 		Actions: &armmonitor.Actions{
 	// 			ActionGroups: []*string{
 	// 				to.Ptr("/subscriptions/1cf177ed-1330-4692-80ea-fd3d7783b147/resourcegroups/sqrapi/providers/microsoft.insights/actiongroups/myactiongroup")},
+	// 				ActionProperties: map[string]*string{
+	// 					"Icm.Title": to.Ptr("Custom title in ICM"),
+	// 					"Icm.TsgId": to.Ptr("https://tsg.url"),
+	// 				},
 	// 				CustomProperties: map[string]*string{
 	// 					"key11": to.Ptr("value11"),
 	// 					"key12": to.Ptr("value12"),
@@ -824,7 +872,7 @@ func ExampleScheduledQueryRulesClient_Update() {
 	// 			EvaluationFrequency: to.Ptr("PT5M"),
 	// 			IsWorkspaceAlertsStorageConfigured: to.Ptr(true),
 	// 			MuteActionsDuration: to.Ptr("PT30M"),
-	// 			RuleResolveConfiguration: &armmonitor.RuleResolveConfiguration{
+	// 			ResolveConfiguration: &armmonitor.RuleResolveConfiguration{
 	// 				AutoResolved: to.Ptr(true),
 	// 				TimeToResolve: to.Ptr("PT10M"),
 	// 			},
@@ -841,7 +889,7 @@ func ExampleScheduledQueryRulesClient_Update() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/deleteScheduledQueryRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/monitor/resource-manager/Microsoft.Insights/stable/2023-12-01/examples/deleteScheduledQueryRule.json
 func ExampleScheduledQueryRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

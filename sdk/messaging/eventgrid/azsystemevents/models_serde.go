@@ -7268,7 +7268,7 @@ func (i *internalACSMessageChannelEventError) UnmarshalJSON(data []byte) error {
 func (i internalACSRouterCommunicationError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", i.Code)
-	populate(objectMap, "errors", i.Errors)
+	populate(objectMap, "details", i.Details)
 	populate(objectMap, "innererror", i.Innererror)
 	populate(objectMap, "message", i.Message)
 	populate(objectMap, "target", i.Target)
@@ -7287,8 +7287,8 @@ func (i *internalACSRouterCommunicationError) UnmarshalJSON(data []byte) error {
 		case "code":
 			err = unpopulate(val, "Code", &i.Code)
 			delete(rawMsg, key)
-		case "errors":
-			err = unpopulate(val, "Errors", &i.Errors)
+		case "details":
+			err = unpopulate(val, "Details", &i.Details)
 			delete(rawMsg, key)
 		case "innererror":
 			err = unpopulate(val, "Innererror", &i.Innererror)

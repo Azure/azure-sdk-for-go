@@ -1932,10 +1932,7 @@ type APIManagementCircuitBreakerOpenedEventData struct {
 // APIManagementCircuitBreakerProperties - Information related to the circuit breaker configured on the backend.
 type APIManagementCircuitBreakerProperties struct {
 	// REQUIRED; Overview of all configured rules and respective details.
-	Rules map[string]*APIManagementCircuitBreakerPropertiesRule
-}
-
-type APIManagementCircuitBreakerPropertiesRule struct {
+	Rules map[string]map[string]any
 }
 
 // APIManagementExpiredGatewayTokenProperties - Information related to a gateway token that has expired for a self-hosted
@@ -3142,7 +3139,7 @@ type internalACSRouterCommunicationError struct {
 	Target *string
 
 	// READ-ONLY; List of Router Communication Errors
-	Errors []internalACSRouterCommunicationError
+	Details []internalACSRouterCommunicationError
 
 	// Router Communication Error Code
 	Code *string

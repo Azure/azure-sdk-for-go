@@ -42,9 +42,9 @@ func unpackMsg(err internalACSRouterCommunicationError, indent string) string {
 
 	sb.WriteString(fmt.Sprintf("%sCode: %s\n%sMessage: %s\n", indent, code, indent, message))
 
-	if len(err.Errors) > 0 {
-		for i, detailErr := range err.Errors {
-			sb.WriteString(fmt.Sprintf("%sErrors[%d]:\n%s", indent, i, unpackMsg(detailErr, indent+"  ")))
+	if len(err.Details) > 0 {
+		for i, detailErr := range err.Details {
+			sb.WriteString(fmt.Sprintf("%sDetails[%d]:\n%s", indent, i, unpackMsg(detailErr, indent+"  ")))
 		}
 	}
 

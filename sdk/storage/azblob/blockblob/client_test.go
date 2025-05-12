@@ -604,7 +604,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithRequestIntent()
 
 	// Stage blocks from URL.
 	blockIDs := testcommon.GenerateBlockIDsList(2)
-	requestIntent := blob.FileShareTokenIntentBackup
+	requestIntent := blob.FileRequestIntentTypeBackup
 
 	opts := blockblob.StageBlockFromURLOptions{
 		FileRequestIntent: &requestIntent,
@@ -1242,7 +1242,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithIntent() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	requestIntent := blob.FileShareTokenIntentBackup
+	requestIntent := blob.FileRequestIntentTypeBackup
 
 	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)

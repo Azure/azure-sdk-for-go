@@ -524,7 +524,7 @@ type CopyFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
 	// File request Intent. Valid value is backup.
-	FileRequestIntent *FileShareTokenIntent
+	FileRequestIntent *FileRequestIntentType
 	// Specifies the date time when the blobs immutability policy is set to expire.
 	ImmutabilityPolicyExpiry *time.Time
 	// Specifies the immutability policy mode to set on the blob.

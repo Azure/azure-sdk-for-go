@@ -534,7 +534,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithRequestIntentHe
 
 	// Prepare source pbClient for copy.
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	requestIntent := blob.FileShareTokenIntentBackup
+	requestIntent := blob.FileRequestIntentTypeBackup
 
 	_, err = srcBlob.UploadPages(context.Background(), streaming.NopCloser(r), blob.HTTPRange{Offset: offset, Count: count}, nil)
 	_require.NoError(err)

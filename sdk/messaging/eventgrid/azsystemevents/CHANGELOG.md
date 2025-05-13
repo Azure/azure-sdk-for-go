@@ -17,6 +17,10 @@
   - APIManagementGatewayTokenNearExpiryEventData
   - EdgeSolutionVersionPublishedEventData
 
+### Breaking Changes
+
+- ACSCallParticipantProperties.Role has changed from a `*string` to a `*ACSCallParticipantRoleKind`.
+
 ## 0.6.1 (2025-02-20)
 
 ### Features Added

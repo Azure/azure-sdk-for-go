@@ -74,7 +74,6 @@ type Flags struct {
 	PackageConfig       string
 	GoVersion           string
 	Token               string
-	ForceStableVersion  bool
 	TypeSpecConfig      string
 	TypeSpecGoOption    string
 	TspClientOption     []string

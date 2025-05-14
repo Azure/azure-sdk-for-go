@@ -154,11 +154,12 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 			errorMessages = append(errorMessages, credNameAzureDeveloperCLI+": "+err.Error())
 			creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzureDeveloperCLI, err: err})
 		}
-
-		if len(errorMessages) > 0 {
-			log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s", strings.Join(errorMessages, "\n\t"))
-		}
 	}
+
+	if len(errorMessages) > 0 {
+		log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s", strings.Join(errorMessages, "\n\t"))
+	}
+
 	chain, err := NewChainedTokenCredential(creds, nil)
 	if err != nil {
 		return nil, err

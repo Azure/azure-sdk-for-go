@@ -49,6 +49,7 @@ type GenerateParam struct {
 	SpecificVersion      string
 	SpecificPackageTitle string
 	SpecRPName           string
+	SpecSubRPName        string
 	ReleaseDate          string
 	SkipGenerateExample  bool
 	GoVersion            string
@@ -232,7 +233,7 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 	} else {
 		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err := ChangeConfigWithCommitID(autorestMdPath, t.SpecRepoURL, t.SpecCommitHash, generateParam.SpecRPName); err != nil {
+		if err := ChangeConfigWithCommitID(autorestMdPath, t.SpecRepoURL, t.SpecCommitHash, generateParam.SpecRPName, generateParam.SpecSubRPName); err != nil {
 			return err
 		}
 	}

@@ -95,13 +95,17 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	errorBuilder := generateErrorBuilder{}
-
-	if input.SdkReleaseType != "" && input.SdkReleaseType != common.SDKReleaseTypeStable && input.SdkReleaseType != common.SDKReleaseTypePreview {
-		return nil, fmt.Errorf("invalid SDK release type:%s, only support 'stable' or 'beta'", input.SdkReleaseType)
-	}
-	if input.SdkReleaseType != "" && input.ApiVersion != "" {
-		if strings.HasSuffix(input.ApiVersion, "-preview") && input.SdkReleaseType == common.SDKReleaseTypeStable {
-			return nil, fmt.Errorf("SDK release type is stable, but API version: %s is preview", input.ApiVersion)
+	if input.RunMode == common.AutomationRunModeLocal || input.RunMode == common.AutomationRunModeRelease {
+		if input.SdkReleaseType != "" && input.SdkReleaseType != common.SDKReleaseTypeStable && input.SdkReleaseType != common.SDKReleaseTypePreview {
+			return nil, fmt.Errorf("invalid SDK release type:%s, only support 'stable' or 'beta'", input.SdkReleaseType)
+		}
+		if input.SdkReleaseType != "" && input.ApiVersion != "" {
+			if strings.HasSuffix(input.ApiVersion, "-preview") && input.SdkReleaseType == common.SDKReleaseTypeStable {
+				return nil, fmt.Errorf("SDK release type is stable, but API version: %s is preview", input.ApiVersion)
+			}
+		}
+		if (input.ApiVersion != "" && input.SdkReleaseType == "") || (input.ApiVersion == "" && input.SdkReleaseType != "") {
+			return nil, fmt.Errorf("both APIVersion and SDKReleaseType parameters are required for self-serve SDK generation")
 		}
 	}
 
@@ -157,10 +161,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			continue
 		}
 		result, errs := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
-			GoVersion:      ctx.goVersion,
-			ApiVersion:     input.ApiVersion,
-			SdkReleaseType: input.SdkReleaseType,
-			RemoveTagSet:   true,
+			GoVersion:    ctx.goVersion,
+			RemoveTagSet: true,
 		})
 		if len(errs) > 0 {
 			errorBuilder.add(errs...)

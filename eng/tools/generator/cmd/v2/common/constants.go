@@ -12,4 +12,7 @@ const (
 
 	SDKReleaseTypeStable  = "stable"
 	SDKReleaseTypePreview = "beta"
+
+	AutomationRunModeRelease = "release"
+	AutomationRunModeLocal   = "local"
 )

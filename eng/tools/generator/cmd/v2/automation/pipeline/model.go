@@ -23,6 +23,7 @@ type GenerateInput struct {
 	RelatedTypeSpecProjectFolder []string                      `json:"relatedTypeSpecProjectFolder"`
 	ApiVersion                   string                        `json:"apiVersion,omitempty"`
 	SdkReleaseType               string                        `json:"sdkReleaseType,omitempty"`
+	RunMode                      string                        `json:"runMode,omitempty"`
 }
 
 // NewGenerateInputFrom ...

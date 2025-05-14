@@ -311,8 +311,6 @@ steps:
     condition: succeededOrFailed()
     workingDirectory: 'eng/tools/doccheck'
 
-  - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
-
   - pwsh: |
       ./eng/scripts/Invoke-SmokeTests.ps1 "$(Packages)"
     displayName: 'Run Nightly SmokeTests'
@@ -339,3 +337,5 @@ steps:
   - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
     parameters:
       PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+  - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml

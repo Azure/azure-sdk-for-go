@@ -648,7 +648,7 @@ func ExampleOrganizationsClient_GetPostgresVersions_organizationsGetPostgresVers
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOrganizationsClient().GetPostgresVersions(ctx, "rgneon", &OrganizationsClientGetPostgresVersionsOptions{
+	res, err := clientFactory.NewOrganizationsClient().GetPostgresVersions(ctx, "rgneon", &armneonpostgres.OrganizationsClientGetPostgresVersionsOptions{
 		parameters: &armneonpostgres.PgVersion{
 			Version: to.Ptr[int32](7),
 		}})

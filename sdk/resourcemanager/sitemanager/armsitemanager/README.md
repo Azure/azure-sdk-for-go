@@ -1,6 +1,6 @@
-# Azure Sitemanager Module for Go
+# Azure Site Manager Module for Go
 
-The `armsitemanager` module provides operations for working with Azure Sitemanager.
+The `armsitemanager` module provides operations for working with Azure Site Manager.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/sitemanager/armsitemanager)
 
@@ -15,7 +15,7 @@ The `armsitemanager` module provides operations for working with Azure Sitemanag
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Sitemanager module:
+Install the Azure Site Manager module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sitemanager/armsitemanager

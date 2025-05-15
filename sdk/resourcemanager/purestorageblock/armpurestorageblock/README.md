@@ -1,6 +1,6 @@
-# Azure Purestorageblock Module for Go
+# Azure Pure Storage Block Module for Go
 
-The `armpurestorageblock` module provides operations for working with Azure Purestorageblock.
+The `armpurestorageblock` module provides operations for working with Azure Pure Storage Block.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/purestorageblock/armpurestorageblock)
 
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Purestorageblock module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Pure Storage Block module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armpurestorageblock.NewClientFactory(<subscription ID>, cred, nil)

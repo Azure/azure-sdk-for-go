@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2025-04-22)
+## 2.0.0-beta.1 (2025-06-02)
 ### Breaking Changes
 
 - Function `*SummariesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, SummaryName, *SummariesClientGetOptions)` to `(context.Context, string, string, string, SummaryType, *SummariesClientGetOptions)`

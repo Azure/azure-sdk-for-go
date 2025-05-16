@@ -1,3 +1,4 @@
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai instead.
 module github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiextensions
 
 go 1.23.0

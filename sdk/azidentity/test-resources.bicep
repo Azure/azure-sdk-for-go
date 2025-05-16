@@ -85,6 +85,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
   name: uniqueString(resourceGroup().id)
   properties: {
     adminUserEnabled: true
+    anonymousPullEnabled: true
   }
   sku: {
     name: 'Basic'
@@ -220,6 +221,7 @@ output AZIDENTITY_ACR_NAME string = deployResources ? containerRegistry.name : '
 output AZIDENTITY_AKS_NAME string = deployResources ? aks.name : ''
 output AZIDENTITY_FUNCTION_NAME string = deployResources ? azfunc.name : ''
 output AZIDENTITY_STORAGE_ID string = deployResources ? sa.id : ''
+output AZIDENTITY_STORAGE_ID_USER_ASSIGNED string = deployResources ? saUserAssigned.id : ''
 output AZIDENTITY_STORAGE_NAME string = deployResources ? sa.name : ''
 output AZIDENTITY_STORAGE_NAME_USER_ASSIGNED string = deployResources ? saUserAssigned.name : ''
 output AZIDENTITY_USER_ASSIGNED_IDENTITY string = deployResources ? usermgdid.id : ''

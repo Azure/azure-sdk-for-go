@@ -256,15 +256,59 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 func TestManagedIdentityCredential_AzureContainerInstanceLive(t *testing.T) {
 	// This test triggers the managed identity test app deployed to an Azure Container Instance.
 	// See the bicep file and test resources scripts for details.
-	ip := os.Getenv("AZIDENTITY_ACI_IP")
-	if ip == "" {
-		t.Skip("set AZIDENTITY_ACI_IP to run this test")
+
+	var run = func(ipVar, nameVar string, id ManagedIDKind) {
+		ip := os.Getenv(ipVar)
+		if ip == "" {
+			t.Skipf("set %s and %s to run this test", ipVar, nameVar)
+		}
+		name := os.Getenv(nameVar)
+		if name == "" {
+			t.Skipf("set %s and %s to run this test", ipVar, nameVar)
+		}
+		url := fmt.Sprintf("http://%s/mic?storage-name=%s", ip, name)
+		switch id.(type) {
+		case ClientID:
+			url += "&client-id=" + id.String()
+		case ObjectID:
+			url += "&object-id=" + id.String()
+		case ResourceID:
+			url += "&resource-id=" + id.String()
+		}
+		res, err := http.Get(url)
+		require.NoError(t, err)
+		b, err := azruntime.Payload(res)
+		require.NoError(t, err)
+		require.Equal(t, "test passed", string(b))
 	}
-	res, err := http.Get("http://" + ip)
-	require.NoError(t, err)
-	b, err := azruntime.Payload(res)
-	require.NoError(t, err)
-	require.Equal(t, "test passed", string(b))
+
+	t.Run(credNameManagedIdentity+"/system assigned", func(t *testing.T) {
+		run("AZIDENTITY_ACI_IP", "AZIDENTITY_STORAGE_NAME", nil)
+	})
+
+	t.Run(credNameManagedIdentity+"/user assigned", func(t *testing.T) {
+		ip, n := "AZIDENTITY_ACI_IP_USER_ASSIGNED", "AZIDENTITY_STORAGE_NAME_USER_ASSIGNED"
+		t.Run("ClientID", func(t *testing.T) {
+			if liveManagedIdentity.clientID == "" {
+				t.Skip("set AZIDENTITY_CLIENT_ID_USER_ASSIGNED to run this test")
+			}
+			run(ip, n, ClientID(liveManagedIdentity.clientID))
+		})
+
+		t.Run("ObjectID", func(t *testing.T) {
+			if liveManagedIdentity.objectID == "" {
+				t.Skip("set AZIDENTITY_OBJECT_ID_USER_ASSIGNED to run this test")
+			}
+			run(ip, n, ObjectID(liveManagedIdentity.objectID))
+		})
+
+		t.Run("ResourceID", func(t *testing.T) {
+			if liveManagedIdentity.resourceID == "" {
+				t.Skip("set AZIDENTITY_RESOURCE_ID_USER_ASSIGNED to run this test")
+			}
+			run(ip, n, ResourceID(liveManagedIdentity.resourceID))
+		})
+	})
 }
 
 func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
@@ -274,7 +318,10 @@ func TestManagedIdentityCredential_AzureFunctionsLive(t *testing.T) {
 	if fn == "" {
 		t.Skip("set AZIDENTITY_FUNCTION_NAME to run this test")
 	}
+	// TODO
 	url := fmt.Sprintf("https://%s.azurewebsites.net/api/HttpTrigger", fn)
+	t.Run("system assigned", func(t *testing.T) {
+	})
 	res, err := http.Get(url)
 	require.NoError(t, err)
 	b, err := azruntime.Payload(res)

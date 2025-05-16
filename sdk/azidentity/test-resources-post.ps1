@@ -66,25 +66,34 @@ docker push $image
 $rg = $DeploymentOutputs['AZIDENTITY_RESOURCE_GROUP']
 
 # ACI is easier to provision here than in the bicep file because the image isn't available before now
-Write-Host "Deploying Azure Container Instance"
+Write-Host "Deploying Azure Container Instances"
 $aciName = "azidentity-test"
 az container create -g $rg -n $aciName --image $image `
-  --acr-identity $($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
-  --assign-identity [system] $($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
+  --assign-identity [system] `
   --cpu 1 `
   --ip-address Public `
   --memory 1.0 `
   --os-type Linux `
   --role "Storage Blob Data Reader" `
   --scope $($DeploymentOutputs['AZIDENTITY_STORAGE_ID']) `
-  -e AZIDENTITY_STORAGE_NAME=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME']) `
-  AZIDENTITY_STORAGE_NAME_USER_ASSIGNED=$($DeploymentOutputs['AZIDENTITY_STORAGE_NAME_USER_ASSIGNED']) `
-  AZIDENTITY_USER_ASSIGNED_IDENTITY=$($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
-  AZIDENTITY_USER_ASSIGNED_IDENTITY_CLIENT_ID=$($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY_CLIENT_ID']) `
-  AZIDENTITY_USER_ASSIGNED_IDENTITY_OBJECT_ID=$($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY_OBJECT_ID']) `
-  FUNCTIONS_CUSTOMHANDLER_PORT=80
+  -e FUNCTIONS_CUSTOMHANDLER_PORT=80
+
 $aciIP = az container show -g $rg -n $aciName --query ipAddress.ip --output tsv
 Write-Host "##vso[task.setvariable variable=AZIDENTITY_ACI_IP;]$aciIP"
+
+# provision a separate ACI with user-assigned identity because one instance apparently can't have both kinds of identity
+$aciUserAssigned = "azidentity-test-user-assigned"
+az container create -g $rg -n $aciUserAssigned --image $image `
+  --assign-identity $($DeploymentOutputs['AZIDENTITY_USER_ASSIGNED_IDENTITY']) `
+  --cpu 1 `
+  --ip-address Public `
+  --memory 1.0 `
+  --os-type Linux `
+  --role "Storage Blob Data Reader" `
+  --scope $($DeploymentOutputs['AZIDENTITY_STORAGE_ID_USER_ASSIGNED']) `
+  -e FUNCTIONS_CUSTOMHANDLER_PORT=80
+$aciIP = az container show -g $rg -n $aciUserAssigned --query ipAddress.ip --output tsv
+Write-Host "##vso[task.setvariable variable=AZIDENTITY_ACI_IP_USER_ASSIGNED;]$aciIP"
 
 # Azure Functions deployment: copy the Windows binary from the Docker image, deploy it in a zip
 Write-Host "Deploying to Azure Functions"

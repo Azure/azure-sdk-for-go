@@ -58,7 +58,7 @@ func TestWorkloadIdentityCredential_Live(t *testing.T) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, "kubectl", "exec", pod, "--", "wget", "-qO-", "localhost")
+	cmd := exec.CommandContext(ctx, "kubectl", "exec", pod, "--", "wget", "-qO-", "localhost/wic?storage-name=$AZIDENTITY_STORAGE_NAME")
 	b, err := cmd.CombinedOutput()
 	s := string(b)
 	require.NoError(t, err, s)

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/ListExperimentsInASubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_ListAll.json
 func ExampleExperimentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,9 +48,17 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 			Name: to.Ptr("exampleExperiment"),
 		// 			Type: to.Ptr("Microsoft.Chaos/experiments"),
 		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+		// 			SystemData: &armchaos.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("User"),
+		// 				CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("User"),
+		// 				LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 			},
 		// 			Location: to.Ptr("centraluseuap"),
-		// 			Identity: &armchaos.ResourceIdentity{
-		// 				Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
+		// 			Identity: &armchaos.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
 		// 				PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
 		// 				TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 		// 			},
@@ -74,7 +82,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 								Actions: []armchaos.ExperimentActionClassification{
 		// 									&armchaos.ContinuousAction{
 		// 										Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
-		// 										Type: to.Ptr("continuous"),
+		// 										Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
 		// 										Duration: to.Ptr("PT10M"),
 		// 										Parameters: []*armchaos.KeyValuePair{
 		// 											{
@@ -86,20 +94,12 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 						}},
 		// 				}},
 		// 			},
-		// 			SystemData: &armchaos.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("User"),
-		// 				CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("User"),
-		// 				LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/ListExperimentsInAResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_List.json
 func ExampleExperimentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,9 +129,17 @@ func ExampleExperimentsClient_NewListPager() {
 		// 			Name: to.Ptr("exampleExperiment"),
 		// 			Type: to.Ptr("Microsoft.Chaos/experiments"),
 		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+		// 			SystemData: &armchaos.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("User"),
+		// 				CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("User"),
+		// 				LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 			},
 		// 			Location: to.Ptr("centraluseuap"),
-		// 			Identity: &armchaos.ResourceIdentity{
-		// 				Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
+		// 			Identity: &armchaos.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
 		// 				PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
 		// 				TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 		// 			},
@@ -155,7 +163,7 @@ func ExampleExperimentsClient_NewListPager() {
 		// 								Actions: []armchaos.ExperimentActionClassification{
 		// 									&armchaos.ContinuousAction{
 		// 										Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
-		// 										Type: to.Ptr("continuous"),
+		// 										Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
 		// 										Duration: to.Ptr("PT10M"),
 		// 										Parameters: []*armchaos.KeyValuePair{
 		// 											{
@@ -167,41 +175,12 @@ func ExampleExperimentsClient_NewListPager() {
 		// 						}},
 		// 				}},
 		// 			},
-		// 			SystemData: &armchaos.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("User"),
-		// 				CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("User"),
-		// 				LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/DeleteExperiment.json
-func ExampleExperimentsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExperimentsClient().BeginDelete(ctx, "exampleRG", "exampleExperiment", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/GetExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_Get.json
 func ExampleExperimentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,9 +202,17 @@ func ExampleExperimentsClient_Get() {
 	// 	Name: to.Ptr("exampleExperiment"),
 	// 	Type: to.Ptr("Microsoft.Chaos/experiments"),
 	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+	// 	SystemData: &armchaos.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("User"),
+	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("User"),
+	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 	},
 	// 	Location: to.Ptr("centraluseuap"),
-	// 	Identity: &armchaos.ResourceIdentity{
-	// 		Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
+	// 	Identity: &armchaos.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
 	// 		PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
 	// 		TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 	// 	},
@@ -249,7 +236,7 @@ func ExampleExperimentsClient_Get() {
 	// 						Actions: []armchaos.ExperimentActionClassification{
 	// 							&armchaos.ContinuousAction{
 	// 								Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
-	// 								Type: to.Ptr("continuous"),
+	// 								Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
 	// 								Duration: to.Ptr("PT10M"),
 	// 								Parameters: []*armchaos.KeyValuePair{
 	// 									{
@@ -261,18 +248,10 @@ func ExampleExperimentsClient_Get() {
 	// 				}},
 	// 		}},
 	// 	},
-	// 	SystemData: &armchaos.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("User"),
-	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("User"),
-	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/CreateUpdateExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_CreateOrUpdate.json
 func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,8 +264,12 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewExperimentsClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleExperiment", armchaos.Experiment{
 		Location: to.Ptr("eastus2euap"),
-		Identity: &armchaos.ResourceIdentity{
-			Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
+		Tags: map[string]*string{
+			"key2138": to.Ptr("fjaeecgnvqd"),
+			"key7131": to.Ptr("ryohwcoiccwsnewjigfmijz"),
+		},
+		Identity: &armchaos.ManagedServiceIdentity{
+			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armchaos.ExperimentProperties{
 			Selectors: []armchaos.TargetSelectorClassification{
@@ -308,7 +291,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 							Actions: []armchaos.ExperimentActionClassification{
 								&armchaos.ContinuousAction{
 									Name:     to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-									Type:     to.Ptr("continuous"),
+									Type:     to.Ptr(armchaos.ExperimentActionTypeContinuous),
 									Duration: to.Ptr("PT10M"),
 									Parameters: []*armchaos.KeyValuePair{
 										{
@@ -335,9 +318,21 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// 	Name: to.Ptr("exampleExperiment"),
 	// 	Type: to.Ptr("Microsoft.Chaos/experiments"),
 	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+	// 	SystemData: &armchaos.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("User"),
+	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("User"),
+	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 	},
 	// 	Location: to.Ptr("eastus2euap"),
-	// 	Identity: &armchaos.ResourceIdentity{
-	// 		Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
+	// 	Tags: map[string]*string{
+	// 		"key2138": to.Ptr("fjaeecgnvqd"),
+	// 		"key7131": to.Ptr("ryohwcoiccwsnewjigfmijz"),
+	// 	},
+	// 	Identity: &armchaos.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armchaos.ManagedServiceIdentityTypeSystemAssigned),
 	// 		PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
 	// 		TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
 	// 	},
@@ -362,7 +357,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// 						Actions: []armchaos.ExperimentActionClassification{
 	// 							&armchaos.ContinuousAction{
 	// 								Name: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
-	// 								Type: to.Ptr("continuous"),
+	// 								Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
 	// 								Duration: to.Ptr("PT10M"),
 	// 								Parameters: []*armchaos.KeyValuePair{
 	// 									{
@@ -374,18 +369,10 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// 				}},
 	// 		}},
 	// 	},
-	// 	SystemData: &armchaos.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("User"),
-	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("User"),
-	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/UpdateExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_Update.json
 func ExampleExperimentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,8 +384,8 @@ func ExampleExperimentsClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewExperimentsClient().BeginUpdate(ctx, "exampleRG", "exampleExperiment", armchaos.ExperimentUpdate{
-		Identity: &armchaos.ResourceIdentity{
-			Type: to.Ptr(armchaos.ResourceIdentityTypeUserAssigned),
+		Identity: &armchaos.ManagedServiceIdentity{
+			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
 				"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ManagedIdentity/userAssignedIdentity/exampleUMI": {},
 			},
@@ -411,13 +398,96 @@ func ExampleExperimentsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Experiment = armchaos.Experiment{
+	// 	Name: to.Ptr("exampleExperiment"),
+	// 	Type: to.Ptr("Microsoft.Chaos/experiments"),
+	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
+	// 	SystemData: &armchaos.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("User"),
+	// 		CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("User"),
+	// 		LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 	},
+	// 	Location: to.Ptr("centraluseuap"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// 	Identity: &armchaos.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
+	// 		PrincipalID: to.Ptr("d04ab567-2c07-43ef-a7f4-4527626b7f56"),
+	// 		TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+	// 		UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
+	// 			"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ManagedIdentity/userAssignedIdentity/exampleUMI": &armchaos.UserAssignedIdentity{
+	// 			},
+	// 		},
+	// 	},
+	// 	Properties: &armchaos.ExperimentProperties{
+	// 		Selectors: []armchaos.TargetSelectorClassification{
+	// 			&armchaos.TargetListSelector{
+	// 				Type: to.Ptr(armchaos.SelectorTypeList),
+	// 				ID: to.Ptr("selector1"),
+	// 				Targets: []*armchaos.TargetReference{
+	// 					{
+	// 						Type: to.Ptr(armchaos.TargetReferenceTypeChaosTarget),
+	// 						ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
+	// 				}},
+	// 		}},
+	// 		Steps: []*armchaos.ExperimentStep{
+	// 			{
+	// 				Name: to.Ptr("step1"),
+	// 				Branches: []*armchaos.ExperimentBranch{
+	// 					{
+	// 						Name: to.Ptr("branch1"),
+	// 						Actions: []armchaos.ExperimentActionClassification{
+	// 							&armchaos.ContinuousAction{
+	// 								Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
+	// 								Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
+	// 								Duration: to.Ptr("PT10M"),
+	// 								Parameters: []*armchaos.KeyValuePair{
+	// 									{
+	// 										Key: to.Ptr("abruptShutdown"),
+	// 										Value: to.Ptr("false"),
+	// 								}},
+	// 								SelectorID: to.Ptr("selector1"),
+	// 						}},
+	// 				}},
+	// 		}},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_Delete.json
+func ExampleExperimentsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExperimentsClient().BeginDelete(ctx, "exampleRG", "exampleExperiment", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/CancelExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_Cancel.json
 func ExampleExperimentsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,28 +508,7 @@ func ExampleExperimentsClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/StartExperiment.json
-func ExampleExperimentsClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExperimentsClient().BeginStart(ctx, "exampleRG", "exampleExperiment", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/ListExperimentExecutions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_ListAllExecutions.json
 func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -486,7 +535,7 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 		// 		{
 		// 			Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
 		// 			Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
-		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/"),
+		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
 		// 			Properties: &armchaos.ExperimentExecutionProperties{
 		// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
 		// 				Status: to.Ptr("failed"),
@@ -496,7 +545,7 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 		// 		{
 		// 			Name: to.Ptr("14d98367-52ef-4596-be4f-53fc81bbfc33"),
 		// 			Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
-		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executionDetails/14d98367-52ef-4596-be4f-53fc81bbfc33"),
+		// 			ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/14d98367-52ef-4596-be4f-53fc81bbfc33"),
 		// 			Properties: &armchaos.ExperimentExecutionProperties{
 		// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
 		// 				Status: to.Ptr("success"),
@@ -507,7 +556,7 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/GetExperimentExecution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_GetExecution.json
 func ExampleExperimentsClient_GetExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -537,7 +586,7 @@ func ExampleExperimentsClient_GetExecution() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e4009d2f8d3bf0271757e522c7d1c1997e193d44/specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/DetailsExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_ExecutionDetails.json
 func ExampleExperimentsClient_ExecutionDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -560,9 +609,6 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	// 	Type: to.Ptr("Microsoft.Chaos/experiments/executions/getExecutionDetails"),
 	// 	ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333/getExecutionDetails"),
 	// 	Properties: &armchaos.ExperimentExecutionDetailsProperties{
-	// 		StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
-	// 		Status: to.Ptr("failed"),
-	// 		StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.928Z"); return t}()),
 	// 		FailureReason: to.Ptr("Dependency failure"),
 	// 		LastActionAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
 	// 		RunInformation: &armchaos.ExperimentExecutionDetailsPropertiesRunInformation{
@@ -600,6 +646,30 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	// 					StepName: to.Ptr("FirstStep"),
 	// 			}},
 	// 		},
+	// 		StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:52:52.255Z"); return t}()),
+	// 		Status: to.Ptr("failed"),
+	// 		StoppedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-14T21:56:18.928Z"); return t}()),
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cb79e798e4d8f10c9cc2c9fe8a99e306a445d714/specification/chaos/resource-manager/Microsoft.Chaos/stable/2025-01-01/examples/Experiments_Start.json
+func ExampleExperimentsClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExperimentsClient().BeginStart(ctx, "exampleRG", "exampleExperiment", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

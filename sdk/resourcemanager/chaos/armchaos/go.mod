@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2
 
 go 1.23.0
 

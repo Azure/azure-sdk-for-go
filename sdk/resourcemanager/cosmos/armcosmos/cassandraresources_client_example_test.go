@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceList.json
 func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceGet.json
 func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceThroughputGet.json
 func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceThroughputUpdate.json
 func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraKeyspaceMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraKeyspaceMigrateToManualThroughput.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +327,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroug
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableList.json
 func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +376,6 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 		// 								Name: to.Ptr("columnA"),
 		// 						}},
 		// 					},
-		// 					AnalyticalStorageTTL: to.Ptr[int32](500),
 		// 					DefaultTTL: to.Ptr[int32](100),
 		// 					ID: to.Ptr("tableName"),
 		// 				},
@@ -386,7 +385,7 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableGet.json
 func ExampleCassandraResourcesClient_GetCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +428,6 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 	// 						Name: to.Ptr("columnA"),
 	// 				}},
 	// 			},
-	// 			AnalyticalStorageTTL: to.Ptr[int32](500),
 	// 			DefaultTTL: to.Ptr[int32](100),
 	// 			ID: to.Ptr("tableName"),
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -440,7 +438,7 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableCreateUpdate.json
 func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,9 +471,8 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 							Name: to.Ptr("columnA"),
 						}},
 				},
-				AnalyticalStorageTTL: to.Ptr[int32](500),
-				DefaultTTL:           to.Ptr[int32](100),
-				ID:                   to.Ptr("tableName"),
+				DefaultTTL: to.Ptr[int32](100),
+				ID:         to.Ptr("tableName"),
 			},
 		},
 	}, nil)
@@ -514,7 +511,6 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	// 						Name: to.Ptr("columnA"),
 	// 				}},
 	// 			},
-	// 			AnalyticalStorageTTL: to.Ptr[int32](500),
 	// 			DefaultTTL: to.Ptr[int32](100),
 	// 			ID: to.Ptr("tableName"),
 	// 		},
@@ -522,7 +518,7 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableDelete.json
 func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -543,7 +539,7 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableThroughputGet.json
 func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,7 +579,7 @@ func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableThroughputUpdate.json
 func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -630,7 +626,7 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableMigrateToAutoscale.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -669,7 +665,7 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraTableMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBCassandraTableMigrateToManualThroughput.json
 func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -697,293 +693,6 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughpu
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
-	// 			MinimumThroughput: to.Ptr("400"),
-	// 			OfferReplacePending: to.Ptr("false"),
-	// 			Throughput: to.Ptr[int32](400),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewList.json
-func ExampleCassandraResourcesClient_NewListCassandraViewsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCassandraResourcesClient().NewListCassandraViewsPager("rgName", "ddb1", "keyspacename", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.CassandraViewListResult = armcosmos.CassandraViewListResult{
-		// 	Value: []*armcosmos.CassandraViewGetResults{
-		// 		{
-		// 			Name: to.Ptr("viewname"),
-		// 			Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspacename/views/viewname"),
-		// 			Tags: map[string]*string{
-		// 			},
-		// 			Properties: &armcosmos.CassandraViewGetProperties{
-		// 				Resource: &armcosmos.CassandraViewGetPropertiesResource{
-		// 					ID: to.Ptr("viewname"),
-		// 					ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY KEY (columnc, columna)"),
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewGet.json
-func ExampleCassandraResourcesClient_GetCassandraView() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CassandraViewGetResults = armcosmos.CassandraViewGetResults{
-	// 	Name: to.Ptr("viewname"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspacename/views/viewname"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armcosmos.CassandraViewGetProperties{
-	// 		Resource: &armcosmos.CassandraViewGetPropertiesResource{
-	// 			ID: to.Ptr("viewname"),
-	// 			ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY KEY (columnc, columna)"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewCreateUpdate.json
-func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraView() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginCreateUpdateCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.CassandraViewCreateUpdateParameters{
-		Tags: map[string]*string{},
-		Properties: &armcosmos.CassandraViewCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
-			Resource: &armcosmos.CassandraViewResource{
-				ID:             to.Ptr("viewname"),
-				ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY (columnc, columna)"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CassandraViewGetResults = armcosmos.CassandraViewGetResults{
-	// 	Name: to.Ptr("viewname"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspacename/views/viewname"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armcosmos.CassandraViewGetProperties{
-	// 		Resource: &armcosmos.CassandraViewGetPropertiesResource{
-	// 			ID: to.Ptr("viewname"),
-	// 			ViewDefinition: to.Ptr("SELECT columna, columnb, columnc FROM keyspacename.srctablename WHERE columna IS NOT NULL AND columnc IS NOT NULL PRIMARY KEY (columnc, columna)"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewDelete.json
-func ExampleCassandraResourcesClient_BeginDeleteCassandraView() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginDeleteCassandraView(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewThroughputGet.json
-func ExampleCassandraResourcesClient_GetCassandraViewThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraResourcesClient().GetCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ThroughputSettingsGetResults = armcosmos.ThroughputSettingsGetResults{
-	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views/throughputSettings"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/views/viewName/throughputSettings/default"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 		Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 			MinimumThroughput: to.Ptr("400"),
-	// 			OfferReplacePending: to.Ptr("true"),
-	// 			Throughput: to.Ptr[int32](400),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewThroughputUpdate.json
-func ExampleCassandraResourcesClient_BeginUpdateCassandraViewThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginUpdateCassandraViewThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", armcosmos.ThroughputSettingsUpdateParameters{
-		Tags: map[string]*string{},
-		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
-			Resource: &armcosmos.ThroughputSettingsResource{
-				Throughput: to.Ptr[int32](400),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ThroughputSettingsGetResults = armcosmos.ThroughputSettingsGetResults{
-	// 	Name: to.Ptr("default"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/cassandraKeyspaces/views/throughputSettings"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/cassandraKeyspaces/keyspaceName/views/viewName/throughputSettings/default"),
-	// 	Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 		Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 			MinimumThroughput: to.Ptr("400"),
-	// 			OfferReplacePending: to.Ptr("true"),
-	// 			Throughput: to.Ptr[int32](400),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewMigrateToAutoscale.json
-func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToAutoscale() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraViewToAutoscale(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ThroughputSettingsGetResults = armcosmos.ThroughputSettingsGetResults{
-	// 	Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 		Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 			AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
-	// 				MaxThroughput: to.Ptr[int32](4000),
-	// 			},
-	// 			MinimumThroughput: to.Ptr("4000"),
-	// 			OfferReplacePending: to.Ptr("false"),
-	// 			Throughput: to.Ptr[int32](400),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBCassandraViewMigrateToManualThroughput.json
-func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToManualThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraResourcesClient().BeginMigrateCassandraViewToManualThroughput(ctx, "rg1", "ddb1", "keyspacename", "viewname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ThroughputSettingsGetResults = armcosmos.ThroughputSettingsGetResults{
-	// 	Properties: &armcosmos.ThroughputSettingsGetProperties{
-	// 		Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("false"),
 	// 			Throughput: to.Ptr[int32](400),

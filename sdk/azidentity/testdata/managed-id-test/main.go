@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -20,51 +21,53 @@ import (
 )
 
 var (
-	config = struct {
-		// clientID, objectID, resourceID of a managed identity permitted to list blobs in the account specified by storageNameUserAssigned
-		clientID, objectID, resourceID azidentity.ManagedIDKind
-		// storageName is the name of a storage account accessible by the default or system-assigned identity
-		storageName string
-		// storageNameUserAssigned is the name of a storage account accessible by the identity specified by
-		// resourceID. The default or system-assigned identity shouldn't have any permission for this account.
-		storageNameUserAssigned string
-		// workloadID determines whether this app tests ManagedIdentityCredential or WorkloadIdentityCredential.
-		// When true, the app ignores clientID, objectID, resourceID and storageNameUserAssigned.
-		workloadID bool
-	}{
-		clientID:                azidentity.ClientID(os.Getenv("AZIDENTITY_USER_ASSIGNED_IDENTITY_CLIENT_ID")),
-		objectID:                azidentity.ObjectID(os.Getenv("AZIDENTITY_USER_ASSIGNED_IDENTITY_OBJECT_ID")),
-		resourceID:              azidentity.ResourceID(os.Getenv("AZIDENTITY_USER_ASSIGNED_IDENTITY")),
-		storageName:             os.Getenv("AZIDENTITY_STORAGE_NAME"),
-		storageNameUserAssigned: os.Getenv("AZIDENTITY_STORAGE_NAME_USER_ASSIGNED"),
-		workloadID:              os.Getenv("AZIDENTITY_USE_WORKLOAD_IDENTITY") != "",
+	clientOptions = azcore.ClientOptions{
+		Logging: policy.LogOptions{
+			AllowedQueryParams: []string{"client_id", "mi_res_id", "msi_res_id", "object_id", "principal_id", "resource"},
+			IncludeBody:        true,
+		},
 	}
 
-	// jwtRegex is used to redact JWTs (e.g. access tokens) in log output sent to a test client, although
-	// that output should never contain tokens because it's sent only when a test fails i.e., the request
-	// handler couldn't obtain an access token
-	jwtRegex   = regexp.MustCompile(`ey\S+\.\S+\.\S+`)
-	logOptions = policy.LogOptions{
-		AllowedQueryParams: []string{"client_id", "mi_res_id", "msi_res_id", "object_id", "principal_id", "resource"},
-		IncludeBody:        true,
-	}
-	// logs collects log output from a test run to help debug failures. Note that its usage isn't
-	// concurrency-safe and that's okay because live managed identity tests targeting this server
-	// don't send concurrent requests.
-	logs          strings.Builder
-	missingConfig string
+	// jwtRegex is used to redact JWTs (e.g. access tokens) in log output sent to a client, although
+	// that output should never contain tokens because it's sent only when authentication fails
+	jwtRegex = regexp.MustCompile(`ey\S+\.\S+\.\S+`)
+
+	// logs collects SDK log output from a test run to help debug failures. Note that its usage
+	// isn't concurrency-safe and that's okay because live managed identity tests targeting this
+	// server don't send concurrent requests.
+	logs strings.Builder
 )
 
-func credential(id azidentity.ManagedIDKind) (azcore.TokenCredential, error) {
-	co := azcore.ClientOptions{Logging: logOptions}
-	if config.workloadID {
-		// the identity is determined by service account configuration
-		return azidentity.NewWorkloadIdentityCredential(&azidentity.WorkloadIdentityCredentialOptions{ClientOptions: co})
+type testOptions struct {
+	id          azidentity.ManagedIDKind
+	storageName string
+}
+
+func options(r *http.Request) (testOptions, error) {
+	c := testOptions{}
+
+	q := r.URL.Query()
+	if c.storageName = q.Get("storage-name"); c.storageName == "" {
+		return testOptions{}, errors.New("storage-name parameter is required")
 	}
-	return azidentity.NewManagedIdentityCredential(&azidentity.ManagedIdentityCredentialOptions{
-		ClientOptions: co,
-		ID:            id,
-	})
+
+	if id := q.Get("client-id"); id != "" {
+		c.id = azidentity.ClientID(id)
+	}
+	if id := q.Get("object-id"); id != "" {
+		if c.id != nil {
+			return testOptions{}, errors.New("multiple IDs specified")
+		}
+		c.id = azidentity.ObjectID(id)
+	}
+	if resourceID := q.Get("resource-id"); resourceID != "" {
+		if c.id != nil {
+			return testOptions{}, errors.New("multiple IDs specified")
+		}
+		c.id = azidentity.ResourceID(resourceID)
+	}
+
+	return c, nil
 }
 
 func listContainers(account string, cred azcore.TokenCredential) error {
@@ -77,44 +80,58 @@ func listContainers(account string, cred azcore.TokenCredential) error {
 	return err
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func handleDefaultAzureCredential(w http.ResponseWriter, r *http.Request) {
 	logs.Reset()
-	log.Print("received a request")
-	if missingConfig != "" {
-		fmt.Fprint(w, "need a value for "+missingConfig)
+	logs.WriteString("testing DefaultAzureCredential\n\n")
+
+	o, err := options(r)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
 		return
 	}
 
-	cred, err := credential(nil)
+	cred, err := azidentity.NewDefaultAzureCredential(
+		&azidentity.DefaultAzureCredentialOptions{
+			ClientOptions: clientOptions,
+		},
+	)
 	if err == nil {
-		name := "ManagedIdentityCredential"
-		if config.workloadID {
-			name = "WorkloadIdentityCredential"
-		}
-		logs.WriteString("\n*** testing " + name + "\n\n")
-		err = listContainers(config.storageName, cred)
+		err = listContainers(o.storageName, cred)
 	}
-	if err == nil && !config.workloadID {
-		for _, id := range []azidentity.ManagedIDKind{config.clientID, config.objectID, config.resourceID} {
-			cred, err = credential(id)
-			if err == nil {
-				err = listContainers(config.storageNameUserAssigned, cred)
-			}
-			if err != nil {
-				break
-			}
-		}
+
+	msg := "test passed"
+	if err != nil {
+		logs.WriteString("\ntest failed with error: " + err.Error() + "\n")
+		msg = logs.String()
+	}
+	fmt.Fprint(w, msg)
+	log.Print(msg)
+}
+
+func handleManagedIdentityCredential(w http.ResponseWriter, r *http.Request) {
+	logs.Reset()
+	logs.WriteString("testing ManagedIdentityCredential\n\n")
+
+	config, err := options(r)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	cred, err := azidentity.NewManagedIdentityCredential(&azidentity.ManagedIdentityCredentialOptions{
+		ClientOptions: clientOptions,
+		ID:            config.id,
+	})
+
+	if err == nil {
+		err = listContainers(config.storageName, cred)
 	}
 
 	if err == nil {
-		// discard logs from the successful tests above
-		logs.Reset()
-		logs.WriteString("*** testing DefaultAzureCredential\n\n")
-		cred, err = azidentity.NewDefaultAzureCredential(
-			&azidentity.DefaultAzureCredentialOptions{
-				ClientOptions: azcore.ClientOptions{Logging: logOptions},
-			},
-		)
+		cred, err = azidentity.NewManagedIdentityCredential(&azidentity.ManagedIdentityCredentialOptions{
+			ClientOptions: clientOptions,
+			ID:            config.id,
+		})
 		if err == nil {
 			err = listContainers(config.storageName, cred)
 		}
@@ -122,7 +139,33 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	msg := "test passed"
 	if err != nil {
-		logs.WriteString("\n*** test failed with error: " + err.Error() + "\n")
+		logs.WriteString("\ntest failed with error: " + err.Error() + "\n")
+		msg = logs.String()
+	}
+	fmt.Fprint(w, msg)
+	log.Print(msg)
+}
+
+func handleWorkloadIdentityCredential(w http.ResponseWriter, r *http.Request) {
+	logs.Reset()
+	logs.WriteString("testing WorkloadIdentityCredential\n\n")
+
+	config, err := options(r)
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
+	cred, err := azidentity.NewWorkloadIdentityCredential(&azidentity.WorkloadIdentityCredentialOptions{
+		ClientOptions: clientOptions,
+	})
+	if err == nil {
+		err = listContainers(config.storageName, cred)
+	}
+
+	msg := "test passed"
+	if err != nil {
+		logs.WriteString("\ntest failed with error: " + err.Error() + "\n")
 		msg = logs.String()
 	}
 	fmt.Fprint(w, msg)
@@ -136,37 +179,15 @@ func main() {
 	})
 	azlog.SetEvents(azidentity.EventAuthentication, azlog.EventRequest, azlog.EventResponse)
 
-	v := []string{}
-	if config.storageName == "" {
-		v = append(v, "AZIDENTITY_STORAGE_NAME")
-	}
-	if config.workloadID {
-		log.Print("Testing WorkloadIdentityCredential")
-	} else {
-		log.Print("Testing ManagedIdentityCredential")
-		if config.clientID.String() == "" {
-			v = append(v, "AZIDENTITY_USER_ASSIGNED_IDENTITY_CLIENT_ID")
-		}
-		if config.objectID.String() == "" {
-			v = append(v, "AZIDENTITY_USER_ASSIGNED_IDENTITY_OBJECT_ID")
-		}
-		if config.resourceID.String() == "" {
-			v = append(v, "AZIDENTITY_USER_ASSIGNED_IDENTITY")
-		}
-		if config.storageNameUserAssigned == "" {
-			v = append(v, "AZIDENTITY_STORAGE_NAME_USER_ASSIGNED")
-		}
-	}
-	if len(v) > 0 {
-		missingConfig = strings.Join(v, ", ")
-		log.Print("missing values for " + missingConfig)
-	}
+	http.HandleFunc("/dac", handleDefaultAzureCredential)
+	http.HandleFunc("/mic", handleManagedIdentityCredential)
+	http.HandleFunc("/wic", handleWorkloadIdentityCredential)
 
 	port := os.Getenv("FUNCTIONS_CUSTOMHANDLER_PORT")
 	if port == "" {
 		port = "8080"
 	}
-	http.HandleFunc("/", handler)
+
 	log.Printf("listening on http://127.0.0.1:%s", port)
 	log.Print(http.ListenAndServe(":"+port, nil))
 }

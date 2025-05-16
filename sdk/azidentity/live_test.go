@@ -22,17 +22,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-// configuration for live tests
 var liveManagedIdentity = struct {
-	clientID   string
-	objectID   string
-	resourceID string
-	imds       bool
+	clientID                  string
+	objectID                  string
+	resourceID                string
+	imds                      bool
+	systemAssignedStorageName string
+	userAssignedStorageName   string
 }{
-	clientID:   os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID"),
-	objectID:   os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID"),
-	resourceID: os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID"),
-	imds:       os.Getenv("IDENTITY_IMDS_AVAILABLE") != "",
+	clientID:                  os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID"),
+	objectID:                  os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID"),
+	resourceID:                os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID"),
+	imds:                      os.Getenv("IDENTITY_IMDS_AVAILABLE") != "",
+	systemAssignedStorageName: os.Getenv("AZIDENTITY_STORAGE_NAME"),
+	userAssignedStorageName:   os.Getenv("AZIDENTITY_STORAGE_NAME_USER_ASSIGNED"),
 }
 
 var liveSP = struct {

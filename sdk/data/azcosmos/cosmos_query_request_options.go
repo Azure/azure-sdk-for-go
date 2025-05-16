@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/unstable/queryengine"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
 )
 
 // QueryOptions includes options for query operations on items.

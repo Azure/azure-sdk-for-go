@@ -1,5 +1,64 @@
 # Release History
 
+## 8.0.0-beta.1 (2025-05-23)
+### Breaking Changes
+
+- Struct `SubscriptionQuotaItem` has been removed
+- Struct `SubscriptionQuotaItemList` has been removed
+- Struct `SubscriptionQuotaItemProperties` has been removed
+- Field `SubscriptionQuotaItem` of struct `ResourceQuotaLimitsClientGetResponse` has been removed
+- Field `SubscriptionQuotaItemList` of struct `ResourceQuotaLimitsClientListResponse` has been removed
+
+### Features Added
+
+- New value `ServiceLevelFlexible` added to enum type `ServiceLevel`
+- New enum type `AcceptGrowCapacityPoolForShortTermCloneSplit` with values `AcceptGrowCapacityPoolForShortTermCloneSplitAccepted`, `AcceptGrowCapacityPoolForShortTermCloneSplitDeclined`
+- New enum type `CredentialsStatus` with values `CredentialsStatusActive`, `CredentialsStatusCredentialsExpired`, `CredentialsStatusNoCredentialsSet`
+- New enum type `ExternalReplicationSetupStatus` with values `ExternalReplicationSetupStatusClusterPeerPending`, `ExternalReplicationSetupStatusClusterPeerRequired`, `ExternalReplicationSetupStatusNoActionRequired`, `ExternalReplicationSetupStatusReplicationCreateRequired`, `ExternalReplicationSetupStatusVServerPeerRequired`
+- New enum type `LdapServerType` with values `LdapServerTypeActiveDirectory`, `LdapServerTypeOpenLDAP`
+- New enum type `NetappProvisioningState` with values `NetappProvisioningStateAccepted`, `NetappProvisioningStateCanceled`, `NetappProvisioningStateDeleting`, `NetappProvisioningStateFailed`, `NetappProvisioningStateProvisioning`, `NetappProvisioningStateSucceeded`, `NetappProvisioningStateUpdating`
+- New enum type `VolumeLanguage` with values `VolumeLanguageAr`, `VolumeLanguageArUTF8`, `VolumeLanguageC`, `VolumeLanguageCUTF8`, `VolumeLanguageCs`, `VolumeLanguageCsUTF8`, `VolumeLanguageDa`, `VolumeLanguageDaUTF8`, `VolumeLanguageDe`, `VolumeLanguageDeUTF8`, `VolumeLanguageEn`, `VolumeLanguageEnUTF8`, `VolumeLanguageEnUs`, `VolumeLanguageEnUsUTF8`, `VolumeLanguageEs`, `VolumeLanguageEsUTF8`, `VolumeLanguageFi`, `VolumeLanguageFiUTF8`, `VolumeLanguageFr`, `VolumeLanguageFrUTF8`, `VolumeLanguageHe`, `VolumeLanguageHeUTF8`, `VolumeLanguageHr`, `VolumeLanguageHrUTF8`, `VolumeLanguageHu`, `VolumeLanguageHuUTF8`, `VolumeLanguageIt`, `VolumeLanguageItUTF8`, `VolumeLanguageJa`, `VolumeLanguageJaJp932`, `VolumeLanguageJaJp932UTF8`, `VolumeLanguageJaJpPck`, `VolumeLanguageJaJpPckUTF8`, `VolumeLanguageJaJpPckV2`, `VolumeLanguageJaJpPckV2UTF8`, `VolumeLanguageJaUTF8`, `VolumeLanguageJaV1`, `VolumeLanguageJaV1UTF8`, `VolumeLanguageKo`, `VolumeLanguageKoUTF8`, `VolumeLanguageNl`, `VolumeLanguageNlUTF8`, `VolumeLanguageNo`, `VolumeLanguageNoUTF8`, `VolumeLanguagePl`, `VolumeLanguagePlUTF8`, `VolumeLanguagePt`, `VolumeLanguagePtUTF8`, `VolumeLanguageRo`, `VolumeLanguageRoUTF8`, `VolumeLanguageRu`, `VolumeLanguageRuUTF8`, `VolumeLanguageSk`, `VolumeLanguageSkUTF8`, `VolumeLanguageSl`, `VolumeLanguageSlUTF8`, `VolumeLanguageSv`, `VolumeLanguageSvUTF8`, `VolumeLanguageTr`, `VolumeLanguageTrUTF8`, `VolumeLanguageUTF8Mb4`, `VolumeLanguageZh`, `VolumeLanguageZhGbk`, `VolumeLanguageZhGbkUTF8`, `VolumeLanguageZhTw`, `VolumeLanguageZhTwBig5`, `VolumeLanguageZhTwBig5UTF8`, `VolumeLanguageZhTwUTF8`, `VolumeLanguageZhUTF8`
+- New function `NewBucketsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BucketsClient, error)`
+- New function `*BucketsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, string, Bucket, *BucketsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BucketsClientCreateOrUpdateResponse], error)`
+- New function `*BucketsClient.BeginDelete(context.Context, string, string, string, string, string, *BucketsClientBeginDeleteOptions) (*runtime.Poller[BucketsClientDeleteResponse], error)`
+- New function `*BucketsClient.GenerateCredentials(context.Context, string, string, string, string, string, BucketCredentialsExpiry, *BucketsClientGenerateCredentialsOptions) (BucketsClientGenerateCredentialsResponse, error)`
+- New function `*BucketsClient.Get(context.Context, string, string, string, string, string, *BucketsClientGetOptions) (BucketsClientGetResponse, error)`
+- New function `*BucketsClient.NewListPager(string, string, string, string, *BucketsClientListOptions) *runtime.Pager[BucketsClientListResponse]`
+- New function `*BucketsClient.BeginUpdate(context.Context, string, string, string, string, string, BucketPatch, *BucketsClientBeginUpdateOptions) (*runtime.Poller[BucketsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewBucketsClient() *BucketsClient`
+- New function `*ClientFactory.NewResourceQuotaLimitsAccountClient() *ResourceQuotaLimitsAccountClient`
+- New function `NewResourceQuotaLimitsAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceQuotaLimitsAccountClient, error)`
+- New function `*ResourceQuotaLimitsAccountClient.Get(context.Context, string, string, string, *ResourceQuotaLimitsAccountClientGetOptions) (ResourceQuotaLimitsAccountClientGetResponse, error)`
+- New function `*ResourceQuotaLimitsAccountClient.NewListPager(string, string, *ResourceQuotaLimitsAccountClientListOptions) *runtime.Pager[ResourceQuotaLimitsAccountClientListResponse]`
+- New function `*VolumesClient.BeginListQuotaReport(context.Context, string, string, string, string, *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error)`
+- New function `*VolumesClient.BeginSplitCloneFromParent(context.Context, string, string, string, string, *VolumesClientBeginSplitCloneFromParentOptions) (*runtime.Poller[VolumesClientSplitCloneFromParentResponse], error)`
+- New struct `Bucket`
+- New struct `BucketCredentialsExpiry`
+- New struct `BucketGenerateCredentials`
+- New struct `BucketList`
+- New struct `BucketPatch`
+- New struct `BucketPatchProperties`
+- New struct `BucketProperties`
+- New struct `BucketServerPatchProperties`
+- New struct `BucketServerProperties`
+- New struct `CifsUser`
+- New struct `FileSystemUser`
+- New struct `LdapConfiguration`
+- New struct `ListQuotaReportResponse`
+- New struct `NfsUser`
+- New struct `QuotaItem`
+- New struct `QuotaItemList`
+- New struct `QuotaItemProperties`
+- New struct `QuotaReport`
+- New field `LdapConfiguration` in struct `AccountProperties`
+- New field `CustomThroughputMibps` in struct `PoolPatchProperties`
+- New field `CustomThroughputMibps` in struct `PoolProperties`
+- New field `ExternalReplicationSetupInfo`, `ExternalReplicationSetupStatus` in struct `ReplicationObject`
+- New anonymous field `QuotaItem` in struct `ResourceQuotaLimitsClientGetResponse`
+- New anonymous field `QuotaItemList` in struct `ResourceQuotaLimitsClientListResponse`
+- New field `AcceptGrowCapacityPoolForShortTermCloneSplit`, `InheritedSizeInBytes`, `Language`, `LdapServerType` in struct `VolumeProperties`
+
+
 ## 7.5.0 (2025-04-25)
 ### Features Added
 

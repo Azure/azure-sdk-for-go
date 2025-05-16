@@ -12,34 +12,34 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 	"net/http"
 	"net/url"
 	"regexp"
 )
 
-// PostgreSQLServerManagementServer is a fake server for instances of the armpostgresqlflexibleservers.PostgreSQLServerManagementClient type.
-type PostgreSQLServerManagementServer struct {
-	// CheckMigrationNameAvailability is the fake for method PostgreSQLServerManagementClient.CheckMigrationNameAvailability
+// PostgreSQLManagementServer is a fake server for instances of the armpostgresqlflexibleservers.PostgreSQLManagementClient type.
+type PostgreSQLManagementServer struct {
+	// CheckMigrationNameAvailability is the fake for method PostgreSQLManagementClient.CheckMigrationNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckMigrationNameAvailability func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters armpostgresqlflexibleservers.MigrationNameAvailabilityResource, options *armpostgresqlflexibleservers.PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions) (resp azfake.Responder[armpostgresqlflexibleservers.PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckMigrationNameAvailability func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters armpostgresqlflexibleservers.MigrationNameAvailabilityResource, options *armpostgresqlflexibleservers.PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions) (resp azfake.Responder[armpostgresqlflexibleservers.PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse], errResp azfake.ErrorResponder)
 }
 
-// NewPostgreSQLServerManagementServerTransport creates a new instance of PostgreSQLServerManagementServerTransport with the provided implementation.
-// The returned PostgreSQLServerManagementServerTransport instance is connected to an instance of armpostgresqlflexibleservers.PostgreSQLServerManagementClient via the
+// NewPostgreSQLManagementServerTransport creates a new instance of PostgreSQLManagementServerTransport with the provided implementation.
+// The returned PostgreSQLManagementServerTransport instance is connected to an instance of armpostgresqlflexibleservers.PostgreSQLManagementClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewPostgreSQLServerManagementServerTransport(srv *PostgreSQLServerManagementServer) *PostgreSQLServerManagementServerTransport {
-	return &PostgreSQLServerManagementServerTransport{srv: srv}
+func NewPostgreSQLManagementServerTransport(srv *PostgreSQLManagementServer) *PostgreSQLManagementServerTransport {
+	return &PostgreSQLManagementServerTransport{srv: srv}
 }
 
-// PostgreSQLServerManagementServerTransport connects instances of armpostgresqlflexibleservers.PostgreSQLServerManagementClient to instances of PostgreSQLServerManagementServer.
-// Don't use this type directly, use NewPostgreSQLServerManagementServerTransport instead.
-type PostgreSQLServerManagementServerTransport struct {
-	srv *PostgreSQLServerManagementServer
+// PostgreSQLManagementServerTransport connects instances of armpostgresqlflexibleservers.PostgreSQLManagementClient to instances of PostgreSQLManagementServer.
+// Don't use this type directly, use NewPostgreSQLManagementServerTransport instead.
+type PostgreSQLManagementServerTransport struct {
+	srv *PostgreSQLManagementServer
 }
 
-// Do implements the policy.Transporter interface for PostgreSQLServerManagementServerTransport.
-func (p *PostgreSQLServerManagementServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for PostgreSQLManagementServerTransport.
+func (p *PostgreSQLManagementServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -49,19 +49,19 @@ func (p *PostgreSQLServerManagementServerTransport) Do(req *http.Request) (*http
 	return p.dispatchToMethodFake(req, method)
 }
 
-func (p *PostgreSQLServerManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (p *PostgreSQLManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if postgreSqlServerManagementServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = postgreSqlServerManagementServerTransportInterceptor.Do(req)
+		if postgreSqlManagementServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = postgreSqlManagementServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "PostgreSQLServerManagementClient.CheckMigrationNameAvailability":
+			case "PostgreSQLManagementClient.CheckMigrationNameAvailability":
 				res.resp, res.err = p.dispatchCheckMigrationNameAvailability(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -82,7 +82,7 @@ func (p *PostgreSQLServerManagementServerTransport) dispatchToMethodFake(req *ht
 	}
 }
 
-func (p *PostgreSQLServerManagementServerTransport) dispatchCheckMigrationNameAvailability(req *http.Request) (*http.Response, error) {
+func (p *PostgreSQLManagementServerTransport) dispatchCheckMigrationNameAvailability(req *http.Request) (*http.Response, error) {
 	if p.srv.CheckMigrationNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckMigrationNameAvailability not implemented")}
 	}
@@ -123,8 +123,8 @@ func (p *PostgreSQLServerManagementServerTransport) dispatchCheckMigrationNameAv
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to PostgreSQLServerManagementServerTransport
-var postgreSqlServerManagementServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to PostgreSQLManagementServerTransport
+var postgreSqlManagementServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

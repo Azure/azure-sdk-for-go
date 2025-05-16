@@ -42,7 +42,7 @@ func NewLogFilesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListByServerPager - List all the server log files in a given server.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager
@@ -90,7 +90,7 @@ func (client *LogFilesClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

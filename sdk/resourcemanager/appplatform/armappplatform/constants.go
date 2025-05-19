@@ -10,7 +10,7 @@ package armappplatform
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.0.1"
 )
 
 // APIPortalAPITryOutEnabledState - Indicates whether the API try-out feature is enabled or disabled. When enabled, users

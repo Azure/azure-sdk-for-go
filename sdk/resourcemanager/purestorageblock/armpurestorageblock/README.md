@@ -15,7 +15,7 @@ The `armpurestorageblock` module provides operations for working with Azure Pure
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Purestorageblock module:
+Install the Azure Pure Storage Block module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purestorageblock/armpurestorageblock

@@ -1,4 +1,4 @@
-// Deprecated: Please note, This package has been deprecated following the retirement of the Azure Spring Apps service on March 31, 2025.For more information, please refer to the https://aka.ms/asaretirement.
+// Deprecated: This package has been deprecated following the retirement of the Azure Spring Apps service on March 31, 2025. For more information, please refer to https://aka.ms/asaretirement.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2
 
 go 1.23.0

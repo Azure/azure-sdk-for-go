@@ -91,7 +91,8 @@ func (client *ManagedCCFClient) backup(ctx context.Context, resourceGroupName st
 }
 
 // backupCreateRequest creates the Backup request.
-func (client *ManagedCCFClient) backupCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFBackup, _ *ManagedCCFClientBeginBackupOptions) (*policy.Request, error) {
+// This function does not require any optional parameters.
+func (client *ManagedCCFClient) backupCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCFBackup) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}/backup"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

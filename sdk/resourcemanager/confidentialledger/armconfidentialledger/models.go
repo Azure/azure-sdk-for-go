@@ -102,7 +102,8 @@ type LedgerProperties struct {
 	// Array of all AAD based Security Principals.
 	AADBasedSecurityPrincipals []*AADBasedSecurityPrincipal
 
-	// Application type of the Confidential Ledger.
+	// Application type of the Confidential Ledger. Default: "Standard".
+	// Expected values: "Standard", "Premium".
 	ApplicationType *ApplicationType
 
 	// Array of all cert based Security Principals.

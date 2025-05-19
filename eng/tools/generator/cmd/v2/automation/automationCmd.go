@@ -161,8 +161,9 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			continue
 		}
 		result, errs := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
-			GoVersion:    ctx.goVersion,
-			RemoveTagSet: true,
+			GoVersion:           ctx.goVersion,
+			RemoveTagSet:        true,
+			SkipGenerateExample: true,
 		})
 		if len(errs) > 0 {
 			errorBuilder.add(errs...)

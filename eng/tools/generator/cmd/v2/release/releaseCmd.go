@@ -197,6 +197,8 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			GoVersion:            c.flags.GoVersion,
 		})
 		if len(errs) > 0 {
+			// GenerateFromSwagger is a batch run function, one error means one package is failed.
+			// For release command, it'll always pass one package to this function.
 			err = errs[0]
 		}
 		if len(results) > 0 {

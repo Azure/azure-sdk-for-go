@@ -198,10 +198,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,
 			GoVersion:            c.flags.GoVersion,
-			ForceStableVersion:   c.flags.ForceStableVersion,
 			SpecSubRPName:        c.flags.SpecSubRPName,
-		})
-	}
 		})
 		if len(errs) > 0 {
 			// GenerateFromSwagger is a batch run function, one error means one package is failed.

@@ -1,6 +1,6 @@
 # Azure App Platform Module for Go
 
-Please note, This package has been deprecated following the retirement of the Azure Spring Apps service on March 31, 2025.For more information, please refer to the https://aka.ms/asaretirement.
+  Please note, this package has been deprecated following the retirement of the Azure Spring Apps service on March 31, 2025. For more information, please refer to https://aka.ms/asaretirement.
 
 The `armappplatform` module provides operations for working with Azure App Platform.
 

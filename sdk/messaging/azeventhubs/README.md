@@ -63,6 +63,8 @@ Examples for various scenarios can be found on [pkg.go.dev](https://aka.ms/azsdk
 
 # Troubleshooting
 
+For detailed troubleshooting information, refer to the [Event Hubs Troubleshooting Guide][eventhubs_troubleshooting].
+
 ### Logging
 
 This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set the environment variable `AZURE_SDK_GO_LOGGING` to `all`. 
@@ -129,6 +131,7 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 
 [azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
+[eventhubs_troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/TROUBLESHOOTING.md
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventhubs
 [godoc]: https://aka.ms/azsdk/go/eventhubs/pkg
 [godoc_examples]: https://aka.ms/azsdk/go/eventhubs/pkg#pkg-examples

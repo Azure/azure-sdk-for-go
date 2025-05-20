@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-04-15)
+## 1.0.0 (2025-05-21)
 ### Breaking Changes
 
 - Type of `CreateAndMountFileShareConfiguration.ConfigurationType` has been changed from `*ConfigurationType` to `*FileShareConfigurationType`

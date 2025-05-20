@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.0 (Unreleased)
+## 0.8.0 (2025-05-20)
 
 ### Features Added
 
@@ -14,7 +14,7 @@ See the [migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sd
 
 ### Other Changes
 
-- Updating to `v0.1.0-beta.7` of the [OpenAI go module](https://github.com/openai/openai-go).
+- Updating to `v1.0.0` of the [OpenAI go module](https://github.com/openai/openai-go).
 - Added samples for responses API.
 
 ## 0.7.2 (2025-02-05)

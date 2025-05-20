@@ -8,11 +8,13 @@ package azopenai_test
 
 import (
 	"context"
+
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/shared/constant"
 	"github.com/stretchr/testify/require"
 )
 
@@ -34,7 +36,7 @@ func newStainlessTestChatCompletionOptions(deployment string) openai.ChatComplet
 }
 
 var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
-var expectedRole = openai.MessageRoleAssistant
+var expectedRole = constant.ValueOf[constant.Assistant]()
 
 func TestClient_GetChatCompletions(t *testing.T) {
 	testFn := func(t *testing.T, client *openai.ChatCompletionService, deployment string, returnedModel string, checkRAI bool) {
@@ -211,13 +213,17 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 	require.True(t, modelWasReturned)
 
 	var message string
+	var role constant.Assistant
 
 	for _, choice := range choices {
 		message += choice.Delta.Content
+		if len(choice.Delta.Role) > 0 {
+			role = constant.Assistant(choice.Delta.Role)
+		}
 	}
 
 	require.Equal(t, expectedContent, message)
-	require.Equal(t, openai.MessageRoleAssistant, expectedRole)
+	require.Equal(t, expectedRole, role)
 }
 
 func TestClient_GetChatCompletions_Vision(t *testing.T) {

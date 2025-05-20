@@ -58,8 +58,8 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
-	// PostgreSQLServerManagementServer contains the fakes for client PostgreSQLServerManagementClient
-	PostgreSQLServerManagementServer PostgreSQLServerManagementServer
+	// PostgreSQLManagementServer contains the fakes for client PostgreSQLManagementClient
+	PostgreSQLManagementServer PostgreSQLManagementServer
 
 	// PrivateEndpointConnectionServer contains the fakes for client PrivateEndpointConnectionClient
 	PrivateEndpointConnectionServer PrivateEndpointConnectionServer
@@ -69,6 +69,9 @@ type ServerFactory struct {
 
 	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
 	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// QuotaUsagesServer contains the fakes for client QuotaUsagesClient
+	QuotaUsagesServer QuotaUsagesServer
 
 	// ReplicasServer contains the fakes for client ReplicasClient
 	ReplicasServer ReplicasServer
@@ -81,6 +84,15 @@ type ServerFactory struct {
 
 	// ServersServer contains the fakes for client ServersClient
 	ServersServer ServersServer
+
+	// TuningConfigurationServer contains the fakes for client TuningConfigurationClient
+	TuningConfigurationServer TuningConfigurationServer
+
+	// TuningIndexServer contains the fakes for client TuningIndexClient
+	TuningIndexServer TuningIndexServer
+
+	// TuningOptionsServer contains the fakes for client TuningOptionsClient
+	TuningOptionsServer TuningOptionsServer
 
 	// VirtualEndpointsServer contains the fakes for client VirtualEndpointsClient
 	VirtualEndpointsServer VirtualEndpointsServer
@@ -117,14 +129,18 @@ type ServerFactoryTransport struct {
 	trLtrBackupOperationsServer               *LtrBackupOperationsServerTransport
 	trMigrationsServer                        *MigrationsServerTransport
 	trOperationsServer                        *OperationsServerTransport
-	trPostgreSQLServerManagementServer        *PostgreSQLServerManagementServerTransport
+	trPostgreSQLManagementServer              *PostgreSQLManagementServerTransport
 	trPrivateEndpointConnectionServer         *PrivateEndpointConnectionServerTransport
 	trPrivateEndpointConnectionsServer        *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer              *PrivateLinkResourcesServerTransport
+	trQuotaUsagesServer                       *QuotaUsagesServerTransport
 	trReplicasServer                          *ReplicasServerTransport
 	trServerCapabilitiesServer                *ServerCapabilitiesServerTransport
 	trServerThreatProtectionSettingsServer    *ServerThreatProtectionSettingsServerTransport
 	trServersServer                           *ServersServerTransport
+	trTuningConfigurationServer               *TuningConfigurationServerTransport
+	trTuningIndexServer                       *TuningIndexServerTransport
+	trTuningOptionsServer                     *TuningOptionsServerTransport
 	trVirtualEndpointsServer                  *VirtualEndpointsServerTransport
 	trVirtualNetworkSubnetUsageServer         *VirtualNetworkSubnetUsageServerTransport
 }
@@ -202,11 +218,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "PostgreSQLServerManagementClient":
-		initServer(s, &s.trPostgreSQLServerManagementServer, func() *PostgreSQLServerManagementServerTransport {
-			return NewPostgreSQLServerManagementServerTransport(&s.srv.PostgreSQLServerManagementServer)
+	case "PostgreSQLManagementClient":
+		initServer(s, &s.trPostgreSQLManagementServer, func() *PostgreSQLManagementServerTransport {
+			return NewPostgreSQLManagementServerTransport(&s.srv.PostgreSQLManagementServer)
 		})
-		resp, err = s.trPostgreSQLServerManagementServer.Do(req)
+		resp, err = s.trPostgreSQLManagementServer.Do(req)
 	case "PrivateEndpointConnectionClient":
 		initServer(s, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
 			return NewPrivateEndpointConnectionServerTransport(&s.srv.PrivateEndpointConnectionServer)
@@ -222,6 +238,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
+	case "QuotaUsagesClient":
+		initServer(s, &s.trQuotaUsagesServer, func() *QuotaUsagesServerTransport { return NewQuotaUsagesServerTransport(&s.srv.QuotaUsagesServer) })
+		resp, err = s.trQuotaUsagesServer.Do(req)
 	case "ReplicasClient":
 		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
 		resp, err = s.trReplicasServer.Do(req)
@@ -238,6 +257,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServersClient":
 		initServer(s, &s.trServersServer, func() *ServersServerTransport { return NewServersServerTransport(&s.srv.ServersServer) })
 		resp, err = s.trServersServer.Do(req)
+	case "TuningConfigurationClient":
+		initServer(s, &s.trTuningConfigurationServer, func() *TuningConfigurationServerTransport {
+			return NewTuningConfigurationServerTransport(&s.srv.TuningConfigurationServer)
+		})
+		resp, err = s.trTuningConfigurationServer.Do(req)
+	case "TuningIndexClient":
+		initServer(s, &s.trTuningIndexServer, func() *TuningIndexServerTransport { return NewTuningIndexServerTransport(&s.srv.TuningIndexServer) })
+		resp, err = s.trTuningIndexServer.Do(req)
+	case "TuningOptionsClient":
+		initServer(s, &s.trTuningOptionsServer, func() *TuningOptionsServerTransport {
+			return NewTuningOptionsServerTransport(&s.srv.TuningOptionsServer)
+		})
+		resp, err = s.trTuningOptionsServer.Do(req)
 	case "VirtualEndpointsClient":
 		initServer(s, &s.trVirtualEndpointsServer, func() *VirtualEndpointsServerTransport {
 			return NewVirtualEndpointsServerTransport(&s.srv.VirtualEndpointsServer)

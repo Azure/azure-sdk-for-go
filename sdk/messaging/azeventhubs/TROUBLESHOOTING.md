@@ -1,6 +1,6 @@
-# Troubleshooting Azure Event Hubs client library issues
+# Troubleshooting Azure Event Hubs module issues
 
-This troubleshooting guide contains instructions to diagnose frequently encountered issues while using the Azure Event Hubs client library for Go.
+This troubleshooting guide contains instructions to diagnose frequently encountered issues while using the Azure Event Hubs module for Go.
 
 ## Table of contents
 
@@ -30,7 +30,7 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 
 ### Error Handling
 
-The Event Hubs client library provides strongly-typed error handling through the `azeventhubs.Error` type with specific error codes that can be checked programmatically. This allows you to handle different error scenarios in your code.
+The Event Hubs module provides strongly-typed error handling through the `azeventhubs.Error` type with specific error codes that can be checked programmatically. This allows you to handle different error scenarios in your code.
 
 ```go
 if err != nil {

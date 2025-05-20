@@ -2,10 +2,12 @@
 
 [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is a big data streaming platform and event ingestion service from Microsoft. For more information about Event Hubs see: [link](https://learn.microsoft.com/azure/event-hubs/event-hubs-about).
 
-Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs` in your application to:
+Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2` in your application to:
 
 - Send events to an event hub.
 - Consume events from an event hub.
+
+NOTE: This library is currently a beta. There may be breaking changes until it reaches semantic version v2.0.0.
 
 Key links:
 - [Source code][source]
@@ -20,7 +22,7 @@ Key links:
 Install the Azure Event Hubs client module for Go with `go get`:
 
 ```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs
+go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2
 ```
 
 ### Prerequisites
@@ -36,28 +38,28 @@ Event Hub clients are created using a TokenCredential from the [Azure Identity p
 You can also create a client using a connection string.
 
 #### Using a service principal
- - ConsumerClient: [link](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-NewConsumerClient)
- - ProducerClient: [link](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-NewProducerClient)
+ - ConsumerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewConsumerClient)
+ - ProducerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewProducerClient)
 
 #### Using a connection string
- - ConsumerClient: [link](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-NewConsumerClientFromConnectionString)
- - ProducerClient: [link](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#example-NewProducerClientFromConnectionString)
+ - ConsumerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewConsumerClientFromConnectionString)
+ - ProducerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewProducerClientFromConnectionString)
 
 # Key concepts
 
 An Event Hub [**namespace**](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#namespace) can have multiple event hubs. Each event hub, in turn, contains [**partitions**](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#partitions) which store events.
 
-Events are published to an event hub using an [event publisher](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#event-publishers). In this package, the event publisher is the [ProducerClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ProducerClient)
+Events are published to an event hub using an [event publisher](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#event-publishers). In this package, the event publisher is the [ProducerClient](https://aka.ms/azsdk/go/eventhubs/pkg#ProducerClient)
 
 Events can be consumed from an event hub using an [event consumer](https://learn.microsoft.com/azure/event-hubs/event-hubs-features#event-consumers). In this package there are two types for consuming events: 
-- The basic event consumer is the, in the [ConsumerClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ConsumerClient). This consumer is useful if you already known which partitions you want to receive from.
-- A distributed event consumer, which uses Azure Blobs for checkpointing and coordination. This is implemented in the [Processor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#Processor). This is useful when you want to have the partition assignment be dynamically chosen, and balanced with other Processor instances.
+- The basic event consumer is the, in the [ConsumerClient](https://aka.ms/azsdk/go/eventhubs/pkg#ConsumerClient). This consumer is useful if you already known which partitions you want to receive from.
+- A distributed event consumer, which uses Azure Blobs for checkpointing and coordination. This is implemented in the [Processor](https://aka.ms/azsdk/go/eventhubs/pkg#Processor). This is useful when you want to have the partition assignment be dynamically chosen, and balanced with other Processor instances.
 
 For more information about Event Hubs features and terminology can be found here: [link](https://learn.microsoft.com/azure/event-hubs/event-hubs-features)
 
 # Examples
 
-Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#pkg-examples) or in the example*_test.go files in our GitHub repo for [azeventhubs](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs).
+Examples for various scenarios can be found on [pkg.go.dev](https://aka.ms/azsdk/go/eventhubs/pkg#pkg-examples) or in the example*_test.go files in our GitHub repo for [azeventhubs](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs).
 
 # Troubleshooting
 
@@ -65,12 +67,13 @@ Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/g
 
 This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set the environment variable `AZURE_SDK_GO_LOGGING` to `all`. 
 
-Use the `azcore/log` package to control log event output or to enable logs for `azeventhubs` only. For example:
+Use the `azcore/log` package to control log event output or to enable logs for `azeventhubs/v2` only. For example:
 
 ```go
 import (
   "fmt"
   azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+  "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2"
 )
 
 // print log output to stdout
@@ -127,7 +130,5 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventhubs
-[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs
-[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#pkg-examples
-
-
+[godoc]: https://aka.ms/azsdk/go/eventhubs/pkg
+[godoc_examples]: https://aka.ms/azsdk/go/eventhubs/pkg#pkg-examples

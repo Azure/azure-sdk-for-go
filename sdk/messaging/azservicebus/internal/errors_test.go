@@ -260,7 +260,8 @@ func Test_TransformError(t *testing.T) {
 
 	// sanity check, an RPCError but it's not a azservicebus.Code type error.
 	err = TransformError(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}})
-	require.False(t, errors.As(err, &asExportedErr))
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeNotFound, asExportedErr.Code)
 
 	err = TransformError(&amqp.Error{Condition: amqp.ErrCond("com.microsoft:message-lock-lost")})
 	require.ErrorAs(t, err, &asExportedErr)

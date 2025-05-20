@@ -6,7 +6,7 @@ package armservicenetworking
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicenetworking/armservicenetworking"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0-beta.1"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -63,6 +63,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// IPAccessRuleAction - Action of Ip Access Rule
+type IPAccessRuleAction string
+
+const (
+	// IPAccessRuleActionAllow - Allow Source Ip Prefixes
+	IPAccessRuleActionAllow IPAccessRuleAction = "allow"
+	// IPAccessRuleActionDeny - Deny Source Ip Prefixes
+	IPAccessRuleActionDeny IPAccessRuleAction = "deny"
+)
+
+// PossibleIPAccessRuleActionValues returns the possible values for the IPAccessRuleAction const type.
+func PossibleIPAccessRuleActionValues() []IPAccessRuleAction {
+	return []IPAccessRuleAction{
+		IPAccessRuleActionAllow,
+		IPAccessRuleActionDeny,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -89,6 +107,8 @@ func PossibleOriginValues() []Origin {
 type PolicyType string
 
 const (
+	// PolicyTypeIPAccessRules - Policy of Type IpAccessRules
+	PolicyTypeIPAccessRules PolicyType = "ipAccessRules"
 	// PolicyTypeWAF - Policy of Type WAF
 	PolicyTypeWAF PolicyType = "waf"
 )
@@ -96,6 +116,7 @@ const (
 // PossiblePolicyTypeValues returns the possible values for the PolicyType const type.
 func PossiblePolicyTypeValues() []PolicyType {
 	return []PolicyType{
+		PolicyTypeIPAccessRules,
 		PolicyTypeWAF,
 	}
 }

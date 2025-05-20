@@ -1,5 +1,7 @@
 # Azure Monitor Query client module for Go
 
+> Use the [azmetrics][azmetrics] package for access to data plane metrics
+
 The Azure Monitor Query client module is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
 - [Logs][logs_overview] - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace][log_analytics_workspace]. The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
@@ -43,10 +45,6 @@ Example [logs client][example_logs_client]
 
 Example [metrics client][example_metrics_client]
 
-#### Create a metrics batch client
-
-Example metrics batch client
-
 ## Key concepts
 
 ### Timespan
@@ -65,12 +63,6 @@ Each set of metric values is a time series with the following characteristics:
 - A metric name
 - The value itself
 - Some metrics may have multiple dimensions as described in [multi-dimensional metrics][multi-metrics]. Custom metrics can have up to 10 dimensions.
-
-### Metrics batch query
-
-A user can also query metrics from multiple resources at once using the query_batch method of MetricsBatchClient. This uses a different API than the MetricsClient and requires that a user pass in a regional endpoint when instantiating the client (for example, "https://westus3.metrics.monitor.azure.com").
-
-Note, each resource must be in the same region as the endpoint passed in when instantiating the client, and each resource must be in the same Azure subscription. Furthermore, the metric namespace that contains the metrics to be queried must also be passed. A list of metric namespaces can be found [here][metric_namespaces].
 
 ### Logs query rate limits and throttling
 
@@ -133,6 +125,7 @@ the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_conta
 comments.
 
 <!-- LINKS -->
+[azmetrics]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 [azquery_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery
 [azquery_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 [azquery_pkg_go_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#section-documentation

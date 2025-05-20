@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListAuthorizationProviders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListAuthorizationProviders.json
 func ExampleAuthorizationProviderClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleAuthorizationProviderClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("aadwithauthcode"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode"),
 		// 			Properties: &armapimanagement.AuthorizationProviderContractProperties{
 		// 				DisplayName: to.Ptr("aadwithauthcode"),
 		// 				IdentityProvider: to.Ptr("aad"),
@@ -69,7 +69,7 @@ func ExampleAuthorizationProviderClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("aadwithclientcred"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithclientcred"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithclientcred"),
 		// 			Properties: &armapimanagement.AuthorizationProviderContractProperties{
 		// 				DisplayName: to.Ptr("aadwithclientcred"),
 		// 				IdentityProvider: to.Ptr("aad"),
@@ -89,14 +89,14 @@ func ExampleAuthorizationProviderClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("google"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/google"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/google"),
 		// 			Properties: &armapimanagement.AuthorizationProviderContractProperties{
 		// 				DisplayName: to.Ptr("google"),
 		// 				IdentityProvider: to.Ptr("google"),
 		// 				Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 		// 					GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 		// 						AuthorizationCode: map[string]*string{
-		// 							"clientId": to.Ptr("508791967882-5qv6o2i99a75un7329vlegtk78kr766h.apps.googleusercontent.com"),
+		// 							"clientId": to.Ptr("99999999-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"),
 		// 							"scopes": to.Ptr("openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"),
 		// 						},
 		// 					},
@@ -107,7 +107,7 @@ func ExampleAuthorizationProviderClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("eventbrite"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/eventbrite"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/eventbrite"),
 		// 			Properties: &armapimanagement.AuthorizationProviderContractProperties{
 		// 				DisplayName: to.Ptr("eventbrite"),
 		// 				IdentityProvider: to.Ptr("oauth2"),
@@ -115,7 +115,7 @@ func ExampleAuthorizationProviderClient_NewListByServicePager() {
 		// 					GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 		// 						AuthorizationCode: map[string]*string{
 		// 							"authorizationUrl": to.Ptr("https://www.eventbrite.com/oauth/authorize"),
-		// 							"clientId": to.Ptr("ZYIJTBTABHOUQQDLZY"),
+		// 							"clientId": to.Ptr("clientid"),
 		// 							"refreshUrl": to.Ptr("https://www.eventbrite.com/oauth/token"),
 		// 							"scopes": nil,
 		// 							"tokenUrl": to.Ptr("https://www.eventbrite.com/oauth/token"),
@@ -129,7 +129,7 @@ func ExampleAuthorizationProviderClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetAuthorizationProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetAuthorizationProvider.json
 func ExampleAuthorizationProviderClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleAuthorizationProviderClient_Get() {
 	// res.AuthorizationProviderContract = armapimanagement.AuthorizationProviderContract{
 	// 	Name: to.Ptr("aadwithauthcode"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode"),
 	// 	Properties: &armapimanagement.AuthorizationProviderContractProperties{
 	// 		DisplayName: to.Ptr("aadwithauthcode"),
 	// 		IdentityProvider: to.Ptr("aad"),
@@ -170,7 +170,7 @@ func ExampleAuthorizationProviderClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderAADAuthCode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateAuthorizationProviderAADAuthCode.json
 func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthorizationProviderAadAuthCode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,8 +188,8 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 			Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 				GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 					AuthorizationCode: map[string]*string{
-						"clientId":     to.Ptr("59790825-fdd3-4b10-bc7a-4c3aaf25801d"),
-						"clientSecret": to.Ptr("Q3iPSaKQ~fZFcJk5vKmqzUAfJagcJ8"),
+						"clientId":     to.Ptr("clientsecretid"),
+						"clientSecret": to.Ptr("clientsecretvalue"),
 						"resourceUri":  to.Ptr("https://graph.microsoft.com"),
 						"scopes":       to.Ptr("User.Read.All Group.Read.All"),
 					},
@@ -207,7 +207,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// res.AuthorizationProviderContract = armapimanagement.AuthorizationProviderContract{
 	// 	Name: to.Ptr("aadwithauthcode"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithauthcode"),
 	// 	Properties: &armapimanagement.AuthorizationProviderContractProperties{
 	// 		DisplayName: to.Ptr("aadwithauthcode"),
 	// 		IdentityProvider: to.Ptr("aad"),
@@ -227,7 +227,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderAADClientCred.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateAuthorizationProviderAADClientCred.json
 func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthorizationProviderAadClientCred() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// res.AuthorizationProviderContract = armapimanagement.AuthorizationProviderContract{
 	// 	Name: to.Ptr("aadwithclientcred"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithclientcred"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/aadwithclientcred"),
 	// 	Properties: &armapimanagement.AuthorizationProviderContractProperties{
 	// 		DisplayName: to.Ptr("aadwithclientcred"),
 	// 		IdentityProvider: to.Ptr("aad"),
@@ -281,7 +281,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderGenericOAuth2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateAuthorizationProviderGenericOAuth2.json
 func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthorizationProviderGenericOAuth2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,8 +300,8 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 				GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 					AuthorizationCode: map[string]*string{
 						"authorizationUrl": to.Ptr("https://www.eventbrite.com/oauth/authorize"),
-						"clientId":         to.Ptr("ZYIJTBTABHOUQQDLZY"),
-						"clientSecret":     to.Ptr("Q3iPSaKQ~fZFcJk5vKmqzUAfJagcJ8"),
+						"clientId":         to.Ptr("clientid"),
+						"clientSecret":     to.Ptr("clientsecretvalue"),
 						"refreshUrl":       to.Ptr("https://www.eventbrite.com/oauth/token"),
 						"scopes":           nil,
 						"tokenUrl":         to.Ptr("https://www.eventbrite.com/oauth/token"),
@@ -320,7 +320,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// res.AuthorizationProviderContract = armapimanagement.AuthorizationProviderContract{
 	// 	Name: to.Ptr("eventbrite"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/eventbrite"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/eventbrite"),
 	// 	Properties: &armapimanagement.AuthorizationProviderContractProperties{
 	// 		DisplayName: to.Ptr("eventbrite"),
 	// 		IdentityProvider: to.Ptr("oauth2"),
@@ -328,7 +328,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// 			GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 	// 				AuthorizationCode: map[string]*string{
 	// 					"authorizationUrl": to.Ptr("https://www.eventbrite.com/oauth/authorize"),
-	// 					"clientId": to.Ptr("ZYIJTBTABHOUQQDLZY"),
+	// 					"clientId": to.Ptr("clientid"),
 	// 					"refreshUrl": to.Ptr("https://www.eventbrite.com/oauth/token"),
 	// 					"scopes": nil,
 	// 					"tokenUrl": to.Ptr("https://www.eventbrite.com/oauth/token"),
@@ -340,7 +340,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderOOBGoogle.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateAuthorizationProviderOOBGoogle.json
 func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthorizationProviderOobGoogle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,8 +358,8 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 			Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 				GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 					AuthorizationCode: map[string]*string{
-						"clientId":     to.Ptr("508791967882-5qv6o2i99a75un7329vlegtk78kr766h.apps.googleusercontent.com"),
-						"clientSecret": to.Ptr("qDN0VyVFjU1OsOyT5Kz8ce"),
+						"clientId":     to.Ptr("99999999-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"),
+						"clientSecret": to.Ptr("clientsecretvalue"),
 						"scopes":       to.Ptr("openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"),
 					},
 				},
@@ -376,14 +376,14 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// res.AuthorizationProviderContract = armapimanagement.AuthorizationProviderContract{
 	// 	Name: to.Ptr("google"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/authorizationProviders"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/google"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/authorizationProviders/google"),
 	// 	Properties: &armapimanagement.AuthorizationProviderContractProperties{
 	// 		DisplayName: to.Ptr("google"),
 	// 		IdentityProvider: to.Ptr("google"),
 	// 		Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 	// 			GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 	// 				AuthorizationCode: map[string]*string{
-	// 					"clientId": to.Ptr("508791967882-5qv6o2i99a75un7329vlegtk78kr766h.apps.googleusercontent.com"),
+	// 					"clientId": to.Ptr("99999999-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"),
 	// 					"scopes": to.Ptr("openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"),
 	// 				},
 	// 			},
@@ -393,7 +393,7 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteAuthorizationProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteAuthorizationProvider.json
 func ExampleAuthorizationProviderClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

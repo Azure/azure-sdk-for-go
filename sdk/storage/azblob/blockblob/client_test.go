@@ -565,6 +565,62 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithRequestIntent() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	srcBlob := containerClient.NewBlockBlobClient("src" + testcommon.GenerateBlobName(testName))
+	destBlob := containerClient.NewBlockBlobClient("dst" + testcommon.GenerateBlobName(testName))
+
+	// Prepare source bbClient for copy.
+	_, err = srcBlob.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	sharedKeyCredential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+	perms := sas.BlobPermissions{Read: true}
+
+	srcBlobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   perms.String(),
+	}.SignWithSharedKey(sharedKeyCredential)
+	_require.NoError(err)
+
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Stage blocks from URL.
+	blockIDs := testcommon.GenerateBlockIDsList(2)
+	requestIntent := blob.FileRequestIntentTypeBackup
+
+	opts := blockblob.StageBlockFromURLOptions{
+		FileRequestIntent: &requestIntent,
+	}
+
+	stageResponse, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
+	_require.NoError(err)
+	_require.NotNil(stageResponse)
+
+	// Check block list.
+	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
+	_require.NoError(err)
+	_require.NotNil(blockList.BlockList)
+	_require.Nil(blockList.BlockList.CommittedBlocks)
+}
+
 //
 //	func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURL() {
 //		_require := require.New(s.T())
@@ -1178,6 +1234,33 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithHeaders() {
 	tagcount := int64(len(testcommon.BasicBlobTagsMap))
 	_require.EqualValues(resp.TagCount, &tagcount)
 	_require.EqualValues(resp.Metadata, testcommon.BasicMetadata)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromURLWithIntent() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	requestIntent := blob.FileRequestIntentTypeBackup
+
+	containerClient, _, destBlob, srcBlobURLWithSAS, _ := setUpPutBlobFromURLTest(testName, _require, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	options := blockblob.UploadBlobFromURLOptions{
+		Tags:              testcommon.BasicBlobTagsMap,
+		HTTPHeaders:       &testcommon.BasicHeaders,
+		Metadata:          testcommon.BasicMetadata,
+		FileRequestIntent: &requestIntent,
+	}
+
+	pbResp, err := destBlob.UploadBlobFromURL(context.Background(), srcBlobURLWithSAS, &options)
+	_require.NotNil(pbResp)
+	_require.NoError(err)
+
+	// Check dest and source properties
+	_, err = destBlob.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlWithCPK() {

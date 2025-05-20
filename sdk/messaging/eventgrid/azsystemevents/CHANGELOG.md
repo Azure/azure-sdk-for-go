@@ -1,6 +1,6 @@
 # Release History
 
-## 0.6.2 (Unreleased)
+## 0.7.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.7.0 (2025-05-14)
+
+### Features Added
+
+- New system events have been added:
+  - ACSCallEndedEventData
+  - ACSCallParticipantAddedEventData
+  - ACSCallParticipantRemovedEventData
+  - ACSCallStartedEventData
+  - ACSChatAzureBotCommandReceivedInThreadEventData
+  - ACSChatTypingIndicatorReceivedInThreadEventData
+  - APIManagementCircuitBreakerClosedEventData
+  - APIManagementCircuitBreakerOpenedEventData
+  - APIManagementGatewayTokenExpiredEventData
+  - APIManagementGatewayTokenNearExpiryEventData
+  - EdgeSolutionVersionPublishedEventData
+
+### Breaking Changes
+
+- ACSCallParticipantProperties.Role has changed from a `*string` to a `*ACSCallParticipantRoleKind`.
 
 ## 0.6.1 (2025-02-20)
 

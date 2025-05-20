@@ -1,5 +1,431 @@
 # Release History
 
+## 3.0.0 (2025-04-10)
+### Breaking Changes
+
+- Type of `ErrorResponse.Error` has been changed from `*ErrorResponseBody` to `*ErrorDetail`
+- Operation `*APIClient.Delete` has been changed to LRO, use `*APIClient.BeginDelete` instead.
+- Operation `*UserClient.Delete` has been changed to LRO, use `*UserClient.BeginDelete` instead.
+- Operation `*PolicyClient.ListByService` has supported pagination, use `*PolicyClient.NewListByServicePager` instead.
+- Operation `*PolicyFragmentClient.ListByService` has supported pagination, use `*PolicyFragmentClient.NewListByServicePager` instead.
+- Operation `*PortalConfigClient.ListByService` has supported pagination, use `*PortalConfigClient.NewListByServicePager` instead.
+- Operation `*ProductPolicyClient.ListByProduct` has supported pagination, use `*ProductPolicyClient.NewListByProductPager` instead.
+
+### Features Added
+
+- New value `APITypeGrpc`, `APITypeOData` added to enum type `APIType`
+- New value `ContentFormatGrpc`, `ContentFormatGrpcLink`, `ContentFormatOData`, `ContentFormatODataLink` added to enum type `ContentFormat`
+- New value `HostnameTypeConfigurationAPI` added to enum type `HostnameType`
+- New value `PlatformVersionStv21` added to enum type `PlatformVersion`
+- New value `SKUTypeBasicV2`, `SKUTypeStandardV2` added to enum type `SKUType`
+- New value `SoapAPITypeGRPC`, `SoapAPITypeOData` added to enum type `SoapAPIType`
+- New enum type `APIGatewaySKUType` with values `APIGatewaySKUTypeStandard`, `APIGatewaySKUTypeWorkspaceGatewayPremium`, `APIGatewaySKUTypeWorkspaceGatewayStandard`
+- New enum type `BackendType` with values `BackendTypePool`, `BackendTypeSingle`
+- New enum type `DeveloperPortalStatus` with values `DeveloperPortalStatusDisabled`, `DeveloperPortalStatusEnabled`
+- New enum type `GatewayListDebugCredentialsContractPurpose` with values `GatewayListDebugCredentialsContractPurposeTracing`
+- New enum type `GatewaySKUCapacityScaleType` with values `GatewaySKUCapacityScaleTypeAutomatic`, `GatewaySKUCapacityScaleTypeManual`, `GatewaySKUCapacityScaleTypeNone`
+- New enum type `KeyVaultRefreshState` with values `KeyVaultRefreshStateFalse`, `KeyVaultRefreshStateTrue`
+- New enum type `LegacyAPIState` with values `LegacyAPIStateDisabled`, `LegacyAPIStateEnabled`
+- New enum type `LegacyPortalStatus` with values `LegacyPortalStatusDisabled`, `LegacyPortalStatusEnabled`
+- New enum type `MigrateToStv2Mode` with values `MigrateToStv2ModeNewIP`, `MigrateToStv2ModePreserveIP`
+- New enum type `PolicyComplianceState` with values `PolicyComplianceStateCompliant`, `PolicyComplianceStateNonCompliant`, `PolicyComplianceStatePending`
+- New enum type `PolicyRestrictionRequireBase` with values `PolicyRestrictionRequireBaseFalse`, `PolicyRestrictionRequireBaseTrue`
+- New function `NewAPIGatewayClient(string, azcore.TokenCredential, *arm.ClientOptions) (*APIGatewayClient, error)`
+- New function `*APIGatewayClient.BeginCreateOrUpdate(context.Context, string, string, GatewayResource, *APIGatewayClientBeginCreateOrUpdateOptions) (*runtime.Poller[APIGatewayClientCreateOrUpdateResponse], error)`
+- New function `*APIGatewayClient.BeginDelete(context.Context, string, string, *APIGatewayClientBeginDeleteOptions) (*runtime.Poller[APIGatewayClientDeleteResponse], error)`
+- New function `*APIGatewayClient.Get(context.Context, string, string, *APIGatewayClientGetOptions) (APIGatewayClientGetResponse, error)`
+- New function `*APIGatewayClient.NewListByResourceGroupPager(string, *APIGatewayClientListByResourceGroupOptions) *runtime.Pager[APIGatewayClientListByResourceGroupResponse]`
+- New function `*APIGatewayClient.NewListPager(*APIGatewayClientListOptions) *runtime.Pager[APIGatewayClientListResponse]`
+- New function `*APIGatewayClient.BeginUpdate(context.Context, string, string, GatewayUpdateParameters, *APIGatewayClientBeginUpdateOptions) (*runtime.Poller[APIGatewayClientUpdateResponse], error)`
+- New function `NewAPIGatewayConfigConnectionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*APIGatewayConfigConnectionClient, error)`
+- New function `*APIGatewayConfigConnectionClient.BeginCreateOrUpdate(context.Context, string, string, string, GatewayConfigConnectionResource, *APIGatewayConfigConnectionClientBeginCreateOrUpdateOptions) (*runtime.Poller[APIGatewayConfigConnectionClientCreateOrUpdateResponse], error)`
+- New function `*APIGatewayConfigConnectionClient.BeginDelete(context.Context, string, string, string, string, *APIGatewayConfigConnectionClientBeginDeleteOptions) (*runtime.Poller[APIGatewayConfigConnectionClientDeleteResponse], error)`
+- New function `*APIGatewayConfigConnectionClient.Get(context.Context, string, string, string, *APIGatewayConfigConnectionClientGetOptions) (APIGatewayConfigConnectionClientGetResponse, error)`
+- New function `*APIGatewayConfigConnectionClient.NewListByGatewayPager(string, string, *APIGatewayConfigConnectionClientListByGatewayOptions) *runtime.Pager[APIGatewayConfigConnectionClientListByGatewayResponse]`
+- New function `NewAllPoliciesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AllPoliciesClient, error)`
+- New function `*AllPoliciesClient.NewListByServicePager(string, string, *AllPoliciesClientListByServiceOptions) *runtime.Pager[AllPoliciesClientListByServiceResponse]`
+- New function `*ClientFactory.NewAPIGatewayClient() *APIGatewayClient`
+- New function `*ClientFactory.NewAPIGatewayConfigConnectionClient() *APIGatewayConfigConnectionClient`
+- New function `*ClientFactory.NewAllPoliciesClient() *AllPoliciesClient`
+- New function `*ClientFactory.NewGatewaySKUsClient() *GatewaySKUsClient`
+- New function `*ClientFactory.NewOperationStatusClient() *OperationStatusClient`
+- New function `*ClientFactory.NewOperationsResultsClient() *OperationsResultsClient`
+- New function `*ClientFactory.NewPolicyRestrictionClient() *PolicyRestrictionClient`
+- New function `*ClientFactory.NewPolicyRestrictionValidationsClient() *PolicyRestrictionValidationsClient`
+- New function `*ClientFactory.NewProductAPILinkClient() *ProductAPILinkClient`
+- New function `*ClientFactory.NewProductGroupLinkClient() *ProductGroupLinkClient`
+- New function `*ClientFactory.NewTagAPILinkClient() *TagAPILinkClient`
+- New function `*ClientFactory.NewTagOperationLinkClient() *TagOperationLinkClient`
+- New function `*ClientFactory.NewTagProductLinkClient() *TagProductLinkClient`
+- New function `*ClientFactory.NewWorkspaceAPIClient() *WorkspaceAPIClient`
+- New function `*ClientFactory.NewWorkspaceAPIDiagnosticClient() *WorkspaceAPIDiagnosticClient`
+- New function `*ClientFactory.NewWorkspaceAPIExportClient() *WorkspaceAPIExportClient`
+- New function `*ClientFactory.NewWorkspaceAPIOperationClient() *WorkspaceAPIOperationClient`
+- New function `*ClientFactory.NewWorkspaceAPIOperationPolicyClient() *WorkspaceAPIOperationPolicyClient`
+- New function `*ClientFactory.NewWorkspaceAPIPolicyClient() *WorkspaceAPIPolicyClient`
+- New function `*ClientFactory.NewWorkspaceAPIReleaseClient() *WorkspaceAPIReleaseClient`
+- New function `*ClientFactory.NewWorkspaceAPIRevisionClient() *WorkspaceAPIRevisionClient`
+- New function `*ClientFactory.NewWorkspaceAPISchemaClient() *WorkspaceAPISchemaClient`
+- New function `*ClientFactory.NewWorkspaceAPIVersionSetClient() *WorkspaceAPIVersionSetClient`
+- New function `*ClientFactory.NewWorkspaceBackendClient() *WorkspaceBackendClient`
+- New function `*ClientFactory.NewWorkspaceCertificateClient() *WorkspaceCertificateClient`
+- New function `*ClientFactory.NewWorkspaceClient() *WorkspaceClient`
+- New function `*ClientFactory.NewWorkspaceDiagnosticClient() *WorkspaceDiagnosticClient`
+- New function `*ClientFactory.NewWorkspaceGlobalSchemaClient() *WorkspaceGlobalSchemaClient`
+- New function `*ClientFactory.NewWorkspaceGroupClient() *WorkspaceGroupClient`
+- New function `*ClientFactory.NewWorkspaceGroupUserClient() *WorkspaceGroupUserClient`
+- New function `*ClientFactory.NewWorkspaceLinkClient() *WorkspaceLinkClient`
+- New function `*ClientFactory.NewWorkspaceLinksClient() *WorkspaceLinksClient`
+- New function `*ClientFactory.NewWorkspaceLoggerClient() *WorkspaceLoggerClient`
+- New function `*ClientFactory.NewWorkspaceNamedValueClient() *WorkspaceNamedValueClient`
+- New function `*ClientFactory.NewWorkspaceNotificationClient() *WorkspaceNotificationClient`
+- New function `*ClientFactory.NewWorkspaceNotificationRecipientEmailClient() *WorkspaceNotificationRecipientEmailClient`
+- New function `*ClientFactory.NewWorkspaceNotificationRecipientUserClient() *WorkspaceNotificationRecipientUserClient`
+- New function `*ClientFactory.NewWorkspacePolicyClient() *WorkspacePolicyClient`
+- New function `*ClientFactory.NewWorkspacePolicyFragmentClient() *WorkspacePolicyFragmentClient`
+- New function `*ClientFactory.NewWorkspaceProductAPILinkClient() *WorkspaceProductAPILinkClient`
+- New function `*ClientFactory.NewWorkspaceProductClient() *WorkspaceProductClient`
+- New function `*ClientFactory.NewWorkspaceProductGroupLinkClient() *WorkspaceProductGroupLinkClient`
+- New function `*ClientFactory.NewWorkspaceProductPolicyClient() *WorkspaceProductPolicyClient`
+- New function `*ClientFactory.NewWorkspaceSubscriptionClient() *WorkspaceSubscriptionClient`
+- New function `*ClientFactory.NewWorkspaceTagAPILinkClient() *WorkspaceTagAPILinkClient`
+- New function `*ClientFactory.NewWorkspaceTagClient() *WorkspaceTagClient`
+- New function `*ClientFactory.NewWorkspaceTagOperationLinkClient() *WorkspaceTagOperationLinkClient`
+- New function `*ClientFactory.NewWorkspaceTagProductLinkClient() *WorkspaceTagProductLinkClient`
+- New function `*GatewayClient.InvalidateDebugCredentials(context.Context, string, string, string, *GatewayClientInvalidateDebugCredentialsOptions) (GatewayClientInvalidateDebugCredentialsResponse, error)`
+- New function `*GatewayClient.ListDebugCredentials(context.Context, string, string, string, GatewayListDebugCredentialsContract, *GatewayClientListDebugCredentialsOptions) (GatewayClientListDebugCredentialsResponse, error)`
+- New function `*GatewayClient.ListTrace(context.Context, string, string, string, GatewayListTraceContract, *GatewayClientListTraceOptions) (GatewayClientListTraceResponse, error)`
+- New function `NewGatewaySKUsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GatewaySKUsClient, error)`
+- New function `*GatewaySKUsClient.NewListAvailableSKUsPager(string, string, *GatewaySKUsClientListAvailableSKUsOptions) *runtime.Pager[GatewaySKUsClientListAvailableSKUsResponse]`
+- New function `NewOperationStatusClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OperationStatusClient, error)`
+- New function `*OperationStatusClient.Get(context.Context, string, string, *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error)`
+- New function `NewOperationsResultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OperationsResultsClient, error)`
+- New function `*OperationsResultsClient.Get(context.Context, string, string, *OperationsResultsClientGetOptions) (OperationsResultsClientGetResponse, error)`
+- New function `NewPolicyRestrictionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PolicyRestrictionClient, error)`
+- New function `*PolicyRestrictionClient.CreateOrUpdate(context.Context, string, string, string, PolicyRestrictionContract, *PolicyRestrictionClientCreateOrUpdateOptions) (PolicyRestrictionClientCreateOrUpdateResponse, error)`
+- New function `*PolicyRestrictionClient.Delete(context.Context, string, string, string, *PolicyRestrictionClientDeleteOptions) (PolicyRestrictionClientDeleteResponse, error)`
+- New function `*PolicyRestrictionClient.Get(context.Context, string, string, string, *PolicyRestrictionClientGetOptions) (PolicyRestrictionClientGetResponse, error)`
+- New function `*PolicyRestrictionClient.GetEntityTag(context.Context, string, string, string, *PolicyRestrictionClientGetEntityTagOptions) (PolicyRestrictionClientGetEntityTagResponse, error)`
+- New function `*PolicyRestrictionClient.NewListByServicePager(string, string, *PolicyRestrictionClientListByServiceOptions) *runtime.Pager[PolicyRestrictionClientListByServiceResponse]`
+- New function `*PolicyRestrictionClient.Update(context.Context, string, string, string, string, PolicyRestrictionUpdateContract, *PolicyRestrictionClientUpdateOptions) (PolicyRestrictionClientUpdateResponse, error)`
+- New function `NewPolicyRestrictionValidationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PolicyRestrictionValidationsClient, error)`
+- New function `*PolicyRestrictionValidationsClient.BeginByService(context.Context, string, string, *PolicyRestrictionValidationsClientBeginByServiceOptions) (*runtime.Poller[PolicyRestrictionValidationsClientByServiceResponse], error)`
+- New function `NewProductAPILinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProductAPILinkClient, error)`
+- New function `*ProductAPILinkClient.CreateOrUpdate(context.Context, string, string, string, string, ProductAPILinkContract, *ProductAPILinkClientCreateOrUpdateOptions) (ProductAPILinkClientCreateOrUpdateResponse, error)`
+- New function `*ProductAPILinkClient.Delete(context.Context, string, string, string, string, *ProductAPILinkClientDeleteOptions) (ProductAPILinkClientDeleteResponse, error)`
+- New function `*ProductAPILinkClient.Get(context.Context, string, string, string, string, *ProductAPILinkClientGetOptions) (ProductAPILinkClientGetResponse, error)`
+- New function `*ProductAPILinkClient.NewListByProductPager(string, string, string, *ProductAPILinkClientListByProductOptions) *runtime.Pager[ProductAPILinkClientListByProductResponse]`
+- New function `NewProductGroupLinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProductGroupLinkClient, error)`
+- New function `*ProductGroupLinkClient.CreateOrUpdate(context.Context, string, string, string, string, ProductGroupLinkContract, *ProductGroupLinkClientCreateOrUpdateOptions) (ProductGroupLinkClientCreateOrUpdateResponse, error)`
+- New function `*ProductGroupLinkClient.Delete(context.Context, string, string, string, string, *ProductGroupLinkClientDeleteOptions) (ProductGroupLinkClientDeleteResponse, error)`
+- New function `*ProductGroupLinkClient.Get(context.Context, string, string, string, string, *ProductGroupLinkClientGetOptions) (ProductGroupLinkClientGetResponse, error)`
+- New function `*ProductGroupLinkClient.NewListByProductPager(string, string, string, *ProductGroupLinkClientListByProductOptions) *runtime.Pager[ProductGroupLinkClientListByProductResponse]`
+- New function `NewTagAPILinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TagAPILinkClient, error)`
+- New function `*TagAPILinkClient.CreateOrUpdate(context.Context, string, string, string, string, TagAPILinkContract, *TagAPILinkClientCreateOrUpdateOptions) (TagAPILinkClientCreateOrUpdateResponse, error)`
+- New function `*TagAPILinkClient.Delete(context.Context, string, string, string, string, *TagAPILinkClientDeleteOptions) (TagAPILinkClientDeleteResponse, error)`
+- New function `*TagAPILinkClient.Get(context.Context, string, string, string, string, *TagAPILinkClientGetOptions) (TagAPILinkClientGetResponse, error)`
+- New function `*TagAPILinkClient.NewListByProductPager(string, string, string, *TagAPILinkClientListByProductOptions) *runtime.Pager[TagAPILinkClientListByProductResponse]`
+- New function `NewTagOperationLinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TagOperationLinkClient, error)`
+- New function `*TagOperationLinkClient.CreateOrUpdate(context.Context, string, string, string, string, TagOperationLinkContract, *TagOperationLinkClientCreateOrUpdateOptions) (TagOperationLinkClientCreateOrUpdateResponse, error)`
+- New function `*TagOperationLinkClient.Delete(context.Context, string, string, string, string, *TagOperationLinkClientDeleteOptions) (TagOperationLinkClientDeleteResponse, error)`
+- New function `*TagOperationLinkClient.Get(context.Context, string, string, string, string, *TagOperationLinkClientGetOptions) (TagOperationLinkClientGetResponse, error)`
+- New function `*TagOperationLinkClient.NewListByProductPager(string, string, string, *TagOperationLinkClientListByProductOptions) *runtime.Pager[TagOperationLinkClientListByProductResponse]`
+- New function `NewTagProductLinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TagProductLinkClient, error)`
+- New function `*TagProductLinkClient.CreateOrUpdate(context.Context, string, string, string, string, TagProductLinkContract, *TagProductLinkClientCreateOrUpdateOptions) (TagProductLinkClientCreateOrUpdateResponse, error)`
+- New function `*TagProductLinkClient.Delete(context.Context, string, string, string, string, *TagProductLinkClientDeleteOptions) (TagProductLinkClientDeleteResponse, error)`
+- New function `*TagProductLinkClient.Get(context.Context, string, string, string, string, *TagProductLinkClientGetOptions) (TagProductLinkClientGetResponse, error)`
+- New function `*TagProductLinkClient.NewListByProductPager(string, string, string, *TagProductLinkClientListByProductOptions) *runtime.Pager[TagProductLinkClientListByProductResponse]`
+- New function `NewWorkspaceAPIClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIClient, error)`
+- New function `*WorkspaceAPIClient.BeginCreateOrUpdate(context.Context, string, string, string, string, APICreateOrUpdateParameter, *WorkspaceAPIClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspaceAPIClientCreateOrUpdateResponse], error)`
+- New function `*WorkspaceAPIClient.Delete(context.Context, string, string, string, string, string, *WorkspaceAPIClientDeleteOptions) (WorkspaceAPIClientDeleteResponse, error)`
+- New function `*WorkspaceAPIClient.Get(context.Context, string, string, string, string, *WorkspaceAPIClientGetOptions) (WorkspaceAPIClientGetResponse, error)`
+- New function `*WorkspaceAPIClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceAPIClientGetEntityTagOptions) (WorkspaceAPIClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPIClient.NewListByServicePager(string, string, string, *WorkspaceAPIClientListByServiceOptions) *runtime.Pager[WorkspaceAPIClientListByServiceResponse]`
+- New function `*WorkspaceAPIClient.Update(context.Context, string, string, string, string, string, APIUpdateContract, *WorkspaceAPIClientUpdateOptions) (WorkspaceAPIClientUpdateResponse, error)`
+- New function `NewWorkspaceAPIDiagnosticClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIDiagnosticClient, error)`
+- New function `*WorkspaceAPIDiagnosticClient.CreateOrUpdate(context.Context, string, string, string, string, string, DiagnosticContract, *WorkspaceAPIDiagnosticClientCreateOrUpdateOptions) (WorkspaceAPIDiagnosticClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceAPIDiagnosticClient.Delete(context.Context, string, string, string, string, string, string, *WorkspaceAPIDiagnosticClientDeleteOptions) (WorkspaceAPIDiagnosticClientDeleteResponse, error)`
+- New function `*WorkspaceAPIDiagnosticClient.Get(context.Context, string, string, string, string, string, *WorkspaceAPIDiagnosticClientGetOptions) (WorkspaceAPIDiagnosticClientGetResponse, error)`
+- New function `*WorkspaceAPIDiagnosticClient.GetEntityTag(context.Context, string, string, string, string, string, *WorkspaceAPIDiagnosticClientGetEntityTagOptions) (WorkspaceAPIDiagnosticClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPIDiagnosticClient.NewListByWorkspacePager(string, string, string, string, *WorkspaceAPIDiagnosticClientListByWorkspaceOptions) *runtime.Pager[WorkspaceAPIDiagnosticClientListByWorkspaceResponse]`
+- New function `*WorkspaceAPIDiagnosticClient.Update(context.Context, string, string, string, string, string, string, DiagnosticUpdateContract, *WorkspaceAPIDiagnosticClientUpdateOptions) (WorkspaceAPIDiagnosticClientUpdateResponse, error)`
+- New function `NewWorkspaceAPIExportClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIExportClient, error)`
+- New function `*WorkspaceAPIExportClient.Get(context.Context, string, string, string, string, ExportFormat, ExportAPI, *WorkspaceAPIExportClientGetOptions) (WorkspaceAPIExportClientGetResponse, error)`
+- New function `NewWorkspaceAPIOperationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIOperationClient, error)`
+- New function `*WorkspaceAPIOperationClient.CreateOrUpdate(context.Context, string, string, string, string, string, OperationContract, *WorkspaceAPIOperationClientCreateOrUpdateOptions) (WorkspaceAPIOperationClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceAPIOperationClient.Delete(context.Context, string, string, string, string, string, string, *WorkspaceAPIOperationClientDeleteOptions) (WorkspaceAPIOperationClientDeleteResponse, error)`
+- New function `*WorkspaceAPIOperationClient.Get(context.Context, string, string, string, string, string, *WorkspaceAPIOperationClientGetOptions) (WorkspaceAPIOperationClientGetResponse, error)`
+- New function `*WorkspaceAPIOperationClient.GetEntityTag(context.Context, string, string, string, string, string, *WorkspaceAPIOperationClientGetEntityTagOptions) (WorkspaceAPIOperationClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPIOperationClient.NewListByAPIPager(string, string, string, string, *WorkspaceAPIOperationClientListByAPIOptions) *runtime.Pager[WorkspaceAPIOperationClientListByAPIResponse]`
+- New function `*WorkspaceAPIOperationClient.Update(context.Context, string, string, string, string, string, string, OperationUpdateContract, *WorkspaceAPIOperationClientUpdateOptions) (WorkspaceAPIOperationClientUpdateResponse, error)`
+- New function `NewWorkspaceAPIOperationPolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIOperationPolicyClient, error)`
+- New function `*WorkspaceAPIOperationPolicyClient.CreateOrUpdate(context.Context, string, string, string, string, string, PolicyIDName, PolicyContract, *WorkspaceAPIOperationPolicyClientCreateOrUpdateOptions) (WorkspaceAPIOperationPolicyClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceAPIOperationPolicyClient.Delete(context.Context, string, string, string, string, string, PolicyIDName, string, *WorkspaceAPIOperationPolicyClientDeleteOptions) (WorkspaceAPIOperationPolicyClientDeleteResponse, error)`
+- New function `*WorkspaceAPIOperationPolicyClient.Get(context.Context, string, string, string, string, string, PolicyIDName, *WorkspaceAPIOperationPolicyClientGetOptions) (WorkspaceAPIOperationPolicyClientGetResponse, error)`
+- New function `*WorkspaceAPIOperationPolicyClient.GetEntityTag(context.Context, string, string, string, string, string, PolicyIDName, *WorkspaceAPIOperationPolicyClientGetEntityTagOptions) (WorkspaceAPIOperationPolicyClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPIOperationPolicyClient.NewListByOperationPager(string, string, string, string, string, *WorkspaceAPIOperationPolicyClientListByOperationOptions) *runtime.Pager[WorkspaceAPIOperationPolicyClientListByOperationResponse]`
+- New function `NewWorkspaceAPIPolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIPolicyClient, error)`
+- New function `*WorkspaceAPIPolicyClient.CreateOrUpdate(context.Context, string, string, string, string, PolicyIDName, PolicyContract, *WorkspaceAPIPolicyClientCreateOrUpdateOptions) (WorkspaceAPIPolicyClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceAPIPolicyClient.Delete(context.Context, string, string, string, string, PolicyIDName, string, *WorkspaceAPIPolicyClientDeleteOptions) (WorkspaceAPIPolicyClientDeleteResponse, error)`
+- New function `*WorkspaceAPIPolicyClient.Get(context.Context, string, string, string, string, PolicyIDName, *WorkspaceAPIPolicyClientGetOptions) (WorkspaceAPIPolicyClientGetResponse, error)`
+- New function `*WorkspaceAPIPolicyClient.GetEntityTag(context.Context, string, string, string, string, PolicyIDName, *WorkspaceAPIPolicyClientGetEntityTagOptions) (WorkspaceAPIPolicyClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPIPolicyClient.NewListByAPIPager(string, string, string, string, *WorkspaceAPIPolicyClientListByAPIOptions) *runtime.Pager[WorkspaceAPIPolicyClientListByAPIResponse]`
+- New function `NewWorkspaceAPIReleaseClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIReleaseClient, error)`
+- New function `*WorkspaceAPIReleaseClient.CreateOrUpdate(context.Context, string, string, string, string, string, APIReleaseContract, *WorkspaceAPIReleaseClientCreateOrUpdateOptions) (WorkspaceAPIReleaseClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceAPIReleaseClient.Delete(context.Context, string, string, string, string, string, string, *WorkspaceAPIReleaseClientDeleteOptions) (WorkspaceAPIReleaseClientDeleteResponse, error)`
+- New function `*WorkspaceAPIReleaseClient.Get(context.Context, string, string, string, string, string, *WorkspaceAPIReleaseClientGetOptions) (WorkspaceAPIReleaseClientGetResponse, error)`
+- New function `*WorkspaceAPIReleaseClient.GetEntityTag(context.Context, string, string, string, string, string, *WorkspaceAPIReleaseClientGetEntityTagOptions) (WorkspaceAPIReleaseClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPIReleaseClient.NewListByServicePager(string, string, string, string, *WorkspaceAPIReleaseClientListByServiceOptions) *runtime.Pager[WorkspaceAPIReleaseClientListByServiceResponse]`
+- New function `*WorkspaceAPIReleaseClient.Update(context.Context, string, string, string, string, string, string, APIReleaseContract, *WorkspaceAPIReleaseClientUpdateOptions) (WorkspaceAPIReleaseClientUpdateResponse, error)`
+- New function `NewWorkspaceAPIRevisionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIRevisionClient, error)`
+- New function `*WorkspaceAPIRevisionClient.NewListByServicePager(string, string, string, string, *WorkspaceAPIRevisionClientListByServiceOptions) *runtime.Pager[WorkspaceAPIRevisionClientListByServiceResponse]`
+- New function `NewWorkspaceAPISchemaClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPISchemaClient, error)`
+- New function `*WorkspaceAPISchemaClient.BeginCreateOrUpdate(context.Context, string, string, string, string, string, SchemaContract, *WorkspaceAPISchemaClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspaceAPISchemaClientCreateOrUpdateResponse], error)`
+- New function `*WorkspaceAPISchemaClient.Delete(context.Context, string, string, string, string, string, string, *WorkspaceAPISchemaClientDeleteOptions) (WorkspaceAPISchemaClientDeleteResponse, error)`
+- New function `*WorkspaceAPISchemaClient.Get(context.Context, string, string, string, string, string, *WorkspaceAPISchemaClientGetOptions) (WorkspaceAPISchemaClientGetResponse, error)`
+- New function `*WorkspaceAPISchemaClient.GetEntityTag(context.Context, string, string, string, string, string, *WorkspaceAPISchemaClientGetEntityTagOptions) (WorkspaceAPISchemaClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPISchemaClient.NewListByAPIPager(string, string, string, string, *WorkspaceAPISchemaClientListByAPIOptions) *runtime.Pager[WorkspaceAPISchemaClientListByAPIResponse]`
+- New function `NewWorkspaceAPIVersionSetClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceAPIVersionSetClient, error)`
+- New function `*WorkspaceAPIVersionSetClient.CreateOrUpdate(context.Context, string, string, string, string, APIVersionSetContract, *WorkspaceAPIVersionSetClientCreateOrUpdateOptions) (WorkspaceAPIVersionSetClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceAPIVersionSetClient.Delete(context.Context, string, string, string, string, string, *WorkspaceAPIVersionSetClientDeleteOptions) (WorkspaceAPIVersionSetClientDeleteResponse, error)`
+- New function `*WorkspaceAPIVersionSetClient.Get(context.Context, string, string, string, string, *WorkspaceAPIVersionSetClientGetOptions) (WorkspaceAPIVersionSetClientGetResponse, error)`
+- New function `*WorkspaceAPIVersionSetClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceAPIVersionSetClientGetEntityTagOptions) (WorkspaceAPIVersionSetClientGetEntityTagResponse, error)`
+- New function `*WorkspaceAPIVersionSetClient.NewListByServicePager(string, string, string, *WorkspaceAPIVersionSetClientListByServiceOptions) *runtime.Pager[WorkspaceAPIVersionSetClientListByServiceResponse]`
+- New function `*WorkspaceAPIVersionSetClient.Update(context.Context, string, string, string, string, string, APIVersionSetUpdateParameters, *WorkspaceAPIVersionSetClientUpdateOptions) (WorkspaceAPIVersionSetClientUpdateResponse, error)`
+- New function `NewWorkspaceBackendClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceBackendClient, error)`
+- New function `*WorkspaceBackendClient.CreateOrUpdate(context.Context, string, string, string, string, BackendContract, *WorkspaceBackendClientCreateOrUpdateOptions) (WorkspaceBackendClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceBackendClient.Delete(context.Context, string, string, string, string, string, *WorkspaceBackendClientDeleteOptions) (WorkspaceBackendClientDeleteResponse, error)`
+- New function `*WorkspaceBackendClient.Get(context.Context, string, string, string, string, *WorkspaceBackendClientGetOptions) (WorkspaceBackendClientGetResponse, error)`
+- New function `*WorkspaceBackendClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceBackendClientGetEntityTagOptions) (WorkspaceBackendClientGetEntityTagResponse, error)`
+- New function `*WorkspaceBackendClient.NewListByWorkspacePager(string, string, string, *WorkspaceBackendClientListByWorkspaceOptions) *runtime.Pager[WorkspaceBackendClientListByWorkspaceResponse]`
+- New function `*WorkspaceBackendClient.Update(context.Context, string, string, string, string, string, BackendUpdateParameters, *WorkspaceBackendClientUpdateOptions) (WorkspaceBackendClientUpdateResponse, error)`
+- New function `NewWorkspaceCertificateClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceCertificateClient, error)`
+- New function `*WorkspaceCertificateClient.CreateOrUpdate(context.Context, string, string, string, string, CertificateCreateOrUpdateParameters, *WorkspaceCertificateClientCreateOrUpdateOptions) (WorkspaceCertificateClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceCertificateClient.Delete(context.Context, string, string, string, string, string, *WorkspaceCertificateClientDeleteOptions) (WorkspaceCertificateClientDeleteResponse, error)`
+- New function `*WorkspaceCertificateClient.Get(context.Context, string, string, string, string, *WorkspaceCertificateClientGetOptions) (WorkspaceCertificateClientGetResponse, error)`
+- New function `*WorkspaceCertificateClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceCertificateClientGetEntityTagOptions) (WorkspaceCertificateClientGetEntityTagResponse, error)`
+- New function `*WorkspaceCertificateClient.NewListByWorkspacePager(string, string, string, *WorkspaceCertificateClientListByWorkspaceOptions) *runtime.Pager[WorkspaceCertificateClientListByWorkspaceResponse]`
+- New function `*WorkspaceCertificateClient.RefreshSecret(context.Context, string, string, string, string, *WorkspaceCertificateClientRefreshSecretOptions) (WorkspaceCertificateClientRefreshSecretResponse, error)`
+- New function `NewWorkspaceClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceClient, error)`
+- New function `*WorkspaceClient.CreateOrUpdate(context.Context, string, string, string, WorkspaceContract, *WorkspaceClientCreateOrUpdateOptions) (WorkspaceClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceClient.Delete(context.Context, string, string, string, string, *WorkspaceClientDeleteOptions) (WorkspaceClientDeleteResponse, error)`
+- New function `*WorkspaceClient.Get(context.Context, string, string, string, *WorkspaceClientGetOptions) (WorkspaceClientGetResponse, error)`
+- New function `*WorkspaceClient.GetEntityTag(context.Context, string, string, string, *WorkspaceClientGetEntityTagOptions) (WorkspaceClientGetEntityTagResponse, error)`
+- New function `*WorkspaceClient.NewListByServicePager(string, string, *WorkspaceClientListByServiceOptions) *runtime.Pager[WorkspaceClientListByServiceResponse]`
+- New function `*WorkspaceClient.Update(context.Context, string, string, string, string, WorkspaceContract, *WorkspaceClientUpdateOptions) (WorkspaceClientUpdateResponse, error)`
+- New function `NewWorkspaceDiagnosticClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceDiagnosticClient, error)`
+- New function `*WorkspaceDiagnosticClient.CreateOrUpdate(context.Context, string, string, string, string, DiagnosticContract, *WorkspaceDiagnosticClientCreateOrUpdateOptions) (WorkspaceDiagnosticClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceDiagnosticClient.Delete(context.Context, string, string, string, string, string, *WorkspaceDiagnosticClientDeleteOptions) (WorkspaceDiagnosticClientDeleteResponse, error)`
+- New function `*WorkspaceDiagnosticClient.Get(context.Context, string, string, string, string, *WorkspaceDiagnosticClientGetOptions) (WorkspaceDiagnosticClientGetResponse, error)`
+- New function `*WorkspaceDiagnosticClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceDiagnosticClientGetEntityTagOptions) (WorkspaceDiagnosticClientGetEntityTagResponse, error)`
+- New function `*WorkspaceDiagnosticClient.NewListByWorkspacePager(string, string, string, *WorkspaceDiagnosticClientListByWorkspaceOptions) *runtime.Pager[WorkspaceDiagnosticClientListByWorkspaceResponse]`
+- New function `*WorkspaceDiagnosticClient.Update(context.Context, string, string, string, string, string, DiagnosticUpdateContract, *WorkspaceDiagnosticClientUpdateOptions) (WorkspaceDiagnosticClientUpdateResponse, error)`
+- New function `NewWorkspaceGlobalSchemaClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceGlobalSchemaClient, error)`
+- New function `*WorkspaceGlobalSchemaClient.BeginCreateOrUpdate(context.Context, string, string, string, string, GlobalSchemaContract, *WorkspaceGlobalSchemaClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspaceGlobalSchemaClientCreateOrUpdateResponse], error)`
+- New function `*WorkspaceGlobalSchemaClient.Delete(context.Context, string, string, string, string, string, *WorkspaceGlobalSchemaClientDeleteOptions) (WorkspaceGlobalSchemaClientDeleteResponse, error)`
+- New function `*WorkspaceGlobalSchemaClient.Get(context.Context, string, string, string, string, *WorkspaceGlobalSchemaClientGetOptions) (WorkspaceGlobalSchemaClientGetResponse, error)`
+- New function `*WorkspaceGlobalSchemaClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceGlobalSchemaClientGetEntityTagOptions) (WorkspaceGlobalSchemaClientGetEntityTagResponse, error)`
+- New function `*WorkspaceGlobalSchemaClient.NewListByServicePager(string, string, string, *WorkspaceGlobalSchemaClientListByServiceOptions) *runtime.Pager[WorkspaceGlobalSchemaClientListByServiceResponse]`
+- New function `NewWorkspaceGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceGroupClient, error)`
+- New function `*WorkspaceGroupClient.CreateOrUpdate(context.Context, string, string, string, string, GroupCreateParameters, *WorkspaceGroupClientCreateOrUpdateOptions) (WorkspaceGroupClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceGroupClient.Delete(context.Context, string, string, string, string, string, *WorkspaceGroupClientDeleteOptions) (WorkspaceGroupClientDeleteResponse, error)`
+- New function `*WorkspaceGroupClient.Get(context.Context, string, string, string, string, *WorkspaceGroupClientGetOptions) (WorkspaceGroupClientGetResponse, error)`
+- New function `*WorkspaceGroupClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceGroupClientGetEntityTagOptions) (WorkspaceGroupClientGetEntityTagResponse, error)`
+- New function `*WorkspaceGroupClient.NewListByServicePager(string, string, string, *WorkspaceGroupClientListByServiceOptions) *runtime.Pager[WorkspaceGroupClientListByServiceResponse]`
+- New function `*WorkspaceGroupClient.Update(context.Context, string, string, string, string, string, GroupUpdateParameters, *WorkspaceGroupClientUpdateOptions) (WorkspaceGroupClientUpdateResponse, error)`
+- New function `NewWorkspaceGroupUserClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceGroupUserClient, error)`
+- New function `*WorkspaceGroupUserClient.CheckEntityExists(context.Context, string, string, string, string, string, *WorkspaceGroupUserClientCheckEntityExistsOptions) (WorkspaceGroupUserClientCheckEntityExistsResponse, error)`
+- New function `*WorkspaceGroupUserClient.Create(context.Context, string, string, string, string, string, *WorkspaceGroupUserClientCreateOptions) (WorkspaceGroupUserClientCreateResponse, error)`
+- New function `*WorkspaceGroupUserClient.Delete(context.Context, string, string, string, string, string, *WorkspaceGroupUserClientDeleteOptions) (WorkspaceGroupUserClientDeleteResponse, error)`
+- New function `*WorkspaceGroupUserClient.NewListPager(string, string, string, string, *WorkspaceGroupUserClientListOptions) *runtime.Pager[WorkspaceGroupUserClientListResponse]`
+- New function `NewWorkspaceLinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceLinkClient, error)`
+- New function `*WorkspaceLinkClient.Get(context.Context, string, string, string, *WorkspaceLinkClientGetOptions) (WorkspaceLinkClientGetResponse, error)`
+- New function `NewWorkspaceLinksClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceLinksClient, error)`
+- New function `*WorkspaceLinksClient.NewListByServicePager(string, string, *WorkspaceLinksClientListByServiceOptions) *runtime.Pager[WorkspaceLinksClientListByServiceResponse]`
+- New function `NewWorkspaceLoggerClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceLoggerClient, error)`
+- New function `*WorkspaceLoggerClient.CreateOrUpdate(context.Context, string, string, string, string, LoggerContract, *WorkspaceLoggerClientCreateOrUpdateOptions) (WorkspaceLoggerClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceLoggerClient.Delete(context.Context, string, string, string, string, string, *WorkspaceLoggerClientDeleteOptions) (WorkspaceLoggerClientDeleteResponse, error)`
+- New function `*WorkspaceLoggerClient.Get(context.Context, string, string, string, string, *WorkspaceLoggerClientGetOptions) (WorkspaceLoggerClientGetResponse, error)`
+- New function `*WorkspaceLoggerClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceLoggerClientGetEntityTagOptions) (WorkspaceLoggerClientGetEntityTagResponse, error)`
+- New function `*WorkspaceLoggerClient.NewListByWorkspacePager(string, string, string, *WorkspaceLoggerClientListByWorkspaceOptions) *runtime.Pager[WorkspaceLoggerClientListByWorkspaceResponse]`
+- New function `*WorkspaceLoggerClient.Update(context.Context, string, string, string, string, string, LoggerUpdateContract, *WorkspaceLoggerClientUpdateOptions) (WorkspaceLoggerClientUpdateResponse, error)`
+- New function `NewWorkspaceNamedValueClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceNamedValueClient, error)`
+- New function `*WorkspaceNamedValueClient.BeginCreateOrUpdate(context.Context, string, string, string, string, NamedValueCreateContract, *WorkspaceNamedValueClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspaceNamedValueClientCreateOrUpdateResponse], error)`
+- New function `*WorkspaceNamedValueClient.Delete(context.Context, string, string, string, string, string, *WorkspaceNamedValueClientDeleteOptions) (WorkspaceNamedValueClientDeleteResponse, error)`
+- New function `*WorkspaceNamedValueClient.Get(context.Context, string, string, string, string, *WorkspaceNamedValueClientGetOptions) (WorkspaceNamedValueClientGetResponse, error)`
+- New function `*WorkspaceNamedValueClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceNamedValueClientGetEntityTagOptions) (WorkspaceNamedValueClientGetEntityTagResponse, error)`
+- New function `*WorkspaceNamedValueClient.NewListByServicePager(string, string, string, *WorkspaceNamedValueClientListByServiceOptions) *runtime.Pager[WorkspaceNamedValueClientListByServiceResponse]`
+- New function `*WorkspaceNamedValueClient.ListValue(context.Context, string, string, string, string, *WorkspaceNamedValueClientListValueOptions) (WorkspaceNamedValueClientListValueResponse, error)`
+- New function `*WorkspaceNamedValueClient.BeginRefreshSecret(context.Context, string, string, string, string, *WorkspaceNamedValueClientBeginRefreshSecretOptions) (*runtime.Poller[WorkspaceNamedValueClientRefreshSecretResponse], error)`
+- New function `*WorkspaceNamedValueClient.BeginUpdate(context.Context, string, string, string, string, string, NamedValueUpdateParameters, *WorkspaceNamedValueClientBeginUpdateOptions) (*runtime.Poller[WorkspaceNamedValueClientUpdateResponse], error)`
+- New function `NewWorkspaceNotificationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceNotificationClient, error)`
+- New function `*WorkspaceNotificationClient.CreateOrUpdate(context.Context, string, string, string, NotificationName, *WorkspaceNotificationClientCreateOrUpdateOptions) (WorkspaceNotificationClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceNotificationClient.Get(context.Context, string, string, string, NotificationName, *WorkspaceNotificationClientGetOptions) (WorkspaceNotificationClientGetResponse, error)`
+- New function `*WorkspaceNotificationClient.NewListByServicePager(string, string, string, *WorkspaceNotificationClientListByServiceOptions) *runtime.Pager[WorkspaceNotificationClientListByServiceResponse]`
+- New function `NewWorkspaceNotificationRecipientEmailClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceNotificationRecipientEmailClient, error)`
+- New function `*WorkspaceNotificationRecipientEmailClient.CheckEntityExists(context.Context, string, string, string, NotificationName, string, *WorkspaceNotificationRecipientEmailClientCheckEntityExistsOptions) (WorkspaceNotificationRecipientEmailClientCheckEntityExistsResponse, error)`
+- New function `*WorkspaceNotificationRecipientEmailClient.CreateOrUpdate(context.Context, string, string, string, NotificationName, string, *WorkspaceNotificationRecipientEmailClientCreateOrUpdateOptions) (WorkspaceNotificationRecipientEmailClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceNotificationRecipientEmailClient.Delete(context.Context, string, string, string, NotificationName, string, *WorkspaceNotificationRecipientEmailClientDeleteOptions) (WorkspaceNotificationRecipientEmailClientDeleteResponse, error)`
+- New function `*WorkspaceNotificationRecipientEmailClient.ListByNotification(context.Context, string, string, string, NotificationName, *WorkspaceNotificationRecipientEmailClientListByNotificationOptions) (WorkspaceNotificationRecipientEmailClientListByNotificationResponse, error)`
+- New function `NewWorkspaceNotificationRecipientUserClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceNotificationRecipientUserClient, error)`
+- New function `*WorkspaceNotificationRecipientUserClient.CheckEntityExists(context.Context, string, string, string, NotificationName, string, *WorkspaceNotificationRecipientUserClientCheckEntityExistsOptions) (WorkspaceNotificationRecipientUserClientCheckEntityExistsResponse, error)`
+- New function `*WorkspaceNotificationRecipientUserClient.CreateOrUpdate(context.Context, string, string, string, NotificationName, string, *WorkspaceNotificationRecipientUserClientCreateOrUpdateOptions) (WorkspaceNotificationRecipientUserClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceNotificationRecipientUserClient.Delete(context.Context, string, string, string, NotificationName, string, *WorkspaceNotificationRecipientUserClientDeleteOptions) (WorkspaceNotificationRecipientUserClientDeleteResponse, error)`
+- New function `*WorkspaceNotificationRecipientUserClient.ListByNotification(context.Context, string, string, string, NotificationName, *WorkspaceNotificationRecipientUserClientListByNotificationOptions) (WorkspaceNotificationRecipientUserClientListByNotificationResponse, error)`
+- New function `NewWorkspacePolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspacePolicyClient, error)`
+- New function `*WorkspacePolicyClient.CreateOrUpdate(context.Context, string, string, string, PolicyIDName, PolicyContract, *WorkspacePolicyClientCreateOrUpdateOptions) (WorkspacePolicyClientCreateOrUpdateResponse, error)`
+- New function `*WorkspacePolicyClient.Delete(context.Context, string, string, string, PolicyIDName, string, *WorkspacePolicyClientDeleteOptions) (WorkspacePolicyClientDeleteResponse, error)`
+- New function `*WorkspacePolicyClient.Get(context.Context, string, string, string, PolicyIDName, *WorkspacePolicyClientGetOptions) (WorkspacePolicyClientGetResponse, error)`
+- New function `*WorkspacePolicyClient.GetEntityTag(context.Context, string, string, string, PolicyIDName, *WorkspacePolicyClientGetEntityTagOptions) (WorkspacePolicyClientGetEntityTagResponse, error)`
+- New function `*WorkspacePolicyClient.NewListByAPIPager(string, string, string, *WorkspacePolicyClientListByAPIOptions) *runtime.Pager[WorkspacePolicyClientListByAPIResponse]`
+- New function `NewWorkspacePolicyFragmentClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspacePolicyFragmentClient, error)`
+- New function `*WorkspacePolicyFragmentClient.BeginCreateOrUpdate(context.Context, string, string, string, string, PolicyFragmentContract, *WorkspacePolicyFragmentClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspacePolicyFragmentClientCreateOrUpdateResponse], error)`
+- New function `*WorkspacePolicyFragmentClient.Delete(context.Context, string, string, string, string, string, *WorkspacePolicyFragmentClientDeleteOptions) (WorkspacePolicyFragmentClientDeleteResponse, error)`
+- New function `*WorkspacePolicyFragmentClient.Get(context.Context, string, string, string, string, *WorkspacePolicyFragmentClientGetOptions) (WorkspacePolicyFragmentClientGetResponse, error)`
+- New function `*WorkspacePolicyFragmentClient.GetEntityTag(context.Context, string, string, string, string, *WorkspacePolicyFragmentClientGetEntityTagOptions) (WorkspacePolicyFragmentClientGetEntityTagResponse, error)`
+- New function `*WorkspacePolicyFragmentClient.NewListByServicePager(string, string, string, *WorkspacePolicyFragmentClientListByServiceOptions) *runtime.Pager[WorkspacePolicyFragmentClientListByServiceResponse]`
+- New function `*WorkspacePolicyFragmentClient.ListReferences(context.Context, string, string, string, string, *WorkspacePolicyFragmentClientListReferencesOptions) (WorkspacePolicyFragmentClientListReferencesResponse, error)`
+- New function `NewWorkspaceProductAPILinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceProductAPILinkClient, error)`
+- New function `*WorkspaceProductAPILinkClient.CreateOrUpdate(context.Context, string, string, string, string, string, ProductAPILinkContract, *WorkspaceProductAPILinkClientCreateOrUpdateOptions) (WorkspaceProductAPILinkClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceProductAPILinkClient.Delete(context.Context, string, string, string, string, string, *WorkspaceProductAPILinkClientDeleteOptions) (WorkspaceProductAPILinkClientDeleteResponse, error)`
+- New function `*WorkspaceProductAPILinkClient.Get(context.Context, string, string, string, string, string, *WorkspaceProductAPILinkClientGetOptions) (WorkspaceProductAPILinkClientGetResponse, error)`
+- New function `*WorkspaceProductAPILinkClient.NewListByProductPager(string, string, string, string, *WorkspaceProductAPILinkClientListByProductOptions) *runtime.Pager[WorkspaceProductAPILinkClientListByProductResponse]`
+- New function `NewWorkspaceProductClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceProductClient, error)`
+- New function `*WorkspaceProductClient.CreateOrUpdate(context.Context, string, string, string, string, ProductContract, *WorkspaceProductClientCreateOrUpdateOptions) (WorkspaceProductClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceProductClient.Delete(context.Context, string, string, string, string, string, *WorkspaceProductClientDeleteOptions) (WorkspaceProductClientDeleteResponse, error)`
+- New function `*WorkspaceProductClient.Get(context.Context, string, string, string, string, *WorkspaceProductClientGetOptions) (WorkspaceProductClientGetResponse, error)`
+- New function `*WorkspaceProductClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceProductClientGetEntityTagOptions) (WorkspaceProductClientGetEntityTagResponse, error)`
+- New function `*WorkspaceProductClient.NewListByServicePager(string, string, string, *WorkspaceProductClientListByServiceOptions) *runtime.Pager[WorkspaceProductClientListByServiceResponse]`
+- New function `*WorkspaceProductClient.Update(context.Context, string, string, string, string, string, ProductUpdateParameters, *WorkspaceProductClientUpdateOptions) (WorkspaceProductClientUpdateResponse, error)`
+- New function `NewWorkspaceProductGroupLinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceProductGroupLinkClient, error)`
+- New function `*WorkspaceProductGroupLinkClient.CreateOrUpdate(context.Context, string, string, string, string, string, ProductGroupLinkContract, *WorkspaceProductGroupLinkClientCreateOrUpdateOptions) (WorkspaceProductGroupLinkClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceProductGroupLinkClient.Delete(context.Context, string, string, string, string, string, *WorkspaceProductGroupLinkClientDeleteOptions) (WorkspaceProductGroupLinkClientDeleteResponse, error)`
+- New function `*WorkspaceProductGroupLinkClient.Get(context.Context, string, string, string, string, string, *WorkspaceProductGroupLinkClientGetOptions) (WorkspaceProductGroupLinkClientGetResponse, error)`
+- New function `*WorkspaceProductGroupLinkClient.NewListByProductPager(string, string, string, string, *WorkspaceProductGroupLinkClientListByProductOptions) *runtime.Pager[WorkspaceProductGroupLinkClientListByProductResponse]`
+- New function `NewWorkspaceProductPolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceProductPolicyClient, error)`
+- New function `*WorkspaceProductPolicyClient.CreateOrUpdate(context.Context, string, string, string, string, PolicyIDName, PolicyContract, *WorkspaceProductPolicyClientCreateOrUpdateOptions) (WorkspaceProductPolicyClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceProductPolicyClient.Delete(context.Context, string, string, string, string, PolicyIDName, string, *WorkspaceProductPolicyClientDeleteOptions) (WorkspaceProductPolicyClientDeleteResponse, error)`
+- New function `*WorkspaceProductPolicyClient.Get(context.Context, string, string, string, string, PolicyIDName, *WorkspaceProductPolicyClientGetOptions) (WorkspaceProductPolicyClientGetResponse, error)`
+- New function `*WorkspaceProductPolicyClient.GetEntityTag(context.Context, string, string, string, string, PolicyIDName, *WorkspaceProductPolicyClientGetEntityTagOptions) (WorkspaceProductPolicyClientGetEntityTagResponse, error)`
+- New function `*WorkspaceProductPolicyClient.ListByProduct(context.Context, string, string, string, string, *WorkspaceProductPolicyClientListByProductOptions) (WorkspaceProductPolicyClientListByProductResponse, error)`
+- New function `NewWorkspaceSubscriptionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceSubscriptionClient, error)`
+- New function `*WorkspaceSubscriptionClient.CreateOrUpdate(context.Context, string, string, string, string, SubscriptionCreateParameters, *WorkspaceSubscriptionClientCreateOrUpdateOptions) (WorkspaceSubscriptionClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceSubscriptionClient.Delete(context.Context, string, string, string, string, string, *WorkspaceSubscriptionClientDeleteOptions) (WorkspaceSubscriptionClientDeleteResponse, error)`
+- New function `*WorkspaceSubscriptionClient.Get(context.Context, string, string, string, string, *WorkspaceSubscriptionClientGetOptions) (WorkspaceSubscriptionClientGetResponse, error)`
+- New function `*WorkspaceSubscriptionClient.GetEntityTag(context.Context, string, string, string, string, *WorkspaceSubscriptionClientGetEntityTagOptions) (WorkspaceSubscriptionClientGetEntityTagResponse, error)`
+- New function `*WorkspaceSubscriptionClient.NewListPager(string, string, string, *WorkspaceSubscriptionClientListOptions) *runtime.Pager[WorkspaceSubscriptionClientListResponse]`
+- New function `*WorkspaceSubscriptionClient.ListSecrets(context.Context, string, string, string, string, *WorkspaceSubscriptionClientListSecretsOptions) (WorkspaceSubscriptionClientListSecretsResponse, error)`
+- New function `*WorkspaceSubscriptionClient.RegeneratePrimaryKey(context.Context, string, string, string, string, *WorkspaceSubscriptionClientRegeneratePrimaryKeyOptions) (WorkspaceSubscriptionClientRegeneratePrimaryKeyResponse, error)`
+- New function `*WorkspaceSubscriptionClient.RegenerateSecondaryKey(context.Context, string, string, string, string, *WorkspaceSubscriptionClientRegenerateSecondaryKeyOptions) (WorkspaceSubscriptionClientRegenerateSecondaryKeyResponse, error)`
+- New function `*WorkspaceSubscriptionClient.Update(context.Context, string, string, string, string, string, SubscriptionUpdateParameters, *WorkspaceSubscriptionClientUpdateOptions) (WorkspaceSubscriptionClientUpdateResponse, error)`
+- New function `NewWorkspaceTagAPILinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceTagAPILinkClient, error)`
+- New function `*WorkspaceTagAPILinkClient.CreateOrUpdate(context.Context, string, string, string, string, string, TagAPILinkContract, *WorkspaceTagAPILinkClientCreateOrUpdateOptions) (WorkspaceTagAPILinkClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceTagAPILinkClient.Delete(context.Context, string, string, string, string, string, *WorkspaceTagAPILinkClientDeleteOptions) (WorkspaceTagAPILinkClientDeleteResponse, error)`
+- New function `*WorkspaceTagAPILinkClient.Get(context.Context, string, string, string, string, string, *WorkspaceTagAPILinkClientGetOptions) (WorkspaceTagAPILinkClientGetResponse, error)`
+- New function `*WorkspaceTagAPILinkClient.NewListByProductPager(string, string, string, string, *WorkspaceTagAPILinkClientListByProductOptions) *runtime.Pager[WorkspaceTagAPILinkClientListByProductResponse]`
+- New function `NewWorkspaceTagClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceTagClient, error)`
+- New function `*WorkspaceTagClient.CreateOrUpdate(context.Context, string, string, string, string, TagCreateUpdateParameters, *WorkspaceTagClientCreateOrUpdateOptions) (WorkspaceTagClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceTagClient.Delete(context.Context, string, string, string, string, string, *WorkspaceTagClientDeleteOptions) (WorkspaceTagClientDeleteResponse, error)`
+- New function `*WorkspaceTagClient.Get(context.Context, string, string, string, string, *WorkspaceTagClientGetOptions) (WorkspaceTagClientGetResponse, error)`
+- New function `*WorkspaceTagClient.GetEntityState(context.Context, string, string, string, string, *WorkspaceTagClientGetEntityStateOptions) (WorkspaceTagClientGetEntityStateResponse, error)`
+- New function `*WorkspaceTagClient.NewListByServicePager(string, string, string, *WorkspaceTagClientListByServiceOptions) *runtime.Pager[WorkspaceTagClientListByServiceResponse]`
+- New function `*WorkspaceTagClient.Update(context.Context, string, string, string, string, string, TagCreateUpdateParameters, *WorkspaceTagClientUpdateOptions) (WorkspaceTagClientUpdateResponse, error)`
+- New function `NewWorkspaceTagOperationLinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceTagOperationLinkClient, error)`
+- New function `*WorkspaceTagOperationLinkClient.CreateOrUpdate(context.Context, string, string, string, string, string, TagOperationLinkContract, *WorkspaceTagOperationLinkClientCreateOrUpdateOptions) (WorkspaceTagOperationLinkClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceTagOperationLinkClient.Delete(context.Context, string, string, string, string, string, *WorkspaceTagOperationLinkClientDeleteOptions) (WorkspaceTagOperationLinkClientDeleteResponse, error)`
+- New function `*WorkspaceTagOperationLinkClient.Get(context.Context, string, string, string, string, string, *WorkspaceTagOperationLinkClientGetOptions) (WorkspaceTagOperationLinkClientGetResponse, error)`
+- New function `*WorkspaceTagOperationLinkClient.NewListByProductPager(string, string, string, string, *WorkspaceTagOperationLinkClientListByProductOptions) *runtime.Pager[WorkspaceTagOperationLinkClientListByProductResponse]`
+- New function `NewWorkspaceTagProductLinkClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WorkspaceTagProductLinkClient, error)`
+- New function `*WorkspaceTagProductLinkClient.CreateOrUpdate(context.Context, string, string, string, string, string, TagProductLinkContract, *WorkspaceTagProductLinkClientCreateOrUpdateOptions) (WorkspaceTagProductLinkClientCreateOrUpdateResponse, error)`
+- New function `*WorkspaceTagProductLinkClient.Delete(context.Context, string, string, string, string, string, *WorkspaceTagProductLinkClientDeleteOptions) (WorkspaceTagProductLinkClientDeleteResponse, error)`
+- New function `*WorkspaceTagProductLinkClient.Get(context.Context, string, string, string, string, string, *WorkspaceTagProductLinkClientGetOptions) (WorkspaceTagProductLinkClientGetResponse, error)`
+- New function `*WorkspaceTagProductLinkClient.NewListByProductPager(string, string, string, string, *WorkspaceTagProductLinkClientListByProductOptions) *runtime.Pager[WorkspaceTagProductLinkClientListByProductResponse]`
+- New struct `AllPoliciesCollection`
+- New struct `AllPoliciesContract`
+- New struct `AllPoliciesContractProperties`
+- New struct `BackendBaseParametersPool`
+- New struct `BackendCircuitBreaker`
+- New struct `BackendConfiguration`
+- New struct `BackendPool`
+- New struct `BackendPoolItem`
+- New struct `BackendSubnetConfiguration`
+- New struct `CircuitBreakerFailureCondition`
+- New struct `CircuitBreakerRule`
+- New struct `ConfigurationAPI`
+- New struct `DiagnosticContractUpdateProperties`
+- New struct `DiagnosticUpdateContract`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `FailureStatusCodeRange`
+- New struct `FrontendConfiguration`
+- New struct `GatewayBaseProperties`
+- New struct `GatewayConfigConnectionBaseProperties`
+- New struct `GatewayConfigConnectionListResult`
+- New struct `GatewayConfigConnectionResource`
+- New struct `GatewayConfigurationAPI`
+- New struct `GatewayDebugCredentialsContract`
+- New struct `GatewayListDebugCredentialsContract`
+- New struct `GatewayListResult`
+- New struct `GatewayListTraceContract`
+- New struct `GatewayProperties`
+- New struct `GatewayResource`
+- New struct `GatewayResourceSKUResult`
+- New struct `GatewayResourceSKUResults`
+- New struct `GatewaySKU`
+- New struct `GatewaySKUCapacity`
+- New struct `GatewaySKUProperties`
+- New struct `GatewaySKUPropertiesForPatch`
+- New struct `GatewayUpdateParameters`
+- New struct `GatewayUpdateProperties`
+- New struct `MigrateToStv2Contract`
+- New struct `OperationStatusResult`
+- New struct `PolicyRestrictionCollection`
+- New struct `PolicyRestrictionContract`
+- New struct `PolicyRestrictionContractProperties`
+- New struct `PolicyRestrictionUpdateContract`
+- New struct `PolicyWithComplianceCollection`
+- New struct `PolicyWithComplianceContract`
+- New struct `PolicyWithComplianceContractProperties`
+- New struct `ProductAPILinkCollection`
+- New struct `ProductAPILinkContract`
+- New struct `ProductAPILinkContractProperties`
+- New struct `ProductGroupLinkCollection`
+- New struct `ProductGroupLinkContract`
+- New struct `ProductGroupLinkContractProperties`
+- New struct `TagAPILinkCollection`
+- New struct `TagAPILinkContract`
+- New struct `TagAPILinkContractProperties`
+- New struct `TagOperationLinkCollection`
+- New struct `TagOperationLinkContract`
+- New struct `TagOperationLinkContractProperties`
+- New struct `TagProductLinkCollection`
+- New struct `TagProductLinkContract`
+- New struct `TagProductLinkContractProperties`
+- New struct `WorkspaceCollection`
+- New struct `WorkspaceContract`
+- New struct `WorkspaceContractProperties`
+- New struct `WorkspaceLinksBaseProperties`
+- New struct `WorkspaceLinksGateway`
+- New struct `WorkspaceLinksListResult`
+- New struct `WorkspaceLinksProperties`
+- New struct `WorkspaceLinksResource`
+- New field `ProvisioningState` in struct `APIContractProperties`
+- New field `ProvisioningState` in struct `APICreateOrUpdateProperties`
+- New field `AppIDs` in struct `AuthorizationAccessPolicyContractProperties`
+- New field `CircuitBreaker`, `Pool`, `Type` in struct `BackendBaseParameters`
+- New field `CircuitBreaker`, `Pool`, `Type` in struct `BackendContractProperties`
+- New field `CircuitBreaker`, `Pool`, `Type` in struct `BackendUpdateParameterProperties`
+- New field `ProvisioningState` in struct `GlobalSchemaContractProperties`
+- New field `ProvisioningState` in struct `NamedValueContractProperties`
+- New field `ProvisioningState` in struct `PolicyFragmentContractProperties`
+- New field `ProvisioningState` in struct `PortalRevisionContractProperties`
+- New field `ProvisioningState` in struct `SchemaContractProperties`
+- New field `ConfigurationAPI`, `DeveloperPortalStatus`, `LegacyPortalStatus` in struct `ServiceBaseProperties`
+- New field `Parameters` in struct `ServiceClientBeginMigrateToStv2Options`
+- New field `ConfigurationAPI`, `DeveloperPortalStatus`, `LegacyPortalStatus` in struct `ServiceProperties`
+- New field `ConfigurationAPI`, `DeveloperPortalStatus`, `LegacyPortalStatus` in struct `ServiceUpdateProperties`
+
+
 ## 2.1.0 (2023-11-24)
 ### Features Added
 

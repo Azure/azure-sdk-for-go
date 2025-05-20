@@ -48,6 +48,7 @@ type testVars struct {
 	TextEmbedding3Small                   endpointWithModel
 	Vision                                endpointWithModel
 	Whisper                               endpointWithModel
+	Reasoning                             endpointWithModel
 }
 
 type endpointWithModel struct {
@@ -171,6 +172,10 @@ var azureOpenAI = func() testVars {
 			Whisper: endpointWithModel{
 				Endpoint: servers.USNorthCentral,
 				Model:    "whisper",
+			},
+			Reasoning: endpointWithModel{
+				Endpoint: servers.SWECentral,
+				Model:    "o3-2025-04-16",
 			},
 			Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
 				Parameters: &azopenai.AzureSearchChatExtensionParameters{

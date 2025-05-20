@@ -4,6 +4,51 @@
 
 package azsystemevents
 
+// ACSCallEndedByKind - Call ended participant kind.
+type ACSCallEndedByKind string
+
+const (
+	// ACSCallEndedByKindMicrosoftInternal - MicrosoftInternal
+	ACSCallEndedByKindMicrosoftInternal ACSCallEndedByKind = "MicrosoftInternal"
+	// ACSCallEndedByKindParticipant - Participant
+	ACSCallEndedByKindParticipant ACSCallEndedByKind = "Participant"
+)
+
+// PossibleACSCallEndedByKindValues returns the possible values for the ACSCallEndedByKind const type.
+func PossibleACSCallEndedByKindValues() []ACSCallEndedByKind {
+	return []ACSCallEndedByKind{
+		ACSCallEndedByKindMicrosoftInternal,
+		ACSCallEndedByKindParticipant,
+	}
+}
+
+// ACSCallParticipantRoleKind - Call participant role kind.
+type ACSCallParticipantRoleKind string
+
+const (
+	// ACSCallParticipantRoleKindAttendee - Attendee
+	ACSCallParticipantRoleKindAttendee ACSCallParticipantRoleKind = "Attendee"
+	// ACSCallParticipantRoleKindCollaborator - Collaborator
+	ACSCallParticipantRoleKindCollaborator ACSCallParticipantRoleKind = "Collaborator"
+	// ACSCallParticipantRoleKindConsumer - Consumer
+	ACSCallParticipantRoleKindConsumer ACSCallParticipantRoleKind = "Consumer"
+	// ACSCallParticipantRoleKindOrganizer - Organizer
+	ACSCallParticipantRoleKindOrganizer ACSCallParticipantRoleKind = "Organizer"
+	// ACSCallParticipantRoleKindPresenter - Presenter
+	ACSCallParticipantRoleKindPresenter ACSCallParticipantRoleKind = "Presenter"
+)
+
+// PossibleACSCallParticipantRoleKindValues returns the possible values for the ACSCallParticipantRoleKind const type.
+func PossibleACSCallParticipantRoleKindValues() []ACSCallParticipantRoleKind {
+	return []ACSCallParticipantRoleKind{
+		ACSCallParticipantRoleKindAttendee,
+		ACSCallParticipantRoleKindCollaborator,
+		ACSCallParticipantRoleKindConsumer,
+		ACSCallParticipantRoleKindOrganizer,
+		ACSCallParticipantRoleKindPresenter,
+	}
+}
+
 // ACSEmailDeliveryReportStatus - The status of the email. Any value other than Delivered is considered failed.
 type ACSEmailDeliveryReportStatus string
 

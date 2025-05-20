@@ -1,5 +1,10 @@
 # Release History
 
+## 2.0.1 (2025-05-19)
+### Other Changes
+
+  Please note, this package has been deprecated following the retirement of the Azure Spring Apps service on March 31, 2025. For more information, please refer to https://aka.ms/asaretirement.
+
 ## 2.0.0 (2024-01-26)
 ### Breaking Changes
 

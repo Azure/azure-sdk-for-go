@@ -1,14 +1,10 @@
 # Release History
 
-## 1.8.2-beta.1 (Unreleased)
+## 1.9.0 (2025-05-06)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added a new azservicebus.Code value, `CodeNotFound`, which indicates the queue, topic or subscription doesn't exist. (PR#24501)
 
 ## 1.8.1 (2025-04-08)
 

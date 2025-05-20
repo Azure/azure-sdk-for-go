@@ -65,6 +65,7 @@ func deleteUnneededTypes() error {
 		"ACSRouterJobEventData",
 		"ACSRouterWorkerEventData",
 		"ACSSmsEventBaseProperties",
+		"ACSSMSEventBaseProperties",
 		"AppConfigurationSnapshotEventData",
 		"AVSClusterEventData",
 		"AVSPrivateCloudEventData",

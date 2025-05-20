@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -67,8 +67,12 @@ func (testsuite *PostgresqlflexibleserversOperationsTestSuite) TestOperationsNew
 	testsuite.Require().NoError(err)
 	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = clientFactory.NewOperationsClient().List(testsuite.ctx, nil)
+	pager := clientFactory.NewOperationsClient().NewListPager(nil)
 	testsuite.Require().NoError(err)
+	for pager.More() {
+		_, err = pager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+	}
 }
 
 func (testsuite *PostgresqlflexibleserversOperationsTestSuite) Prepare() {

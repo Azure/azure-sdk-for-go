@@ -3,7 +3,7 @@
 
 package azeventhubs
 
-import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
+import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/exported"
 
 // Error represents an Event Hub specific error.
 // NOTE: the Code is considered part of the published API but the message that

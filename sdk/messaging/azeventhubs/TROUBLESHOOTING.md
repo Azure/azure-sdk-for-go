@@ -30,21 +30,24 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 
 ### Error Handling
 
-The Event Hubs module provides strongly-typed error handling through the `azeventhubs.Error` type with specific error codes that can be checked programmatically. This allows you to handle different error scenarios in your code.
+azeventhubs can return two types of errors: `azeventhubs.Error`, which contains a code you can use programatically, and `error`s which only contain an error message.
+
+Here's an example of how to check the `Code` from an `azeventhubs.Error`:
 
 ```go
 if err != nil {
-    var azError *azeventhubs.Error
-    if errors.As(err, &azError) {
-        switch azError.Code {
+    var azehErr *azeventhubs.Error
+    
+    if errors.As(err, &azehErr) {
+        switch azehErr.Code {
         case azeventhubs.ErrorCodeUnauthorizedAccess:
             // Handle authentication errors
         case azeventhubs.ErrorCodeConnectionLost:
-            // Handle connection problems
-        case azeventhubs.ErrorCodeOwnershipLost:
-            // Handle partition ownership changes
+            // This error is only returned if all configured retries have been exhausted.
+            // An example of configuring retries can be found here: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2#example-NewConsumerClient-ConfiguringRetries
         }
     }
+    
     // Handle other error types
 }
 ```
@@ -75,8 +78,6 @@ azlog.SetEvents(
     azeventhubs.EventConsumer, // Consumer operations
 )
 ```
-
-When troubleshooting, it's recommended to enable all Event Hubs log events to get comprehensive information.
 
 ### Authentication Issues
 

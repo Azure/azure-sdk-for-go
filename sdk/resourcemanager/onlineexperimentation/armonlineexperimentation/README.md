@@ -1,6 +1,6 @@
-# Azure Online Experimentation Module for Go
+# Azure Onlineexperimentation Module for Go
 
-The `armonlineexperimentation` module provides operations for working with Azure Online Experimentation.
+The `armonlineexperimentation` module provides operations for working with Azure Onlineexperimentation.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/onlineexperimentation/armonlineexperimentation)
 
@@ -15,7 +15,7 @@ The `armonlineexperimentation` module provides operations for working with Azure
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Online Experimentation module:
+Install the Azure Onlineexperimentation module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/onlineexperimentation/armonlineexperimentation
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/onlineexperimentati
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Online Experimentation.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Onlineexperimentation.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Online Experimentation module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Onlineexperimentation module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armonlineexperimentation.NewClientFactory(<subscription ID>, cred, nil)

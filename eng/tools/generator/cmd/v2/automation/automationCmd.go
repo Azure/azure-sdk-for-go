@@ -119,8 +119,8 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		SDKPath:        sdkRepo.Root(),
 		SDKRepo:        &sdkRepo,
 		SpecPath:       ctx.specRoot,
-		SpecRepoURL:    input.RepoHTTPSURL,
 		SpecCommitHash: ctx.commitHash,
+		SpecRepoURL:    input.RepoHTTPSURL,
 	}
 	results := make([]pipeline.PackageResult, 0)
 

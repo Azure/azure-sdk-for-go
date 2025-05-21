@@ -162,10 +162,6 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
 		generateCtx.SpecReadmeFile = absReadme
 		generateCtx.SpecReadmeGoFile = absReadmeGo
-		if strings.HasSuffix(input.RepoHTTPSURL, common.PrivateSpecRepo) {
-			// for private spec repo, automation always use the local config, issue: https://github.com/Azure/azure-sdk-tools/issues/10696
-			generateCtx.SpecCommitHash = ""
-		}
 		rpMap, err := ctx.getRPMap(absReadmeGo)
 		if err != nil {
 			errorBuilder.add(err)

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentAtScope.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentValidateOnScope.json
 func ExampleDeploymentsClient_BeginValidateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleDeploymentsClient_BeginValidateAtScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtTenant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentAtTenant.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnTenant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentValidateOnTenant.json
 func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnTenant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentWhatIfOnTenant.json
 func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +419,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentAtManagementGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -503,7 +503,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentValidateOnManagementGroup.json
 func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -587,7 +587,7 @@ func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentWhatIfOnManagementGroup.json
 func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -682,7 +682,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentSubscriptionTemplateSpecsWithId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentSubscriptionTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -741,7 +741,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentValidateOnSubscription.json
 func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -825,7 +825,7 @@ func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentWhatIfOnSubscription.json
 func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,7 +916,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentResourceGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateWithAUriAndQueryString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -984,7 +984,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1051,7 +1051,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1152,7 +1152,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1252,7 +1252,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentValidateOnResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentValidateOnResourceGroup.json
 func ExampleDeploymentsClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1336,7 +1336,7 @@ func ExampleDeploymentsClient_BeginValidate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PostDeploymentWhatIfOnResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/PostDeploymentWhatIfOnResourceGroup.json
 func ExampleDeploymentsClient_BeginWhatIf() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1415,7 +1415,7 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/91bfc0d02eaed75e6a3bfb5b9b150c84c79400ed/specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/CalculateTemplateHash.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ada20fa9d6dcc6453f04f32d20fe3cf97293aa88/specification/resources/resource-manager/Microsoft.Resources/stable/2025-03-01/examples/CalculateTemplateHash.json
 func ExampleDeploymentsClient_CalculateTemplateHash() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

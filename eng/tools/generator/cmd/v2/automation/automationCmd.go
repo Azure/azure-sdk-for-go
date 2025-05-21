@@ -162,6 +162,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
 		generateCtx.SpecReadmeFile = absReadme
 		generateCtx.SpecReadmeGoFile = absReadmeGo
+		generateCtx.SpecCommitHash = ""
 		rpMap, err := ctx.getRPMap(absReadmeGo)
 		if err != nil {
 			errorBuilder.add(err)

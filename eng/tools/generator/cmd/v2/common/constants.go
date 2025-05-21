@@ -9,6 +9,7 @@ const (
 	SdkRootPath           = "/sdk"
 	ReadmeFileName        = "README.md"
 	ClientFactoryFileName = "client_factory.go"
+	PrivateSpecRepo       = "azure-rest-api-specs-pr"
 
 	SDKReleaseTypeStable  = "stable"
 	SDKReleaseTypePreview = "beta"

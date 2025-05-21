@@ -155,7 +155,15 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	swaggerNamespaceResults := make(map[string][]*common.GenerateResult)
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Start to process swagger project: %s", readme)
-		rpMap, err := ctx.getRPMap(readme)
+		absReadme, err := filepath.Abs(filepath.Join(ctx.specRoot, readme))
+		if err != nil {
+			return nil, fmt.Errorf("cannot get absolute path for spec path '%s': %+v", ctx.specRoot, err)
+		}
+		absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
+		generateCtx.SpecReadmeFile = absReadme
+		generateCtx.SpecReadmeGoFile = absReadmeGo
+		generateCtx.SpecCommitHash = "" // always use local config for swagger automation
+		rpMap, err := ctx.getRPMap(absReadmeGo)
 		if err != nil {
 			errorBuilder.add(err)
 			continue
@@ -186,17 +194,11 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}, errorBuilder.build()
 }
 
-func (ctx *automationContext) getRPMap(readme string) (map[string][]common.PackageInfo, error) {
-	absReadme, err := filepath.Abs(filepath.Join(ctx.specRoot, readme))
-	if err != nil {
-		return nil, fmt.Errorf("cannot get absolute path for spec path '%s': %+v", ctx.specRoot, err)
-	}
-	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
-
+func (ctx *automationContext) getRPMap(absReadmeGo string) (map[string][]common.PackageInfo, error) {
 	log.Printf("Get all namespaces from readme file")
 	rpMap, err := common.ReadV2ModuleNameToGetNamespace(absReadmeGo)
 	if err != nil {
-		return nil, fmt.Errorf("cannot get rp and namespaces from readme '%s': %+v", readme, err)
+		return nil, fmt.Errorf("cannot get rp and namespaces from readme '%s': %+v", absReadmeGo, err)
 	}
 	return rpMap, nil
 }

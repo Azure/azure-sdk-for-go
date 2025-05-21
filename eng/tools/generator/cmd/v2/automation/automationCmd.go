@@ -116,10 +116,11 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	generateCtx := common.GenerateContext{
-		SDKPath:     sdkRepo.Root(),
-		SDKRepo:     &sdkRepo,
-		SpecPath:    ctx.specRoot,
-		SpecRepoURL: input.RepoHTTPSURL,
+		SDKPath:        sdkRepo.Root(),
+		SDKRepo:        &sdkRepo,
+		SpecPath:       ctx.specRoot,
+		SpecRepoURL:    input.RepoHTTPSURL,
+		SpecCommitHash: ctx.commitHash,
 	}
 	results := make([]pipeline.PackageResult, 0)
 
@@ -161,6 +162,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 		absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
 		generateCtx.SpecReadmeFile = absReadme
 		generateCtx.SpecReadmeGoFile = absReadmeGo
+		generateCtx.SpecCommitHash = "" // swagger automation always use the local config, issue: https://github.com/Azure/azure-sdk-tools/issues/10696
 		rpMap, err := ctx.getRPMap(absReadmeGo)
 		if err != nil {
 			errorBuilder.add(err)

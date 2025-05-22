@@ -512,6 +512,8 @@ type DownloadStreamOptions struct {
 	// the lease ID that's specified in the request matches the lease ID of the file.
 	// Otherwise, the operation fails with status code 412 (Precondition Failed).
 	LeaseAccessConditions *LeaseAccessConditions
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
+	ChunkSize int64
 }
 
 func (o *DownloadStreamOptions) format() (*generated.FileClientDownloadOptions, *LeaseAccessConditions) {
@@ -558,7 +560,8 @@ func (o *downloadOptions) getFilePropertiesOptions() *GetPropertiesOptions {
 
 func (o *downloadOptions) getDownloadFileOptions(rng HTTPRange) *DownloadStreamOptions {
 	downloadFileOptions := &DownloadStreamOptions{
-		Range: rng,
+		Range:     rng,
+		ChunkSize: o.ChunkSize,
 	}
 	if o != nil {
 		downloadFileOptions.LeaseAccessConditions = o.LeaseAccessConditions

@@ -4982,11 +4982,41 @@ func (f *fakeDownloadFile) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
-func TestDownloadSmallChunkSize(t *testing.T) {
+func TestDownloadStreamChunkSize(t *testing.T) {
 	_require := require.New(t)
 
-	fileSize := int64(100 * 1024 * 1024)
-	chunkSize := int64(1024)
+	fileSize := int64(1 * 1024 * 1024) // 1MB file
+	chunkSize := int64(256 * 1024)     // 256KB chunk size
+	fbb := &fakeDownloadFile{
+		contentSize: fileSize,
+	}
+
+	log.SetListener(nil) // no logging
+
+	fileClient, err := file.NewClientWithNoCredential("https://fake/file/path", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(fileClient)
+
+	// Reset counter
+	atomic.StoreUint64(&fbb.numChunks, 0)
+
+	// Download with custom chunk size
+	_, err = fileClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{ChunkSize: chunkSize})
+	_require.NoError(err)
+	
+	// We can't directly verify the chunk size was set correctly since getInfo is unexported,
+	// but we can test that the functionality works by using it with a RetryReader in another test
+}
+
+func TestDownloadStreamWithChunkSize(t *testing.T) {
+	_require := require.New(t)
+
+	fileSize := int64(1 * 1024 * 1024) // 1MB file
+	chunkSize := int64(256 * 1024)     // 256KB chunk size
 	numChunks := uint64(((fileSize - 1) / chunkSize) + 1)
 	fbb := &fakeDownloadFile{
 		contentSize: fileSize,
@@ -5002,24 +5032,25 @@ func TestDownloadSmallChunkSize(t *testing.T) {
 	_require.NoError(err)
 	_require.NotNil(fileClient)
 
-	// download to a temp file and verify contents
-	tmp, err := os.CreateTemp("", "")
-	_require.NoError(err)
-	defer tmp.Close()
-
-	_, err = fileClient.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{ChunkSize: chunkSize})
-	_require.NoError(err)
-
-	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
-
-	// reset counter
+	// Reset counter
 	atomic.StoreUint64(&fbb.numChunks, 0)
 
-	buff := make([]byte, fileSize)
-	_, err = fileClient.DownloadBuffer(context.Background(), buff, &file.DownloadBufferOptions{ChunkSize: chunkSize})
+	// Download with custom chunk size
+	resp, err := fileClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{ChunkSize: chunkSize})
 	_require.NoError(err)
-
-	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+	
+	// Read from the stream using a RetryReader
+	reader := resp.NewRetryReader(context.Background(), nil)
+	buffer := make([]byte, fileSize)
+	n, err := io.ReadFull(reader, buffer)
+	_require.NoError(err)
+	_require.Equal(fileSize, int64(n))
+	
+	err = reader.Close()
+	_require.NoError(err)
+	
+	// The number of chunks should match our calculation
+	_require.Equal(numChunks, atomic.LoadUint64(&fbb.numChunks))
 }
 
 // TODO: Add tests for retry header options

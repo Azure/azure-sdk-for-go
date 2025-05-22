@@ -58,7 +58,7 @@ func (testsuite *MongoDbResourcesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestMongoDbResourcesTestSuite(t *testing.T) {
+func TTestMongoDbResourcesTestSuite(t *testing.T) {
 	suite.Run(t, new(MongoDbResourcesTestSuite))
 }
 

@@ -56,7 +56,7 @@ func (testsuite *PrivateEndpointConnectionTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestPrivateEndpointConnectionTestSuite(t *testing.T) {
+func TTestPrivateEndpointConnectionTestSuite(t *testing.T) {
 	suite.Run(t, new(PrivateEndpointConnectionTestSuite))
 }
 

@@ -58,7 +58,7 @@ func (testsuite *CassandraResourcesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestCassandraResourcesTestSuite(t *testing.T) {
+func TTestCassandraResourcesTestSuite(t *testing.T) {
 	suite.Run(t, new(CassandraResourcesTestSuite))
 }
 

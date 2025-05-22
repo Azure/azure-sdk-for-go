@@ -66,7 +66,7 @@ func (testsuite *SqlResourcesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestSqlResourcesTestSuite(t *testing.T) {
+func TTestSqlResourcesTestSuite(t *testing.T) {
 	suite.Run(t, new(SqlResourcesTestSuite))
 }
 

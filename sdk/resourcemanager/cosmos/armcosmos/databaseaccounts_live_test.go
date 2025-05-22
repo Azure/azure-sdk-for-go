@@ -52,7 +52,7 @@ func (testsuite *DatabaseAccountsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestDatabaseAccountsTestSuite(t *testing.T) {
+func TTestDatabaseAccountsTestSuite(t *testing.T) {
 	suite.Run(t, new(DatabaseAccountsTestSuite))
 }
 

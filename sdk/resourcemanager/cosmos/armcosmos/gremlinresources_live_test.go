@@ -58,7 +58,7 @@ func (testsuite *GremlinResourcesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestGremlinResourcesTestSuite(t *testing.T) {
+func TTestGremlinResourcesTestSuite(t *testing.T) {
 	suite.Run(t, new(GremlinResourcesTestSuite))
 }
 

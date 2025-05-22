@@ -4,27 +4,21 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 
 ## Table of contents
 
-* [General Troubleshooting](#general-troubleshooting)
-  * [Error Handling](#error-handling)
-  * [Logging](#logging)
-  * [Authentication Issues](#authentication-issues)
-* [Common Error Scenarios](#common-error-scenarios)
-  * [Unauthorized Access Errors](#unauthorized-access-errors)
-  * [Connection Lost Errors](#connection-lost-errors)
-  * [Ownership Lost Errors](#ownership-lost-errors)
-* [Event Processor Troubleshooting](#event-processor-troubleshooting)
-  * [Load Balancing Issues](#load-balancing-issues)
-  * [Checkpoint Store Problems](#checkpoint-store-problems)
-  * [Performance Considerations](#performance-considerations)
-* [Connectivity Issues](#connectivity-issues)
-  * [Enterprise Environments and Firewalls](#enterprise-environments-and-firewalls)
-  * [Using WebSockets Transport](#using-websockets-transport)
-  * [Working with Proxies](#working-with-proxies)
-* [Advanced Troubleshooting](#advanced-troubleshooting)
-  * [Logs to Collect](#logs-to-collect)
-  * [Interpreting Logs](#interpreting-logs)
-* [Additional Resources](#additional-resources)
-  * [Filing GitHub Issues](#filing-github-issues)
+- [General Troubleshooting](#general-troubleshooting)
+    - [Error Handling](#error-handling)
+    - [Logging](#logging)
+- [Common Error Scenarios](#common-error-scenarios)
+    - [Unauthorized Access Errors](#unauthorized-access-errors)
+    - [Connection Lost Errors](#connection-lost-errors)
+    - [Ownership Lost Errors](#ownership-lost-errors)
+    - [Performance Considerations](#performance-considerations)
+- [Connectivity Issues](#connectivity-issues)
+    - [Enterprise Environments and Firewalls](#enterprise-environments-and-firewalls)
+- [Advanced Troubleshooting](#advanced-troubleshooting)
+    - [Logs to collect](#logs-to-collect)
+    - [Interpreting Logs](#interpreting-logs)
+    - [Additional Resources](#additional-resources)
+    - [Filing GitHub Issues](#filing-github-issues)
 
 ## General Troubleshooting
 
@@ -135,11 +129,11 @@ In corporate networks with strict firewall rules, you may encounter connectivity
 
 ## Advanced Troubleshooting
 
-### Logging
+### Logs to collect
 
 When troubleshooting issues with Event Hubs that you need to escalate to support or report in GitHub issues, collect the following logs:
 
-1. **Enable debug logging**: Set `AZURE_SDK_GO_LOGGING=all` in your environment. This will print all Azure log messages to the console. Capture these logs.
+1. **Enable debug logging**: To enable logs, see [logging](#logging).
 2. **Timeframe**: Capture logs from at least 5 minutes before until 5 minutes after the issue occurs
 3. **Include timestamps**: Ensure your logging setup includes timestamps. By default `AZURE_SDK_GO_LOGGING` logging includes timestamps.
 
@@ -153,7 +147,7 @@ When analyzing Event Hubs logs:
 4. **Consumer errors**: `EventConsumer` logs show message receive operations and partition ownership changes
 5. **Load balancing**: Look for ownership claims and changes in `EventConsumer` logs
 
-## Additional Resources
+### Additional Resources
 
 - [Event Hubs Documentation](https://learn.microsoft.com/azure/event-hubs/)
 - [Event Hubs Pricing](https://azure.microsoft.com/pricing/details/event-hubs/)

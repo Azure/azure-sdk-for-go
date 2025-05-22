@@ -15,7 +15,7 @@ The `armextensions` module provides operations for working with Azure Kubernetes
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Kubernetesconfiguration module:
+Install the Azure Kubernetes Configuration module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armextensions

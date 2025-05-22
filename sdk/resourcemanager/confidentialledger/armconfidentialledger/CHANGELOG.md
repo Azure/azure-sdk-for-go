@@ -1,5 +1,14 @@
 # Release History
 
+## 1.3.0-beta.3 (2025-05-23)
+### Features Added
+
+- New enum type `ApplicationType` with values `ApplicationTypeCodeTransparency`, `ApplicationTypeConfidentialLedger`
+- New enum type `EnclavePlatform` with values `EnclavePlatformAmdSevSnp`, `EnclavePlatformIntelSgx`
+- New field `ApplicationType`, `EnclavePlatform`, `HostLevel`, `MaxBodySizeInMb`, `NodeCount`, `SubjectName`, `WorkerThreads`, `WriteLBAddressPrefix` in struct `LedgerProperties`
+- New field `EnclavePlatform` in struct `ManagedCCFProperties`
+
+
 ## 1.3.0-beta.2 (2024-04-26)
 ### Features Added
 

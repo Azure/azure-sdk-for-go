@@ -1,8 +1,6 @@
 # Release History
 
-## 0.8.0 (Unreleased)
-
-### Features Added
+## 1.0.0 (2025-05-22)
 
 ### Breaking Changes
 
@@ -10,11 +8,9 @@ This library has been updated to function as a companion to the [official OpenAI
 
 See the [migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai/MIGRATION.md) for details on how to update your code to use this library alongside the official OpenAI Go client.
 
-### Bugs Fixed
-
 ### Other Changes
 
-- Updating to `v0.1.0-beta.7` of the [OpenAI go module](https://github.com/openai/openai-go).
+- Updating to `v1.0.0` of the [OpenAI go module](https://github.com/openai/openai-go).
 - Added samples for responses API.
 
 ## 0.7.2 (2025-02-05)

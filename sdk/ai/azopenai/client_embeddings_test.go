@@ -18,6 +18,7 @@ import (
 )
 
 func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
+	t.Skip("Skipping while we investigate the issue with Azure OpenAI.")
 	client := newStainlessTestClient(t, azureOpenAI.Embeddings.Endpoint)
 
 	_, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{

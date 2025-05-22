@@ -1,5 +1,7 @@
 # Azure OpenAI assistants client module for Go
 
+> Deprecated: use [github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai) instead. See the [Migration Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai/MIGRATION.md) for details.
+
 NOTE: this client can be used with Azure OpenAI and OpenAI.
 
 OpenAI assistants makes it simpler to have a create, manage and use Assistant, where conversation state is stored and managed by the service.  These assistants are backed by the same powerful models you're used to with OpenAI, and also allows the use of the Code Interpreter, Retrieval and Function Calling tools.

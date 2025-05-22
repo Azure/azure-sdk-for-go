@@ -1,5 +1,7 @@
 # Azure OpenAI extensions module for Go
 
+> Deprecated: use [github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai) instead. See the [Migration Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai/MIGRATION.md) for details.
+
 This module provides models and convenience functions to make it simpler to use Azure OpenAI features, such as [Azure OpenAI On Your Data][openai_on_your_data], with the OpenAI Go client (https://pkg.go.dev/github.com/openai/openai-go).
 
 [Source code][repo] | [Package (pkg.go.dev)][pkggodev] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]

@@ -10,7 +10,7 @@ require (
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.9.0
-	github.com/openai/openai-go v0.1.0-beta.9
+	github.com/openai/openai-go v1.0.0
 )
 
 require (

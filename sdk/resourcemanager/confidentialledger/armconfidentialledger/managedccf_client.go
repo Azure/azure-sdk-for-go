@@ -75,7 +75,7 @@ func (client *ManagedCCFClient) backup(ctx context.Context, resourceGroupName st
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.backupCreateRequest(ctx, resourceGroupName, appName, managedCCF, options)
+	req, err := client.backupCreateRequest(ctx, resourceGroupName, appName, managedCCF)
 	if err != nil {
 		return nil, err
 	}

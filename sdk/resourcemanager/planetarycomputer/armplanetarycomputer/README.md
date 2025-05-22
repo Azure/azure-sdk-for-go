@@ -1,4 +1,4 @@
-# Azure Planetarycomputer Module for Go
+# Azure Planetary Computer Module for Go
 
 The `armplanetarycomputer` module provides operations for working with Azure Planetarycomputer.
 

@@ -1,4 +1,4 @@
-# Azure Kubernetesconfiguration Module for Go
+# Azure Kubernetes Configuration Module for Go
 
 The `armextensions` module provides operations for working with Azure Kubernetesconfiguration.
 

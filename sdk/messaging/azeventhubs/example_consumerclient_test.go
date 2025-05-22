@@ -170,3 +170,28 @@ func ExampleNewConsumerClient_usingCustomEndpoint() {
 		panic(err)
 	}
 }
+
+func ExampleNewConsumerClient_configuringRetries() {
+	// `DefaultAzureCredential` tries several common credential types. For more credential types
+	// see this link: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#readme-credential-types.
+	defaultAzureCred, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	consumerClient, err = azeventhubs.NewConsumerClient("<ex: myeventhubnamespace.servicebus.windows.net>", "eventhub-name", azeventhubs.DefaultConsumerGroup, defaultAzureCred, &azeventhubs.ConsumerClientOptions{
+		RetryOptions: azeventhubs.RetryOptions{
+			// NOTE: these are the default values.
+			MaxRetries:    3,
+			RetryDelay:    time.Second,
+			MaxRetryDelay: 120 * time.Second,
+		},
+	})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		fmt.Printf("ERROR: %s\n", err)
+		return
+	}
+}

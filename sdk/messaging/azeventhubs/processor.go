@@ -26,13 +26,15 @@ var processorOwnerLevel = to.Ptr[int64](0)
 type ProcessorStrategy string
 
 const (
-	// ProcessorStrategyBalanced will attempt to claim a single partition at a time, until each active
-	// owner has an equal share of partitions.
+	// ProcessorStrategyBalanced will attempt to claim a single partition during each update interval, until
+	// each active owner has an equal share of partitions. It can take longer for Processors to acquire their
+	// full share of partitions, but minimizes partition swapping.
 	// This is the default strategy.
 	ProcessorStrategyBalanced ProcessorStrategy = "balanced"
 
-	// ProcessorStrategyGreedy will attempt to claim as many partitions at a time as it can, ignoring
-	// balance.
+	// ProcessorStrategyGreedy will attempt to claim all partitions it can during each update interval, respecting
+	// balance. This can lead to more partition swapping, as Processors steal partitions to get to their fair share,
+	// but can speed up initial startup.
 	ProcessorStrategyGreedy ProcessorStrategy = "greedy"
 )
 

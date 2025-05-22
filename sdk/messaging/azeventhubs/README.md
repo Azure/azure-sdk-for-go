@@ -41,6 +41,8 @@ You can also create a client using a connection string.
  - ConsumerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewConsumerClient)
  - ProducerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewProducerClient)
 
+  For Event Hubs roles, see [Built-in roles for Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/authenticate-application#built-in-roles-for-azure-event-hubs).
+
 #### Using a connection string
  - ConsumerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewConsumerClientFromConnectionString)
  - ProducerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewProducerClientFromConnectionString)
@@ -62,6 +64,8 @@ For more information about Event Hubs features and terminology can be found here
 Examples for various scenarios can be found on [pkg.go.dev](https://aka.ms/azsdk/go/eventhubs/pkg#pkg-examples) or in the example*_test.go files in our GitHub repo for [azeventhubs](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs).
 
 # Troubleshooting
+
+For detailed troubleshooting information, refer to the [Event Hubs Troubleshooting Guide][eventhubs_troubleshooting].
 
 ### Logging
 
@@ -129,6 +133,7 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 
 [azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
+[eventhubs_troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/TROUBLESHOOTING.md
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventhubs
 [godoc]: https://aka.ms/azsdk/go/eventhubs/pkg
 [godoc_examples]: https://aka.ms/azsdk/go/eventhubs/pkg#pkg-examples

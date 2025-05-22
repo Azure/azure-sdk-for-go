@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Planetarycomputer` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Planetary Computer` label.
 
 # Contributing
 

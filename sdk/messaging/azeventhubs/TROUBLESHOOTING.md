@@ -182,7 +182,6 @@ To file an issue in Github, use this [link](https://github.com/Azure/azure-sdk-f
 
 <!-- LINKS -->
 [azidentity_troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity/TROUBLESHOOTING.md
-[example_websockets]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs
 [amqp_errors]: https://learn.microsoft.com/azure/event-hubs/event-hubs-amqp-troubleshoot
 [azidentity_tokencredentials]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#readme-credential-chains
 [eventhubs_faq_ports]: https://learn.microsoft.com/azure/event-hubs/event-hubs-faq#what-ports-do-i-need-to-open-on-the-firewall

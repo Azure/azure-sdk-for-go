@@ -1,5 +1,7 @@
 # Azure SDK for Go
 
+> Why did the Gopher cross the road? To escape the race condition!
+
 [![godoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go)
 
 This repository is for active development of the Azure SDK for Go. For consumers of the SDK you can follow the links below to visit the documentation you are interested in

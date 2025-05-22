@@ -15,7 +15,7 @@ The `armplanetarycomputer` module provides operations for working with Azure Pla
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Planetarycomputer module:
+Install the Azure Planetary Computer module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/planetarycomputer/armplanetarycomputer

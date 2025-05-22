@@ -4,7 +4,7 @@
 
 ### Other changes
 
-- Bumped the `internal` package reference from `1.10.0` to `1.11.1`
+- Bumped all package references to latest
 
 ## 1.0.0 (2025-05-21)
 ### Breaking Changes

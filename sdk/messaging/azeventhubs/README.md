@@ -41,6 +41,8 @@ You can also create a client using a connection string.
  - ConsumerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewConsumerClient)
  - ProducerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewProducerClient)
 
+  For Event Hubs roles, see [Built-in roles for Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/authenticate-application#built-in-roles-for-azure-event-hubs).
+
 #### Using a connection string
  - ConsumerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewConsumerClientFromConnectionString)
  - ProducerClient: [link](https://aka.ms/azsdk/go/eventhubs/pkg#example-NewProducerClientFromConnectionString)

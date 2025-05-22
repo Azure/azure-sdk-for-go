@@ -1,16 +1,12 @@
 # Release History
 
-## 1.0.0 (2025-05-20)
-
-### Features Added
+## 1.0.0 (2025-05-22)
 
 ### Breaking Changes
 
 This library has been updated to function as a companion to the [official OpenAI Go client library](https://github.com/openai/openai-go). It provides types and functions that allow interaction with Azure-specific extensions available in the Azure OpenAI service.
 
 See the [migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai/MIGRATION.md) for details on how to update your code to use this library alongside the official OpenAI Go client.
-
-### Bugs Fixed
 
 ### Other Changes
 

@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.1 (Unreleased)
+
+### Other changes
+
+- Bumped the `internal` package reference from `1.10.0` to `1.11.1`
+
 ## 1.0.0 (2025-05-21)
 ### Breaking Changes
 

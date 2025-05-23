@@ -1,6 +1,6 @@
-# Azure Kubernetesconfiguration Module for Go
+# Azure Kubernetes Configuration Module for Go
 
-The `armextensiontypes` module provides operations for working with Azure Kubernetesconfiguration.
+The `armextensiontypes` module provides operations for working with Azure Kubernetes Configuration.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/kubernetesconfiguration/armextensiontypes)
 
@@ -15,7 +15,7 @@ The `armextensiontypes` module provides operations for working with Azure Kubern
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Kubernetesconfiguration module:
+Install the Azure Kubernetes Configuration module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armextensiontypes
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfigura
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Kubernetesconfiguration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Kubernetes Configuration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Kubernetesconfiguration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Kubernetes Configuration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armextensiontypes.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Kubernetesconfiguration` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Kubernetes Configuration` label.
 
 # Contributing
 

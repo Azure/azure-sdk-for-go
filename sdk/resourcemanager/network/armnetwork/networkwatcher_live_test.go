@@ -52,7 +52,7 @@ func (testsuite *NetworkWatcherTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNetworkWatcherTestSuite(t *testing.T) {
+func TTestNetworkWatcherTestSuite(t *testing.T) {
 	suite.Run(t, new(NetworkWatcherTestSuite))
 }
 

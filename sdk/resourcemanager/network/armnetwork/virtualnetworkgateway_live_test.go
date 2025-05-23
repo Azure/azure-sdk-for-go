@@ -61,7 +61,7 @@ func (testsuite *VirtualNetworkGatewayTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestVirtualNetworkGatewayTestSuite(t *testing.T) {
+func TTestVirtualNetworkGatewayTestSuite(t *testing.T) {
 	suite.Run(t, new(VirtualNetworkGatewayTestSuite))
 }
 

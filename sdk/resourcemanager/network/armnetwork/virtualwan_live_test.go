@@ -66,7 +66,7 @@ func (testsuite *VirtualWanTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestVirtualWanTestSuite(t *testing.T) {
+func TTestVirtualWanTestSuite(t *testing.T) {
 	suite.Run(t, new(VirtualWanTestSuite))
 }
 

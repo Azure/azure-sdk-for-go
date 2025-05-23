@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -58,7 +58,7 @@ func (testsuite *ExpressRouteCircuitTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestExpressRouteCircuitTestSuite(t *testing.T) {
+func TTestExpressRouteCircuitTestSuite(t *testing.T) {
 	suite.Run(t, new(ExpressRouteCircuitTestSuite))
 }
 

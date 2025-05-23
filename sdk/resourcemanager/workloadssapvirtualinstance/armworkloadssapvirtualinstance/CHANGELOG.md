@@ -1,11 +1,5 @@
 # Release History
 
-## 1.0.1 (Unreleased)
-
-### Other changes
-
-- Bumped all package references to latest
-
 ## 1.0.0 (2025-05-21)
 ### Breaking Changes
 

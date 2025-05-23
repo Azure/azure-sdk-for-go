@@ -672,6 +672,11 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
+	log.Printf("##[command]Executing go get -u all toolchain@none in %s\n", modulePath)
+	if err := ExecuteGo(modulePath, "get", "-u", "all", "toolchain@none"); err != nil {
+		return nil, err
+	}
+
 	log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)
 	if err := ExecuteGo(modulePath, "mod", "tidy"); err != nil {
 		return nil, err

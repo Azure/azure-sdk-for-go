@@ -91,6 +91,10 @@ function Process-Sdk ()
 
     if ($tidy)
     {
+        Write-Host "##[command]Executing go get -u all in " $currentDirectory
+        go get -u all
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
+        
         Write-Host "##[command]Executing go mod tidy in " $currentDirectory
         go mod tidy
         if ($LASTEXITCODE) { exit $LASTEXITCODE }

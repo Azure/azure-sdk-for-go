@@ -1,6 +1,6 @@
 # Azure Planetary Computer Module for Go
 
-The `armplanetarycomputer` module provides operations for working with Azure Planetarycomputer.
+The `armplanetarycomputer` module provides operations for working with Azure Planetary Computer.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/planetarycomputer/armplanetarycomputer)
 

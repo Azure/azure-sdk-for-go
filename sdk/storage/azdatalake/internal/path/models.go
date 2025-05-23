@@ -9,6 +9,7 @@ package path
 import (
 	"errors"
 	"net/url"
+	"strings"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -49,7 +50,11 @@ func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessC
 	// we don't need sourceModAccCond since this is not rename
 	mode := generated.PathRenameModeLegacy
 	// URL encode the source path to handle special characters
-	encodedPath := url.PathEscape(path)
+	segments := strings.Split(path, "/")
+	for i, segment := range segments {
+		segments[i] = url.QueryEscape(segment)
+	}
+	encodedPath := strings.Join(segments, "/")
 	createOpts := &generated.PathClientCreateOptions{
 		Mode:         &mode,
 		RenameSource: &encodedPath,

@@ -50,11 +50,20 @@ func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessC
 	// we don't need sourceModAccCond since this is not rename
 	mode := generated.PathRenameModeLegacy
 	// URL encode the source path to handle special characters
-	segments := strings.Split(path, "/")
+	pathPart, queryPart, found := strings.Cut(path, "?")
+	
+	// URL encode each path segment individually to preserve structure
+	segments := strings.Split(pathPart, "/")
 	for i, segment := range segments {
 		segments[i] = url.QueryEscape(segment)
 	}
 	encodedPath := strings.Join(segments, "/")
+	
+	// If there was a query part, encode and append it
+	if found && queryPart != "" {
+		encodedPath = encodedPath + "?" + url.QueryEscape(queryPart)
+	}
+	
 	createOpts := &generated.PathClientCreateOptions{
 		Mode:         &mode,
 		RenameSource: &encodedPath,

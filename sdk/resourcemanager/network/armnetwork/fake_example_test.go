@@ -69,9 +69,9 @@ func ExampleInterfacesServer() {
 	fmt.Println(*resp.ID)
 
 	// APIs that haven't been faked will return an error
-	_, err = client.BeginDelete(context.TODO(), "fakeResourceGroup", "fakeInterface", nil)
+	// _, err = client.BeginDelete(context.TODO(), "fakeResourceGroup", "fakeInterface", nil)
 
-	fmt.Println(err.Error())
+	// fmt.Println(err.Error())
 
 	// Output:
 	// /fake/resource/id

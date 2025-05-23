@@ -10,6 +10,7 @@ import (
 	"errors"
 	"net/url"
 	"strings"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -61,7 +62,10 @@ func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessC
 	
 	// If there was a query part, encode and append it
 	if found && queryPart != "" {
-		encodedPath = encodedPath + "?" + url.QueryEscape(queryPart)
+		encodedQueryURL, err := runtime.EncodeQueryParams("?" + queryPart)
+		if err == nil {
+			encodedPath = encodedPath + encodedQueryURL
+		}
 	}
 	
 	createOpts := &generated.PathClientCreateOptions{

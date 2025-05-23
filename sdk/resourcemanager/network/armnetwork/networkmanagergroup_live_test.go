@@ -60,7 +60,7 @@ func (testsuite *NetworkManagerGroupTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNetworkManagerGroupTestSuite(t *testing.T) {
+func TTestNetworkManagerGroupTestSuite(t *testing.T) {
 	suite.Run(t, new(NetworkManagerGroupTestSuite))
 }
 

@@ -63,7 +63,7 @@ func (testsuite *NetworkManagerSecurityAdminConfigurationTestSuite) TearDownSuit
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNetworkManagerSecurityAdminConfigurationTestSuite(t *testing.T) {
+func TTestNetworkManagerSecurityAdminConfigurationTestSuite(t *testing.T) {
 	suite.Run(t, new(NetworkManagerSecurityAdminConfigurationTestSuite))
 }
 

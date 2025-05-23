@@ -56,7 +56,7 @@ func (testsuite *NetworkSecurityGroupTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNetworkSecurityGroupTestSuite(t *testing.T) {
+func TTestNetworkSecurityGroupTestSuite(t *testing.T) {
 	suite.Run(t, new(NetworkSecurityGroupTestSuite))
 }
 

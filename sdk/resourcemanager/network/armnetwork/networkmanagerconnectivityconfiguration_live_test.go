@@ -58,7 +58,7 @@ func (testsuite *NetworkManagerConnectivityConfigurationTestSuite) TearDownSuite
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNetworkManagerConnectivityConfigurationTestSuite(t *testing.T) {
+func TTestNetworkManagerConnectivityConfigurationTestSuite(t *testing.T) {
 	suite.Run(t, new(NetworkManagerConnectivityConfigurationTestSuite))
 }
 

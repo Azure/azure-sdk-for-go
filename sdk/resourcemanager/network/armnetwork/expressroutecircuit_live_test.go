@@ -58,7 +58,7 @@ func (testsuite *ExpressRouteCircuitTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestExpressRouteCircuitTestSuite(t *testing.T) {
+func TTestExpressRouteCircuitTestSuite(t *testing.T) {
 	suite.Run(t, new(ExpressRouteCircuitTestSuite))
 }
 

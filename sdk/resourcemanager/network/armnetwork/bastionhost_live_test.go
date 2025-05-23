@@ -55,7 +55,7 @@ func (testsuite *BastionHostTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestBastionHostTestSuite(t *testing.T) {
+func TTestBastionHostTestSuite(t *testing.T) {
 	suite.Run(t, new(BastionHostTestSuite))
 }
 

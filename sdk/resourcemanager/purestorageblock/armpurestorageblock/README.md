@@ -15,7 +15,7 @@ The `armpurestorageblock` module provides operations for working with Azure Pure
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Purestorageblock module:
+Install the Azure Pure Storage Block module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purestorageblock/armpurestorageblock
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purestorageblock/ar
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Purestorageblock.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Pure Storage Block.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)

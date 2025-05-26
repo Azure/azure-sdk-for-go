@@ -117,8 +117,13 @@ func TestInterfaceToAnyFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.InterfaceToAnyFilter)
 
+	// Check that the breaking change that isn't to `any` remains
 	excepted := "### Breaking Changes\n\n- Type of `Interface2Any.NewType` has been changed from `interface{}` to `string`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+	
+	// Check that the count summary matches what's displayed
+	summary := changelog.GetChangeSummary()
+	assert.Equal(t, "Total 1 breaking change(s), 0 additive change(s).", summary)
 }
 
 func TestTypeToAny(t *testing.T) {

@@ -118,6 +118,21 @@ func getSummaries(breaking *report.BreakingChanges, additive *delta.Content) str
 	if additive != nil {
 		ac = additive.Count()
 	}
+	
+	// Count all field changes where target type contains "any" which are shown in Features Added
+	anyCount := 0
+	if breaking != nil {
+		for _, s := range breaking.Structs {
+			for _, v := range s.Fields {
+				if strings.Contains(v.To, "any") {
+					anyCount++
+				}
+			}
+		}
+	}
+	
+	// Add this count to additive changes because they appear in Features Added section
+	ac += anyCount
 
 	return fmt.Sprintf("Total %d breaking change(s), %d additive change(s).", bc, ac)
 }
@@ -455,7 +470,7 @@ func removePattern(funcName string, returnValue string) string {
 func typeToAny(b *report.BreakingChanges, flag bool) []string {
 	var items []string
 
-	if b == nil || b.IsEmpty() {
+	if !flag || b == nil || b.IsEmpty() {
 		return items
 	}
 
@@ -464,7 +479,8 @@ func typeToAny(b *report.BreakingChanges, flag bool) []string {
 			v := b.Structs[k]
 			for _, f := range sortChangeItem(v.Fields) {
 				d := v.Fields[f]
-				if flag == (d.To == "any") {
+				// Return any field change where destination type contains 'any' 
+				if strings.Contains(d.To, "any") {
 					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
 					items = append(items, line)
 				}

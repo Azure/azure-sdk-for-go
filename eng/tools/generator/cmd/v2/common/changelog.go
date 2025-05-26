@@ -119,20 +119,15 @@ func getSummaries(breaking *report.BreakingChanges, additive *delta.Content) str
 		ac = additive.Count()
 	}
 	
-	// Count all field changes where target type contains "any" which are shown in Features Added
-	anyCount := 0
-	if breaking != nil {
-		for _, s := range breaking.Structs {
-			for _, v := range s.Fields {
-				if strings.Contains(v.To, "any") {
-					anyCount++
-				}
-			}
-		}
+	// Count to-any changes that are shown in Features Added section by typeToAny
+	// but are not counted in additive changes
+	toAnyCount := 0
+	if breaking != nil && !breaking.IsEmpty() {
+		toAnyCount = len(typeToAny(breaking, true))
 	}
 	
-	// Add this count to additive changes because they appear in Features Added section
-	ac += anyCount
+	// Add the count to additive changes to make the summary accurate
+	ac += toAnyCount
 
 	return fmt.Sprintf("Total %d breaking change(s), %d additive change(s).", bc, ac)
 }
@@ -479,7 +474,8 @@ func typeToAny(b *report.BreakingChanges, flag bool) []string {
 			v := b.Structs[k]
 			for _, f := range sortChangeItem(v.Fields) {
 				d := v.Fields[f]
-				// Return any field change where destination type contains 'any' 
+				// Find any field changes where the target type contains 'any'
+				// This will show all to-any changes in Features Added section
 				if strings.Contains(d.To, "any") {
 					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
 					items = append(items, line)

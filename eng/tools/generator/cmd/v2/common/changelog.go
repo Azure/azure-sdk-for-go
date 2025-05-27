@@ -225,7 +225,7 @@ func getBreakingChanges(b *report.BreakingChanges) []string {
 	}
 
 	// get signature changes
-	items = append(items, getSignatureChangeItems(&b.Changes)...)
+	items = append(items, getSignatureChangeItems(&b.Changes, false)...)
 
 	// get removed content
 	items = append(items, getRemovedContent(b.Removed)...)
@@ -240,7 +240,7 @@ func getAdditiveChanges(a *report.AdditiveChanges) []string {
 	}
 
 	// get signature changes
-	items = append(items, getSignatureChangeItems(&a.Changes)...)
+	items = append(items, getSignatureChangeItems(&a.Changes, true)...)
 
 	// get added content
 	items = append(items, getNewContents(a.Added)...)
@@ -248,7 +248,7 @@ func getAdditiveChanges(a *report.AdditiveChanges) []string {
 	return items
 }
 
-func getSignatureChangeItems(b *report.Changes) []string {
+func getSignatureChangeItems(b *report.Changes, countTypeToAny bool) []string {
 	if b.IsEmpty() {
 		return nil
 	}
@@ -286,7 +286,7 @@ func getSignatureChangeItems(b *report.Changes) []string {
 		}
 	}
 	// write struct changes
-	items = append(items, typeToAny(b, false)...)
+	items = append(items, typeToAny(b, countTypeToAny)...)
 
 	// interfaces are skipped, which are identical to some of the functions
 

@@ -227,12 +227,12 @@ func FilterChangelog(changelog *Changelog, opts ...func(changelog *Changelog)) {
 
 func EnumFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
-		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.TypeAliases != nil {
-			for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
+		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.Added.TypeAliases != nil {
+			for typeAliases := range changelog.Modified.AdditiveChanges.Added.TypeAliases {
 				funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Added.Funcs, typeAliases, "Possible")
 				if funcExist && len(funcKeys) == 1 {
 					for _, f := range funcKeys {
-						delete(changelog.Modified.AdditiveChanges.Funcs, f)
+						delete(changelog.Modified.AdditiveChanges.Added.Funcs, f)
 					}
 				}
 			}
@@ -373,8 +373,8 @@ func LROFilter(changelog *Changelog) {
 				} else {
 					beginFunc = fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
 				}
-				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
-					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
+				if _, ok := changelog.Modified.AdditiveChanges.Added.Funcs[beginFunc]; ok {
+					delete(changelog.Modified.AdditiveChanges.Added.Funcs, beginFunc)
 					v.ReplacedBy = &beginFunc
 					removedContent.Funcs[bFunc] = v
 				}
@@ -397,8 +397,8 @@ func PageableFilter(changelog *Changelog) {
 				} else {
 					pagination = fmt.Sprintf("%s.New%sPager", clientFunc[0], clientFunc[1])
 				}
-				if _, ok := changelog.Modified.AdditiveChanges.Funcs[pagination]; ok {
-					delete(changelog.Modified.AdditiveChanges.Funcs, pagination)
+				if _, ok := changelog.Modified.AdditiveChanges.Added.Funcs[pagination]; ok {
+					delete(changelog.Modified.AdditiveChanges.Added.Funcs, pagination)
 					v.ReplacedBy = &pagination
 					removedContent.Funcs[bFunc] = v
 				}
@@ -480,15 +480,15 @@ func TypeToAnyFilter(changelog *Changelog) {
 					if changelog.Modified.AdditiveChanges == nil {
 						changelog.Modified.AdditiveChanges = &report.AdditiveChanges{}
 					}
-					if changelog.Modified.AdditiveChanges.Structs == nil {
-						changelog.Modified.AdditiveChanges.Structs = map[string]delta.StructDef{}
+					if changelog.Modified.AdditiveChanges.Changes.Structs == nil {
+						changelog.Modified.AdditiveChanges.Changes.Structs = map[string]delta.StructDef{}
 					}
-					if _, ok := changelog.Modified.AdditiveChanges.Structs[structName]; !ok {
-						changelog.Modified.AdditiveChanges.Structs[structName] = delta.StructDef{
+					if _, ok := changelog.Modified.AdditiveChanges.Changes.Structs[structName]; !ok {
+						changelog.Modified.AdditiveChanges.Changes.Structs[structName] = delta.StructDef{
 							Fields: make(map[string]delta.Signature),
 						}
 					}
-					changelog.Modified.AdditiveChanges.Structs[structName].Fields[k] = v
+					changelog.Modified.AdditiveChanges.Changes.Structs[structName].Fields[k] = v
 				}
 			}
 			if len(s.Fields) == 0 {

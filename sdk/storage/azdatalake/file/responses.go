@@ -246,14 +246,11 @@ func FormatDownloadStreamResponse(r *blob.DownloadStreamResponse, rawResponse *h
 		newResp.VersionID = r.VersionID
 	}
 	
-	// Check if rawResponse is nil before accessing its fields
-	if rawResponse != nil {
-		if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
-			newResp.EncryptionContext = &val
-		}
-		if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
-			newResp.AccessControlList = &val
-		}
+	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+		newResp.EncryptionContext = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+		newResp.AccessControlList = &val
 	}
 	return newResp
 }

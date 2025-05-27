@@ -288,26 +288,23 @@ func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *htt
 	newResp.Version = r.Version
 	newResp.VersionID = r.VersionID
 	
-	// Check if rawResponse is nil before accessing its fields
-	if rawResponse != nil {
-		if val := rawResponse.Header.Get("x-ms-owner"); val != "" {
-			newResp.Owner = &val
-		}
-		if val := rawResponse.Header.Get("x-ms-group"); val != "" {
-			newResp.Group = &val
-		}
-		if val := rawResponse.Header.Get("x-ms-permissions"); val != "" {
-			newResp.Permissions = &val
-		}
-		if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
-			newResp.AccessControlList = &val
-		}
-		if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
-			newResp.ResourceType = &val
-		}
-		if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
-			newResp.EncryptionContext = &val
-		}
+	if val := rawResponse.Header.Get("x-ms-owner"); val != "" {
+		newResp.Owner = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-group"); val != "" {
+		newResp.Group = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-permissions"); val != "" {
+		newResp.Permissions = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+		newResp.AccessControlList = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
+		newResp.ResourceType = &val
+	}
+	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+		newResp.EncryptionContext = &val
 	}
 	return newResp
 }

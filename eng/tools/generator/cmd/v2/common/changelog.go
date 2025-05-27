@@ -95,6 +95,7 @@ func writeChangelogForPackage(r *report.Package) string {
 
 	// write additional changes
 	toAny := typeToAny(r.BreakingChanges, true)
+	deleteTypeToAny(r.BreakingChanges)
 	additives := getNewContents(r.AdditiveChanges)
 	if len(additives) > 0 || len(toAny) > 0 {
 		md.WriteHeader("Features Added")
@@ -473,6 +474,24 @@ func typeToAny(b *report.BreakingChanges, flag bool) []string {
 	}
 
 	return items
+}
+
+func deleteTypeToAny(b *report.BreakingChanges) {
+	if b == nil || b.IsEmpty() {
+		return
+	}
+
+	if len(b.Structs) > 0 {
+		for _, k := range sortChangeItem(b.Structs) {
+			v := b.Structs[k]
+			for _, f := range sortChangeItem(v.Fields) {
+				d := v.Fields[f]
+				if d.To == "any" {
+					delete(b.Structs, k)
+				}
+			}
+		}
+	}
 }
 
 // GetChangelogForPackage generates the changelog report with the given two Contents

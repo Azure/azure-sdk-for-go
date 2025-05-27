@@ -285,8 +285,8 @@ func getSignatureChangeItems(b *report.Changes) []string {
 			}
 		}
 	}
-	// write struct changes(type to any has been processed in filter logic, there is no need to specifically handle it here)
-	items = append(items, typeToAny(b, true)...)
+	// write struct changes
+	items = append(items, typeToAny(b, false)...)
 
 	// interfaces are skipped, which are identical to some of the functions
 

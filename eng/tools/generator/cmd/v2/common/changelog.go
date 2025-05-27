@@ -94,14 +94,9 @@ func writeChangelogForPackage(r *report.Package) string {
 	}
 
 	// write additional changes
-	toAny := typeToAny(r.BreakingChanges, true)
-	deleteTypeToAny(r.BreakingChanges)
-	additives := getNewContents(r.AdditiveChanges)
-	if len(additives) > 0 || len(toAny) > 0 {
+	additives := getAdditiveChanges(r.AdditiveChanges)
+	if len(additives) > 0 {
 		md.WriteHeader("Features Added")
-		for _, item := range toAny {
-			md.WriteListItem(item)
-		}
 		for _, item := range additives {
 			md.WriteListItem(item)
 		}
@@ -110,7 +105,7 @@ func writeChangelogForPackage(r *report.Package) string {
 	return md.String()
 }
 
-func getSummaries(breaking *report.BreakingChanges, additive *delta.Content) string {
+func getSummaries(breaking *report.BreakingChanges, additive *report.AdditiveChanges) string {
 	bc := 0
 	if breaking != nil {
 		bc = breaking.Count()
@@ -230,7 +225,7 @@ func getBreakingChanges(b *report.BreakingChanges) []string {
 	}
 
 	// get signature changes
-	items = append(items, getSignatureChangeItems(b)...)
+	items = append(items, getSignatureChangeItems(&b.Changes)...)
 
 	// get removed content
 	items = append(items, getRemovedContent(b.Removed)...)
@@ -238,7 +233,22 @@ func getBreakingChanges(b *report.BreakingChanges) []string {
 	return items
 }
 
-func getSignatureChangeItems(b *report.BreakingChanges) []string {
+func getAdditiveChanges(a *report.AdditiveChanges) []string {
+	items := make([]string, 0)
+	if a == nil || a.IsEmpty() {
+		return items
+	}
+
+	// get signature changes
+	items = append(items, getSignatureChangeItems(&a.Changes)...)
+
+	// get added content
+	items = append(items, getNewContents(a.Added)...)
+
+	return items
+}
+
+func getSignatureChangeItems(b *report.Changes) []string {
 	if b.IsEmpty() {
 		return nil
 	}
@@ -275,8 +285,8 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 			}
 		}
 	}
-	// write struct changes
-	items = append(items, typeToAny(b, false)...)
+	// write struct changes(type to any has been processed in filter logic, there is no need to specifically handle it here)
+	items = append(items, typeToAny(b, true)...)
 
 	// interfaces are skipped, which are identical to some of the functions
 
@@ -453,7 +463,7 @@ func removePattern(funcName string, returnValue string) string {
 	return fmt.Sprintf("%s.%s", before, after)
 }
 
-func typeToAny(b *report.BreakingChanges, flag bool) []string {
+func typeToAny(b *report.Changes, flag bool) []string {
 	var items []string
 
 	if b == nil || b.IsEmpty() {
@@ -480,16 +490,34 @@ func deleteTypeToAny(b *report.BreakingChanges) {
 	if b == nil || b.IsEmpty() {
 		return
 	}
-
 	if len(b.Structs) > 0 {
-		for _, k := range sortChangeItem(b.Structs) {
-			v := b.Structs[k]
-			for _, f := range sortChangeItem(v.Fields) {
-				d := v.Fields[f]
-				if d.To == "any" {
-					delete(b.Structs, k)
+		structsToDelete := make([]string, 0)
+
+		// Collect fields and structs to delete
+		for structName, s := range b.Structs {
+			fieldsToDelete := make([]string, 0)
+
+			// Collect fields to delete
+			for fieldName, f := range s.Fields {
+				if f.To == "any" {
+					fieldsToDelete = append(fieldsToDelete, fieldName)
 				}
 			}
+
+			// Delete the collected fields
+			for _, fieldName := range fieldsToDelete {
+				delete(b.Structs[structName].Fields, fieldName)
+			}
+
+			// If all fields were deleted, mark struct for deletion
+			if len(b.Structs[structName].Fields) == 0 {
+				structsToDelete = append(structsToDelete, structName)
+			}
+		}
+
+		// Delete the collected structs
+		for _, structName := range structsToDelete {
+			delete(b.Structs, structName)
 		}
 	}
 }

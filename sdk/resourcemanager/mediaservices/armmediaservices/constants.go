@@ -10,7 +10,7 @@ package armmediaservices
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
-	moduleVersion = "v3.4.0"
+	moduleVersion = "v3.4.1"
 )
 
 // AacAudioProfile - The encoding profile to be used when encoding audio with AAC.

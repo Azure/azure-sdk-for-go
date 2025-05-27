@@ -78,6 +78,96 @@ func handleTestLevelSanitizer(req *http.Request, options *RecordingOptions) {
 	}
 }
 
+type SanitizerDefinition interface {
+	Name() string
+}
+
+// HeaderRegexSanitizer describes a sanitizer that modifies header values based on a regex pattern.
+// Key: The name of the header to target.
+// Value: The substitution value for the header.
+// Regex: The regex pattern to match within the header value.
+// GroupForReplace: Specifies which regex group to replace, if applicable.
+type HeaderRegexSanitizer struct {
+	Key             string `json:"key"`
+	Value           string `json:"value,omitempty"`
+	Regex           string `json:"regex,omitempty"`
+	GroupForReplace string `json:"groupForReplace,omitempty"`
+}
+
+func (h HeaderRegexSanitizer) Name() string {
+	return "HeaderRegexSanitizer"
+}
+
+// UriRegexSanitizer describes a sanitizer that modifies URI values based on a regex pattern.
+// Value: The substitution value for the URI.
+// Regex: The regex pattern to match within the URI.
+type UriRegexSanitizer struct {
+	Value string `json:"value"`
+	Regex string `json:"regex"`
+}
+
+func (u UriRegexSanitizer) Name() string {
+	return "UriRegexSanitizer"
+}
+
+// GeneralRegexSanitizer describes a sanitizer that applies regex-based replacements across request/response bodies, headers, and URIs.
+// Value: The substitution value.
+// Regex: The regex pattern to match.
+// GroupForReplace: Specifies which regex group to replace, if applicable.
+type GeneralRegexSanitizer struct {
+	Value           string `json:"value"`
+	Regex           string `json:"regex"`
+	GroupForReplace string `json:"groupForReplace,omitempty"`
+}
+
+func (g GeneralRegexSanitizer) Name() string {
+	return "GeneralRegexSanitizer"
+}
+
+func marshalSanitizers(sanitizers []SanitizerDefinition) ([]byte, error) {
+	type wrapper struct {
+		Name string              `json:"Name"`
+		Body SanitizerDefinition `json:"Body"`
+	}
+
+	result := make([]wrapper, len(sanitizers))
+	for i, sanitizer := range sanitizers {
+		result[i] = wrapper{
+			Name: sanitizer.Name(),
+			Body: sanitizer,
+		}
+	}
+	return json.Marshal(result)
+}
+
+// AddSanitizers allows adding a batch of sanitizers in a single call. Supported sanitizers include:
+// - HeaderRegexSanitizer: Replaces or modifies header values based on a regex pattern.
+// - UriRegexSanitizer: Replaces or modifies URI values based on a regex pattern.
+// - GeneralRegexSanitizer: Applies regex-based replacements across request/response bodies, headers, and URIs.
+func AddSanitizers(sanitizers []SanitizerDefinition, options *RecordingOptions) error {
+	if recordMode == LiveMode {
+		return nil
+	}
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizers", options.baseURL())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	handleTestLevelSanitizer(req, options)
+
+	marshalled, err := marshalSanitizers(sanitizers)
+	if err != nil {
+		return err
+	}
+
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	return handleProxyResponse(client.Do(req))
+}
+
 // AddBodyKeySanitizer adds a sanitizer for JSON Bodies. jsonPath is the path to the key, value
 // is the value to replace with, and regex is the string to match in the body. If your regex includes a group
 // options.GroupForReplace specifies which group to replace

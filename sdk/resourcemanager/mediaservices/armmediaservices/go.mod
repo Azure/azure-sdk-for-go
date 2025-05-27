@@ -1,3 +1,4 @@
+// Deprecated: Please note, this package has been deprecated and will no longer be maintained after 06/30/2024.Refer to [Azure Media Services retirement guide](https://learn.microsoft.com/azure/media-services/latest/azure-media-services-retirement) for more retirement details and how to migrate to the new services.Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices/v3
 
 go 1.23.0

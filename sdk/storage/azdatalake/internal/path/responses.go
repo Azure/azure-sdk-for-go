@@ -287,7 +287,7 @@ func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *htt
 	newResp.TagCount = r.TagCount
 	newResp.Version = r.Version
 	newResp.VersionID = r.VersionID
-	
+
 	if val := rawResponse.Header.Get("x-ms-owner"); val != "" {
 		newResp.Owner = &val
 	}

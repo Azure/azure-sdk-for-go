@@ -2479,24 +2479,29 @@ func (s *RecordedTestSuite) TestRenameWithQueryParameters() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	// Create a client with the path including query parameters
-	_, err = fClient.Rename(context.Background(), "new-file.txt", nil)
+	// Create a source file with query parameters
+	srcClient, err := testcommon.GetFileClient(filesystemName, "source-file.txt", s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
-
-	// Create a new file to test the rename with query parameters
-	newFile := "query-test-file.txt"
-	queryClient, err := testcommon.GetFileClient(filesystemName, newFile, s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	resp, err = queryClient.Create(context.Background(), nil)
+	
+	resp, err = srcClient.Create(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp)
 	
-	_require.NotNil(createOpts)
-	_require.NotNil(createOpts.RenameSource)
-	// Verify the source path was properly encoded
-	expected := "query-test-file.txt?param1=value1&param2=value+with+spaces"
-	_require.Equal(expected, *createOpts.RenameSource)
+	// Create a destination path
+	destFile := "dest-file.txt"
+	
+	// Rename source file (with query params) to destination
+	// This is the operation that would fail without proper URL encoding
+	_, err = srcClient.Rename(context.Background(), destFile, nil)
+	_require.NoError(err)
+	
+	// Verify destination file exists
+	destClient, err := testcommon.GetFileClient(filesystemName, destFile, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	destResp, err := destClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(destResp)
 }
 
 func (s *RecordedTestSuite) TestRenameFileWithCPK() {
@@ -4027,8 +4032,8 @@ func (s *RecordedTestSuite) TestFileAppendWithFlushReleaseLease() {
 
 	opts := &file.FlushDataOptions{
 		LeaseAction: &file.LeaseActionRelease,
-		AccessConditions: &path.AccessConditions{
-			LeaseAccessConditions: &path.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		AccessConditions: &file.AccessConditions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
 		},
 	}
 

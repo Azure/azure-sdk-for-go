@@ -9,6 +9,7 @@ package directory_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"net/http"
 	"strconv"
 	"testing"
@@ -2526,6 +2527,112 @@ func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 
 	_, err = dirClient.Rename(context.Background(), "newName", nil)
 	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestDirRenameWithSpecialCharacters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Test with directory name containing spaces
+	dirName := "dir with spaces"
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Rename to a path with special characters
+	newName := "renamed dir+special@!&% chars"
+	_, err = dirClient.Rename(context.Background(), newName, nil)
+	_require.NoError(err)
+
+	// Verify new directory exists by creating a client to it and checking properties
+	newClient, err := testcommon.GetDirClient(filesystemName, newName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	_, err = newClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	
+	// Test with Unicode characters
+	unicodeDirName := "lör mapp"
+	unicodeClient, err := testcommon.GetDirClient(filesystemName, unicodeDirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err = unicodeClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Rename Unicode directory to another Unicode name
+	newUnicodeName := "ångström ümlaut 目录"
+	_, err = unicodeClient.Rename(context.Background(), newUnicodeName, nil)
+	_require.NoError(err)
+
+	// Verify new directory exists
+	newUnicodeClient, err := testcommon.GetDirClient(filesystemName, newUnicodeName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	_, err = newUnicodeClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestDirRenameWithQueryParameters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a regular directory
+	dirName := "original-dir"
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// In a real scenario, SAS tokens or other parameters might be appended to the source path
+	// Here we're simulating this with some fake query parameters
+	srcPathWithQuery := dirName + "?param1=value1&param2=value with spaces"
+	
+	// Create a client with the path including query parameters
+	// Note: This is just to test our URL encoding, in a real scenario you'd get this path from somewhere else
+	_, err = dirClient.Rename(context.Background(), "new-dir", nil)
+	_require.NoError(err)
+
+	// Create a new directory to test the rename with query parameters
+	newDir := "query-test-dir"
+	queryClient, err := testcommon.GetDirClient(filesystemName, newDir, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err = queryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Use internal implementation to test path handling with query parameters
+	// This is a white box test since we can't directly attach query params to the source path in normal usage
+	path := newDir + "?param1=value1&param2=value with spaces"
+	_, _, _, createOpts, _ := path.FormatRenameOptions(nil, path)
+	
+	_require.NotNil(createOpts)
+	_require.NotNil(createOpts.RenameSource)
+	// Verify the source path was properly encoded
+	expected := "query-test-dir?param1=value1&param2=value+with+spaces"
+	_require.Equal(expected, *createOpts.RenameSource)
 }
 
 func (s *RecordedTestSuite) TestDirRenameRequestWithCPK() {

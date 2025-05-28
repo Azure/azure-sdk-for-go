@@ -2404,6 +2404,112 @@ func (s *RecordedTestSuite) TestRenameNoOptions() {
 	_require.NoError(err)
 }
 
+func (s *RecordedTestSuite) TestRenameWithSpecialCharacters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Test with file name containing spaces
+	fileName := "file with spaces.txt"
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Rename to a path with special characters
+	newName := "renamed file+special@!&% chars.txt"
+	_, err = fClient.Rename(context.Background(), newName, nil)
+	_require.NoError(err)
+
+	// Verify new file exists by creating a client to it and checking properties
+	newClient, err := testcommon.GetFileClient(filesystemName, newName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	_, err = newClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	
+	// Test with Unicode characters
+	unicodeFileName := "lör 006.jpg"
+	unicodeClient, err := testcommon.GetFileClient(filesystemName, unicodeFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err = unicodeClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Rename Unicode file to another Unicode name
+	newUnicodeName := "ångström ümlaut 我的文件.jpg"
+	_, err = unicodeClient.Rename(context.Background(), newUnicodeName, nil)
+	_require.NoError(err)
+
+	// Verify new file exists
+	newUnicodeClient, err := testcommon.GetFileClient(filesystemName, newUnicodeName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	_, err = newUnicodeClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestRenameWithQueryParameters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a regular file
+	fileName := "original-file.txt"
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// In a real scenario, SAS tokens or other parameters might be appended to the source path
+	// Here we're simulating this with some fake query parameters
+	srcPathWithQuery := fileName + "?param1=value1&param2=value with spaces"
+	
+	// Create a client with the path including query parameters
+	// Note: This is just to test our URL encoding, in a real scenario you'd get this path from somewhere else
+	_, err = fClient.Rename(context.Background(), "new-file.txt", nil)
+	_require.NoError(err)
+
+	// Create a new file to test the rename with query parameters
+	newFile := "query-test-file.txt"
+	queryClient, err := testcommon.GetFileClient(filesystemName, newFile, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err = queryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Use internal implementation to test path handling with query parameters
+	// This is a white box test since we can't directly attach query params to the source path in normal usage
+	path := newFile + "?param1=value1&param2=value with spaces"
+	_, _, _, createOpts, _ := path.FormatRenameOptions(nil, path)
+	
+	_require.NotNil(createOpts)
+	_require.NotNil(createOpts.RenameSource)
+	// Verify the source path was properly encoded
+	expected := "query-test-file.txt?param1=value1&param2=value+with+spaces"
+	_require.Equal(expected, *createOpts.RenameSource)
+}
+
 func (s *RecordedTestSuite) TestRenameFileWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

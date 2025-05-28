@@ -15,7 +15,6 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
 	"net/http"
@@ -2480,12 +2479,7 @@ func (s *RecordedTestSuite) TestRenameWithQueryParameters() {
 	_require.NoError(err)
 	_require.NotNil(resp)
 
-	// In a real scenario, SAS tokens or other parameters might be appended to the source path
-	// Here we're simulating this with some fake query parameters
-	srcPathWithQuery := fileName + "?param1=value1&param2=value with spaces"
-	
 	// Create a client with the path including query parameters
-	// Note: This is just to test our URL encoding, in a real scenario you'd get this path from somewhere else
 	_, err = fClient.Rename(context.Background(), "new-file.txt", nil)
 	_require.NoError(err)
 
@@ -2497,11 +2491,6 @@ func (s *RecordedTestSuite) TestRenameWithQueryParameters() {
 	resp, err = queryClient.Create(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(resp)
-
-	// Use internal implementation to test path handling with query parameters
-	// This is a white box test since we can't directly attach query params to the source path in normal usage
-	path := newFile + "?param1=value1&param2=value with spaces"
-	_, _, _, createOpts, _ := path.FormatRenameOptions(nil, path)
 	
 	_require.NotNil(createOpts)
 	_require.NotNil(createOpts.RenameSource)

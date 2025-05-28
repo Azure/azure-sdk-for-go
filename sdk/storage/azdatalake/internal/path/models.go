@@ -64,7 +64,7 @@ func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessC
 	if found && queryPart != "" {
 		encodedQueryURL, err := runtime.EncodeQueryParams("?" + queryPart)
 		if err == nil {
-			encodedPath = encodedPath + encodedQueryURL
+			encodedPath += encodedQueryURL
 		}
 	}
 	

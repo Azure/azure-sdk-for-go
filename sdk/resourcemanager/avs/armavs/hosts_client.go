@@ -16,63 +16,63 @@ import (
 	"strings"
 )
 
-// ScriptCmdletsClient contains the methods for the ScriptCmdlets group.
-// Don't use this type directly, use NewScriptCmdletsClient() instead.
-type ScriptCmdletsClient struct {
+// HostsClient contains the methods for the Hosts group.
+// Don't use this type directly, use NewHostsClient() instead.
+type HostsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewScriptCmdletsClient creates a new instance of ScriptCmdletsClient with the specified values.
+// NewHostsClient creates a new instance of HostsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptCmdletsClient, error) {
+func NewHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HostsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ScriptCmdletsClient{
+	client := &HostsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Get a ScriptCmdlet
+// Get - Get a Host
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptPackageName - Name of the script package.
-//   - scriptCmdletName - Name of the script cmdlet.
-//   - options - ScriptCmdletsClientGetOptions contains the optional parameters for the ScriptCmdletsClient.Get method.
-func (client *ScriptCmdletsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string, options *ScriptCmdletsClientGetOptions) (ScriptCmdletsClientGetResponse, error) {
+//   - clusterName - Name of the cluster
+//   - hostID - The host identifier.
+//   - options - HostsClientGetOptions contains the optional parameters for the HostsClient.Get method.
+func (client *HostsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, hostID string, options *HostsClientGetOptions) (HostsClientGetResponse, error) {
 	var err error
-	const operationName = "ScriptCmdletsClient.Get"
+	const operationName = "HostsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, scriptCmdletName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, hostID, options)
 	if err != nil {
-		return ScriptCmdletsClientGetResponse{}, err
+		return HostsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScriptCmdletsClientGetResponse{}, err
+		return HostsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ScriptCmdletsClientGetResponse{}, err
+		return HostsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string, _ *ScriptCmdletsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets/{scriptCmdletName}"
+func (client *HostsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, hostID string, _ *HostsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/hosts/{hostId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -85,14 +85,14 @@ func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	if scriptPackageName == "" {
-		return nil, errors.New("parameter scriptPackageName cannot be empty")
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scriptPackageName}", url.PathEscape(scriptPackageName))
-	if scriptCmdletName == "" {
-		return nil, errors.New("parameter scriptCmdletName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if hostID == "" {
+		return nil, errors.New("parameter hostID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scriptCmdletName}", url.PathEscape(scriptCmdletName))
+	urlPath = strings.ReplaceAll(urlPath, "{hostId}", url.PathEscape(hostID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -105,37 +105,37 @@ func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (ScriptCmdletsClientGetResponse, error) {
-	result := ScriptCmdletsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdlet); err != nil {
-		return ScriptCmdletsClientGetResponse{}, err
+func (client *HostsClient) getHandleResponse(resp *http.Response) (HostsClientGetResponse, error) {
+	result := HostsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Host); err != nil {
+		return HostsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - List ScriptCmdlet resources by ScriptPackage
+// NewListPager - List Host resources by Cluster
 //
 // Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - scriptPackageName - Name of the script package.
-//   - options - ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.NewListPager method.
-func (client *ScriptCmdletsClient) NewListPager(resourceGroupName string, privateCloudName string, scriptPackageName string, options *ScriptCmdletsClientListOptions) *runtime.Pager[ScriptCmdletsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ScriptCmdletsClientListResponse]{
-		More: func(page ScriptCmdletsClientListResponse) bool {
+//   - clusterName - Name of the cluster
+//   - options - HostsClientListOptions contains the optional parameters for the HostsClient.NewListPager method.
+func (client *HostsClient) NewListPager(resourceGroupName string, privateCloudName string, clusterName string, options *HostsClientListOptions) *runtime.Pager[HostsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[HostsClientListResponse]{
+		More: func(page HostsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ScriptCmdletsClientListResponse) (ScriptCmdletsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScriptCmdletsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *HostsClientListResponse) (HostsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HostsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, scriptPackageName, options)
+				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, clusterName, options)
 			}, nil)
 			if err != nil {
-				return ScriptCmdletsClientListResponse{}, err
+				return HostsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -144,8 +144,8 @@ func (client *ScriptCmdletsClient) NewListPager(resourceGroupName string, privat
 }
 
 // listCreateRequest creates the List request.
-func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, _ *ScriptCmdletsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets"
+func (client *HostsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, _ *HostsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/hosts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -158,10 +158,10 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	if scriptPackageName == "" {
-		return nil, errors.New("parameter scriptPackageName cannot be empty")
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scriptPackageName}", url.PathEscape(scriptPackageName))
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -174,10 +174,10 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *ScriptCmdletsClient) listHandleResponse(resp *http.Response) (ScriptCmdletsClientListResponse, error) {
-	result := ScriptCmdletsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScriptCmdletsList); err != nil {
-		return ScriptCmdletsClientListResponse{}, err
+func (client *HostsClient) listHandleResponse(resp *http.Response) (HostsClientListResponse, error) {
+	result := HostsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HostListResult); err != nil {
+		return HostsClientListResponse{}, err
 	}
 	return result, nil
 }

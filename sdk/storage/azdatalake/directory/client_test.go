@@ -16,11 +16,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -2978,4 +2980,38 @@ func (s *RecordedTestSuite) TestCreateDirectoryClientCustomAudience() {
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 
+}
+
+// TestDirectoryClientAuthenticationFailure tests that GetProperties handles authentication failures gracefully
+func (s *UnrecordedTestSuite) TestDirectoryClientAuthenticationFailure() {
+	_require := require.New(s.T())
+
+	// Skip this test in any mode except live mode to avoid network issues
+	if recording.GetRecordMode() != recording.LiveMode {
+		s.T().Skip("Skipping authentication failure test - only runs in live mode")
+	}
+
+	// Test with invalid credentials to simulate authentication failure
+	tenantID := "invalid-tenant-id"
+	clientID := "invalid-client-id"
+	clientSecret := "invalid-secret"
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+
+	// Use fake storage account URL
+	url := "https://fakestorage.dfs.core.windows.net"
+
+	srvClient, err := service.NewClient(url, cred, nil)
+	_require.NoError(err)
+
+	fsClient := srvClient.NewFileSystemClient("testfs")
+	dirClient := fsClient.NewDirectoryClient("testdir")
+
+	// This should return an error, not panic
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.Error(err, "Expected authentication error")
+
+	// Verify it's an authentication-related error, not a panic
+	_require.Contains(err.Error(), "ClientSecretCredential")
 }

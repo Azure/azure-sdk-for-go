@@ -138,7 +138,7 @@ func (l *LocationsServerTransport) dispatchCheckTrialAvailability(req *http.Requ
 	var options *armavs.LocationsClientCheckTrialAvailabilityOptions
 	if !reflect.ValueOf(body).IsZero() {
 		options = &armavs.LocationsClientCheckTrialAvailabilityOptions{
-			Sku: &body,
+			SKU: &body,
 		}
 	}
 	respr, errRespr := l.srv.CheckTrialAvailability(req.Context(), locationParam, options)

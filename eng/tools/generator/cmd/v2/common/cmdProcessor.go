@@ -50,7 +50,8 @@ func ExecuteGoGenerate(path string) error {
 
 	if stdoutBuffer.Len() > 0 {
 		// find generated successuly flag
-		if strings.Contains(stdoutBuffer.String(), "Autorest completed") {
+		infoRegex := regexp.MustCompile(`info\s+\|\s+Autorest completed`)
+		if infoRegex.MatchString(stdoutBuffer.String()) {
 			return nil
 		}
 		if strings.Contains(stdoutBuffer.String(), "error   |") {

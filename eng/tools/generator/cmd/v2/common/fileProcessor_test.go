@@ -20,7 +20,7 @@ import (
 func TestCalculateNewVersion(t *testing.T) {
 	fixChange := &Changelog{Modified: &report.Package{}}
 	breakingChange := &Changelog{RemovedPackage: true, Modified: &report.Package{}}
-	additiveChange := &Changelog{Modified: &report.Package{AdditiveChanges: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}
+	additiveChange := &Changelog{Modified: &report.Package{AdditiveChanges: &report.AdditiveChanges{Added: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}}
 
 	// previous 0.x.x
 	// fix with stable

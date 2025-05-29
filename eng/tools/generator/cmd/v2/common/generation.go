@@ -278,7 +278,7 @@ func (t *SwaggerCommonGenerator) GenChangeLog(oriExports *exports.Content, newEx
 	}
 
 	log.Printf("filter changelog...")
-	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
+	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter, TypeToAnyFilter)
 	return changelog, nil
 }
 
@@ -650,7 +650,7 @@ func (t *TypeSpecCommonGenerator) GenChangeLog(oriExports *exports.Content, newE
 	}
 
 	log.Printf("filter changelog...")
-	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter)
+	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter, TypeToAnyFilter)
 	return changelog, nil
 }
 

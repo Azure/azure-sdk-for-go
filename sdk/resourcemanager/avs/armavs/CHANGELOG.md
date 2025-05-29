@@ -1,9 +1,6 @@
 # Release History
 
 ## 2.1.0 (2025-05-29)
-### Breaking Changes
-
-- Field `SKU` of struct `LocationsClientCheckTrialAvailabilityOptions` has been removed
 
 ### Features Added
 
@@ -56,7 +53,6 @@
 - New struct `SpecializedHostProperties`
 - New field `ManagementNetwork`, `UplinkNetwork` in struct `AddonHcxProperties`
 - New field `PureStorageVolume` in struct `DatastoreProperties`
-- New field `Sku` in struct `LocationsClientCheckTrialAvailabilityOptions`
 - New field `Zones` in struct `PrivateCloud`
 
 

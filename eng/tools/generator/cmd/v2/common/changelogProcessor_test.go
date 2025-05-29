@@ -206,7 +206,19 @@ func TestGetAllVersionTagsV2(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	expected := []string{"refs/tags/sdk/azidentity/v0.1.0"}
+	expected := "refs/tags/sdk/azidentity/v0.1.0"
 	assert.Contains(t, tags, expected)
+	expected = "refs/tags/sdk/azidentity/v1.10.0"
+	assert.Contains(t, tags, expected)
+	assert.GreaterOrEqual(t, len(tags), 69)
+
+	tags, err = common.GetAllVersionTagsV2("sdk/resourcemanager/network/armnetwork", sdkRepo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected = "refs/tags/sdk/resourcemanager/network/armnetwork/v0.1.0"
+	assert.Contains(t, tags, expected)
+	expected = "refs/tags/sdk/resourcemanager/network/armnetwork/v7.0.0"
+	assert.Contains(t, tags, expected)
+	assert.GreaterOrEqual(t, len(tags), 30)
 }

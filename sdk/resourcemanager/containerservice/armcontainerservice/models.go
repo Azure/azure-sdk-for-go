@@ -55,8 +55,16 @@ type AdvancedNetworkingSecurity struct {
 	// Configure Advanced Networking Security features on Cilium clusters. See individual fields for their default values.
 	Enabled *bool
 
+	// Encryption configuration for Cilium-based clusters. Once enabled all traffic between Cilium managed pods will be encrypted
+	// when it leaves the node boundary.
+	TransitEncryption *AdvancedNetworkingSecurityTransitEncryption
+}
+
+// AdvancedNetworkingSecurityTransitEncryption - Encryption configuration for Cilium-based clusters. Once enabled all traffic
+// between Cilium managed pods will be encrypted when it leaves the node boundary.
+type AdvancedNetworkingSecurityTransitEncryption struct {
 	// This can be enabled only on Cilium-based clusters. If not specified, the default value is None.
-	TransitEncryption *TransitEncryption
+	Type *TransitEncryptionType
 }
 
 // AgentPool - Agent Pool.
@@ -117,19 +125,6 @@ type AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem struct {
 type AgentPoolDeleteMachinesParameter struct {
 	// REQUIRED; The agent pool machine names.
 	MachineNames []*string
-}
-
-type AgentPoolGPUProfile struct {
-	// Specify the type of GPU driver to install when creating Windows agent pools. If not provided, AKS selects the driver based
-	// on system compatibility. This cannot be changed once the AgentPool has been
-	// created. This cannot be set on Linux AgentPools. For Linux AgentPools, the driver is selected based on system compatibility.
-	DriverType *DriverType
-
-	// The default value is true when the vmSize of the agent pool contains a GPU, false otherwise. GPU Driver Installation can
-	// only be set true when VM has an associated GPU resource. Setting this field to
-	// false prevents automatic GPU driver installation. In that case, in order for the GPU to be usable, the user must perform
-	// GPU driver installation themselves.
-	InstallGPUDriver *bool
 }
 
 // AgentPoolGatewayProfile - Profile of the managed cluster gateway agent pool.
@@ -477,6 +472,16 @@ type ExtendedLocation struct {
 	Type *ExtendedLocationTypes
 }
 
+type GPUProfile struct {
+	// Whether to install GPU drivers. When it's not specified, default is Install.
+	Driver *GPUDriver
+
+	// Specify the type of GPU driver to install when creating Windows agent pools. If not provided, AKS selects the driver based
+	// on system compatibility. This cannot be changed once the AgentPool has been
+	// created. This cannot be set on Linux AgentPools. For Linux AgentPools, the driver is selected based on system compatibility.
+	DriverType *DriverType
+}
+
 // GuardrailsAvailableVersion - Available Guardrails Version
 type GuardrailsAvailableVersion struct {
 	// REQUIRED; Whether the version is default or not and support info.
@@ -788,6 +793,49 @@ type LoadBalancerProperties struct {
 
 	// READ-ONLY; The current provisioning state.
 	ProvisioningState *string
+}
+
+// LocalDNSOverrides - Overrides for localDNS profile.
+type LocalDNSOverrides struct {
+	// Cache max TTL in seconds. See cache plugin [https://coredns.io/plugins/cache] for more information.
+	CacheDurationInSeconds *int32
+
+	// Destination server for DNS queries to be forwarded from localDNS.
+	ForwardDestination *LocalDNSForwardDestination
+
+	// Forward policy for selecting upstream DNS server. See forward plugin [https://coredns.io/plugins/forward] for more information.
+	ForwardPolicy *LocalDNSForwardPolicy
+
+	// Maximum number of concurrent queries. See forward plugin [https://coredns.io/plugins/forward] for more information.
+	MaxConcurrent *int32
+
+	// Enforce TCP or prefer UDP protocol for connections from localDNS to upstream DNS server.
+	Protocol *LocalDNSProtocol
+
+	// Log level for DNS queries in localDNS.
+	QueryLogging *LocalDNSQueryLogging
+
+	// Policy for serving stale data. See cache plugin [https://coredns.io/plugins/cache] for more information.
+	ServeStale *LocalDNSServeStale
+
+	// Serve stale duration in seconds. See cache plugin [https://coredns.io/plugins/cache] for more information.
+	ServeStaleDurationInSeconds *int32
+}
+
+// LocalDNSProfile - Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS helps improve performance
+// and reliability of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
+type LocalDNSProfile struct {
+	// KubeDNS overrides apply to DNS traffic from pods with dnsPolicy:ClusterFirst (referred to as KubeDNS traffic).
+	KubeDNSOverrides *LocalDNSOverrides
+
+	// Mode of enablement for localDNS.
+	Mode *LocalDNSMode
+
+	// VnetDNS overrides apply to DNS traffic from pods with dnsPolicy:default or kubelet (referred to as VnetDNS traffic).
+	VnetDNSOverrides *LocalDNSOverrides
+
+	// READ-ONLY; System-generated state of localDNS.
+	State *LocalDNSState
 }
 
 // Machine - A machine. Contains details about the underlying virtual machine. A machine may be visible here but not in kubectl
@@ -1110,7 +1158,7 @@ type ManagedClusterAgentPoolProfile struct {
 	GpuInstanceProfile *GPUInstanceProfile
 
 	// The GPU settings of an agent pool.
-	GpuProfile *AgentPoolGPUProfile
+	GpuProfile *GPUProfile
 
 	// This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
 	// For more information see Azure dedicated hosts
@@ -1125,6 +1173,10 @@ type ManagedClusterAgentPoolProfile struct {
 
 	// The OS configuration of Linux agent nodes.
 	LinuxOSConfig *LinuxOSConfig
+
+	// Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS helps improve performance and reliability
+	// of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
+	LocalDNSProfile *LocalDNSProfile
 
 	// The maximum number of nodes for auto-scaling
 	MaxCount *int32
@@ -1322,7 +1374,7 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	GpuInstanceProfile *GPUInstanceProfile
 
 	// The GPU settings of an agent pool.
-	GpuProfile *AgentPoolGPUProfile
+	GpuProfile *GPUProfile
 
 	// This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
 	// For more information see Azure dedicated hosts
@@ -1337,6 +1389,10 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 	// The OS configuration of Linux agent nodes.
 	LinuxOSConfig *LinuxOSConfig
+
+	// Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS helps improve performance and reliability
+	// of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
+	LocalDNSProfile *LocalDNSProfile
 
 	// The maximum number of nodes for auto-scaling
 	MaxCount *int32
@@ -1621,6 +1677,9 @@ type ManagedClusterCostAnalysis struct {
 
 // ManagedClusterHTTPProxyConfig - Cluster HTTP proxy configuration.
 type ManagedClusterHTTPProxyConfig struct {
+	// Whether to enable HTTP proxy. When disabled, the specified proxy configuration will be not be set on pods and nodes.
+	Enabled *bool
+
 	// The HTTP proxy server endpoint to use.
 	HTTPProxy *string
 
@@ -1781,6 +1840,13 @@ type ManagedClusterNATGatewayProfile struct {
 }
 
 type ManagedClusterNodeProvisioningProfile struct {
+	// This field has no effect unless mode is 'Auto'. Warning: Changing this from Auto to None on an existing cluster will cause
+	// the default Karpenter NodePools to be deleted, which will in turn drain and
+	// delete the nodes associated with those pools. It is strongly recommended to not do this unless there are idle nodes ready
+	// to take the pods evicted by that action. If not specified, the default is
+	// Auto. For more information see aka.ms/something
+	DefaultNodePools *NodeProvisioningDefaultNodePools
+
 	// Once the mode it set to Auto, it cannot be changed back to Manual.
 	Mode *NodeProvisioningMode
 }
@@ -1956,11 +2022,6 @@ type ManagedClusterProperties struct {
 	// on Namespace as a ARM Resource.
 	EnableNamespaceResources *bool
 
-	// (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in Kubernetes
-	// v1.21, and removed from Kubernetes in v1.25. Learn more at
-	// https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-	EnablePodSecurityPolicy *bool
-
 	// Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool
 
@@ -2017,6 +2078,9 @@ type ManagedClusterProperties struct {
 
 	// The Safeguards profile holds all the safeguards information for a given cluster
 	SafeguardsProfile *SafeguardsProfile
+
+	// Profile of the pod scheduler configuration.
+	SchedulerProfile *SchedulerProfile
 
 	// Security profile for the managed cluster.
 	SecurityProfile *ManagedClusterSecurityProfile
@@ -2471,6 +2535,44 @@ type ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler struct {
 	AddonAutoscaling *AddonAutoscaling
 }
 
+// ManagedNamespace - Namespace managed by ARM.
+type ManagedNamespace struct {
+	// The location of the namespace.
+	Location *string
+
+	// Properties of a namespace.
+	Properties *NamespaceProperties
+
+	// The tags to be persisted on the managed cluster namespace.
+	Tags map[string]*string
+
+	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
+	// is updated. Specify an if-match or if-none-match header with the eTag value for a
+	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	ETag *string
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// ManagedNamespaceListResult - The result of a request to list managed namespaces in a managed cluster.
+type ManagedNamespaceListResult struct {
+	// The URI to fetch the next page of results, if any.
+	NextLink *string
+
+	// The list of managed namespaces.
+	Value []*ManagedNamespace
+}
+
 type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string
@@ -2569,44 +2671,6 @@ type MeshUpgradeProfileProperties struct {
 
 	// List of revisions available for upgrade of a specific mesh revision
 	Upgrades []*string
-}
-
-// Namespace managed by ARM.
-type Namespace struct {
-	// The location of the namespace.
-	Location *string
-
-	// Properties of a namespace.
-	Properties *NamespaceProperties
-
-	// The tags to be persisted on the managed cluster namespace.
-	Tags map[string]*string
-
-	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
-	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
-	ETag *string
-
-	// READ-ONLY; Resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource that is unique within a resource group. This name can be used to access the resource.
-	Name *string
-
-	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// NamespaceListResult - The result of a request to list namespaces in a managed cluster.
-type NamespaceListResult struct {
-	// The URI to fetch the next page of results, if any.
-	NextLink *string
-
-	// The list of namespaces.
-	Value []*Namespace
 }
 
 // NamespaceProperties - Properties of a namespace managed by ARM
@@ -3126,6 +3190,24 @@ type Schedule struct {
 
 	// For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
 	Weekly *WeeklySchedule
+}
+
+// SchedulerInstanceProfile - The scheduler profile for a single scheduler instance.
+type SchedulerInstanceProfile struct {
+	// The config customization mode for this scheduler instance.
+	SchedulerConfigMode *SchedulerConfigMode
+}
+
+// SchedulerProfile - The pod scheduler profile for the cluster.
+type SchedulerProfile struct {
+	// Mapping of each scheduler instance to its profile.
+	SchedulerInstanceProfiles *SchedulerProfileSchedulerInstanceProfiles
+}
+
+// SchedulerProfileSchedulerInstanceProfiles - Mapping of each scheduler instance to its profile.
+type SchedulerProfileSchedulerInstanceProfiles struct {
+	// The scheduler profile for the upstream scheduler instance.
+	Upstream *SchedulerInstanceProfile
 }
 
 // ServiceMeshProfile - Service mesh profile for a managed cluster.

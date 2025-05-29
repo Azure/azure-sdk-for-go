@@ -384,37 +384,39 @@ type ManagedClustersClientListSafeguardsVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// ManagedNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedNamespacesClient.BeginCreateOrUpdate
 // method.
-type NamespacesClientBeginCreateOrUpdateOptions struct {
+type ManagedNamespacesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
-type NamespacesClientBeginDeleteOptions struct {
+// ManagedNamespacesClientBeginDeleteOptions contains the optional parameters for the ManagedNamespacesClient.BeginDelete
+// method.
+type ManagedNamespacesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
-type NamespacesClientGetOptions struct {
+// ManagedNamespacesClientGetOptions contains the optional parameters for the ManagedNamespacesClient.Get method.
+type ManagedNamespacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListByManagedClusterOptions contains the optional parameters for the NamespacesClient.NewListByManagedClusterPager
+// ManagedNamespacesClientListByManagedClusterOptions contains the optional parameters for the ManagedNamespacesClient.NewListByManagedClusterPager
 // method.
-type NamespacesClientListByManagedClusterOptions struct {
+type ManagedNamespacesClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListCredentialOptions contains the optional parameters for the NamespacesClient.ListCredential method.
-type NamespacesClientListCredentialOptions struct {
+// ManagedNamespacesClientListCredentialOptions contains the optional parameters for the ManagedNamespacesClient.ListCredential
+// method.
+type ManagedNamespacesClientListCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientUpdateOptions contains the optional parameters for the NamespacesClient.Update method.
-type NamespacesClientUpdateOptions struct {
+// ManagedNamespacesClientUpdateOptions contains the optional parameters for the ManagedNamespacesClient.Update method.
+type ManagedNamespacesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -78,6 +78,80 @@ func GetAllVersionTags(moduleRelativePath string) ([]string, error) {
 	return tags, nil
 }
 
+func GetAllVersionTagsV2(moduleRelativePath string, sdkRepo repo.SDKRepository) ([]string, error) {
+	arr := strings.Split(moduleRelativePath, "/")
+	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", arr[len(arr)-2], arr[len(arr)-1])
+
+	// Create remote with center sdk repo if it doesn't exist
+	remoteName := "release_remote"
+	_, err := sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{sdk_remote_url}})
+	if err != nil && err != git.ErrRemoteExists {
+		return nil, fmt.Errorf("failed to create remote: %v", err)
+	}
+	// Fetch all tags from remote with unshallow if needed
+	fetchOpts := &git.FetchOptions{
+		RemoteName: remoteName,
+		RefSpecs:   []config.RefSpec{"refs/tags/*:refs/tags/*"},
+		Tags:       git.AllTags,
+		Force:      true,
+	}
+
+	err = sdkRepo.Fetch(fetchOpts)
+
+	// It's normal to get "already up-to-date" error if tags are already fetched
+	if err != nil && err != git.NoErrAlreadyUpToDate {
+		return nil, fmt.Errorf("failed to fetch tags: %v", err)
+	}
+
+	// Get all tags
+	tags, err := sdkRepo.Tags()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tags: %v", err)
+	}
+
+	var versions []string
+	var result []string
+	versionTag := make(map[string]string)
+	err = tags.ForEach(func(ref *plumbing.Reference) error {
+		tagName := ref.Name().String()
+		if strings.Contains(tagName, moduleRelativePath+"/v") {
+			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
+			if m != "" {
+				versions = append(versions, m)
+				versionTag[m] = tagName
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to process tags: %v", err)
+	}
+
+	// Sort versions in descending order
+	vs := make([]*semver.Version, len(versions))
+	for i, r := range versions {
+		v, err := semver.NewVersion(r)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse version %s: %v", r, err)
+		}
+		vs[i] = v
+	}
+	sort.Sort(sort.Reverse(semver.Collection(vs)))
+
+	// Build final result
+	for _, v := range vs {
+		result = append(result, versionTag[v.Original()])
+	}
+
+	// remove remote
+	err = sdkRepo.DeleteRemote(remoteName)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
 	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
 

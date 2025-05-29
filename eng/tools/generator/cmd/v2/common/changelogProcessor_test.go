@@ -4,10 +4,14 @@
 package common_test
 
 import (
+	"log"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -183,4 +187,26 @@ func TestNonExportedFilter(t *testing.T) {
 
 	excepted := "### Breaking Changes\n\n- Function `*Public.PublicMethod` has been removed\n\n### Features Added\n\n- New function `*Public.NewPublicMethos() `\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
+func TestGetAllVersionTagsV2(t *testing.T) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	log.Printf("Using current directory as SDK root: %s", cwd)
+
+	// create sdk repo ref
+	sdkRepo, err := repo.OpenSDKRepository(utils.NormalizePath(cwd))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tags, err := common.GetAllVersionTagsV2("refs/tags/sdk/azidentity", sdkRepo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := []string{"refs/tags/sdk/azidentity/v0.1.0"}
+	assert.Contains(t, tags, expected)
 }

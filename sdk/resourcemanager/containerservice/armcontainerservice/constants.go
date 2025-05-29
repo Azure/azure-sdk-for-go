@@ -7,7 +7,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v7.0.0-beta.2"
+	moduleVersion = "v7.0.0-beta.3"
 )
 
 // AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.

@@ -1,5 +1,9 @@
 # Release History
 
+## 7.0.0-beta.3 (2025-05-29)
+### Other Changes
+
+
 ## 7.0.0-beta.2 (2025-04-24)
 ### Breaking Changes
 

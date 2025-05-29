@@ -79,7 +79,7 @@ func ExampleLocationsClient_CheckTrialAvailability_locationsCheckTrialAvailabili
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewLocationsClient().CheckTrialAvailability(ctx, "eastus", &armavs.LocationsClientCheckTrialAvailabilityOptions{
-		Sku: &armavs.SKU{
+		SKU: &armavs.SKU{
 			Name: to.Ptr("avs52t"),
 		}})
 	if err != nil {

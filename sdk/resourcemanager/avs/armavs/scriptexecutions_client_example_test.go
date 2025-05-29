@@ -178,7 +178,7 @@ func ExampleScriptExecutionsClient_GetExecutionLogs() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewScriptExecutionsClient().GetExecutionLogs(ctx, "group1", "cloud1", "addSsoServer", &armavs.ScriptExecutionsClientGetExecutionLogsOptions{
-		ScriptOutputStreamType: &[]*armavs.ScriptOutputStreamType{
+		ScriptOutputStreamType: []*armavs.ScriptOutputStreamType{
 			to.Ptr(armavs.ScriptOutputStreamTypeInformation),
 			to.Ptr(armavs.ScriptOutputStreamType("Warnings")),
 			to.Ptr(armavs.ScriptOutputStreamType("Errors")),

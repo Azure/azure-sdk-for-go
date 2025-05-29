@@ -112,13 +112,14 @@ func GetAllVersionTagsV2(moduleRelativePath string, sdkRepo repo.SDKRepository) 
 	var versions []string
 	var result []string
 	versionTag := make(map[string]string)
+	semverRegex := regexp.MustCompile(semver.SemVerRegex) // Precompile the regex
 	err = tags.ForEach(func(ref *plumbing.Reference) error {
 		tagName := ref.Name().String()
 		if strings.Contains(tagName, moduleRelativePath+"/v") {
-			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
-			if m != "" {
-				versions = append(versions, m)
-				versionTag[m] = tagName
+			matchedVersion := semverRegex.FindString(tagName)
+			if matchedVersion != "" {
+				versions = append(versions, matchedVersion)
+				versionTag[matchedVersion] = tagName
 			}
 		}
 		return nil

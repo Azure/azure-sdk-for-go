@@ -20,7 +20,8 @@ type httpGetter func(ctx context.Context, i httpGetterInfo) (io.ReadCloser, erro
 // httpGetterInfo is passed to an HTTPGetter function passing it parameters
 // that should be used to make an HTTP GET request.
 type httpGetterInfo struct {
-	Range HTTPRange
+	Range     HTTPRange
+	ChunkSize int64
 }
 
 // RetryReaderOptions configures the retry reader's behavior.

@@ -567,7 +567,7 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 	return DownloadStreamResponse{
 		DownloadResponse:      resp,
 		client:                f,
-		getInfo:               httpGetterInfo{Range: options.Range},
+		getInfo:               httpGetterInfo{Range: options.Range, ChunkSize: options.ChunkSize},
 		leaseAccessConditions: options.LeaseAccessConditions,
 	}, err
 }

@@ -2463,7 +2463,48 @@ func (s *RecordedTestSuite) TestDirSetHTTPHeadersIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
-func (s *UnrecordedTestSuite) TestDirectoryRenameUsingSAS() {
+func (s *UnrecordedTestSuite) TestDirectoryGetPropertiesWithEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirectoryClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createDirOpts := &directory.CreateOptions{
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	}
+
+	resp, err := dirClient.Create(context.Background(), createDirOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Equal(testcommon.TestEncryptionContext, *response.EncryptionContext)
+
+	// Create a directory without encryption context
+	dirClient2, err := testcommon.GetDirectoryClient(filesystemName, dirName+"test", s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp2, err := dirClient2.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp2)
+
+	response2, err := dirClient2.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Nil(response2.EncryptionContext)
+}
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

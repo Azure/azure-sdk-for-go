@@ -6,7 +6,7 @@ package armworkloadssapvirtualinstance
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadssapvirtualinstance/armworkloadssapvirtualinstance"
-	moduleVersion = "v1.0.1"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

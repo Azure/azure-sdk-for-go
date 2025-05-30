@@ -346,39 +346,39 @@ type ManagedClustersClientUpdateTagsResponse struct {
 	ManagedCluster
 }
 
-// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.BeginCreateOrUpdate.
-type NamespacesClientCreateOrUpdateResponse struct {
+// ManagedNamespacesClientCreateOrUpdateResponse contains the response from method ManagedNamespacesClient.BeginCreateOrUpdate.
+type ManagedNamespacesClientCreateOrUpdateResponse struct {
 	// Namespace managed by ARM.
-	Namespace
+	ManagedNamespace
 }
 
-// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
-type NamespacesClientDeleteResponse struct {
+// ManagedNamespacesClientDeleteResponse contains the response from method ManagedNamespacesClient.BeginDelete.
+type ManagedNamespacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
-type NamespacesClientGetResponse struct {
+// ManagedNamespacesClientGetResponse contains the response from method ManagedNamespacesClient.Get.
+type ManagedNamespacesClientGetResponse struct {
 	// Namespace managed by ARM.
-	Namespace
+	ManagedNamespace
 }
 
-// NamespacesClientListByManagedClusterResponse contains the response from method NamespacesClient.NewListByManagedClusterPager.
-type NamespacesClientListByManagedClusterResponse struct {
-	// The result of a request to list namespaces in a managed cluster.
-	NamespaceListResult
+// ManagedNamespacesClientListByManagedClusterResponse contains the response from method ManagedNamespacesClient.NewListByManagedClusterPager.
+type ManagedNamespacesClientListByManagedClusterResponse struct {
+	// The result of a request to list managed namespaces in a managed cluster.
+	ManagedNamespaceListResult
 }
 
-// NamespacesClientListCredentialResponse contains the response from method NamespacesClient.ListCredential.
-type NamespacesClientListCredentialResponse struct {
+// ManagedNamespacesClientListCredentialResponse contains the response from method ManagedNamespacesClient.ListCredential.
+type ManagedNamespacesClientListCredentialResponse struct {
 	// The list credential result response.
 	CredentialResults
 }
 
-// NamespacesClientUpdateResponse contains the response from method NamespacesClient.Update.
-type NamespacesClientUpdateResponse struct {
+// ManagedNamespacesClientUpdateResponse contains the response from method ManagedNamespacesClient.Update.
+type ManagedNamespacesClientUpdateResponse struct {
 	// Namespace managed by ARM.
-	Namespace
+	ManagedNamespace
 }
 
 // OperationStatusResultClientGetByAgentPoolResponse contains the response from method OperationStatusResultClient.GetByAgentPool.

@@ -7,7 +7,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v7.0.0-beta.2"
+	moduleVersion = "v7.0.0-beta.3"
 )
 
 // AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
@@ -353,6 +353,24 @@ func PossibleFormatValues() []Format {
 	}
 }
 
+// GPUDriver - Whether to install GPU drivers. When it's not specified, default is Install.
+type GPUDriver string
+
+const (
+	// GPUDriverInstall - Install driver.
+	GPUDriverInstall GPUDriver = "Install"
+	// GPUDriverNone - Skip driver install.
+	GPUDriverNone GPUDriver = "None"
+)
+
+// PossibleGPUDriverValues returns the possible values for the GPUDriver const type.
+func PossibleGPUDriverValues() []GPUDriver {
+	return []GPUDriver{
+		GPUDriverInstall,
+		GPUDriverNone,
+	}
+}
+
 // GPUInstanceProfile - GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.
 type GPUInstanceProfile string
 
@@ -560,6 +578,150 @@ func PossibleLoadBalancerSKUValues() []LoadBalancerSKU {
 	return []LoadBalancerSKU{
 		LoadBalancerSKUBasic,
 		LoadBalancerSKUStandard,
+	}
+}
+
+// LocalDNSForwardDestination - Destination server for DNS queries to be forwarded from localDNS.
+type LocalDNSForwardDestination string
+
+const (
+	// LocalDNSForwardDestinationClusterCoreDNS - Forward DNS queries from localDNS to cluster CoreDNS.
+	LocalDNSForwardDestinationClusterCoreDNS LocalDNSForwardDestination = "ClusterCoreDNS"
+	// LocalDNSForwardDestinationVnetDNS - Forward DNS queries from localDNS to DNS server configured in the VNET. A VNET can
+	// have multiple DNS servers configured.
+	LocalDNSForwardDestinationVnetDNS LocalDNSForwardDestination = "VnetDNS"
+)
+
+// PossibleLocalDNSForwardDestinationValues returns the possible values for the LocalDNSForwardDestination const type.
+func PossibleLocalDNSForwardDestinationValues() []LocalDNSForwardDestination {
+	return []LocalDNSForwardDestination{
+		LocalDNSForwardDestinationClusterCoreDNS,
+		LocalDNSForwardDestinationVnetDNS,
+	}
+}
+
+// LocalDNSForwardPolicy - Forward policy for selecting upstream DNS server. See forward plugin [https://coredns.io/plugins/forward]
+// for more information.
+type LocalDNSForwardPolicy string
+
+const (
+	// LocalDNSForwardPolicyRandom - Implements random upstream DNS server selection. See [forward plugin](https://coredns.io/plugins/forward)
+	// for more information.
+	LocalDNSForwardPolicyRandom LocalDNSForwardPolicy = "Random"
+	// LocalDNSForwardPolicyRoundRobin - Implements round robin upstream DNS server selection. See [forward plugin](https://coredns.io/plugins/forward)
+	// for more information.
+	LocalDNSForwardPolicyRoundRobin LocalDNSForwardPolicy = "RoundRobin"
+	// LocalDNSForwardPolicySequential - Implements sequential upstream DNS server selection. See [forward plugin](https://coredns.io/plugins/forward)
+	// for more information.
+	LocalDNSForwardPolicySequential LocalDNSForwardPolicy = "Sequential"
+)
+
+// PossibleLocalDNSForwardPolicyValues returns the possible values for the LocalDNSForwardPolicy const type.
+func PossibleLocalDNSForwardPolicyValues() []LocalDNSForwardPolicy {
+	return []LocalDNSForwardPolicy{
+		LocalDNSForwardPolicyRandom,
+		LocalDNSForwardPolicyRoundRobin,
+		LocalDNSForwardPolicySequential,
+	}
+}
+
+// LocalDNSMode - Mode of enablement for localDNS.
+type LocalDNSMode string
+
+const (
+	// LocalDNSModeDisabled - Disable localDNS.
+	LocalDNSModeDisabled LocalDNSMode = "Disabled"
+	// LocalDNSModePreferred - If the current orchestrator version supports this feature, prefer enabling localDNS.
+	LocalDNSModePreferred LocalDNSMode = "Preferred"
+	// LocalDNSModeRequired - Enable localDNS.
+	LocalDNSModeRequired LocalDNSMode = "Required"
+)
+
+// PossibleLocalDNSModeValues returns the possible values for the LocalDNSMode const type.
+func PossibleLocalDNSModeValues() []LocalDNSMode {
+	return []LocalDNSMode{
+		LocalDNSModeDisabled,
+		LocalDNSModePreferred,
+		LocalDNSModeRequired,
+	}
+}
+
+// LocalDNSProtocol - Enforce TCP or prefer UDP protocol for connections from localDNS to upstream DNS server.
+type LocalDNSProtocol string
+
+const (
+	// LocalDNSProtocolForceTCP - Enforce TCP protocol for connections from localDNS to upstream DNS server.
+	LocalDNSProtocolForceTCP LocalDNSProtocol = "ForceTCP"
+	// LocalDNSProtocolPreferUDP - Prefer UDP protocol for connections from localDNS to upstream DNS server.
+	LocalDNSProtocolPreferUDP LocalDNSProtocol = "PreferUDP"
+)
+
+// PossibleLocalDNSProtocolValues returns the possible values for the LocalDNSProtocol const type.
+func PossibleLocalDNSProtocolValues() []LocalDNSProtocol {
+	return []LocalDNSProtocol{
+		LocalDNSProtocolForceTCP,
+		LocalDNSProtocolPreferUDP,
+	}
+}
+
+// LocalDNSQueryLogging - Log level for DNS queries in localDNS.
+type LocalDNSQueryLogging string
+
+const (
+	// LocalDNSQueryLoggingError - Enables error logging in localDNS. See [errors plugin](https://coredns.io/plugins/errors) for
+	// more information.
+	LocalDNSQueryLoggingError LocalDNSQueryLogging = "Error"
+	// LocalDNSQueryLoggingLog - Enables query logging in localDNS. See [log plugin](https://coredns.io/plugins/log) for more
+	// information.
+	LocalDNSQueryLoggingLog LocalDNSQueryLogging = "Log"
+)
+
+// PossibleLocalDNSQueryLoggingValues returns the possible values for the LocalDNSQueryLogging const type.
+func PossibleLocalDNSQueryLoggingValues() []LocalDNSQueryLogging {
+	return []LocalDNSQueryLogging{
+		LocalDNSQueryLoggingError,
+		LocalDNSQueryLoggingLog,
+	}
+}
+
+// LocalDNSServeStale - Policy for serving stale data. See cache plugin [https://coredns.io/plugins/cache] for more information.
+type LocalDNSServeStale string
+
+const (
+	// LocalDNSServeStaleDisable - Disable serving stale data.
+	LocalDNSServeStaleDisable LocalDNSServeStale = "Disable"
+	// LocalDNSServeStaleImmediate - Serve stale data immediately. Send the expired entry to the client before checking to see
+	// if the entry is available from the source. See [cache plugin](https://coredns.io/plugins/cache) for more information.
+	LocalDNSServeStaleImmediate LocalDNSServeStale = "Immediate"
+	// LocalDNSServeStaleVerify - Serve stale data with verification. First verify that an entry is still unavailable from the
+	// source before sending the expired entry to the client. See [cache plugin](https://coredns.io/plugins/cache) for more information.
+	LocalDNSServeStaleVerify LocalDNSServeStale = "Verify"
+)
+
+// PossibleLocalDNSServeStaleValues returns the possible values for the LocalDNSServeStale const type.
+func PossibleLocalDNSServeStaleValues() []LocalDNSServeStale {
+	return []LocalDNSServeStale{
+		LocalDNSServeStaleDisable,
+		LocalDNSServeStaleImmediate,
+		LocalDNSServeStaleVerify,
+	}
+}
+
+// LocalDNSState - System-generated state of localDNS.
+type LocalDNSState string
+
+const (
+	// LocalDNSStateDisabled - localDNS is disabled.
+	LocalDNSStateDisabled LocalDNSState = "Disabled"
+	// LocalDNSStateEnabled - localDNS is enabled.
+	LocalDNSStateEnabled LocalDNSState = "Enabled"
+)
+
+// PossibleLocalDNSStateValues returns the possible values for the LocalDNSState const type.
+func PossibleLocalDNSStateValues() []LocalDNSState {
+	return []LocalDNSState{
+		LocalDNSStateDisabled,
+		LocalDNSStateEnabled,
 	}
 }
 
@@ -843,6 +1005,29 @@ func PossibleNodeOSUpgradeChannelValues() []NodeOSUpgradeChannel {
 	}
 }
 
+// NodeProvisioningDefaultNodePools - This field has no effect unless mode is 'Auto'. Warning: Changing this from Auto to
+// None on an existing cluster will cause the default Karpenter NodePools to be deleted, which will in turn drain and
+// delete the nodes associated with those pools. It is strongly recommended to not do this unless there are idle nodes ready
+// to take the pods evicted by that action. If not specified, the default is
+// Auto. For more information see aka.ms/something
+type NodeProvisioningDefaultNodePools string
+
+const (
+	// NodeProvisioningDefaultNodePoolsAuto - A standard set of Karpenter NodePools are provisioned
+	NodeProvisioningDefaultNodePoolsAuto NodeProvisioningDefaultNodePools = "Auto"
+	// NodeProvisioningDefaultNodePoolsNone - No Karpenter NodePools are provisioned automatically. Automatic scaling will not
+	// happen unless the user creates one or more NodePool instances.
+	NodeProvisioningDefaultNodePoolsNone NodeProvisioningDefaultNodePools = "None"
+)
+
+// PossibleNodeProvisioningDefaultNodePoolsValues returns the possible values for the NodeProvisioningDefaultNodePools const type.
+func PossibleNodeProvisioningDefaultNodePoolsValues() []NodeProvisioningDefaultNodePools {
+	return []NodeProvisioningDefaultNodePools{
+		NodeProvisioningDefaultNodePoolsAuto,
+		NodeProvisioningDefaultNodePoolsNone,
+	}
+}
+
 // NodeProvisioningMode - Once the mode it set to Auto, it cannot be changed back to Manual.
 type NodeProvisioningMode string
 
@@ -901,6 +1086,12 @@ const (
 	OSSKUMariner OSSKU = "Mariner"
 	// OSSKUUbuntu - Use Ubuntu as the OS for node images.
 	OSSKUUbuntu OSSKU = "Ubuntu"
+	// OSSKUUbuntu2204 - Use Ubuntu2204 as the OS for node images, however, Ubuntu 22.04 may not be supported for all nodepools.
+	// For limitations and supported kubernetes versions, see see https://aka.ms/aks/supported-ubuntu-versions
+	OSSKUUbuntu2204 OSSKU = "Ubuntu2204"
+	// OSSKUUbuntu2404 - Use Ubuntu2404 as the OS for node images, however, Ubuntu 24.04 may not be supported for all nodepools.
+	// For limitations and supported kubernetes versions, see see https://aka.ms/aks/supported-ubuntu-versions
+	OSSKUUbuntu2404 OSSKU = "Ubuntu2404"
 	// OSSKUWindows2019 - Use Windows2019 as the OS for node images. Unsupported for system node pools. Windows2019 only supports
 	// Windows2019 containers; it cannot run Windows2022 containers and vice versa.
 	OSSKUWindows2019 OSSKU = "Windows2019"
@@ -919,6 +1110,8 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUCBLMariner,
 		OSSKUMariner,
 		OSSKUUbuntu,
+		OSSKUUbuntu2204,
+		OSSKUUbuntu2404,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
 		OSSKUWindowsAnnual,
@@ -1246,6 +1439,25 @@ func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 	}
 }
 
+// SchedulerConfigMode - The config customization mode for this scheduler instance.
+type SchedulerConfigMode string
+
+const (
+	// SchedulerConfigModeDefault - No config customization. Use default configuration.
+	SchedulerConfigModeDefault SchedulerConfigMode = "Default"
+	// SchedulerConfigModeManagedByCRD - Enable config customization. Customer can specify scheduler configuration via a CRD.
+	// See aka.ms/aks/scheduler-crd for details.
+	SchedulerConfigModeManagedByCRD SchedulerConfigMode = "ManagedByCRD"
+)
+
+// PossibleSchedulerConfigModeValues returns the possible values for the SchedulerConfigMode const type.
+func PossibleSchedulerConfigModeValues() []SchedulerConfigMode {
+	return []SchedulerConfigMode{
+		SchedulerConfigModeDefault,
+		SchedulerConfigModeManagedByCRD,
+	}
+}
+
 // SeccompDefault - Specifies the default seccomp profile applied to all workloads. If not specified, 'Unconfined' will be
 // used by default.
 type SeccompDefault string
@@ -1302,21 +1514,22 @@ func PossibleSnapshotTypeValues() []SnapshotType {
 	}
 }
 
-// TransitEncryption - This can be enabled only on Cilium-based clusters. If not specified, the default value is None.
-type TransitEncryption string
+// TransitEncryptionType - This can be enabled only on Cilium-based clusters. If not specified, the default value is None.
+type TransitEncryptionType string
 
 const (
-	// TransitEncryptionNone - Disable WireGuard encryption for cluster traffic
-	TransitEncryptionNone TransitEncryption = "None"
-	// TransitEncryptionWireGuard - Enable WireGuard encryption for cluster traffic
-	TransitEncryptionWireGuard TransitEncryption = "WireGuard"
+	// TransitEncryptionTypeNone - Disable Transit encryption
+	TransitEncryptionTypeNone TransitEncryptionType = "None"
+	// TransitEncryptionTypeWireGuard - Enable WireGuard encryption. Refer to https://docs.cilium.io/en/latest/security/network/encryption-wireguard/
+	// on use cases and implementation details
+	TransitEncryptionTypeWireGuard TransitEncryptionType = "WireGuard"
 )
 
-// PossibleTransitEncryptionValues returns the possible values for the TransitEncryption const type.
-func PossibleTransitEncryptionValues() []TransitEncryption {
-	return []TransitEncryption{
-		TransitEncryptionNone,
-		TransitEncryptionWireGuard,
+// PossibleTransitEncryptionTypeValues returns the possible values for the TransitEncryptionType const type.
+func PossibleTransitEncryptionTypeValues() []TransitEncryptionType {
+	return []TransitEncryptionType{
+		TransitEncryptionTypeNone,
+		TransitEncryptionTypeWireGuard,
 	}
 }
 

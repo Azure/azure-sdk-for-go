@@ -89,9 +89,9 @@ func (c *ClientFactory) NewManagedClustersClient() *ManagedClustersClient {
 	}
 }
 
-// NewNamespacesClient creates a new instance of NamespacesClient.
-func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
-	return &NamespacesClient{
+// NewManagedNamespacesClient creates a new instance of ManagedNamespacesClient.
+func (c *ClientFactory) NewManagedNamespacesClient() *ManagedNamespacesClient {
+	return &ManagedNamespacesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

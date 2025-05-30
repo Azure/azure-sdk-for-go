@@ -122,3 +122,25 @@ type PrivateLinksClientListByMongoClusterOptions struct {
 type ReplicasClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }
+
+// UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate method.
+type UsersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
+type UsersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// UsersClientGetOptions contains the optional parameters for the UsersClient.Get method.
+type UsersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UsersClientListByMongoClusterOptions contains the optional parameters for the UsersClient.NewListByMongoClusterPager method.
+type UsersClientListByMongoClusterOptions struct {
+	// placeholder for future optional parameters
+}

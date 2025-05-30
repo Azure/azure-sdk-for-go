@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- `AzureCLICredential` and `AzureDeveloperCLICredential` could wait indefinitely for subprocess output
 
 ### Other Changes
 

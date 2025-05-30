@@ -16,68 +16,67 @@ import (
 	"strings"
 )
 
-// AddonsClient contains the methods for the Addons group.
-// Don't use this type directly, use NewAddonsClient() instead.
-type AddonsClient struct {
+// PureStoragePoliciesClient contains the methods for the PureStoragePolicies group.
+// Don't use this type directly, use NewPureStoragePoliciesClient() instead.
+type PureStoragePoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAddonsClient creates a new instance of AddonsClient with the specified values.
+// NewPureStoragePoliciesClient creates a new instance of PureStoragePoliciesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewAddonsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AddonsClient, error) {
+func NewPureStoragePoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PureStoragePoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &AddonsClient{
+	client := &PureStoragePoliciesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a Addon
+// BeginCreateOrUpdate - Create a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - addonName - Name of the addon.
-//   - addon - Resource create parameters.
-//   - options - AddonsClientBeginCreateOrUpdateOptions contains the optional parameters for the AddonsClient.BeginCreateOrUpdate
+//   - storagePolicyName - Name of the storage policy.
+//   - resource - Resource create parameters.
+//   - options - PureStoragePoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PureStoragePoliciesClient.BeginCreateOrUpdate
 //     method.
-func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AddonsClientCreateOrUpdateResponse], error) {
+func (client *PureStoragePoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, resource PureStoragePolicy, options *PureStoragePoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PureStoragePoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, addonName, addon, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, storagePolicyName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AddonsClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PureStoragePoliciesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AddonsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PureStoragePoliciesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create a Addon
+// CreateOrUpdate - Create a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-09-01
-func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *PureStoragePoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, resource PureStoragePolicy, options *PureStoragePoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AddonsClient.BeginCreateOrUpdate"
+	const operationName = "PureStoragePoliciesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, addon, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, storagePolicyName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -93,8 +92,8 @@ func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, _ *AddonsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
+func (client *PureStoragePoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, resource PureStoragePolicy, _ *PureStoragePoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -107,10 +106,10 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	if addonName == "" {
-		return nil, errors.New("parameter addonName cannot be empty")
+	if storagePolicyName == "" {
+		return nil, errors.New("parameter storagePolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{addonName}", url.PathEscape(addonName))
+	urlPath = strings.ReplaceAll(urlPath, "{storagePolicyName}", url.PathEscape(storagePolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -120,48 +119,49 @@ func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, addon); err != nil {
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// BeginDelete - Delete a Addon
+// BeginDelete - Delete a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - addonName - Name of the addon.
-//   - options - AddonsClientBeginDeleteOptions contains the optional parameters for the AddonsClient.BeginDelete method.
-func (client *AddonsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (*runtime.Poller[AddonsClientDeleteResponse], error) {
+//   - storagePolicyName - Name of the storage policy.
+//   - options - PureStoragePoliciesClientBeginDeleteOptions contains the optional parameters for the PureStoragePoliciesClient.BeginDelete
+//     method.
+func (client *PureStoragePoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, options *PureStoragePoliciesClientBeginDeleteOptions) (*runtime.Poller[PureStoragePoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, addonName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, storagePolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AddonsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PureStoragePoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AddonsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PureStoragePoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a Addon
+// Delete - Delete a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-09-01
-func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PureStoragePoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, options *PureStoragePoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AddonsClient.BeginDelete"
+	const operationName = "PureStoragePoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, storagePolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +169,7 @@ func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -177,8 +177,8 @@ func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, _ *AddonsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
+func (client *PureStoragePoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, _ *PureStoragePoliciesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -191,10 +191,10 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	if addonName == "" {
-		return nil, errors.New("parameter addonName cannot be empty")
+	if storagePolicyName == "" {
+		return nil, errors.New("parameter storagePolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{addonName}", url.PathEscape(addonName))
+	urlPath = strings.ReplaceAll(urlPath, "{storagePolicyName}", url.PathEscape(storagePolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -206,39 +206,39 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// Get - Get a Addon
+// Get - Get a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - addonName - Name of the addon.
-//   - options - AddonsClientGetOptions contains the optional parameters for the AddonsClient.Get method.
-func (client *AddonsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientGetOptions) (AddonsClientGetResponse, error) {
+//   - storagePolicyName - Name of the storage policy.
+//   - options - PureStoragePoliciesClientGetOptions contains the optional parameters for the PureStoragePoliciesClient.Get method.
+func (client *PureStoragePoliciesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, options *PureStoragePoliciesClientGetOptions) (PureStoragePoliciesClientGetResponse, error) {
 	var err error
-	const operationName = "AddonsClient.Get"
+	const operationName = "PureStoragePoliciesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, storagePolicyName, options)
 	if err != nil {
-		return AddonsClientGetResponse{}, err
+		return PureStoragePoliciesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AddonsClientGetResponse{}, err
+		return PureStoragePoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return AddonsClientGetResponse{}, err
+		return PureStoragePoliciesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, _ *AddonsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons/{addonName}"
+func (client *PureStoragePoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, _ *PureStoragePoliciesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -251,10 +251,10 @@ func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	if addonName == "" {
-		return nil, errors.New("parameter addonName cannot be empty")
+	if storagePolicyName == "" {
+		return nil, errors.New("parameter storagePolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{addonName}", url.PathEscape(addonName))
+	urlPath = strings.ReplaceAll(urlPath, "{storagePolicyName}", url.PathEscape(storagePolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -267,27 +267,28 @@ func (client *AddonsClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *AddonsClient) getHandleResponse(resp *http.Response) (AddonsClientGetResponse, error) {
-	result := AddonsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Addon); err != nil {
-		return AddonsClientGetResponse{}, err
+func (client *PureStoragePoliciesClient) getHandleResponse(resp *http.Response) (PureStoragePoliciesClientGetResponse, error) {
+	result := PureStoragePoliciesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PureStoragePolicy); err != nil {
+		return PureStoragePoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - List Addon resources by PrivateCloud
+// NewListPager - List PureStoragePolicy resources by PrivateCloud
 //
 // Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
-//   - options - AddonsClientListOptions contains the optional parameters for the AddonsClient.NewListPager method.
-func (client *AddonsClient) NewListPager(resourceGroupName string, privateCloudName string, options *AddonsClientListOptions) *runtime.Pager[AddonsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AddonsClientListResponse]{
-		More: func(page AddonsClientListResponse) bool {
+//   - options - PureStoragePoliciesClientListOptions contains the optional parameters for the PureStoragePoliciesClient.NewListPager
+//     method.
+func (client *PureStoragePoliciesClient) NewListPager(resourceGroupName string, privateCloudName string, options *PureStoragePoliciesClientListOptions) *runtime.Pager[PureStoragePoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PureStoragePoliciesClientListResponse]{
+		More: func(page PureStoragePoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AddonsClientListResponse) (AddonsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AddonsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *PureStoragePoliciesClientListResponse) (PureStoragePoliciesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PureStoragePoliciesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -296,7 +297,7 @@ func (client *AddonsClient) NewListPager(resourceGroupName string, privateCloudN
 				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 			}, nil)
 			if err != nil {
-				return AddonsClientListResponse{}, err
+				return PureStoragePoliciesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -305,8 +306,8 @@ func (client *AddonsClient) NewListPager(resourceGroupName string, privateCloudN
 }
 
 // listCreateRequest creates the List request.
-func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *AddonsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons"
+func (client *PureStoragePoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *PureStoragePoliciesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -331,10 +332,10 @@ func (client *AddonsClient) listCreateRequest(ctx context.Context, resourceGroup
 }
 
 // listHandleResponse handles the List response.
-func (client *AddonsClient) listHandleResponse(resp *http.Response) (AddonsClientListResponse, error) {
-	result := AddonsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AddonList); err != nil {
-		return AddonsClientListResponse{}, err
+func (client *PureStoragePoliciesClient) listHandleResponse(resp *http.Response) (PureStoragePoliciesClientListResponse, error) {
+	result := PureStoragePoliciesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PureStoragePolicyListResult); err != nil {
+		return PureStoragePoliciesClientListResponse{}, err
 	}
 	return result, nil
 }

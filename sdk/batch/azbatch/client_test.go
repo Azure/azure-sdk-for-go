@@ -35,6 +35,7 @@ func TestApplications(t *testing.T) {
 }
 
 func TestCertificates(t *testing.T) {
+	t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/24713")
 	client := record(t)
 	cc, err := client.CreateCertificate(ctx, azbatch.Certificate{
 		Format: to.Ptr(azbatch.CertificateFormatCER),

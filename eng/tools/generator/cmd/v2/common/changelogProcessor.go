@@ -78,6 +78,69 @@ func GetAllVersionTags(moduleRelativePath string) ([]string, error) {
 	return tags, nil
 }
 
+func GetAllVersionTagsV2(moduleRelativePath string, sdkRepo repo.SDKRepository) ([]string, error) {
+	arr := strings.Split(moduleRelativePath, "/")
+	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", arr[len(arr)-2], arr[len(arr)-1])
+
+	remoteName := "release_remote"
+	fetchOpts := &git.FetchOptions{
+		RemoteName: remoteName,
+		RefSpecs:   []config.RefSpec{"refs/tags/*:refs/tags/*"},
+		Tags:       git.AllTags,
+	}
+
+	err := FetchTagsFromRemote(sdkRepo, remoteName, fetchOpts)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get all tags
+	tags, err := sdkRepo.Tags()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tags: %v", err)
+	}
+
+	var versions []string
+	var result []string
+	versionTag := make(map[string]string)
+	semverRegex := regexp.MustCompile(semver.SemVerRegex) // Precompile the regex
+	err = tags.ForEach(func(ref *plumbing.Reference) error {
+		tagName := ref.Name().String()
+		if strings.Contains(tagName, moduleRelativePath+"/v") {
+			matchedVersion := semverRegex.FindString(tagName)
+			if matchedVersion != "" {
+				versions = append(versions, matchedVersion)
+				versionTag[matchedVersion] = tagName
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to process tags: %v", err)
+	}
+
+	// Sort versions in descending order
+	vs := make([]*semver.Version, len(versions))
+	for i, r := range versions {
+		v, err := semver.NewVersion(r)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse version %s: %v", r, err)
+		}
+		vs[i] = v
+	}
+	sort.Sort(sort.Reverse(semver.Collection(vs)))
+
+	// Build final result
+	for _, v := range vs {
+		result = append(result, versionTag[v.Original()])
+	}
+	if err := cleanupRemote(sdkRepo, remoteName); err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
 	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
 
@@ -144,21 +207,15 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 		return nil, err
 	}
 
-	// create remote with center sdk repo
 	remoteName := "release_remote"
-	_, err = sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{sdk_remote_url}})
-	if err != nil {
-		if err != git.ErrRemoteExists {
-			return nil, err
-		}
+	fetchOpts := &git.FetchOptions{
+		RemoteName: remoteName,
+		RefSpecs:   []config.RefSpec{config.RefSpec(tag + ":" + tag)},
 	}
 
-	// fetch tag from remote
-	err = sdkRepo.Fetch(&git.FetchOptions{RemoteName: remoteName, RefSpecs: []config.RefSpec{config.RefSpec(tag + ":" + tag)}})
+	err = FetchTagsFromRemote(sdkRepo, remoteName, fetchOpts)
 	if err != nil {
-		if err.Error() != "already up-to-date" {
-			return nil, err
-		}
+		return nil, err
 	}
 
 	// checkout to the specific tag
@@ -181,10 +238,7 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	if err != nil {
 		return nil, err
 	}
-
-	// remove remote
-	err = sdkRepo.DeleteRemote(remoteName)
-	if err != nil {
+	if err := cleanupRemote(sdkRepo, remoteName); err != nil {
 		return nil, err
 	}
 
@@ -468,4 +522,30 @@ func nonExportOperation(content *delta.Content) {
 			delete(content.Structs, sName)
 		}
 	}
+}
+
+func FetchTagsFromRemote(sdkRepo repo.SDKRepository, remoteName string, fetchOpts *git.FetchOptions) error {
+	// Create remote with center sdk repo if it doesn't exist
+	_, err := sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{sdk_remote_url}})
+	if err != nil && err != git.ErrRemoteExists {
+		return fmt.Errorf("failed to create remote: %v", err)
+	}
+
+	// Fetch tags from remote
+	err = sdkRepo.Fetch(fetchOpts)
+	// It's normal to get "already up-to-date" error if tags are already fetched
+	if err != nil && err != git.NoErrAlreadyUpToDate && err.Error() != "already up-to-date" {
+		return fmt.Errorf("failed to fetch: %v", err)
+	}
+
+	return nil
+}
+
+func cleanupRemote(sdkRepo repo.SDKRepository, remoteName string) error {
+	// remove remote
+	err := sdkRepo.DeleteRemote(remoteName)
+	if err != nil {
+		return fmt.Errorf("failed to delete remote: %v", err)
+	}
+	return nil
 }

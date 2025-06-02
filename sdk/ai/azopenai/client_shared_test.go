@@ -127,19 +127,19 @@ var azureOpenAI = func() testVars {
 			},
 			ChatCompletions: endpointWithModel{
 				Endpoint: servers.USEast,
-				Model:    "gpt-4-0613",
+				Model:    "gpt-4",
 			},
 			ChatCompletionsLegacyFunctions: endpointWithModel{
 				Endpoint: servers.USEast,
-				Model:    "gpt-4-0613",
+				Model:    "gpt-4",
 			},
 			ChatCompletionsOYD: endpointWithModel{
 				Endpoint: servers.USEast,
-				Model:    "gpt-4-0613",
+				Model:    "gpt-4",
 			},
 			ChatCompletionsRAI: endpointWithModel{
 				Endpoint: servers.USEast,
-				Model:    "gpt-4-0613",
+				Model:    "gpt-4",
 			},
 			ChatCompletionsWithJSONResponseFormat: endpointWithModel{
 				Endpoint: servers.SWECentral,

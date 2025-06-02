@@ -1,4 +1,4 @@
-# Migration Guide from Azure OpenAI SDK v0.7.x to v1.0.0
+# Migration Guide from Azure OpenAI SDK v0.7.x to v0.8.0+
 
 ## Table of Contents
 - [Overview](#overview)
@@ -20,7 +20,7 @@ The `azopenai.Client` provided by this package has been retired in favor of the 
 
 ## Summary of Major Changes
 
-| Area                | v0.7.x Approach                | v1.0.0+ Approach (Recommended)         |
+| Area                | v0.7.x Approach                | v0.8.0+ Approach (Recommended)         |
 |---------------------|--------------------------------|----------------------------------------|
 | Client              | `azopenai.Client`              | `openai.Client`                        |
 | Assistants          | `azopenaiassistants`           | **No longer available**                |

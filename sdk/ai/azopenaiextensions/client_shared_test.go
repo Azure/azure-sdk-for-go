@@ -234,6 +234,9 @@ func getRecordingOptions(t *testing.T) *recording.RecordingOptions {
 }
 
 func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("Skipping test in live mode")
+	}
 	return newStainlessTestClientWithOptions(t, ep, nil)
 }
 

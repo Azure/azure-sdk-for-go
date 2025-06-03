@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -34,6 +35,10 @@ type ProducerClientOptions struct {
 	// A custom endpoint address that can be used when establishing the connection to the service.
 	CustomEndpoint string
 
+	// ManagementTimeout is the timeout for management operations like GetEventHubProperties and GetPartitionProperties.
+	// If not set, a default timeout of 5 minutes will be used.
+	ManagementTimeout time.Duration
+
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
 	NewWebSocketConn func(ctx context.Context, params WebSocketConnParams) (net.Conn, error)
@@ -48,10 +53,11 @@ type ProducerClientOptions struct {
 
 // ProducerClient can be used to send events to an Event Hub.
 type ProducerClient struct {
-	eventHub     string
-	links        *internal.Links[amqpwrap.AMQPSenderCloser]
-	namespace    internal.NamespaceForProducerOrConsumer
-	retryOptions RetryOptions
+	eventHub          string
+	links             *internal.Links[amqpwrap.AMQPSenderCloser]
+	managementTimeout time.Duration
+	namespace         internal.NamespaceForProducerOrConsumer
+	retryOptions      RetryOptions
 }
 
 // anyPartitionID is what we target if we want to send a message and let Event Hubs pick a partition
@@ -182,12 +188,12 @@ func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDa
 // GetPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
 // number and when an event was last enqueued to the partition.
 func (pc *ProducerClient) GetPartitionProperties(ctx context.Context, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
-	return getPartitionProperties(ctx, EventProducer, pc.namespace, pc.links, pc.eventHub, partitionID, pc.retryOptions, options)
+	return getPartitionProperties(ctx, EventProducer, pc.namespace, pc.links, pc.eventHub, partitionID, pc.retryOptions, pc.managementTimeout, options)
 }
 
 // GetEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
 func (pc *ProducerClient) GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	return getEventHubProperties(ctx, EventProducer, pc.namespace, pc.links, pc.eventHub, pc.retryOptions, options)
+	return getEventHubProperties(ctx, EventProducer, pc.namespace, pc.links, pc.eventHub, pc.retryOptions, pc.managementTimeout, options)
 }
 
 // Close releases resources for this client.
@@ -240,6 +246,9 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 		eventHub: creds.eventHub,
 	}
 
+	// Set default management timeout
+	client.managementTimeout = 5 * time.Minute
+
 	var nsOptions []internal.NamespaceOption
 
 	if creds.connectionString != "" {
@@ -254,6 +263,11 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 
 	if options != nil {
 		client.retryOptions = options.RetryOptions
+
+		// Set management timeout from options if provided
+		if options.ManagementTimeout > 0 {
+			client.managementTimeout = options.ManagementTimeout
+		}
 
 		if options.TLSConfig != nil {
 			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.TLSConfig))

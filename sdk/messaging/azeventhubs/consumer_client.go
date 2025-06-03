@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"net"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -27,6 +28,10 @@ type ConsumerClientOptions struct {
 	// diagnostics as this name will be returned in error messages. By default,
 	// an identifier will be automatically generated.
 	InstanceID string
+
+	// ManagementTimeout is the timeout for management operations like GetEventHubProperties and GetPartitionProperties.
+	// If not set, a default timeout of 5 minutes will be used.
+	ManagementTimeout time.Duration
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
@@ -51,9 +56,10 @@ type ConsumerClient struct {
 	// troubleshooting.
 	instanceID string
 
-	links        *internal.Links[amqpwrap.RPCLink]
-	namespace    *internal.Namespace
-	retryOptions RetryOptions
+	links             *internal.Links[amqpwrap.RPCLink]
+	managementTimeout time.Duration
+	namespace         *internal.Namespace
+	retryOptions      RetryOptions
 }
 
 // NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication. You
@@ -145,14 +151,14 @@ func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *Partit
 
 // GetEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
 func (cc *ConsumerClient) GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
-	return getEventHubProperties(ctx, EventConsumer, cc.namespace, cc.links, cc.eventHub, cc.retryOptions, options)
+	return getEventHubProperties(ctx, EventConsumer, cc.namespace, cc.links, cc.eventHub, cc.retryOptions, cc.managementTimeout, options)
 }
 
 // GetPartitionProperties gets properties for a specific partition. This includes data like the
 // last enqueued sequence number, the first sequence number and when an event was last enqueued
 // to the partition.
 func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
-	return getPartitionProperties(ctx, EventConsumer, cc.namespace, cc.links, cc.eventHub, partitionID, cc.retryOptions, options)
+	return getPartitionProperties(ctx, EventConsumer, cc.namespace, cc.links, cc.eventHub, partitionID, cc.retryOptions, cc.managementTimeout, options)
 }
 
 // InstanceID is the identifier for this ConsumerClient.
@@ -207,6 +213,13 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 		consumerGroup: args.consumerGroup,
 		eventHub:      args.eventHub,
 		instanceID:    instanceID,
+	}
+
+	// Set management timeout, default to 5 minutes if not specified
+	if options.ManagementTimeout > 0 {
+		client.managementTimeout = options.ManagementTimeout
+	} else {
+		client.managementTimeout = 5 * time.Minute
 	}
 
 	var nsOptions []internal.NamespaceOption

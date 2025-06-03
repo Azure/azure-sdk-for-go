@@ -264,10 +264,6 @@ var ErrConnResetNeeded = errors.New("connection must be reset, link/connection s
 
 const defaultCloseTimeout = time.Minute
 
-// DefaultManagementTimeout is the default timeout for management operations that use the $management link.
-// These operations can potentially hang indefinitely if the response never comes back, so we apply a default timeout.
-const DefaultManagementTimeout = 5 * time.Minute
-
 // ContextWithTimeoutFn matches the signature for `context.WithTimeout` and is used when we want to
 // stub things out for tests.
 type ContextWithTimeoutFn func(parent context.Context, timeout time.Duration) (context.Context, context.CancelFunc)

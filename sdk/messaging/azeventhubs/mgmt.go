@@ -56,6 +56,10 @@ func getEventHubProperties[LinkT internal.AMQPLink](ctx context.Context, eventNa
 }
 
 func getEventHubPropertiesInternal(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
+	// Ensure context has a timeout to prevent indefinite hanging
+	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
+	defer cancel()
+
 	token, err := ns.GetTokenForEntity(eventHub)
 
 	if err != nil {
@@ -132,6 +136,10 @@ func getPartitionProperties[LinkT internal.AMQPLink](ctx context.Context, eventN
 }
 
 func getPartitionPropertiesInternal(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+	// Ensure context has a timeout to prevent indefinite hanging
+	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
+	defer cancel()
+
 	token, err := ns.GetTokenForEntity(eventHub)
 
 	if err != nil {
@@ -148,7 +156,7 @@ func getPartitionPropertiesInternal(ctx context.Context, ns internal.NamespaceFo
 		},
 	}
 
-	resp, err := rpcLink.RPC(context.Background(), amqpMsg)
+	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
 	if err != nil {
 		return PartitionProperties{}, internal.TransformError(err)

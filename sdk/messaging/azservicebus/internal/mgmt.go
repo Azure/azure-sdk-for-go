@@ -32,10 +32,6 @@ const (
 )
 
 func ReceiveDeferred(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, mode exported.ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	const messagesField, messageField = "messages", "message"
 
 	backwardsMode := uint32(0)
@@ -116,10 +112,6 @@ func ReceiveDeferred(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName str
 }
 
 func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	const messagesField, messageField = "messages", "message"
 
 	msg := &amqp.Message{
@@ -222,10 +214,6 @@ func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string
 // RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
 // NOTE: this function assumes all the messages received on the same link.
 func RenewLocks(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, lockTokens []amqp.UUID) ([]time.Time, error) {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]any{
 			"operation": "com.microsoft:renew-lock",
@@ -273,10 +261,6 @@ func RenewLocks(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, 
 
 // RenewSessionLocks renews a session lock.
 func RenewSessionLock(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, sessionID string) (time.Time, error) {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	body := map[string]any{
 		"session-id": sessionID,
 	}
@@ -313,10 +297,6 @@ func RenewSessionLock(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName st
 
 // GetSessionState retrieves state associated with the session.
 func GetSessionState(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, sessionID string) ([]byte, error) {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	amqpMsg := &amqp.Message{
 		Value: map[string]any{
 			"session-id": sessionID,
@@ -362,10 +342,6 @@ func GetSessionState(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName str
 
 // SetSessionState sets the state associated with the session.
 func SetSessionState(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, sessionID string, state []byte) error {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	uuid, err := uuid.New()
 
 	if err != nil {
@@ -402,10 +378,6 @@ func SetSessionState(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName str
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
 func SettleOnMgmtLink(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]any) error {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	if lockToken == nil {
 		err := errors.New("lock token on the message is not set, thus cannot send disposition")
 		return err
@@ -449,10 +421,6 @@ func SettleOnMgmtLink(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName st
 // ScheduleMessages will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
 // that can be used to cancel each message.
 func ScheduleMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, enqueueTime time.Time, messages []*amqp.Message) ([]int64, error) {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	if len(messages) == 0 {
 		return nil, errors.New("expected one or more messages")
 	}
@@ -549,10 +517,6 @@ func ScheduleMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName st
 // CancelScheduledMessages allows for removal of messages that have been handed to the Service Bus broker for later delivery,
 // but have not yet ben enqueued.
 func CancelScheduledMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, seq []int64) error {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]any{
 			"operation": "com.microsoft:cancel-scheduled-message",

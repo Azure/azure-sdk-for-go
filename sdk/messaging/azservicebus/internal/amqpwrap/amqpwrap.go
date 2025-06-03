@@ -266,20 +266,8 @@ const defaultCloseTimeout = time.Minute
 
 // DefaultManagementTimeout is the default timeout for management operations that use the $management link.
 // These operations can potentially hang indefinitely if the response never comes back, so we apply a default timeout.
-const DefaultManagementTimeout = 2 * time.Minute
+const DefaultManagementTimeout = 5 * time.Minute
 
 // ContextWithTimeoutFn matches the signature for `context.WithTimeout` and is used when we want to
 // stub things out for tests.
 type ContextWithTimeoutFn func(parent context.Context, timeout time.Duration) (context.Context, context.CancelFunc)
-
-// EnsureContextHasTimeout adds a default timeout to the context if it doesn't already have one.
-// This is used for management operations that can potentially hang indefinitely.
-func EnsureContextHasTimeout(ctx context.Context, defaultTimeout time.Duration) (context.Context, context.CancelFunc) {
-	if _, hasDeadline := ctx.Deadline(); hasDeadline {
-		// Context already has a deadline, use it as-is
-		return ctx, func() {}
-	}
-	
-	// No deadline set, add the default timeout
-	return context.WithTimeout(ctx, defaultTimeout)
-}

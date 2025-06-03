@@ -38,6 +38,13 @@ type GetEventHubPropertiesOptions struct {
 
 // getEventHubProperties gets event hub properties, like the available partition IDs and when the Event Hub was created.
 func getEventHubProperties[LinkT internal.AMQPLink](ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links *internal.Links[LinkT], eventHub string, retryOptions RetryOptions, options *GetEventHubPropertiesOptions) (EventHubProperties, error) {
+	// Ensure context has a timeout to prevent indefinite hanging
+	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, amqpwrap.DefaultManagementTimeout)
+		defer cancel()
+	}
+
 	var props EventHubProperties
 
 	err := links.RetryManagement(ctx, eventName, "getEventHubProperties", retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {
@@ -119,6 +126,13 @@ type GetPartitionPropertiesOptions struct {
 // getPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
 // number and when an event was last enqueued to the partition.
 func getPartitionProperties[LinkT internal.AMQPLink](ctx context.Context, eventName log.Event, ns internal.NamespaceForManagementOps, links *internal.Links[LinkT], eventHub string, partitionID string, retryOptions RetryOptions, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+	// Ensure context has a timeout to prevent indefinite hanging
+	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, amqpwrap.DefaultManagementTimeout)
+		defer cancel()
+	}
+
 	var props PartitionProperties
 
 	err := links.RetryManagement(ctx, eventName, "getPartitionProperties", retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.RPCLink]) error {

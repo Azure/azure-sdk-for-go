@@ -136,10 +136,6 @@ func getPartitionProperties[LinkT internal.AMQPLink](ctx context.Context, eventN
 }
 
 func getPartitionPropertiesInternal(ctx context.Context, ns internal.NamespaceForManagementOps, rpcLink amqpwrap.RPCLink, eventHub string, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
-	// Ensure context has a timeout to prevent indefinite hanging
-	ctx, cancel := amqpwrap.EnsureContextHasTimeout(ctx, amqpwrap.DefaultManagementTimeout)
-	defer cancel()
-
 	token, err := ns.GetTokenForEntity(eventHub)
 
 	if err != nil {

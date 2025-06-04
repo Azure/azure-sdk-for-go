@@ -269,7 +269,7 @@ func (l *Links[LinkT]) checkOpen() error {
 	defer l.linksMu.RUnlock()
 
 	if l.links == nil {
-		return NewErrNonRetriable("client has been closed by user")
+		return exported.NewError(exported.ErrorCodeClientClosed, NewErrNonRetriable("client has been closed by user"))
 	}
 
 	return nil

@@ -25,6 +25,11 @@ const (
 	// When using types like the [Processor], partition ownership will change as instances
 	// rebalance.
 	ErrorCodeOwnershipLost ErrorCode = "ownershiplost"
+
+	// ErrorCodeClientClosed means the client has been closed by the user and can no longer
+	// be used for operations. This error can be safely ignored when shutting down clients
+	// and processors, as it is expected behavior.
+	ErrorCodeClientClosed ErrorCode = "clientclosed"
 )
 
 // Error represents an Event Hub specific error.

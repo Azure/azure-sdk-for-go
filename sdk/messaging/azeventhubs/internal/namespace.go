@@ -259,7 +259,7 @@ func (ns *Namespace) Check() error {
 	return nil
 }
 
-var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
+var ErrClientClosed = exported.NewError(exported.ErrorCodeClientClosed, NewErrNonRetriable("client has been closed by user"))
 
 // Recover destroys the currently held AMQP connection and recreates it, if needed.
 //

@@ -123,3 +123,10 @@ func Test_TransformError(t *testing.T) {
 	// and it's okay, for convenience, to pass a nil.
 	require.Nil(t, TransformError(nil))
 }
+
+func TestClientClosedError(t *testing.T) {
+	// Test that ErrClientClosed has the correct error code
+	var err *exported.Error
+	require.ErrorAs(t, ErrClientClosed, &err)
+	require.Equal(t, exported.ErrorCodeClientClosed, err.Code)
+}

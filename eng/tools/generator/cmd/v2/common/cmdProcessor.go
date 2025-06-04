@@ -44,16 +44,14 @@ func ExecuteGoGenerate(path string) error {
 	}
 
 	cmdWaitErr := cmd.Wait()
+	if cmdWaitErr == nil {
+		return nil
+	}
 
 	fmt.Println(stdoutBuffer.String())
 	fmt.Println(stderrBuffer.String())
 
 	if stdoutBuffer.Len() > 0 {
-		// find generated successuly flag
-		infoRegex := regexp.MustCompile(`info\s+\|\s+Autorest completed`)
-		if infoRegex.MatchString(stdoutBuffer.String()) {
-			return nil
-		}
 		if strings.Contains(stdoutBuffer.String(), "error   |") {
 			// find first error message until last
 			errMsgs := stdoutBuffer.Bytes()

@@ -122,7 +122,7 @@ func TestClient_ResponsesStreaming(t *testing.T) {
 	for stream.Next() {
 		event := stream.Current()
 		if event.Type == "response.output_text.delta" {
-			combinedOutput += event.Delta
+			combinedOutput += event.Delta.OfString
 		}
 	}
 

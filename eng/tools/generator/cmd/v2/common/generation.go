@@ -179,7 +179,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &SwaggerOnBoardGenerator{SwaggerCommonGenerator: commonGenerator}
 	} else {
-		tags, err := GetAllVersionTags(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName))
+		tags, err := GetAllVersionTagsV2(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName), *ctx.SDKRepo)
 		if err != nil {
 			return nil, err
 		}
@@ -573,7 +573,7 @@ func (ctx *GenerateContext) GenerateForSingleTypeSpec(generateParam *GeneratePar
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &TypeSpecOnBoardGenerator{TypeSpecCommonGenerator: commonGenerator}
 	} else {
-		tags, err := GetAllVersionTags(moduleRelativePath)
+		tags, err := GetAllVersionTagsV2(moduleRelativePath, *ctx.SDKRepo)
 		if err != nil {
 			return nil, err
 		}

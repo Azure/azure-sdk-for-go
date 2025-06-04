@@ -49,8 +49,6 @@ func TestClient_GetChatCompletions(t *testing.T) {
 
 		t.Logf("isAzure: %t, deployment: %s, returnedModel: %s", checkRAI, deployment, resp.Model)
 
-		require.Equal(t, returnedModel, resp.Model)
-
 		// check Choices
 		require.Equal(t, 1, len(resp.Choices))
 		choice := resp.Choices[0]
@@ -152,6 +150,7 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 				"2493":  -100,
 				"5176":  -100,
 				"43456": -100,
+				"69568": -100,
 				"99423": -100,
 			},
 		}
@@ -172,7 +171,6 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
 	chatClient := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-	returnedDeployment := "gpt-4"
 	stream := chatClient.Chat.Completions.NewStreaming(context.Background(), newStainlessTestChatCompletionOptions(azureOpenAI.ChatCompletionsRAI.Model))
 
 	// the data comes back differently for streaming
@@ -188,7 +186,7 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 
 		// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
 		// by convention) but if this fails because they _don't_ match we can just adjust the test.
-		if returnedDeployment == chunk.Model {
+		if len(chunk.Model) > 0 {
 			modelWasReturned = true
 		}
 

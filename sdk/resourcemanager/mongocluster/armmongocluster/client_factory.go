@@ -78,3 +78,11 @@ func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
 		internal:       c.internal,
 	}
 }
+
+// NewUsersClient creates a new instance of UsersClient.
+func (c *ClientFactory) NewUsersClient() *UsersClient {
+	return &UsersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}

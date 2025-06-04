@@ -520,7 +520,7 @@ func (client *CloudVMClustersClient) listPrivateIPAddressesCreateRequest(ctx con
 // listPrivateIPAddressesHandleResponse handles the ListPrivateIPAddresses response.
 func (client *CloudVMClustersClient) listPrivateIPAddressesHandleResponse(resp *http.Response) (CloudVMClustersClientListPrivateIPAddressesResponse, error) {
 	result := CloudVMClustersClientListPrivateIPAddressesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateIpAddressPropertiesArray); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateIPAddressPropertiesArray); err != nil {
 		return CloudVMClustersClientListPrivateIPAddressesResponse{}, err
 	}
 	return result, nil

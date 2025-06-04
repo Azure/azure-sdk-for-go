@@ -1,9 +1,6 @@
 # Release History
 
 ## 2.0.0 (2025-06-04)
-### Breaking Changes
-
-- Field `PrivateIPAddressPropertiesArray` of struct `CloudVMClustersClientListPrivateIPAddressesResponse` has been removed
 
 ### Features Added
 
@@ -84,7 +81,6 @@
 - New field `ComputeModel`, `DatabaseServerType`, `DefinedFileSystemConfiguration`, `StorageServerType` in struct `CloudExadataInfrastructureProperties`
 - New field `ComputeModel`, `FileSystemConfigurationDetails` in struct `CloudVMClusterProperties`
 - New field `FileSystemConfigurationDetails` in struct `CloudVMClusterUpdateProperties`
-- New field `PrivateIpAddressPropertiesArray` in struct `CloudVMClustersClientListPrivateIPAddressesResponse`
 - New field `ComputeModel` in struct `DbServerProperties`
 - New field `AreServerTypesSupported`, `ComputeModel`, `DisplayName`, `ShapeName` in struct `DbSystemShapeProperties`
 - New field `Zone` in struct `DbSystemShapesClientListByLocationOptions`

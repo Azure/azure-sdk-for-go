@@ -218,7 +218,7 @@ type CloudVMClustersClientListBySubscriptionResponse struct {
 
 // CloudVMClustersClientListPrivateIPAddressesResponse contains the response from method CloudVMClustersClient.ListPrivateIPAddresses.
 type CloudVMClustersClientListPrivateIPAddressesResponse struct {
-	PrivateIpAddressPropertiesArray []*PrivateIPAddressProperties
+	PrivateIPAddressPropertiesArray []*PrivateIPAddressProperties
 }
 
 // CloudVMClustersClientRemoveVMsResponse contains the response from method CloudVMClustersClient.BeginRemoveVMs.

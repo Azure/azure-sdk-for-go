@@ -1,4 +1,4 @@
-# Azure Cloudhealth Module for Go
+# Azure Cloud Health Module for Go
 
 The `armcloudhealth` module provides operations for working with Azure Cloudhealth.
 
@@ -15,7 +15,7 @@ The `armcloudhealth` module provides operations for working with Azure Cloudheal
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Cloudhealth module:
+Install the Azure Cloud Health module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cloudhealth/armcloudhealth
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cloudhealth/armclou
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Cloudhealth.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Cloud Health.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Cloudhealth module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Cloud Health module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcloudhealth.NewClientFactory(<subscription ID>, cred, nil)

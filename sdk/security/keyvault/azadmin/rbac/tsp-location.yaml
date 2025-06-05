@@ -1,6 +1,5 @@
 directory: specification/keyvault/Security.KeyVault.RBAC
-commit: cac8bb6ffc89f41dcd9bffaa265ecc45ef2d83c1
+commit: bc16bd3359c80260f1d1d523679fbe6806ce0813
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
 - specification/keyvault/Security.KeyVault.Common/
-# https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/Security.KeyVault.RBAC

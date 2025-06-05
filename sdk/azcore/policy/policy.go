@@ -112,13 +112,7 @@ type RetryOptions struct {
 	MaxRetryDelay time.Duration
 
 	// StatusCodes specifies the HTTP status codes that indicate the operation should be retried.
-	// A nil slice will use the following values.
-	//   http.StatusRequestTimeout      408
-	//   http.StatusTooManyRequests     429
-	//   http.StatusInternalServerError 500
-	//   http.StatusBadGateway          502
-	//   http.StatusServiceUnavailable  503
-	//   http.StatusGatewayTimeout      504
+	// A nil slice will use the values returned by DefaultRetryStatusCodes.
 	// Specifying values will replace the default values.
 	// Specifying an empty slice will disable retries for HTTP status codes.
 	StatusCodes []int
@@ -131,6 +125,22 @@ type RetryOptions struct {
 	// if one is nil, the other is not nil.
 	// A return value of true means the retry policy should retry.
 	ShouldRetry func(*http.Response, error) bool
+}
+
+// DefaultRetryStatusCodes outputs a list of the default retry status codes.
+func DefaultRetryStatusCodes() []int {
+	// Treated as a function since lists (even static length arrays) are not valid constant initializers,
+	// but we probably don't want the user directly modifying this list, as opposed to adjusting RetryOptions.StatusCodes.
+
+	// NOTE: if you change this list, you MUST update the docs in policy/policy.go
+	return []int{
+		http.StatusRequestTimeout,      // 408
+		http.StatusTooManyRequests,     // 429
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	}
 }
 
 // TelemetryOptions configures the telemetry policy's behavior.

@@ -37,8 +37,8 @@ type ServerFactory struct {
 	// ManagedClustersServer contains the fakes for client ManagedClustersClient
 	ManagedClustersServer ManagedClustersServer
 
-	// NamespacesServer contains the fakes for client NamespacesClient
-	NamespacesServer NamespacesServer
+	// ManagedNamespacesServer contains the fakes for client ManagedNamespacesClient
+	ManagedNamespacesServer ManagedNamespacesServer
 
 	// OperationStatusResultServer contains the fakes for client OperationStatusResultClient
 	OperationStatusResultServer OperationStatusResultServer
@@ -86,7 +86,7 @@ type ServerFactoryTransport struct {
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
 	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
-	trNamespacesServer                  *NamespacesServerTransport
+	trManagedNamespacesServer           *ManagedNamespacesServerTransport
 	trOperationStatusResultServer       *OperationStatusResultServerTransport
 	trOperationsServer                  *OperationsServerTransport
 	trPrivateEndpointConnectionsServer  *PrivateEndpointConnectionsServerTransport
@@ -139,9 +139,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedClustersServerTransport(&s.srv.ManagedClustersServer)
 		})
 		resp, err = s.trManagedClustersServer.Do(req)
-	case "NamespacesClient":
-		initServer(s, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
-		resp, err = s.trNamespacesServer.Do(req)
+	case "ManagedNamespacesClient":
+		initServer(s, &s.trManagedNamespacesServer, func() *ManagedNamespacesServerTransport {
+			return NewManagedNamespacesServerTransport(&s.srv.ManagedNamespacesServer)
+		})
+		resp, err = s.trManagedNamespacesServer.Do(req)
 	case "OperationStatusResultClient":
 		initServer(s, &s.trOperationStatusResultServer, func() *OperationStatusResultServerTransport {
 			return NewOperationStatusResultServerTransport(&s.srv.OperationStatusResultServer)

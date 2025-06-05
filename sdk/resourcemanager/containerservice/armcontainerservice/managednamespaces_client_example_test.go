@@ -18,8 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/NamespacesList.json
-func ExampleNamespacesClient_NewListByManagedClusterPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/ManagedNamespacesList.json
+func ExampleManagedNamespacesClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleNamespacesClient_NewListByManagedClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNamespacesClient().NewListByManagedClusterPager("rg1", "clustername1", nil)
+	pager := clientFactory.NewManagedNamespacesClient().NewListByManagedClusterPager("rg1", "clustername1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -40,12 +40,12 @@ func ExampleNamespacesClient_NewListByManagedClusterPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.NamespaceListResult = armcontainerservice.NamespaceListResult{
-		// 	Value: []*armcontainerservice.Namespace{
+		// page.ManagedNamespaceListResult = armcontainerservice.ManagedNamespaceListResult{
+		// 	Value: []*armcontainerservice.ManagedNamespace{
 		// 		{
 		// 			Name: to.Ptr("namespace1"),
-		// 			Type: to.Ptr("Microsoft.ContainerService/managedClusters/namespaces"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/namespaces/namespace1"),
+		// 			Type: to.Ptr("Microsoft.ContainerService/managedClusters/managedNamespaces"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armcontainerservice.NamespaceProperties{
 		// 				AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
@@ -76,8 +76,8 @@ func ExampleNamespacesClient_NewListByManagedClusterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/NamespacesGet.json
-func ExampleNamespacesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/ManagedNamespacesGet.json
+func ExampleManagedNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -87,17 +87,17 @@ func ExampleNamespacesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNamespacesClient().Get(ctx, "rg1", "clustername1", "namespace1", nil)
+	res, err := clientFactory.NewManagedNamespacesClient().Get(ctx, "rg1", "clustername1", "namespace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Namespace = armcontainerservice.Namespace{
+	// res.ManagedNamespace = armcontainerservice.ManagedNamespace{
 	// 	Name: to.Ptr("namespace1"),
-	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/namespaces"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/namespaces/namespace1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/managedNamespaces"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
 	// 	Location: to.Ptr("eastus2"),
 	// 	Properties: &armcontainerservice.NamespaceProperties{
 	// 		AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
@@ -126,8 +126,8 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/NamespacesCreate_Update.json
-func ExampleNamespacesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/ManagedNamespacesCreate_Update.json
+func ExampleManagedNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -137,7 +137,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNamespacesClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "namespace1", armcontainerservice.Namespace{
+	poller, err := clientFactory.NewManagedNamespacesClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "namespace1", armcontainerservice.ManagedNamespace{
 		Properties: &armcontainerservice.NamespaceProperties{
 			AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
 			Annotations: map[string]*string{
@@ -172,10 +172,10 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Namespace = armcontainerservice.Namespace{
+	// res.ManagedNamespace = armcontainerservice.ManagedNamespace{
 	// 	Name: to.Ptr("namespace1"),
-	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/namespaces"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/namespaces/namespace1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/managedNamespaces"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/managedNamespaces/namespace1"),
 	// 	Location: to.Ptr("eastus2"),
 	// 	Properties: &armcontainerservice.NamespaceProperties{
 	// 		AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
@@ -204,8 +204,8 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/NamespacesDelete.json
-func ExampleNamespacesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/ManagedNamespacesDelete.json
+func ExampleManagedNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -215,7 +215,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNamespacesClient().BeginDelete(ctx, "rg1", "clustername1", "namespace1", nil)
+	poller, err := clientFactory.NewManagedNamespacesClient().BeginDelete(ctx, "rg1", "clustername1", "namespace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -225,8 +225,8 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/NamespacesUpdateTags.json
-func ExampleNamespacesClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/ManagedNamespacesUpdateTags.json
+func ExampleManagedNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -236,7 +236,7 @@ func ExampleNamespacesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNamespacesClient().Update(ctx, "rg1", "clustername1", "namespace1", armcontainerservice.TagsObject{
+	res, err := clientFactory.NewManagedNamespacesClient().Update(ctx, "rg1", "clustername1", "namespace1", armcontainerservice.TagsObject{
 		Tags: map[string]*string{
 			"tagKey1": to.Ptr("tagValue1"),
 			"tagKey2": to.Ptr("tagValue2"),
@@ -248,7 +248,7 @@ func ExampleNamespacesClient_Update() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Namespace = armcontainerservice.Namespace{
+	// res.ManagedNamespace = armcontainerservice.ManagedNamespace{
 	// 	Location: to.Ptr("eastus2"),
 	// 	Properties: &armcontainerservice.NamespaceProperties{
 	// 		AdoptionPolicy: to.Ptr(armcontainerservice.AdoptionPolicyIfIdentical),
@@ -278,8 +278,8 @@ func ExampleNamespacesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/NamespacesListCredentialResult.json
-func ExampleNamespacesClient_ListCredential() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/ManagedNamespacesListCredentialResult.json
+func ExampleManagedNamespacesClient_ListCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -289,7 +289,7 @@ func ExampleNamespacesClient_ListCredential() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNamespacesClient().ListCredential(ctx, "rg1", "clustername1", "namespace1", nil)
+	res, err := clientFactory.NewManagedNamespacesClient().ListCredential(ctx, "rg1", "clustername1", "namespace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

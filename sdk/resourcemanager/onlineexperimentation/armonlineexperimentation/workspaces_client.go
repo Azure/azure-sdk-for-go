@@ -16,62 +16,62 @@ import (
 	"strings"
 )
 
-// OnlineExperimentWorkspacesClient contains the methods for the OnlineExperimentWorkspaces group.
-// Don't use this type directly, use NewOnlineExperimentWorkspacesClient() instead.
-type OnlineExperimentWorkspacesClient struct {
+// WorkspacesClient contains the methods for the Workspaces group.
+// Don't use this type directly, use NewWorkspacesClient() instead.
+type WorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewOnlineExperimentWorkspacesClient creates a new instance of OnlineExperimentWorkspacesClient with the specified values.
+// NewWorkspacesClient creates a new instance of WorkspacesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewOnlineExperimentWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OnlineExperimentWorkspacesClient, error) {
+func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspacesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &OnlineExperimentWorkspacesClient{
+	client := &WorkspacesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create an experiment workspace, or update an existing workspace
+// BeginCreateOrUpdate - Create an online experimentation workspace, or update an existing workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-31-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the OnlineExperimentWorkspace
+//   - workspaceName - The name of the OnlineExperimentationWorkspace
 //   - resource - Resource create parameters.
-//   - options - OnlineExperimentWorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.BeginCreateOrUpdate
+//   - options - WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
 //     method.
-func (client *OnlineExperimentWorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, resource OnlineExperimentWorkspace, options *OnlineExperimentWorkspacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[OnlineExperimentWorkspacesClientCreateOrUpdateResponse], error) {
+func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, resource Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OnlineExperimentWorkspacesClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OnlineExperimentWorkspacesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create an experiment workspace, or update an existing workspace
+// CreateOrUpdate - Create an online experimentation workspace, or update an existing workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-31-preview
-func (client *OnlineExperimentWorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, resource OnlineExperimentWorkspace, options *OnlineExperimentWorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2025-08-01-preview
+func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, resource Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "OnlineExperimentWorkspacesClient.BeginCreateOrUpdate"
+	const operationName = "WorkspacesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -91,7 +91,7 @@ func (client *OnlineExperimentWorkspacesClient) createOrUpdate(ctx context.Conte
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OnlineExperimentWorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, resource OnlineExperimentWorkspace, _ *OnlineExperimentWorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, resource Workspace, _ *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OnlineExperimentation/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -110,7 +110,7 @@ func (client *OnlineExperimentWorkspacesClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-31-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -120,38 +120,37 @@ func (client *OnlineExperimentWorkspacesClient) createOrUpdateCreateRequest(ctx 
 	return req, nil
 }
 
-// BeginDelete - Deletes an experiment workspace
+// BeginDelete - Deletes an online experimentation workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-31-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the OnlineExperimentWorkspace
-//   - options - OnlineExperimentWorkspacesClientBeginDeleteOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.BeginDelete
-//     method.
-func (client *OnlineExperimentWorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *OnlineExperimentWorkspacesClientBeginDeleteOptions) (*runtime.Poller[OnlineExperimentWorkspacesClientDeleteResponse], error) {
+//   - workspaceName - The name of the OnlineExperimentationWorkspace
+//   - options - WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*runtime.Poller[WorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OnlineExperimentWorkspacesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OnlineExperimentWorkspacesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes an experiment workspace
+// Delete - Deletes an online experimentation workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-31-preview
-func (client *OnlineExperimentWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *OnlineExperimentWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+// Generated from API version 2025-08-01-preview
+func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "OnlineExperimentWorkspacesClient.BeginDelete"
+	const operationName = "WorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -171,7 +170,7 @@ func (client *OnlineExperimentWorkspacesClient) deleteOperation(ctx context.Cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OnlineExperimentWorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *OnlineExperimentWorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OnlineExperimentation/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -190,44 +189,43 @@ func (client *OnlineExperimentWorkspacesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-31-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets an experiment workspace
+// Get - Gets an online experimentation workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-31-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the OnlineExperimentWorkspace
-//   - options - OnlineExperimentWorkspacesClientGetOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.Get
-//     method.
-func (client *OnlineExperimentWorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *OnlineExperimentWorkspacesClientGetOptions) (OnlineExperimentWorkspacesClientGetResponse, error) {
+//   - workspaceName - The name of the OnlineExperimentationWorkspace
+//   - options - WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
+func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientGetOptions) (WorkspacesClientGetResponse, error) {
 	var err error
-	const operationName = "OnlineExperimentWorkspacesClient.Get"
+	const operationName = "WorkspacesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
-		return OnlineExperimentWorkspacesClientGetResponse{}, err
+		return WorkspacesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return OnlineExperimentWorkspacesClientGetResponse{}, err
+		return WorkspacesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return OnlineExperimentWorkspacesClientGetResponse{}, err
+		return WorkspacesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *OnlineExperimentWorkspacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *OnlineExperimentWorkspacesClientGetOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OnlineExperimentation/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,34 +244,34 @@ func (client *OnlineExperimentWorkspacesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-31-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *OnlineExperimentWorkspacesClient) getHandleResponse(resp *http.Response) (OnlineExperimentWorkspacesClientGetResponse, error) {
-	result := OnlineExperimentWorkspacesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OnlineExperimentWorkspace); err != nil {
-		return OnlineExperimentWorkspacesClientGetResponse{}, err
+func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (WorkspacesClientGetResponse, error) {
+	result := WorkspacesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Workspace); err != nil {
+		return WorkspacesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Gets all experiment workspaces in a resource group.
+// NewListByResourceGroupPager - Gets all online experimentation workspaces in a resource group.
 //
-// Generated from API version 2025-05-31-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - OnlineExperimentWorkspacesClientListByResourceGroupOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.NewListByResourceGroupPager
+//   - options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
 //     method.
-func (client *OnlineExperimentWorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *OnlineExperimentWorkspacesClientListByResourceGroupOptions) *runtime.Pager[OnlineExperimentWorkspacesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OnlineExperimentWorkspacesClientListByResourceGroupResponse]{
-		More: func(page OnlineExperimentWorkspacesClientListByResourceGroupResponse) bool {
+func (client *WorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListByResourceGroupResponse]{
+		More: func(page WorkspacesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *OnlineExperimentWorkspacesClientListByResourceGroupResponse) (OnlineExperimentWorkspacesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OnlineExperimentWorkspacesClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *WorkspacesClientListByResourceGroupResponse) (WorkspacesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkspacesClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -282,7 +280,7 @@ func (client *OnlineExperimentWorkspacesClient) NewListByResourceGroupPager(reso
 				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			}, nil)
 			if err != nil {
-				return OnlineExperimentWorkspacesClientListByResourceGroupResponse{}, err
+				return WorkspacesClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -291,7 +289,7 @@ func (client *OnlineExperimentWorkspacesClient) NewListByResourceGroupPager(reso
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *OnlineExperimentWorkspacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *OnlineExperimentWorkspacesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *WorkspacesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OnlineExperimentation/workspaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -306,33 +304,33 @@ func (client *OnlineExperimentWorkspacesClient) listByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-31-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *OnlineExperimentWorkspacesClient) listByResourceGroupHandleResponse(resp *http.Response) (OnlineExperimentWorkspacesClientListByResourceGroupResponse, error) {
-	result := OnlineExperimentWorkspacesClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OnlineExperimentWorkspaceListResult); err != nil {
-		return OnlineExperimentWorkspacesClientListByResourceGroupResponse{}, err
+func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Response) (WorkspacesClientListByResourceGroupResponse, error) {
+	result := WorkspacesClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
+		return WorkspacesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Gets all experiment workspaces in the specified subscription.
+// NewListBySubscriptionPager - Gets all online experimentation workspaces in the specified subscription.
 //
-// Generated from API version 2025-05-31-preview
-//   - options - OnlineExperimentWorkspacesClientListBySubscriptionOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.NewListBySubscriptionPager
+// Generated from API version 2025-08-01-preview
+//   - options - WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.NewListBySubscriptionPager
 //     method.
-func (client *OnlineExperimentWorkspacesClient) NewListBySubscriptionPager(options *OnlineExperimentWorkspacesClientListBySubscriptionOptions) *runtime.Pager[OnlineExperimentWorkspacesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OnlineExperimentWorkspacesClientListBySubscriptionResponse]{
-		More: func(page OnlineExperimentWorkspacesClientListBySubscriptionResponse) bool {
+func (client *WorkspacesClient) NewListBySubscriptionPager(options *WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListBySubscriptionResponse]{
+		More: func(page WorkspacesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *OnlineExperimentWorkspacesClientListBySubscriptionResponse) (OnlineExperimentWorkspacesClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OnlineExperimentWorkspacesClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *WorkspacesClientListBySubscriptionResponse) (WorkspacesClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkspacesClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -341,7 +339,7 @@ func (client *OnlineExperimentWorkspacesClient) NewListBySubscriptionPager(optio
 				return client.listBySubscriptionCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
-				return OnlineExperimentWorkspacesClientListBySubscriptionResponse{}, err
+				return WorkspacesClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
@@ -350,7 +348,7 @@ func (client *OnlineExperimentWorkspacesClient) NewListBySubscriptionPager(optio
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *OnlineExperimentWorkspacesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *OnlineExperimentWorkspacesClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *WorkspacesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OnlineExperimentation/workspaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -361,54 +359,53 @@ func (client *OnlineExperimentWorkspacesClient) listBySubscriptionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-31-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *OnlineExperimentWorkspacesClient) listBySubscriptionHandleResponse(resp *http.Response) (OnlineExperimentWorkspacesClientListBySubscriptionResponse, error) {
-	result := OnlineExperimentWorkspacesClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OnlineExperimentWorkspaceListResult); err != nil {
-		return OnlineExperimentWorkspacesClientListBySubscriptionResponse{}, err
+func (client *WorkspacesClient) listBySubscriptionHandleResponse(resp *http.Response) (WorkspacesClientListBySubscriptionResponse, error) {
+	result := WorkspacesClientListBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListResult); err != nil {
+		return WorkspacesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Patch an experiment workspace
+// BeginUpdate - Patch an online experimentation workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-31-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the OnlineExperimentWorkspace
+//   - workspaceName - The name of the OnlineExperimentationWorkspace
 //   - properties - The resource properties to be updated.
-//   - options - OnlineExperimentWorkspacesClientBeginUpdateOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.BeginUpdate
-//     method.
-func (client *OnlineExperimentWorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, properties OnlineExperimentWorkspacePatch, options *OnlineExperimentWorkspacesClientBeginUpdateOptions) (*runtime.Poller[OnlineExperimentWorkspacesClientUpdateResponse], error) {
+//   - options - WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, properties WorkspacePatch, options *WorkspacesClientBeginUpdateOptions) (*runtime.Poller[WorkspacesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, workspaceName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OnlineExperimentWorkspacesClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OnlineExperimentWorkspacesClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Patch an experiment workspace
+// Update - Patch an online experimentation workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-31-preview
-func (client *OnlineExperimentWorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, properties OnlineExperimentWorkspacePatch, options *OnlineExperimentWorkspacesClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2025-08-01-preview
+func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, properties WorkspacePatch, options *WorkspacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "OnlineExperimentWorkspacesClient.BeginUpdate"
+	const operationName = "WorkspacesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -428,7 +425,7 @@ func (client *OnlineExperimentWorkspacesClient) update(ctx context.Context, reso
 }
 
 // updateCreateRequest creates the Update request.
-func (client *OnlineExperimentWorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, properties OnlineExperimentWorkspacePatch, _ *OnlineExperimentWorkspacesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, properties WorkspacePatch, _ *WorkspacesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OnlineExperimentation/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -447,7 +444,7 @@ func (client *OnlineExperimentWorkspacesClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-31-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

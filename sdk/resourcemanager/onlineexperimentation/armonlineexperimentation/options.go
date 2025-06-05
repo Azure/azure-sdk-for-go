@@ -4,46 +4,79 @@
 
 package armonlineexperimentation
 
-// OnlineExperimentWorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.BeginCreateOrUpdate
-// method.
-type OnlineExperimentWorkspacesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// OnlineExperimentWorkspacesClientBeginDeleteOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.BeginDelete
-// method.
-type OnlineExperimentWorkspacesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// OnlineExperimentWorkspacesClientBeginUpdateOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.BeginUpdate
-// method.
-type OnlineExperimentWorkspacesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// OnlineExperimentWorkspacesClientGetOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.Get
-// method.
-type OnlineExperimentWorkspacesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OnlineExperimentWorkspacesClientListByResourceGroupOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.NewListByResourceGroupPager
-// method.
-type OnlineExperimentWorkspacesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OnlineExperimentWorkspacesClientListBySubscriptionOptions contains the optional parameters for the OnlineExperimentWorkspacesClient.NewListBySubscriptionPager
-// method.
-type OnlineExperimentWorkspacesClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Update
+// method.
+type PrivateEndpointConnectionsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
+// method.
+type PrivateLinkResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
+// method.
+type WorkspacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+type WorkspacesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+type WorkspacesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
+type WorkspacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
+// method.
+type WorkspacesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.NewListBySubscriptionPager
+// method.
+type WorkspacesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }

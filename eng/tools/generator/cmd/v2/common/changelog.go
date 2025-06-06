@@ -225,7 +225,7 @@ func getBreakingChanges(b *report.BreakingChanges) []string {
 	}
 
 	// get signature changes
-	items = append(items, getSignatureChangeItems(&b.Changes, false)...)
+	items = append(items, getSignatureChangeItems(&b.Changes)...)
 
 	// get removed content
 	items = append(items, getRemovedContent(b.Removed)...)
@@ -240,7 +240,7 @@ func getAdditiveChanges(a *report.AdditiveChanges) []string {
 	}
 
 	// get signature changes
-	items = append(items, getSignatureChangeItems(&a.Changes, true)...)
+	items = append(items, getSignatureChangeItems(&a.Changes)...)
 
 	// get added content
 	items = append(items, getNewContents(a.Added)...)
@@ -248,7 +248,7 @@ func getAdditiveChanges(a *report.AdditiveChanges) []string {
 	return items
 }
 
-func getSignatureChangeItems(b *report.Changes, countTypeToAny bool) []string {
+func getSignatureChangeItems(b *report.Changes) []string {
 	if b.IsEmpty() {
 		return nil
 	}
@@ -286,7 +286,7 @@ func getSignatureChangeItems(b *report.Changes, countTypeToAny bool) []string {
 		}
 	}
 	// write struct changes
-	items = append(items, typeToAny(b, countTypeToAny)...)
+	items = append(items, typeTo(b)...)
 
 	// interfaces are skipped, which are identical to some of the functions
 
@@ -463,7 +463,7 @@ func removePattern(funcName string, returnValue string) string {
 	return fmt.Sprintf("%s.%s", before, after)
 }
 
-func typeToAny(b *report.Changes, flag bool) []string {
+func typeTo(b *report.Changes) []string {
 	var items []string
 
 	if b == nil || b.IsEmpty() {
@@ -475,51 +475,13 @@ func typeToAny(b *report.Changes, flag bool) []string {
 			v := b.Structs[k]
 			for _, f := range sortChangeItem(v.Fields) {
 				d := v.Fields[f]
-				if flag == (d.To == "any") {
-					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
-					items = append(items, line)
-				}
+				line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
+				items = append(items, line)
 			}
 		}
 	}
 
 	return items
-}
-
-func deleteTypeToAny(b *report.BreakingChanges) {
-	if b == nil || b.IsEmpty() {
-		return
-	}
-	if len(b.Structs) > 0 {
-		structsToDelete := make([]string, 0)
-
-		// Collect fields and structs to delete
-		for structName, s := range b.Structs {
-			fieldsToDelete := make([]string, 0)
-
-			// Collect fields to delete
-			for fieldName, f := range s.Fields {
-				if f.To == "any" {
-					fieldsToDelete = append(fieldsToDelete, fieldName)
-				}
-			}
-
-			// Delete the collected fields
-			for _, fieldName := range fieldsToDelete {
-				delete(b.Structs[structName].Fields, fieldName)
-			}
-
-			// If all fields were deleted, mark struct for deletion
-			if len(b.Structs[structName].Fields) == 0 {
-				structsToDelete = append(structsToDelete, structName)
-			}
-		}
-
-		// Delete the collected structs
-		for _, structName := range structsToDelete {
-			delete(b.Structs, structName)
-		}
-	}
 }
 
 // GetChangelogForPackage generates the changelog report with the given two Contents

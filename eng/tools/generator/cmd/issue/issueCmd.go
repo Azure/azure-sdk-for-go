@@ -230,6 +230,10 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if issue == nil {
 			continue
 		}
+		log.Printf("isNormal(%t) isSdkReleasedByServiceTeam(%t) issueId(%d) issueTitle(%s)", isNormalPeriod(), isSdkReleasedByServiceTeam(issue), issue.GetID(), issue.GetTitle())
+		if !isNormalPeriod() && !isSdkReleasedByServiceTeam(issue) {
+			continue
+		}
 		if isPRReady(issue) {
 			continue
 		}
@@ -252,13 +256,6 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 			continue
 		}
 		if req == nil {
-			continue
-		}
-		if isSdkReleasedByServiceTeam(issue) {
-			requests = append(requests, *req)
-			continue
-		} 
-		if !isNormalPeriod() {
 			continue
 		}
 		requests = append(requests, *req)

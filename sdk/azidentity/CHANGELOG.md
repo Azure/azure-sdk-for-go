@@ -10,6 +10,7 @@
 - `AzureCLICredential` and `AzureDeveloperCLICredential` could wait indefinitely for subprocess output
 
 ### Other Changes
+* enhanced support for AKS workloads
 
 ## 1.10.0 (2025-05-14)
 

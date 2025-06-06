@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (Unreleased)
+## 2.0.0 (2025-06-10)
 
 First release of `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2`. This new major release
 changes a single field (Offset) from an integer, and should be a non-breaking change for most users of the previous package.

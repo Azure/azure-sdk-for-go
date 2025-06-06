@@ -6,7 +6,7 @@ package armmongocluster
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
-	moduleVersion = "v1.0.1"
+	moduleVersion = "v1.1.0-beta.1"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -21,6 +21,25 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AuthenticationMode - The authentication modes supporting on the Mongo cluster.
+type AuthenticationMode string
+
+const (
+	// AuthenticationModeMicrosoftEntraID - Microsoft Entra ID authentication mode using Entra users assigned to the cluster and
+	// auth mechanism 'MONGODB-OIDC'.
+	AuthenticationModeMicrosoftEntraID AuthenticationMode = "MicrosoftEntraID"
+	// AuthenticationModeNativeAuth - Native mongo authentication mode using username and password with auth mechanism 'SCRAM-SHA-256'.
+	AuthenticationModeNativeAuth AuthenticationMode = "NativeAuth"
+)
+
+// PossibleAuthenticationModeValues returns the possible values for the AuthenticationMode const type.
+func PossibleAuthenticationModeValues() []AuthenticationMode {
+	return []AuthenticationMode{
+		AuthenticationModeMicrosoftEntraID,
+		AuthenticationModeNativeAuth,
 	}
 }
 
@@ -90,6 +109,42 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DataAPIMode - The mode to apply to the Mongo Data API.
+type DataAPIMode string
+
+const (
+	// DataAPIModeDisabled - Mongo Data API is disabled for the cluster.
+	DataAPIModeDisabled DataAPIMode = "Disabled"
+	// DataAPIModeEnabled - Mongo Data API is enabled for the cluster.
+	DataAPIModeEnabled DataAPIMode = "Enabled"
+)
+
+// PossibleDataAPIModeValues returns the possible values for the DataAPIMode const type.
+func PossibleDataAPIModeValues() []DataAPIMode {
+	return []DataAPIMode{
+		DataAPIModeDisabled,
+		DataAPIModeEnabled,
+	}
+}
+
+// EntraPrincipalType - Microsoft Entra ID principal types available for a Mongo user.
+type EntraPrincipalType string
+
+const (
+	// EntraPrincipalTypeServicePrincipal - Entra service principal type.
+	EntraPrincipalTypeServicePrincipal EntraPrincipalType = "servicePrincipal"
+	// EntraPrincipalTypeUser - Entra user type.
+	EntraPrincipalTypeUser EntraPrincipalType = "user"
+)
+
+// PossibleEntraPrincipalTypeValues returns the possible values for the EntraPrincipalType const type.
+func PossibleEntraPrincipalTypeValues() []EntraPrincipalType {
+	return []EntraPrincipalType{
+		EntraPrincipalTypeServicePrincipal,
+		EntraPrincipalTypeUser,
+	}
+}
+
 // HighAvailabilityMode - The high availability modes for a cluster.
 type HighAvailabilityMode string
 
@@ -111,6 +166,21 @@ func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 		HighAvailabilityModeDisabled,
 		HighAvailabilityModeSameZone,
 		HighAvailabilityModeZoneRedundantPreferred,
+	}
+}
+
+// IdentityProviderType - Identity provider types that a a user identity can belong to.
+type IdentityProviderType string
+
+const (
+	// IdentityProviderTypeMicrosoftEntraID - Microsoft Entra ID provider.
+	IdentityProviderTypeMicrosoftEntraID IdentityProviderType = "MicrosoftEntraID"
+)
+
+// PossibleIdentityProviderTypeValues returns the possible values for the IdentityProviderType const type.
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
+	return []IdentityProviderType{
+		IdentityProviderTypeMicrosoftEntraID,
 	}
 }
 
@@ -182,7 +252,7 @@ type PrivateEndpointServiceConnectionStatus string
 const (
 	// PrivateEndpointServiceConnectionStatusApproved - Connection approved
 	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	// PrivateEndpointServiceConnectionStatusPending - Connectionaiting for approval or rejection
+	// PrivateEndpointServiceConnectionStatusPending - Connection waiting for approval or rejection
 	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
 	// PrivateEndpointServiceConnectionStatusRejected - Connection Rejected
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
@@ -360,5 +430,38 @@ func PossibleStatusValues() []Status {
 		StatusStopped,
 		StatusStopping,
 		StatusUpdating,
+	}
+}
+
+// StorageType - The type of storage that a mongo cluster can be provisioned with.
+type StorageType string
+
+const (
+	// StorageTypePremiumSSD - Premium SSD for high performance workloads.
+	StorageTypePremiumSSD StorageType = "PremiumSSD"
+	// StorageTypePremiumSSDv2 - Premium SSD v2 for very IO-intensive workloads. This is a preview option and has additional limitations.
+	StorageTypePremiumSSDv2 StorageType = "PremiumSSDv2"
+)
+
+// PossibleStorageTypeValues returns the possible values for the StorageType const type.
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{
+		StorageTypePremiumSSD,
+		StorageTypePremiumSSDv2,
+	}
+}
+
+// UserRole - Built-in database role that can be assigned to a user.
+type UserRole string
+
+const (
+	// UserRoleDatabaseOwner - Datbase owner role permissions on the target scope.
+	UserRoleDatabaseOwner UserRole = "dbOwner"
+)
+
+// PossibleUserRoleValues returns the possible values for the UserRole const type.
+func PossibleUserRoleValues() []UserRole {
+	return []UserRole{
+		UserRoleDatabaseOwner,
 	}
 }

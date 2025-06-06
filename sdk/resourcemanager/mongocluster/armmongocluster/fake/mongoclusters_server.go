@@ -29,7 +29,7 @@ type MongoClustersServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, mongoClusterName string, resource armmongocluster.MongoCluster, options *armmongocluster.MongoClustersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method MongoClustersClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MongoClustersClient.Get
@@ -49,7 +49,7 @@ type MongoClustersServer struct {
 	ListConnectionStrings func(ctx context.Context, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientListConnectionStringsOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
 
 	// BeginPromote is the fake for method MongoClustersClient.BeginPromote
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPromote func(ctx context.Context, resourceGroupName string, mongoClusterName string, body armmongocluster.PromoteReplicaRequest, options *armmongocluster.MongoClustersClientBeginPromoteOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientPromoteResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method MongoClustersClient.BeginUpdate
@@ -96,33 +96,52 @@ func (m *MongoClustersServerTransport) Do(req *http.Request) (*http.Response, er
 }
 
 func (m *MongoClustersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "MongoClustersClient.CheckNameAvailability":
-		resp, err = m.dispatchCheckNameAvailability(req)
-	case "MongoClustersClient.BeginCreateOrUpdate":
-		resp, err = m.dispatchBeginCreateOrUpdate(req)
-	case "MongoClustersClient.BeginDelete":
-		resp, err = m.dispatchBeginDelete(req)
-	case "MongoClustersClient.Get":
-		resp, err = m.dispatchGet(req)
-	case "MongoClustersClient.NewListPager":
-		resp, err = m.dispatchNewListPager(req)
-	case "MongoClustersClient.NewListByResourceGroupPager":
-		resp, err = m.dispatchNewListByResourceGroupPager(req)
-	case "MongoClustersClient.ListConnectionStrings":
-		resp, err = m.dispatchListConnectionStrings(req)
-	case "MongoClustersClient.BeginPromote":
-		resp, err = m.dispatchBeginPromote(req)
-	case "MongoClustersClient.BeginUpdate":
-		resp, err = m.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if mongoClustersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = mongoClustersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "MongoClustersClient.CheckNameAvailability":
+				res.resp, res.err = m.dispatchCheckNameAvailability(req)
+			case "MongoClustersClient.BeginCreateOrUpdate":
+				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
+			case "MongoClustersClient.BeginDelete":
+				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MongoClustersClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "MongoClustersClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
+			case "MongoClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
+			case "MongoClustersClient.ListConnectionStrings":
+				res.resp, res.err = m.dispatchListConnectionStrings(req)
+			case "MongoClustersClient.BeginPromote":
+				res.resp, res.err = m.dispatchBeginPromote(req)
+			case "MongoClustersClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (m *MongoClustersServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
@@ -132,7 +151,7 @@ func (m *MongoClustersServerTransport) dispatchCheckNameAvailability(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkMongoClusterNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmongocluster.CheckNameAvailabilityRequest](req)
@@ -167,7 +186,7 @@ func (m *MongoClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.MongoCluster](req)
@@ -215,7 +234,7 @@ func (m *MongoClustersServerTransport) dispatchBeginDelete(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -239,9 +258,9 @@ func (m *MongoClustersServerTransport) dispatchBeginDelete(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		m.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		m.beginDelete.remove(req)
@@ -257,7 +276,7 @@ func (m *MongoClustersServerTransport) dispatchGet(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -292,7 +311,7 @@ func (m *MongoClustersServerTransport) dispatchNewListPager(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := m.srv.NewListPager(nil)
@@ -325,7 +344,7 @@ func (m *MongoClustersServerTransport) dispatchNewListByResourceGroupPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -360,7 +379,7 @@ func (m *MongoClustersServerTransport) dispatchListConnectionStrings(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listConnectionStrings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -395,7 +414,7 @@ func (m *MongoClustersServerTransport) dispatchBeginPromote(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/promote`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.PromoteReplicaRequest](req)
@@ -423,9 +442,9 @@ func (m *MongoClustersServerTransport) dispatchBeginPromote(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		m.beginPromote.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginPromote) {
 		m.beginPromote.remove(req)
@@ -443,7 +462,7 @@ func (m *MongoClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.Update](req)
@@ -480,4 +499,10 @@ func (m *MongoClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to MongoClustersServerTransport
+var mongoClustersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

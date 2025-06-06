@@ -1,14 +1,13 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0 (Unreleased)
+
+First release of `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2`. This new major release
+changes a single field (Offset) from an integer, and should be a non-breaking change for most users of the previous package.
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Support for Event Hubs Geo-Replication (PR#24477)
 
 ## 2.0.0-beta.1 (2025-05-06)
 

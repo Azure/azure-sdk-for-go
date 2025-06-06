@@ -196,11 +196,12 @@ func issueHasLabel(issue *github.Issue, label IssueLabel) bool {
 type IssueLabel string
 
 const (
-	GoLabel              IssueLabel = "Go"
-	AutoLinkLabel        IssueLabel = "auto-link"
-	PRreadyLabel         IssueLabel = "PRready"
-	InconsistentTagLabel IssueLabel = "Inconsistent tag"
+	GoLabel                       IssueLabel = "Go"
+	AutoLinkLabel                 IssueLabel = "auto-link"
+	PRreadyLabel                  IssueLabel = "PRready"
+	InconsistentTagLabel          IssueLabel = "Inconsistent tag"
 	SdkReleasedByServiceTeamLabel IssueLabel = "SDK released by service owner"
+	HoldOnLabel                   IssueLabel = "HoldOn"
 )
 
 func isGoReleaseRequest(issue *github.Issue) bool {
@@ -223,6 +224,10 @@ func isSdkReleasedByServiceTeam(issue *github.Issue) bool {
 	return issueHasLabel(issue, SdkReleasedByServiceTeamLabel)
 }
 
+func isHoldOn(issue *github.Issue) bool {
+	return issueHasLabel(issue, HoldOnLabel)
+}
+
 func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request, error) {
 	var requests []request.Request
 	var errResult error
@@ -230,8 +235,7 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if issue == nil {
 			continue
 		}
-		log.Printf("isNormal(%t) isSdkReleasedByServiceTeam(%t) issueId(%d) issueTitle(%s)", isNormalPeriod(), isSdkReleasedByServiceTeam(issue), issue.GetID(), issue.GetTitle())
-		if !isNormalPeriod() && !isSdkReleasedByServiceTeam(issue) {
+		if isHoldOn(issue) {
 			continue
 		}
 		if isPRReady(issue) {
@@ -307,26 +311,4 @@ func (c *commandContext) validateConfig(cfg config.Config) error {
 
 func timePtr(t time.Time) *time.Time {
 	return &t
-}
-
-func isNormalPeriod()bool{
-	now := time.Now()
-	firstDay := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
-	// Find the weekday of the first day (0 = Sunday, ..., 6 = Saturday)
-	weekday := int(firstDay.Weekday())
-	// Days until the first Saturday
-	daysToFirstSaturday := (6 - weekday + 7) % 7
-	// Add 7 more days to get the second Saturday
-	daysToSecondSaturday := daysToFirstSaturday + 7
-	// Calculate the second Saturday
-	secondSaturday := firstDay.AddDate(0, 0, daysToSecondSaturday)
-
-	// Compare today's date with second Saturday
-	if now.After(secondSaturday) {
-		log.Printf("The PR generation time of the current month is: [%s - %s]\n",
-			firstDay.Format("2006-01-02"),
-			secondSaturday.Format("2006-01-02"))
-			return true
-	}
-	return false
 }

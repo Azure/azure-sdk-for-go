@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-18-preview/Instances_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleInstancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleInstancesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-18-preview/Instances_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_Delete_MaximumSet_Gen.json
 func ExampleInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleInstancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-09-18-preview/Instances_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_Get_MaximumSet_Gen.json
 func ExampleInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-18-preview/Instances_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleInstancesClient_NewListByResourceGroupPager_instancesListByResourceGroupGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +328,7 @@ func ExampleInstancesClient_NewListByResourceGroupPager_instancesListByResourceG
 	}
 }
 
-// Generated from example definition: 2024-09-18-preview/Instances_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleInstancesClient_NewListByResourceGroupPager_instancesListByResourceGroupGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +363,7 @@ func ExampleInstancesClient_NewListByResourceGroupPager_instancesListByResourceG
 	}
 }
 
-// Generated from example definition: 2024-09-18-preview/Instances_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_ListBySubscription_MaximumSet_Gen.json
 func ExampleInstancesClient_NewListBySubscriptionPager_instancesListBySubscriptionGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -453,7 +453,7 @@ func ExampleInstancesClient_NewListBySubscriptionPager_instancesListBySubscripti
 	}
 }
 
-// Generated from example definition: 2024-09-18-preview/Instances_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_ListBySubscription_MinimumSet_Gen.json
 func ExampleInstancesClient_NewListBySubscriptionPager_instancesListBySubscriptionGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleInstancesClient_NewListBySubscriptionPager_instancesListBySubscripti
 	}
 }
 
-// Generated from example definition: 2024-09-18-preview/Instances_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-18/Instances_Update_MaximumSet_Gen.json
 func ExampleInstancesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -196,10 +196,12 @@ func issueHasLabel(issue *github.Issue, label IssueLabel) bool {
 type IssueLabel string
 
 const (
-	GoLabel              IssueLabel = "Go"
-	AutoLinkLabel        IssueLabel = "auto-link"
-	PRreadyLabel         IssueLabel = "PRready"
-	InconsistentTagLabel IssueLabel = "Inconsistent tag"
+	GoLabel                       IssueLabel = "Go"
+	AutoLinkLabel                 IssueLabel = "auto-link"
+	PRreadyLabel                  IssueLabel = "PRready"
+	InconsistentTagLabel          IssueLabel = "Inconsistent tag"
+	SdkReleasedByServiceTeamLabel IssueLabel = "SDK released by service owner"
+	HoldOnLabel                   IssueLabel = "HoldOn"
 )
 
 func isGoReleaseRequest(issue *github.Issue) bool {
@@ -218,11 +220,22 @@ func isInconsistentTag(issue *github.Issue) bool {
 	return issueHasLabel(issue, InconsistentTagLabel)
 }
 
+func isSdkReleasedByServiceTeam(issue *github.Issue) bool {
+	return issueHasLabel(issue, SdkReleasedByServiceTeamLabel)
+}
+
+func isHoldOn(issue *github.Issue) bool {
+	return issueHasLabel(issue, HoldOnLabel)
+}
+
 func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request, error) {
 	var requests []request.Request
 	var errResult error
 	for _, issue := range issues {
 		if issue == nil {
+			continue
+		}
+		if isHoldOn(issue) {
 			continue
 		}
 		if isPRReady(issue) {
@@ -231,7 +244,7 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if !isAutoLink(issue) {
 			continue
 		}
-		if isInconsistentTag(issue) {
+		if isInconsistentTag(issue) && !isSdkReleasedByServiceTeam(issue) {
 			log.Printf("[ERROR] %s Readme tag is inconsistent with default tag\n", issue.GetHTMLURL())
 			errResult = errors.Join(errResult, fmt.Errorf("%s: readme tag is inconsistent with default tag", issue.GetHTMLURL()))
 			continue

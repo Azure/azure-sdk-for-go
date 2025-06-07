@@ -141,6 +141,8 @@ func TestTypeToAny(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	common.FilterChangelog(changelog, common.TypeToAnyFilter)
+
 	excepted := "### Breaking Changes\n\n- Type of `Client.M` has been changed from `map[string]string` to `map[string]any`\n\n### Features Added\n\n- Type of `Client.A` has been changed from `*int` to `any`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }

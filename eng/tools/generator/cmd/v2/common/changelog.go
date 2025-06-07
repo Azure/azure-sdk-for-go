@@ -94,13 +94,9 @@ func writeChangelogForPackage(r *report.Package) string {
 	}
 
 	// write additional changes
-	toAny := typeToAny(r.BreakingChanges, true)
-	additives := getNewContents(r.AdditiveChanges)
-	if len(additives) > 0 || len(toAny) > 0 {
+	additives := getAdditiveChanges(r.AdditiveChanges)
+	if len(additives) > 0 {
 		md.WriteHeader("Features Added")
-		for _, item := range toAny {
-			md.WriteListItem(item)
-		}
 		for _, item := range additives {
 			md.WriteListItem(item)
 		}
@@ -109,7 +105,7 @@ func writeChangelogForPackage(r *report.Package) string {
 	return md.String()
 }
 
-func getSummaries(breaking *report.BreakingChanges, additive *delta.Content) string {
+func getSummaries(breaking *report.BreakingChanges, additive *report.AdditiveChanges) string {
 	bc := 0
 	if breaking != nil {
 		bc = breaking.Count()
@@ -229,7 +225,7 @@ func getBreakingChanges(b *report.BreakingChanges) []string {
 	}
 
 	// get signature changes
-	items = append(items, getSignatureChangeItems(b)...)
+	items = append(items, getSignatureChangeItems(&b.Changes)...)
 
 	// get removed content
 	items = append(items, getRemovedContent(b.Removed)...)
@@ -237,7 +233,22 @@ func getBreakingChanges(b *report.BreakingChanges) []string {
 	return items
 }
 
-func getSignatureChangeItems(b *report.BreakingChanges) []string {
+func getAdditiveChanges(a *report.AdditiveChanges) []string {
+	items := make([]string, 0)
+	if a == nil || a.IsEmpty() {
+		return items
+	}
+
+	// get signature changes
+	items = append(items, getSignatureChangeItems(&a.Changes)...)
+
+	// get added content
+	items = append(items, getNewContents(a.Added)...)
+
+	return items
+}
+
+func getSignatureChangeItems(b *report.Changes) []string {
 	if b.IsEmpty() {
 		return nil
 	}
@@ -275,7 +286,7 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 		}
 	}
 	// write struct changes
-	items = append(items, typeToAny(b, false)...)
+	items = append(items, typeTo(b)...)
 
 	// interfaces are skipped, which are identical to some of the functions
 
@@ -452,7 +463,7 @@ func removePattern(funcName string, returnValue string) string {
 	return fmt.Sprintf("%s.%s", before, after)
 }
 
-func typeToAny(b *report.BreakingChanges, flag bool) []string {
+func typeTo(b *report.Changes) []string {
 	var items []string
 
 	if b == nil || b.IsEmpty() {
@@ -464,10 +475,8 @@ func typeToAny(b *report.BreakingChanges, flag bool) []string {
 			v := b.Structs[k]
 			for _, f := range sortChangeItem(v.Fields) {
 				d := v.Fields[f]
-				if flag == (d.To == "any") {
-					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
-					items = append(items, line)
-				}
+				line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
+				items = append(items, line)
 			}
 		}
 	}

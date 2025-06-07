@@ -1,14 +1,8 @@
 # Release History
 
-## 0.7.1 (Unreleased)
+## 1.0.0 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+First stable release of the azsystemevents package.
 
 ## 0.7.0 (2025-05-14)
 

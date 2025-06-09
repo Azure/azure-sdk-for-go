@@ -4,6 +4,8 @@
 
 First release of `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2`. 
 
+### Breaking Changes
+
 This new major release is compatible with azeventhubs v1, with one difference - Checkpoint.Offset and ReceivedEventData.Offset's type have been changed to a string (from an integer). 
 This change does NOT affect any stored checkpoints. Most customers will be unaffected by this change and can safely upgrade.
 

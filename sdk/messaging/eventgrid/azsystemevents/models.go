@@ -23,11 +23,11 @@ type ACSCallEndedByProperties struct {
 	// REQUIRED; The communication identifier of the call ended by
 	CommunicationIdentifier *CommunicationIdentifierModel
 
+	// REQUIRED; The type of call ended by.
+	Kind *ACSCallEndedByKind
+
 	// REQUIRED; The name of the call ended by.
 	Name *string
-
-	// REQUIRED; The type of call ended by.
-	Type *ACSCallEndedByKind
 }
 
 // ACSCallEndedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallEnded event.
@@ -72,42 +72,6 @@ type ACSCallGroupProperties struct {
 // ACSCallParticipantAddedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallParticipantAdded
 // event.
 type ACSCallParticipantAddedEventData struct {
-	// REQUIRED; The correlationId of calling event
-	CorrelationID *string
-
-	// REQUIRED; The call id of the server
-	ServerCallID *string
-
-	// REQUIRED; The call participant who initiated the call.
-	StartedBy *ACSCallParticipantProperties
-
-	// The display name of the participant.
-	DisplayName *string
-
-	// The group metadata
-	Group *ACSCallGroupProperties
-
-	// Is the calling event a room call.
-	IsRoomsCall *bool
-
-	// Is two-party in calling event.
-	IsTwoParty *bool
-
-	// The id of the participant.
-	ParticipantID *string
-
-	// The room metadata
-	Room *ACSCallRoomProperties
-
-	// The user of the call participant
-	User *ACSCallParticipantProperties
-
-	// The user agent of the participant.
-	UserAgent *string
-}
-
-// ACSCallParticipantEventProperties - Schema of common properties of all participant events
-type ACSCallParticipantEventProperties struct {
 	// REQUIRED; The correlationId of calling event
 	CorrelationID *string
 
@@ -1067,13 +1031,13 @@ type ACSRecordingChunkInfoProperties struct {
 // event.
 type ACSRecordingFileStatusUpdatedEventData struct {
 	// REQUIRED; The recording channel type - Mixed, Unmixed
-	RecordingChannelKind *RecordingChannelKind
+	RecordingChannelType *ACSRecordingChannelType
 
 	// REQUIRED; The recording content type- AudioVideo, or Audio
-	RecordingContentType *RecordingContentType
+	RecordingContentType *ACSRecordingContentType
 
 	// REQUIRED; The recording format type - Mp4, Mp3, Wav
-	RecordingFormatType *RecordingFormatType
+	RecordingFormatType *ACSRecordingFormatType
 
 	// REQUIRED; The time at which the recording started
 	RecordingStartTime *time.Time
@@ -1939,7 +1903,7 @@ type APIManagementCircuitBreakerProperties struct {
 // gateway deployment.
 type APIManagementExpiredGatewayTokenProperties struct {
 	// REQUIRED; Timestamp when the gateway token has expired.
-	ExpiredAtUTC *time.Time
+	ExpiresOn *time.Time
 }
 
 // APIManagementGatewayAPIAddedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayAPIAdded
@@ -2036,20 +2000,20 @@ type APIManagementGatewayProperties struct {
 // event.
 type APIManagementGatewayTokenExpiredEventData struct {
 	// REQUIRED; Information related to a given self-hosted gateway deployment.
-	GatewayInfo *APIManagementGatewayProperties
+	Gateway *APIManagementGatewayProperties
 
 	// REQUIRED; Information related to a an expired gateway token for a self-hosted gateway deployment.
-	TokenInfo *APIManagementExpiredGatewayTokenProperties
+	Token *APIManagementExpiredGatewayTokenProperties
 }
 
 // APIManagementGatewayTokenNearExpiryEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayTokenNearExpiry
 // event.
 type APIManagementGatewayTokenNearExpiryEventData struct {
 	// REQUIRED; Information related to a given self-hosted gateway deployment.
-	GatewayInfo *APIManagementGatewayProperties
+	Gateway *APIManagementGatewayProperties
 
 	// REQUIRED; Information related to a an expired gateway token for a self-hosted gateway deployment.
-	TokenInfo *APIManagementNearExpiryGatewayTokenProperties
+	Token *APIManagementNearExpiryGatewayTokenProperties
 }
 
 // APIManagementGatewayUpdatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayUpdated
@@ -2064,7 +2028,7 @@ type APIManagementGatewayUpdatedEventData struct {
 // gateway deployment.
 type APIManagementNearExpiryGatewayTokenProperties struct {
 	// REQUIRED; Timestamp when the gateway token will expire.
-	ExpiredAtUTC *time.Time
+	ExpiresOn *time.Time
 }
 
 // APIManagementProductCreatedEventData - Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductCreated

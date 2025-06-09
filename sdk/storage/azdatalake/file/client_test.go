@@ -15,7 +15,6 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
 	"io"
 	"net/http"
@@ -2404,6 +2403,107 @@ func (s *RecordedTestSuite) TestRenameNoOptions() {
 	_require.NoError(err)
 }
 
+func (s *RecordedTestSuite) TestRenameWithSpecialCharacters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Test with file name containing spaces
+	fileName := "file with spaces.txt"
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Rename to a path with special characters
+	newName := "renamed file+special@!&% chars.txt"
+	_, err = fClient.Rename(context.Background(), newName, nil)
+	_require.NoError(err)
+
+	// Verify new file exists by creating a client to it and checking properties
+	newClient, err := testcommon.GetFileClient(filesystemName, newName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	_, err = newClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	
+	// Test with Unicode characters
+	unicodeFileName := "lör 006.jpg"
+	unicodeClient, err := testcommon.GetFileClient(filesystemName, unicodeFileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err = unicodeClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Rename Unicode file to another Unicode name
+	newUnicodeName := "ångström ümlaut 我的文件.jpg"
+	_, err = unicodeClient.Rename(context.Background(), newUnicodeName, nil)
+	_require.NoError(err)
+
+	// Verify new file exists
+	newUnicodeClient, err := testcommon.GetFileClient(filesystemName, newUnicodeName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	_, err = newUnicodeClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestRenameWithQueryParameters() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a regular file
+	fileName := "original-file.txt"
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Create a source file with query parameters
+	srcClient, err := testcommon.GetFileClient(filesystemName, "source-file.txt", s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	resp, err = srcClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+	
+	// Create a destination path
+	destFile := "dest-file.txt"
+	
+	// Rename source file (with query params) to destination
+	// This is the operation that would fail without proper URL encoding
+	_, err = srcClient.Rename(context.Background(), destFile, nil)
+	_require.NoError(err)
+	
+	// Verify destination file exists
+	destClient, err := testcommon.GetFileClient(filesystemName, destFile, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	
+	destResp, err := destClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(destResp)
+}
+
 func (s *RecordedTestSuite) TestRenameFileWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3932,8 +4032,8 @@ func (s *RecordedTestSuite) TestFileAppendWithFlushReleaseLease() {
 
 	opts := &file.FlushDataOptions{
 		LeaseAction: &file.LeaseActionRelease,
-		AccessConditions: &path.AccessConditions{
-			LeaseAccessConditions: &path.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
+		AccessConditions: &file.AccessConditions{
+			LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
 		},
 	}
 

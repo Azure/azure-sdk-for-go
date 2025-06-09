@@ -1,17 +1,6 @@
 #!/bin/bash
 set -ex
 
-today=`date "+%Y%m%d"`
-firstDay=`date -d "${today}" +%Y%m01`
-week=`date -d "$firstDay" +%w`
-secondSaturday=$((firstDay+(12 - week) % 7 + 8))
-
-if [ $today -gt $secondSaturday ]
-then
- echo "The PR generation time of the current month is: [$firstDay-$secondSaturday]"
- exit 0
-fi
-
 export PATH=$PATH:$HOME/go/bin
 git config --global user.email "ReleaseHelper"
 git config --global user.name "ReleaseHelper"

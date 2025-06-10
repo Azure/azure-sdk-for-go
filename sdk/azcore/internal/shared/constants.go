@@ -29,6 +29,8 @@ const (
 	HeaderXMSRequestID           = "x-ms-request-id"
 	HeaderXMSErrorCode           = "x-ms-error-code"
 	HeaderXMSRetryAfterMS        = "x-ms-retry-after-ms"
+	HeaderXMSCopySourceStatusCode = "x-ms-copy-source-status-code"
+	HeaderXMSCopySourceErrorCode  = "x-ms-copy-source-error-code"
 )
 
 const BearerTokenPrefix = "Bearer "

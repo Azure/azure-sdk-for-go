@@ -7,12 +7,13 @@ package backup
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Client contains the methods for the group.
@@ -53,7 +54,9 @@ func (client *Client) BeginFullBackup(ctx context.Context, azureStorageBlobConta
 // Generated from API version 7.6
 func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerURI SASTokenParameters, options *BeginFullBackupOptions) (*http.Response, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "backup.Client.BeginFullBackup", client.internal.Tracer(), nil)
+	const operationName = "Client.BeginFullBackup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.fullBackupCreateRequest(ctx, azureStorageBlobContainerURI, options)
 	if err != nil {
@@ -108,7 +111,9 @@ func (client *Client) BeginFullRestore(ctx context.Context, restoreBlobDetails R
 // Generated from API version 7.6
 func (client *Client) fullRestore(ctx context.Context, restoreBlobDetails RestoreOperationParameters, options *BeginFullRestoreOptions) (*http.Response, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "backup.Client.BeginFullRestore", client.internal.Tracer(), nil)
+	const operationName = "Client.BeginFullRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.fullRestoreCreateRequest(ctx, restoreBlobDetails, options)
 	if err != nil {
@@ -175,7 +180,9 @@ func (client *Client) BeginPreFullBackup(ctx context.Context, preBackupOperation
 // Generated from API version 7.6
 func (client *Client) preFullBackup(ctx context.Context, preBackupOperationParameters PreBackupOperationParameters, options *BeginPreFullBackupOptions) (*http.Response, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "backup.Client.BeginPreFullBackup", client.internal.Tracer(), nil)
+	const operationName = "Client.BeginPreFullBackup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.preFullBackupCreateRequest(ctx, preBackupOperationParameters, options)
 	if err != nil {
@@ -228,7 +235,9 @@ func (client *Client) BeginPreFullRestore(ctx context.Context, preRestoreOperati
 // Generated from API version 7.6
 func (client *Client) preFullRestore(ctx context.Context, preRestoreOperationParameters PreRestoreOperationParameters, options *BeginPreFullRestoreOptions) (*http.Response, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "backup.Client.BeginPreFullRestore", client.internal.Tracer(), nil)
+	const operationName = "Client.BeginPreFullRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.preFullRestoreCreateRequest(ctx, preRestoreOperationParameters, options)
 	if err != nil {
@@ -284,7 +293,9 @@ func (client *Client) BeginSelectiveKeyRestore(ctx context.Context, keyName stri
 // Generated from API version 7.6
 func (client *Client) selectiveKeyRestore(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, options *BeginSelectiveKeyRestoreOptions) (*http.Response, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "backup.Client.BeginSelectiveKeyRestore", client.internal.Tracer(), nil)
+	const operationName = "Client.BeginSelectiveKeyRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.selectiveKeyRestoreCreateRequest(ctx, keyName, restoreBlobDetails, options)
 	if err != nil {

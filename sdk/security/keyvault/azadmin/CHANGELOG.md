@@ -3,6 +3,7 @@
 ### 1.4.0 (Unreleased)
 
 #### Features Added
+* Add fakes support
 
 #### Breaking Changes
 

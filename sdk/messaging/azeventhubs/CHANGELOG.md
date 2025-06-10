@@ -2,6 +2,8 @@
 
 ## 1.4.0 (2025-06-10)
 
+### Other Changes
+
 This package has been deprecated, use `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2` instead. The major release
 changes a single field (Offset) from an integer, and should be a non-breaking change for most users.
 

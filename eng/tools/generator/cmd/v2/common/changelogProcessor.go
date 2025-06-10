@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
@@ -254,7 +255,7 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 func MarshalUnmarshalFilter(changelog *Changelog) {
 	if changelog.Modified != nil {
 		if changelog.Modified.AdditiveChanges != nil {
-			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
+			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Added.Funcs)
 		}
 		if changelog.Modified.BreakingChanges != nil && changelog.Modified.BreakingChanges.Removed != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.BreakingChanges.Removed.Funcs)
@@ -280,12 +281,12 @@ func FilterChangelog(changelog *Changelog, opts ...func(changelog *Changelog)) {
 
 func EnumFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
-		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.TypeAliases != nil {
-			for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
-				funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Funcs, typeAliases, "Possible")
+		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.Added.TypeAliases != nil {
+			for typeAliases := range changelog.Modified.AdditiveChanges.Added.TypeAliases {
+				funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Added.Funcs, typeAliases, "Possible")
 				if funcExist && len(funcKeys) == 1 {
 					for _, f := range funcKeys {
-						delete(changelog.Modified.AdditiveChanges.Funcs, f)
+						delete(changelog.Modified.AdditiveChanges.Added.Funcs, f)
 					}
 				}
 			}
@@ -330,7 +331,7 @@ func searchKey[T exports.Const | exports.Func | exports.Struct](m map[string]T, 
 
 func FuncFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
-		funcOperation(changelog.Modified.AdditiveChanges)
+		funcOperation(changelog.Modified.AdditiveChanges.Added)
 	}
 
 	if changelog.Modified.HasBreakingChanges() {
@@ -426,8 +427,8 @@ func LROFilter(changelog *Changelog) {
 				} else {
 					beginFunc = fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
 				}
-				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
-					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
+				if _, ok := changelog.Modified.AdditiveChanges.Added.Funcs[beginFunc]; ok {
+					delete(changelog.Modified.AdditiveChanges.Added.Funcs, beginFunc)
 					v.ReplacedBy = &beginFunc
 					removedContent.Funcs[bFunc] = v
 				}
@@ -450,8 +451,8 @@ func PageableFilter(changelog *Changelog) {
 				} else {
 					pagination = fmt.Sprintf("%s.New%sPager", clientFunc[0], clientFunc[1])
 				}
-				if _, ok := changelog.Modified.AdditiveChanges.Funcs[pagination]; ok {
-					delete(changelog.Modified.AdditiveChanges.Funcs, pagination)
+				if _, ok := changelog.Modified.AdditiveChanges.Added.Funcs[pagination]; ok {
+					delete(changelog.Modified.AdditiveChanges.Added.Funcs, pagination)
 					v.ReplacedBy = &pagination
 					removedContent.Funcs[bFunc] = v
 				}
@@ -479,7 +480,7 @@ func InterfaceToAnyFilter(changelog *Changelog) {
 func NonExportedFilter(changelog *Changelog) {
 	if !changelog.Modified.IsEmpty() {
 		if changelog.Modified.HasAdditiveChanges() {
-			nonExportOperation(changelog.Modified.AdditiveChanges)
+			nonExportOperation(changelog.Modified.AdditiveChanges.Added)
 		}
 
 		if changelog.Modified.HasBreakingChanges() {
@@ -520,6 +521,33 @@ func nonExportOperation(content *delta.Content) {
 	for sName := range content.Structs {
 		if !ast.IsExported(sName) {
 			delete(content.Structs, sName)
+		}
+	}
+}
+
+func TypeToAnyFilter(changelog *Changelog) {
+	if changelog.Modified.HasBreakingChanges() {
+		for structName, s := range changelog.Modified.BreakingChanges.Changes.Structs {
+			for k, v := range s.Fields {
+				if v.To == "any" {
+					delete(s.Fields, k)
+					if changelog.Modified.AdditiveChanges == nil {
+						changelog.Modified.AdditiveChanges = &report.AdditiveChanges{}
+					}
+					if changelog.Modified.AdditiveChanges.Changes.Structs == nil {
+						changelog.Modified.AdditiveChanges.Changes.Structs = map[string]delta.StructDef{}
+					}
+					if _, ok := changelog.Modified.AdditiveChanges.Changes.Structs[structName]; !ok {
+						changelog.Modified.AdditiveChanges.Changes.Structs[structName] = delta.StructDef{
+							Fields: make(map[string]delta.Signature),
+						}
+					}
+					changelog.Modified.AdditiveChanges.Changes.Structs[structName].Fields[k] = v
+				}
+			}
+			if len(s.Fields) == 0 {
+				delete(changelog.Modified.BreakingChanges.Structs, structName)
+			}
 		}
 	}
 }

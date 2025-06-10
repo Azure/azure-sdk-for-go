@@ -86,14 +86,16 @@ func TestRemovedConstAndTypeAlias(t *testing.T) {
 
 func TestCombineSimilarItem(t *testing.T) {
 	r := &report.Package{
-		AdditiveChanges: &delta.Content{
-			Content: exports.Content{
-				Structs: map[string]exports.Struct{
-					"Struct": {
-						AnonymousFields: []string{"AnonymousA", "AnonymousB"},
-						Fields: map[string]string{
-							"FieldB": "",
-							"FieldA": "",
+		AdditiveChanges: &report.AdditiveChanges{
+			Added: &delta.Content{
+				Content: exports.Content{
+					Structs: map[string]exports.Struct{
+						"Struct": {
+							AnonymousFields: []string{"AnonymousA", "AnonymousB"},
+							Fields: map[string]string{
+								"FieldB": "",
+								"FieldA": "",
+							},
 						},
 					},
 				},

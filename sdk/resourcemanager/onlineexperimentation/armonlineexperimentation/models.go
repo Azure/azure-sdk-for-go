@@ -46,101 +46,9 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
-// OnlineExperimentWorkspace - An online experiment workspace resource.
-type OnlineExperimentWorkspace struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// READ-ONLY; The name of the OnlineExperimentWorkspace
-	Name *string
-
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// The resource-specific properties for this resource.
-	Properties *OnlineExperimentWorkspaceProperties
-
-	// The SKU (Stock Keeping Unit) assigned to this resource.
-	SKU *WorkspaceSKU
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// OnlineExperimentWorkspaceListResult - The response of a OnlineExperimentWorkspace list operation.
-type OnlineExperimentWorkspaceListResult struct {
-	// REQUIRED; The OnlineExperimentWorkspace items on this page
-	Value []*OnlineExperimentWorkspace
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OnlineExperimentWorkspacePatch - Partial update of an online experiment workspace resource.
-type OnlineExperimentWorkspacePatch struct {
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// Updatable properties of the online experiment workspace resource.
-	Properties *OnlineExperimentWorkspacePatchProperties
-
-	// The SKU (Stock Keeping Unit) assigned to this resource.
-	SKU *WorkspaceSKU
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-type OnlineExperimentWorkspacePatchProperties struct {
-	// The encryption configuration for the online experiment workspace resource.
-	Encryption *ResourceEncryptionConfiguration
-
-	// The resource identifier of the Log Analytics workspace which online experiment workspace uses for generating experiment
-	// analysis results.
-	LogAnalyticsWorkspaceResourceID *string
-
-	// The resource identifier of storage account where logs are exported from Log Analytics workspace. Online Experiment workspace
-	// uses it generating experiment analysis results.
-	LogsExporterStorageAccountResourceID *string
-}
-
-// OnlineExperimentWorkspaceProperties - The properties of an online experiment workspace.
-type OnlineExperimentWorkspaceProperties struct {
-	// REQUIRED; The resource identifier of App Configuration with which this online experiment workspace is tied for experimentation.
-	// This is a required field for creating an online experiment workspace.
-	AppConfigurationResourceID *string
-
-	// REQUIRED; The resource identifier of the Log Analytics workspace which online experiment workspace uses for generating
-	// experiment analysis results.
-	LogAnalyticsWorkspaceResourceID *string
-
-	// REQUIRED; The resource identifier of storage account where logs are exported from Log Analytics workspace. Online Experiment
-	// workspace uses it generating experiment analysis results.
-	LogsExporterStorageAccountResourceID *string
-
-	// The encryption configuration for the online experiment workspace resource.
-	Encryption *ResourceEncryptionConfiguration
-
-	// READ-ONLY; The data plane endpoint for the online experiment workspace resource.
-	Endpoint *string
-
-	// READ-ONLY; The provisioning state for the resource
-	ProvisioningState *ResourceProvisioningState
-
-	// READ-ONLY; The Id of the workspace.
-	WorkspaceID *string
-}
-
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -189,7 +97,7 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// ResourceEncryptionConfiguration - The encryption configuration for the online experiment workspace resource.
+// ResourceEncryptionConfiguration - The encryption configuration for the online experimentation workspace resource.
 type ResourceEncryptionConfiguration struct {
 	// All Customer-managed key encryption properties for the resource.
 	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
@@ -223,6 +131,100 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+// Workspace - An online experimentation workspace resource.
+type Workspace struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// READ-ONLY; The name of the OnlineExperimentationWorkspace
+	Name *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *WorkspaceProperties
+
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *WorkspaceSKU
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceListResult - The response of a OnlineExperimentationWorkspace list operation.
+type WorkspaceListResult struct {
+	// REQUIRED; The OnlineExperimentationWorkspace items on this page
+	Value []*Workspace
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// WorkspacePatch - Partial update of an online experimentation workspace resource.
+type WorkspacePatch struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Updatable properties of the online experimentation workspace resource.
+	Properties *WorkspacePatchProperties
+
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *WorkspaceSKU
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+type WorkspacePatchProperties struct {
+	// The encryption configuration for the online experimentation workspace resource.
+	Encryption *ResourceEncryptionConfiguration
+
+	// The resource identifier of the Log Analytics workspace which online experimentation workspace uses for generating experiment
+	// analysis results.
+	LogAnalyticsWorkspaceResourceID *string
+
+	// The resource identifier of storage account where logs are exported from Log Analytics workspace. online experimentation
+	// workspace uses it generating experiment analysis results.
+	LogsExporterStorageAccountResourceID *string
+}
+
+// WorkspaceProperties - The properties of an online experimentation workspace.
+type WorkspaceProperties struct {
+	// REQUIRED; The resource identifier of App Configuration with which this online experimentation workspace is tied for experimentation.
+	// This is a required field for creating an online experimentation workspace.
+	AppConfigurationResourceID *string
+
+	// REQUIRED; The resource identifier of the Log Analytics workspace which online experimentation workspace uses for generating
+	// experiment analysis results.
+	LogAnalyticsWorkspaceResourceID *string
+
+	// REQUIRED; The resource identifier of storage account where logs are exported from Log Analytics workspace. online experimentation
+	// workspace uses it generating experiment analysis results.
+	LogsExporterStorageAccountResourceID *string
+
+	// The encryption configuration for the online experimentation workspace resource.
+	Encryption *ResourceEncryptionConfiguration
+
+	// READ-ONLY; The data plane endpoint for the online experimentation workspace resource.
+	Endpoint *string
+
+	// READ-ONLY; The provisioning state for the resource
+	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; The Id of the workspace.
+	WorkspaceID *string
 }
 
 // WorkspaceSKU - The SKU (Stock Keeping Unit) assigned to this resource.

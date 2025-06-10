@@ -1,5 +1,15 @@
 # Release History
 
+## 2.0.1-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.0.0 (2025-06-10)
 
 First release of `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2`. 

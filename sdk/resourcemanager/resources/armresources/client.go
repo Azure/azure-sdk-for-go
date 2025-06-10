@@ -43,7 +43,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CheckExistence - Checks whether a resource exists.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group containing the resource to check. The name is case insensitive.
 //   - resourceProviderNamespace - The resource provider of the resource to check.
 //   - parentResourcePath - The parent resource identity.
@@ -108,7 +108,7 @@ func (client *Client) checkExistenceCreateRequest(ctx context.Context, resourceG
 // providers. In the event that a Resource provider does not implement this API, ARM will respond with
 // a 405. The alternative then is to use the GET API to check for the existence of the resource.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 //     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 //   - apiVersion - The API version to use for the operation.
@@ -152,7 +152,7 @@ func (client *Client) checkExistenceByIDCreateRequest(ctx context.Context, resou
 // BeginCreateOrUpdate - Creates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group for the resource. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - parentResourcePath - The parent resource identity.
@@ -181,7 +181,7 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 // CreateOrUpdate - Creates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
@@ -241,7 +241,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 // BeginCreateOrUpdateByID - Create a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 //     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 //   - apiVersion - The API version to use for the operation.
@@ -268,7 +268,7 @@ func (client *Client) BeginCreateOrUpdateByID(ctx context.Context, resourceID st
 // CreateOrUpdateByID - Create a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) createOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdateByID"
@@ -311,7 +311,7 @@ func (client *Client) createOrUpdateByIDCreateRequest(ctx context.Context, resou
 // BeginDelete - Deletes a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group that contains the resource to delete. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - parentResourcePath - The parent resource identity.
@@ -339,7 +339,7 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 // Delete - Deletes a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
@@ -396,7 +396,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 // BeginDeleteByID - Deletes a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 //     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 //   - apiVersion - The API version to use for the operation.
@@ -421,7 +421,7 @@ func (client *Client) BeginDeleteByID(ctx context.Context, resourceID string, ap
 // DeleteByID - Deletes a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) deleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDeleteByID"
@@ -461,7 +461,7 @@ func (client *Client) deleteByIDCreateRequest(ctx context.Context, resourceID st
 // Get - Gets a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - parentResourcePath - The parent resource identity.
@@ -535,7 +535,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 // GetByID - Gets a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 //     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 //   - apiVersion - The API version to use for the operation.
@@ -588,7 +588,7 @@ func (client *Client) getByIDHandleResponse(resp *http.Response) (ClientGetByIDR
 
 // NewListPager - Get all the resources in a subscription.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
@@ -634,7 +634,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -651,7 +651,7 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // NewListByResourceGroupPager - Get all the resources for a resource group.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The resource group with the resources to get.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
 //     method.
@@ -703,7 +703,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -724,7 +724,7 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 // on the groups until the move completes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - sourceResourceGroupName - The name of the resource group from the source subscription containing the resources to be moved.
 //   - parameters - Parameters for moving resources.
 //   - options - ClientBeginMoveResourcesOptions contains the optional parameters for the Client.BeginMoveResources method.
@@ -751,7 +751,7 @@ func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGrou
 // on the groups until the move completes.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) moveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginMoveResources"
@@ -789,7 +789,7 @@ func (client *Client) moveResourcesCreateRequest(ctx context.Context, sourceReso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -801,7 +801,7 @@ func (client *Client) moveResourcesCreateRequest(ctx context.Context, sourceReso
 // BeginUpdate - Updates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group for the resource. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - parentResourcePath - The parent resource identity.
@@ -830,7 +830,7 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 // Update - Updates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
@@ -890,7 +890,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 // BeginUpdateByID - Updates a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 //     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 //   - apiVersion - The API version to use for the operation.
@@ -916,7 +916,7 @@ func (client *Client) BeginUpdateByID(ctx context.Context, resourceID string, ap
 // UpdateByID - Updates a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) updateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdateByID"
@@ -963,7 +963,7 @@ func (client *Client) updateByIDCreateRequest(ctx context.Context, resourceID st
 // error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 //   - sourceResourceGroupName - The name of the resource group from the source subscription containing the resources to be validated
 //     for move.
 //   - parameters - Parameters for moving resources.
@@ -993,7 +993,7 @@ func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceReso
 // error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-04-01
 func (client *Client) validateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginValidateMoveResources"
@@ -1031,7 +1031,7 @@ func (client *Client) validateMoveResourcesCreateRequest(ctx context.Context, so
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -1,5 +1,8 @@
 # Azure Event Hubs Client Module for Go
 
+> Deprecated: use [github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2) instead. 
+> This upgrade changes the Offset field to a string (from an int), and should be a non-breaking change for most users.
+
 [Azure Event Hubs](https://azure.microsoft.com/services/event-hubs/) is a big data streaming platform and event ingestion service from Microsoft. For more information about Event Hubs see: [link](https://learn.microsoft.com/azure/event-hubs/event-hubs-about).
 
 Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs` in your application to:

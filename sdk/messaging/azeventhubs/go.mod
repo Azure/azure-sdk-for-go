@@ -1,4 +1,4 @@
-// Deprecated: This module is deprecated. Please use pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2 instead. This upgrade changes the Offset field to a string (from an int), and should be a non-breaking change for most users.
+// Deprecated: This module is deprecated. Please use https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2 instead. This upgrade changes the Offset field to a string (from an int), and should be a non-breaking change for most users.
 module github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs
 
 go 1.23.0

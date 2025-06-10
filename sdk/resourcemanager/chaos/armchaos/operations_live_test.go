@@ -60,12 +60,8 @@ func (testsuite *OperationsTestSuite) TestOperation() {
 	var err error
 	// From step Operations_ListAll
 	fmt.Println("Call operation: Operations_ListAll")
-	operationsClient, err := armchaos.NewOperationsClient(testsuite.cred, testsuite.options)
+	operationsClient, err := armchaos.NewOperationStatusesClient(testsuite.subscriptionId, testsuite.cred,nil)
 	testsuite.Require().NoError(err)
-	operationsClientNewListAllPager := operationsClient.NewListAllPager(nil)
-	for operationsClientNewListAllPager.More() {
-		_, err := operationsClientNewListAllPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
+	_, err = operationsClient.Get(testsuite.ctx, testsuite.location, testsuite.subscriptionId,nil)
+	testsuite.Require().NoError(err)
 }

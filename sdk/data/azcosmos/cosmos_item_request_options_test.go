@@ -54,6 +54,19 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 		t.Errorf("headerDedicatedGatewayMaxAge should be 300000 but got %v", headers[headerDedicatedGatewayMaxAge])
 	}
 	if headers[headerDedicatedGatewayBypassCache] != "true" {
-		t.Errorf("headerDedicatedGatewayBypassCache should be true but got %v", headers[headerDedicatedGatewayBypassIntegratedCache])
+		t.Errorf("headerDedicatedGatewayBypassCache should be true but got %v", headers[headerDedicatedGatewayBypassCache])
+	}
+}
+
+func TestItemRequestOptionsToHeaders_bypassIntegratedCacheNotSet(t *testing.T) {
+	options := &QueryOptions{}
+	header := options.toHeaders()
+	if header == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
+
+	headers := *header
+	if _, exists := headers[headerDedicatedGatewayBypassCache]; exists {
+		t.Errorf("headerDedicatedGatewayBypassCache should not exist when BypassIntegratedCache is not set")
 	}
 }

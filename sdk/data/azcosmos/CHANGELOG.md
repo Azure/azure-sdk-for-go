@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added support for BypassIntegratedCache option
+
 ### Breaking Changes
 
 ### Bugs Fixed

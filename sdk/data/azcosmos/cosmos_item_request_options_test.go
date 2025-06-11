@@ -25,6 +25,7 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	options.DedicatedGatewayRequestOptions = &DedicatedGatewayRequestOptions{
 		MaxIntegratedCacheStaleness: &maxIntegratedCacheStalenessDuration,
 	}
+	options.DedicatedGatewayRequestOptions.BypassIntegratedCache = true
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")
@@ -51,5 +52,8 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	}
 	if headers[headerDedicatedGatewayMaxAge] != strconv.FormatInt(300000, 10) {
 		t.Errorf("headerDedicatedGatewayMaxAge should be 300000 but got %v", headers[headerDedicatedGatewayMaxAge])
+	}
+	if headers[headerDedicatedGatewayBypassCache] != "true" {
+		t.Errorf("headerDedicatedGatewayBypassCache should be true but got %v", headers[headerDedicatedGatewayBypassIntegratedCache])
 	}
 }

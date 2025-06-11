@@ -59,7 +59,7 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 }
 
 func TestItemRequestOptionsToHeaders_bypassIntegratedCacheNotSet(t *testing.T) {
-	options := &QueryOptions{}
+	options := &ItemOptions{}
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")

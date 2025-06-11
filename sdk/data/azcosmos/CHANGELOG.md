@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added support for BypassIntegratedCache option See [PR 24772](https://github.com/Azure/azure-sdk-for-go/pull/24772)
+
 ### Breaking Changes
 
 ### Bugs Fixed

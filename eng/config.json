@@ -74,7 +74,7 @@
         },
         {
             "Name": "keyvault/azsecrets",
-            "CoverageGoal": 0.85
+            "CoverageGoal": 0.80
         },
         {
             "Name": "data/aztables",

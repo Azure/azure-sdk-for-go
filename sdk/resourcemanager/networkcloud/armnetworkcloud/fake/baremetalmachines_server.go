@@ -284,7 +284,16 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BareMetalMachinesClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BareMetalMachinesClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -328,7 +337,16 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginDelete(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BareMetalMachinesClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BareMetalMachinesClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -907,7 +925,16 @@ func (b *BareMetalMachinesServerTransport) dispatchBeginUpdate(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BareMetalMachinesClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BareMetalMachinesClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, bareMetalMachineNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

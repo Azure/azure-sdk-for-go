@@ -14,90 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78eac0bd58633028293cb1ec1709baa200bed9e2/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2023-09-01/examples/PrivateEndpointConnections_Get.json
-func ExamplePrivateEndpointConnectionsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "myResourceGroup", "myWorkspace", "myConnection", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PrivateEndpointConnection = armdashboard.PrivateEndpointConnection{
-	// 	Name: to.Ptr("myConnection"),
-	// 	Type: to.Ptr("Microsoft.Dashboard/grafana/privateEndpointConnections"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/Microsoft.Dashboard/grafana/myWorkspace/privateEndpointConnections/myConnection"),
-	// 	Properties: &armdashboard.PrivateEndpointConnectionProperties{
-	// 		GroupIDs: []*string{
-	// 			to.Ptr("grafana")},
-	// 			PrivateEndpoint: &armdashboard.PrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/Microsoft.Network/privateEndpoint/myEndpoint"),
-	// 			},
-	// 			PrivateLinkServiceConnectionState: &armdashboard.PrivateLinkServiceConnectionState{
-	// 				Description: to.Ptr("string"),
-	// 				ActionsRequired: to.Ptr("None"),
-	// 				Status: to.Ptr(armdashboard.PrivateEndpointServiceConnectionStatusPending),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armdashboard.PrivateEndpointConnectionProvisioningStateSucceeded),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78eac0bd58633028293cb1ec1709baa200bed9e2/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2023-09-01/examples/PrivateEndpointConnections_Approve.json
-func ExamplePrivateEndpointConnectionsClient_BeginApprove() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", armdashboard.PrivateEndpointConnection{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78eac0bd58633028293cb1ec1709baa200bed9e2/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2023-09-01/examples/PrivateEndpointConnections_Delete.json
-func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "myResourceGroup", "myWorkspace", "myConnection", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78eac0bd58633028293cb1ec1709baa200bed9e2/specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2023-09-01/examples/PrivateEndpointConnections_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2024-11-01-preview/examples/PrivateEndpointConnections_List.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,5 +60,85 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		// 				},
 		// 		}},
 		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2024-11-01-preview/examples/PrivateEndpointConnections_Get.json
+func ExamplePrivateEndpointConnectionsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "myResourceGroup", "myWorkspace", "myConnection", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PrivateEndpointConnection = armdashboard.PrivateEndpointConnection{
+	// 	Name: to.Ptr("myConnection"),
+	// 	Type: to.Ptr("Microsoft.Dashboard/grafana/privateEndpointConnections"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/Microsoft.Dashboard/grafana/myWorkspace/privateEndpointConnections/myConnection"),
+	// 	Properties: &armdashboard.PrivateEndpointConnectionProperties{
+	// 		GroupIDs: []*string{
+	// 			to.Ptr("grafana")},
+	// 			PrivateEndpoint: &armdashboard.PrivateEndpoint{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/Microsoft.Network/privateEndpoint/myEndpoint"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armdashboard.PrivateLinkServiceConnectionState{
+	// 				Description: to.Ptr("string"),
+	// 				ActionsRequired: to.Ptr("None"),
+	// 				Status: to.Ptr(armdashboard.PrivateEndpointServiceConnectionStatusPending),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdashboard.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2024-11-01-preview/examples/PrivateEndpointConnections_Approve.json
+func ExamplePrivateEndpointConnectionsClient_BeginApprove() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", armdashboard.PrivateEndpointConnection{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2024-11-01-preview/examples/PrivateEndpointConnections_Delete.json
+func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "myResourceGroup", "myWorkspace", "myConnection", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

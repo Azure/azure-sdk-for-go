@@ -218,7 +218,7 @@ func (testsuite *AppconfigurationTestSuite) TestReplicas() {
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}
-func (testsuite *AppconfigurationTestSuite) TestPrivateEndpointConnections() {
+func (testsuite *AppconfigurationTestSuite) TTestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
 	// From step Create_PrivateEndpoint

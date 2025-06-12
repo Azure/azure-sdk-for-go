@@ -1,6 +1,6 @@
-# Azure Planetarycomputer Module for Go
+# Azure Planetary Computer Module for Go
 
-The `armplanetarycomputer` module provides operations for working with Azure Planetarycomputer.
+The `armplanetarycomputer` module provides operations for working with Azure Planetary Computer.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/planetarycomputer/armplanetarycomputer)
 
@@ -15,7 +15,7 @@ The `armplanetarycomputer` module provides operations for working with Azure Pla
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Planetarycomputer module:
+Install the Azure Planetary Computer module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/planetarycomputer/armplanetarycomputer
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/planetarycomputer/a
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Planetarycomputer.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Planetary Computer.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Planetarycomputer module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Planetary Computer module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armplanetarycomputer.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Planetarycomputer` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Planetary Computer` label.
 
 # Contributing
 

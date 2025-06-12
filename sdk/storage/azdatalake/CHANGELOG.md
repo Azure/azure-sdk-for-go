@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fix panic in File and Directory client DownloadStream and Get Properties on authentication failure.
 
 ### Other Changes
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2025-06-11)
+## 1.2.0 (2025-06-12)
 
 ### Other Changes
 * Upgrade dependencies

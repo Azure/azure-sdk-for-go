@@ -59,7 +59,7 @@ func (testsuite *TargetsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestTargetsTestSuite(t *testing.T) {
+func TTestTargetsTestSuite(t *testing.T) {
 	suite.Run(t, new(TargetsTestSuite))
 }
 

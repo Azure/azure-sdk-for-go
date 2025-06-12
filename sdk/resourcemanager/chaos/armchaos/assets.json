@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/chaos/armchaos",
-  "Tag": "go/resourcemanager/chaos/armchaos_cb54da0c82"
+  "Tag": "go/resourcemanager/chaos/armchaos_fd50b88100"
 }

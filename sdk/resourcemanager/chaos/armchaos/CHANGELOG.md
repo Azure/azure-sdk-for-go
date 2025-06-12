@@ -11,17 +11,9 @@
 - Type of `ExperimentUpdate.Identity` has been changed from `*ResourceIdentity` to `*ManagedServiceIdentity`
 - Enum `ResourceIdentityType` has been removed
 - Function `*OperationsClient.NewListAllPager` has been removed
-- Struct `ErrorResponse` has been removed
 - Struct `OperationStatus` has been removed
-- Struct `Resource` has been removed
 - Struct `ResourceIdentity` has been removed
-- Struct `TrackedResource` has been removed
-- Field `Location` of struct `CapabilityType` has been removed
 - Field `OperationStatus` of struct `OperationStatusesClientGetResponse` has been removed
-- Field `AdditionalProperties` of struct `TargetListSelector` has been removed
-- Field `AdditionalProperties` of struct `TargetQuerySelector` has been removed
-- Field `AdditionalProperties` of struct `TargetSelector` has been removed
-- Field `Location` of struct `TargetType` has been removed
 
 ### Features Added
 

@@ -7,7 +7,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.10.1
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys v1.3.1
-	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0-beta.1
+	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.10.0
 )

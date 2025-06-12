@@ -3,7 +3,7 @@
 ### 1.4.0 (Unreleased)
 
 #### Features Added
-* Add fakes support
+* Add fakes support (https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes)
 
 #### Breaking Changes
 

@@ -26,8 +26,6 @@ func regexReplace(fileName string, regex string, replace string) {
 }
 
 func main() {
-	// SETTINGS
-
 	// RBAC
 	// change type of scope parameter from string to RoleScope
 	regexReplace("rbac/client.go", `scope string`, "scope RoleScope")

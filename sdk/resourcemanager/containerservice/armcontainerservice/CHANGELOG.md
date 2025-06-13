@@ -1,5 +1,35 @@
 # Release History
 
+## 7.0.0 (2025-06-12)
+### Breaking Changes
+
+- Field `EnablePodSecurityPolicy` of struct `ManagedClusterProperties` has been removed
+
+### Features Added
+
+- New value `AgentPoolModeGateway` added to enum type `AgentPoolMode`
+- New value `AgentPoolTypeVirtualMachines` added to enum type `AgentPoolType`
+- New value `OSSKUUbuntu2204` added to enum type `OSSKU`
+- New enum type `PodIPAllocationMode` with values `PodIPAllocationModeDynamicIndividual`, `PodIPAllocationModeStaticBlock`
+- New enum type `UndrainableNodeBehavior` with values `UndrainableNodeBehaviorCordon`, `UndrainableNodeBehaviorSchedule`
+- New struct `AgentPoolGatewayProfile`
+- New struct `AgentPoolStatus`
+- New struct `CloudErrorBody`
+- New struct `ManagedClusterStaticEgressGatewayProfile`
+- New struct `ManagedClusterStatus`
+- New struct `ManualScaleProfile`
+- New struct `ScaleProfile`
+- New struct `VirtualMachineNodes`
+- New struct `VirtualMachinesProfile`
+- New field `MaxUnavailable`, `UndrainableNodeBehavior` in struct `AgentPoolUpgradeSettings`
+- New field `Zones` in struct `Machine`
+- New field `EnableVnetIntegration`, `SubnetID` in struct `ManagedClusterAPIServerAccessProfile`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `Status` in struct `ManagedClusterProperties`
+- New field `StaticEgressGatewayProfile` in struct `NetworkProfile`
+
+
 ## 7.0.0-beta.3 (2025-05-29)
 ### Breaking Changes
 

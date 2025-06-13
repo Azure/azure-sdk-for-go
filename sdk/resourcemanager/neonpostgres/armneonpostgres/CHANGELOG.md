@@ -1,5 +1,28 @@
 # Release History
 
+## 2.0.0 (2025-05-13)
+### Breaking Changes
+
+- Function `*BranchesClient.BeginUpdate` has been removed
+- Function `*ComputesClient.BeginCreateOrUpdate` has been removed
+- Function `*ComputesClient.Delete` has been removed
+- Function `*ComputesClient.Get` has been removed
+- Function `*ComputesClient.BeginUpdate` has been removed
+- Function `*EndpointsClient.BeginCreateOrUpdate` has been removed
+- Function `*EndpointsClient.Delete` has been removed
+- Function `*EndpointsClient.Get` has been removed
+- Function `*EndpointsClient.BeginUpdate` has been removed
+- Function `*ProjectsClient.BeginUpdate` has been removed
+- Function `*NeonDatabasesClient.BeginCreateOrUpdate` has been removed
+- Function `*NeonDatabasesClient.Delete` has been removed
+- Function `*NeonDatabasesClient.Get` has been removed
+- Function `*NeonDatabasesClient.BeginUpdate` has been removed
+- Function `*NeonRolesClient.BeginCreateOrUpdate` has been removed
+- Function `*NeonRolesClient.Delete` has been removed
+- Function `*NeonRolesClient.Get` has been removed
+- Function `*NeonRolesClient.BeginUpdate` has been removed
+
+
 ## 1.0.0 (2025-04-07)
 ### Features Added
 

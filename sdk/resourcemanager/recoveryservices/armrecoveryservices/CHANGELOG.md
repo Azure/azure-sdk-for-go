@@ -1,5 +1,15 @@
 # Release History
 
+## 2.1.0 (2025-06-12)
+### Features Added
+
+- New enum type `IdentityType` with values `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
+- New enum type `State` with values `StateDisabled`, `StateEnabled`, `StateInvalid`
+- New struct `AssociatedIdentity`
+- New struct `SourceScanConfiguration`
+- New field `SourceScanConfiguration` in struct `SecuritySettings`
+
+
 ## 2.0.0 (2024-05-24)
 ### Breaking Changes
 

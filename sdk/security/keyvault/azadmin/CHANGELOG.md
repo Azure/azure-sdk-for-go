@@ -1,12 +1,19 @@
 ## Release History
 
-### 1.4.0 (Unreleased)
+### 1.4.1-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 1.4.0 (2025-06-12)
+
+#### Features Added
+* Add fakes support (https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes)
 
 #### Other Changes
 * Upgraded to API service version `7.6`

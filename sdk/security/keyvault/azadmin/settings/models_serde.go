@@ -7,8 +7,9 @@ package settings
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type ListResult.

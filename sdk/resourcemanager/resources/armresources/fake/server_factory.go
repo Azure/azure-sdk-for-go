@@ -19,12 +19,6 @@ type ServerFactory struct {
 	// Server contains the fakes for client Client
 	Server Server
 
-	// DeploymentOperationsServer contains the fakes for client DeploymentOperationsClient
-	DeploymentOperationsServer DeploymentOperationsServer
-
-	// DeploymentsServer contains the fakes for client DeploymentsClient
-	DeploymentsServer DeploymentsServer
-
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -56,8 +50,6 @@ type ServerFactoryTransport struct {
 	srv                           *ServerFactory
 	trMu                          sync.Mutex
 	trServer                      *ServerTransport
-	trDeploymentOperationsServer  *DeploymentOperationsServerTransport
-	trDeploymentsServer           *DeploymentsServerTransport
 	trOperationsServer            *OperationsServerTransport
 	trProviderResourceTypesServer *ProviderResourceTypesServerTransport
 	trProvidersServer             *ProvidersServerTransport
@@ -81,14 +73,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
-	case "DeploymentOperationsClient":
-		initServer(s, &s.trDeploymentOperationsServer, func() *DeploymentOperationsServerTransport {
-			return NewDeploymentOperationsServerTransport(&s.srv.DeploymentOperationsServer)
-		})
-		resp, err = s.trDeploymentOperationsServer.Do(req)
-	case "DeploymentsClient":
-		initServer(s, &s.trDeploymentsServer, func() *DeploymentsServerTransport { return NewDeploymentsServerTransport(&s.srv.DeploymentsServer) })
-		resp, err = s.trDeploymentsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

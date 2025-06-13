@@ -147,7 +147,16 @@ func (l *L3NetworksServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, l3NetworkNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.L3NetworksClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.L3NetworksClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := l.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, l3NetworkNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -191,7 +200,16 @@ func (l *L3NetworksServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := l.srv.BeginDelete(req.Context(), resourceGroupNameParam, l3NetworkNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.L3NetworksClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.L3NetworksClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := l.srv.BeginDelete(req.Context(), resourceGroupNameParam, l3NetworkNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -340,7 +358,16 @@ func (l *L3NetworksServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := l.srv.Update(req.Context(), resourceGroupNameParam, l3NetworkNameParam, body, nil)
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	var options *armnetworkcloud.L3NetworksClientUpdateOptions
+	if ifMatchParam != nil || ifNoneMatchParam != nil {
+		options = &armnetworkcloud.L3NetworksClientUpdateOptions{
+			IfMatch:     ifMatchParam,
+			IfNoneMatch: ifNoneMatchParam,
+		}
+	}
+	respr, errRespr := l.srv.Update(req.Context(), resourceGroupNameParam, l3NetworkNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

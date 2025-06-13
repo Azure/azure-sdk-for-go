@@ -147,7 +147,16 @@ func (v *VolumesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, volumeNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.VolumesClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.VolumesClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, volumeNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -191,7 +200,16 @@ func (v *VolumesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameParam, volumeNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.VolumesClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.VolumesClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameParam, volumeNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -340,7 +358,16 @@ func (v *VolumesServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := v.srv.Update(req.Context(), resourceGroupNameParam, volumeNameParam, body, nil)
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	var options *armnetworkcloud.VolumesClientUpdateOptions
+	if ifMatchParam != nil || ifNoneMatchParam != nil {
+		options = &armnetworkcloud.VolumesClientUpdateOptions{
+			IfMatch:     ifMatchParam,
+			IfNoneMatch: ifNoneMatchParam,
+		}
+	}
+	respr, errRespr := v.srv.Update(req.Context(), resourceGroupNameParam, volumeNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -147,7 +147,16 @@ func (t *TrunkedNetworksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, trunkedNetworkNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.TrunkedNetworksClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.TrunkedNetworksClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, trunkedNetworkNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -191,7 +200,16 @@ func (t *TrunkedNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameParam, trunkedNetworkNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.TrunkedNetworksClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.TrunkedNetworksClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameParam, trunkedNetworkNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -340,7 +358,16 @@ func (t *TrunkedNetworksServerTransport) dispatchUpdate(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.Update(req.Context(), resourceGroupNameParam, trunkedNetworkNameParam, body, nil)
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	var options *armnetworkcloud.TrunkedNetworksClientUpdateOptions
+	if ifMatchParam != nil || ifNoneMatchParam != nil {
+		options = &armnetworkcloud.TrunkedNetworksClientUpdateOptions{
+			IfMatch:     ifMatchParam,
+			IfNoneMatch: ifNoneMatchParam,
+		}
+	}
+	respr, errRespr := t.srv.Update(req.Context(), resourceGroupNameParam, trunkedNetworkNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

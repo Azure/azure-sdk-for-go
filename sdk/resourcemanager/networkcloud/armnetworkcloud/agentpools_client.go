@@ -43,7 +43,7 @@ func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create a new Kubernetes cluster agent pool or update the properties of the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
 //   - agentPoolName - The name of the Kubernetes cluster agent pool.
@@ -71,7 +71,7 @@ func (client *AgentPoolsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create a new Kubernetes cluster agent pool or update the properties of the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *AgentPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolParameters AgentPool, options *AgentPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolsClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *AgentPoolsClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolParameters AgentPool, _ *AgentPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolParameters AgentPool, options *AgentPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,9 +117,15 @@ func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	if err := runtime.MarshalAsJSON(req, agentPoolParameters); err != nil {
 		return nil, err
 	}
@@ -129,7 +135,7 @@ func (client *AgentPoolsClient) createOrUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Delete the provided Kubernetes cluster agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
 //   - agentPoolName - The name of the Kubernetes cluster agent pool.
@@ -155,7 +161,7 @@ func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete the provided Kubernetes cluster agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolsClient.BeginDelete"
@@ -178,7 +184,7 @@ func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, _ *AgentPoolsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,16 +207,22 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	return req, nil
 }
 
 // Get - Get properties of the provided Kubernetes cluster agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
 //   - agentPoolName - The name of the Kubernetes cluster agent pool.
@@ -261,7 +273,7 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +290,7 @@ func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoo
 
 // NewListByKubernetesClusterPager - Get a list of agent pools for the provided Kubernetes cluster.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
 //   - options - AgentPoolsClientListByKubernetesClusterOptions contains the optional parameters for the AgentPoolsClient.NewListByKubernetesClusterPager
@@ -326,7 +338,7 @@ func (client *AgentPoolsClient) listByKubernetesClusterCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,7 +357,7 @@ func (client *AgentPoolsClient) listByKubernetesClusterHandleResponse(resp *http
 // Kubernetes cluster agent pool. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesClusterName - The name of the Kubernetes cluster.
 //   - agentPoolName - The name of the Kubernetes cluster agent pool.
@@ -373,7 +385,7 @@ func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // cluster agent pool. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters AgentPoolPatchParameters, options *AgentPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolsClient.BeginUpdate"
@@ -396,7 +408,7 @@ func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters AgentPoolPatchParameters, _ *AgentPoolsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, agentPoolName string, agentPoolUpdateParameters AgentPoolPatchParameters, options *AgentPoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -419,9 +431,15 @@ func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	if err := runtime.MarshalAsJSON(req, agentPoolUpdateParameters); err != nil {
 		return nil, err
 	}

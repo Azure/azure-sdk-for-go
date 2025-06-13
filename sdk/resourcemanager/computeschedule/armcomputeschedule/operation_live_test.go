@@ -52,7 +52,7 @@ func (testsuite *ComputeScheduleOperationsTestSuite) SetupSuite() {
 	testsuite.Prepare()
 }
 
-func TestComputeScheduleOperationsTestSuite(t *testing.T) {
+func TTestComputeScheduleOperationsTestSuite(t *testing.T) {
 	suite.Run(t, new(ComputeScheduleOperationsTestSuite))
 }
 

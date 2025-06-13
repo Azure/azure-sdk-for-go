@@ -12,42 +12,43 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 	"net/http"
 	"net/url"
 	"regexp"
 )
 
-// ExtensionMetadataServer is a fake server for instances of the armhybridcompute.ExtensionMetadataClient type.
-type ExtensionMetadataServer struct {
-	// Get is the fake for method ExtensionMetadataClient.Get
+// ExtensionMetadataV2Server is a fake server for instances of the armhybridcompute.ExtensionMetadataV2Client type.
+type ExtensionMetadataV2Server struct {
+	// Get is the fake for method ExtensionMetadataV2Client.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, publisher string, extensionType string, version string, options *armhybridcompute.ExtensionMetadataClientGetOptions) (resp azfake.Responder[armhybridcompute.ExtensionMetadataClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, publisher string, extensionType string, version string, options *armhybridcompute.ExtensionMetadataV2ClientGetOptions) (resp azfake.Responder[armhybridcompute.ExtensionMetadataV2ClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ExtensionMetadataClient.NewListPager
+	// NewListPager is the fake for method ExtensionMetadataV2Client.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, publisher string, extensionType string, options *armhybridcompute.ExtensionMetadataClientListOptions) (resp azfake.PagerResponder[armhybridcompute.ExtensionMetadataClientListResponse])
+	NewListPager func(location string, publisher string, extensionType string, options *armhybridcompute.ExtensionMetadataV2ClientListOptions) (resp azfake.PagerResponder[armhybridcompute.ExtensionMetadataV2ClientListResponse])
 }
 
-// NewExtensionMetadataServerTransport creates a new instance of ExtensionMetadataServerTransport with the provided implementation.
-// The returned ExtensionMetadataServerTransport instance is connected to an instance of armhybridcompute.ExtensionMetadataClient via the
+// NewExtensionMetadataV2ServerTransport creates a new instance of ExtensionMetadataV2ServerTransport with the provided implementation.
+// The returned ExtensionMetadataV2ServerTransport instance is connected to an instance of armhybridcompute.ExtensionMetadataV2Client via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewExtensionMetadataServerTransport(srv *ExtensionMetadataServer) *ExtensionMetadataServerTransport {
-	return &ExtensionMetadataServerTransport{
+func NewExtensionMetadataV2ServerTransport(srv *ExtensionMetadataV2Server) *ExtensionMetadataV2ServerTransport {
+	return &ExtensionMetadataV2ServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armhybridcompute.ExtensionMetadataClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armhybridcompute.ExtensionMetadataV2ClientListResponse]](),
 	}
 }
 
-// ExtensionMetadataServerTransport connects instances of armhybridcompute.ExtensionMetadataClient to instances of ExtensionMetadataServer.
-// Don't use this type directly, use NewExtensionMetadataServerTransport instead.
-type ExtensionMetadataServerTransport struct {
-	srv          *ExtensionMetadataServer
-	newListPager *tracker[azfake.PagerResponder[armhybridcompute.ExtensionMetadataClientListResponse]]
+// ExtensionMetadataV2ServerTransport connects instances of armhybridcompute.ExtensionMetadataV2Client to instances of ExtensionMetadataV2Server.
+// Don't use this type directly, use NewExtensionMetadataV2ServerTransport instead.
+type ExtensionMetadataV2ServerTransport struct {
+	srv          *ExtensionMetadataV2Server
+	newListPager *tracker[azfake.PagerResponder[armhybridcompute.ExtensionMetadataV2ClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for ExtensionMetadataServerTransport.
-func (e *ExtensionMetadataServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ExtensionMetadataV2ServerTransport.
+func (e *ExtensionMetadataV2ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -57,21 +58,21 @@ func (e *ExtensionMetadataServerTransport) Do(req *http.Request) (*http.Response
 	return e.dispatchToMethodFake(req, method)
 }
 
-func (e *ExtensionMetadataServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (e *ExtensionMetadataV2ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if extensionMetadataServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = extensionMetadataServerTransportInterceptor.Do(req)
+		if extensionMetadataV2ServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = extensionMetadataV2ServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "ExtensionMetadataClient.Get":
+			case "ExtensionMetadataV2Client.Get":
 				res.resp, res.err = e.dispatchGet(req)
-			case "ExtensionMetadataClient.NewListPager":
+			case "ExtensionMetadataV2Client.NewListPager":
 				res.resp, res.err = e.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -92,14 +93,14 @@ func (e *ExtensionMetadataServerTransport) dispatchToMethodFake(req *http.Reques
 	}
 }
 
-func (e *ExtensionMetadataServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (e *ExtensionMetadataV2ServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisher>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisher>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -126,23 +127,23 @@ func (e *ExtensionMetadataServerTransport) dispatchGet(req *http.Request) (*http
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionValue, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionValueV2, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (e *ExtensionMetadataServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (e *ExtensionMetadataV2ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridCompute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisher>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisher>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -160,6 +161,9 @@ func (e *ExtensionMetadataServerTransport) dispatchNewListPager(req *http.Reques
 		resp := e.srv.NewListPager(locationParam, publisherParam, extensionTypeParam, nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhybridcompute.ExtensionMetadataV2ClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
@@ -175,8 +179,8 @@ func (e *ExtensionMetadataServerTransport) dispatchNewListPager(req *http.Reques
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ExtensionMetadataServerTransport
-var extensionMetadataServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ExtensionMetadataV2ServerTransport
+var extensionMetadataV2ServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

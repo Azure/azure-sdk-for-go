@@ -145,7 +145,16 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginCreateOrUpdate(r
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := k.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := k.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -193,7 +202,16 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginDelete(req *http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := k.srv.BeginDelete(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.KubernetesClusterFeaturesClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.KubernetesClusterFeaturesClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := k.srv.BeginDelete(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -323,7 +341,16 @@ func (k *KubernetesClusterFeaturesServerTransport) dispatchBeginUpdate(req *http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := k.srv.BeginUpdate(req.Context(), resourceGroupNameParam, kubernetesClusterNameParam, featureNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

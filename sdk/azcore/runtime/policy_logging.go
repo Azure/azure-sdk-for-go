@@ -61,6 +61,8 @@ func NewLogPolicy(o *policy.LogOptions) policy.Policy {
 		"x-ms-request-id":               {},
 		"x-ms-client-request-id":        {},
 		"x-ms-return-client-request-id": {},
+		"x-ms-copy-source-status-code":  {},
+		"x-ms-copy-source-error-code":   {},
 	}
 	// add any caller-specified allowed headers to the set
 	for _, ah := range o.AllowedHeaders {

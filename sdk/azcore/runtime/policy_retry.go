@@ -13,6 +13,8 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
@@ -87,6 +89,48 @@ func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; 
 	}
 
 	return delay
+}
+
+// shouldRetryCopySource checks if the response contains copy source headers
+// with retryable error codes (InternalError, OperationTimedOut, ServerBusy)
+func shouldRetryCopySource(resp *http.Response) bool {
+	if resp == nil {
+		return false
+	}
+	
+	// Check for copy source status code header
+	copySourceStatusCode := resp.Header.Get(shared.HeaderXMSCopySourceStatusCode)
+	if copySourceStatusCode == "" {
+		return false
+	}
+	
+	// Parse the status code
+	statusCode, err := strconv.Atoi(copySourceStatusCode)
+	if err != nil {
+		return false
+	}
+	
+	// Check for copy source error code header
+	copySourceErrorCode := resp.Header.Get(shared.HeaderXMSCopySourceErrorCode)
+	if copySourceErrorCode == "" {
+		return false
+	}
+	
+	// Retry on specific error codes that match .NET SDK behavior:
+	// InternalError, OperationTimedOut, ServerBusy
+	copySourceErrorCode = strings.ToLower(copySourceErrorCode)
+	retryableErrors := []string{"internalerror", "operationtimedout", "serverbusy"}
+	
+	for _, retryableError := range retryableErrors {
+		if copySourceErrorCode == retryableError {
+			// Also check if the status code indicates a server error
+			if statusCode >= 500 || statusCode == 408 || statusCode == 429 {
+				return true
+			}
+		}
+	}
+	
+	return false
 }
 
 // NewRetryPolicy creates a policy object configured using the specified options.
@@ -183,8 +227,9 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 				log.Write(log.EventRetryPolicy, "exit due to ShouldRetry")
 				return
 			}
-		} else if err == nil && !HasStatusCode(resp, options.StatusCodes...) {
-			// if there is no error and the response code isn't in the list of retry codes then we're done.
+		} else if err == nil && !HasStatusCode(resp, options.StatusCodes...) && !shouldRetryCopySource(resp) {
+			// if there is no error and the response code isn't in the list of retry codes 
+			// and doesn't have retryable copy source headers then we're done.
 			log.Write(log.EventRetryPolicy, "exit due to non-retriable status code")
 			return
 		}

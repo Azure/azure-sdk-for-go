@@ -308,3 +308,39 @@ func TestWriteRespBodyReadError(t *testing.T) {
 	require.Error(t, writeRespBody(resp, &buf))
 	require.Contains(t, buf.String(), "Failed to read response body: read failed")
 }
+
+func TestPolicyLoggingCopySourceHeadersNotRedacted(t *testing.T) {
+	rawlog := map[log.Event]string{}
+	log.SetListener(func(cls log.Event, s string) {
+		rawlog[cls] = s
+	})
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithHeader(shared.HeaderXMSCopySourceStatusCode, "500"),
+		mock.WithHeader(shared.HeaderXMSCopySourceErrorCode, "InternalError"),
+	)
+	pl := exported.NewPipeline(srv, NewLogPolicy(nil))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if logResp, ok := rawlog[log.EventResponse]; ok {
+		// verify that the copy source headers are not redacted
+		if !strings.Contains(logResp, "X-Ms-Copy-Source-Status-Code: 500") {
+			t.Fatalf("copy source status code header was redacted: %s", logResp)
+		}
+		if !strings.Contains(logResp, "X-Ms-Copy-Source-Error-Code: InternalError") {
+			t.Fatalf("copy source error code header was redacted: %s", logResp)
+		}
+	} else {
+		t.Fatal("no response logged")
+	}
+}

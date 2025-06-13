@@ -962,3 +962,173 @@ func TestCalcDelay(t *testing.T) {
 		}
 	})
 }
+
+func TestRetryPolicyCopySourceRetryInternalError(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// First response with copy source internal error (should retry)
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusInternalServerError),
+		mock.WithHeader(shared.HeaderXMSCopySourceStatusCode, "500"),
+		mock.WithHeader(shared.HeaderXMSCopySourceErrorCode, "InternalError"),
+	)
+	// Second response succeeds
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	
+	pl := exported.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 2 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 2)
+	}
+}
+
+func TestRetryPolicyCopySourceRetryOperationTimedOut(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// First response with copy source operation timed out (should retry)
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusRequestTimeout),
+		mock.WithHeader(shared.HeaderXMSCopySourceStatusCode, "408"),
+		mock.WithHeader(shared.HeaderXMSCopySourceErrorCode, "OperationTimedOut"),
+	)
+	// Second response succeeds
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	
+	pl := exported.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 2 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 2)
+	}
+}
+
+func TestRetryPolicyCopySourceRetryServerBusy(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// First response with copy source server busy (should retry)
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusServiceUnavailable),
+		mock.WithHeader(shared.HeaderXMSCopySourceStatusCode, "503"),
+		mock.WithHeader(shared.HeaderXMSCopySourceErrorCode, "ServerBusy"),
+	)
+	// Second response succeeds
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	
+	pl := exported.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 2 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 2)
+	}
+}
+
+func TestRetryPolicyCopySourceNoRetryOnSuccess(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// Response with copy source success (should not retry)
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusOK),
+		mock.WithHeader(shared.HeaderXMSCopySourceStatusCode, "200"),
+		mock.WithHeader(shared.HeaderXMSCopySourceErrorCode, "Success"),
+	)
+	
+	pl := exported.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 1 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 1)
+	}
+}
+
+func TestRetryPolicyCopySourceNoRetryOnNonRetryableError(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// Response with copy source non-retryable error (should not retry)
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusBadRequest),
+		mock.WithHeader(shared.HeaderXMSCopySourceStatusCode, "400"),
+		mock.WithHeader(shared.HeaderXMSCopySourceErrorCode, "InvalidInput"),
+	)
+	
+	pl := exported.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 1 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 1)
+	}
+}
+
+func TestRetryPolicyCopySourceCaseInsensitive(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// First response with copy source error in mixed case (should retry)
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusInternalServerError),
+		mock.WithHeader(shared.HeaderXMSCopySourceStatusCode, "500"),
+		mock.WithHeader(shared.HeaderXMSCopySourceErrorCode, "InternalError"),
+	)
+	// Second response succeeds
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	
+	pl := exported.NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 2 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 2)
+	}
+}

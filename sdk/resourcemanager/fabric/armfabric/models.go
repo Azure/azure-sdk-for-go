@@ -100,13 +100,15 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -147,6 +149,39 @@ type OperationListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// PagedQuota - Paged collection of Quota items
+type PagedQuota struct {
+	// REQUIRED; The Quota items on this page
+	Value []*Quota
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// Quota - Describes Resource Quota
+type Quota struct {
+	// REQUIRED; The current usage of the resource.
+	CurrentValue *int64
+
+	// REQUIRED; The maximum permitted usage of the resource.
+	Limit *int64
+
+	// REQUIRED; The unit of usage measurement.
+	Unit *string
+
+	// READ-ONLY; The name of the quota.
+	Name *QuotaName
+}
+
+// QuotaName - The Quota Names
+type QuotaName struct {
+	// The localized name of the resource.
+	LocalizedValue *string
+
+	// The name of the resource.
+	Value *string
 }
 
 // RpSKU - Represents the SKU name and Azure pricing tier for Microsoft Fabric capacity resource.

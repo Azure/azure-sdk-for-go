@@ -6,7 +6,7 @@ package armcomputefleet
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0"
 )
 
 // AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
@@ -188,9 +188,9 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 // resource disk space for Ephemeral OS disk provisioning. For more information on
 // Ephemeral OS disk size requirements, please refer Ephemeral OS disk size
 // requirements for Windows VM at
-// https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
+// https://learn.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
 // and Linux VM at
-// https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements
+// https://learn.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements
 // Minimum api-version for NvmeDisk: 2024-03-01.
 type DiffDiskPlacement string
 
@@ -215,10 +215,10 @@ func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 // DiskControllerTypes - Specifies the disk controller type configured for the VM and
 // VirtualMachineScaleSet. This property is only supported for virtual machines
 // whose operating system disk and VM sku supports Generation 2
-// (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2), please
+// (https://learn.microsoft.com/en-us/azure/virtual-machines/generation-2), please
 // check the HyperVGenerations capability returned as part of VM sku capabilities
 // in the response of Microsoft.Compute SKUs api for the region contains V2
-// (https://docs.microsoft.com/rest/api/compute/resourceskus/list). For more
+// (https://learn.microsoft.com/rest/api/compute/resourceskus/list). For more
 // information about Disk Controller Types supported please refer to
 // https://aka.ms/azure-diskcontrollertypes.
 type DiskControllerTypes string
@@ -449,10 +449,10 @@ type ManagedServiceIdentityType string
 const (
 	// ManagedServiceIdentityTypeNone - No managed identity.
 	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
-	// ManagedServiceIdentityTypeSystemAndUserAssigned - System and user assigned managed identity.
-	ManagedServiceIdentityTypeSystemAndUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
 	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
 	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
 	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
 	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
@@ -461,8 +461,8 @@ const (
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	return []ManagedServiceIdentityType{
 		ManagedServiceIdentityTypeNone,
-		ManagedServiceIdentityTypeSystemAndUserAssigned,
 		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
@@ -799,9 +799,9 @@ func PossibleSpotAllocationStrategyValues() []SpotAllocationStrategy {
 // zone redundant storage. StandardSSD_ZRS uses Standard SSD zone redundant
 // storage. For more information regarding disks supported for Windows Virtual
 // Machines, refer to
-// https://docs.microsoft.com/azure/virtual-machines/windows/disks-types and, for
+// https://learn.microsoft.com/azure/virtual-machines/windows/disks-types and, for
 // Linux Virtual Machines, refer to
-// https://docs.microsoft.com/azure/virtual-machines/linux/disks-types
+// https://learn.microsoft.com/azure/virtual-machines/linux/disks-types
 type StorageAccountTypes string
 
 const (

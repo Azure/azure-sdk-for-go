@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/v2"
 	"log"
 )
 
@@ -185,6 +185,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 								DeleteOption:      to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 							},
 						},
+						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 					},
 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -566,6 +567,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 								DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 	// 							},
 	// 						},
+	// 						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 	// 					},
 	// 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 	// 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -888,6 +890,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdateMinimumSet() {
 								},
 							},
 						},
+						NetworkAPIVersion: to.Ptr(armcomputefleet.NetworkAPIVersion("2022-07-01")),
 					},
 				},
 				ComputeAPIVersion:        to.Ptr("2023-09-01"),
@@ -988,6 +991,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdateMinimumSet() {
 	// 								},
 	// 							},
 	// 						},
+	// 						NetworkAPIVersion: to.Ptr(armcomputefleet.NetworkAPIVersion("2022-07-01")),
 	// 					},
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2023-09-01"),
@@ -1208,6 +1212,7 @@ func ExampleFleetsClient_Get() {
 	// 								DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 	// 							},
 	// 						},
+	// 						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 	// 					},
 	// 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 	// 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -1627,6 +1632,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 		// 										DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 		// 									},
 		// 								},
+		// 								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 		// 							},
 		// 							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 		// 								HealthProbe: &armcomputefleet.APIEntityReference{
@@ -2050,6 +2056,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 		// 										DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 		// 									},
 		// 								},
+		// 								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 		// 							},
 		// 							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 		// 								HealthProbe: &armcomputefleet.APIEntityReference{
@@ -2313,7 +2320,6 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 		// 	VirtualMachineScaleSetListResult: armcomputefleet.VirtualMachineScaleSetListResult{
 		// 		Value: []*armcomputefleet.VirtualMachineScaleSet{
 		// 			{
-		// 				Name: to.Ptr("myVmss"),
 		// 				ID: to.Ptr("/subscriptions/7B0CD4DB-3381-4013-9B31-FB6E6FD0FF1C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachineScaleSets/myVmss"),
 		// 				Type: to.Ptr("Microsoft.AzureFleet/fleets/virtualMachineScaleSets"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.ProvisioningStateCreating),
@@ -2518,6 +2524,7 @@ func ExampleFleetsClient_BeginUpdate() {
 								DeleteOption:      to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 							},
 						},
+						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 					},
 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -2884,6 +2891,7 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 								DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 	// 							},
 	// 						},
+	// 						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 	// 					},
 	// 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 	// 						HealthProbe: &armcomputefleet.APIEntityReference{

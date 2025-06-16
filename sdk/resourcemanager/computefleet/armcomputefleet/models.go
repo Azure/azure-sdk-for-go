@@ -117,9 +117,9 @@ type BaseVirtualMachineProfile struct {
 	// Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS
 	// (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for
 	// Windows
-	// Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+	// Server](https://learn.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
 	// <br><br> [Azure Hybrid Use Benefit for Linux
-	// Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
+	// Server](https://learn.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
 	// <br><br> Minimum api-version: 2015-06-15
 	LicenseType *string
 
@@ -229,8 +229,8 @@ type DiffDiskSettings struct {
 	// values are: **CacheDisk,** **ResourceDisk.** The defaulting behavior is:
 	// **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk**
 	// is used. Refer to the VM size documentation for Windows VM at
-	// https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
-	// https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
+	// https://learn.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
+	// https://learn.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
 	// sizes exposes a cache disk.
 	Placement *DiffDiskPlacement
 }
@@ -403,7 +403,7 @@ type KeyVaultSecretReference struct {
 
 // LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine. For a
 // list of supported Linux distributions, see [Linux on Azure-Endorsed
-// Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+// Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
 type LinuxConfiguration struct {
 	// Specifies whether password authentication should be disabled.
 	DisablePasswordAuthentication *bool
@@ -507,13 +507,15 @@ type OSImageNotificationProfile struct {
 	NotBeforeTimeout *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -679,7 +681,7 @@ type SSHPublicKey struct {
 	// SSH public key certificate used to authenticate with the VM through ssh. The
 	// key needs to be at least 2048-bit and in ssh-rsa format. For creating ssh keys,
 	// see [Create SSH keys on Linux and Mac for Linux VMs in
-	// Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
+	// Azure]https://learn.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
 	KeyData *string
 
 	// Specifies the full path on the created VM where ssh public key is stored. If
@@ -908,6 +910,7 @@ type VMAttributes struct {
 	LocalStorageInGiB *VMAttributeMinMaxDouble
 
 	// Specifies whether the VMSize supporting local storage should be used to build Fleet or not.
+	// Included - Default if not specified as most Azure VMs support local storage.
 	LocalStorageSupport *VMAttributeSupport
 
 	// The range of memory in GiB per vCPU specified from min to max. Optional parameter. Either Min or Max is required if specified.
@@ -991,14 +994,14 @@ type VMSizeProperties struct {
 	// specified in the request body the default behavior is to set it to the value of
 	// vCPUs available for that VM size exposed in api response of [List all available
 	// virtual machine sizes in a
-	// region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+	// region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
 	VCPUsAvailable *int32
 
 	// Specifies the vCPU to physical core ratio. When this property is not specified
 	// in the request body the default behavior is set to the value of vCPUsPerCore
 	// for the VM Size exposed in api response of [List all available virtual machine
 	// sizes in a
-	// region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+	// region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
 	// **Setting this property to 1 also means that hyper-threading is disabled.**
 	VCPUsPerCore *int32
 }
@@ -1018,16 +1021,16 @@ type VaultCertificate struct {
 	// This is the URL of a certificate that has been uploaded to Key Vault as a
 	// secret. For adding a secret to the Key Vault, see [Add a key or secret to the
 	// key
-	// vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add).
+	// vault](https://learn.microsoft.com/azure/key-vault/key-vault-get-started/#add).
 	// In this case, your certificate needs to be It is the Base64 encoding of the
 	// following JSON Object which is encoded in UTF-8: <br><br> {<br>
 	// "data":"<Base64-encoded-certificate>",<br> "dataType":"pfx",<br>
 	// "password":"<pfx-file-password>"<br>} <br> To install certificates on a virtual
 	// machine it is recommended to use the [Azure Key Vault virtual machine extension
 	// for
-	// Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+	// Linux](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
 	// or the [Azure Key Vault virtual machine extension for
-	// Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+	// Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
 	CertificateURL *string
 }
 
@@ -1419,10 +1422,10 @@ type VirtualMachineScaleSetOSProfile struct {
 	// "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
 	// "Password22", "iloveyou!" <br><br> For resetting the password, see [How to
 	// reset the Remote Desktop service or its login password in a Windows
-	// VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+	// VM](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
 	// <br><br> For resetting root password, see [Manage users, SSH, and check or
 	// repair disks on Azure Linux VMs using the VMAccess
-	// Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
+	// Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
 	AdminPassword *string
 
 	// Specifies the name of the administrator account. <br><br> **Windows-only
@@ -1448,12 +1451,12 @@ type VirtualMachineScaleSetOSProfile struct {
 	// is decoded to a binary array that is saved as a file on the Virtual Machine.
 	// The maximum length of the binary array is 65535 bytes. For using cloud-init for
 	// your VM, see [Using cloud-init to customize a Linux VM during
-	// creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
+	// creation](https://learn.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
 	CustomData *string
 
 	// Specifies the Linux operating system settings on the virtual machine. For a
 	// list of supported Linux distributions, see [Linux on Azure-Endorsed
-	// Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+	// Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
 	LinuxConfiguration *LinuxConfiguration
 
 	// Optional property which must either be set to True or omitted.
@@ -1462,9 +1465,9 @@ type VirtualMachineScaleSetOSProfile struct {
 	// Specifies set of certificates that should be installed onto the virtual
 	// machines in the scale set. To install certificates on a virtual machine it is
 	// recommended to use the [Azure Key Vault virtual machine extension for
-	// Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+	// Linux](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
 	// or the [Azure Key Vault virtual machine extension for
-	// Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+	// Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
 	Secrets []*VaultSecretGroup
 
 	// Specifies Windows operating system settings on the virtual machine.
@@ -1531,7 +1534,7 @@ type VirtualMachineScaleSetStorageProfile struct {
 	// Specifies the parameters that are used to add data disks to the virtual
 	// machines in the scale set. For more information about disks, see [About disks
 	// and VHDs for Azure virtual
-	// machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+	// machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
 	DataDisks []*VirtualMachineScaleSetDataDisk
 
 	// Specifies the disk controller type configured for the virtual machines in the scale set. Minimum api-version: 2022-08-01
@@ -1546,7 +1549,7 @@ type VirtualMachineScaleSetStorageProfile struct {
 	// Specifies information about the operating system disk used by the virtual
 	// machines in the scale set. For more information about disks, see [About disks
 	// and VHDs for Azure virtual
-	// machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+	// machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
 	OSDisk *VirtualMachineScaleSetOSDisk
 }
 
@@ -1561,16 +1564,16 @@ type WinRMListener struct {
 	// This is the URL of a certificate that has been uploaded to Key Vault as a
 	// secret. For adding a secret to the Key Vault, see [Add a key or secret to the
 	// key
-	// vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add).
+	// vault](https://learn.microsoft.com/azure/key-vault/key-vault-get-started/#add).
 	// In this case, your certificate needs to be the Base64 encoding of the following
 	// JSON Object which is encoded in UTF-8: <br><br> {<br>
 	// "data":"<Base64-encoded-certificate>",<br> "dataType":"pfx",<br>
 	// "password":"<pfx-file-password>"<br>} <br> To install certificates on a virtual
 	// machine it is recommended to use the [Azure Key Vault virtual machine extension
 	// for
-	// Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+	// Linux](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
 	// or the [Azure Key Vault virtual machine extension for
-	// Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+	// Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
 	CertificateURL *string
 
 	// Specifies the protocol of WinRM listener. Possible values are: **http,**
@@ -1604,9 +1607,9 @@ type WindowsConfiguration struct {
 
 	// Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
 	// Possible values can be
-	// [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
+	// [TimeZoneInfo.Id](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
 	// value from time zones returned by
-	// [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
+	// [TimeZoneInfo.GetSystemTimeZones](https://learn.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
 	TimeZone *string
 
 	// Specifies the Windows Remote Management listeners. This enables remote Windows

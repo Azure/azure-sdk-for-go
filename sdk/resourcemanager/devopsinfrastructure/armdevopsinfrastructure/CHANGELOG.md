@@ -1,5 +1,21 @@
 # Release History
 
+## 1.1.0 (2025-06-16)
+### Features Added
+
+- New enum type `AvailabilityStatus` with values `AvailabilityStatusAvailable`, `AvailabilityStatusUnavailable`
+- New enum type `CertificateStoreNameOption` with values `CertificateStoreNameOptionMy`, `CertificateStoreNameOptionRoot`
+- New enum type `CheckNameAvailabilityReason` with values `CheckNameAvailabilityReasonAlreadyExists`, `CheckNameAvailabilityReasonInvalid`
+- New enum type `EphemeralType` with values `EphemeralTypeAutomatic`, `EphemeralTypeCacheDisk`, `EphemeralTypeResourceDisk`
+- New enum type `ResourceType` with values `ResourceTypeMicrosoftDevOpsInfrastructurePools`
+- New function `*PoolsClient.CheckNameAvailability(context.Context, CheckNameAvailability, *PoolsClientCheckNameAvailabilityOptions) (PoolsClientCheckNameAvailabilityResponse, error)`
+- New struct `CheckNameAvailability`
+- New struct `CheckNameAvailabilityResult`
+- New field `OpenAccess` in struct `Organization`
+- New field `EphemeralType` in struct `PoolImage`
+- New field `CertificateStoreName` in struct `SecretsManagementSettings`
+
+
 ## 1.0.0 (2024-11-20)
 ### Breaking Changes
 

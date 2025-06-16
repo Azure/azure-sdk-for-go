@@ -29,7 +29,7 @@ type CapacitiesServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, capacityName string, resource armfabric.Capacity, options *armfabric.CapacitiesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armfabric.CapacitiesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CapacitiesClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, capacityName string, options *armfabric.CapacitiesClientBeginDeleteOptions) (resp azfake.PollerResponder[armfabric.CapacitiesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CapacitiesClient.Get
@@ -52,12 +52,16 @@ type CapacitiesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSKUsForCapacityPager func(resourceGroupName string, capacityName string, options *armfabric.CapacitiesClientListSKUsForCapacityOptions) (resp azfake.PagerResponder[armfabric.CapacitiesClientListSKUsForCapacityResponse])
 
+	// NewListUsagesPager is the fake for method CapacitiesClient.NewListUsagesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListUsagesPager func(location string, options *armfabric.CapacitiesClientListUsagesOptions) (resp azfake.PagerResponder[armfabric.CapacitiesClientListUsagesResponse])
+
 	// BeginResume is the fake for method CapacitiesClient.BeginResume
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginResume func(ctx context.Context, resourceGroupName string, capacityName string, options *armfabric.CapacitiesClientBeginResumeOptions) (resp azfake.PollerResponder[armfabric.CapacitiesClientResumeResponse], errResp azfake.ErrorResponder)
 
 	// BeginSuspend is the fake for method CapacitiesClient.BeginSuspend
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginSuspend func(ctx context.Context, resourceGroupName string, capacityName string, options *armfabric.CapacitiesClientBeginSuspendOptions) (resp azfake.PollerResponder[armfabric.CapacitiesClientSuspendResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method CapacitiesClient.BeginUpdate
@@ -77,6 +81,7 @@ func NewCapacitiesServerTransport(srv *CapacitiesServer) *CapacitiesServerTransp
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListBySubscriptionResponse]](),
 		newListSKUsPager:            newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsResponse]](),
 		newListSKUsForCapacityPager: newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsForCapacityResponse]](),
+		newListUsagesPager:          newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListUsagesResponse]](),
 		beginResume:                 newTracker[azfake.PollerResponder[armfabric.CapacitiesClientResumeResponse]](),
 		beginSuspend:                newTracker[azfake.PollerResponder[armfabric.CapacitiesClientSuspendResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armfabric.CapacitiesClientUpdateResponse]](),
@@ -93,6 +98,7 @@ type CapacitiesServerTransport struct {
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListBySubscriptionResponse]]
 	newListSKUsPager            *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsResponse]]
 	newListSKUsForCapacityPager *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsForCapacityResponse]]
+	newListUsagesPager          *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListUsagesResponse]]
 	beginResume                 *tracker[azfake.PollerResponder[armfabric.CapacitiesClientResumeResponse]]
 	beginSuspend                *tracker[azfake.PollerResponder[armfabric.CapacitiesClientSuspendResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armfabric.CapacitiesClientUpdateResponse]]
@@ -110,37 +116,58 @@ func (c *CapacitiesServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (c *CapacitiesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "CapacitiesClient.CheckNameAvailability":
-		resp, err = c.dispatchCheckNameAvailability(req)
-	case "CapacitiesClient.BeginCreateOrUpdate":
-		resp, err = c.dispatchBeginCreateOrUpdate(req)
-	case "CapacitiesClient.BeginDelete":
-		resp, err = c.dispatchBeginDelete(req)
-	case "CapacitiesClient.Get":
-		resp, err = c.dispatchGet(req)
-	case "CapacitiesClient.NewListByResourceGroupPager":
-		resp, err = c.dispatchNewListByResourceGroupPager(req)
-	case "CapacitiesClient.NewListBySubscriptionPager":
-		resp, err = c.dispatchNewListBySubscriptionPager(req)
-	case "CapacitiesClient.NewListSKUsPager":
-		resp, err = c.dispatchNewListSKUsPager(req)
-	case "CapacitiesClient.NewListSKUsForCapacityPager":
-		resp, err = c.dispatchNewListSKUsForCapacityPager(req)
-	case "CapacitiesClient.BeginResume":
-		resp, err = c.dispatchBeginResume(req)
-	case "CapacitiesClient.BeginSuspend":
-		resp, err = c.dispatchBeginSuspend(req)
-	case "CapacitiesClient.BeginUpdate":
-		resp, err = c.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if capacitiesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = capacitiesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "CapacitiesClient.CheckNameAvailability":
+				res.resp, res.err = c.dispatchCheckNameAvailability(req)
+			case "CapacitiesClient.BeginCreateOrUpdate":
+				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "CapacitiesClient.BeginDelete":
+				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CapacitiesClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CapacitiesClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "CapacitiesClient.NewListBySubscriptionPager":
+				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
+			case "CapacitiesClient.NewListSKUsPager":
+				res.resp, res.err = c.dispatchNewListSKUsPager(req)
+			case "CapacitiesClient.NewListSKUsForCapacityPager":
+				res.resp, res.err = c.dispatchNewListSKUsForCapacityPager(req)
+			case "CapacitiesClient.NewListUsagesPager":
+				res.resp, res.err = c.dispatchNewListUsagesPager(req)
+			case "CapacitiesClient.BeginResume":
+				res.resp, res.err = c.dispatchBeginResume(req)
+			case "CapacitiesClient.BeginSuspend":
+				res.resp, res.err = c.dispatchBeginSuspend(req)
+			case "CapacitiesClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (c *CapacitiesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
@@ -150,7 +177,7 @@ func (c *CapacitiesServerTransport) dispatchCheckNameAvailability(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armfabric.CheckNameAvailabilityRequest](req)
@@ -185,7 +212,7 @@ func (c *CapacitiesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities/(?P<capacityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armfabric.Capacity](req)
@@ -233,7 +260,7 @@ func (c *CapacitiesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities/(?P<capacityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -257,9 +284,9 @@ func (c *CapacitiesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)
@@ -275,7 +302,7 @@ func (c *CapacitiesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities/(?P<capacityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -310,7 +337,7 @@ func (c *CapacitiesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -347,7 +374,7 @@ func (c *CapacitiesServerTransport) dispatchNewListBySubscriptionPager(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := c.srv.NewListBySubscriptionPager(nil)
@@ -380,7 +407,7 @@ func (c *CapacitiesServerTransport) dispatchNewListSKUsPager(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := c.srv.NewListSKUsPager(nil)
@@ -413,7 +440,7 @@ func (c *CapacitiesServerTransport) dispatchNewListSKUsForCapacityPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities/(?P<capacityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -445,6 +472,43 @@ func (c *CapacitiesServerTransport) dispatchNewListSKUsForCapacityPager(req *htt
 	return resp, nil
 }
 
+func (c *CapacitiesServerTransport) dispatchNewListUsagesPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListUsagesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListUsagesPager not implemented")}
+	}
+	newListUsagesPager := c.newListUsagesPager.get(req)
+	if newListUsagesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListUsagesPager(locationParam, nil)
+		newListUsagesPager = &resp
+		c.newListUsagesPager.add(req, newListUsagesPager)
+		server.PagerResponderInjectNextLinks(newListUsagesPager, req, func(page *armfabric.CapacitiesClientListUsagesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListUsagesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListUsagesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListUsagesPager) {
+		c.newListUsagesPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (c *CapacitiesServerTransport) dispatchBeginResume(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginResume == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginResume not implemented")}
@@ -454,7 +518,7 @@ func (c *CapacitiesServerTransport) dispatchBeginResume(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities/(?P<capacityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -478,9 +542,9 @@ func (c *CapacitiesServerTransport) dispatchBeginResume(req *http.Request) (*htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginResume.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginResume) {
 		c.beginResume.remove(req)
@@ -498,7 +562,7 @@ func (c *CapacitiesServerTransport) dispatchBeginSuspend(req *http.Request) (*ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities/(?P<capacityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suspend`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -522,9 +586,9 @@ func (c *CapacitiesServerTransport) dispatchBeginSuspend(req *http.Request) (*ht
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginSuspend.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginSuspend) {
 		c.beginSuspend.remove(req)
@@ -542,7 +606,7 @@ func (c *CapacitiesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/capacities/(?P<capacityName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armfabric.CapacityUpdate](req)
@@ -579,4 +643,10 @@ func (c *CapacitiesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to CapacitiesServerTransport
+var capacitiesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

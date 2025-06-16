@@ -32,9 +32,21 @@ type EnterpriseMccCacheNodesOperationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetOptions) (resp azfake.Responder[armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetCacheNodeAutoUpdateHistory is the fake for method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCacheNodeAutoUpdateHistory func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions) (resp azfake.Responder[armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse], errResp azfake.ErrorResponder)
+
 	// GetCacheNodeInstallDetails is the fake for method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeInstallDetails
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCacheNodeInstallDetails func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsOptions) (resp azfake.Responder[armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse], errResp azfake.ErrorResponder)
+
+	// GetCacheNodeMccIssueDetailsHistory is the fake for method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCacheNodeMccIssueDetailsHistory func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions) (resp azfake.Responder[armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse], errResp azfake.ErrorResponder)
+
+	// GetCacheNodeTLSCertificateHistory is the fake for method EnterpriseMccCacheNodesOperationsClient.GetCacheNodeTLSCertificateHistory
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCacheNodeTLSCertificateHistory func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryOptions) (resp azfake.Responder[armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse], errResp azfake.ErrorResponder)
 
 	// NewListByEnterpriseMccCustomerResourcePager is the fake for method EnterpriseMccCacheNodesOperationsClient.NewListByEnterpriseMccCustomerResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -95,8 +107,14 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchToMethodFake(
 				res.resp, res.err = e.dispatchBeginDelete(req)
 			case "EnterpriseMccCacheNodesOperationsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
+			case "EnterpriseMccCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory":
+				res.resp, res.err = e.dispatchGetCacheNodeAutoUpdateHistory(req)
 			case "EnterpriseMccCacheNodesOperationsClient.GetCacheNodeInstallDetails":
 				res.resp, res.err = e.dispatchGetCacheNodeInstallDetails(req)
+			case "EnterpriseMccCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory":
+				res.resp, res.err = e.dispatchGetCacheNodeMccIssueDetailsHistory(req)
+			case "EnterpriseMccCacheNodesOperationsClient.GetCacheNodeTLSCertificateHistory":
+				res.resp, res.err = e.dispatchGetCacheNodeTLSCertificateHistory(req)
 			case "EnterpriseMccCacheNodesOperationsClient.NewListByEnterpriseMccCustomerResourcePager":
 				res.resp, res.err = e.dispatchNewListByEnterpriseMccCustomerResourcePager(req)
 			case "EnterpriseMccCacheNodesOperationsClient.Update":
@@ -129,7 +147,7 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchBeginCreateOr
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armconnectedcache.EnterpriseMccCacheNodeResource](req)
@@ -181,7 +199,7 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchBeginDelete(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -227,7 +245,7 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGet(req *http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -257,6 +275,43 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGet(req *http
 	return resp, nil
 }
 
+func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGetCacheNodeAutoUpdateHistory(req *http.Request) (*http.Response, error) {
+	if e.srv.GetCacheNodeAutoUpdateHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCacheNodeAutoUpdateHistory not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCacheNodeAutoUpdateHistory`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetCacheNodeAutoUpdateHistory(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MccCacheNodeAutoUpdateHistory, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGetCacheNodeInstallDetails(req *http.Request) (*http.Response, error) {
 	if e.srv.GetCacheNodeInstallDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCacheNodeInstallDetails not implemented")}
@@ -264,7 +319,7 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGetCacheNodeI
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCacheNodeInstallDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -294,6 +349,80 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGetCacheNodeI
 	return resp, nil
 }
 
+func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGetCacheNodeMccIssueDetailsHistory(req *http.Request) (*http.Response, error) {
+	if e.srv.GetCacheNodeMccIssueDetailsHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCacheNodeMccIssueDetailsHistory not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCacheNodeMccIssueDetailsHistory`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetCacheNodeMccIssueDetailsHistory(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MccCacheNodeIssueHistory, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchGetCacheNodeTLSCertificateHistory(req *http.Request) (*http.Response, error) {
+	if e.srv.GetCacheNodeTLSCertificateHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCacheNodeTLSCertificateHistory not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCacheNodeTlsCertificateHistory`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.GetCacheNodeTLSCertificateHistory(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MccCacheNodeTLSCertificateHistory, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchNewListByEnterpriseMccCustomerResourcePager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListByEnterpriseMccCustomerResourcePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByEnterpriseMccCustomerResourcePager not implemented")}
@@ -303,7 +432,7 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchNewListByEnte
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -342,7 +471,7 @@ func (e *EnterpriseMccCacheNodesOperationsServerTransport) dispatchUpdate(req *h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enterpriseMccCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armconnectedcache.PatchResource](req)

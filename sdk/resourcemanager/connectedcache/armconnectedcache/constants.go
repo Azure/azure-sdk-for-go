@@ -6,7 +6,7 @@ package armconnectedcache
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedcache/armconnectedcache"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -129,27 +129,6 @@ func PossibleCustomerTransitStateValues() []CustomerTransitState {
 		CustomerTransitStateCombinedTransit,
 		CustomerTransitStateNoTransit,
 		CustomerTransitStateTransitOnly,
-	}
-}
-
-// CycleType - Update Cycle type
-type CycleType string
-
-const (
-	// CycleTypeFast - customer selection of fast / auto update to install mcc on their physical vm
-	CycleTypeFast CycleType = "Fast"
-	// CycleTypePreview - customer selection of preview update install mcc on their physical vm
-	CycleTypePreview CycleType = "Preview"
-	// CycleTypeSlow - customer selection of slow update to install mcc on their physical vm
-	CycleTypeSlow CycleType = "Slow"
-)
-
-// PossibleCycleTypeValues returns the possible values for the CycleType const type.
-func PossibleCycleTypeValues() []CycleType {
-	return []CycleType{
-		CycleTypeFast,
-		CycleTypePreview,
-		CycleTypeSlow,
 	}
 }
 

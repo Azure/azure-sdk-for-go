@@ -42,7 +42,7 @@ func NewBrokerListenerClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Create a BrokerListenerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -70,7 +70,7 @@ func (client *BrokerListenerClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create a BrokerListenerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *BrokerListenerClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, listenerName string, resource BrokerListenerResource, options *BrokerListenerClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BrokerListenerClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *BrokerListenerClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *BrokerListenerClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Delete a BrokerListenerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -160,7 +160,7 @@ func (client *BrokerListenerClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Delete a BrokerListenerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *BrokerListenerClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, listenerName string, options *BrokerListenerClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BrokerListenerClient.BeginDelete"
@@ -210,7 +210,7 @@ func (client *BrokerListenerClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +219,7 @@ func (client *BrokerListenerClient) deleteCreateRequest(ctx context.Context, res
 // Get - Get a BrokerListenerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -275,7 +275,7 @@ func (client *BrokerListenerClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,7 +292,7 @@ func (client *BrokerListenerClient) getHandleResponse(resp *http.Response) (Brok
 
 // NewListByResourceGroupPager - List BrokerListenerResource resources by BrokerResource
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -345,7 +345,7 @@ func (client *BrokerListenerClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

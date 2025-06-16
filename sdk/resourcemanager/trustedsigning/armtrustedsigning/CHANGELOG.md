@@ -1,5 +1,17 @@
 # Release History
 
+## 0.2.0 (2025-06-16)
+### Breaking Changes
+
+- Type of `CodeSigningAccountPatchProperties.SKU` has been changed from `*AccountSKU` to `*AccountSKUPatch`
+- Field `City`, `CommonName`, `Country`, `EnhancedKeyUsage`, `Organization`, `OrganizationUnit`, `PostalCode`, `State`, `StreetAddress` of struct `CertificateProfileProperties` has been removed
+
+### Features Added
+
+- New struct `AccountSKUPatch`
+- New field `EnhancedKeyUsage` in struct `Certificate`
+
+
 ## 0.1.0 (2024-09-29)
 ### Other Changes
 

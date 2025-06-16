@@ -1,5 +1,12 @@
 # Release History
 
+## 0.2.0 (2025-06-16)
+### Breaking Changes
+
+- Type of `WorkloadImpactProperties.AdditionalProperties` has been changed from `*WorkloadImpactPropertiesAdditionalProperties` to `map[string]any`
+- Struct `WorkloadImpactPropertiesAdditionalProperties` has been removed
+
+
 ## 0.1.0 (2025-02-25)
 ### Other Changes
 

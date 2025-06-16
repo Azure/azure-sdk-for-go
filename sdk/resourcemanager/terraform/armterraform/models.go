@@ -11,6 +11,12 @@ type BaseExportModel struct {
 	// REQUIRED; The parameter type
 	Type *Type
 
+	// Exclude resources from being exported based on the Azure resource ID pattern (case-insensitive regexp)
+	ExcludeAzureResource []*string
+
+	// Exclude resources from being exported based on the Terraform resource type
+	ExcludeTerraformResource []*string
+
 	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
 	// to make it valid
 	FullProperties *bool
@@ -28,13 +34,10 @@ func (b *BaseExportModel) GetBaseExportModel() *BaseExportModel { return b }
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info *ErrorAdditionalInfoInfo
+	Info any
 
 	// READ-ONLY; The additional info type.
 	Type *string
-}
-
-type ErrorAdditionalInfoInfo struct {
 }
 
 // ErrorDetail - The error detail.
@@ -65,6 +68,15 @@ type ExportQuery struct {
 	// Field has constant value TypeExportQuery, any specified value is ignored.
 	Type *Type
 
+	// The ARG Scope Filter parameter
+	AuthorizationScopeFilter *AuthorizationScopeFilter
+
+	// Exclude resources from being exported based on the Azure resource ID pattern (case-insensitive regexp)
+	ExcludeAzureResource []*string
+
+	// Exclude resources from being exported based on the Terraform resource type
+	ExcludeTerraformResource []*string
+
 	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
 	// to make it valid
 	FullProperties *bool
@@ -78,6 +90,9 @@ type ExportQuery struct {
 	// Whether to recursively list child resources of the query result
 	Recursive *bool
 
+	// The ARG table name
+	Table *string
+
 	// The target Azure Terraform Provider
 	TargetProvider *TargetProvider
 }
@@ -85,10 +100,12 @@ type ExportQuery struct {
 // GetBaseExportModel implements the BaseExportModelClassification interface for type ExportQuery.
 func (e *ExportQuery) GetBaseExportModel() *BaseExportModel {
 	return &BaseExportModel{
-		FullProperties: e.FullProperties,
-		MaskSensitive:  e.MaskSensitive,
-		TargetProvider: e.TargetProvider,
-		Type:           e.Type,
+		ExcludeAzureResource:     e.ExcludeAzureResource,
+		ExcludeTerraformResource: e.ExcludeTerraformResource,
+		FullProperties:           e.FullProperties,
+		MaskSensitive:            e.MaskSensitive,
+		TargetProvider:           e.TargetProvider,
+		Type:                     e.Type,
 	}
 }
 
@@ -100,6 +117,12 @@ type ExportResource struct {
 	// CONSTANT; The parameter type
 	// Field has constant value TypeExportResource, any specified value is ignored.
 	Type *Type
+
+	// Exclude resources from being exported based on the Azure resource ID pattern (case-insensitive regexp)
+	ExcludeAzureResource []*string
+
+	// Exclude resources from being exported based on the Terraform resource type
+	ExcludeTerraformResource []*string
 
 	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
 	// to make it valid
@@ -124,10 +147,12 @@ type ExportResource struct {
 // GetBaseExportModel implements the BaseExportModelClassification interface for type ExportResource.
 func (e *ExportResource) GetBaseExportModel() *BaseExportModel {
 	return &BaseExportModel{
-		FullProperties: e.FullProperties,
-		MaskSensitive:  e.MaskSensitive,
-		TargetProvider: e.TargetProvider,
-		Type:           e.Type,
+		ExcludeAzureResource:     e.ExcludeAzureResource,
+		ExcludeTerraformResource: e.ExcludeTerraformResource,
+		FullProperties:           e.FullProperties,
+		MaskSensitive:            e.MaskSensitive,
+		TargetProvider:           e.TargetProvider,
+		Type:                     e.Type,
 	}
 }
 
@@ -139,6 +164,12 @@ type ExportResourceGroup struct {
 	// CONSTANT; The parameter type
 	// Field has constant value TypeExportResourceGroup, any specified value is ignored.
 	Type *Type
+
+	// Exclude resources from being exported based on the Azure resource ID pattern (case-insensitive regexp)
+	ExcludeAzureResource []*string
+
+	// Exclude resources from being exported based on the Terraform resource type
+	ExcludeTerraformResource []*string
 
 	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
 	// to make it valid
@@ -157,10 +188,12 @@ type ExportResourceGroup struct {
 // GetBaseExportModel implements the BaseExportModelClassification interface for type ExportResourceGroup.
 func (e *ExportResourceGroup) GetBaseExportModel() *BaseExportModel {
 	return &BaseExportModel{
-		FullProperties: e.FullProperties,
-		MaskSensitive:  e.MaskSensitive,
-		TargetProvider: e.TargetProvider,
-		Type:           e.Type,
+		ExcludeAzureResource:     e.ExcludeAzureResource,
+		ExcludeTerraformResource: e.ExcludeTerraformResource,
+		FullProperties:           e.FullProperties,
+		MaskSensitive:            e.MaskSensitive,
+		TargetProvider:           e.TargetProvider,
+		Type:                     e.Type,
 	}
 }
 
@@ -172,17 +205,22 @@ type ExportResult struct {
 	// A list of errors derived during exporting each resource
 	Errors []*ErrorDetail
 
+	// The Terraform import blocks for the current export, which users can use to run "terraform plan" with to import the resources
+	Import *string
+
 	// A list of Azure resources which are not exported to Terraform due to there is no corresponding resources in Terraform
 	SkippedResources []*string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.

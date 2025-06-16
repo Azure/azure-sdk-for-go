@@ -6,7 +6,7 @@ package armsitemanager
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sitemanager/armsitemanager"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The kind of entity that created the resource.

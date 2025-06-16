@@ -6,7 +6,7 @@ package armiotoperations
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotoperations/armiotoperations"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -418,6 +418,27 @@ const (
 func PossibleFilterTypeValues() []FilterType {
 	return []FilterType{
 		FilterTypeFilter,
+	}
+}
+
+// InstanceFeatureMode - The enum defining mode of a feature.
+type InstanceFeatureMode string
+
+const (
+	// InstanceFeatureModeDisabled - Opt out of a feature
+	InstanceFeatureModeDisabled InstanceFeatureMode = "Disabled"
+	// InstanceFeatureModePreview - Opt in to enable a preview feature
+	InstanceFeatureModePreview InstanceFeatureMode = "Preview"
+	// InstanceFeatureModeStable - Opt in to enable a stable feature
+	InstanceFeatureModeStable InstanceFeatureMode = "Stable"
+)
+
+// PossibleInstanceFeatureModeValues returns the possible values for the InstanceFeatureMode const type.
+func PossibleInstanceFeatureModeValues() []InstanceFeatureMode {
+	return []InstanceFeatureMode{
+		InstanceFeatureModeDisabled,
+		InstanceFeatureModePreview,
+		InstanceFeatureModeStable,
 	}
 }
 

@@ -4,43 +4,78 @@
 
 package armonlineexperimentation
 
-// OnlineExperimentWorkspacesClientCreateOrUpdateResponse contains the response from method OnlineExperimentWorkspacesClient.BeginCreateOrUpdate.
-type OnlineExperimentWorkspacesClientCreateOrUpdateResponse struct {
-	// An online experiment workspace resource.
-	OnlineExperimentWorkspace
-}
-
-// OnlineExperimentWorkspacesClientDeleteResponse contains the response from method OnlineExperimentWorkspacesClient.BeginDelete.
-type OnlineExperimentWorkspacesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// OnlineExperimentWorkspacesClientGetResponse contains the response from method OnlineExperimentWorkspacesClient.Get.
-type OnlineExperimentWorkspacesClientGetResponse struct {
-	// An online experiment workspace resource.
-	OnlineExperimentWorkspace
-}
-
-// OnlineExperimentWorkspacesClientListByResourceGroupResponse contains the response from method OnlineExperimentWorkspacesClient.NewListByResourceGroupPager.
-type OnlineExperimentWorkspacesClientListByResourceGroupResponse struct {
-	// The response of a OnlineExperimentWorkspace list operation.
-	OnlineExperimentWorkspaceListResult
-}
-
-// OnlineExperimentWorkspacesClientListBySubscriptionResponse contains the response from method OnlineExperimentWorkspacesClient.NewListBySubscriptionPager.
-type OnlineExperimentWorkspacesClientListBySubscriptionResponse struct {
-	// The response of a OnlineExperimentWorkspace list operation.
-	OnlineExperimentWorkspaceListResult
-}
-
-// OnlineExperimentWorkspacesClientUpdateResponse contains the response from method OnlineExperimentWorkspacesClient.BeginUpdate.
-type OnlineExperimentWorkspacesClientUpdateResponse struct {
-	// An online experiment workspace resource.
-	OnlineExperimentWorkspace
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	// Private endpoint connection resource for an online experimentation workspace resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
+type PrivateEndpointConnectionsClientListResponse struct {
+	// The response of a PrivateEndpointConnection list operation.
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	// Private endpoint connection resource for an online experimentation workspace resource.
+	PrivateEndpointConnection
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	// A private link resource.
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
+type PrivateLinkResourcesClientListResponse struct {
+	// The response of a PrivateLinkResource list operation.
+	PrivateLinkResourceListResult
+}
+
+// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.BeginCreateOrUpdate.
+type WorkspacesClientCreateOrUpdateResponse struct {
+	// An online experimentation workspace resource.
+	Workspace
+}
+
+// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.BeginDelete.
+type WorkspacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// WorkspacesClientGetResponse contains the response from method WorkspacesClient.Get.
+type WorkspacesClientGetResponse struct {
+	// An online experimentation workspace resource.
+	Workspace
+}
+
+// WorkspacesClientListByResourceGroupResponse contains the response from method WorkspacesClient.NewListByResourceGroupPager.
+type WorkspacesClientListByResourceGroupResponse struct {
+	// The response of a OnlineExperimentationWorkspace list operation.
+	WorkspaceListResult
+}
+
+// WorkspacesClientListBySubscriptionResponse contains the response from method WorkspacesClient.NewListBySubscriptionPager.
+type WorkspacesClientListBySubscriptionResponse struct {
+	// The response of a OnlineExperimentationWorkspace list operation.
+	WorkspaceListResult
+}
+
+// WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.BeginUpdate.
+type WorkspacesClientUpdateResponse struct {
+	// An online experimentation workspace resource.
+	Workspace
 }

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v3"
 	"log"
 )
 
@@ -79,7 +79,7 @@ func ExampleLocationsClient_CheckTrialAvailability_locationsCheckTrialAvailabili
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewLocationsClient().CheckTrialAvailability(ctx, "eastus", &armavs.LocationsClientCheckTrialAvailabilityOptions{
-		SKU: &armavs.SKU{
+		Sku: &armavs.SKU{
 			Name: to.Ptr("avs52t"),
 		}})
 	if err != nil {

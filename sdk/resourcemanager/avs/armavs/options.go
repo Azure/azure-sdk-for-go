@@ -218,7 +218,7 @@ type LocationsClientCheckQuotaAvailabilityOptions struct {
 // method.
 type LocationsClientCheckTrialAvailabilityOptions struct {
 	// Optionally, check for a specific SKU
-	SKU *SKU
+	Sku *SKU
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.

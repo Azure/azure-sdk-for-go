@@ -147,9 +147,9 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.SKU != nil {
+	if options != nil && options.Sku != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.SKU); err != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Sku); err != nil {
 			return nil, err
 		}
 		return req, nil

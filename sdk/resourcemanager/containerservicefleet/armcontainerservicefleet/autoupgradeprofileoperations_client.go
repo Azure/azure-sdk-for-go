@@ -39,7 +39,7 @@ func NewAutoUpgradeProfileOperationsClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// BeginGenerateUpdateRun - A long-running resource action.
+// BeginGenerateUpdateRun - Generates an update run for a given auto upgrade profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01
@@ -66,7 +66,7 @@ func (client *AutoUpgradeProfileOperationsClient) BeginGenerateUpdateRun(ctx con
 	}
 }
 
-// GenerateUpdateRun - A long-running resource action.
+// GenerateUpdateRun - Generates an update run for a given auto upgrade profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01

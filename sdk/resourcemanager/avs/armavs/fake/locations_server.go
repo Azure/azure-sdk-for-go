@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v3"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -138,7 +138,7 @@ func (l *LocationsServerTransport) dispatchCheckTrialAvailability(req *http.Requ
 	var options *armavs.LocationsClientCheckTrialAvailabilityOptions
 	if !reflect.ValueOf(body).IsZero() {
 		options = &armavs.LocationsClientCheckTrialAvailabilityOptions{
-			SKU: &body,
+			Sku: &body,
 		}
 	}
 	respr, errRespr := l.srv.CheckTrialAvailability(req.Context(), locationParam, options)

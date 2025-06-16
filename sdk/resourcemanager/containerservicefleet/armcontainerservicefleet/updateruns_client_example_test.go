@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
@@ -247,7 +247,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMax
 	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 							{
 	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 								Info: map[string]any{
 	// 								},
 	// 							},
 	// 						},
@@ -268,7 +268,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMax
 	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 									{
 	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 										Info: map[string]any{
 	// 										},
 	// 									},
 	// 								},
@@ -290,7 +290,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMax
 	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 											{
 	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 												Info: map[string]any{
 	// 												},
 	// 											},
 	// 										},
@@ -312,7 +312,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMax
 	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 													{
 	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 														Info: map[string]any{
 	// 														},
 	// 													},
 	// 												},
@@ -340,7 +340,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMax
 	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 										{
 	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 											Info: map[string]any{
 	// 											},
 	// 										},
 	// 									},
@@ -590,7 +590,7 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRul
 	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 							{
 	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 								Info: map[string]any{
 	// 								},
 	// 							},
 	// 						},
@@ -611,7 +611,7 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRul
 	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 									{
 	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 										Info: map[string]any{
 	// 										},
 	// 									},
 	// 								},
@@ -633,7 +633,7 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRul
 	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 											{
 	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 												Info: map[string]any{
 	// 												},
 	// 											},
 	// 										},
@@ -655,7 +655,7 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRul
 	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 													{
 	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 														Info: map[string]any{
 	// 														},
 	// 													},
 	// 												},
@@ -683,7 +683,7 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRul
 	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 										{
 	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 											Info: map[string]any{
 	// 											},
 	// 										},
 	// 									},
@@ -906,7 +906,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 		// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 		// 									{
 		// 										Type: to.Ptr("fzgprz"),
-		// 										Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+		// 										Info: map[string]any{
 		// 										},
 		// 									},
 		// 								},
@@ -927,7 +927,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 		// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 		// 											{
 		// 												Type: to.Ptr("fzgprz"),
-		// 												Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+		// 												Info: map[string]any{
 		// 												},
 		// 											},
 		// 										},
@@ -949,7 +949,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 		// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 		// 													{
 		// 														Type: to.Ptr("fzgprz"),
-		// 														Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+		// 														Info: map[string]any{
 		// 														},
 		// 													},
 		// 												},
@@ -971,7 +971,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 		// 														AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 		// 															{
 		// 																Type: to.Ptr("fzgprz"),
-		// 																Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+		// 																Info: map[string]any{
 		// 																},
 		// 															},
 		// 														},
@@ -999,7 +999,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 		// 											AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 		// 												{
 		// 													Type: to.Ptr("fzgprz"),
-		// 													Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+		// 													Info: map[string]any{
 		// 													},
 		// 												},
 		// 											},
@@ -1243,7 +1243,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 							{
 	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 								Info: map[string]any{
 	// 								},
 	// 							},
 	// 						},
@@ -1264,7 +1264,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 									{
 	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 										Info: map[string]any{
 	// 										},
 	// 									},
 	// 								},
@@ -1286,7 +1286,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 											{
 	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 												Info: map[string]any{
 	// 												},
 	// 											},
 	// 										},
@@ -1308,7 +1308,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 													{
 	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 														Info: map[string]any{
 	// 														},
 	// 													},
 	// 												},
@@ -1336,7 +1336,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 										{
 	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 											Info: map[string]any{
 	// 											},
 	// 										},
 	// 									},
@@ -1545,7 +1545,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRu
 	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 							{
 	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 								Info: map[string]any{
 	// 								},
 	// 							},
 	// 						},
@@ -1566,7 +1566,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRu
 	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 									{
 	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 										Info: map[string]any{
 	// 										},
 	// 									},
 	// 								},
@@ -1588,7 +1588,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRu
 	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 											{
 	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 												Info: map[string]any{
 	// 												},
 	// 											},
 	// 										},
@@ -1610,7 +1610,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRu
 	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 													{
 	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 														Info: map[string]any{
 	// 														},
 	// 													},
 	// 												},
@@ -1638,7 +1638,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRu
 	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 										{
 	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 											Info: map[string]any{
 	// 											},
 	// 										},
 	// 									},
@@ -1847,7 +1847,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule
 	// 						AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 							{
 	// 								Type: to.Ptr("fzgprz"),
-	// 								Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 								Info: map[string]any{
 	// 								},
 	// 							},
 	// 						},
@@ -1868,7 +1868,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule
 	// 								AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 									{
 	// 										Type: to.Ptr("fzgprz"),
-	// 										Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 										Info: map[string]any{
 	// 										},
 	// 									},
 	// 								},
@@ -1890,7 +1890,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule
 	// 										AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 											{
 	// 												Type: to.Ptr("fzgprz"),
-	// 												Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 												Info: map[string]any{
 	// 												},
 	// 											},
 	// 										},
@@ -1912,7 +1912,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule
 	// 												AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 													{
 	// 														Type: to.Ptr("fzgprz"),
-	// 														Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 														Info: map[string]any{
 	// 														},
 	// 													},
 	// 												},
@@ -1940,7 +1940,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule
 	// 									AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 										{
 	// 											Type: to.Ptr("fzgprz"),
-	// 											Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 											Info: map[string]any{
 	// 											},
 	// 										},
 	// 									},

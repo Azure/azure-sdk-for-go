@@ -7,7 +7,7 @@ package armavs_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v3"
 	"log"
 )
 

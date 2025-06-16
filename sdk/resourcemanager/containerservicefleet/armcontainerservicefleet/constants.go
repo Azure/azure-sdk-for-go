@@ -6,7 +6,7 @@ package armcontainerservicefleet
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v3.0.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

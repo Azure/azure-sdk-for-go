@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
@@ -118,7 +118,7 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	// 					AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 						{
 	// 							Type: to.Ptr("oorrhg"),
-	// 							Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 							Info: map[string]any{
 	// 							},
 	// 						},
 	// 					},
@@ -267,7 +267,7 @@ func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResourceGenera
 	// 					AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 	// 						{
 	// 							Type: to.Ptr("oorrhg"),
-	// 							Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+	// 							Info: map[string]any{
 	// 							},
 	// 						},
 	// 					},
@@ -400,7 +400,7 @@ func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradePro
 		// 							AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
 		// 								{
 		// 									Type: to.Ptr("oorrhg"),
-		// 									Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
+		// 									Info: map[string]any{
 		// 									},
 		// 								},
 		// 							},

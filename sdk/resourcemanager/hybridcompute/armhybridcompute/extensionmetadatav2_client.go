@@ -17,25 +17,22 @@ import (
 	"strings"
 )
 
-// ExtensionMetadataClient contains the methods for the ExtensionMetadata group.
-// Don't use this type directly, use NewExtensionMetadataClient() instead.
-type ExtensionMetadataClient struct {
-	internal       *arm.Client
-	subscriptionID string
+// ExtensionMetadataV2Client contains the methods for the ExtensionMetadataV2 group.
+// Don't use this type directly, use NewExtensionMetadataV2Client() instead.
+type ExtensionMetadataV2Client struct {
+	internal *arm.Client
 }
 
-// NewExtensionMetadataClient creates a new instance of ExtensionMetadataClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+// NewExtensionMetadataV2Client creates a new instance of ExtensionMetadataV2Client with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewExtensionMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionMetadataClient, error) {
+func NewExtensionMetadataV2Client(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionMetadataV2Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ExtensionMetadataClient{
-		subscriptionID: subscriptionID,
-		internal:       cl,
+	client := &ExtensionMetadataV2Client{
+		internal: cl,
 	}
 	return client, nil
 }
@@ -44,40 +41,36 @@ func NewExtensionMetadataClient(subscriptionID string, credential azcore.TokenCr
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-02-19-preview
-//   - location - The location of the Extension being received.
+//   - location - The name of Azure region.
 //   - publisher - The publisher of the Extension being received.
 //   - extensionType - The extensionType of the Extension being received.
 //   - version - The version of the Extension being received.
-//   - options - ExtensionMetadataClientGetOptions contains the optional parameters for the ExtensionMetadataClient.Get method.
-func (client *ExtensionMetadataClient) Get(ctx context.Context, location string, publisher string, extensionType string, version string, options *ExtensionMetadataClientGetOptions) (ExtensionMetadataClientGetResponse, error) {
+//   - options - ExtensionMetadataV2ClientGetOptions contains the optional parameters for the ExtensionMetadataV2Client.Get method.
+func (client *ExtensionMetadataV2Client) Get(ctx context.Context, location string, publisher string, extensionType string, version string, options *ExtensionMetadataV2ClientGetOptions) (ExtensionMetadataV2ClientGetResponse, error) {
 	var err error
-	const operationName = "ExtensionMetadataClient.Get"
+	const operationName = "ExtensionMetadataV2Client.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, publisher, extensionType, version, options)
 	if err != nil {
-		return ExtensionMetadataClientGetResponse{}, err
+		return ExtensionMetadataV2ClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ExtensionMetadataClientGetResponse{}, err
+		return ExtensionMetadataV2ClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ExtensionMetadataClientGetResponse{}, err
+		return ExtensionMetadataV2ClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExtensionMetadataClient) getCreateRequest(ctx context.Context, location string, publisher string, extensionType string, version string, _ *ExtensionMetadataClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions/{version}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+func (client *ExtensionMetadataV2Client) getCreateRequest(ctx context.Context, location string, publisher string, extensionType string, version string, _ *ExtensionMetadataV2ClientGetOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions/{version}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -106,10 +99,10 @@ func (client *ExtensionMetadataClient) getCreateRequest(ctx context.Context, loc
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtensionMetadataClient) getHandleResponse(resp *http.Response) (ExtensionMetadataClientGetResponse, error) {
-	result := ExtensionMetadataClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionValue); err != nil {
-		return ExtensionMetadataClientGetResponse{}, err
+func (client *ExtensionMetadataV2Client) getHandleResponse(resp *http.Response) (ExtensionMetadataV2ClientGetResponse, error) {
+	result := ExtensionMetadataV2ClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionValueV2); err != nil {
+		return ExtensionMetadataV2ClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -117,28 +110,27 @@ func (client *ExtensionMetadataClient) getHandleResponse(resp *http.Response) (E
 // NewListPager - Gets all Extension versions based on location, publisher, extensionType
 //
 // Generated from API version 2025-02-19-preview
-//   - location - The location of the Extension being received.
+//   - location - The name of Azure region.
 //   - publisher - The publisher of the Extension being received.
 //   - extensionType - The extensionType of the Extension being received.
-//   - options - ExtensionMetadataClientListOptions contains the optional parameters for the ExtensionMetadataClient.NewListPager
+//   - options - ExtensionMetadataV2ClientListOptions contains the optional parameters for the ExtensionMetadataV2Client.NewListPager
 //     method.
-func (client *ExtensionMetadataClient) NewListPager(location string, publisher string, extensionType string, options *ExtensionMetadataClientListOptions) *runtime.Pager[ExtensionMetadataClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ExtensionMetadataClientListResponse]{
-		More: func(page ExtensionMetadataClientListResponse) bool {
-			return false
+func (client *ExtensionMetadataV2Client) NewListPager(location string, publisher string, extensionType string, options *ExtensionMetadataV2ClientListOptions) *runtime.Pager[ExtensionMetadataV2ClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ExtensionMetadataV2ClientListResponse]{
+		More: func(page ExtensionMetadataV2ClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ExtensionMetadataClientListResponse) (ExtensionMetadataClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExtensionMetadataClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, location, publisher, extensionType, options)
-			if err != nil {
-				return ExtensionMetadataClientListResponse{}, err
+		Fetcher: func(ctx context.Context, page *ExtensionMetadataV2ClientListResponse) (ExtensionMetadataV2ClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExtensionMetadataV2Client.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
-			resp, err := client.internal.Pipeline().Do(req)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, publisher, extensionType, options)
+			}, nil)
 			if err != nil {
-				return ExtensionMetadataClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExtensionMetadataClientListResponse{}, runtime.NewResponseError(resp)
+				return ExtensionMetadataV2ClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -147,12 +139,8 @@ func (client *ExtensionMetadataClient) NewListPager(location string, publisher s
 }
 
 // listCreateRequest creates the List request.
-func (client *ExtensionMetadataClient) listCreateRequest(ctx context.Context, location string, publisher string, extensionType string, _ *ExtensionMetadataClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+func (client *ExtensionMetadataV2Client) listCreateRequest(ctx context.Context, location string, publisher string, extensionType string, _ *ExtensionMetadataV2ClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -177,10 +165,10 @@ func (client *ExtensionMetadataClient) listCreateRequest(ctx context.Context, lo
 }
 
 // listHandleResponse handles the List response.
-func (client *ExtensionMetadataClient) listHandleResponse(resp *http.Response) (ExtensionMetadataClientListResponse, error) {
-	result := ExtensionMetadataClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionValueListResult); err != nil {
-		return ExtensionMetadataClientListResponse{}, err
+func (client *ExtensionMetadataV2Client) listHandleResponse(resp *http.Response) (ExtensionMetadataV2ClientListResponse, error) {
+	result := ExtensionMetadataV2ClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionValueListResultV2); err != nil {
+		return ExtensionMetadataV2ClientListResponse{}, err
 	}
 	return result, nil
 }

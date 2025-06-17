@@ -63,6 +63,9 @@ type AgentPool struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -220,6 +223,9 @@ type BareMetalMachine struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -291,6 +297,9 @@ type BareMetalMachineKeySet struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -611,6 +620,9 @@ type BmcKeySet struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -698,6 +710,9 @@ type CloudServicesNetwork struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -794,6 +809,9 @@ type Cluster struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -900,6 +918,9 @@ type ClusterManager struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -983,6 +1004,9 @@ type ClusterMetricsConfiguration struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -1261,6 +1285,9 @@ type Console struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -1593,6 +1620,9 @@ type KubernetesCluster struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -1616,6 +1646,9 @@ type KubernetesClusterFeature struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -1856,6 +1889,9 @@ type L2Network struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -1949,6 +1985,9 @@ type L3Network struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -2382,6 +2421,9 @@ type Rack struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -2669,6 +2711,9 @@ type StorageAppliance struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -2861,6 +2906,9 @@ type TrunkedNetwork struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -2973,6 +3021,9 @@ type VirtualMachine struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -3128,6 +3179,9 @@ type Volume struct {
 
 	// Resource tags.
 	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string

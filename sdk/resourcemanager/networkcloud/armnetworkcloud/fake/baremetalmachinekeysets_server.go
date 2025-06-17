@@ -145,7 +145,16 @@ func (b *BareMetalMachineKeySetsServerTransport) dispatchBeginCreateOrUpdate(req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -193,7 +202,16 @@ func (b *BareMetalMachineKeySetsServerTransport) dispatchBeginDelete(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BareMetalMachineKeySetsClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BareMetalMachineKeySetsClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -323,7 +341,16 @@ func (b *BareMetalMachineKeySetsServerTransport) dispatchBeginUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bareMetalMachineKeySetNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

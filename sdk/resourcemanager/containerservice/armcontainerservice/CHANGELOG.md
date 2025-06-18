@@ -1,5 +1,27 @@
 # Release History
 
+## 7.1.0 (2025-06-18)
+### Features Added
+
+- New value `AgentPoolModeGateway` added to enum type `AgentPoolMode`
+- New value `AgentPoolTypeVirtualMachines` added to enum type `AgentPoolType`
+- New enum type `PodIPAllocationMode` with values `PodIPAllocationModeDynamicIndividual`, `PodIPAllocationModeStaticBlock`
+- New struct `AgentPoolGatewayProfile`
+- New struct `AgentPoolStatus`
+- New struct `CloudErrorBody`
+- New struct `ManagedClusterStaticEgressGatewayProfile`
+- New struct `ManagedClusterStatus`
+- New struct `ManualScaleProfile`
+- New struct `ScaleProfile`
+- New struct `VirtualMachineNodes`
+- New struct `VirtualMachinesProfile`
+- New field `Zones` in struct `Machine`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `Status` in struct `ManagedClusterProperties`
+- New field `StaticEgressGatewayProfile` in struct `NetworkProfile`
+
+
 ## 7.0.0 (2025-06-16)
 ### Breaking Changes
 

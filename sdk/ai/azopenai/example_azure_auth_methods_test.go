@@ -61,6 +61,22 @@ func Example_usingDefaultAzureCredential() {
 	makeSimpleRequest(&client, model)
 }
 
+// Example_usingManagedIdentityCredential demonstrates how to authenticate with Azure OpenAI using Managed Identity.
+// This example shows how to:
+// - Create an Azure OpenAI client using ManagedIdentityCredential
+// - Support both system-assigned and user-assigned managed identities
+// - Make authenticated requests without storing credentials
+//
+// The example uses environment variables for configuration:
+// - AOAI_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_MODEL: The deployment name of your model
+//
+// Managed Identity is ideal for:
+// - Azure services (VMs, App Service, Azure Functions, etc.)
+// - Azure DevOps pipelines with the Azure DevOps service connection
+// - CI/CD scenarios where you want to avoid storing secrets
+// - Production workloads requiring secure, credential-free authentication
+//
 func Example_usingManagedIdentityCredential() {
 	endpoint := os.Getenv("AOAI_ENDPOINT")
 	model := os.Getenv("AOAI_MODEL")

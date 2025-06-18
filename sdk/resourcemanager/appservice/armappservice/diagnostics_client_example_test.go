@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
 func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
 func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDetectorResponses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponses.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppDetectorRe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppSlotDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppSlotDetect
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDetectorResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponse.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +397,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppDetectorResponse() {
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppSlotDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -527,7 +527,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppSlotDetectorResponse
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,7 +562,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppDiagno
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppSlotDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -597,7 +597,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppSlotDi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppDiagnosticCategory
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppSlotDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppSlotDiagnosticCate
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteAnalyses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalyses.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +714,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppAnalyses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteAnalysesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalysesSlot.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppSlotAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +777,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppSlotAnalyses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysis.json
 func ExampleDiagnosticsClient_GetSiteAnalysis_getAppAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -804,7 +804,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_GetSiteAnalysis_getAppSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -831,7 +831,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppSlotAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysis.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -958,7 +958,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1085,7 +1085,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDetectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectors.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1275,7 +1275,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppDetectors() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDetectorsSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorsSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppSlotDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1339,7 +1339,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppSlotDetectors() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetector.json
 func ExampleDiagnosticsClient_GetSiteDetector_getAppDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1368,7 +1368,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorSlot.json
 func ExampleDiagnosticsClient_GetSiteDetector_getAppSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1397,7 +1397,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppSlotDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetector.json
 func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1435,7 +1435,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1447,6 +1447,1292 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteSlotDetector() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewDiagnosticsClient().ExecuteSiteDetector(ctx, "Sample-WestUSResourceGroup", "SampleApp", "sitecrashes", "availability", &armappservice.DiagnosticsClientExecuteSiteDetectorOptions{StartTime: nil,
+		EndTime:   nil,
+		TimeGrain: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DiagnosticDetectorResponse = armappservice.DiagnosticDetectorResponse{
+	// 	Name: to.Ptr("sitecrashes"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/detectors/sitecrashes"),
+	// 	Properties: &armappservice.DiagnosticDetectorResponseProperties{
+	// 		AbnormalTimePeriods: []*armappservice.DetectorAbnormalTimePeriod{
+	// 			{
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 				Solutions: []*armappservice.Solution{
+	// 				},
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 		}},
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponses.json
+func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager_getAppDetectorResponses() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteDetectorResponsesSlotPager("Sample-WestUSResourceGroup", "SampleApp", "staging", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DetectorResponseCollection = armappservice.DetectorResponseCollection{
+		// 	Value: []*armappservice.DetectorResponse{
+		// 		{
+		// 			Name: to.Ptr("runtimeavailability"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/detectors/runtimeavailability"),
+		// 			Properties: &armappservice.DetectorResponseProperties{
+		// 				Dataset: []*armappservice.DiagnosticData{
+		// 				},
+		// 				Metadata: &armappservice.DetectorInfo{
+		// 					Description: to.Ptr("This detector analyzes the requests to your application."),
+		// 					Category: to.Ptr("Availability and Performance"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
+func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager_getAppSlotDetectorResponses() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteDetectorResponsesSlotPager("Sample-WestUSResourceGroup", "SampleApp", "staging", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DetectorResponseCollection = armappservice.DetectorResponseCollection{
+		// 	Value: []*armappservice.DetectorResponse{
+		// 		{
+		// 			Name: to.Ptr("runtimeavailability"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/detectors/runtimeavailability"),
+		// 			Properties: &armappservice.DetectorResponseProperties{
+		// 				Dataset: []*armappservice.DiagnosticData{
+		// 				},
+		// 				Metadata: &armappservice.DetectorInfo{
+		// 					Description: to.Ptr("This detector analyzes the requests to your application."),
+		// 					Category: to.Ptr("Availability and Performance"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponse.json
+func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppDetectorResponse() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteDetectorResponseSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", "staging", &armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions{StartTime: nil,
+		EndTime:   nil,
+		TimeGrain: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DetectorResponse = armappservice.DetectorResponse{
+	// 	Name: to.Ptr("runtimeavailability"),
+	// 	ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/detectors/runtimeavailability"),
+	// 	Properties: &armappservice.DetectorResponseProperties{
+	// 		Dataset: []*armappservice.DiagnosticData{
+	// 			{
+	// 				RenderingProperties: &armappservice.Rendering{
+	// 					Description: to.Ptr("This detector breaks down the number of requests that your app received for each status code."),
+	// 					Title: to.Ptr("Requests by Status Code"),
+	// 				},
+	// 				Table: &armappservice.DataTableResponseObject{
+	// 					Columns: []*armappservice.DataTableResponseColumn{
+	// 						{
+	// 							ColumnName: to.Ptr("PreciseTimeStamp"),
+	// 							ColumnType: to.Ptr("datetime"),
+	// 							DataType: to.Ptr("DateTime"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http2xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http3xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http4xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http5xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 					}},
+	// 					Rows: [][]*string{
+	// 						[]*string{
+	// 							to.Ptr("2018-03-27T00:25:00Z"),
+	// 							to.Ptr("772705"),
+	// 							to.Ptr("0"),
+	// 							to.Ptr("0"),
+	// 							to.Ptr("0")},
+	// 							[]*string{
+	// 								to.Ptr("2018-03-27T00:30:00Z"),
+	// 								to.Ptr("787069"),
+	// 								to.Ptr("0"),
+	// 								to.Ptr("0"),
+	// 								to.Ptr("0")},
+	// 								[]*string{
+	// 									to.Ptr("2018-03-27T00:35:00Z"),
+	// 									to.Ptr("781627"),
+	// 									to.Ptr("0"),
+	// 									to.Ptr("1"),
+	// 									to.Ptr("0")},
+	// 									[]*string{
+	// 										to.Ptr("2018-03-27T00:40:00Z"),
+	// 										to.Ptr("785017"),
+	// 										to.Ptr("0"),
+	// 										to.Ptr("0"),
+	// 										to.Ptr("0")},
+	// 										[]*string{
+	// 											to.Ptr("2018-03-27T00:45:00Z"),
+	// 											to.Ptr("783518"),
+	// 											to.Ptr("0"),
+	// 											to.Ptr("0"),
+	// 											to.Ptr("0")},
+	// 											[]*string{
+	// 												to.Ptr("2018-03-27T00:50:00Z"),
+	// 												to.Ptr("785783"),
+	// 												to.Ptr("0"),
+	// 												to.Ptr("0"),
+	// 												to.Ptr("0")},
+	// 												[]*string{
+	// 													to.Ptr("2018-03-27T00:55:00Z"),
+	// 													to.Ptr("772874"),
+	// 													to.Ptr("0"),
+	// 													to.Ptr("0"),
+	// 													to.Ptr("0")},
+	// 													[]*string{
+	// 														to.Ptr("2018-03-27T01:00:00Z"),
+	// 														to.Ptr("787162"),
+	// 														to.Ptr("0"),
+	// 														to.Ptr("0"),
+	// 														to.Ptr("0")},
+	// 														[]*string{
+	// 															to.Ptr("2018-03-27T01:05:00Z"),
+	// 															to.Ptr("782036"),
+	// 															to.Ptr("0"),
+	// 															to.Ptr("0"),
+	// 															to.Ptr("0")},
+	// 															[]*string{
+	// 																to.Ptr("2018-03-27T01:10:00Z"),
+	// 																to.Ptr("784642"),
+	// 																to.Ptr("0"),
+	// 																to.Ptr("0"),
+	// 																to.Ptr("0")}},
+	// 																TableName: to.Ptr("Table_0"),
+	// 															},
+	// 													}},
+	// 													Metadata: &armappservice.DetectorInfo{
+	// 														Description: to.Ptr("This detector analyzes the requests to your application."),
+	// 														Category: to.Ptr("Availability and Performance"),
+	// 													},
+	// 												},
+	// 											}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
+func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppSlotDetectorResponse() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteDetectorResponseSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", "staging", &armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions{StartTime: nil,
+		EndTime:   nil,
+		TimeGrain: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DetectorResponse = armappservice.DetectorResponse{
+	// 	Name: to.Ptr("runtimeavailability"),
+	// 	ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/detectors/runtimeavailability"),
+	// 	Properties: &armappservice.DetectorResponseProperties{
+	// 		Dataset: []*armappservice.DiagnosticData{
+	// 			{
+	// 				RenderingProperties: &armappservice.Rendering{
+	// 					Description: to.Ptr("This detector breaks down the number of requests that your app received for each status code."),
+	// 					Title: to.Ptr("Requests by Status Code"),
+	// 				},
+	// 				Table: &armappservice.DataTableResponseObject{
+	// 					Columns: []*armappservice.DataTableResponseColumn{
+	// 						{
+	// 							ColumnName: to.Ptr("PreciseTimeStamp"),
+	// 							ColumnType: to.Ptr("datetime"),
+	// 							DataType: to.Ptr("DateTime"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http2xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http3xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http4xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 						},
+	// 						{
+	// 							ColumnName: to.Ptr("count_Http5xx"),
+	// 							ColumnType: to.Ptr("long"),
+	// 							DataType: to.Ptr("Int64"),
+	// 					}},
+	// 					Rows: [][]*string{
+	// 						[]*string{
+	// 							to.Ptr("2018-03-27T00:25:00Z"),
+	// 							to.Ptr("772705"),
+	// 							to.Ptr("0"),
+	// 							to.Ptr("0"),
+	// 							to.Ptr("0")},
+	// 							[]*string{
+	// 								to.Ptr("2018-03-27T00:30:00Z"),
+	// 								to.Ptr("787069"),
+	// 								to.Ptr("0"),
+	// 								to.Ptr("0"),
+	// 								to.Ptr("0")},
+	// 								[]*string{
+	// 									to.Ptr("2018-03-27T00:35:00Z"),
+	// 									to.Ptr("781627"),
+	// 									to.Ptr("0"),
+	// 									to.Ptr("1"),
+	// 									to.Ptr("0")},
+	// 									[]*string{
+	// 										to.Ptr("2018-03-27T00:40:00Z"),
+	// 										to.Ptr("785017"),
+	// 										to.Ptr("0"),
+	// 										to.Ptr("0"),
+	// 										to.Ptr("0")},
+	// 										[]*string{
+	// 											to.Ptr("2018-03-27T00:45:00Z"),
+	// 											to.Ptr("783518"),
+	// 											to.Ptr("0"),
+	// 											to.Ptr("0"),
+	// 											to.Ptr("0")},
+	// 											[]*string{
+	// 												to.Ptr("2018-03-27T00:50:00Z"),
+	// 												to.Ptr("785783"),
+	// 												to.Ptr("0"),
+	// 												to.Ptr("0"),
+	// 												to.Ptr("0")},
+	// 												[]*string{
+	// 													to.Ptr("2018-03-27T00:55:00Z"),
+	// 													to.Ptr("772874"),
+	// 													to.Ptr("0"),
+	// 													to.Ptr("0"),
+	// 													to.Ptr("0")},
+	// 													[]*string{
+	// 														to.Ptr("2018-03-27T01:00:00Z"),
+	// 														to.Ptr("787162"),
+	// 														to.Ptr("0"),
+	// 														to.Ptr("0"),
+	// 														to.Ptr("0")},
+	// 														[]*string{
+	// 															to.Ptr("2018-03-27T01:05:00Z"),
+	// 															to.Ptr("782036"),
+	// 															to.Ptr("0"),
+	// 															to.Ptr("0"),
+	// 															to.Ptr("0")},
+	// 															[]*string{
+	// 																to.Ptr("2018-03-27T01:10:00Z"),
+	// 																to.Ptr("784642"),
+	// 																to.Ptr("0"),
+	// 																to.Ptr("0"),
+	// 																to.Ptr("0")}},
+	// 																TableName: to.Ptr("Table_0"),
+	// 															},
+	// 													}},
+	// 													Metadata: &armappservice.DetectorInfo{
+	// 														Description: to.Ptr("This detector analyzes the requests to your application."),
+	// 														Category: to.Ptr("Availability and Performance"),
+	// 													},
+	// 												},
+	// 											}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager_listAppDiagnosticCategories() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteDiagnosticCategoriesSlotPager("Sample-WestUSResourceGroup", "SampleApp", "Production", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DiagnosticCategoryCollection = armappservice.DiagnosticCategoryCollection{
+		// 	Value: []*armappservice.DiagnosticCategory{
+		// 		{
+		// 			Name: to.Ptr("availability"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability"),
+		// 			Properties: &armappservice.DiagnosticCategoryProperties{
+		// 				Description: to.Ptr("Availability and Perfomance Diagnostics"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager_listAppSlotDiagnosticCategories() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteDiagnosticCategoriesSlotPager("Sample-WestUSResourceGroup", "SampleApp", "staging", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DiagnosticCategoryCollection = armappservice.DiagnosticCategoryCollection{
+		// 	Value: []*armappservice.DiagnosticCategory{
+		// 		{
+		// 			Name: to.Ptr("availability"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability"),
+		// 			Properties: &armappservice.DiagnosticCategoryProperties{
+		// 				Description: to.Ptr("Availability and Perfomance Diagnostics"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppDiagnosticCategory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteDiagnosticCategorySlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "Production", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DiagnosticCategory = armappservice.DiagnosticCategory{
+	// 	Name: to.Ptr("availability"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability"),
+	// 	Properties: &armappservice.DiagnosticCategoryProperties{
+	// 		Description: to.Ptr("Availability and Perfomance Diagnostics"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
+func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppSlotDiagnosticCategory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteDiagnosticCategorySlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "staging", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DiagnosticCategory = armappservice.DiagnosticCategory{
+	// 	Name: to.Ptr("availability"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability"),
+	// 	Properties: &armappservice.DiagnosticCategoryProperties{
+	// 		Description: to.Ptr("Availability and Perfomance Diagnostics"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalyses.json
+func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager_listAppAnalyses() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteAnalysesSlotPager("Sample-WestUSResourceGroup", "SampleApp", "availability", "Production", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DiagnosticAnalysisCollection = armappservice.DiagnosticAnalysisCollection{
+		// 	Value: []*armappservice.AnalysisDefinition{
+		// 		{
+		// 			Name: to.Ptr("appanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/appanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Determine causes of availability loss as well as solutions for these problems"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("apprestartanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/apprestartanalyses"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Find the reasons that your app restarted"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("memoryanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/memoryanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Detect issues with memory as well as suggest ways to troubleshoot memory problems"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("tcpconnectionsanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/tcpconnectionsanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Analyze port usage and find out if a high number of connections is causing problems for your web app"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("perfanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/perfanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Determine causes of performance degredation as well as solutions for these problems"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalysesSlot.json
+func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager_listAppSlotAnalyses() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteAnalysesSlotPager("Sample-WestUSResourceGroup", "SampleApp", "availability", "staging", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DiagnosticAnalysisCollection = armappservice.DiagnosticAnalysisCollection{
+		// 	Value: []*armappservice.AnalysisDefinition{
+		// 		{
+		// 			Name: to.Ptr("appanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/appanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Determine causes of availability loss as well as solutions for these problems"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("apprestartanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/apprestartanalyses"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Find the reasons that your app restarted"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("memoryanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/memoryanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Detect issues with memory as well as suggest ways to troubleshoot memory problems"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("tcpconnectionsanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/tcpconnectionsanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Analyze port usage and find out if a high number of connections is causing problems for your web app"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("perfanalysis"),
+		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/perfanalysis"),
+		// 			Properties: &armappservice.AnalysisDefinitionProperties{
+		// 				Description: to.Ptr("Determine causes of performance degredation as well as solutions for these problems"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysis.json
+func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppAnalysis() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteAnalysisSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis", "Production", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AnalysisDefinition = armappservice.AnalysisDefinition{
+	// 	Name: to.Ptr("appanalysis"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/appanalysis"),
+	// 	Properties: &armappservice.AnalysisDefinitionProperties{
+	// 		Description: to.Ptr("Determine causes of availability loss as well as solutions for these problems"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppSlotAnalysis() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteAnalysisSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis", "staging", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AnalysisDefinition = armappservice.AnalysisDefinition{
+	// 	Name: to.Ptr("appanalysis"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/appanalysis"),
+	// 	Properties: &armappservice.AnalysisDefinitionProperties{
+	// 		Description: to.Ptr("Determine causes of availability loss as well as solutions for these problems"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteAnalysis() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().ExecuteSiteAnalysisSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "apprestartanalyses", "Production", &armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions{StartTime: nil,
+		EndTime:   nil,
+		TimeGrain: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DiagnosticAnalysis = armappservice.DiagnosticAnalysis{
+	// 	Name: to.Ptr("apprestartanalysis"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/analyses/apprestartanalyses"),
+	// 	Properties: &armappservice.DiagnosticAnalysisProperties{
+	// 		AbnormalTimePeriods: []*armappservice.AbnormalTimePeriod{
+	// 			{
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 				Events: []*armappservice.DetectorAbnormalTimePeriod{
+	// 					{
+	// 						Type: to.Ptr(armappservice.IssueTypeServiceIncident),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:48.000Z"); return t}()),
+	// 						Message: to.Ptr("Your application process was restarted as application environment variables changed. This can most likely occur due to update in app settings or swap operation. This event occurred multiple times during the day."),
+	// 						MetaData: [][]*armappservice.NameValuePair{
+	// 							[]*armappservice.NameValuePair{
+	// 								{
+	// 									Name: to.Ptr("feature"),
+	// 									Value: to.Ptr("auditlogs"),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("displayedName"),
+	// 									Value: to.Ptr("Check Audit Logs"),
+	// 						}}},
+	// 						Priority: to.Ptr[float64](0),
+	// 						Solutions: []*armappservice.Solution{
+	// 						},
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:50.000Z"); return t}()),
+	// 				}},
+	// 				Solutions: []*armappservice.Solution{
+	// 				},
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 		}},
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 		NonCorrelatedDetectors: []*armappservice.DetectorDefinition{
+	// 		},
+	// 		Payload: []*armappservice.AnalysisData{
+	// 			{
+	// 				Data: [][]*armappservice.NameValuePair{
+	// 				},
+	// 				Metrics: []*armappservice.DiagnosticMetricSet{
+	// 					{
+	// 						Name: to.Ptr("All Application Stop Events"),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 						TimeGrain: to.Ptr("00:05:00"),
+	// 						Values: []*armappservice.DiagnosticMetricSample{
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C15BE"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								IsAggregated: to.Ptr(true),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C15C1"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3BE0FB"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								IsAggregated: to.Ptr(true),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](4),
+	// 						}},
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("User Events"),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 						TimeGrain: to.Ptr("00:05:00"),
+	// 						Unit: to.Ptr(""),
+	// 						Values: []*armappservice.DiagnosticMetricSample{
+	// 							{
+	// 								IsAggregated: to.Ptr(true),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](3),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C09FC"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](1),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C2ADC"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](1),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C214E"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](1),
+	// 						}},
+	// 				}},
+	// 				Source: to.Ptr("workerprocessrecycle"),
+	// 		}},
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
+func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteSlotAnalysis() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().ExecuteSiteAnalysisSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "apprestartanalyses", "staging", &armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions{StartTime: nil,
+		EndTime:   nil,
+		TimeGrain: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DiagnosticAnalysis = armappservice.DiagnosticAnalysis{
+	// 	Name: to.Ptr("apprestartanalysis"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/slots/staging/diagnostics/availability/analyses/apprestartanalyses"),
+	// 	Properties: &armappservice.DiagnosticAnalysisProperties{
+	// 		AbnormalTimePeriods: []*armappservice.AbnormalTimePeriod{
+	// 			{
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 				Events: []*armappservice.DetectorAbnormalTimePeriod{
+	// 					{
+	// 						Type: to.Ptr(armappservice.IssueTypeServiceIncident),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:48.000Z"); return t}()),
+	// 						Message: to.Ptr("Your application process was restarted as application environment variables changed. This can most likely occur due to update in app settings or swap operation. This event occurred multiple times during the day."),
+	// 						MetaData: [][]*armappservice.NameValuePair{
+	// 							[]*armappservice.NameValuePair{
+	// 								{
+	// 									Name: to.Ptr("feature"),
+	// 									Value: to.Ptr("auditlogs"),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("displayedName"),
+	// 									Value: to.Ptr("Check Audit Logs"),
+	// 						}}},
+	// 						Priority: to.Ptr[float64](0),
+	// 						Solutions: []*armappservice.Solution{
+	// 						},
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:50.000Z"); return t}()),
+	// 				}},
+	// 				Solutions: []*armappservice.Solution{
+	// 				},
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 		}},
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 		NonCorrelatedDetectors: []*armappservice.DetectorDefinition{
+	// 		},
+	// 		Payload: []*armappservice.AnalysisData{
+	// 			{
+	// 				Data: [][]*armappservice.NameValuePair{
+	// 				},
+	// 				Metrics: []*armappservice.DiagnosticMetricSet{
+	// 					{
+	// 						Name: to.Ptr("All Application Stop Events"),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 						TimeGrain: to.Ptr("00:05:00"),
+	// 						Values: []*armappservice.DiagnosticMetricSample{
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C15BE"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								IsAggregated: to.Ptr(true),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C15C1"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3BE0FB"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](2),
+	// 							},
+	// 							{
+	// 								IsAggregated: to.Ptr(true),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](4),
+	// 						}},
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("User Events"),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 						TimeGrain: to.Ptr("00:05:00"),
+	// 						Unit: to.Ptr(""),
+	// 						Values: []*armappservice.DiagnosticMetricSample{
+	// 							{
+	// 								IsAggregated: to.Ptr(true),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](3),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C09FC"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](1),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C2ADC"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](1),
+	// 							},
+	// 							{
+	// 								RoleInstance: to.Ptr("RD00155D3C214E"),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
+	// 								Total: to.Ptr[float64](1),
+	// 						}},
+	// 				}},
+	// 				Source: to.Ptr("workerprocessrecycle"),
+	// 		}},
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectors.json
+func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager_listAppDetectors() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteDetectorsSlotPager("Sample-WestUSResourceGroup", "SampleApp", "availability", "Production", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DiagnosticDetectorCollection = armappservice.DiagnosticDetectorCollection{
+		// 	Value: []*armappservice.DetectorDefinitionResource{
+		// 		{
+		// 			Name: to.Ptr("servicehealth"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/servicehealth"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Service Health"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](1),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("siteswap"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/siteswap"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Site Swap Operations"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](8),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sitecrashes"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/sitecrashes"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Site Crash Events"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](9),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("deployment"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/deployment"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Site Deployments"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](7),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sitecpuanalysis"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/sitecpuanalysis"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("CPU Analysis"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](3),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sitememoryanalysis"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/sitememoryanalysis"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Physical Memory Analysis"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](3),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("committedmemoryusage"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/committedmemoryusage"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Committed Memory Usage"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](7),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("pagefileoperations"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/pagefileoperations"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Page File Operations"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](3),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("siterestartuserinitiated"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/siterestartuserinitiated"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("User Initiated Site Restarts"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](14),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("siterestartsettingupdate"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/siterestartsettingupdate"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Config Update Site Restarts"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](12),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("frebanalysis"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/frebanalysis"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Freb Logs Analysis"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](6),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("workeravailability"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/workeravailability"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Worker Availability"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](11),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sitelatency"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/sitelatency"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Site Latency"),
+		// 				IsEnabled: to.Ptr(false),
+		// 				Rank: to.Ptr[float64](1005),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("threadcount"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/threadcount"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Thread Count"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](23),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("failedrequestsperuri"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/failedrequestsperuri"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Failed Requests Per URI"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](998),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("autoheal"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/autoheal"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("AutoHeal"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](21),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("loganalyzer"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/loganalyzer"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("PHP Log Analyzer"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](26),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("aspnetcore"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/aspnetcore"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("ASP.NET Core"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](5),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorsSlot.json
+func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager_listAppSlotDetectors() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiagnosticsClient().NewListSiteDetectorsSlotPager("Sample-WestUSResourceGroup", "SampleApp", "availability", "staging", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DiagnosticDetectorCollection = armappservice.DiagnosticDetectorCollection{
+		// 	Value: []*armappservice.DetectorDefinitionResource{
+		// 		{
+		// 			Name: to.Ptr("servicehealth"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/diagnostics/availability/detectors/servicehealth"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Service Health"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](1),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("siteswap"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/diagnostics/availability/detectors/siteswap"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Site Swap Operations"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](8),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sitecrashes"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/diagnostics/availability/detectors/sitecrashes"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Site Crash Events"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](9),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("deployment"),
+		// 			ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/diagnostics/availability/detectors/deployment"),
+		// 			Properties: &armappservice.DetectorDefinition{
+		// 				DisplayName: to.Ptr("Site Deployments"),
+		// 				IsEnabled: to.Ptr(true),
+		// 				Rank: to.Ptr[float64](7),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetector.json
+func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppDetector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteDetectorSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes", "Production", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DetectorDefinitionResource = armappservice.DetectorDefinitionResource{
+	// 	Name: to.Ptr("sitecrashes"),
+	// 	ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/diagnostics/availability/detectors/sitecrashes"),
+	// 	Properties: &armappservice.DetectorDefinition{
+	// 		DisplayName: to.Ptr("Site Crash Events"),
+	// 		IsEnabled: to.Ptr(true),
+	// 		Rank: to.Ptr[float64](9),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorSlot.json
+func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppSlotDetector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().GetSiteDetectorSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes", "staging", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DetectorDefinitionResource = armappservice.DetectorDefinitionResource{
+	// 	Name: to.Ptr("sitecrashes"),
+	// 	ID: to.Ptr("/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourceGroups/Build2015DemoRG/providers/Microsoft.Web/sites/BuggyBakery/slots/staging/diagnostics/availability/detectors/sitecrashes"),
+	// 	Properties: &armappservice.DetectorDefinition{
+	// 		DisplayName: to.Ptr("Site Crash Events"),
+	// 		IsEnabled: to.Ptr(true),
+	// 		Rank: to.Ptr[float64](9),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetector.json
+func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot_executeSiteDetector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().ExecuteSiteDetectorSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "sitecrashes", "availability", "Production", &armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions{StartTime: nil,
+		EndTime:   nil,
+		TimeGrain: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DiagnosticDetectorResponse = armappservice.DiagnosticDetectorResponse{
+	// 	Name: to.Ptr("sitecrashes"),
+	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/Sample-WestUSResourceGroup/providers/Microsoft.Web/sites/SampleApp/diagnostics/availability/detectors/sitecrashes"),
+	// 	Properties: &armappservice.DiagnosticDetectorResponseProperties{
+	// 		AbnormalTimePeriods: []*armappservice.DetectorAbnormalTimePeriod{
+	// 			{
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 				Solutions: []*armappservice.Solution{
+	// 				},
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 		}},
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
+func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot_executeSiteSlotDetector() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDiagnosticsClient().ExecuteSiteDetectorSlot(ctx, "Sample-WestUSResourceGroup", "SampleApp", "sitecrashes", "availability", "staging", &armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions{StartTime: nil,
 		EndTime:   nil,
 		TimeGrain: nil,
 	})

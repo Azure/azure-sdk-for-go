@@ -59,8 +59,6 @@ func Example_usingDefaultAzureCredential() {
 
 	// Use the client with default credentials
 	makeSimpleRequest(&client, model)
-
-	// Output:
 }
 
 func Example_usingManagedIdentityCredential() {
@@ -95,8 +93,6 @@ func Example_usingManagedIdentityCredential() {
 
 	// Use the client with managed identity credentials
 	makeSimpleRequest(&client, model)
-
-	// Output:
 }
 
 // Helper function to make a simple request to Azure OpenAI

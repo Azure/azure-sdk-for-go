@@ -76,7 +76,6 @@ func Example_usingDefaultAzureCredential() {
 // - Azure DevOps pipelines with the Azure DevOps service connection
 // - CI/CD scenarios where you want to avoid storing secrets
 // - Production workloads requiring secure, credential-free authentication
-//
 func Example_usingManagedIdentityCredential() {
 	endpoint := os.Getenv("AOAI_ENDPOINT")
 	model := os.Getenv("AOAI_MODEL")

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/MachineList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8ae0d9c888888dd1d8776aad67e156f403d4d840/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-03-01/examples/MachineList.json
 func ExampleMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleMachinesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8600539fa5ba6c774b4454a401d9cd3cf01a36a7/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-03-02-preview/examples/MachineGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8ae0d9c888888dd1d8776aad67e156f403d4d840/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-03-01/examples/MachineGet.json
 func ExampleMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

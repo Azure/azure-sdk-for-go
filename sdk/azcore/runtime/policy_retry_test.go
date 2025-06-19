@@ -10,9 +10,11 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"math"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -961,4 +963,62 @@ func TestCalcDelay(t *testing.T) {
 			)
 		}
 	})
+}
+
+type retryLoggingChecker struct {
+	count int32
+}
+
+func (r *retryLoggingChecker) Do(req *policy.Request) (*http.Response, error) {
+	if r.count > 0 {
+		var opValues logPolicyOpValues
+		req.OperationValue(&opValues)
+		if reflect.ValueOf(opValues).IsZero() {
+			// the logging policy is after us. so it should have populated logPolicyOpValues
+			return nil, errors.New("unexpected zero-value for logPolicyOpValues")
+		}
+
+		// verify that the logging policy is updating the try in opValues
+		if r.count != opValues.try {
+			return nil, fmt.Errorf("expected count %d, got %d", r.count, opValues.try)
+		}
+	}
+	r.count++
+	return req.Next()
+}
+
+func TestRetryPolicyWithLoggingChecker(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBodyReadError())
+	srv.AppendResponse(mock.WithBodyReadError())
+	srv.AppendResponse()
+	pl := newTestPipeline(&policy.ClientOptions{
+		Transport: srv, Retry: *testRetryOptions(),
+		PerRetryPolicies: []policy.Policy{&retryLoggingChecker{}},
+	})
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	body := newRewindTrackingBody("stuff")
+	if err := req.SetBody(body, "text/plain"); err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != 3 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
+	}
+	if body.rcount != 2 {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
 }

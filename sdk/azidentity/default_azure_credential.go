@@ -112,7 +112,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		case strings.EqualFold(atc, credNameAzureDeveloperCLI):
 			selected = azd
 		default:
-			return nil, fmt.Errorf(`invalid %s value %q. Valid values are "dev", "prod", and the name of any credential type in the default chain. See https://aka.ms/azsdk/go/identity/docs#DefaultAzureCredential for more information`, azureTokenCredentials, atc)
+			return nil, fmt.Errorf(`invalid %s value %q. Valid values are "dev", "prod", or the name of any credential type in the default chain. See https://aka.ms/azsdk/go/identity/docs#DefaultAzureCredential for more information`, azureTokenCredentials, atc)
 		}
 	}
 

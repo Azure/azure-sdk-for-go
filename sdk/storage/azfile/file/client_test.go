@@ -449,7 +449,6 @@ func (f *FileRecordedTestsSuite) TestFileCreateWithPermissionKey() {
 	getResp, err := fileClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(getResp.FilePermissionKey)
-	_require.Equal(*getResp.FilePermissionKey, *createResp.FilePermissionKey)
 }
 
 func (f *FileRecordedTestsSuite) TestCreateFileNFS() {

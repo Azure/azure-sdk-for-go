@@ -998,27 +998,15 @@ func TestRetryPolicyWithLoggingChecker(t *testing.T) {
 		PerRetryPolicies: []policy.Policy{&retryLoggingChecker{}},
 	})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
+	require.NoError(t, err)
+
 	body := newRewindTrackingBody("stuff")
-	if err := req.SetBody(body, "text/plain"); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, req.SetBody(body, "text/plain"))
+
 	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	if r := srv.Requests(); r != 3 {
-		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
-	}
-	if body.rcount != 2 {
-		t.Fatalf("unexpected rewind count: %d", body.rcount)
-	}
-	if !body.closed {
-		t.Fatal("request body wasn't closed")
-	}
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, 3, srv.Requests())
+	require.EqualValues(t, 2, body.rcount)
+	require.True(t, body.closed)
 }

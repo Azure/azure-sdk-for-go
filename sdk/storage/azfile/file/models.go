@@ -125,7 +125,7 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			Metadata:          o.Metadata,
 		}
 
-		if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
+		if permissionKey != nil && *permissionKey != shared.DefaultPreserveString {
 			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
 		} else if o.FilePermissionFormat != nil {
 			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))

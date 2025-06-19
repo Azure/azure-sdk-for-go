@@ -64,6 +64,7 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 		options := DownloadStreamOptions{
 			Range:                 getInfo.Range,
 			LeaseAccessConditions: r.leaseAccessConditions,
+			ChunkSize:             r.getInfo.ChunkSize,
 		}
 		resp, err := r.client.DownloadStream(ctx, &options)
 		if err != nil {

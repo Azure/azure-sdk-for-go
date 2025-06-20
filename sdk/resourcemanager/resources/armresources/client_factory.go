@@ -41,22 +41,6 @@ func (c *ClientFactory) NewClient() *Client {
 	}
 }
 
-// NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient.
-func (c *ClientFactory) NewDeploymentOperationsClient() *DeploymentOperationsClient {
-	return &DeploymentOperationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDeploymentsClient creates a new instance of DeploymentsClient.
-func (c *ClientFactory) NewDeploymentsClient() *DeploymentsClient {
-	return &DeploymentsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

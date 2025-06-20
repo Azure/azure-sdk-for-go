@@ -670,9 +670,7 @@ func TestContainerPatchItem(t *testing.T) {
 }
 
 func TestContainerReadPartitionKeyRanges(t *testing.T) {
-	// Step 1. Creating a fake Json response as something that would be returned from the server(Cosmos DB)
-	// Note, I'm getting this instance from the example in the documentation
-	expectedJsonResponse := `{
+	expectedJsonResponse := []byte(`{
 	"_rid": "lypXAMSZ-Cs=",
 	"PartitionKeyRanges": [
         {
@@ -719,9 +717,8 @@ func TestContainerReadPartitionKeyRanges(t *testing.T) {
         }
 	],
 	"_count": 100
-	}`
+	}`)
 
-	// Step 2. Creating a mock server to simulate the Cosmos DB response
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(
@@ -740,30 +737,25 @@ func TestContainerReadPartitionKeyRanges(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	// Step 3. Call GetPartitionKeys
 	resp, err := container.GetPartitionKeyRange(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("GetPartitionKeys failed: %v", err)
 	}
 
-	// Step 4. Assert the response
 	if resp.PartitionKeyRanges == nil {
 		t.Fatal("PartitionKeyRanges is nil")
 	}
 	if len(resp.PartitionKeyRanges) != 2 {
 		t.Fatalf("Expected 2 partition key ranges, got %d", len(resp.PartitionKeyRanges))
 	}
-	// Checking the high level rid
 	high_level_rid := resp.Rid
 	if high_level_rid != "lypXAMSZ-Cs=" {
 		t.Errorf("Expected Rid to be lypXAMSZ-Cs=, got %s", high_level_rid)
 	}
 
-	// Checking the high level count
 	if resp.Count != 100 {
 		t.Errorf("Expected Count to be 100, got %d", resp.Count)
 	}
-	// Check first partition key range
 	pkr1 := resp.PartitionKeyRanges[0]
 	if pkr1.ID != "151" {
 		t.Errorf("Expected ID to be 151, got %s", pkr1.ID)
@@ -778,7 +770,6 @@ func TestContainerReadPartitionKeyRanges(t *testing.T) {
 		t.Errorf("Expected Parents to be [5 10 31], got %v", pkr1.Parents)
 	}
 
-	// Check second partition key range
 	pkr2 := resp.PartitionKeyRanges[1]
 	if pkr2.ID != "163" {
 		t.Errorf("Expected ID to be 163, got %s", pkr2.ID)
@@ -794,15 +785,13 @@ func TestContainerReadPartitionKeyRanges(t *testing.T) {
 	}
 }
 
-// Testing Edge Case: Empty Partition Key Ranges
-func TestContainerReadPartitionKeyRanges_Empty(t *testing.T) {
+func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 	expectedJsonResponse := `{
     "_rid": "lypXAMSZ-Cs=",
     "PartitionKeyRanges": [],
     "_count": 0
 	}`
 
-	// Step 2. Creating a mock server to simulate the Cosmos DB response
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(

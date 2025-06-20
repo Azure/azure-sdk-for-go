@@ -3,6 +3,7 @@
 ## 1.0.0 (2025-06-20)
 ### Other Changes
 
+Updated to use API version 2025-06-01
 
 ## 0.1.0 (2025-05-07)
 ### Other Changes

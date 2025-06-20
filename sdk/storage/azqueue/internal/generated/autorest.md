@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: " https://raw.githubusercontent.com/Azure/azure-rest-api-specs/39970688f01821bbb1d2a09182d882da86a51a18/specification/storage/data-plane/Microsoft.QueueStorage/stable/2018-03-28/queue.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/39970688f01821bbb1d2a09182d882da86a51a18/specification/storage/data-plane/Microsoft.QueueStorage/stable/2018-03-28/queue.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"

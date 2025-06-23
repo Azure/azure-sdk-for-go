@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed bug where fileClient.Create API call was failing on passing permissionKey parameter. Fixes[#24632(https://github.com/Azure/azure-sdk-for-go/issues/24632)]
 
 ### Other Changes
 

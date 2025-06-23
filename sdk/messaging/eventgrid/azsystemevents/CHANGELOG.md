@@ -1,14 +1,23 @@
 # Release History
 
-## 0.7.1 (Unreleased)
+## 1.0.0 (2025-06-23)
 
-### Features Added
+First stable release of the azsystemevents package.
 
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+Some types have been renamed:
+- ACSCallEndedByProperties.Type -> Kind
+- ACSRecordingFileStatusUpdatedEventData.RecordingChannelKind -> RecordingChannelType
+- APIManagementExpiredGatewayTokenProperties.ExpiredAtUTC -> ExpiresOn
+- APIManagementGatewayTokenExpiredEventData.GatewayInfo -> Gateway
+- APIManagementGatewayTokenExpiredEventData.TokenInfo -> Token
+- APIManagementGatewayTokenNearExpiryEventData.GatewayInfo -> Gateway
+- APIManagementGatewayTokenNearExpiryEventData.TokenInfo -> Token
+- APIManagementNearExpiryGatewayTokenProperties.ExpiredAtUTC -> ExpiresOn
+- RecordingChannelKind -> ACSRecordingChannelType
+- RecordingContentType -> ACSRecordingContentType 
+- RecordingFormatType -> ACSRecordingFormatType
 
 ## 0.7.0 (2025-05-14)
 

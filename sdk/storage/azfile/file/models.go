@@ -124,11 +124,16 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			FilePermissionKey: permissionKey,
 			Metadata:          o.Metadata,
 		}
-
-		if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
-			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
-		} else if o.FilePermissionFormat != nil {
-			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
+		// Refer the documentation for details - https://learn.microsoft.com/en-us/rest/api/storageservices/create-file#smb-only-request-headers
+		if permissionKey != nil {
+			createOptions.FilePermissionKey = permissionKey
+		} else if permission != nil {
+			createOptions.FilePermission = permission
+			if o.FilePermissionFormat != nil {
+				createOptions.FilePermissionFormat = to.Ptr(*o.FilePermissionFormat)
+			} else {
+				createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormatSddl) // optional, default
+			}
 		}
 	}
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions

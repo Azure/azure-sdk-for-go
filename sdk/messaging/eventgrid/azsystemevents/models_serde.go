@@ -51,8 +51,8 @@ func (a *ACSCallEndReasonProperties) UnmarshalJSON(data []byte) error {
 func (a ACSCallEndedByProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "communicationIdentifier", a.CommunicationIdentifier)
+	populate(objectMap, "type", a.Kind)
 	populate(objectMap, "name", a.Name)
-	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -68,11 +68,11 @@ func (a *ACSCallEndedByProperties) UnmarshalJSON(data []byte) error {
 		case "communicationIdentifier":
 			err = unpopulate(val, "CommunicationIdentifier", &a.CommunicationIdentifier)
 			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Kind", &a.Kind)
+			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &a.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -191,73 +191,6 @@ func (a ACSCallParticipantAddedEventData) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ACSCallParticipantAddedEventData.
 func (a *ACSCallParticipantAddedEventData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", a, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "correlationId":
-			err = unpopulate(val, "CorrelationID", &a.CorrelationID)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, "DisplayName", &a.DisplayName)
-			delete(rawMsg, key)
-		case "group":
-			err = unpopulate(val, "Group", &a.Group)
-			delete(rawMsg, key)
-		case "isRoomsCall":
-			err = unpopulate(val, "IsRoomsCall", &a.IsRoomsCall)
-			delete(rawMsg, key)
-		case "isTwoParty":
-			err = unpopulate(val, "IsTwoParty", &a.IsTwoParty)
-			delete(rawMsg, key)
-		case "participantId":
-			err = unpopulate(val, "ParticipantID", &a.ParticipantID)
-			delete(rawMsg, key)
-		case "room":
-			err = unpopulate(val, "Room", &a.Room)
-			delete(rawMsg, key)
-		case "serverCallId":
-			err = unpopulate(val, "ServerCallID", &a.ServerCallID)
-			delete(rawMsg, key)
-		case "startedBy":
-			err = unpopulate(val, "StartedBy", &a.StartedBy)
-			delete(rawMsg, key)
-		case "user":
-			err = unpopulate(val, "User", &a.User)
-			delete(rawMsg, key)
-		case "userAgent":
-			err = unpopulate(val, "UserAgent", &a.UserAgent)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", a, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ACSCallParticipantEventProperties.
-func (a ACSCallParticipantEventProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "correlationId", a.CorrelationID)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "group", a.Group)
-	populate(objectMap, "isRoomsCall", a.IsRoomsCall)
-	populate(objectMap, "isTwoParty", a.IsTwoParty)
-	populate(objectMap, "participantId", a.ParticipantID)
-	populate(objectMap, "room", a.Room)
-	populate(objectMap, "serverCallId", a.ServerCallID)
-	populate(objectMap, "startedBy", a.StartedBy)
-	populate(objectMap, "user", a.User)
-	populate(objectMap, "userAgent", a.UserAgent)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ACSCallParticipantEventProperties.
-func (a *ACSCallParticipantEventProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -2246,7 +2179,7 @@ func (a *ACSRecordingChunkInfoProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ACSRecordingFileStatusUpdatedEventData.
 func (a ACSRecordingFileStatusUpdatedEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "recordingChannelType", a.RecordingChannelKind)
+	populate(objectMap, "recordingChannelType", a.RecordingChannelType)
 	populate(objectMap, "recordingContentType", a.RecordingContentType)
 	populate(objectMap, "recordingDurationMs", a.RecordingDurationMS)
 	populate(objectMap, "recordingFormatType", a.RecordingFormatType)
@@ -2266,7 +2199,7 @@ func (a *ACSRecordingFileStatusUpdatedEventData) UnmarshalJSON(data []byte) erro
 		var err error
 		switch key {
 		case "recordingChannelType":
-			err = unpopulate(val, "RecordingChannelKind", &a.RecordingChannelKind)
+			err = unpopulate(val, "RecordingChannelType", &a.RecordingChannelType)
 			delete(rawMsg, key)
 		case "recordingContentType":
 			err = unpopulate(val, "RecordingContentType", &a.RecordingContentType)
@@ -4171,7 +4104,7 @@ func (a *APIManagementCircuitBreakerProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type APIManagementExpiredGatewayTokenProperties.
 func (a APIManagementExpiredGatewayTokenProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "expiredAtUtc", a.ExpiredAtUTC)
+	populateDateTimeRFC3339(objectMap, "expiredAtUtc", a.ExpiresOn)
 	return json.Marshal(objectMap)
 }
 
@@ -4185,7 +4118,7 @@ func (a *APIManagementExpiredGatewayTokenProperties) UnmarshalJSON(data []byte) 
 		var err error
 		switch key {
 		case "expiredAtUtc":
-			err = unpopulateDateTimeRFC3339(val, "ExpiredAtUTC", &a.ExpiredAtUTC)
+			err = unpopulateDateTimeRFC3339(val, "ExpiresOn", &a.ExpiresOn)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4499,8 +4432,8 @@ func (a *APIManagementGatewayProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type APIManagementGatewayTokenExpiredEventData.
 func (a APIManagementGatewayTokenExpiredEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "gatewayInfo", a.GatewayInfo)
-	populate(objectMap, "tokenInfo", a.TokenInfo)
+	populate(objectMap, "gatewayInfo", a.Gateway)
+	populate(objectMap, "tokenInfo", a.Token)
 	return json.Marshal(objectMap)
 }
 
@@ -4514,10 +4447,10 @@ func (a *APIManagementGatewayTokenExpiredEventData) UnmarshalJSON(data []byte) e
 		var err error
 		switch key {
 		case "gatewayInfo":
-			err = unpopulate(val, "GatewayInfo", &a.GatewayInfo)
+			err = unpopulate(val, "Gateway", &a.Gateway)
 			delete(rawMsg, key)
 		case "tokenInfo":
-			err = unpopulate(val, "TokenInfo", &a.TokenInfo)
+			err = unpopulate(val, "Token", &a.Token)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4530,8 +4463,8 @@ func (a *APIManagementGatewayTokenExpiredEventData) UnmarshalJSON(data []byte) e
 // MarshalJSON implements the json.Marshaller interface for type APIManagementGatewayTokenNearExpiryEventData.
 func (a APIManagementGatewayTokenNearExpiryEventData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "gatewayInfo", a.GatewayInfo)
-	populate(objectMap, "tokenInfo", a.TokenInfo)
+	populate(objectMap, "gatewayInfo", a.Gateway)
+	populate(objectMap, "tokenInfo", a.Token)
 	return json.Marshal(objectMap)
 }
 
@@ -4545,10 +4478,10 @@ func (a *APIManagementGatewayTokenNearExpiryEventData) UnmarshalJSON(data []byte
 		var err error
 		switch key {
 		case "gatewayInfo":
-			err = unpopulate(val, "GatewayInfo", &a.GatewayInfo)
+			err = unpopulate(val, "Gateway", &a.Gateway)
 			delete(rawMsg, key)
 		case "tokenInfo":
-			err = unpopulate(val, "TokenInfo", &a.TokenInfo)
+			err = unpopulate(val, "Token", &a.Token)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4588,7 +4521,7 @@ func (a *APIManagementGatewayUpdatedEventData) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type APIManagementNearExpiryGatewayTokenProperties.
 func (a APIManagementNearExpiryGatewayTokenProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "expiredAtUtc", a.ExpiredAtUTC)
+	populateDateTimeRFC3339(objectMap, "expiredAtUtc", a.ExpiresOn)
 	return json.Marshal(objectMap)
 }
 
@@ -4602,7 +4535,7 @@ func (a *APIManagementNearExpiryGatewayTokenProperties) UnmarshalJSON(data []byt
 		var err error
 		switch key {
 		case "expiredAtUtc":
-			err = unpopulateDateTimeRFC3339(val, "ExpiredAtUTC", &a.ExpiredAtUTC)
+			err = unpopulateDateTimeRFC3339(val, "ExpiresOn", &a.ExpiresOn)
 			delete(rawMsg, key)
 		}
 		if err != nil {

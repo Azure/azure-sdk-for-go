@@ -27,7 +27,7 @@ type PartitionKeyRange struct {
 	Parents                 []string `json:"parents"`
 	OwnedArchivalPKRangeIds []string `json:"ownedArchivalPKRangeIds"`
 	Timestamp               int64    `json:"_ts"`
-	LSN                     int64    `json:"lsn"`
+	LSN                     int64    `json:"_lsn"`
 }
 
 /*
@@ -39,7 +39,7 @@ type PartitionKeyRange struct {
 type PartitionKeyRangeResponse struct {
 	Response
 	Rid                string              `json:"_rid"`
-	PartitionKeyRanges []PartitionKeyRange `json:"partitionKeyRanges"`
+	PartitionKeyRanges []PartitionKeyRange `json:"PartitionKeyRanges"`
 	Count              int                 `json:"_count"`
 }
 

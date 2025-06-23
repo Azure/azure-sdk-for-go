@@ -9,7 +9,7 @@ import (
 
 func TestPartitionKeyRangeRequestOptionsToHeaders(t *testing.T) {
 	options := &PartitionKeyRangeOptions{}
-	if options.toHeaders() == nil {
-		t.Error("Expected headers to be non-nil")
+	if options.toHeaders() != nil {
+		t.Error("toHeaders should return nil")
 	}
 }

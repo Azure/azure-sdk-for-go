@@ -39,6 +39,10 @@ type ContainerProperties struct {
 	UniqueKeyPolicy *UniqueKeyPolicy
 	// ConflictResolutionPolicy contains the conflict resolution policy of the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy
+	// VectorEmbeddingPolicy contains the vector embedding policy of the container.
+	// This policy defines how vector embeddings are stored and searched within the container.
+	// For more information see https://docs.microsoft.com/azure/cosmos-db/nosql/vector-search
+	VectorEmbeddingPolicy *VectorEmbeddingPolicy
 }
 
 // MarshalJSON implements the json.Marshaler interface
@@ -108,6 +112,15 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 		}
 		buffer.WriteString(",\"conflictResolutionPolicy\":")
 		buffer.Write(conflictPolicy)
+	}
+
+	if tp.VectorEmbeddingPolicy != nil {
+		vectorPolicy, err := json.Marshal(tp.VectorEmbeddingPolicy)
+		if err != nil {
+			return nil, err
+		}
+		buffer.WriteString(",\"vectorEmbeddingPolicy\":")
+		buffer.Write(vectorPolicy)
 	}
 
 	buffer.WriteString("}")
@@ -186,6 +199,12 @@ func (tp *ContainerProperties) UnmarshalJSON(b []byte) error {
 
 	if cp, ok := attributes["conflictResolutionPolicy"]; ok {
 		if err := json.Unmarshal(cp, &tp.ConflictResolutionPolicy); err != nil {
+			return err
+		}
+	}
+
+	if vp, ok := attributes["vectorEmbeddingPolicy"]; ok {
+		if err := json.Unmarshal(vp, &tp.VectorEmbeddingPolicy); err != nil {
 			return err
 		}
 	}

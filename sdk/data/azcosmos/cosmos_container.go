@@ -432,12 +432,9 @@ func (c *ContainerClient) ReadItem(
 	return response, err
 }
 
-// GetPartitionKeyRange retrieves all the distinct Partition Range keys froma a Cosmos container
-// @param: c *ContainerClient - The client for the Cosmos container
-// @param: ctx context.Context - The context for the request
-// @param: o *PartitionKeyRangeOptions - Options for the operation, can be nil
-// @returns: ([]PartitionKeyRange, error) - A slice of PartitionKeyRange along with their metadata
-
+// GetPartitionKeyRange retrieves all the distinct Partition Range keys froma a Cosmos container.
+// ctx - The context for the request.
+// o - Options for the operation, can be nil.
 func (c *ContainerClient) GetPartitionKeyRange(ctx context.Context, o *PartitionKeyRangeOptions) (PartitionKeyRangeResponse, error) {
 	spanName, err := c.getSpanForContainer(operationTypeRead, resourceTypePartitionKeyRange, c.id)
 	if err != nil {

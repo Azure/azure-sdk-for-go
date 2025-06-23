@@ -476,7 +476,7 @@ func TestConsumeCloudEventAcsRecordingFileStatusUpdatedEventData(t *testing.T) {
 	// back compat
 	require.Equal(t, azsystemevents.ACSRecordingChannelTypeMixed, *sysEvent.RecordingChannelType)
 	require.Equal(t, azsystemevents.ACSRecordingContentTypeAudio, *sysEvent.RecordingContentType)
-	require.Equal(t, azsystemevents.ACSRecordingFormatTypeMp3, *sysEvent.RecordingFormatType)
+	require.Equal(t, azsystemevents.ACSRecordingFormatTypeMP3, *sysEvent.RecordingFormatType)
 }
 
 func TestConsumeCloudEventAcsEmailDeliveryReportReceivedEvent(t *testing.T) {

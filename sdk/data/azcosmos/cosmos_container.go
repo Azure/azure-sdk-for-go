@@ -439,17 +439,13 @@ func (c *ContainerClient) ReadItem(
 // @returns: ([]PartitionKeyRange, error) - A slice of PartitionKeyRange along with their metadata
 
 func (c *ContainerClient) GetPartitionKeyRange(ctx context.Context, o *PartitionKeyRangeOptions) (PartitionKeyRangeResponse, error) {
-	// Step 1. Tracing the operation
 	spanName, err := c.getSpanForContainer(operationTypeRead, resourceTypePartitionKeyRange, c.id)
-	// If we cannot get the span name, return an error
 	if err != nil {
 		return PartitionKeyRangeResponse{}, err
 	}
-	// Start the span with the context and the span name
 	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
 	defer func() { endSpan(err) }()
 
-	// Step 2. Prepare the request context
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypePartitionKeyRange,
 		resourceAddress: c.link,
@@ -459,13 +455,11 @@ func (c *ContainerClient) GetPartitionKeyRange(ctx context.Context, o *Partition
 		o = &PartitionKeyRangeOptions{}
 	}
 
-	// Step 3. Generating the REST API path and if we can't, return an error
 	path, err := generatePathForNameBased(resourceTypePartitionKeyRange, operationContext.resourceAddress, true)
 	if err != nil {
 		return PartitionKeyRangeResponse{}, err
 	}
 
-	// Step 4. Send the GET request
 	azResponse, err := c.database.client.sendGetRequest(
 		path,
 		ctx,
@@ -473,7 +467,6 @@ func (c *ContainerClient) GetPartitionKeyRange(ctx context.Context, o *Partition
 		o,
 		nil)
 
-	// Step 5. Parse the response and return the list of PartitionKeyRange
 	response, err := newPartitionKeyRangeResponse(azResponse)
 	if err != nil {
 		return PartitionKeyRangeResponse{}, err

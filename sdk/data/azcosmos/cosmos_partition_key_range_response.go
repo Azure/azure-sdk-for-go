@@ -11,7 +11,7 @@ import (
 )
 
 /*
-* Struct that represents a single partition key range from GET /pkranges endpoint
+* PartitionKeyRange represents a single partition key range from GET /pkranges endpoint
 * Includes all the needed fields to represent a partition key range
  */
 type PartitionKeyRange struct {
@@ -31,7 +31,7 @@ type PartitionKeyRange struct {
 }
 
 /*
-* Struct that represents the response from GET /pkranges endpoint
+* PartitionKeyRangeResponse represents the response from GET /pkranges endpoint
 * Contains the list of partition key ranges
 * Rid is for the high level resource id
 * count is for the number of partition key ranges returned
@@ -44,7 +44,7 @@ type PartitionKeyRangeResponse struct {
 }
 
 /*
-* Function to create a new PartitionKeyRangeResponse from an HTTP response
+* newPartitionKeyRangeResponse creates a new PartitionKeyRangeResponse from an HTTP response
 * It will parse the HTTP response and return a list of PartitionKeyRange objects
  */
 func newPartitionKeyRangeResponse(resp *http.Response) (PartitionKeyRangeResponse, error) {

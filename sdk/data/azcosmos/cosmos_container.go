@@ -432,7 +432,7 @@ func (c *ContainerClient) ReadItem(
 	return response, err
 }
 
-// From a Cosmos container, this function retrieves all the distinct Partition Range keys
+// GetPartitionKeyRange retrieves all the distinct Partition Range keys froma a Cosmos container
 // @param: c *ContainerClient - The client for the Cosmos container
 // @param: ctx context.Context - The context for the request
 // @param: o *PartitionKeyRangeOptions - Options for the operation, can be nil

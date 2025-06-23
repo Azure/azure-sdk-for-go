@@ -3,7 +3,7 @@
 
 package azcosmos
 
-// ReadPartitionKeyRangesOptions includes options for reading partition key ranges.
+// PartitionKeyRangeOptions includes options for reading partition key ranges.
 type PartitionKeyRangeOptions struct{}
 
 // toHeaders converts the options to a map of HTTP headers.

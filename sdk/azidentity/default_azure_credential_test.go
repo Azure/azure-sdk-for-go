@@ -105,6 +105,12 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 			require.Equal(t, "*azidentity."+c, fmt.Sprintf("%T", actual.chain.sources[0]))
 		})
 	}
+
+	t.Run("invalid", func(t *testing.T) {
+		t.Setenv(azureTokenCredentials, t.Name())
+		_, err := NewDefaultAzureCredential(nil)
+		require.ErrorContains(t, err, azureTokenCredentials)
+	})
 }
 
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {

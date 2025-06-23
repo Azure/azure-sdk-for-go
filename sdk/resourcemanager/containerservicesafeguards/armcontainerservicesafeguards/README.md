@@ -1,6 +1,6 @@
-# Azure Containerservicesafeguards Module for Go
+# Azure Container Servicesafe Guards Module for Go
 
-The `armcontainerservicesafeguards` module provides operations for working with Azure Containerservicesafeguards.
+The `armcontainerservicesafeguards` module provides operations for working with Azure Container Servicesafe Guards.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/containerservicesafeguards/armcontainerservicesafeguards)
 
@@ -15,7 +15,7 @@ The `armcontainerservicesafeguards` module provides operations for working with 
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Containerservicesafeguards module:
+Install the Azure Container Servicesafe Guards module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicesafeguards/armcontainerservicesafeguards
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicesaf
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Containerservicesafeguards.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Container Servicesafe Guards.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Containerservicesafeguards module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Container Servicesafe Guards module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcontainerservicesafeguards.NewClientFactory(cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Containerservicesafeguards` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Container Servicesafe Guards` label.
 
 # Contributing
 

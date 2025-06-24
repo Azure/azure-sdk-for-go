@@ -500,36 +500,33 @@ func TestContainerFullTextSearch(t *testing.T) {
 			t.Fatalf("Failed to create sample item: %v", err)
 		}
 	}
+
+	// Try to execute a full-text search query (this may fail if the SDK doesn't support it yet)
+	queryText := `SELECT * FROM c WHERE FullTextContains(c.title, "search") OR FullTextContains(c.description, "search")`
+	queryPager := container.NewQueryItemsPager(queryText, partitionKey, nil)
+
+	if !queryPager.More() {
+		t.Errorf("Expected results from full-text search query, but got none")
+	}
+
+	page, err := queryPager.NextPage(context.TODO())
 	if err != nil {
-		t.Logf("Warning: Failed to create sample item for full-text search test: %v", err)
+		t.Errorf("Failed to execute full-text search query: %v", err)
+	}
+	if len(page.Items) != 1 {
+		t.Errorf("Expected 1 result from full-text search query, but got %d", len(page.Items))
+	}
+
+	var resultItem map[string]interface{}
+	err = json.Unmarshal(page.Items[0], &resultItem)
+	if err != nil {
+		t.Errorf("Failed to unmarshal full-text search result: %v", err)
 	} else {
-		// Try to execute a full-text search query (this may fail if the SDK doesn't support it yet)
-		queryText := `SELECT * FROM c WHERE FullTextContains(c.title, "search") OR FullTextContains(c.description, "search")`
-		queryPager := container.NewQueryItemsPager(queryText, partitionKey, nil)
-
-		if !queryPager.More() {
-			t.Errorf("Expected results from full-text search query, but got none")
+		if resultItem["id"] != "1" {
+			t.Errorf("Expected result item ID '1', got '%s'", resultItem["id"])
 		}
-
-		page, err := queryPager.NextPage(context.TODO())
-		if err != nil {
-			t.Errorf("Failed to execute full-text search query: %v", err)
-		}
-		if len(page.Items) != 1 {
-			t.Errorf("Expected 1 result from full-text search query, but got %d", len(page.Items))
-		}
-
-		var resultItem map[string]interface{}
-		err = json.Unmarshal(page.Items[0], &resultItem)
-		if err != nil {
-			t.Errorf("Failed to unmarshal full-text search result: %v", err)
-		} else {
-			if resultItem["id"] != "1" {
-				t.Errorf("Expected result item ID '1', got '%s'", resultItem["id"])
-			}
-			if resultItem["title"] != "Azure Cosmos DB Full Text Search" {
-				t.Errorf("Expected result item title 'Azure Cosmos DB Full Text Search', got '%s'", resultItem["title"])
-			}
+		if resultItem["title"] != "Azure Cosmos DB Full Text Search" {
+			t.Errorf("Expected result item title 'Azure Cosmos DB Full Text Search', got '%s'", resultItem["title"])
 		}
 	}
 

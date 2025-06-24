@@ -5,7 +5,9 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
+	"time"
 )
 
 func TestContainerCRUD(t *testing.T) {
@@ -198,5 +200,73 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 	resp, err = container.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete container: %v", err)
+	}
+}
+
+func TestEmulatorContainerReadPartitionKeyRanges(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_container aContainer", "read_partition_key_ranges aContainer"},
+	}))
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerGETPKR")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/id"},
+		},
+	}
+
+	throughput := NewManualThroughputProperties(30000)
+
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: &throughput})
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	if resp.ContainerProperties.ID != properties.ID {
+		t.Errorf("Unexpected id match: %v", resp.ContainerProperties)
+	}
+
+	if resp.ContainerProperties.PartitionKeyDefinition.Paths[0] != properties.PartitionKeyDefinition.Paths[0] {
+		t.Errorf("Unexpected path match: %v", resp.ContainerProperties)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+
+	item := map[string]interface{}{
+		"id": "testitem1",
+	}
+	itemBytes, err := json.Marshal(item)
+	if err != nil {
+		t.Fatalf("Failed to marshal item: %v", err)
+	}
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("testitem1"), itemBytes, nil)
+	if err != nil {
+		t.Fatalf("Failed to insert item: %v", err)
+	}
+	time.Sleep(2 * time.Second)
+
+	pkRangesResponse, err := container.GetPartitionKeyRange(context.TODO(), nil)
+	if err != nil {
+		t.Fatalf("Failed to read partition key ranges: %v", err)
+	}
+	t.Logf("PK Ranges Response: %+v", pkRangesResponse)
+
+	if len(pkRangesResponse.PartitionKeyRanges) == 0 {
+		t.Fatalf("Expected at least one partition key range, got none")
+	}
+
+	if pkRangesResponse.PartitionKeyRanges[1].ID == "" {
+		t.Errorf("Expected partition key range ID to be set, but got empty string")
+	}
+
+	if pkRangesResponse.PartitionKeyRanges[1].MinInclusive == "" {
+		t.Errorf("Expected partition key range MinInclusive to be set, but got empty string")
+	}
+
+	if pkRangesResponse.PartitionKeyRanges[1].MaxExclusive == "" {
+		t.Errorf("Expected partition key range MaxExclusive to be set, but got empty string")
 	}
 }

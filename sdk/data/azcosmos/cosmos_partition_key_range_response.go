@@ -6,26 +6,28 @@ package azcosmos
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PartitionKeyRange represents a single partition key range from GET /pkranges endpoint
 // Includes all the needed fields to represent a partition key range
 type PartitionKeyRange struct {
-	ID                      string   `json:"id"`
-	Rid                     string   `json:"_rid"`
-	ETag                    string   `json:"_etag"`
-	MinInclusive            string   `json:"minInclusive"`
-	MaxExclusive            string   `json:"maxExclusive"`
-	RidPrefix               int      `json:"ridPrefix"`
-	Self                    string   `json:"_self"`
-	ThroughputFraction      float64  `json:"throughputFraction"`
-	Status                  string   `json:"status"`
-	Parents                 []string `json:"parents"`
-	OwnedArchivalPKRangeIds []string `json:"ownedArchivalPKRangeIds"`
-	Timestamp               int64    `json:"_ts"`
-	LSN                     int64    `json:"_lsn"`
+	ID                      string       `json:"id"`
+	ResourceID              string       `json:"_rid"`
+	ETag                    *azcore.ETag `json:"_etag"`
+	MinInclusive            string       `json:"minInclusive"`
+	MaxExclusive            string       `json:"maxExclusive"`
+	ResourceIDPrefix        int          `json:"ridPrefix"`
+	SelfLink                string       `json:"_self"`
+	ThroughputFraction      float64      `json:"throughputFraction"`
+	Status                  string       `json:"status"`
+	Parents                 []string     `json:"parents"`
+	OwnedArchivalPKRangeIds []string     `json:"ownedArchivalPKRangeIds"`
+	LastModified            time.Time    `json:"_ts"`
+	LSN                     int64        `json:"lsn"`
 }
 
 // PartitionKeyRangeResponse represents the response from GET /pkranges endpoint
@@ -34,7 +36,7 @@ type PartitionKeyRange struct {
 // count is for the number of partition key ranges returned
 type PartitionKeyRangeResponse struct {
 	Response
-	Rid                string              `json:"_rid"`
+	ResourceID         string              `json:"_rid"`
 	PartitionKeyRanges []PartitionKeyRange `json:"PartitionKeyRanges"`
 	Count              int                 `json:"_count"`
 }

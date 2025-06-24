@@ -84,8 +84,8 @@ func TestPartitionKeyRangeResponseParsing(t *testing.T) {
 		t.Errorf("Expected RequestCharge to be %f, but got %f", 15.75, parsedResponse.RequestCharge)
 	}
 
-	if parsedResponse.Rid != "mockResourceId" {
-		t.Errorf("Expected Rid to be %s, but got %s", "mockResourceId", parsedResponse.Rid)
+	if parsedResponse.ResourceID != "mockResourceId" {
+		t.Errorf("Expected Rid to be %s, but got %s", "mockResourceId", parsedResponse.ResourceID)
 	}
 
 	if parsedResponse.Count != 2 {

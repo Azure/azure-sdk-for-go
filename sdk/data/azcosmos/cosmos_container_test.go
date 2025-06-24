@@ -748,7 +748,7 @@ func TestContainerReadPartitionKeyRanges(t *testing.T) {
 	if len(resp.PartitionKeyRanges) != 2 {
 		t.Fatalf("Expected 2 partition key ranges, got %d", len(resp.PartitionKeyRanges))
 	}
-	high_level_rid := resp.Rid
+	high_level_rid := resp.ResourceID
 	if high_level_rid != "lypXAMSZ-Cs=" {
 		t.Errorf("Expected Rid to be lypXAMSZ-Cs=, got %s", high_level_rid)
 	}

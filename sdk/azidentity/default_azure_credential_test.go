@@ -95,6 +95,22 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 			require.IsType(t, c, actual.chain.sources[i])
 		}
 	})
+
+	for _, c := range []string{credNameEnvironment, credNameWorkloadIdentity, credNameManagedIdentity, credNameAzureCLI, credNameAzureDeveloperCLI} {
+		t.Run(c, func(t *testing.T) {
+			t.Setenv(azureTokenCredentials, c)
+			actual, err := NewDefaultAzureCredential(nil)
+			require.NoError(t, err)
+			require.Equal(t, 1, len(actual.chain.sources))
+			require.Equal(t, "*azidentity."+c, fmt.Sprintf("%T", actual.chain.sources[0]))
+		})
+	}
+
+	t.Run("invalid", func(t *testing.T) {
+		t.Setenv(azureTokenCredentials, t.Name())
+		_, err := NewDefaultAzureCredential(nil)
+		require.ErrorContains(t, err, azureTokenCredentials)
+	})
 }
 
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
@@ -122,7 +138,7 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	// these credentials' constructors returned errors because their configuration is absent;
 	// those errors should be represented in the error returned by DefaultAzureCredential.GetToken()
 	// and NewDefaultAzureCredential should have logged them
-	for _, name := range []string{"EnvironmentCredential", credNameWorkloadIdentity} {
+	for _, name := range []string{credNameEnvironment, credNameWorkloadIdentity} {
 		matched, err := regexp.MatchString(name+`: .+\n`, err.Error())
 		if err != nil {
 			t.Fatal(err)

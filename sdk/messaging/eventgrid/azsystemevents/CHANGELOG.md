@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-06-23)
+## 1.0.0 (TBD)
 
 First stable release of the azsystemevents package.
 
@@ -18,6 +18,9 @@ Some types have been renamed:
 - RecordingChannelKind -> ACSRecordingChannelType
 - RecordingContentType -> ACSRecordingContentType 
 - RecordingFormatType -> ACSRecordingFormatType
+
+Some types have been removed:
+- ACSCallParticipantEventProperties
 
 ## 0.7.0 (2025-05-14)
 

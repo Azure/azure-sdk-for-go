@@ -5,6 +5,7 @@
 #### Features Added
 
 #### Breaking Changes
+* The type of ApproximateMessagesCount has changed from *int32 to *int64 to support large queues with more than int32 max value messages.
 
 #### Bugs Fixed
 

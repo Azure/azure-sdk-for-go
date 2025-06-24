@@ -3,6 +3,10 @@
 ## 1.10.2-beta.1 (Unreleased)
 
 ### Features Added
+- `DefaultAzureCredential` allows selecting one of its credential types by name via environment variable
+  `AZURE_TOKEN_CREDENTIALS`. It will use only the selected type at runtime. For example, set
+  `AZURE_TOKEN_CREDENTIALS=WorkloadIdentityCredential` to have `DefaultAzureCredential` use only
+  `WorkloadIdentityCredential`.
 
 ### Breaking Changes
 

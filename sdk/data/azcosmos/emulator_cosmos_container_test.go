@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 )
 
@@ -341,6 +342,195 @@ func TestContainerVectorSearch(t *testing.T) {
 	}
 	if index2.Type != VectorIndexTypeFlat {
 		t.Errorf("Expected second vector index type flat, got %s", index2.Type)
+	}
+
+	// Clean up
+	_, err = container.Delete(context.TODO(), nil)
+	if err != nil {
+		t.Fatalf("Failed to delete container: %v", err)
+	}
+}
+
+func TestContainerFullTextSearch(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_container fullTextContainer", "read_container fullTextContainer", "delete_container fullTextContainer"},
+	}))
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "fullTextSearch")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+
+	// Create container with full-text policy and indexing
+	properties := ContainerProperties{
+		ID: "fullTextContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+		FullTextPolicy: &FullTextPolicy{
+			DefaultLanguage: "en-US",
+			FullTextPaths: []FullTextPath{
+				{
+					Path:     "/title",
+					Language: "en-US",
+				},
+				{
+					Path:     "/description",
+					Language: "en-US",
+				},
+			},
+		},
+		IndexingPolicy: &IndexingPolicy{
+			Automatic:    true,
+			IndexingMode: IndexingModeConsistent,
+			IncludedPaths: []IncludedPath{
+				{Path: "/*"},
+			},
+			ExcludedPaths: []ExcludedPath{
+				{Path: "/\"_etag\"/?"},
+			},
+			FullTextIndexes: []FullTextIndex{
+				{
+					Path: "/title",
+				},
+				{
+					Path: "/description",
+				},
+			},
+		},
+	}
+
+	throughput := NewManualThroughputProperties(400)
+	_, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: &throughput})
+	if err != nil {
+		t.Fatalf("Failed to create full-text container: %v", err)
+	}
+
+	container, _ := database.NewContainer("fullTextContainer")
+
+	// Read the container back to validate properties were set correctly
+	resp, err := container.Read(context.TODO(), nil)
+	if err != nil {
+		t.Fatalf("Failed to read container: %v", err)
+	}
+
+	readProperties := resp.ContainerProperties
+
+	// Validate basic properties
+	if readProperties.ID != properties.ID {
+		t.Errorf("Expected container ID %s, got %s", properties.ID, readProperties.ID)
+	}
+
+	// Validate full-text policy
+	if readProperties.FullTextPolicy == nil {
+		t.Fatalf("Expected FullTextPolicy to be set, but it was nil")
+	}
+
+	if readProperties.FullTextPolicy.DefaultLanguage != "en-US" {
+		t.Errorf("Expected default language en-US, got %s", readProperties.FullTextPolicy.DefaultLanguage)
+	}
+
+	if len(readProperties.FullTextPolicy.FullTextPaths) != 2 {
+		t.Fatalf("Expected 2 full text paths, got %d", len(readProperties.FullTextPolicy.FullTextPaths))
+	}
+
+	// Validate first full text path
+	path1 := readProperties.FullTextPolicy.FullTextPaths[0]
+	if path1.Path != "/title" {
+		t.Errorf("Expected first path /title, got %s", path1.Path)
+	}
+	if path1.Language != "en-US" {
+		t.Errorf("Expected first path language en-US, got %s", path1.Language)
+	}
+
+	// Validate second full text path
+	path2 := readProperties.FullTextPolicy.FullTextPaths[1]
+	if path2.Path != "/description" {
+		t.Errorf("Expected second path /description, got %s", path2.Path)
+	}
+	if path2.Language != "en-US" {
+		t.Errorf("Expected second path language en-US, got %s", path2.Language)
+	}
+
+	// Validate full-text indexing policy
+	if readProperties.IndexingPolicy == nil {
+		t.Fatalf("Expected IndexingPolicy to be set, but it was nil")
+	}
+
+	if len(readProperties.IndexingPolicy.FullTextIndexes) != 2 {
+		t.Fatalf("Expected 2 full text indexes, got %d", len(readProperties.IndexingPolicy.FullTextIndexes))
+	}
+
+	// Validate first full text index
+	index1 := readProperties.IndexingPolicy.FullTextIndexes[0]
+	if index1.Path != "/title" {
+		t.Errorf("Expected first full text index path /title, got %s", index1.Path)
+	}
+
+	// Validate second full text index
+	index2 := readProperties.IndexingPolicy.FullTextIndexes[1]
+	if index2.Path != "/description" {
+		t.Errorf("Expected second full text index path /description, got %s", index2.Path)
+	}
+	// Try to insert some sample data for full-text search testing
+	sampleItems := []map[string]interface{}{
+		{
+			"id":          "1",
+			"pk":          "test",
+			"title":       "Azure Cosmos DB Full Text Search",
+			"description": "Learn about the powerful full-text search capabilities in Azure Cosmos DB",
+		},
+		{
+			// An item that should not match the full-text search query.
+			// This means it should not contain the word "search" in the title or description.
+			"id":          "2",
+			"pk":          "test",
+			"title":       "Not related",
+			"description": "An unrelated item that should not match the query",
+		},
+	}
+
+	partitionKey := NewPartitionKeyString("test")
+	for _, item := range sampleItems {
+		itemBytes, err := json.Marshal(item)
+		if err != nil {
+			t.Fatalf("Failed to marshal sample item: %v", err)
+		}
+		_, err = container.CreateItem(context.TODO(), partitionKey, itemBytes, nil)
+		if err != nil {
+			t.Fatalf("Failed to create sample item: %v", err)
+		}
+	}
+	if err != nil {
+		t.Logf("Warning: Failed to create sample item for full-text search test: %v", err)
+	} else {
+		// Try to execute a full-text search query (this may fail if the SDK doesn't support it yet)
+		queryText := `SELECT * FROM c WHERE FullTextContains(c.title, "search") OR FullTextContains(c.description, "search")`
+		queryPager := container.NewQueryItemsPager(queryText, partitionKey, nil)
+
+		if !queryPager.More() {
+			t.Errorf("Expected results from full-text search query, but got none")
+		}
+
+		page, err := queryPager.NextPage(context.TODO())
+		if err != nil {
+			t.Errorf("Failed to execute full-text search query: %v", err)
+		}
+		if len(page.Items) != 1 {
+			t.Errorf("Expected 1 result from full-text search query, but got %d", len(page.Items))
+		}
+
+		var resultItem map[string]interface{}
+		err = json.Unmarshal(page.Items[0], &resultItem)
+		if err != nil {
+			t.Errorf("Failed to unmarshal full-text search result: %v", err)
+		} else {
+			if resultItem["id"] != "1" {
+				t.Errorf("Expected result item ID '1', got '%s'", resultItem["id"])
+			}
+			if resultItem["title"] != "Azure Cosmos DB Full Text Search" {
+				t.Errorf("Expected result item title 'Azure Cosmos DB Full Text Search', got '%s'", resultItem["title"])
+			}
+		}
 	}
 
 	// Clean up

@@ -20,6 +20,8 @@ type IndexingPolicy struct {
 	CompositeIndexes [][]CompositeIndex `json:"compositeIndexes,omitempty"`
 	// Vector indexes for vector search capabilities.
 	VectorIndexes []VectorIndex `json:"vectorIndexes,omitempty"`
+	// Full text indexes for full-text search capabilities.
+	FullTextIndexes []FullTextIndex `json:"fullTextIndexes,omitempty"`
 }
 
 // IncludedPath represents a json path to be included in indexing.
@@ -78,3 +80,9 @@ const (
 	// Supports up to 4,096 dimensions.
 	VectorIndexTypeDiskANN VectorIndexType = "diskANN"
 )
+
+// FullTextIndex represents a full-text index for efficient text search operations.
+type FullTextIndex struct {
+	// Path to the text property in the document.
+	Path string `json:"path"`
+}

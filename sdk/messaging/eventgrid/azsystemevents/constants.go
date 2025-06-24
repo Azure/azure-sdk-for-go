@@ -186,10 +186,10 @@ func PossibleACSRecordingContentTypeValues() []ACSRecordingContentType {
 type ACSRecordingFormatType string
 
 const (
-	// ACSRecordingFormatTypeMp3 - MP3 format
-	ACSRecordingFormatTypeMp3 ACSRecordingFormatType = "Mp3"
-	// ACSRecordingFormatTypeMp4 - MP4 format
-	ACSRecordingFormatTypeMp4 ACSRecordingFormatType = "Mp4"
+	// ACSRecordingFormatTypeMP3 - MP3 format
+	ACSRecordingFormatTypeMP3 ACSRecordingFormatType = "Mp3"
+	// ACSRecordingFormatTypeMP4 - MP4 format
+	ACSRecordingFormatTypeMP4 ACSRecordingFormatType = "Mp4"
 	// ACSRecordingFormatTypeWav - WAV format
 	ACSRecordingFormatTypeWav ACSRecordingFormatType = "Wav"
 )
@@ -197,8 +197,8 @@ const (
 // PossibleACSRecordingFormatTypeValues returns the possible values for the ACSRecordingFormatType const type.
 func PossibleACSRecordingFormatTypeValues() []ACSRecordingFormatType {
 	return []ACSRecordingFormatType{
-		ACSRecordingFormatTypeMp3,
-		ACSRecordingFormatTypeMp4,
+		ACSRecordingFormatTypeMP3,
+		ACSRecordingFormatTypeMP4,
 		ACSRecordingFormatTypeWav,
 	}
 }

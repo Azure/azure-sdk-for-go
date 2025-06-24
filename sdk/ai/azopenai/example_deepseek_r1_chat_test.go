@@ -77,7 +77,7 @@ func Example_deepseekReasoningBasic() {
 		fmt.Fprintf(os.Stderr, "%s\n", resp.Choices[0].Message.Content)
 
 		choice := resp.Choices[0]
-		
+
 		// Show the internal reasoning process (DeepSeek-R1's thinking)
 		if choice.Message.JSON.ExtraFields != nil {
 			if reasoningField, ok := choice.Message.JSON.ExtraFields["reasoning_content"]; ok {
@@ -162,9 +162,9 @@ func Example_deepseekReasoningMultiTurn() {
 	resp, err := client.Chat.Completions.New(
 		context.TODO(),
 		openai.ChatCompletionNewParams{
-			Model:       openai.ChatModel(model),
-			MaxTokens:   openai.Int(2048),
-			Messages:    messages,
+			Model:     openai.ChatModel(model),
+			MaxTokens: openai.Int(2048),
+			Messages:  messages,
 		},
 	)
 
@@ -210,17 +210,17 @@ func Example_deepseekReasoningStreaming() {
 	}
 	// Create a streaming chat completion
 	stream := client.Chat.Completions.NewStreaming(
-		context.TODO(),		openai.ChatCompletionNewParams{
+		context.TODO(), openai.ChatCompletionNewParams{
 			Model:       openai.ChatModel(model),
-			MaxTokens:   openai.Int(1500), // Reduced for simpler problem
+			MaxTokens:   openai.Int(1500),  // Reduced for simpler problem
 			Temperature: openai.Float(0.1), // Lower temperature for consistent reasoning
-			Messages: []openai.ChatCompletionMessageParamUnion{				{
-					OfSystem: &openai.ChatCompletionSystemMessageParam{
-						Content: openai.ChatCompletionSystemMessageParamContentUnion{
-							OfString: openai.String("You are a helpful assistant that excels at step-by-step reasoning. Always show your thought process clearly."),
-						},
+			Messages: []openai.ChatCompletionMessageParamUnion{{
+				OfSystem: &openai.ChatCompletionSystemMessageParam{
+					Content: openai.ChatCompletionSystemMessageParamContentUnion{
+						OfString: openai.String("You are a helpful assistant that excels at step-by-step reasoning. Always show your thought process clearly."),
 					},
 				},
+			},
 				{
 					OfUser: &openai.ChatCompletionUserMessageParam{
 						Content: openai.ChatCompletionUserMessageParamContentUnion{
@@ -231,7 +231,7 @@ func Example_deepseekReasoningStreaming() {
 			},
 		},
 	)
-	
+
 	for stream.Next() {
 		evt := stream.Current()
 		if len(evt.Choices) > 0 {
@@ -241,7 +241,7 @@ func Example_deepseekReasoningStreaming() {
 			if choice.Delta.Content != "" {
 				fmt.Fprintf(os.Stderr, "%s", choice.Delta.Content)
 			}
-			
+
 			// Output reasoning content if present
 			if choice.Delta.JSON.ExtraFields != nil {
 				if reasoningField, ok := choice.Delta.JSON.ExtraFields["reasoning_content"]; ok {
@@ -257,7 +257,7 @@ func Example_deepseekReasoningStreaming() {
 			}
 		}
 	}
-	
+
 	if stream.Err() != nil {
 		fmt.Fprintf(os.Stderr, "\nERROR: %s\n", stream.Err())
 		return

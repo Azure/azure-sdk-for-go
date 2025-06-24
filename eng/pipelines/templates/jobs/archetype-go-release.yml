@@ -44,6 +44,7 @@ stages:
   - stage: Release
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     dependsOn: CheckRelease
     condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
@@ -51,8 +52,8 @@ stages:
       - deployment: ReleaseGate
         environment: package-publish
         pool:
-          name: azsdk-pool
-          image: ubuntu-24.04
+          name: $(LINUXPOOL)
+          image: $(LINUXVMIMAGE)
           os: linux
         templateContext:
           type: releaseJob

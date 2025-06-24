@@ -30,7 +30,7 @@ func TestPartitionKeyRangeResponseParsing(t *testing.T) {
                 "parents": ["parent1", "parent2"],
                 "ownedArchivalPKRangeIds": ["archive1"],
                 "_ts": 12345,
-                "_lsn": 9876
+                "lsn": 9876
             },
             {
                 "id": "1",
@@ -45,7 +45,7 @@ func TestPartitionKeyRangeResponseParsing(t *testing.T) {
                 "parents": ["parent3"],
                 "ownedArchivalPKRangeIds": ["archive2", "archive3"],
                 "_ts": 67890,
-                "_lsn": 54321
+                "lsn": 54321
             }
         ],
         "_count": 2

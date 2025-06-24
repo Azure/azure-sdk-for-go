@@ -114,8 +114,12 @@ func TestPartitionKeyRangeResponseParsing(t *testing.T) {
 		t.Errorf("Expected ThroughputFraction to be %f, but got %f", 0.25, parsedPkr1.ThroughputFraction)
 	}
 
-	if len(parsedPkr1.Parents) != 2 || parsedPkr1.Parents[0] != "parent1" {
+	if len(parsedPkr1.Parents) != 2 || parsedPkr1.Parents[0] != "parent1" || parsedPkr1.Parents[1] != "parent2" {
 		t.Errorf("Parents array not parsed correctly")
+	}
+
+	if len(parsedPkr1.OwnedArchivalPKRangeIds) != 1 || parsedPkr1.OwnedArchivalPKRangeIds[0] != "archive1" {
+		t.Errorf("OwnedArchivalPKRangeIds not parsed correctly")
 	}
 
 	parsedPkr2 := parsedResponse.PartitionKeyRanges[1]

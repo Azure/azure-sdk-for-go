@@ -1,0 +1,1 @@
+{"version":3,"file":"tsp-index.js","sourceRoot":"","sources":["../../../../src/lib/intrinsic/tsp-index.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,uBAAuB,EAAE,eAAe,EAAE,gBAAgB,EAAE,MAAM,iBAAiB,CAAC;AAE7F,MAAM,CAAC,MAAM,WAAW,GAAG;IACzB,QAAQ,EAAE;QACR,OAAO,EAAE,gBAAgB;QACzB,cAAc,EAAE,uBAAuB;KACxC;IACD,qBAAqB,EAAE;QACrB,MAAM,EAAE,eAAe;KACQ;CAClC,CAAC"}

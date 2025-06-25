@@ -1,0 +1,1 @@
+{"version":3,"file":"console-sink.d.ts","sourceRoot":"","sources":["../../../../src/core/logger/console-sink.ts"],"names":[],"mappings":"AAKA,OAAO,EACL,UAAU,EAMX,MAAM,aAAa,CAAC;AAsErB,MAAM,WAAW,uBAAuB;IACtC,QAAQ,CAAC,MAAM,CAAC,EAAE,OAAO,CAAC;IAC1B,QAAQ,CAAC,cAAc,CAAC,EAAE,MAAM,CAAC;CAClC;AAED,wBAAgB,gBAAgB,CAAC,UAAU,EAAE,UAAU,EAAE,OAAO,GAAE,uBAA4B,UAY7F"}

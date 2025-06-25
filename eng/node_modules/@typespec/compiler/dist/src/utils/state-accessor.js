@@ -1,0 +1,12 @@
+export function useStateMap(key) {
+    const getter = (program, target) => program.stateMap(key).get(target);
+    const setter = (program, target, value) => program.stateMap(key).set(target, value);
+    const mapGetter = (program) => program.stateMap(key);
+    return [getter, setter, mapGetter];
+}
+export function useStateSet(key) {
+    const getter = (program, target) => program.stateSet(key).has(target);
+    const setter = (program, target) => program.stateSet(key).add(target);
+    return [getter, setter];
+}
+//# sourceMappingURL=state-accessor.js.map

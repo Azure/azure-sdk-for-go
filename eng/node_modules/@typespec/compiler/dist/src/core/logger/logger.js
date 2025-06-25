@@ -1,0 +1,43 @@
+import { getSourceLocation } from "../diagnostics.js";
+const LogLevels = {
+    trace: 10,
+    warning: 40,
+    error: 50,
+};
+const defaultOptions = {
+    level: "trace",
+};
+export function createLogger(options) {
+    const config = { ...defaultOptions, ...options };
+    function log(log) {
+        if (LogLevels[config.level] <= LogLevels[log.level]) {
+            config.sink.log(processLog(log));
+        }
+    }
+    return {
+        log,
+        trace: (message) => log({ level: "trace", message }),
+        warn: (message) => log({ level: "warning", message }),
+        error: (message) => log({ level: "error", message }),
+        trackAction: async (message, finalMessage, action) => config.sink.trackAction
+            ? config.sink.trackAction(message, finalMessage, action)
+            : action({
+                message: "",
+                fail() { },
+                warn() { },
+                succeed() { },
+                skip() { },
+                stop() { },
+                isStopped: false,
+            }),
+    };
+}
+function processLog(log) {
+    return {
+        level: log.level,
+        code: log.code,
+        message: log.message,
+        sourceLocation: getSourceLocation(log.target, { locateId: true }),
+    };
+}
+//# sourceMappingURL=logger.js.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"diagnostic-error.d.ts","sourceRoot":"","sources":["../../../src/core/diagnostic-error.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,YAAY,CAAC;AAE7C,8CAA8C;AAC9C,qBAAa,eAAgB,SAAQ,KAAK;IACxC,QAAQ,CAAC,WAAW,EAAE,SAAS,UAAU,EAAE,CAAC;gBAEhC,WAAW,EAAE,UAAU,GAAG,SAAS,UAAU,EAAE;CAI5D"}

@@ -1,0 +1,7 @@
+import type { Diagnostic, StringTemplate } from "../types.js";
+export declare function isStringTemplateSerializable(stringTemplate: StringTemplate): [boolean, readonly Diagnostic[]];
+/**
+ * get a list of diagnostic explaining why this string template cannot be converted to a string.
+ */
+export declare function explainStringTemplateNotSerializable(stringTemplate: StringTemplate): readonly Diagnostic[];
+//# sourceMappingURL=string-template-utils.d.ts.map

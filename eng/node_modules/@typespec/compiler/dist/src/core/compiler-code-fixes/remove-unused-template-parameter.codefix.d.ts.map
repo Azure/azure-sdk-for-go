@@ -1,0 +1,1 @@
+{"version":3,"file":"remove-unused-template-parameter.codefix.d.ts","sourceRoot":"","sources":["../../../../src/core/compiler-code-fixes/remove-unused-template-parameter.codefix.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,gCAAgC,EAAE,MAAM,aAAa,CAAC;AAE/D;;GAEG;AACH,wBAAgB,oCAAoC,CAAC,IAAI,EAAE,gCAAgC,iCAqC1F"}

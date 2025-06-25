@@ -1,0 +1,75 @@
+import { TypeSpecConfigJsonSchema } from "../config/config-schema.js";
+export const InitTemplateLibrarySpecSchema = {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+        name: { type: "string" },
+        version: { type: "string", nullable: true },
+    },
+    required: ["name"],
+};
+export const InitTemplateSchema = {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        target: { type: "string", enum: ["library", "project"], default: "project", nullable: true },
+        compilerVersion: { type: "string", nullable: true },
+        libraries: {
+            type: "array",
+            items: {
+                oneOf: [{ type: "string" }, InitTemplateLibrarySpecSchema],
+            },
+            nullable: true,
+        },
+        emitters: {
+            type: "object",
+            nullable: true,
+            additionalProperties: {
+                type: "object",
+                properties: {
+                    label: { type: "string", nullable: true },
+                    description: { type: "string", nullable: true },
+                    selected: { type: "boolean", nullable: true },
+                    options: {},
+                    message: { type: "string", nullable: true },
+                    version: { type: "string", nullable: true },
+                },
+                required: [],
+            },
+            required: [],
+        },
+        skipCompilerPackage: { type: "boolean", nullable: true },
+        config: { nullable: true, ...TypeSpecConfigJsonSchema },
+        inputs: {
+            type: "object",
+            nullable: true,
+            additionalProperties: {
+                type: "object",
+                properties: {
+                    description: { type: "string" },
+                    type: { type: "string", enum: ["text"] },
+                    initialValue: {},
+                },
+                required: ["description", "type"],
+            },
+            required: [],
+        },
+        files: {
+            type: "array",
+            nullable: true,
+            items: {
+                type: "object",
+                properties: {
+                    path: { type: "string" },
+                    destination: { type: "string" },
+                    skipGeneration: { type: "boolean", nullable: true },
+                },
+                required: ["path", "destination"],
+            },
+        },
+    },
+    required: ["title", "description"],
+};
+//# sourceMappingURL=init-template.js.map

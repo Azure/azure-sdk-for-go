@@ -1,0 +1,1 @@
+{"version":3,"file":"remove-unused-code.codefix.d.ts","sourceRoot":"","sources":["../../../../src/core/compiler-code-fixes/remove-unused-code.codefix.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,mBAAmB,EAAE,KAAK,kBAAkB,EAAE,MAAM,aAAa,CAAC;AAEhF;;GAEG;AACH,wBAAgB,uBAAuB,CAAC,IAAI,EAAE,mBAAmB,GAAG,kBAAkB,iCASrF"}

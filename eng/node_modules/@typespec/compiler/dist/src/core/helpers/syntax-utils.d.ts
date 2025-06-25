@@ -1,0 +1,17 @@
+import { IdentifierNode, MemberExpressionNode, TypeReferenceNode } from "../types.js";
+/**
+ * Print a string as a TypeSpec identifier. If the string is a valid identifier, return it as is otherwise wrap it into backticks.
+ * @param sv Identifier string value.
+ * @returns Identifier string as it would be represented in a TypeSpec file.
+ *
+ * @example
+ * ```ts
+ * printIdentifier("foo") // foo
+ * printIdentifier("foo bar") // `foo bar`
+ * ```
+ */
+export declare function printIdentifier(sv: string, 
+/** @internal */ context?: "allow-reserved" | "disallow-reserved"): string;
+export declare function typeReferenceToString(node: TypeReferenceNode | MemberExpressionNode | IdentifierNode): string;
+export declare function splitLines(text: string): string[];
+//# sourceMappingURL=syntax-utils.d.ts.map

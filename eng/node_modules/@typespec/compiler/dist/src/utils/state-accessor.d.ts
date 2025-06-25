@@ -1,0 +1,11 @@
+import type { Program } from "../core/program.js";
+import type { Type } from "../core/types.js";
+type StateMapGetter<K extends Type, V> = (program: Program, type: K) => V | undefined;
+type StateMapSetter<K extends Type, V> = (program: Program, type: K, value: V) => void;
+type StateMapMapGetter<K extends Type, V> = (program: Program) => Map<K, V>;
+export declare function useStateMap<K extends Type, V>(key: symbol): [StateMapGetter<K, V>, StateMapSetter<K, V>, StateMapMapGetter<K, V>];
+type StateSetGetter<K extends Type> = (program: Program, type: K) => boolean;
+type StateSetSetter<K extends Type> = (program: Program, type: K) => void;
+export declare function useStateSet<K extends Type>(key: symbol): [StateSetGetter<K>, StateSetSetter<K>];
+export {};
+//# sourceMappingURL=state-accessor.d.ts.map

@@ -1,0 +1,115 @@
+import { ignoreDiagnostics } from "../../core/diagnostics.js";
+import { getDiscriminatedUnion, } from "../../core/helpers/discriminator-utils.js";
+import { $doc, getDoc } from "../../lib/decorators.js";
+import { createRekeyableMap } from "../../utils/misc.js";
+import { createDiagnosable } from "../create-diagnosable.js";
+import { defineKit } from "../define-kit.js";
+import { decoratorApplication } from "../utils.js";
+export const UnionKit = defineKit({
+    union: {
+        filter(union, filterFn) {
+            const variants = Array.from(union.variants.values()).filter(filterFn);
+            return this.union.create({ variants });
+        },
+        create(descOrChildren) {
+            let descriptor;
+            if (Array.isArray(descOrChildren)) {
+                // Build a descriptor from the children
+                descriptor = {
+                    decorators: [],
+                    variants: descOrChildren.map((child) => {
+                        const memberDoc = getDoc(this.program, child);
+                        return this.unionVariant.create({
+                            type: child,
+                            decorators: memberDoc ? [[$doc, memberDoc]] : undefined,
+                        });
+                    }),
+                };
+            }
+            else {
+                // Already a descriptor
+                descriptor = descOrChildren;
+            }
+            const union = this.program.checker.createType({
+                kind: "Union",
+                name: descriptor.name,
+                decorators: decoratorApplication(this, descriptor.decorators),
+                variants: createRekeyableMap(),
+                get options() {
+                    return Array.from(this.variants.values()).map((v) => v.type);
+                },
+                expression: descriptor.name === undefined,
+            });
+            if (Array.isArray(descriptor.variants)) {
+                for (const variant of descriptor.variants) {
+                    union.variants.set(variant.name, variant);
+                    variant.union = union;
+                }
+            }
+            else if (descriptor.variants) {
+                for (const [name, value] of Object.entries(descriptor.variants)) {
+                    union.variants.set(name, this.unionVariant.create({ name, type: this.literal.create(value) }));
+                }
+            }
+            this.program.checker.finishType(union);
+            return union;
+        },
+        createFromEnum(type) {
+            const enumDoc = getDoc(this.program, type);
+            return this.union.create({
+                name: type.name,
+                decorators: enumDoc ? [[$doc, enumDoc]] : undefined,
+                variants: Array.from(type.members.values()).map((member) => {
+                    const memberDoc = getDoc(this.program, member);
+                    const value = member.value ?? member.name;
+                    return this.unionVariant.create({
+                        name: member.name,
+                        type: this.literal.create(value),
+                        decorators: memberDoc ? [[$doc, memberDoc]] : undefined,
+                    });
+                }),
+            });
+        },
+        is(type) {
+            return type.entityKind === "Type" && type.kind === "Union";
+        },
+        isValidEnum(type) {
+            for (const variant of type.variants.values()) {
+                if (!this.literal.isString(variant.type) && !this.literal.isNumeric(variant.type)) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        isExtensible(type) {
+            const variants = Array.from(type.variants.values());
+            if (variants.length === 0) {
+                return false;
+            }
+            for (let i = 0; i < variants.length; i++) {
+                let isCommon = true;
+                for (let j = 0; j < variants.length; j++) {
+                    if (i === j) {
+                        continue;
+                    }
+                    const assignable = ignoreDiagnostics(this.program.checker.isTypeAssignableTo(variants[j].type, variants[i].type, type));
+                    if (!assignable) {
+                        isCommon = false;
+                        break;
+                    }
+                }
+                if (isCommon) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        isExpression(type) {
+            return type.name === undefined || type.name === "";
+        },
+        getDiscriminatedUnion: createDiagnosable(function (type) {
+            return getDiscriminatedUnion(this.program, type);
+        }),
+    },
+});
+//# sourceMappingURL=union.js.map

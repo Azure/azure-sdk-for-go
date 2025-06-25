@@ -1,0 +1,1 @@
+{"version":3,"file":"diagnostic-error.js","sourceRoot":"","sources":["../../../src/core/diagnostic-error.ts"],"names":[],"mappings":"AAEA,8CAA8C;AAC9C,MAAM,OAAO,eAAgB,SAAQ,KAAK;IAC/B,WAAW,CAAwB;IAE5C,YAAY,WAA+C;QACzD,KAAK,EAAE,CAAC;QACR,IAAI,CAAC,WAAW,GAAG,KAAK,CAAC,OAAO,CAAC,WAAW,CAAC,CAAC,CAAC,CAAC,WAAW,CAAC,CAAC,CAAC,CAAC,WAAW,CAAC,CAAC;IAC9E,CAAC;CACF"}

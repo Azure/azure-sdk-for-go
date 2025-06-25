@@ -1,0 +1,42 @@
+import { camelCase, kebabCase, pascalCase } from "change-case";
+import Mustache from "mustache";
+import { getBaseFileName } from "../core/path-utils.js";
+export function createFileTemplatingContext(config) {
+    const folderName = getBaseFileName(config.directory);
+    return {
+        ...config.template,
+        ...config,
+        folderName,
+        normalizeVersion,
+        toLowerCase,
+        normalizePackageName,
+        casing,
+    };
+}
+export function render(content, context) {
+    return Mustache.render(content, context);
+}
+const casing = {
+    camelCase: createNamingUtils(camelCase),
+    kebabCase: createNamingUtils(kebabCase),
+    pascalCase: createNamingUtils(pascalCase),
+};
+function createNamingUtils(fn) {
+    return () => (text, render) => fn(render(text));
+}
+const normalizeVersion = function () {
+    return function (text, render) {
+        return render(text).replaceAll("-", "_");
+    };
+};
+const toLowerCase = function () {
+    return function (text, render) {
+        return render(text).toLowerCase();
+    };
+};
+const normalizePackageName = function () {
+    return function (text, render) {
+        return render(text).replaceAll(".", "-").toLowerCase();
+    };
+};
+//# sourceMappingURL=file-templating.js.map

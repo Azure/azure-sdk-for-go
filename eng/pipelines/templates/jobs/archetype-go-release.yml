@@ -52,8 +52,8 @@ stages:
       - deployment: ReleaseGate
         environment: package-publish
         pool:
-          name: $(LINUXPOOL)
-          image: $(LINUXVMIMAGE)
+          name: azsdk-pool
+          image: ubuntu-24.04
           os: linux
         templateContext:
           type: releaseJob

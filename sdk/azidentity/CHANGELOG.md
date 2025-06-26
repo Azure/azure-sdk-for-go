@@ -13,6 +13,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+- By default, `ManagedIdentityCredential` retries IMDS requests for a maximum of ~70 seconds as recommended
+  in IMDS documentation. In previous versions, it would stop retrying after ~54 seconds by default.
 
 ## 1.10.1 (2025-06-10)
 

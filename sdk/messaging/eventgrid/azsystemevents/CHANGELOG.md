@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (TBD)
+## 1.0.0 (2025-06-26)
 
 First stable release of the azsystemevents package.
 

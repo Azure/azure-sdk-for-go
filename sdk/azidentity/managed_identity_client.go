@@ -54,10 +54,10 @@ type managedIdentityClient struct {
 // setIMDSRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
 func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 	if o.MaxRetries == 0 {
-		o.MaxRetries = 5
+		o.MaxRetries = 6
 	}
 	if o.MaxRetryDelay == 0 {
-		o.MaxRetryDelay = 1 * time.Minute
+		o.MaxRetryDelay = 25 * time.Second
 	}
 	if o.RetryDelay == 0 {
 		o.RetryDelay = 2 * time.Second
@@ -81,9 +81,6 @@ func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 			http.StatusNotExtended,                   // 510
 			http.StatusNetworkAuthenticationRequired, // 511
 		}
-	}
-	if o.TryTimeout == 0 {
-		o.TryTimeout = 1 * time.Minute
 	}
 }
 

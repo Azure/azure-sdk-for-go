@@ -29,9 +29,9 @@ type Client struct {
 }
 
 // NewClient returns a pointer to a Client
-func NewClient(cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(cred azcore.TokenCredential, options *AgentsClientOptions) (*Client, error) {
 	if options == nil {
-		options = &ClientOptions{}
+		options = &AgentsClientOptions{}
 	}
 
 	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{
@@ -40,7 +40,7 @@ func NewClient(cred azcore.TokenCredential, options *ClientOptions) (*Client, er
 		},
 	}, &options.ClientOptions)
 
-	return &Client{client: internal.NewTemplateClient(pl), pl: pl}, nil
+	return &Client{client: internal.NewAgentsClient(pl), pl: pl}, nil
 
 }
 

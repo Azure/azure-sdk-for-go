@@ -3,7 +3,16 @@ options:
     service-dir: sdk/azaiagents
     # package-dir: <package>
     module: github.com/Azure/azure-sdk-for-go/sdk/ai/azaiagents
-    module-version: 1.0.0
-    generate-samples: true
-    generate-fakes: true
-    inject-spans: true
+    module-version: 0.0.1
+emit:
+  - "@azure-tools/typespec-autorest"
+options:
+  "@azure-tools/typespec-autorest":
+    emitter-output-dir: "{project-root}/generated"
+    output-file: "azaiagents.json"
+
+parameters:
+  "service-dir":
+    default: "sdk/azaiagents"
+  "dependencies":
+    default: ""

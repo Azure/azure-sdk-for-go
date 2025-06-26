@@ -22,8 +22,8 @@ type AgentsClient struct {
 }
 
 // NewTemplateClient creates a new instance of TemplateClient with the specified values.
-func NewAgentsClient(pl runtime.Pipeline) *TemplateClient {
-	return &TemplateClient{pl: pl}
+func NewAgentsClient(pl runtime.Pipeline) *AgentsClient {
+	return &AgentsClient{pl: pl}
 }
 
 // SomeAPI is an example of an API.

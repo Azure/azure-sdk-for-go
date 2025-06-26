@@ -432,6 +432,45 @@ func (c *ContainerClient) ReadItem(
 	return response, err
 }
 
+// GetPartitionKeyRange retrieves all the distinct Partition Range keys froma a Cosmos container.
+// ctx - The context for the request.
+// o - Options for the operation, can be nil.
+func (c *ContainerClient) GetPartitionKeyRange(ctx context.Context, o *PartitionKeyRangeOptions) (PartitionKeyRangeResponse, error) {
+	spanName, err := c.getSpanForContainer(operationTypeRead, resourceTypePartitionKeyRange, c.id)
+	if err != nil {
+		return PartitionKeyRangeResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
+
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypePartitionKeyRange,
+		resourceAddress: c.link,
+	}
+
+	if o == nil {
+		o = &PartitionKeyRangeOptions{}
+	}
+
+	path, err := generatePathForNameBased(resourceTypePartitionKeyRange, operationContext.resourceAddress, true)
+	if err != nil {
+		return PartitionKeyRangeResponse{}, err
+	}
+
+	azResponse, err := c.database.client.sendGetRequest(
+		path,
+		ctx,
+		operationContext,
+		o,
+		nil)
+
+	response, err := newPartitionKeyRangeResponse(azResponse)
+	if err != nil {
+		return PartitionKeyRangeResponse{}, err
+	}
+	return response, nil
+}
+
 // DeleteItem deletes an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.

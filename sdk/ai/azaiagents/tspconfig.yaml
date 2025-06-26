@@ -1,0 +1,9 @@
+options:
+  "@azure-tools/typespec-go":
+    service-dir: sdk/azaiagents
+    # package-dir: <package>
+    module: github.com/Azure/azure-sdk-for-go/sdk/ai/azaiagents
+    module-version: 1.0.0
+    generate-samples: true
+    generate-fakes: true
+    inject-spans: true

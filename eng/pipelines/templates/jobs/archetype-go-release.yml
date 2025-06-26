@@ -56,8 +56,8 @@ stages:
         # to check authorization for the definition. As a result the deployment will fail to start looking like this:
         # https://dev.azure.com/azure-sdk/internal/_build/results?buildId=5020114&view=logs&j=999b5c42-1b8c-5343-8349-a768054333f6
         pool:
-          name: azsdk-pool
-          image: ubuntu-24.04
+          name: $(LINUXPOOL)
+          image: $(LINUXVMIMAGE)
           os: linux
         templateContext:
           type: releaseJob

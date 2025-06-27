@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added function `DefaultRetryStatusCodes() []int` to provide a list of default HTTP codes a retry is fired on.
+
 ### Breaking Changes
 
 ### Bugs Fixed

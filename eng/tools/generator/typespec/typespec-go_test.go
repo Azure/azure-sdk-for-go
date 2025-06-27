@@ -39,6 +39,24 @@ func TestGoEmitterOptionsValidate(t *testing.T) {
 	err = goEmitOptions.Validate()
 	assert.NoError(t, err)
 
+	// module has extra sub-path
+	goOption = map[string]any{
+		"module": "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/xxx/yyy/armxxx",
+	}
+	goEmitOptions, err = typespec.NewGoEmitterOptions(goOption)
+	assert.NoError(t, err)
+	err = goEmitOptions.Validate()
+	assert.NoError(t, err)
+
+	// module has too many sub-paths
+	goOption = map[string]any{
+		"module": "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/xxx/yyy/zzz/armxxx",
+	}
+	goEmitOptions, err = typespec.NewGoEmitterOptions(goOption)
+	assert.NoError(t, err)
+	err = goEmitOptions.Validate()
+	assert.EqualError(t, err, typespec.ErrModuleFormat.Error())
+
 	// module format is wrong
 	goOption = map[string]any{
 		"module": "github.com/Azure/azure-sdk-for-go/sdk/xxx/armxxx",

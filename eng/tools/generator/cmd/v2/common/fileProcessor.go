@@ -189,7 +189,7 @@ func ChangeConfigWithLocalPath(path, readmeFile, readmeGoFile string) error {
 }
 
 // replace repo URL and commit id in autorest.md file
-func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error {
+func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName, specSubRPName string) error {
 	log.Printf("Replacing repo URL and commit id in autorest.md ...")
 	b, err := os.ReadFile(path)
 	if err != nil {
@@ -203,7 +203,9 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 			indexReadme := strings.Index(line, autorest_md_file_suffix)
 			resourceManagerPath := []byte(line)
 			resourceManagerPath = resourceManagerPath[indexResourceManager : indexReadme-1]
-
+			if specSubRPName != "" {
+				resourceManagerPath = append(resourceManagerPath, []byte("/"+specSubRPName)...)
+			}
 			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.md", repoURL, commitID, specRPName, resourceManagerPath)
 			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.go.md", repoURL, commitID, specRPName, resourceManagerPath)
 			break

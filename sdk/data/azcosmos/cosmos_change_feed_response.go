@@ -40,18 +40,8 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	if err != nil {
 		return response, err
 	}
-
 	// Parse the response into our response structure
 	if err := json.Unmarshal(body, &response); err != nil {
-		// // If standard parsing fails, try as a direct array of documents
-		// var documents []json.RawMessage
-		// if arrErr := json.Unmarshal(body, &documents); arrErr == nil {
-		// 	response.Documents = documents
-		// 	response.Count = len(documents)
-		// 	return response, nil
-		// }
-
-		// Neither approach worked, return the original error
 		return response, err
 	}
 

@@ -56,9 +56,14 @@ func (options *ChangeFeedOptions) toHeaders() *map[string]string {
 	}
 
 	if options.IfNoneMatch != nil {
-		headers[headerIfNoneMatch] = string(*options.IfNoneMatch)
+		//headers[headerIfNoneMatch] = string(*options.IfNoneMatch)
+		etag := string(*options.IfNoneMatch)
+		if len(etag) > 0 && etag[0] != '"' {
+			etag = `"` + etag + `"`
+		}
+		headers[headerIfNoneMatch] = etag
 	}
-
+	// Formats the time as RFC1123, e.g., "Mon, 02 Jan 2006 15:04:05 MST" (e.g., "Thu, 27 Jun 2025 14:30:00 UTC")
 	if options.IfModifiedSince != nil {
 		headers[cosmosHeaderIfModifiedSince] = options.IfModifiedSince.UTC().Format(time.RFC1123)
 	}

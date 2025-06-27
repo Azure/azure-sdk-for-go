@@ -6,7 +6,8 @@ package azcosmos
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
+
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ChangeFeedResponse contains the result of a change feed request.
@@ -21,55 +22,38 @@ type ChangeFeedResponse struct {
 }
 
 // newChangeFeedResponse creates a new ChangeFeedResponse from an HTTP response.
-func newChangeFeedResponse(response *http.Response) (ChangeFeedResponse, error) {
-	if response == nil {
-		return ChangeFeedResponse{}, errNilResponse
+func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
+	response := ChangeFeedResponse{
+		Response: newResponse(resp),
 	}
 
-	if response.StatusCode == http.StatusNotModified {
+	if resp.StatusCode == http.StatusNotModified {
 		// Handle 304 Not Modified response (no changes since the specified ETag)
-		result := ChangeFeedResponse{
-			Documents:       []json.RawMessage{}, // Empty array for documents
-			Count:           0,
-			Response:        response,
-		}
-
-		return result, nil
+		response.Documents = []json.RawMessage{}
+		response.Count = 0
+		return response, nil
 	}
 
-	// For non-304 responses, read the body and parse the feed
-	documents, err := readDocumentsFromResponse(response)
+	// For non-304 responses, unmarshal the response body
+	defer resp.Body.Close()
+	body, err := azruntime.Payload(resp)
 	if err != nil {
-		return ChangeFeedResponse{}, err
+		return response, err
 	}
 
-	// Create the response with parsed documents
-	result := ChangeFeedResponse{
-		ResourceID:  	response.Header.Get(cosmosHeaderResourceId),
-		Documents:   	documents,
-		Count:       	len(documents),
-		Response: 		newResponse(response),
+	// Parse the response into our response structure
+	if err := json.Unmarshal(body, &response); err != nil {
+		// // If standard parsing fails, try as a direct array of documents
+		// var documents []json.RawMessage
+		// if arrErr := json.Unmarshal(body, &documents); arrErr == nil {
+		// 	response.Documents = documents
+		// 	response.Count = len(documents)
+		// 	return response, nil
+		// }
+
+		// Neither approach worked, return the original error
+		return response, err
 	}
 
-	return result, nil
-}
-
-// readDocumentsFromResponse reads JSON documents from an HTTP response body.
-func readDocumentsFromResponse(response *http.Response) ([]json.RawMessage, error) {
-	if response == nil {
-		return nil, errNilResponse
-	}
-
-	// Parse response body as a JSON array
-	var documents []json.RawMessage
-	decoder := json.NewDecoder(response.Body)
-	if err := decoder.Decode(&documents); err != nil {
-		if strings.Contains(err.Error(), "EOF") {
-			// Empty response body, return empty array
-			return []json.RawMessage{}, nil
-		}
-		return nil, err
-	}
-
-	return documents, nil
+	return response, nil
 }

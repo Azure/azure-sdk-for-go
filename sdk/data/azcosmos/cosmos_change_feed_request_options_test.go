@@ -5,11 +5,8 @@ package azcosmos
 
 import (
 	"testing"
-	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestChangeFeedOptionsToHeaders(t *testing.T) {
-	
+
 }

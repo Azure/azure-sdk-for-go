@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01-preview/AvsStorageContainers_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsStorageContainers_Delete_MaximumSet_Gen.json
 func ExampleAvsStorageContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleAvsStorageContainersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/AvsStorageContainers_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsStorageContainers_Get_MaximumSet_Gen.json
 func ExampleAvsStorageContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleAvsStorageContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
 func ExampleAvsStorageContainersClient_NewListByStoragePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_GetBillingReport_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleReservationsClient_GetBillingReport() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleReservationsClient_GetBillingStatus() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
 func ExampleReservationsClient_GetResourceLimits() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -42,7 +42,7 @@ func NewAvsStorageContainerVolumesClient(subscriptionID string, credential azcor
 // BeginDelete - Delete a volume in an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - storageContainerName - Name of the storage container
@@ -69,7 +69,7 @@ func (client *AvsStorageContainerVolumesClient) BeginDelete(ctx context.Context,
 // Delete - Delete a volume in an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 func (client *AvsStorageContainerVolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, options *AvsStorageContainerVolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvsStorageContainerVolumesClient.BeginDelete"
@@ -119,7 +119,7 @@ func (client *AvsStorageContainerVolumesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -128,7 +128,7 @@ func (client *AvsStorageContainerVolumesClient) deleteCreateRequest(ctx context.
 // Get - Get a volume in an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - storageContainerName - Name of the storage container
@@ -185,7 +185,7 @@ func (client *AvsStorageContainerVolumesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *AvsStorageContainerVolumesClient) getHandleResponse(resp *http.Res
 
 // NewListByAvsStorageContainerPager - List volumes in an AVS storage container
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - storageContainerName - Name of the storage container
@@ -255,7 +255,7 @@ func (client *AvsStorageContainerVolumesClient) listByAvsStorageContainerCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,7 +273,7 @@ func (client *AvsStorageContainerVolumesClient) listByAvsStorageContainerHandleR
 // BeginUpdate - Update a volume in an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - storageContainerName - Name of the storage container
@@ -301,7 +301,7 @@ func (client *AvsStorageContainerVolumesClient) BeginUpdate(ctx context.Context,
 // Update - Update a volume in an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 func (client *AvsStorageContainerVolumesClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, options *AvsStorageContainerVolumesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvsStorageContainerVolumesClient.BeginUpdate"
@@ -351,7 +351,7 @@ func (client *AvsStorageContainerVolumesClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

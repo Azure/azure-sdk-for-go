@@ -1,6 +1,6 @@
 # Azure Cloud Health Module for Go
 
-The `armcloudhealth` module provides operations for working with Azure Cloudhealth.
+The `armcloudhealth` module provides operations for working with Azure Cloud Health.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/cloudhealth/armcloudhealth)
 

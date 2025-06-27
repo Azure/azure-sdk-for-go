@@ -822,3 +822,144 @@ func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 		t.Fatalf("Expected 0 partition key ranges, got %d", len(resp.PartitionKeyRanges))
 	}
 }
+
+func TestContainerGetChangeFeedIfModifiedSince(t *testing.T) {
+	changeFeedBody := []byte(
+		`{"_rid":"test-rid",
+		"Documents":[{"id":"doc1"},{"id":"doc2"}],
+		"_count":2}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "5.5"),
+		mock.WithStatusCode(200))
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	modifiedSince := time.Now().Add(-time.Hour).UTC()
+	options := &ChangeFeedOptions{
+		IfModifiedSince: &modifiedSince,
+	}
+
+	resp, err := container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed returned error: %v", err)
+	}
+	if resp.ResourceID != "test-rid" {
+		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
+	}
+	if resp.Count != 2 {
+		t.Errorf("Expected Count 2, got %v", resp.Count)
+	}
+	if len(resp.Documents) != 2 {
+		t.Errorf("Expected 2 documents, got %v", len(resp.Documents))
+	}
+}
+
+func TestContainerGetChangeFeedPartitionKey(t *testing.T) {
+	changeFeedBody := []byte(
+		`{"_rid":"test-rid-1",
+		"Documents":[{"id":"doc3"}],
+		"_count":1}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "2.2"),
+		mock.WithStatusCode(200))
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	pk := NewPartitionKeyString("pkvalue")
+	options := &ChangeFeedOptions{
+		PartitionKey: &pk,
+	}
+
+	resp, err := container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed returned error: %v", err)
+	}
+	if resp.ResourceID != "test-rid-1" {
+		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
+	}
+	if resp.Count != 1 {
+		t.Errorf("Expected Count 1, got %v", resp.Count)
+	}
+	if len(resp.Documents) != 1 {
+		t.Errorf("Expected 1 document, got %v", len(resp.Documents))
+	}
+}
+
+func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
+	// First response: 3 documents
+	changeFeedBodyAll := []byte(
+		`{"_rid":"test-rid",
+        "Documents":[{"id":"doc1"},{"id":"doc2"},{"id":"doc3"}],
+        "_count":3}`)
+	// Second response: 1 document (filtered)
+	changeFeedBodyFiltered := []byte(
+		`{"_rid":"test-rid",
+        "Documents":[{"id":"doc3"}],
+        "_count":1}`)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	// Set up the mock server to return the first response, then the second
+	srv.AppendResponse(
+		mock.WithBody(changeFeedBodyAll),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "5.5"),
+		mock.WithStatusCode(200))
+	srv.AppendResponse(
+		mock.WithBody(changeFeedBodyFiltered),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "2.2"),
+		mock.WithStatusCode(200))
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// First call: no header, expect 3 docs
+	resp, err := container.GetChangeFeed(context.TODO(), &ChangeFeedOptions{})
+	if err != nil {
+		t.Fatalf("GetChangeFeed (all) returned error: %v", err)
+	}
+	if resp.Count != 3 || len(resp.Documents) != 3 {
+		t.Errorf("Expected 3 documents, got %d", len(resp.Documents))
+	}
+
+	// Second call: with IfModifiedSince header, expect 1 doc
+	modifiedSince := time.Now().Add(-time.Hour).UTC()
+	options := &ChangeFeedOptions{
+		IfModifiedSince: &modifiedSince,
+	}
+	resp, err = container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed (filtered) returned error: %v", err)
+	}
+	if resp.Count != 1 || len(resp.Documents) != 1 {
+		t.Errorf("Expected 1 document, got %d", len(resp.Documents))
+	}
+}

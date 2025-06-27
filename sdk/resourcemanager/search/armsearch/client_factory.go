@@ -58,13 +58,6 @@ func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *Netwo
 	}
 }
 
-// NewOfferingsClient creates a new instance of OfferingsClient.
-func (c *ClientFactory) NewOfferingsClient() *OfferingsClient {
-	return &OfferingsClient{
-		internal: c.internal,
-	}
-}
-
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

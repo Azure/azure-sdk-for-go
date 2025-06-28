@@ -21,6 +21,6 @@ const (
 	//
 	// This is not needed for Receivers in [PeekLock] mode, as cached messages are automatically released to the service.
 	//
-	// [receiver_and_delete_example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
+	// [receiver_and_delete_example]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#example-Receiver.ReceiveMessages-ReceiveAndDelete
 	ReceiveAndDelete ReceiveMode = 1
 )

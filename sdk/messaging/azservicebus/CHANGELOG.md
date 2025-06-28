@@ -5,7 +5,7 @@
 ### Bugs Fixed
 
 - Receiver's, in ReceiveModeReceiveAndDelete, now allow ReceiveMessages() calls after Receiver.Close. These calls will only draw from any internally cached messages that 
-  accumulated between the final call to ReceiveMessages() and Close. See the example "ExampleReceiver_ReceiveMessages_receiveAndDelete", in [example_receiver_test.go](./example_receiver_test.go)
+  accumulated between the final call to ReceiveMessages() and Close. See an example of how to do this here: [ExampleReceiver_ReceiveMessages_receiveAndDelete](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#example-Receiver.ReceiveMessages-ReceiveAndDelete)
   for an example. (PR#24864)
 
 ## 1.9.0 (2025-05-06)

@@ -1228,6 +1228,145 @@ func TestNilPartitionKey(t *testing.T) {
 	require.NoError(t, err)
 }
 
+// TestReceiverReceiveAndDeleteDoesNotLoseMessages checks that you can receive any internally cached
+// messages after the Receiver is closed. This is special behavior, for ReceiveAndDelete.
+func TestReceiverReceiveAndDeleteDoesNotLoseMessages(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	const totalSent = 2000
+
+	mustSendMessages(t, context.Background(), totalSent, 1000, sender)
+
+	// receive our first batch of messages - we'll purposefully ask for more credits
+	// than we'll receive.
+	receiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	receivedBeforeClose, err := receiver.ReceiveMessages(context.Background(), totalSent, &ReceiveMessagesOptions{
+		// we use a short timeout here to make it even MORE likely that we don't receive all the messages
+		TimeAfterFirstMessage: time.Millisecond,
+	})
+	require.NoError(t, err)
+	require.Less(t, len(receivedBeforeClose), totalSent)
+
+	// give it a little time so messages can arrive, in the background, and fill up the Prefetched() cache.
+	time.Sleep(time.Second)
+	require.NoError(t, receiver.Close(context.Background()))
+
+	// At this point the receiver is closed - we can continue to receive from it, even after closure. The messages
+	// are only what is cached. This lets users who are doing ReceiveAndDelete to make sure they get all messages that have
+	// arrived - previously, it was possible to have some data loss.
+	t.Logf("Now receiving after the receiver has been closed. We have %d/%d messages", len(receivedBeforeClose), totalSent)
+
+	var after []*ReceivedMessage
+
+Loop:
+	for {
+		const maxPerCall = 2                                                             // picking a small number to make sure we hit our internal cache a few times
+		messages, err := receiver.ReceiveMessages(context.Background(), maxPerCall, nil) // you could receive any amount here, but I'd like to purposefully force it to update the internal cache few times.
+
+		var sbErr *Error
+
+		switch {
+		case errors.As(err, &sbErr) && sbErr.Code == CodeClosed:
+			t.Logf("All messages have been extracted. Got %d", len(after))
+			break Loop
+		case err != nil:
+			require.NoError(t, err)
+		default:
+			require.LessOrEqual(t, len(messages), maxPerCall, "make sure we don't give more than you asked for")
+			t.Logf("More messages received. Got %d/%d", len(after), totalSent)
+			after = append(after, messages...)
+		}
+	}
+
+	require.Equal(t, totalSent, len(after)+len(receivedBeforeClose))
+}
+
+func TestReceiverReceiveAndDeleteNoCachedMessages(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	const totalSent = 2
+	mustSendMessages(t, context.Background(), totalSent, 1000, sender)
+
+	// receive our first batch of messages - we'll purposefully ask for more credits
+	// than we'll receive.
+	receiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveModeReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	receivedBeforeClose, err := receiver.ReceiveMessages(context.Background(), totalSent, nil)
+	require.NoError(t, err)
+	require.Equal(t, totalSent, len(receivedBeforeClose))
+	require.NoError(t, receiver.Close(context.Background()))
+
+	// At this point the receiver is closed - we can continue to receive from it, even after closure. The messages
+	// are only what is cached. This lets users who are doing ReceiveAndDelete to make sure they get all messages that have
+	// arrived - previously, it was possible to have some data loss.
+	t.Logf("Now receiving after the receiver has been closed. We have %d/%d messages", len(receivedBeforeClose), totalSent)
+
+	// However, in this case, we don't have any cached messages, so we'll immediately get the CodeClosed error.
+	afterClose, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+
+	var sbErr *Error
+	require.ErrorAs(t, err, &sbErr)
+	require.Equal(t, CodeClosed, sbErr.Code)
+	require.Empty(t, afterClose)
+}
+
+func mustSendMessages(t *testing.T, ctx context.Context, count int, bodySize int, sender *Sender) {
+	var batch *MessageBatch
+
+	body := make([]byte, bodySize)
+
+SendLoop:
+	for i := 0; i < count; i++ {
+		if batch == nil {
+			tmpBatch, err := sender.NewMessageBatch(ctx, nil)
+			require.NoError(t, err)
+			batch = tmpBatch
+		}
+
+		err := batch.AddMessage(&Message{
+			Body: body,
+			ApplicationProperties: map[string]any{
+				"Index": i,
+			}}, nil)
+
+		switch {
+		case errors.Is(err, ErrMessageTooLarge) && batch.NumMessages() == 0:
+			require.Fail(t, "Message is too large, even if its the only one in the batch!")
+		case errors.Is(err, ErrMessageTooLarge):
+			err := sender.SendMessageBatch(ctx, batch, nil)
+			require.NoError(t, err)
+			t.Logf("Sent %d messages", batch.NumMessages())
+
+			batch = nil
+			i-- // add the last message again
+		case i == count-1:
+			err := sender.SendMessageBatch(ctx, batch, nil)
+			require.NoError(t, err)
+			t.Logf("Sent %d messages", batch.NumMessages())
+
+			batch = nil
+			break SendLoop
+		default:
+			// all good, keep adding to the same batch.
+		}
+	}
+}
+
 type receivedMessageSlice []*ReceivedMessage
 
 func (messages receivedMessageSlice) Len() int {

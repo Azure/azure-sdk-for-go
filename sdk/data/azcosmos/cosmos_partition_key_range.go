@@ -13,8 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// PartitionKeyRangeProperties represents the properties of a partition key range.
-type PartitionKeyRangeProperties struct {
+// PartitionKeyRange represents the properties of a partition key range.
+type PartitionKeyRange struct {
 	// ID contains the unique id of the partition key range.
 	ID string `json:"id"`
 	// ResourceID contains the resource id of the partition key range.
@@ -44,7 +44,7 @@ type PartitionKeyRangeProperties struct {
 }
 
 // MarshalJSON implements the json.Marshaler interface
-func (pkr PartitionKeyRangeProperties) MarshalJSON() ([]byte, error) {
+func (pkr PartitionKeyRange) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"id\":\"%s\"", pkr.ID))
 
@@ -110,7 +110,7 @@ func (pkr PartitionKeyRangeProperties) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface
-func (pkr *PartitionKeyRangeProperties) UnmarshalJSON(b []byte) error {
+func (pkr *PartitionKeyRange) UnmarshalJSON(b []byte) error {
 	var attributes map[string]json.RawMessage
 	err := json.Unmarshal(b, &attributes)
 	if err != nil {

@@ -18,7 +18,7 @@ type PartitionKeyRangeResponse struct {
 	// ResourceID is the resource id of the partition key ranges
 	ResourceID string `json:"_rid"`
 	// PartitionKeyRanges contains the list of partition key ranges
-	PartitionKeyRanges []PartitionKeyRangeProperties `json:"PartitionKeyRanges"`
+	PartitionKeyRanges []PartitionKeyRange `json:"PartitionKeyRanges"`
 	// Count is the number of partition key ranges returned in the response
 	Count int `json:"_count"`
 	Response

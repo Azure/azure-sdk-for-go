@@ -11,9 +11,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-func TestPartitionKeyRangePropertiesSerialization(t *testing.T) {
+func TestPartitionKeyRangeSerialization(t *testing.T) {
 	etag := azcore.ETag("\"00000000-0000-0000-0000-000000000000\"")
-	pkr := PartitionKeyRangeProperties{
+	pkr := PartitionKeyRange{
 		ID:                      "0",
 		ResourceID:              "rid1",
 		ETag:                    &etag,
@@ -31,13 +31,13 @@ func TestPartitionKeyRangePropertiesSerialization(t *testing.T) {
 
 	jsonBytes, err := json.Marshal(pkr)
 	if err != nil {
-		t.Fatalf("Failed to marshal PartitionKeyRangeProperties: %v", err)
+		t.Fatalf("Failed to marshal PartitionKeyRange: %v", err)
 	}
 
-	var newPkr PartitionKeyRangeProperties
+	var newPkr PartitionKeyRange
 	err = json.Unmarshal(jsonBytes, &newPkr)
 	if err != nil {
-		t.Fatalf("Failed to unmarshal PartitionKeyRangeProperties: %v", err)
+		t.Fatalf("Failed to unmarshal PartitionKeyRange: %v", err)
 	}
 
 	if pkr.ID != newPkr.ID {

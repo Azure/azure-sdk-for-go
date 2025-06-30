@@ -41,15 +41,20 @@ stages:
               pwsh: true
             env:
               GH_TOKEN: $(azuresdk-github-pat)
+
   - stage: Release
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     dependsOn: CheckRelease
     condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
     jobs:
       - deployment: ReleaseGate
         environment: package-publish
+        # when in a deployment, the pool name must be hardcoded. If it is a variable reference, AzDO is unable to locate the pool
+        # to check authorization for the definition. As a result the deployment will fail to start looking like this:
+        # https://dev.azure.com/azure-sdk/internal/_build/results?buildId=5020114&view=logs&j=999b5c42-1b8c-5343-8349-a768054333f6
         pool:
           name: azsdk-pool
           image: ubuntu-24.04

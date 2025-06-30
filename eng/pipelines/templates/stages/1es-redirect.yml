@@ -36,6 +36,10 @@ extends:
         - 1ES.PT.Tag-refs/tags/canary
     settings:
       skipBuildTagsForGitHubPullRequests: true
+    featureFlags:
+      golang:                
+        internalModuleProxy:
+          enabled: true
     sdl:
       ${{ if and(eq(variables['Build.DefinitionName'], 'go - azcore'), eq(variables['Build.SourceBranchName'], 'main'), eq(variables['System.TeamProject'], 'internal')) }}:
         autobaseline:

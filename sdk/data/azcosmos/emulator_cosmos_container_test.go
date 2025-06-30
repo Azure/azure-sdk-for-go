@@ -605,3 +605,68 @@ func TestEmulatorContainerReadPartitionKeyRanges(t *testing.T) {
 		t.Errorf("Expected partition key range MaxExclusive to be set, but got empty string")
 	}
 }
+
+func TestEmulatorContainerGetFeedRanges(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_container aContainer", "read_partition_key_ranges aContainer"},
+	}))
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerGFR")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/id"},
+		},
+	}
+
+	throughput := NewManualThroughputProperties(30000)
+
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: &throughput})
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	if resp.ContainerProperties.ID != properties.ID {
+		t.Errorf("Unexpected id match: %v", resp.ContainerProperties)
+	}
+
+	if resp.ContainerProperties.PartitionKeyDefinition.Paths[0] != properties.PartitionKeyDefinition.Paths[0] {
+		t.Errorf("Unexpected path match: %v", resp.ContainerProperties)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+
+	item := map[string]interface{}{
+		"id": "testitem1",
+	}
+	itemBytes, err := json.Marshal(item)
+	if err != nil {
+		t.Fatalf("Failed to marshal item: %v", err)
+	}
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("testitem1"), itemBytes, nil)
+	if err != nil {
+		t.Fatalf("Failed to insert item: %v", err)
+	}
+	time.Sleep(2 * time.Second)
+
+	feedRanges, err := container.GetFeedRanges(context.TODO())
+	if err != nil {
+		t.Fatalf("Failed to get feed ranges: %v", err)
+	}
+	t.Logf("Feed Ranges: %+v", feedRanges)
+
+	if len(feedRanges) == 0 {
+		t.Fatalf("Expected at least one feed range, got none")
+	}
+
+	for i, feedRange := range feedRanges {
+		if feedRange.MinInclusive == "" {
+			t.Errorf("Feed range %d MinInclusive is empty", i)
+		}
+		if feedRange.MaxExclusive == "" {
+			t.Errorf("Feed range %d MaxExclusive is empty", i)
+		}
+	}
+}

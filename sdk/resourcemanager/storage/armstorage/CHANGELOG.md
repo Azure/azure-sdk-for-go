@@ -4,7 +4,6 @@
 ### Other Changes
 
 - Field `StartOn` of struct `TriggerParameters` changed to `required`
-- Field `StartOn` of struct `TriggerParameters` changed to `required`
 
 ## 1.8.0 (2025-04-08)
 ### Features Added

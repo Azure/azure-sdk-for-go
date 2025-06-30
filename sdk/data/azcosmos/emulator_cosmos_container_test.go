@@ -583,7 +583,7 @@ func TestEmulatorContainerReadPartitionKeyRanges(t *testing.T) {
 	}
 	time.Sleep(2 * time.Second)
 
-	pkRangesResponse, err := container.GetPartitionKeyRange(context.TODO(), nil)
+	pkRangesResponse, err := container.GetPartitionKeyRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read partition key ranges: %v", err)
 	}

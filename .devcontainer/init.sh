@@ -14,5 +14,5 @@ npm install -g @typespec/compiler
 # installs 'tsp-client' - The TypeSpec+Azure client generator
 npm install -g @azure-tools/typespec-client-generator-cli
 
-# NOTE: 
+# NOTE: you probably won't need this as most libraries should be using TypeSpec
 npm install -g autorest

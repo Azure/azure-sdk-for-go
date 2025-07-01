@@ -1,5 +1,12 @@
 # Release History
 
+## 1.3.0 (2025-07-25)
+### Features Added
+
+- New enum type `IsolationScope` with values `IsolationScopeNone`, `IsolationScopeRegional`
+- New field `IsolationScope` in struct `UserAssignedIdentityProperties`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

@@ -18,64 +18,63 @@ import (
 	"strings"
 )
 
-// ProjectConnectionClient contains the methods for the ProjectConnection group.
-// Don't use this type directly, use NewProjectConnectionClient() instead.
-type ProjectConnectionClient struct {
+// AccountConnectionsClient contains the methods for the AccountConnections group.
+// Don't use this type directly, use NewAccountConnectionsClient() instead.
+type AccountConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewProjectConnectionClient creates a new instance of ProjectConnectionClient with the specified values.
+// NewAccountConnectionsClient creates a new instance of AccountConnectionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewProjectConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectConnectionClient, error) {
+func NewAccountConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ProjectConnectionClient{
+	client := &AccountConnectionsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Create - Create or update Cognitive Services project connection under the specified project.
+// Create - Create or update Cognitive Services account connection under the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
 //   - connectionName - Friendly name of the connection
-//   - options - ProjectConnectionClientCreateOptions contains the optional parameters for the ProjectConnectionClient.Create
+//   - options - AccountConnectionsClientCreateOptions contains the optional parameters for the AccountConnectionsClient.Create
 //     method.
-func (client *ProjectConnectionClient) Create(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionClientCreateOptions) (ProjectConnectionClientCreateResponse, error) {
+func (client *AccountConnectionsClient) Create(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientCreateOptions) (AccountConnectionsClientCreateResponse, error) {
 	var err error
-	const operationName = "ProjectConnectionClient.Create"
+	const operationName = "AccountConnectionsClient.Create"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, projectName, connectionName, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, connectionName, options)
 	if err != nil {
-		return ProjectConnectionClientCreateResponse{}, err
+		return AccountConnectionsClientCreateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProjectConnectionClientCreateResponse{}, err
+		return AccountConnectionsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionClientCreateResponse{}, err
+		return AccountConnectionsClientCreateResponse{}, err
 	}
 	resp, err := client.createHandleResponse(httpResp)
 	return resp, err
 }
 
 // createCreateRequest creates the Create request.
-func (client *ProjectConnectionClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
+func (client *AccountConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -88,10 +87,6 @@ func (client *ProjectConnectionClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
 	if connectionName == "" {
 		return nil, errors.New("parameter connectionName cannot be empty")
 	}
@@ -101,11 +96,11 @@ func (client *ProjectConnectionClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+	if options != nil && options.Connection != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Connection); err != nil {
 			return nil, err
 		}
 		return req, nil
@@ -114,48 +109,47 @@ func (client *ProjectConnectionClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *ProjectConnectionClient) createHandleResponse(resp *http.Response) (ProjectConnectionClientCreateResponse, error) {
-	result := ProjectConnectionClientCreateResponse{}
+func (client *AccountConnectionsClient) createHandleResponse(resp *http.Response) (AccountConnectionsClientCreateResponse, error) {
+	result := AccountConnectionsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
-		return ProjectConnectionClientCreateResponse{}, err
+		return AccountConnectionsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Delete Cognitive Services project connection by name.
+// Delete - Delete Cognitive Services account connection by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
 //   - connectionName - Friendly name of the connection
-//   - options - ProjectConnectionClientDeleteOptions contains the optional parameters for the ProjectConnectionClient.Delete
+//   - options - AccountConnectionsClientDeleteOptions contains the optional parameters for the AccountConnectionsClient.Delete
 //     method.
-func (client *ProjectConnectionClient) Delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionClientDeleteOptions) (ProjectConnectionClientDeleteResponse, error) {
+func (client *AccountConnectionsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientDeleteOptions) (AccountConnectionsClientDeleteResponse, error) {
 	var err error
-	const operationName = "ProjectConnectionClient.Delete"
+	const operationName = "AccountConnectionsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, projectName, connectionName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, connectionName, options)
 	if err != nil {
-		return ProjectConnectionClientDeleteResponse{}, err
+		return AccountConnectionsClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProjectConnectionClientDeleteResponse{}, err
+		return AccountConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionClientDeleteResponse{}, err
+		return AccountConnectionsClientDeleteResponse{}, err
 	}
-	return ProjectConnectionClientDeleteResponse{}, nil
+	return AccountConnectionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProjectConnectionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, _ *ProjectConnectionClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
+func (client *AccountConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectionName string, _ *AccountConnectionsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -168,10 +162,6 @@ func (client *ProjectConnectionClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
 	if connectionName == "" {
 		return nil, errors.New("parameter connectionName cannot be empty")
 	}
@@ -181,46 +171,45 @@ func (client *ProjectConnectionClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Lists Cognitive Services project connection by name.
+// Get - Lists Cognitive Services account connection by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
 //   - connectionName - Friendly name of the connection
-//   - options - ProjectConnectionClientGetOptions contains the optional parameters for the ProjectConnectionClient.Get method.
-func (client *ProjectConnectionClient) Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionClientGetOptions) (ProjectConnectionClientGetResponse, error) {
+//   - options - AccountConnectionsClientGetOptions contains the optional parameters for the AccountConnectionsClient.Get method.
+func (client *AccountConnectionsClient) Get(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientGetOptions) (AccountConnectionsClientGetResponse, error) {
 	var err error
-	const operationName = "ProjectConnectionClient.Get"
+	const operationName = "AccountConnectionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, projectName, connectionName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, connectionName, options)
 	if err != nil {
-		return ProjectConnectionClientGetResponse{}, err
+		return AccountConnectionsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProjectConnectionClientGetResponse{}, err
+		return AccountConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionClientGetResponse{}, err
+		return AccountConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProjectConnectionClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, _ *ProjectConnectionClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
+func (client *AccountConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectionName string, _ *AccountConnectionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -233,10 +222,6 @@ func (client *ProjectConnectionClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
 	if connectionName == "" {
 		return nil, errors.New("parameter connectionName cannot be empty")
 	}
@@ -246,45 +231,44 @@ func (client *ProjectConnectionClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProjectConnectionClient) getHandleResponse(resp *http.Response) (ProjectConnectionClientGetResponse, error) {
-	result := ProjectConnectionClientGetResponse{}
+func (client *AccountConnectionsClient) getHandleResponse(resp *http.Response) (AccountConnectionsClientGetResponse, error) {
+	result := AccountConnectionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
-		return ProjectConnectionClientGetResponse{}, err
+		return AccountConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists all the available Cognitive Services project connections under the specified project.
+// NewListPager - Lists all the available Cognitive Services account connections under the specified account.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
-//   - options - ProjectConnectionClientListOptions contains the optional parameters for the ProjectConnectionClient.NewListPager
+//   - options - AccountConnectionsClientListOptions contains the optional parameters for the AccountConnectionsClient.NewListPager
 //     method.
-func (client *ProjectConnectionClient) NewListPager(resourceGroupName string, accountName string, projectName string, options *ProjectConnectionClientListOptions) *runtime.Pager[ProjectConnectionClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProjectConnectionClientListResponse]{
-		More: func(page ProjectConnectionClientListResponse) bool {
+func (client *AccountConnectionsClient) NewListPager(resourceGroupName string, accountName string, options *AccountConnectionsClientListOptions) *runtime.Pager[AccountConnectionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountConnectionsClientListResponse]{
+		More: func(page AccountConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ProjectConnectionClientListResponse) (ProjectConnectionClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProjectConnectionClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *AccountConnectionsClientListResponse) (AccountConnectionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountConnectionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, options)
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 			}, nil)
 			if err != nil {
-				return ProjectConnectionClientListResponse{}, err
+				return AccountConnectionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -293,8 +277,8 @@ func (client *ProjectConnectionClient) NewListPager(resourceGroupName string, ac
 }
 
 // listCreateRequest creates the List request.
-func (client *ProjectConnectionClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, options *ProjectConnectionClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections"
+func (client *AccountConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountConnectionsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -307,16 +291,12 @@ func (client *ProjectConnectionClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	if options != nil && options.Category != nil {
 		reqQP.Set("category", *options.Category)
 	}
@@ -332,49 +312,48 @@ func (client *ProjectConnectionClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *ProjectConnectionClient) listHandleResponse(resp *http.Response) (ProjectConnectionClientListResponse, error) {
-	result := ProjectConnectionClientListResponse{}
+func (client *AccountConnectionsClient) listHandleResponse(resp *http.Response) (AccountConnectionsClientListResponse, error) {
+	result := AccountConnectionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResourceArmPaginatedResult); err != nil {
-		return ProjectConnectionClientListResponse{}, err
+		return AccountConnectionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// Update - Update Cognitive Services project connection under the specified project.
+// Update - Update Cognitive Services account connection under the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
 //   - connectionName - Friendly name of the connection
-//   - options - ProjectConnectionClientUpdateOptions contains the optional parameters for the ProjectConnectionClient.Update
+//   - options - AccountConnectionsClientUpdateOptions contains the optional parameters for the AccountConnectionsClient.Update
 //     method.
-func (client *ProjectConnectionClient) Update(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionClientUpdateOptions) (ProjectConnectionClientUpdateResponse, error) {
+func (client *AccountConnectionsClient) Update(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientUpdateOptions) (AccountConnectionsClientUpdateResponse, error) {
 	var err error
-	const operationName = "ProjectConnectionClient.Update"
+	const operationName = "AccountConnectionsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, projectName, connectionName, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, connectionName, options)
 	if err != nil {
-		return ProjectConnectionClientUpdateResponse{}, err
+		return AccountConnectionsClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ProjectConnectionClientUpdateResponse{}, err
+		return AccountConnectionsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionClientUpdateResponse{}, err
+		return AccountConnectionsClientUpdateResponse{}, err
 	}
 	resp, err := client.updateHandleResponse(httpResp)
 	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProjectConnectionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections/{connectionName}"
+func (client *AccountConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -387,10 +366,6 @@ func (client *ProjectConnectionClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
 	if connectionName == "" {
 		return nil, errors.New("parameter connectionName cannot be empty")
 	}
@@ -400,11 +375,11 @@ func (client *ProjectConnectionClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+	if options != nil && options.Connection != nil {
+		if err := runtime.MarshalAsJSON(req, *options.Connection); err != nil {
 			return nil, err
 		}
 		return req, nil
@@ -413,10 +388,10 @@ func (client *ProjectConnectionClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProjectConnectionClient) updateHandleResponse(resp *http.Response) (ProjectConnectionClientUpdateResponse, error) {
-	result := ProjectConnectionClientUpdateResponse{}
+func (client *AccountConnectionsClient) updateHandleResponse(resp *http.Response) (AccountConnectionsClientUpdateResponse, error) {
+	result := AccountConnectionsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
-		return ProjectConnectionClientUpdateResponse{}, err
+		return AccountConnectionsClientUpdateResponse{}, err
 	}
 	return result, nil
 }

@@ -12,10 +12,10 @@ Follow these steps to help users generate Go SDK from specific API specification
 ## Prerequisites
 
 1. Ensure Go version is 1.23 or later.
-2. Install the `generator` tool (v0.0.0-20250630212816-bb29ffdbc8c4) with the command:
+2. Install the `generator` tool (v0.1.0) with the command:
 
 ```bash
-go install github.com/Azure/azure-sdk-for-go/eng/tools/generator@v0.0.0-20250630212816-bb29ffdbc8c4
+go install github.com/Azure/azure-sdk-for-go/eng/tools/generator@v0.1.0
 ```
 
 3. Ensure Node.js version is 20 or later.

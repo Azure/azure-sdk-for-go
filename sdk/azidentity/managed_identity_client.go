@@ -82,6 +82,9 @@ func setIMDSRetryOptionDefaults(o *policy.RetryOptions) {
 			http.StatusNetworkAuthenticationRequired, // 511
 		}
 	}
+	if o.TryTimeout == 0 {
+		o.TryTimeout = 1 * time.Minute
+	}
 }
 
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions

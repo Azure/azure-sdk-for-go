@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -65,7 +66,10 @@ func (options *ChangeFeedOptions) toHeaders() *map[string]string {
 	}
 	// Formats the time as RFC1123, e.g., "Mon, 02 Jan 2006 15:04:05 MST" (e.g., "Thu, 27 Jun 2025 14:30:00 UTC")
 	if options.IfModifiedSince != nil {
-		headers[cosmosHeaderIfModifiedSince] = options.IfModifiedSince.UTC().Format(time.RFC1123)
+		formatted := options.IfModifiedSince.UTC().Format(time.RFC1123)
+		formatted = strings.Replace(formatted, "UTC", "GMT", 1)
+
+		headers[cosmosHeaderIfModifiedSince] = formatted
 	}
 
 	if options.PartitionKey != nil {

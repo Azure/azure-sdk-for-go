@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -40,16 +41,17 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	options.IfNoneMatch = &etag
 	headers = options.toHeaders()
 	h = *headers
-	if h[headerIfNoneMatch] != "test-etag" {
-		t.Errorf("Expected IfNoneMatch to be test-etag, got %v", h[headerIfNoneMatch])
+	if h[headerIfNoneMatch] != `"test-etag"` {
+		t.Errorf("Expected IfNoneMatch to be \"test-etag\", got %v", h[headerIfNoneMatch])
 	}
 
 	now := time.Now().UTC()
 	options.IfModifiedSince = &now
 	headers = options.toHeaders()
 	h = *headers
-	if h[cosmosHeaderIfModifiedSince] != now.Format(time.RFC1123) {
-		t.Errorf("Expected IfModifiedSince to be %v, got %v", now.Format(time.RFC1123), h[cosmosHeaderIfModifiedSince])
+	expectedIfModifiedSince := strings.Replace(now.Format(time.RFC1123), "UTC", "GMT", 1)
+	if h[cosmosHeaderIfModifiedSince] != expectedIfModifiedSince {
+		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])
 	}
 
 	pk := NewPartitionKeyString("pkvalue")

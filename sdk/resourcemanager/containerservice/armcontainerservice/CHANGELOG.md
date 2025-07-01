@@ -1,5 +1,275 @@
 # Release History
 
+## 7.1.0 (2025-06-18)
+### Features Added
+
+- New value `AgentPoolModeGateway` added to enum type `AgentPoolMode`
+- New value `AgentPoolTypeVirtualMachines` added to enum type `AgentPoolType`
+- New enum type `PodIPAllocationMode` with values `PodIPAllocationModeDynamicIndividual`, `PodIPAllocationModeStaticBlock`
+- New struct `AgentPoolGatewayProfile`
+- New struct `AgentPoolStatus`
+- New struct `CloudErrorBody`
+- New struct `ManagedClusterStaticEgressGatewayProfile`
+- New struct `ManagedClusterStatus`
+- New struct `ManualScaleProfile`
+- New struct `ScaleProfile`
+- New struct `VirtualMachineNodes`
+- New struct `VirtualMachinesProfile`
+- New field `Zones` in struct `Machine`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `Status` in struct `ManagedClusterProperties`
+- New field `StaticEgressGatewayProfile` in struct `NetworkProfile`
+
+
+## 7.0.0 (2025-06-16)
+### Breaking Changes
+
+- Field `EnablePodSecurityPolicy` of struct `ManagedClusterProperties` has been removed
+
+### Features Added
+
+- New value `OSSKUUbuntu2204` added to enum type `OSSKU`
+- New enum type `UndrainableNodeBehavior` with values `UndrainableNodeBehaviorCordon`, `UndrainableNodeBehaviorSchedule`
+- New field `MaxUnavailable`, `UndrainableNodeBehavior` in struct `AgentPoolUpgradeSettings`
+- New field `EnableVnetIntegration`, `SubnetID` in struct `ManagedClusterAPIServerAccessProfile`
+
+
+## 7.0.0-beta.3 (2025-05-29)
+### Breaking Changes
+
+- Type of `AdvancedNetworkingSecurity.TransitEncryption` has been changed from `*TransitEncryption` to `*AdvancedNetworkingSecurityTransitEncryption`
+- Type of `ManagedClusterAgentPoolProfile.GpuProfile` has been changed from `*AgentPoolGPUProfile` to `*GPUProfile`
+- Type of `ManagedClusterAgentPoolProfileProperties.GpuProfile` has been changed from `*AgentPoolGPUProfile` to `*GPUProfile`
+- Enum `TransitEncryption` has been removed
+- Function `*ClientFactory.NewNamespacesClient` has been removed
+- Function `NewNamespacesClient` has been removed
+- Function `*NamespacesClient.BeginCreateOrUpdate` has been removed
+- Function `*NamespacesClient.BeginDelete` has been removed
+- Function `*NamespacesClient.Get` has been removed
+- Function `*NamespacesClient.NewListByManagedClusterPager` has been removed
+- Function `*NamespacesClient.ListCredential` has been removed
+- Function `*NamespacesClient.Update` has been removed
+- Struct `AgentPoolGPUProfile` has been removed
+- Struct `Namespace` has been removed
+- Struct `NamespaceListResult` has been removed
+- Field `EnablePodSecurityPolicy` of struct `ManagedClusterProperties` has been removed
+
+### Features Added
+
+- New value `OSSKUUbuntu2204`, `OSSKUUbuntu2404` added to enum type `OSSKU`
+- New enum type `GPUDriver` with values `GPUDriverInstall`, `GPUDriverNone`
+- New enum type `LocalDNSForwardDestination` with values `LocalDNSForwardDestinationClusterCoreDNS`, `LocalDNSForwardDestinationVnetDNS`
+- New enum type `LocalDNSForwardPolicy` with values `LocalDNSForwardPolicyRandom`, `LocalDNSForwardPolicyRoundRobin`, `LocalDNSForwardPolicySequential`
+- New enum type `LocalDNSMode` with values `LocalDNSModeDisabled`, `LocalDNSModePreferred`, `LocalDNSModeRequired`
+- New enum type `LocalDNSProtocol` with values `LocalDNSProtocolForceTCP`, `LocalDNSProtocolPreferUDP`
+- New enum type `LocalDNSQueryLogging` with values `LocalDNSQueryLoggingError`, `LocalDNSQueryLoggingLog`
+- New enum type `LocalDNSServeStale` with values `LocalDNSServeStaleDisable`, `LocalDNSServeStaleImmediate`, `LocalDNSServeStaleVerify`
+- New enum type `LocalDNSState` with values `LocalDNSStateDisabled`, `LocalDNSStateEnabled`
+- New enum type `NodeProvisioningDefaultNodePools` with values `NodeProvisioningDefaultNodePoolsAuto`, `NodeProvisioningDefaultNodePoolsNone`
+- New enum type `SchedulerConfigMode` with values `SchedulerConfigModeDefault`, `SchedulerConfigModeManagedByCRD`
+- New enum type `TransitEncryptionType` with values `TransitEncryptionTypeNone`, `TransitEncryptionTypeWireGuard`
+- New function `*ClientFactory.NewManagedNamespacesClient() *ManagedNamespacesClient`
+- New function `NewManagedNamespacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedNamespacesClient, error)`
+- New function `*ManagedNamespacesClient.BeginCreateOrUpdate(context.Context, string, string, string, ManagedNamespace, *ManagedNamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedNamespacesClientCreateOrUpdateResponse], error)`
+- New function `*ManagedNamespacesClient.BeginDelete(context.Context, string, string, string, *ManagedNamespacesClientBeginDeleteOptions) (*runtime.Poller[ManagedNamespacesClientDeleteResponse], error)`
+- New function `*ManagedNamespacesClient.Get(context.Context, string, string, string, *ManagedNamespacesClientGetOptions) (ManagedNamespacesClientGetResponse, error)`
+- New function `*ManagedNamespacesClient.NewListByManagedClusterPager(string, string, *ManagedNamespacesClientListByManagedClusterOptions) *runtime.Pager[ManagedNamespacesClientListByManagedClusterResponse]`
+- New function `*ManagedNamespacesClient.ListCredential(context.Context, string, string, string, *ManagedNamespacesClientListCredentialOptions) (ManagedNamespacesClientListCredentialResponse, error)`
+- New function `*ManagedNamespacesClient.Update(context.Context, string, string, string, TagsObject, *ManagedNamespacesClientUpdateOptions) (ManagedNamespacesClientUpdateResponse, error)`
+- New struct `AdvancedNetworkingSecurityTransitEncryption`
+- New struct `GPUProfile`
+- New struct `LocalDNSOverrides`
+- New struct `LocalDNSProfile`
+- New struct `ManagedNamespace`
+- New struct `ManagedNamespaceListResult`
+- New struct `SchedulerInstanceProfile`
+- New struct `SchedulerProfile`
+- New struct `SchedulerProfileSchedulerInstanceProfiles`
+- New field `LocalDNSProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `LocalDNSProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `Enabled` in struct `ManagedClusterHTTPProxyConfig`
+- New field `DefaultNodePools` in struct `ManagedClusterNodeProvisioningProfile`
+- New field `SchedulerProfile` in struct `ManagedClusterProperties`
+
+
+## 7.0.0-beta.2 (2025-04-24)
+### Breaking Changes
+
+- Struct `AutoScaleProfile` has been removed
+- Field `OSDiskSizeGB`, `OSDiskType`, `Sizes` of struct `ManualScaleProfile` has been removed
+
+### Features Added
+
+- Type of `ScaleProfile.Autoscale` has been changed from `[]*AutoScaleProfile` to `any`
+- New enum type `AdoptionPolicy` with values `AdoptionPolicyAlways`, `AdoptionPolicyIfIdentical`, `AdoptionPolicyNever`
+- New enum type `AdvancedNetworkPolicies` with values `AdvancedNetworkPoliciesFQDN`, `AdvancedNetworkPoliciesL7`, `AdvancedNetworkPoliciesNone`
+- New enum type `DeletePolicy` with values `DeletePolicyDelete`, `DeletePolicyKeep`
+- New enum type `NamespaceProvisioningState` with values `NamespaceProvisioningStateCanceled`, `NamespaceProvisioningStateCreating`, `NamespaceProvisioningStateDeleting`, `NamespaceProvisioningStateFailed`, `NamespaceProvisioningStateSucceeded`, `NamespaceProvisioningStateUpdating`
+- New enum type `PolicyRule` with values `PolicyRuleAllowAll`, `PolicyRuleAllowSameNamespace`, `PolicyRuleDenyAll`
+- New enum type `TransitEncryption` with values `TransitEncryptionNone`, `TransitEncryptionWireGuard`
+- New function `*ClientFactory.NewNamespacesClient() *NamespacesClient`
+- New function `NewNamespacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NamespacesClient, error)`
+- New function `*NamespacesClient.BeginCreateOrUpdate(context.Context, string, string, string, Namespace, *NamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- New function `*NamespacesClient.BeginDelete(context.Context, string, string, string, *NamespacesClientBeginDeleteOptions) (*runtime.Poller[NamespacesClientDeleteResponse], error)`
+- New function `*NamespacesClient.Get(context.Context, string, string, string, *NamespacesClientGetOptions) (NamespacesClientGetResponse, error)`
+- New function `*NamespacesClient.NewListByManagedClusterPager(string, string, *NamespacesClientListByManagedClusterOptions) *runtime.Pager[NamespacesClientListByManagedClusterResponse]`
+- New function `*NamespacesClient.ListCredential(context.Context, string, string, string, *NamespacesClientListCredentialOptions) (NamespacesClientListCredentialResponse, error)`
+- New function `*NamespacesClient.Update(context.Context, string, string, string, TagsObject, *NamespacesClientUpdateOptions) (NamespacesClientUpdateResponse, error)`
+- New struct `Namespace`
+- New struct `NamespaceListResult`
+- New struct `NamespaceProperties`
+- New struct `NetworkPolicies`
+- New struct `ResourceQuota`
+- New field `AdvancedNetworkPolicies`, `TransitEncryption` in struct `AdvancedNetworkingSecurity`
+- New field `Size` in struct `ManualScaleProfile`
+
+
+## 6.6.0 (2025-04-22)
+### Features Added
+
+- New enum type `NginxIngressControllerType` with values `NginxIngressControllerTypeAnnotationControlled`, `NginxIngressControllerTypeExternal`, `NginxIngressControllerTypeInternal`, `NginxIngressControllerTypeNone`
+- New struct `ManagedClusterIngressProfileNginx`
+- New field `Nginx` in struct `ManagedClusterIngressProfileWebAppRouting`
+
+
+## 7.0.0-beta.1 (2025-04-15)
+### Breaking Changes
+
+- Type of `ManagedClusterAgentPoolProfile.GpuProfile` has been changed from `*GPUProfile` to `*AgentPoolGPUProfile`
+- Type of `ManagedClusterAgentPoolProfileProperties.GpuProfile` has been changed from `*GPUProfile` to `*AgentPoolGPUProfile`
+- Enum `GPUDriver` has been removed
+- Struct `GPUProfile` has been removed
+
+### Features Added
+
+- New value `AgentPoolModeGateway` added to enum type `AgentPoolMode`
+- New value `AgentPoolTypeVirtualMachines` added to enum type `AgentPoolType`
+- New value `ManagedClusterSKUNameAutomatic` added to enum type `ManagedClusterSKUName`
+- New value `OSSKUMariner`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New value `SnapshotTypeManagedCluster` added to enum type `SnapshotType`
+- New value `WorkloadRuntimeKataMshvVMIsolation` added to enum type `WorkloadRuntime`
+- New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
+- New enum type `AgentPoolSSHAccess` with values `AgentPoolSSHAccessDisabled`, `AgentPoolSSHAccessLocalUser`
+- New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
+- New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
+- New enum type `GuardrailsSupport` with values `GuardrailsSupportPreview`, `GuardrailsSupportStable`
+- New enum type `IpvsScheduler` with values `IpvsSchedulerLeastConnection`, `IpvsSchedulerRoundRobin`
+- New enum type `Level` with values `LevelEnforcement`, `LevelOff`, `LevelWarning`
+- New enum type `Mode` with values `ModeIPTABLES`, `ModeIPVS`
+- New enum type `NginxIngressControllerType` with values `NginxIngressControllerTypeAnnotationControlled`, `NginxIngressControllerTypeExternal`, `NginxIngressControllerTypeInternal`, `NginxIngressControllerTypeNone`
+- New enum type `NodeProvisioningMode` with values `NodeProvisioningModeAuto`, `NodeProvisioningModeManual`
+- New enum type `Operator` with values `OperatorDoesNotExist`, `OperatorExists`, `OperatorIn`, `OperatorNotIn`
+- New enum type `PodIPAllocationMode` with values `PodIPAllocationModeDynamicIndividual`, `PodIPAllocationModeStaticBlock`
+- New enum type `PodLinkLocalAccess` with values `PodLinkLocalAccessIMDS`, `PodLinkLocalAccessNone`
+- New enum type `SafeguardsSupport` with values `SafeguardsSupportPreview`, `SafeguardsSupportStable`
+- New enum type `SeccompDefault` with values `SeccompDefaultRuntimeDefault`, `SeccompDefaultUnconfined`
+- New enum type `UndrainableNodeBehavior` with values `UndrainableNodeBehaviorCordon`, `UndrainableNodeBehaviorSchedule`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) (*Client, error)`
+- New function `*Client.NewListNodeImageVersionsPager(string, *ClientListNodeImageVersionsOptions) *runtime.Pager[ClientListNodeImageVersionsResponse]`
+- New function `*ClientFactory.NewClient() *Client`
+- New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
+- New function `*ClientFactory.NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient`
+- New function `*ClientFactory.NewOperationStatusResultClient() *OperationStatusResultClient`
+- New function `NewLoadBalancersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LoadBalancersClient, error)`
+- New function `*LoadBalancersClient.CreateOrUpdate(context.Context, string, string, string, LoadBalancer, *LoadBalancersClientCreateOrUpdateOptions) (LoadBalancersClientCreateOrUpdateResponse, error)`
+- New function `*LoadBalancersClient.BeginDelete(context.Context, string, string, string, *LoadBalancersClientBeginDeleteOptions) (*runtime.Poller[LoadBalancersClientDeleteResponse], error)`
+- New function `*LoadBalancersClient.Get(context.Context, string, string, string, *LoadBalancersClientGetOptions) (LoadBalancersClientGetResponse, error)`
+- New function `*LoadBalancersClient.NewListByManagedClusterPager(string, string, *LoadBalancersClientListByManagedClusterOptions) *runtime.Pager[LoadBalancersClientListByManagedClusterResponse]`
+- New function `NewManagedClusterSnapshotsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedClusterSnapshotsClient, error)`
+- New function `*ManagedClusterSnapshotsClient.CreateOrUpdate(context.Context, string, string, ManagedClusterSnapshot, *ManagedClusterSnapshotsClientCreateOrUpdateOptions) (ManagedClusterSnapshotsClientCreateOrUpdateResponse, error)`
+- New function `*ManagedClusterSnapshotsClient.Delete(context.Context, string, string, *ManagedClusterSnapshotsClientDeleteOptions) (ManagedClusterSnapshotsClientDeleteResponse, error)`
+- New function `*ManagedClusterSnapshotsClient.Get(context.Context, string, string, *ManagedClusterSnapshotsClientGetOptions) (ManagedClusterSnapshotsClientGetResponse, error)`
+- New function `*ManagedClusterSnapshotsClient.NewListByResourceGroupPager(string, *ManagedClusterSnapshotsClientListByResourceGroupOptions) *runtime.Pager[ManagedClusterSnapshotsClientListByResourceGroupResponse]`
+- New function `*ManagedClusterSnapshotsClient.NewListPager(*ManagedClusterSnapshotsClientListOptions) *runtime.Pager[ManagedClusterSnapshotsClientListResponse]`
+- New function `*ManagedClusterSnapshotsClient.UpdateTags(context.Context, string, string, TagsObject, *ManagedClusterSnapshotsClientUpdateTagsOptions) (ManagedClusterSnapshotsClientUpdateTagsResponse, error)`
+- New function `*ManagedClustersClient.GetGuardrailsVersions(context.Context, string, string, *ManagedClustersClientGetGuardrailsVersionsOptions) (ManagedClustersClientGetGuardrailsVersionsResponse, error)`
+- New function `*ManagedClustersClient.GetSafeguardsVersions(context.Context, string, string, *ManagedClustersClientGetSafeguardsVersionsOptions) (ManagedClustersClientGetSafeguardsVersionsResponse, error)`
+- New function `*ManagedClustersClient.NewListGuardrailsVersionsPager(string, *ManagedClustersClientListGuardrailsVersionsOptions) *runtime.Pager[ManagedClustersClientListGuardrailsVersionsResponse]`
+- New function `*ManagedClustersClient.NewListSafeguardsVersionsPager(string, *ManagedClustersClientListSafeguardsVersionsOptions) *runtime.Pager[ManagedClustersClientListSafeguardsVersionsResponse]`
+- New function `*ManagedClustersClient.BeginRebalanceLoadBalancers(context.Context, string, string, RebalanceLoadBalancersRequestBody, *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*runtime.Poller[ManagedClustersClientRebalanceLoadBalancersResponse], error)`
+- New function `NewOperationStatusResultClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OperationStatusResultClient, error)`
+- New function `*OperationStatusResultClient.Get(context.Context, string, string, string, *OperationStatusResultClientGetOptions) (OperationStatusResultClientGetResponse, error)`
+- New function `*OperationStatusResultClient.GetByAgentPool(context.Context, string, string, string, string, *OperationStatusResultClientGetByAgentPoolOptions) (OperationStatusResultClientGetByAgentPoolResponse, error)`
+- New function `*OperationStatusResultClient.NewListPager(string, string, *OperationStatusResultClientListOptions) *runtime.Pager[OperationStatusResultClientListResponse]`
+- New struct `AgentPoolArtifactStreamingProfile`
+- New struct `AgentPoolGPUProfile`
+- New struct `AgentPoolGatewayProfile`
+- New struct `AgentPoolStatus`
+- New struct `AutoScaleProfile`
+- New struct `CloudErrorBody`
+- New struct `Component`
+- New struct `ComponentsByRelease`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `GuardrailsAvailableVersion`
+- New struct `GuardrailsAvailableVersionsList`
+- New struct `GuardrailsAvailableVersionsProperties`
+- New struct `LabelSelector`
+- New struct `LabelSelectorRequirement`
+- New struct `LoadBalancer`
+- New struct `LoadBalancerListResult`
+- New struct `LoadBalancerProperties`
+- New struct `ManagedClusterAIToolchainOperatorProfile`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
+- New struct `ManagedClusterAzureMonitorProfileContainerInsights`
+- New struct `ManagedClusterIngressProfileNginx`
+- New struct `ManagedClusterNodeProvisioningProfile`
+- New struct `ManagedClusterPropertiesForSnapshot`
+- New struct `ManagedClusterSecurityProfileDefenderSecurityGating`
+- New struct `ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem`
+- New struct `ManagedClusterSecurityProfileImageIntegrity`
+- New struct `ManagedClusterSecurityProfileNodeRestriction`
+- New struct `ManagedClusterSnapshot`
+- New struct `ManagedClusterSnapshotListResult`
+- New struct `ManagedClusterSnapshotProperties`
+- New struct `ManagedClusterStaticEgressGatewayProfile`
+- New struct `ManagedClusterStatus`
+- New struct `ManualScaleProfile`
+- New struct `NetworkProfileForSnapshot`
+- New struct `NetworkProfileKubeProxyConfig`
+- New struct `NetworkProfileKubeProxyConfigIpvsConfig`
+- New struct `NodeImageVersion`
+- New struct `NodeImageVersionsListResult`
+- New struct `OperationStatusResult`
+- New struct `OperationStatusResultList`
+- New struct `RebalanceLoadBalancersRequestBody`
+- New struct `SafeguardsAvailableVersion`
+- New struct `SafeguardsAvailableVersionsList`
+- New struct `SafeguardsAvailableVersionsProperties`
+- New struct `SafeguardsProfile`
+- New struct `ScaleProfile`
+- New struct `VirtualMachineNodes`
+- New struct `VirtualMachinesProfile`
+- New field `SSHAccess` in struct `AgentPoolSecurityProfile`
+- New field `ComponentsByReleases` in struct `AgentPoolUpgradeProfileProperties`
+- New field `IsOutOfSupport` in struct `AgentPoolUpgradeProfilePropertiesUpgradesItem`
+- New field `MaxBlockedNodes`, `MaxUnavailable`, `UndrainableNodeBehavior` in struct `AgentPoolUpgradeSettings`
+- New field `GatewayConfigurationName`, `Name`, `Namespace` in struct `IstioEgressGateway`
+- New field `SeccompDefault` in struct `KubeletConfig`
+- New field `Kind` in struct `ManagedCluster`
+- New field `EnableVnetIntegration`, `SubnetID` in struct `ManagedClusterAPIServerAccessProfile`
+- New field `ArtifactStreamingProfile`, `EnableCustomCATrust`, `GatewayProfile`, `NodeInitializationTaints`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `ArtifactStreamingProfile`, `EnableCustomCATrust`, `GatewayProfile`, `NodeInitializationTaints`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `AppMonitoring`, `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
+- New field `EffectiveNoProxy` in struct `ManagedClusterHTTPProxyConfig`
+- New field `Nginx` in struct `ManagedClusterIngressProfileWebAppRouting`
+- New field `ClusterServiceLoadBalancerHealthProbeMode` in struct `ManagedClusterLoadBalancerProfile`
+- New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
+- New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
+- New field `AiToolchainOperatorProfile`, `CreationData`, `EnableNamespaceResources`, `NodeProvisioningProfile`, `SafeguardsProfile`, `Status` in struct `ManagedClusterProperties`
+- New field `ImageIntegrity`, `NodeRestriction` in struct `ManagedClusterSecurityProfile`
+- New field `SecurityGating` in struct `ManagedClusterSecurityProfileDefender`
+- New field `Version` in struct `ManagedClusterStorageProfileDiskCSIDriver`
+- New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
+- New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
+- New field `KubeProxyConfig`, `PodLinkLocalAccess`, `StaticEgressGatewayProfile` in struct `NetworkProfile`
+
+
 ## 6.5.0 (2025-03-26)
 ### Features Added
 

@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -31,6 +32,10 @@ type OrganizationsServer struct {
 	// Get is the fake for method OrganizationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, organizationName string, options *armneonpostgres.OrganizationsClientGetOptions) (resp azfake.Responder[armneonpostgres.OrganizationsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetPostgresVersions is the fake for method OrganizationsClient.GetPostgresVersions
+	// HTTP status codes to indicate success: http.StatusOK
+	GetPostgresVersions func(ctx context.Context, resourceGroupName string, options *armneonpostgres.OrganizationsClientGetPostgresVersionsOptions) (resp azfake.Responder[armneonpostgres.OrganizationsClientGetPostgresVersionsResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method OrganizationsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -99,6 +104,8 @@ func (o *OrganizationsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = o.dispatchBeginDelete(req)
 			case "OrganizationsClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
+			case "OrganizationsClient.GetPostgresVersions":
+				res.resp, res.err = o.dispatchGetPostgresVersions(req)
 			case "OrganizationsClient.NewListByResourceGroupPager":
 				res.resp, res.err = o.dispatchNewListByResourceGroupPager(req)
 			case "OrganizationsClient.NewListBySubscriptionPager":
@@ -243,6 +250,45 @@ func (o *OrganizationsServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OrganizationResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OrganizationsServerTransport) dispatchGetPostgresVersions(req *http.Request) (*http.Response, error) {
+	if o.srv.GetPostgresVersions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetPostgresVersions not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Neon\.Postgres/getPostgresVersions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armneonpostgres.PgVersion](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armneonpostgres.OrganizationsClientGetPostgresVersionsOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armneonpostgres.OrganizationsClientGetPostgresVersionsOptions{
+			Parameters: &body,
+		}
+	}
+	respr, errRespr := o.srv.GetPostgresVersions(req.Context(), resourceGroupNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PgVersionsResult, req)
 	if err != nil {
 		return nil, err
 	}

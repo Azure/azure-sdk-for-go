@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
@@ -45,6 +46,7 @@ func GetAllVersionTags(moduleRelativePath string) ([]string, error) {
 	result := []map[string]interface{}{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
+		log.Printf("Failed to unmarshal response body: %s, error: %v", string(body), err)
 		return nil, err
 	}
 	var tags []string
@@ -75,6 +77,69 @@ func GetAllVersionTags(moduleRelativePath string) ([]string, error) {
 	}
 
 	return tags, nil
+}
+
+func GetAllVersionTagsV2(moduleRelativePath string, sdkRepo repo.SDKRepository) ([]string, error) {
+	arr := strings.Split(moduleRelativePath, "/")
+	log.Printf("Fetching all release tags from GitHub for RP: '%s' Package: '%s' ...", arr[len(arr)-2], arr[len(arr)-1])
+
+	remoteName := "release_remote"
+	fetchOpts := &git.FetchOptions{
+		RemoteName: remoteName,
+		RefSpecs:   []config.RefSpec{"refs/tags/*:refs/tags/*"},
+		Tags:       git.AllTags,
+	}
+
+	err := FetchTagsFromRemote(sdkRepo, remoteName, fetchOpts)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get all tags
+	tags, err := sdkRepo.Tags()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tags: %v", err)
+	}
+
+	var versions []string
+	var result []string
+	versionTag := make(map[string]string)
+	semverRegex := regexp.MustCompile(semver.SemVerRegex) // Precompile the regex
+	err = tags.ForEach(func(ref *plumbing.Reference) error {
+		tagName := ref.Name().String()
+		if strings.Contains(tagName, moduleRelativePath+"/v") {
+			matchedVersion := semverRegex.FindString(tagName)
+			if matchedVersion != "" {
+				versions = append(versions, matchedVersion)
+				versionTag[matchedVersion] = tagName
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to process tags: %v", err)
+	}
+
+	// Sort versions in descending order
+	vs := make([]*semver.Version, len(versions))
+	for i, r := range versions {
+		v, err := semver.NewVersion(r)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse version %s: %v", r, err)
+		}
+		vs[i] = v
+	}
+	sort.Sort(sort.Reverse(semver.Collection(vs)))
+
+	// Build final result
+	for _, v := range vs {
+		result = append(result, versionTag[v.Original()])
+	}
+	if err := cleanupRemote(sdkRepo, remoteName); err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
@@ -143,21 +208,15 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 		return nil, err
 	}
 
-	// create remote with center sdk repo
 	remoteName := "release_remote"
-	_, err = sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{sdk_remote_url}})
-	if err != nil {
-		if err != git.ErrRemoteExists {
-			return nil, err
-		}
+	fetchOpts := &git.FetchOptions{
+		RemoteName: remoteName,
+		RefSpecs:   []config.RefSpec{config.RefSpec(tag + ":" + tag)},
 	}
 
-	// fetch tag from remote
-	err = sdkRepo.Fetch(&git.FetchOptions{RemoteName: remoteName, RefSpecs: []config.RefSpec{config.RefSpec(tag + ":" + tag)}})
+	err = FetchTagsFromRemote(sdkRepo, remoteName, fetchOpts)
 	if err != nil {
-		if err.Error() != "already up-to-date" {
-			return nil, err
-		}
+		return nil, err
 	}
 
 	// checkout to the specific tag
@@ -180,10 +239,7 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	if err != nil {
 		return nil, err
 	}
-
-	// remove remote
-	err = sdkRepo.DeleteRemote(remoteName)
-	if err != nil {
+	if err := cleanupRemote(sdkRepo, remoteName); err != nil {
 		return nil, err
 	}
 
@@ -199,7 +255,7 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 func MarshalUnmarshalFilter(changelog *Changelog) {
 	if changelog.Modified != nil {
 		if changelog.Modified.AdditiveChanges != nil {
-			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
+			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Added.Funcs)
 		}
 		if changelog.Modified.BreakingChanges != nil && changelog.Modified.BreakingChanges.Removed != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.BreakingChanges.Removed.Funcs)
@@ -225,12 +281,12 @@ func FilterChangelog(changelog *Changelog, opts ...func(changelog *Changelog)) {
 
 func EnumFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
-		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.TypeAliases != nil {
-			for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
-				funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Funcs, typeAliases, "Possible")
+		if changelog.Modified.AdditiveChanges != nil && changelog.Modified.AdditiveChanges.Added.TypeAliases != nil {
+			for typeAliases := range changelog.Modified.AdditiveChanges.Added.TypeAliases {
+				funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Added.Funcs, typeAliases, "Possible")
 				if funcExist && len(funcKeys) == 1 {
 					for _, f := range funcKeys {
-						delete(changelog.Modified.AdditiveChanges.Funcs, f)
+						delete(changelog.Modified.AdditiveChanges.Added.Funcs, f)
 					}
 				}
 			}
@@ -275,7 +331,7 @@ func searchKey[T exports.Const | exports.Func | exports.Struct](m map[string]T, 
 
 func FuncFilter(changelog *Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
-		funcOperation(changelog.Modified.AdditiveChanges)
+		funcOperation(changelog.Modified.AdditiveChanges.Added)
 	}
 
 	if changelog.Modified.HasBreakingChanges() {
@@ -371,8 +427,8 @@ func LROFilter(changelog *Changelog) {
 				} else {
 					beginFunc = fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
 				}
-				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
-					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
+				if _, ok := changelog.Modified.AdditiveChanges.Added.Funcs[beginFunc]; ok {
+					delete(changelog.Modified.AdditiveChanges.Added.Funcs, beginFunc)
 					v.ReplacedBy = &beginFunc
 					removedContent.Funcs[bFunc] = v
 				}
@@ -395,8 +451,8 @@ func PageableFilter(changelog *Changelog) {
 				} else {
 					pagination = fmt.Sprintf("%s.New%sPager", clientFunc[0], clientFunc[1])
 				}
-				if _, ok := changelog.Modified.AdditiveChanges.Funcs[pagination]; ok {
-					delete(changelog.Modified.AdditiveChanges.Funcs, pagination)
+				if _, ok := changelog.Modified.AdditiveChanges.Added.Funcs[pagination]; ok {
+					delete(changelog.Modified.AdditiveChanges.Added.Funcs, pagination)
 					v.ReplacedBy = &pagination
 					removedContent.Funcs[bFunc] = v
 				}
@@ -424,7 +480,7 @@ func InterfaceToAnyFilter(changelog *Changelog) {
 func NonExportedFilter(changelog *Changelog) {
 	if !changelog.Modified.IsEmpty() {
 		if changelog.Modified.HasAdditiveChanges() {
-			nonExportOperation(changelog.Modified.AdditiveChanges)
+			nonExportOperation(changelog.Modified.AdditiveChanges.Added)
 		}
 
 		if changelog.Modified.HasBreakingChanges() {
@@ -467,4 +523,57 @@ func nonExportOperation(content *delta.Content) {
 			delete(content.Structs, sName)
 		}
 	}
+}
+
+func TypeToAnyFilter(changelog *Changelog) {
+	if changelog.Modified.HasBreakingChanges() {
+		for structName, s := range changelog.Modified.BreakingChanges.Changes.Structs {
+			for k, v := range s.Fields {
+				if v.To == "any" {
+					delete(s.Fields, k)
+					if changelog.Modified.AdditiveChanges == nil {
+						changelog.Modified.AdditiveChanges = &report.AdditiveChanges{}
+					}
+					if changelog.Modified.AdditiveChanges.Changes.Structs == nil {
+						changelog.Modified.AdditiveChanges.Changes.Structs = map[string]delta.StructDef{}
+					}
+					if _, ok := changelog.Modified.AdditiveChanges.Changes.Structs[structName]; !ok {
+						changelog.Modified.AdditiveChanges.Changes.Structs[structName] = delta.StructDef{
+							Fields: make(map[string]delta.Signature),
+						}
+					}
+					changelog.Modified.AdditiveChanges.Changes.Structs[structName].Fields[k] = v
+				}
+			}
+			if len(s.Fields) == 0 {
+				delete(changelog.Modified.BreakingChanges.Structs, structName)
+			}
+		}
+	}
+}
+
+func FetchTagsFromRemote(sdkRepo repo.SDKRepository, remoteName string, fetchOpts *git.FetchOptions) error {
+	// Create remote with center sdk repo if it doesn't exist
+	_, err := sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{sdk_remote_url}})
+	if err != nil && err != git.ErrRemoteExists {
+		return fmt.Errorf("failed to create remote: %v", err)
+	}
+
+	// Fetch tags from remote
+	err = sdkRepo.Fetch(fetchOpts)
+	// It's normal to get "already up-to-date" error if tags are already fetched
+	if err != nil && err != git.NoErrAlreadyUpToDate && err.Error() != "already up-to-date" {
+		return fmt.Errorf("failed to fetch: %v", err)
+	}
+
+	return nil
+}
+
+func cleanupRemote(sdkRepo repo.SDKRepository, remoteName string) error {
+	// remove remote
+	err := sdkRepo.DeleteRemote(remoteName)
+	if err != nil {
+		return fmt.Errorf("failed to delete remote: %v", err)
+	}
+	return nil
 }

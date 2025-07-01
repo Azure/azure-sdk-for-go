@@ -11,9 +11,9 @@ param(
     [switch]$tidy,
     [switch]$alwaysSetBodyParamRequired,
     [switch]$removeUnreferencedTypes,
-    [switch]$factoryGatherAllParams,
+    [switch]$factoryGatherCommonParams,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.71",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.72",
     [string]$filePrefix,
     [string]$outputFolder
 )
@@ -58,10 +58,10 @@ function Process-Sdk ()
             $removeUnreferencedTypesFlag = "true"
         }
 
-        $factoryGatherAllParamsFlag = "false"
-        if ($factoryGatherAllParams)
+        $factoryGatherAllParamsFlag = "true"
+        if ($factoryGatherCommonParams)
         {
-            $factoryGatherAllParamsFlag = "true"
+            $factoryGatherAllParamsFlag = "false"
         }
 
         if ($filePrefix)
@@ -91,6 +91,10 @@ function Process-Sdk ()
 
     if ($tidy)
     {
+        Write-Host "##[command]Executing go get -u ./... toolchain@none in " $currentDirectory
+        go get -u ./... toolchain@none
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
+        
         Write-Host "##[command]Executing go mod tidy in " $currentDirectory
         go mod tidy
         if ($LASTEXITCODE) { exit $LASTEXITCODE }

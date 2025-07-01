@@ -4,5 +4,5 @@
 package internal
 
 const (
-	version = "v1.2.0-beta.2" //nolint
+	version = "v1.2.1-beta.1" //nolint
 )

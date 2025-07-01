@@ -42,7 +42,7 @@ func NewStandbyContainerGroupPoolsClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Create a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyContainerGroupPoolName - Name of the standby container group pool
 //   - resource - Resource create parameters.
@@ -69,7 +69,7 @@ func (client *StandbyContainerGroupPoolsClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Create a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 func (client *StandbyContainerGroupPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, resource StandbyContainerGroupPoolResource, options *StandbyContainerGroupPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StandbyContainerGroupPoolsClient.BeginCreateOrUpdate"
@@ -111,7 +111,7 @@ func (client *StandbyContainerGroupPoolsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -124,7 +124,7 @@ func (client *StandbyContainerGroupPoolsClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Delete a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyContainerGroupPoolName - Name of the standby container group pool
 //   - options - StandbyContainerGroupPoolsClientBeginDeleteOptions contains the optional parameters for the StandbyContainerGroupPoolsClient.BeginDelete
@@ -149,7 +149,7 @@ func (client *StandbyContainerGroupPoolsClient) BeginDelete(ctx context.Context,
 // Delete - Delete a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 func (client *StandbyContainerGroupPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, options *StandbyContainerGroupPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StandbyContainerGroupPoolsClient.BeginDelete"
@@ -191,7 +191,7 @@ func (client *StandbyContainerGroupPoolsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -200,7 +200,7 @@ func (client *StandbyContainerGroupPoolsClient) deleteCreateRequest(ctx context.
 // Get - Get a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyContainerGroupPoolName - Name of the standby container group pool
 //   - options - StandbyContainerGroupPoolsClientGetOptions contains the optional parameters for the StandbyContainerGroupPoolsClient.Get
@@ -247,7 +247,7 @@ func (client *StandbyContainerGroupPoolsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +264,7 @@ func (client *StandbyContainerGroupPoolsClient) getHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - List StandbyContainerGroupPoolResource resources by resource group
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StandbyContainerGroupPoolsClientListByResourceGroupOptions contains the optional parameters for the StandbyContainerGroupPoolsClient.NewListByResourceGroupPager
 //     method.
@@ -307,7 +307,7 @@ func (client *StandbyContainerGroupPoolsClient) listByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *StandbyContainerGroupPoolsClient) listByResourceGroupHandleRespons
 
 // NewListBySubscriptionPager - List StandbyContainerGroupPoolResource resources by subscription ID
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - options - StandbyContainerGroupPoolsClientListBySubscriptionOptions contains the optional parameters for the StandbyContainerGroupPoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *StandbyContainerGroupPoolsClient) NewListBySubscriptionPager(options *StandbyContainerGroupPoolsClientListBySubscriptionOptions) *runtime.Pager[StandbyContainerGroupPoolsClientListBySubscriptionResponse] {
@@ -362,7 +362,7 @@ func (client *StandbyContainerGroupPoolsClient) listBySubscriptionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -380,7 +380,7 @@ func (client *StandbyContainerGroupPoolsClient) listBySubscriptionHandleResponse
 // Update - Update a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyContainerGroupPoolName - Name of the standby container group pool
 //   - properties - The resource properties to be updated.
@@ -428,7 +428,7 @@ func (client *StandbyContainerGroupPoolsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

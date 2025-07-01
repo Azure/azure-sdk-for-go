@@ -4,10 +4,14 @@
 package common_test
 
 import (
+	"log"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -137,6 +141,8 @@ func TestTypeToAny(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	common.FilterChangelog(changelog, common.TypeToAnyFilter)
+
 	excepted := "### Breaking Changes\n\n- Type of `Client.M` has been changed from `map[string]string` to `map[string]any`\n\n### Features Added\n\n- Type of `Client.A` has been changed from `*int` to `any`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
@@ -183,4 +189,38 @@ func TestNonExportedFilter(t *testing.T) {
 
 	excepted := "### Breaking Changes\n\n- Function `*Public.PublicMethod` has been removed\n\n### Features Added\n\n- New function `*Public.NewPublicMethos() `\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
+func TestGetAllVersionTagsV2(t *testing.T) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	log.Printf("Using current directory as SDK root: %s", cwd)
+
+	// create sdk repo ref
+	sdkRepo, err := repo.OpenSDKRepository(utils.NormalizePath(cwd))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tags, err := common.GetAllVersionTagsV2("refs/tags/sdk/azidentity", sdkRepo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := "refs/tags/sdk/azidentity/v0.1.0"
+	assert.Contains(t, tags, expected)
+	expected = "refs/tags/sdk/azidentity/v1.10.0"
+	assert.Contains(t, tags, expected)
+	assert.GreaterOrEqual(t, len(tags), 69)
+
+	tags, err = common.GetAllVersionTagsV2("sdk/resourcemanager/network/armnetwork", sdkRepo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected = "refs/tags/sdk/resourcemanager/network/armnetwork/v0.1.0"
+	assert.Contains(t, tags, expected)
+	expected = "refs/tags/sdk/resourcemanager/network/armnetwork/v7.0.0"
+	assert.Contains(t, tags, expected)
+	assert.GreaterOrEqual(t, len(tags), 30)
 }

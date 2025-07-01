@@ -8,7 +8,7 @@ import (
 	"os"
 	"sort"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh/stress/tests"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/eh/stress/tests"
 )
 
 func main() {

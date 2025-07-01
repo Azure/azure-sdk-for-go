@@ -142,9 +142,9 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewPostgreSQLServerManagementClient creates a new instance of PostgreSQLServerManagementClient.
-func (c *ClientFactory) NewPostgreSQLServerManagementClient() *PostgreSQLServerManagementClient {
-	return &PostgreSQLServerManagementClient{
+// NewPostgreSQLManagementClient creates a new instance of PostgreSQLManagementClient.
+func (c *ClientFactory) NewPostgreSQLManagementClient() *PostgreSQLManagementClient {
+	return &PostgreSQLManagementClient{
 		internal: c.internal,
 	}
 }
@@ -168,6 +168,14 @@ func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointCo
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	return &PrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewQuotaUsagesClient creates a new instance of QuotaUsagesClient.
+func (c *ClientFactory) NewQuotaUsagesClient() *QuotaUsagesClient {
+	return &QuotaUsagesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -200,6 +208,30 @@ func (c *ClientFactory) NewServerThreatProtectionSettingsClient() *ServerThreatP
 // NewServersClient creates a new instance of ServersClient.
 func (c *ClientFactory) NewServersClient() *ServersClient {
 	return &ServersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTuningConfigurationClient creates a new instance of TuningConfigurationClient.
+func (c *ClientFactory) NewTuningConfigurationClient() *TuningConfigurationClient {
+	return &TuningConfigurationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTuningIndexClient creates a new instance of TuningIndexClient.
+func (c *ClientFactory) NewTuningIndexClient() *TuningIndexClient {
+	return &TuningIndexClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTuningOptionsClient creates a new instance of TuningOptionsClient.
+func (c *ClientFactory) NewTuningOptionsClient() *TuningOptionsClient {
+	return &TuningOptionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

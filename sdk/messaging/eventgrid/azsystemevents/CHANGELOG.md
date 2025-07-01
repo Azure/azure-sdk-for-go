@@ -1,14 +1,47 @@
 # Release History
 
-## 0.6.2 (Unreleased)
+## 1.0.0 (2025-06-26)
 
-### Features Added
+First stable release of the azsystemevents package.
 
 ### Breaking Changes
 
-### Bugs Fixed
+Some types have been renamed:
+- ACSCallEndedByProperties.Type -> Kind
+- ACSRecordingFileStatusUpdatedEventData.RecordingChannelKind -> RecordingChannelType
+- APIManagementExpiredGatewayTokenProperties.ExpiredAtUTC -> ExpiresOn
+- APIManagementGatewayTokenExpiredEventData.GatewayInfo -> Gateway
+- APIManagementGatewayTokenExpiredEventData.TokenInfo -> Token
+- APIManagementGatewayTokenNearExpiryEventData.GatewayInfo -> Gateway
+- APIManagementGatewayTokenNearExpiryEventData.TokenInfo -> Token
+- APIManagementNearExpiryGatewayTokenProperties.ExpiredAtUTC -> ExpiresOn
+- RecordingChannelKind -> ACSRecordingChannelType
+- RecordingContentType -> ACSRecordingContentType 
+- RecordingFormatType -> ACSRecordingFormatType
 
-### Other Changes
+Some types have been removed:
+- ACSCallParticipantEventProperties
+
+## 0.7.0 (2025-05-14)
+
+### Features Added
+
+- New system events have been added:
+  - ACSCallEndedEventData
+  - ACSCallParticipantAddedEventData
+  - ACSCallParticipantRemovedEventData
+  - ACSCallStartedEventData
+  - ACSChatAzureBotCommandReceivedInThreadEventData
+  - ACSChatTypingIndicatorReceivedInThreadEventData
+  - APIManagementCircuitBreakerClosedEventData
+  - APIManagementCircuitBreakerOpenedEventData
+  - APIManagementGatewayTokenExpiredEventData
+  - APIManagementGatewayTokenNearExpiryEventData
+  - EdgeSolutionVersionPublishedEventData
+
+### Breaking Changes
+
+- ACSCallParticipantProperties.Role has changed from a `*string` to a `*ACSCallParticipantRoleKind`.
 
 ## 0.6.1 (2025-02-20)
 

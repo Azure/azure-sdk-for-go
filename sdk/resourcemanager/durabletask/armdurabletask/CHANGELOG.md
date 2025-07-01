@@ -1,5 +1,22 @@
 # Release History
 
+## 0.2.0 (2025-04-15)
+### Features Added
+
+- New enum type `PurgeableOrchestrationState` with values `PurgeableOrchestrationStateCanceled`, `PurgeableOrchestrationStateCompleted`, `PurgeableOrchestrationStateFailed`, `PurgeableOrchestrationStateTerminated`
+- New function `*ClientFactory.NewRetentionPoliciesClient() *RetentionPoliciesClient`
+- New function `NewRetentionPoliciesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RetentionPoliciesClient, error)`
+- New function `*RetentionPoliciesClient.BeginCreateOrReplace(context.Context, string, string, RetentionPolicy, *RetentionPoliciesClientBeginCreateOrReplaceOptions) (*runtime.Poller[RetentionPoliciesClientCreateOrReplaceResponse], error)`
+- New function `*RetentionPoliciesClient.BeginDelete(context.Context, string, string, *RetentionPoliciesClientBeginDeleteOptions) (*runtime.Poller[RetentionPoliciesClientDeleteResponse], error)`
+- New function `*RetentionPoliciesClient.Get(context.Context, string, string, *RetentionPoliciesClientGetOptions) (RetentionPoliciesClientGetResponse, error)`
+- New function `*RetentionPoliciesClient.NewListBySchedulerPager(string, string, *RetentionPoliciesClientListBySchedulerOptions) *runtime.Pager[RetentionPoliciesClientListBySchedulerResponse]`
+- New function `*RetentionPoliciesClient.BeginUpdate(context.Context, string, string, RetentionPolicy, *RetentionPoliciesClientBeginUpdateOptions) (*runtime.Poller[RetentionPoliciesClientUpdateResponse], error)`
+- New struct `RetentionPolicy`
+- New struct `RetentionPolicyDetails`
+- New struct `RetentionPolicyListResult`
+- New struct `RetentionPolicyProperties`
+
+
 ## 0.1.0 (2025-03-20)
 ### Other Changes
 

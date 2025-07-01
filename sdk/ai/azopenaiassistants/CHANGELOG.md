@@ -1,14 +1,10 @@
 # Release History
 
-## 0.3.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.4.0 (2025-06-03)
 
 ### Other Changes
+
+- This module is now DEPRECATED. See [Migration Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai/MIGRATION.md) for more details.
 
 ## 0.3.0 (2024-12-03)
 

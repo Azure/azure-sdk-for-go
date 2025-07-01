@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/RegionInfos_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/RegionInfos_List.json
 func ExampleResourceRegionInfosClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleResourceRegionInfosClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("eastus/default"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/regionInfos"),
-		// 			ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/providers/Microsoft.NetApp/locations/eastus/regionInfos/default"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/regionInfos/default"),
 		// 			Properties: &armnetapp.RegionInfo{
 		// 				AvailabilityZoneMappings: []*armnetapp.RegionInfoAvailabilityZoneMappingsItem{
 		// 					{
@@ -66,7 +66,7 @@ func ExampleResourceRegionInfosClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/RegionInfos_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/RegionInfos_Get.json
 func ExampleResourceRegionInfosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleResourceRegionInfosClient_Get() {
 	// res.RegionInfoResource = armnetapp.RegionInfoResource{
 	// 	Name: to.Ptr("eastus/default"),
 	// 	Type: to.Ptr("Microsoft.NetApp/locations/regionInfos"),
-	// 	ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/providers/Microsoft.NetApp/locations/eastus/regionInfos/default"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/regionInfos/default"),
 	// 	Properties: &armnetapp.RegionInfo{
 	// 		AvailabilityZoneMappings: []*armnetapp.RegionInfoAvailabilityZoneMappingsItem{
 	// 			{

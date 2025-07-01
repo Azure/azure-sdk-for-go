@@ -30,12 +30,14 @@ type Client struct {
 // downloaded. This operation requires the certificates/backup permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate.
 //   - options - BackupCertificateOptions contains the optional parameters for the Client.BackupCertificate method.
 func (client *Client) BackupCertificate(ctx context.Context, name string, options *BackupCertificateOptions) (BackupCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.BackupCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.BackupCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.backupCertificateCreateRequest(ctx, name, options)
 	if err != nil {
@@ -67,7 +69,7 @@ func (client *Client) backupCertificateCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -87,14 +89,16 @@ func (client *Client) backupCertificateHandleResponse(resp *http.Response) (Back
 // If this is the first version, the certificate resource is created. This operation requires the certificates/create permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate. The value you provide may be copied globally for the purpose of running the service.
 //     The value provided should not include personally identifiable or sensitive information.
 //   - parameters - The parameters to create a certificate.
 //   - options - CreateCertificateOptions contains the optional parameters for the Client.CreateCertificate method.
 func (client *Client) CreateCertificate(ctx context.Context, name string, parameters CreateCertificateParameters, options *CreateCertificateOptions) (CreateCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.CreateCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createCertificateCreateRequest(ctx, name, parameters, options)
 	if err != nil {
@@ -126,7 +130,7 @@ func (client *Client) createCertificateCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -151,12 +155,14 @@ func (client *Client) createCertificateHandleResponse(resp *http.Response) (Crea
 // individual versions of a certificate object. This operation requires the certificates/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate.
 //   - options - DeleteCertificateOptions contains the optional parameters for the Client.DeleteCertificate method.
 func (client *Client) DeleteCertificate(ctx context.Context, name string, options *DeleteCertificateOptions) (DeleteCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.DeleteCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCertificateCreateRequest(ctx, name, options)
 	if err != nil {
@@ -188,7 +194,7 @@ func (client *Client) deleteCertificateCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,13 +215,15 @@ func (client *Client) deleteCertificateHandleResponse(resp *http.Response) (Dele
 // no longer created. This operation requires the certificates/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate.
 //   - options - DeleteCertificateOperationOptions contains the optional parameters for the Client.DeleteCertificateOperation
 //     method.
 func (client *Client) DeleteCertificateOperation(ctx context.Context, name string, options *DeleteCertificateOperationOptions) (DeleteCertificateOperationResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteCertificateOperation", client.internal.Tracer(), nil)
+	const operationName = "Client.DeleteCertificateOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCertificateOperationCreateRequest(ctx, name, options)
 	if err != nil {
@@ -247,7 +255,7 @@ func (client *Client) deleteCertificateOperationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -268,11 +276,13 @@ func (client *Client) deleteCertificateOperationHandleResponse(resp *http.Respon
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - options - DeleteContactsOptions contains the optional parameters for the Client.DeleteContacts method.
 func (client *Client) DeleteContacts(ctx context.Context, options *DeleteContactsOptions) (DeleteContactsResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteContacts", client.internal.Tracer(), nil)
+	const operationName = "Client.DeleteContacts"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteContactsCreateRequest(ctx, options)
 	if err != nil {
@@ -300,7 +310,7 @@ func (client *Client) deleteContactsCreateRequest(ctx context.Context, _ *Delete
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,14 +331,16 @@ func (client *Client) deleteContactsHandleResponse(resp *http.Response) (DeleteC
 // requires the certificates/manageissuers/deleteissuers permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer.
+// Generated from API version 7.6
+//   - name - The name of the issuer.
 //   - options - DeleteIssuerOptions contains the optional parameters for the Client.DeleteIssuer method.
-func (client *Client) DeleteIssuer(ctx context.Context, issuerName string, options *DeleteIssuerOptions) (DeleteIssuerResponse, error) {
+func (client *Client) DeleteIssuer(ctx context.Context, name string, options *DeleteIssuerOptions) (DeleteIssuerResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteIssuer", client.internal.Tracer(), nil)
+	const operationName = "Client.DeleteIssuer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteIssuerCreateRequest(ctx, issuerName, options)
+	req, err := client.deleteIssuerCreateRequest(ctx, name, options)
 	if err != nil {
 		return DeleteIssuerResponse{}, err
 	}
@@ -345,20 +357,20 @@ func (client *Client) DeleteIssuer(ctx context.Context, issuerName string, optio
 }
 
 // deleteIssuerCreateRequest creates the DeleteIssuer request.
-func (client *Client) deleteIssuerCreateRequest(ctx context.Context, issuerName string, _ *DeleteIssuerOptions) (*policy.Request, error) {
+func (client *Client) deleteIssuerCreateRequest(ctx context.Context, name string, _ *DeleteIssuerOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
-	if issuerName == "" {
-		return nil, errors.New("parameter issuerName cannot be empty")
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(issuerName))
+	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,14 +390,16 @@ func (client *Client) deleteIssuerHandleResponse(resp *http.Response) (DeleteIss
 // Gets information about a specific certificate. This operation requires the certificates/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate in the given vault.
 //   - version - The version of the certificate. This URI fragment is optional. If not specified, the latest version of the certificate
 //     is returned.
 //   - options - GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
 func (client *Client) GetCertificate(ctx context.Context, name string, version string, options *GetCertificateOptions) (GetCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.GetCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCertificateCreateRequest(ctx, name, version, options)
 	if err != nil {
@@ -418,7 +432,7 @@ func (client *Client) getCertificateCreateRequest(ctx context.Context, name stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -438,12 +452,14 @@ func (client *Client) getCertificateHandleResponse(resp *http.Response) (GetCert
 // Gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate.
 //   - options - GetCertificateOperationOptions contains the optional parameters for the Client.GetCertificateOperation method.
 func (client *Client) GetCertificateOperation(ctx context.Context, name string, options *GetCertificateOperationOptions) (GetCertificateOperationResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetCertificateOperation", client.internal.Tracer(), nil)
+	const operationName = "Client.GetCertificateOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCertificateOperationCreateRequest(ctx, name, options)
 	if err != nil {
@@ -475,7 +491,7 @@ func (client *Client) getCertificateOperationCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -496,12 +512,14 @@ func (client *Client) getCertificateOperationHandleResponse(resp *http.Response)
 // operation requires the certificates/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate in a given key vault.
 //   - options - GetCertificatePolicyOptions contains the optional parameters for the Client.GetCertificatePolicy method.
 func (client *Client) GetCertificatePolicy(ctx context.Context, name string, options *GetCertificatePolicyOptions) (GetCertificatePolicyResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetCertificatePolicy", client.internal.Tracer(), nil)
+	const operationName = "Client.GetCertificatePolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCertificatePolicyCreateRequest(ctx, name, options)
 	if err != nil {
@@ -533,7 +551,7 @@ func (client *Client) getCertificatePolicyCreateRequest(ctx context.Context, nam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -554,11 +572,13 @@ func (client *Client) getCertificatePolicyHandleResponse(resp *http.Response) (G
 // operation requires the certificates/managecontacts permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - options - GetContactsOptions contains the optional parameters for the Client.GetContacts method.
 func (client *Client) GetContacts(ctx context.Context, options *GetContactsOptions) (GetContactsResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetContacts", client.internal.Tracer(), nil)
+	const operationName = "Client.GetContacts"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getContactsCreateRequest(ctx, options)
 	if err != nil {
@@ -586,7 +606,7 @@ func (client *Client) getContactsCreateRequest(ctx context.Context, _ *GetContac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -608,12 +628,14 @@ func (client *Client) getContactsHandleResponse(resp *http.Response) (GetContact
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate
 //   - options - GetDeletedCertificateOptions contains the optional parameters for the Client.GetDeletedCertificate method.
 func (client *Client) GetDeletedCertificate(ctx context.Context, name string, options *GetDeletedCertificateOptions) (GetDeletedCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetDeletedCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.GetDeletedCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getDeletedCertificateCreateRequest(ctx, name, options)
 	if err != nil {
@@ -645,7 +667,7 @@ func (client *Client) getDeletedCertificateCreateRequest(ctx context.Context, na
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -666,14 +688,16 @@ func (client *Client) getDeletedCertificateHandleResponse(resp *http.Response) (
 // operation requires the certificates/manageissuers/getissuers permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer.
+// Generated from API version 7.6
+//   - name - The name of the issuer.
 //   - options - GetIssuerOptions contains the optional parameters for the Client.GetIssuer method.
-func (client *Client) GetIssuer(ctx context.Context, issuerName string, options *GetIssuerOptions) (GetIssuerResponse, error) {
+func (client *Client) GetIssuer(ctx context.Context, name string, options *GetIssuerOptions) (GetIssuerResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetIssuer", client.internal.Tracer(), nil)
+	const operationName = "Client.GetIssuer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getIssuerCreateRequest(ctx, issuerName, options)
+	req, err := client.getIssuerCreateRequest(ctx, name, options)
 	if err != nil {
 		return GetIssuerResponse{}, err
 	}
@@ -690,20 +714,20 @@ func (client *Client) GetIssuer(ctx context.Context, issuerName string, options 
 }
 
 // getIssuerCreateRequest creates the GetIssuer request.
-func (client *Client) getIssuerCreateRequest(ctx context.Context, issuerName string, _ *GetIssuerOptions) (*policy.Request, error) {
+func (client *Client) getIssuerCreateRequest(ctx context.Context, name string, _ *GetIssuerOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
-	if issuerName == "" {
-		return nil, errors.New("parameter issuerName cannot be empty")
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(issuerName))
+	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -725,14 +749,16 @@ func (client *Client) getIssuerHandleResponse(resp *http.Response) (GetIssuerRes
 // PEM file must contain the key as well as x509 certificates. Key Vault will only accept a key in PKCS#8 format.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate. The value you provide may be copied globally for the purpose of running the service.
 //     The value provided should not include personally identifiable or sensitive information.
 //   - parameters - The parameters to import the certificate.
 //   - options - ImportCertificateOptions contains the optional parameters for the Client.ImportCertificate method.
 func (client *Client) ImportCertificate(ctx context.Context, name string, parameters ImportCertificateParameters, options *ImportCertificateOptions) (ImportCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.ImportCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.ImportCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.importCertificateCreateRequest(ctx, name, parameters, options)
 	if err != nil {
@@ -764,7 +790,7 @@ func (client *Client) importCertificateCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -788,7 +814,7 @@ func (client *Client) importCertificateHandleResponse(resp *http.Response) (Impo
 // The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires
 // the certificates/list permission.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - options - ListCertificatePropertiesOptions contains the optional parameters for the Client.NewListCertificatePropertiesPager
 //     method.
 func (client *Client) NewListCertificatePropertiesPager(options *ListCertificatePropertiesOptions) *runtime.Pager[ListCertificatePropertiesResponse] {
@@ -797,6 +823,7 @@ func (client *Client) NewListCertificatePropertiesPager(options *ListCertificate
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListCertificatePropertiesResponse) (ListCertificatePropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListCertificatePropertiesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -823,7 +850,7 @@ func (client *Client) listCertificatePropertiesCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	if options != nil && options.IncludePending != nil {
 		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
 	}
@@ -846,7 +873,7 @@ func (client *Client) listCertificatePropertiesHandleResponse(resp *http.Respons
 // The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This operation requires
 // the certificates/list permission.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate.
 //   - options - ListCertificatePropertiesVersionsOptions contains the optional parameters for the Client.NewListCertificatePropertiesVersionsPager
 //     method.
@@ -856,6 +883,7 @@ func (client *Client) NewListCertificatePropertiesVersionsPager(name string, opt
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListCertificatePropertiesVersionsResponse) (ListCertificatePropertiesVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListCertificatePropertiesVersionsPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -886,7 +914,7 @@ func (client *Client) listCertificatePropertiesVersionsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -908,7 +936,7 @@ func (client *Client) listCertificatePropertiesVersionsHandleResponse(resp *http
 // for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list
 // permission. This operation can only be enabled on soft-delete enabled vaults.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - options - ListDeletedCertificatePropertiesOptions contains the optional parameters for the Client.NewListDeletedCertificatePropertiesPager
 //     method.
 func (client *Client) NewListDeletedCertificatePropertiesPager(options *ListDeletedCertificatePropertiesOptions) *runtime.Pager[ListDeletedCertificatePropertiesResponse] {
@@ -917,6 +945,7 @@ func (client *Client) NewListDeletedCertificatePropertiesPager(options *ListDele
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListDeletedCertificatePropertiesResponse) (ListDeletedCertificatePropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListDeletedCertificatePropertiesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -943,7 +972,7 @@ func (client *Client) listDeletedCertificatePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	if options != nil && options.IncludePending != nil {
 		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
 	}
@@ -966,7 +995,7 @@ func (client *Client) listDeletedCertificatePropertiesHandleResponse(resp *http.
 // The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation
 // requires the certificates/manageissuers/getissuers permission.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - options - ListIssuerPropertiesOptions contains the optional parameters for the Client.NewListIssuerPropertiesPager method.
 func (client *Client) NewListIssuerPropertiesPager(options *ListIssuerPropertiesOptions) *runtime.Pager[ListIssuerPropertiesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListIssuerPropertiesResponse]{
@@ -974,6 +1003,7 @@ func (client *Client) NewListIssuerPropertiesPager(options *ListIssuerProperties
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListIssuerPropertiesResponse) (ListIssuerPropertiesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListIssuerPropertiesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -1000,7 +1030,7 @@ func (client *Client) listIssuerPropertiesCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1021,13 +1051,15 @@ func (client *Client) listIssuerPropertiesHandleResponse(resp *http.Response) (L
 // in the service. This operation requires the certificates/create permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate.
 //   - parameters - The parameters to merge certificate.
 //   - options - MergeCertificateOptions contains the optional parameters for the Client.MergeCertificate method.
 func (client *Client) MergeCertificate(ctx context.Context, name string, parameters MergeCertificateParameters, options *MergeCertificateOptions) (MergeCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.MergeCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.MergeCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.mergeCertificateCreateRequest(ctx, name, parameters, options)
 	if err != nil {
@@ -1059,7 +1091,7 @@ func (client *Client) mergeCertificateCreateRequest(ctx context.Context, name st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1085,12 +1117,14 @@ func (client *Client) mergeCertificateHandleResponse(resp *http.Response) (Merge
 // the certificate/purge permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate
 //   - options - PurgeDeletedCertificateOptions contains the optional parameters for the Client.PurgeDeletedCertificate method.
 func (client *Client) PurgeDeletedCertificate(ctx context.Context, name string, options *PurgeDeletedCertificateOptions) (PurgeDeletedCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.PurgeDeletedCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.PurgeDeletedCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.purgeDeletedCertificateCreateRequest(ctx, name, options)
 	if err != nil {
@@ -1121,7 +1155,7 @@ func (client *Client) purgeDeletedCertificateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1134,12 +1168,14 @@ func (client *Client) purgeDeletedCertificateCreateRequest(ctx context.Context, 
 // This operation requires the certificates/recover permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the deleted certificate
 //   - options - RecoverDeletedCertificateOptions contains the optional parameters for the Client.RecoverDeletedCertificate method.
 func (client *Client) RecoverDeletedCertificate(ctx context.Context, name string, options *RecoverDeletedCertificateOptions) (RecoverDeletedCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.RecoverDeletedCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.RecoverDeletedCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.recoverDeletedCertificateCreateRequest(ctx, name, options)
 	if err != nil {
@@ -1171,7 +1207,7 @@ func (client *Client) recoverDeletedCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1191,12 +1227,14 @@ func (client *Client) recoverDeletedCertificateHandleResponse(resp *http.Respons
 // Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - parameters - The parameters to restore the certificate.
 //   - options - RestoreCertificateOptions contains the optional parameters for the Client.RestoreCertificate method.
 func (client *Client) RestoreCertificate(ctx context.Context, parameters RestoreCertificateParameters, options *RestoreCertificateOptions) (RestoreCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.RestoreCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.RestoreCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.restoreCertificateCreateRequest(ctx, parameters, options)
 	if err != nil {
@@ -1224,7 +1262,7 @@ func (client *Client) restoreCertificateCreateRequest(ctx context.Context, param
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1248,12 +1286,14 @@ func (client *Client) restoreCertificateHandleResponse(resp *http.Response) (Res
 // Sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - contacts - The contacts for the key vault certificate.
 //   - options - SetContactsOptions contains the optional parameters for the Client.SetContacts method.
 func (client *Client) SetContacts(ctx context.Context, contacts Contacts, options *SetContactsOptions) (SetContactsResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetContacts", client.internal.Tracer(), nil)
+	const operationName = "Client.SetContacts"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.setContactsCreateRequest(ctx, contacts, options)
 	if err != nil {
@@ -1281,7 +1321,7 @@ func (client *Client) setContactsCreateRequest(ctx context.Context, contacts Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1306,16 +1346,18 @@ func (client *Client) setContactsHandleResponse(resp *http.Response) (SetContact
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer. The value you provide may be copied globally for the purpose of running the service.
-//     The value provided should not include personally identifiable or sensitive information.
+// Generated from API version 7.6
+//   - name - The name of the issuer. The value you provide may be copied globally for the purpose of running the service. The
+//     value provided should not include personally identifiable or sensitive information.
 //   - parameter - Certificate issuer set parameter.
 //   - options - SetIssuerOptions contains the optional parameters for the Client.SetIssuer method.
-func (client *Client) SetIssuer(ctx context.Context, issuerName string, parameter SetIssuerParameters, options *SetIssuerOptions) (SetIssuerResponse, error) {
+func (client *Client) SetIssuer(ctx context.Context, name string, parameter SetIssuerParameters, options *SetIssuerOptions) (SetIssuerResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetIssuer", client.internal.Tracer(), nil)
+	const operationName = "Client.SetIssuer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.setIssuerCreateRequest(ctx, issuerName, parameter, options)
+	req, err := client.setIssuerCreateRequest(ctx, name, parameter, options)
 	if err != nil {
 		return SetIssuerResponse{}, err
 	}
@@ -1332,20 +1374,20 @@ func (client *Client) SetIssuer(ctx context.Context, issuerName string, paramete
 }
 
 // setIssuerCreateRequest creates the SetIssuer request.
-func (client *Client) setIssuerCreateRequest(ctx context.Context, issuerName string, parameter SetIssuerParameters, _ *SetIssuerOptions) (*policy.Request, error) {
+func (client *Client) setIssuerCreateRequest(ctx context.Context, name string, parameter SetIssuerParameters, _ *SetIssuerOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
-	if issuerName == "" {
-		return nil, errors.New("parameter issuerName cannot be empty")
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(issuerName))
+	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1370,14 +1412,16 @@ func (client *Client) setIssuerHandleResponse(resp *http.Response) (SetIssuerRes
 // certificate's attributes. This operation requires the certificates/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate in the given key vault.
 //   - version - The version of the certificate.
 //   - parameters - The parameters for certificate update.
 //   - options - UpdateCertificateOptions contains the optional parameters for the Client.UpdateCertificate method.
 func (client *Client) UpdateCertificate(ctx context.Context, name string, version string, parameters UpdateCertificateParameters, options *UpdateCertificateOptions) (UpdateCertificateResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateCertificate", client.internal.Tracer(), nil)
+	const operationName = "Client.UpdateCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCertificateCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
@@ -1410,7 +1454,7 @@ func (client *Client) updateCertificateCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1434,14 +1478,16 @@ func (client *Client) updateCertificateHandleResponse(resp *http.Response) (Upda
 // Updates a certificate creation operation that is already in progress. This operation requires the certificates/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate.
 //   - certificateOperation - The certificate operation response.
 //   - options - UpdateCertificateOperationOptions contains the optional parameters for the Client.UpdateCertificateOperation
 //     method.
 func (client *Client) UpdateCertificateOperation(ctx context.Context, name string, certificateOperation UpdateCertificateOperationParameter, options *UpdateCertificateOperationOptions) (UpdateCertificateOperationResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateCertificateOperation", client.internal.Tracer(), nil)
+	const operationName = "Client.UpdateCertificateOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCertificateOperationCreateRequest(ctx, name, certificateOperation, options)
 	if err != nil {
@@ -1473,7 +1519,7 @@ func (client *Client) updateCertificateOperationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1498,13 +1544,15 @@ func (client *Client) updateCertificateOperationHandleResponse(resp *http.Respon
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 7.6
 //   - name - The name of the certificate in the given vault.
 //   - certificatePolicy - The policy for the certificate.
 //   - options - UpdateCertificatePolicyOptions contains the optional parameters for the Client.UpdateCertificatePolicy method.
 func (client *Client) UpdateCertificatePolicy(ctx context.Context, name string, certificatePolicy CertificatePolicy, options *UpdateCertificatePolicyOptions) (UpdateCertificatePolicyResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateCertificatePolicy", client.internal.Tracer(), nil)
+	const operationName = "Client.UpdateCertificatePolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCertificatePolicyCreateRequest(ctx, name, certificatePolicy, options)
 	if err != nil {
@@ -1536,7 +1584,7 @@ func (client *Client) updateCertificatePolicyCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1561,15 +1609,17 @@ func (client *Client) updateCertificatePolicyHandleResponse(resp *http.Response)
 // the certificates/setissuers permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
-//   - issuerName - The name of the issuer.
+// Generated from API version 7.6
+//   - name - The name of the issuer.
 //   - parameter - Certificate issuer update parameter.
 //   - options - UpdateIssuerOptions contains the optional parameters for the Client.UpdateIssuer method.
-func (client *Client) UpdateIssuer(ctx context.Context, issuerName string, parameter UpdateIssuerParameters, options *UpdateIssuerOptions) (UpdateIssuerResponse, error) {
+func (client *Client) UpdateIssuer(ctx context.Context, name string, parameter UpdateIssuerParameters, options *UpdateIssuerOptions) (UpdateIssuerResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateIssuer", client.internal.Tracer(), nil)
+	const operationName = "Client.UpdateIssuer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateIssuerCreateRequest(ctx, issuerName, parameter, options)
+	req, err := client.updateIssuerCreateRequest(ctx, name, parameter, options)
 	if err != nil {
 		return UpdateIssuerResponse{}, err
 	}
@@ -1586,20 +1636,20 @@ func (client *Client) UpdateIssuer(ctx context.Context, issuerName string, param
 }
 
 // updateIssuerCreateRequest creates the UpdateIssuer request.
-func (client *Client) updateIssuerCreateRequest(ctx context.Context, issuerName string, parameter UpdateIssuerParameters, _ *UpdateIssuerOptions) (*policy.Request, error) {
+func (client *Client) updateIssuerCreateRequest(ctx context.Context, name string, parameter UpdateIssuerParameters, _ *UpdateIssuerOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
-	if issuerName == "" {
-		return nil, errors.New("parameter issuerName cannot be empty")
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(issuerName))
+	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

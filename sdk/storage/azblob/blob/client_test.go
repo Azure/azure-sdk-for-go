@@ -267,6 +267,60 @@ func (s *BlobUnrecordedTestsSuite) TestCopyBlobFromUrlSourceContentMD5() {
 	_require.Error(err)
 }
 
+func (s *BlobUnrecordedTestsSuite) TestCopyBlobFromUrlOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const contentSize = 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+
+	srcBlob := containerClient.NewBlockBlobClient("srcblob")
+	destBlob := containerClient.NewBlockBlobClient("destblob")
+
+	// Prepare source bbClient for copy.
+	_, err = srcBlob.Upload(context.Background(), streaming.NopCloser(body), nil)
+	_require.NoError(err)
+
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_require.NoError(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+
+	// Get source blob url with SAS for StageFromURL.
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.NoError(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	requestIntent := blob.FileRequestIntentTypeBackup
+
+	// Invoke CopyFromURL.
+	resp, err := destBlob.CopyFromURL(context.Background(), srcBlobURLWithSAS, &blob.CopyFromURLOptions{
+		FileRequestIntent: &requestIntent,
+	})
+	_require.NoError(err)
+	_require.NotNil(resp)
+}
+
 // This test simulates DownloadFile/Buffer methods,
 // and verifies length and content of file
 func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {

@@ -152,17 +152,15 @@ extends:
               image: $(LINUXVMIMAGE)
               os: linux
 
+            ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+              # during go - pullrequest, we may end up running the entire repo, which may take a very long time
+              # to run. The tests are batched, but we do not batch analyze in the interest of time waiting to spin the job.
+              timeoutInMinutes: 180
+
             steps:
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
                 parameters:
-                  ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
-                    Paths:
-                      - "/*"
-                      - ".vscode/"
-                  ${{ else }}:
-                    Paths:
-                      - "sdk/${{ parameters.ServiceDirectory }}"
-                      - ".vscode/"
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
               - template: /eng/common/pipelines/templates/steps/check-spelling.yml
 

@@ -7,7 +7,7 @@ package armpostgresqlflexibleservers
 
 // AdministratorsClientCreateResponse contains the response from method AdministratorsClient.BeginCreate.
 type AdministratorsClientCreateResponse struct {
-	// Represents an Active Directory administrator.
+	// Represents an Microsoft Entra Administrator.
 	ActiveDirectoryAdministrator
 }
 
@@ -18,13 +18,13 @@ type AdministratorsClientDeleteResponse struct {
 
 // AdministratorsClientGetResponse contains the response from method AdministratorsClient.Get.
 type AdministratorsClientGetResponse struct {
-	// Represents an Active Directory administrator.
+	// Represents an Microsoft Entra Administrator.
 	ActiveDirectoryAdministrator
 }
 
 // AdministratorsClientListByServerResponse contains the response from method AdministratorsClient.NewListByServerPager.
 type AdministratorsClientListByServerResponse struct {
-	// A list of active directory administrators.
+	// A list of Microsoft Entra Administrators.
 	AdministratorListResult
 }
 
@@ -207,14 +207,14 @@ type MigrationsClientUpdateResponse struct {
 	MigrationResource
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of resource provider operations.
 	OperationListResult
 }
 
-// PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse contains the response from method PostgreSQLServerManagementClient.CheckMigrationNameAvailability.
-type PostgreSQLServerManagementClientCheckMigrationNameAvailabilityResponse struct {
+// PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse contains the response from method PostgreSQLManagementClient.CheckMigrationNameAvailability.
+type PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse struct {
 	// Represents a migration name's availability.
 	MigrationNameAvailabilityResource
 }
@@ -252,6 +252,12 @@ type PrivateLinkResourcesClientGetResponse struct {
 type PrivateLinkResourcesClientListByServerResponse struct {
 	// A list of private link resources
 	PrivateLinkResourceListResult
+}
+
+// QuotaUsagesClientListResponse contains the response from method QuotaUsagesClient.NewListPager.
+type QuotaUsagesClientListResponse struct {
+	// Capability for the PostgreSQL server
+	QuotaUsagesListResult
 }
 
 // ReplicasClientListByServerResponse contains the response from method ReplicasClient.NewListByServerPager.
@@ -332,6 +338,56 @@ type ServersClientStopResponse struct {
 type ServersClientUpdateResponse struct {
 	// Represents a server.
 	Server
+}
+
+// TuningConfigurationClientDisableResponse contains the response from method TuningConfigurationClient.BeginDisable.
+type TuningConfigurationClientDisableResponse struct {
+	// placeholder for future response values
+}
+
+// TuningConfigurationClientEnableResponse contains the response from method TuningConfigurationClient.BeginEnable.
+type TuningConfigurationClientEnableResponse struct {
+	// placeholder for future response values
+}
+
+// TuningConfigurationClientListSessionDetailsResponse contains the response from method TuningConfigurationClient.NewListSessionDetailsPager.
+type TuningConfigurationClientListSessionDetailsResponse struct {
+	// A list of tuning configuration sessions.
+	SessionDetailsListResult
+}
+
+// TuningConfigurationClientListSessionsResponse contains the response from method TuningConfigurationClient.NewListSessionsPager.
+type TuningConfigurationClientListSessionsResponse struct {
+	// A list of tuning configuration sessions.
+	SessionsListResult
+}
+
+// TuningConfigurationClientStartSessionResponse contains the response from method TuningConfigurationClient.BeginStartSession.
+type TuningConfigurationClientStartSessionResponse struct {
+	// placeholder for future response values
+}
+
+// TuningConfigurationClientStopSessionResponse contains the response from method TuningConfigurationClient.BeginStopSession.
+type TuningConfigurationClientStopSessionResponse struct {
+	// placeholder for future response values
+}
+
+// TuningIndexClientListRecommendationsResponse contains the response from method TuningIndexClient.NewListRecommendationsPager.
+type TuningIndexClientListRecommendationsResponse struct {
+	// A list of available index recommendations.
+	IndexRecommendationListResult
+}
+
+// TuningOptionsClientGetResponse contains the response from method TuningOptionsClient.Get.
+type TuningOptionsClientGetResponse struct {
+	// Stores property that features impact on some metric if this recommended action is applied.
+	TuningOptionsResource
+}
+
+// TuningOptionsClientListByServerResponse contains the response from method TuningOptionsClient.NewListByServerPager.
+type TuningOptionsClientListByServerResponse struct {
+	// A list of server tuning options.
+	TuningOptionsListResult
 }
 
 // VirtualEndpointsClientCreateResponse contains the response from method VirtualEndpointsClient.BeginCreate.

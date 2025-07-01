@@ -104,6 +104,16 @@ type AgentPoolDeleteMachinesParameter struct {
 	MachineNames []*string
 }
 
+// AgentPoolGatewayProfile - Profile of the managed cluster gateway agent pool.
+type AgentPoolGatewayProfile struct {
+	// The Gateway agent pool associates one public IPPrefix for each static egress gateway to provide public egress. The size
+	// of Public IPPrefix should be selected by the user. Each node in the agent pool
+	// is assigned with one IP from the IPPrefix. The IPPrefix size thus serves as a cap on the size of the Gateway agent pool.
+	// Due to Azure public IPPrefix size limitation, the valid value range is [28, 31]
+	// (/31 = 2 nodes/IPs, /30 = 4 nodes/IPs, /29 = 8 nodes/IPs, /28 = 16 nodes/IPs). The default value is 31.
+	PublicIPPrefixSize *int32
+}
+
 // AgentPoolListResult - The response from the List Agent Pools operation.
 type AgentPoolListResult struct {
 	// The list of agent pools.
@@ -136,6 +146,12 @@ type AgentPoolSecurityProfile struct {
 	// node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the
 	// default is false.
 	EnableVTPM *bool
+}
+
+// AgentPoolStatus - Contains read-only information about the Agent Pool.
+type AgentPoolStatus struct {
+	// READ-ONLY; Preserves the detailed info of failure. If there was no error, this field is omitted.
+	ProvisioningError *CloudErrorBody
 }
 
 // AgentPoolUpgradeProfile - The list of available upgrades for an agent pool.
@@ -186,13 +202,23 @@ type AgentPoolUpgradeSettings struct {
 	// This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage
 	// of the total agent pool size at the time of the upgrade. For
 	// percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information, including best
-	// practices, see:
-	// https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
+	// practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
 	MaxSurge *string
+
+	// This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is specified, it is the percentage
+	// of the total agent pool size at the time of the upgrade. For
+	// percentages, fractional nodes are rounded up. If not specified, the default is 0. For more information, including best
+	// practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
+	MaxUnavailable *string
 
 	// The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node. If not
 	// specified, the default is 0 minutes.
 	NodeSoakDurationInMinutes *int32
+
+	// Defines the behavior for undrainable nodes during upgrade. The most common cause of undrainable nodes is Pod Disruption
+	// Budgets (PDBs), but other issues, such as pod termination grace period is
+	// exceeding the remaining per-node drain timeout or pod is still being in a running state, can also cause undrainable nodes.
+	UndrainableNodeBehavior *UndrainableNodeBehavior
 }
 
 // AgentPoolWindowsProfile - The Windows agent pool's specific profile.
@@ -221,6 +247,21 @@ type AzureKeyVaultKms struct {
 	// Resource ID of key vault. When keyVaultNetworkAccess is Private, this field is required and must be a valid resource ID.
 	// When keyVaultNetworkAccess is Public, leave the field empty.
 	KeyVaultResourceID *string
+}
+
+// CloudErrorBody - An error response from the Container service.
+type CloudErrorBody struct {
+	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string
+
+	// A list of additional details about the error.
+	Details []*CloudErrorBody
+
+	// A message describing the error, intended to be suitable for display in a user interface.
+	Message *string
+
+	// The target of the particular error. For example, the name of the property in error.
+	Target *string
 }
 
 // ClusterUpgradeSettings - Settings for upgrading a cluster.
@@ -545,6 +586,9 @@ type Machine struct {
 
 	// READ-ONLY; Resource type
 	Type *string
+
+	// READ-ONLY; The Availability zone in which machine is located.
+	Zones []*string
 }
 
 // MachineIPAddress - The machine IP address details.
@@ -725,9 +769,16 @@ type ManagedClusterAPIServerAccessProfile struct {
 	// Whether to create additional public FQDN for private cluster or not.
 	EnablePrivateClusterPublicFQDN *bool
 
+	// Whether to enable apiserver vnet integration for the cluster or not. See aka.ms/AksVnetIntegration for more details.
+	EnableVnetIntegration *bool
+
 	// The default is System. For more details see configure private DNS zone [https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone].
 	// Allowed values are 'system' and 'none'.
 	PrivateDNSZone *string
+
+	// It is required when creating a new cluster with BYO Vnet, or when updating an existing cluster to enable apiserver vnet
+	// integration.
+	SubnetID *string
 }
 
 // ManagedClusterAccessProfile - Managed cluster Access Profile.
@@ -817,6 +868,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// Whether to enable UltraSSD
 	EnableUltraSSD *bool
 
+	// Profile specific to a managed agent pool in Gateway mode. This field cannot be set if agent pool mode is not Gateway.
+	GatewayProfile *AgentPoolGatewayProfile
+
 	// GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.
 	GpuInstanceProfile *GPUInstanceProfile
 
@@ -892,6 +946,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// cannot be greater than the control plane version. For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
 	OrchestratorVersion *string
 
+	// The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is 'DynamicIndividual'.
+	PodIPAllocationMode *PodIPAllocationMode
+
 	// If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	PodSubnetID *string
@@ -921,6 +978,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// [https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing]
 	SpotMaxPrice *float32
 
+	// Contains read-only information about the Agent Pool.
+	Status *AgentPoolStatus
+
 	// The tags to be persisted on the agent pool virtual machine scale set.
 	Tags map[string]*string
 
@@ -934,6 +994,12 @@ type ManagedClusterAgentPoolProfile struct {
 	// fail to run correctly. For more details on restricted VM sizes, see:
 	// https://docs.microsoft.com/azure/aks/quotas-skus-regions
 	VMSize *string
+
+	// The status of nodes in a VirtualMachines agent pool.
+	VirtualMachineNodesStatus []*VirtualMachineNodes
+
+	// Specifications on VirtualMachines agent pool.
+	VirtualMachinesProfile *VirtualMachinesProfile
 
 	// If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
 	// nodes and pods, otherwise it applies to just nodes. This is of the form:
@@ -998,6 +1064,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Whether to enable UltraSSD
 	EnableUltraSSD *bool
 
+	// Profile specific to a managed agent pool in Gateway mode. This field cannot be set if agent pool mode is not Gateway.
+	GatewayProfile *AgentPoolGatewayProfile
+
 	// GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.
 	GpuInstanceProfile *GPUInstanceProfile
 
@@ -1073,6 +1142,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// cannot be greater than the control plane version. For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
 	OrchestratorVersion *string
 
+	// The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is 'DynamicIndividual'.
+	PodIPAllocationMode *PodIPAllocationMode
+
 	// If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	PodSubnetID *string
@@ -1102,6 +1174,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// [https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing]
 	SpotMaxPrice *float32
 
+	// Contains read-only information about the Agent Pool.
+	Status *AgentPoolStatus
+
 	// The tags to be persisted on the agent pool virtual machine scale set.
 	Tags map[string]*string
 
@@ -1115,6 +1190,12 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// fail to run correctly. For more details on restricted VM sizes, see:
 	// https://docs.microsoft.com/azure/aks/quotas-skus-regions
 	VMSize *string
+
+	// The status of nodes in a VirtualMachines agent pool.
+	VirtualMachineNodesStatus []*VirtualMachineNodes
+
+	// Specifications on VirtualMachines agent pool.
+	VirtualMachinesProfile *VirtualMachinesProfile
 
 	// If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
 	// nodes and pods, otherwise it applies to just nodes. This is of the form:
@@ -1248,6 +1329,11 @@ type ManagedClusterIngressProfile struct {
 	WebAppRouting *ManagedClusterIngressProfileWebAppRouting
 }
 
+type ManagedClusterIngressProfileNginx struct {
+	// Ingress type for the default NginxIngressController custom resource
+	DefaultIngressControllerType *NginxIngressControllerType
+}
+
 // ManagedClusterIngressProfileWebAppRouting - Application Routing add-on settings for the ingress profile.
 type ManagedClusterIngressProfileWebAppRouting struct {
 	// Resource IDs of the DNS zones to be associated with the Application Routing add-on. Used only when Application Routing
@@ -1258,6 +1344,9 @@ type ManagedClusterIngressProfileWebAppRouting struct {
 
 	// Whether to enable the Application Routing add-on.
 	Enabled *bool
+
+	// Configuration for the default NginxIngressController. See more at https://learn.microsoft.com/en-us/azure/aks/app-routing-nginx-configuration#the-default-nginx-ingress-controller.
+	Nginx *ManagedClusterIngressProfileNginx
 
 	// READ-ONLY; Managed identity of the Application Routing add-on. This is the identity that should be granted permissions,
 	// for example, to manage the associated Azure DNS resource and get certificates from Azure
@@ -1508,11 +1597,6 @@ type ManagedClusterProperties struct {
 	// This is of the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'
 	DiskEncryptionSetID *string
 
-	// (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in Kubernetes
-	// v1.21, and removed from Kubernetes in v1.25. Learn more at
-	// https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-	EnablePodSecurityPolicy *bool
-
 	// Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool
 
@@ -1575,6 +1659,9 @@ type ManagedClusterProperties struct {
 
 	// Information about a service principal identity for the cluster to use for manipulating Azure APIs.
 	ServicePrincipalProfile *ManagedClusterServicePrincipalProfile
+
+	// Contains read-only information about the Managed Cluster.
+	Status *ManagedClusterStatus
 
 	// Storage profile for the managed cluster.
 	StorageProfile *ManagedClusterStorageProfile
@@ -1768,6 +1855,18 @@ type ManagedClusterServicePrincipalProfile struct {
 	Secret *string
 }
 
+// ManagedClusterStaticEgressGatewayProfile - The Static Egress Gateway addon configuration for the cluster.
+type ManagedClusterStaticEgressGatewayProfile struct {
+	// Indicates if Static Egress Gateway addon is enabled or not.
+	Enabled *bool
+}
+
+// ManagedClusterStatus - Contains read-only information about the Managed Cluster.
+type ManagedClusterStatus struct {
+	// READ-ONLY; Preserves the detailed info of failure. If there was no error, this field is omitted.
+	ProvisioningError *CloudErrorBody
+}
+
 // ManagedClusterStorageProfile - Storage profile for the container service cluster.
 type ManagedClusterStorageProfile struct {
 	// AzureBlob CSI Driver settings for the storage profile.
@@ -1894,6 +1993,15 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
+}
+
+// ManualScaleProfile - Specifications on number of machines.
+type ManualScaleProfile struct {
+	// Number of nodes.
+	Count *int32
+
+	// VM size that AKS will use when creating and scaling e.g. 'StandardE4sv3', 'StandardE16sv3' or 'StandardD16sv5'.
+	Size *string
 }
 
 // MeshRevision - Holds information on upgrades and compatibility for given major.minor mesh release.
@@ -2035,6 +2143,9 @@ type NetworkProfile struct {
 	// One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
 	// networking. They must not overlap with any Subnet IP ranges.
 	ServiceCidrs []*string
+
+	// The profile for Static Egress Gateway addon. For more details about Static Egress Gateway, see https://aka.ms/aks/static-egress-gateway.
+	StaticEgressGatewayProfile *ManagedClusterStaticEgressGatewayProfile
 }
 
 // OperationListResult - The List Operation response.
@@ -2232,6 +2343,12 @@ type SSHPublicKey struct {
 	// REQUIRED; Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with
 	// or without headers.
 	KeyData *string
+}
+
+// ScaleProfile - Specifications on how to scale a VirtualMachines agent pool.
+type ScaleProfile struct {
+	// Specifications on how to scale the VirtualMachines agent pool to a fixed size.
+	Manual []*ManualScaleProfile
 }
 
 // Schedule - One and only one of the schedule types should be specified. Choose either 'daily', 'weekly', 'absoluteMonthly'
@@ -2554,6 +2671,21 @@ type UserAssignedIdentity struct {
 
 	// The resource ID of the user assigned identity.
 	ResourceID *string
+}
+
+// VirtualMachineNodes - Current status on a group of nodes of the same vm size.
+type VirtualMachineNodes struct {
+	// Number of nodes.
+	Count *int32
+
+	// The VM size of the agents used to host this group of nodes.
+	Size *string
+}
+
+// VirtualMachinesProfile - Specifications on VirtualMachines agent pool.
+type VirtualMachinesProfile struct {
+	// Specifications on how to scale a VirtualMachines agent pool.
+	Scale *ScaleProfile
 }
 
 // WeeklySchedule - For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.

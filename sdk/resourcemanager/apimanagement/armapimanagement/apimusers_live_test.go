@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -187,13 +187,5 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	userConfirmationPasswordClient, err := armapimanagement.NewUserConfirmationPasswordClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = userConfirmationPasswordClient.Send(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, &armapimanagement.UserConfirmationPasswordClientSendOptions{AppType: nil})
-	testsuite.Require().NoError(err)
-
-	// From step User_Delete
-	fmt.Println("Call operation: User_Delete")
-	_, err = userClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, "*", &armapimanagement.UserClientDeleteOptions{DeleteSubscriptions: nil,
-		Notify:  nil,
-		AppType: nil,
-	})
 	testsuite.Require().NoError(err)
 }

@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
@@ -44,7 +44,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 	type sendResult struct {
 		PartitionID  string
-		OffsetBefore int64
+		OffsetBefore string
 	}
 
 	sendResults := make([]sendResult, len(ehProps.PartitionIDs))
@@ -126,7 +126,7 @@ func TestConsumerClient_Recovery(t *testing.T) {
 			require.NoError(t, err)
 			require.EqualValues(t, 1, len(events))
 
-			t.Logf("[%s] Received seq:%d, offset:%d", sr.PartitionID, events[0].SequenceNumber, events[0].Offset)
+			t.Logf("[%s] Received seq:%d, offset:%s", sr.PartitionID, events[0].SequenceNumber, events[0].Offset)
 
 			require.Equal(t, fmt.Sprintf("event 1 for partition %s", sr.PartitionID), string(events[0].Body))
 		}(i, sr)
@@ -193,7 +193,7 @@ func TestConsumerClient_RecoveryLink(t *testing.T) {
 
 	type sendResult struct {
 		PartitionID  string
-		OffsetBefore int64
+		OffsetBefore string
 	}
 
 	sendResults := make([]sendResult, len(ehProps.PartitionIDs))

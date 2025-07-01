@@ -18,6 +18,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -39,6 +40,77 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("GetToken error: %v", err)
 	}
+}
+
+func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
+	if v, ok := os.LookupEnv(azureTokenCredentials); ok {
+		require.NoError(t, os.Unsetenv(azureTokenCredentials))
+		defer os.Setenv(azureTokenCredentials, v)
+	}
+	// configure EnvironmentCredential and WorkloadIdentityCredential
+	// so those types appear in the chain instead of error reporters
+	for k, v := range map[string]string{
+		azureClientID:     fakeClientID,
+		azureClientSecret: fakeSecret,
+		azureTenantID:     fakeTenantID,
+		// this file won't be read because the test doesn't request a token
+		azureFederatedTokenFile: "/dev/null",
+	} {
+		t.Setenv(k, v)
+	}
+	fullChain := []azcore.TokenCredential{
+		&EnvironmentCredential{},
+		&WorkloadIdentityCredential{},
+		&ManagedIdentityCredential{},
+		&AzureCLICredential{},
+		&AzureDeveloperCLICredential{},
+	}
+	firstDevIndex := 3
+
+	t.Run("not set", func(t *testing.T) {
+		actual, err := NewDefaultAzureCredential(nil)
+		require.NoError(t, err)
+		require.Equal(t, len(fullChain), len(actual.chain.sources))
+		for i, c := range fullChain {
+			require.IsType(t, c, actual.chain.sources[i])
+		}
+	})
+
+	t.Run("dev", func(t *testing.T) {
+		t.Setenv(azureTokenCredentials, "dev")
+		actual, err := NewDefaultAzureCredential(nil)
+		require.NoError(t, err)
+		require.Equal(t, len(fullChain)-firstDevIndex, len(actual.chain.sources))
+		for i, c := range fullChain[firstDevIndex:] {
+			require.IsType(t, c, actual.chain.sources[i])
+		}
+	})
+
+	t.Run("prod", func(t *testing.T) {
+		t.Setenv(azureTokenCredentials, "prod")
+		actual, err := NewDefaultAzureCredential(nil)
+		require.NoError(t, err)
+		require.Equal(t, firstDevIndex, len(actual.chain.sources))
+		for i, c := range fullChain[:firstDevIndex] {
+			require.IsType(t, c, actual.chain.sources[i])
+		}
+	})
+
+	for _, c := range []string{credNameEnvironment, credNameWorkloadIdentity, credNameManagedIdentity, credNameAzureCLI, credNameAzureDeveloperCLI} {
+		t.Run(c, func(t *testing.T) {
+			t.Setenv(azureTokenCredentials, c)
+			actual, err := NewDefaultAzureCredential(nil)
+			require.NoError(t, err)
+			require.Equal(t, 1, len(actual.chain.sources))
+			require.Equal(t, "*azidentity."+c, fmt.Sprintf("%T", actual.chain.sources[0]))
+		})
+	}
+
+	t.Run("invalid", func(t *testing.T) {
+		t.Setenv(azureTokenCredentials, t.Name())
+		_, err := NewDefaultAzureCredential(nil)
+		require.ErrorContains(t, err, azureTokenCredentials)
+	})
 }
 
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
@@ -66,7 +138,7 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	// these credentials' constructors returned errors because their configuration is absent;
 	// those errors should be represented in the error returned by DefaultAzureCredential.GetToken()
 	// and NewDefaultAzureCredential should have logged them
-	for _, name := range []string{"EnvironmentCredential", credNameWorkloadIdentity} {
+	for _, name := range []string{credNameEnvironment, credNameWorkloadIdentity} {
 		matched, err := regexp.MatchString(name+`: .+\n`, err.Error())
 		if err != nil {
 			t.Fatal(err)

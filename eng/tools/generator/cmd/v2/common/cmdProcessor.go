@@ -44,15 +44,14 @@ func ExecuteGoGenerate(path string) error {
 	}
 
 	cmdWaitErr := cmd.Wait()
+	if cmdWaitErr == nil {
+		return nil
+	}
 
 	fmt.Println(stdoutBuffer.String())
 	fmt.Println(stderrBuffer.String())
 
 	if stdoutBuffer.Len() > 0 {
-		// find generated successuly flag
-		if strings.Contains(stdoutBuffer.String(), "Autorest completed") {
-			return nil
-		}
 		if strings.Contains(stdoutBuffer.String(), "error   |") {
 			// find first error message until last
 			errMsgs := stdoutBuffer.Bytes()
@@ -93,8 +92,8 @@ func ExecuteGoGenerate(path string) error {
 }
 
 // execute `pwsh Invoke-MgmtTestgen` command and fetch result
-func ExecuteExampleGenerate(path, packagePath, flag string) error {
-	cmd := exec.Command("pwsh", "../../../../eng/scripts/Invoke-MgmtTestgen.ps1", "-skipBuild", "-cleanGenerated", "-format", "-tidy", "-generateExample", packagePath, flag)
+func ExecuteExampleGenerate(path, packagePath string, flags []string) error {
+	cmd := exec.Command("pwsh", append([]string{"../../../../eng/scripts/Invoke-MgmtTestgen.ps1", "-skipBuild", "-cleanGenerated", "-format", "-tidy", "-generateExample", packagePath}, flags...)...)
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
 	log.Printf("Result of `pwsh Invoke-MgmtTestgen` execution: \n%s", string(output))

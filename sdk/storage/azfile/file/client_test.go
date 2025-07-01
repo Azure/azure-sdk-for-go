@@ -421,6 +421,36 @@ func (f *FileRecordedTestsSuite) TestFileCreateNegativeMetadataInvalid() {
 	_require.Error(err)
 }
 
+func (f *FileRecordedTestsSuite) TestFileCreateWithPermissionKey() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	createResp, err := shareClient.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
+	_require.NoError(err)
+	_require.NotNil(createResp.FilePermissionKey)
+	_require.NotEmpty(*createResp.FilePermissionKey)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+	_, err = fileClient.Create(context.Background(), 1024, &file.CreateOptions{
+		Permissions: &file.Permissions{
+			PermissionKey: createResp.FilePermissionKey,
+		},
+	})
+	_require.NoError(err)
+
+	getResp, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.FilePermissionKey)
+}
+
 func (f *FileRecordedTestsSuite) TestCreateFileNFS() {
 	_require := require.New(f.T())
 	testName := f.T().Name()

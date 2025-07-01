@@ -489,6 +489,66 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURWithLRequestIntentHeader() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4KB
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	contentMD5 := md5.Sum(sourceData)
+	srcBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appenddest"))
+
+	// Prepare source abClient for copy.
+	_, err = srcBlob.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
+	_require.NoError(err)
+
+	// Get source abClient URL with SAS for AppendBlockFromURL.
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+
+	keyCredential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+	perms := sas.BlobPermissions{Read: true}
+
+	srcBlobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   perms.String(),
+	}.SignWithSharedKey(keyCredential)
+	_require.NoError(err)
+
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Append block from URL.
+	_, err = destBlob.Create(context.Background(), nil)
+	_require.NoError(err)
+	requestIntent := blob.FileRequestIntentTypeBackup
+	appendFromURLResp, err := destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendblob.AppendBlockFromURLOptions{
+		SourceContentValidation: blob.SourceContentValidationTypeMD5(contentMD5[:]),
+		FileRequestIntent:       &requestIntent,
+	})
+
+	_require.NoError(err)
+	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
+
+	// Check data integrity through downloading.
+	destBuffer := make([]byte, 4*1024)
+	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
+	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
+	_require.NoError(err)
+	_require.Equal(destBuffer, sourceData)
+}
+
 func (s *AppendBlobUnrecordedTestsSuite) TestBlobEncryptionScopeSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

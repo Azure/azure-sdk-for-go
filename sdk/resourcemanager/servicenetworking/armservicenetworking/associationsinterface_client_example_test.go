@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/AssociationPut.json
+// Generated from example definition: 2025-03-01-preview/AssociationPut.json
 func ExampleAssociationsInterfaceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleAssociationsInterfaceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AssociationDelete.json
+// Generated from example definition: 2025-03-01-preview/AssociationDelete.json
 func ExampleAssociationsInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleAssociationsInterfaceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/AssociationGet.json
+// Generated from example definition: 2025-03-01-preview/AssociationGet.json
 func ExampleAssociationsInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleAssociationsInterfaceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/AssociationsGet.json
+// Generated from example definition: 2025-03-01-preview/AssociationsGet.json
 func ExampleAssociationsInterfaceClient_NewListByTrafficControllerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleAssociationsInterfaceClient_NewListByTrafficControllerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/AssociationPatch.json
+// Generated from example definition: 2025-03-01-preview/AssociationPatch.json
 func ExampleAssociationsInterfaceClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

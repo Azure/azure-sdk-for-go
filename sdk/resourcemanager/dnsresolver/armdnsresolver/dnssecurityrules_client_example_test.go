@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsSecurityRule_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsSecurityRule_Put.json
 func ExampleDNSSecurityRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,8 +36,7 @@ func ExampleDNSSecurityRulesClient_BeginCreateOrUpdate() {
 		},
 		Properties: &armdnsresolver.DNSSecurityRuleProperties{
 			Action: &armdnsresolver.DNSSecurityRuleAction{
-				ActionType:        to.Ptr(armdnsresolver.ActionTypeBlock),
-				BlockResponseCode: to.Ptr(armdnsresolver.BlockResponseCodeSERVFAIL),
+				ActionType: to.Ptr(armdnsresolver.ActionTypeBlock),
 			},
 			DNSResolverDomainLists: []*armdnsresolver.SubResource{
 				{
@@ -77,7 +76,6 @@ func ExampleDNSSecurityRulesClient_BeginCreateOrUpdate() {
 	// 	Properties: &armdnsresolver.DNSSecurityRuleProperties{
 	// 		Action: &armdnsresolver.DNSSecurityRuleAction{
 	// 			ActionType: to.Ptr(armdnsresolver.ActionTypeBlock),
-	// 			BlockResponseCode: to.Ptr(armdnsresolver.BlockResponseCodeSERVFAIL),
 	// 		},
 	// 		DNSResolverDomainLists: []*armdnsresolver.SubResource{
 	// 			{
@@ -90,7 +88,7 @@ func ExampleDNSSecurityRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsSecurityRule_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsSecurityRule_Patch.json
 func ExampleDNSSecurityRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +147,7 @@ func ExampleDNSSecurityRulesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsSecurityRule_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsSecurityRule_Delete.json
 func ExampleDNSSecurityRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +168,7 @@ func ExampleDNSSecurityRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsSecurityRule_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsSecurityRule_Get.json
 func ExampleDNSSecurityRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +204,6 @@ func ExampleDNSSecurityRulesClient_Get() {
 	// 	Properties: &armdnsresolver.DNSSecurityRuleProperties{
 	// 		Action: &armdnsresolver.DNSSecurityRuleAction{
 	// 			ActionType: to.Ptr(armdnsresolver.ActionTypeBlock),
-	// 			BlockResponseCode: to.Ptr(armdnsresolver.BlockResponseCodeSERVFAIL),
 	// 		},
 	// 		DNSResolverDomainLists: []*armdnsresolver.SubResource{
 	// 			{
@@ -219,7 +216,7 @@ func ExampleDNSSecurityRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsSecurityRule_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsSecurityRule_List.json
 func ExampleDNSSecurityRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +258,6 @@ func ExampleDNSSecurityRulesClient_NewListPager() {
 		// 			Properties: &armdnsresolver.DNSSecurityRuleProperties{
 		// 				Action: &armdnsresolver.DNSSecurityRuleAction{
 		// 					ActionType: to.Ptr(armdnsresolver.ActionTypeBlock),
-		// 					BlockResponseCode: to.Ptr(armdnsresolver.BlockResponseCodeSERVFAIL),
 		// 				},
 		// 				DNSResolverDomainLists: []*armdnsresolver.SubResource{
 		// 					{
@@ -290,7 +286,6 @@ func ExampleDNSSecurityRulesClient_NewListPager() {
 		// 			Properties: &armdnsresolver.DNSSecurityRuleProperties{
 		// 				Action: &armdnsresolver.DNSSecurityRuleAction{
 		// 					ActionType: to.Ptr(armdnsresolver.ActionTypeBlock),
-		// 					BlockResponseCode: to.Ptr(armdnsresolver.BlockResponseCodeSERVFAIL),
 		// 				},
 		// 				DNSResolverDomainLists: []*armdnsresolver.SubResource{
 		// 					{

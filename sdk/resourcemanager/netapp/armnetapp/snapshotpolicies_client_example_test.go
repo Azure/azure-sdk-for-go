@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/SnapshotPolicies_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_List.json
 func ExampleSnapshotPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleSnapshotPoliciesClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("account1/snapshotPolicy1"),
 		// 			Type: to.Ptr("Microsoft.NetApp/netAppAccounts/snapshotPolicies"),
-		// 			ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armnetapp.SnapshotPolicyProperties{
 		// 				DailySchedule: &armnetapp.DailySchedule{
@@ -77,7 +77,7 @@ func ExampleSnapshotPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/SnapshotPolicies_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_Get.json
 func ExampleSnapshotPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	// res.SnapshotPolicy = armnetapp.SnapshotPolicy{
 	// 	Name: to.Ptr("account1/snapshotPolicy1"),
 	// 	Type: to.Ptr("Microsoft.NetApp/netAppAccounts/snapshotPolicies"),
-	// 	ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.SnapshotPolicyProperties{
 	// 		DailySchedule: &armnetapp.DailySchedule{
@@ -128,7 +128,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/SnapshotPolicies_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_Create.json
 func ExampleSnapshotPoliciesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	// res.SnapshotPolicy = armnetapp.SnapshotPolicy{
 	// 	Name: to.Ptr("account1/snapshotPolicy1"),
 	// 	Type: to.Ptr("Microsoft.NetApp/netAppAccounts/snapshotPolicies"),
-	// 	ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.SnapshotPolicyProperties{
 	// 		DailySchedule: &armnetapp.DailySchedule{
@@ -205,7 +205,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/SnapshotPolicies_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_Update.json
 func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	// res.SnapshotPolicy = armnetapp.SnapshotPolicy{
 	// 	Name: to.Ptr("account1/snapshotPolicy1"),
 	// 	Type: to.Ptr("Microsoft.NetApp/netAppAccounts/snapshotPolicies"),
-	// 	ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.SnapshotPolicyProperties{
 	// 		DailySchedule: &armnetapp.DailySchedule{
@@ -286,7 +286,7 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/SnapshotPolicies_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_Delete.json
 func ExampleSnapshotPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/SnapshotPolicies_ListVolumes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/SnapshotPolicies_ListVolumes.json
 func ExampleSnapshotPoliciesClient_ListVolumes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,14 +330,14 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	// 		{
 	// 			Name: to.Ptr("account1/pool1/volume1"),
 	// 			Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 			ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
+	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
 	// 			Location: to.Ptr("eastus"),
 	// 			Properties: &armnetapp.VolumeProperties{
 	// 				CreationToken: to.Ptr("some-amazing-filepath"),
-	// 				FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
+	// 				FileSystemID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 				ProvisioningState: to.Ptr("Succeeded"),
 	// 				ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 				SubnetID: to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 				ThroughputMibps: to.Ptr[float32](128),
 	// 				UsageThreshold: to.Ptr[int64](107374182400),
 	// 			},

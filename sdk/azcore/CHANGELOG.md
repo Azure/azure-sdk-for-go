@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed incorrect request/response logging try info when logging a request that's being retried.
+
 ### Other Changes
 
 ## 1.18.0 (2025-04-03)

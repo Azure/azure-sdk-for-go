@@ -7,7 +7,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v6.5.0"
+	moduleVersion = "v7.1.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -15,6 +15,9 @@ const (
 type AgentPoolMode string
 
 const (
+	// AgentPoolModeGateway - Gateway agent pools are dedicated to providing static egress IPs to pods. For more details, see
+	// https://aka.ms/aks/static-egress-gateway.
+	AgentPoolModeGateway AgentPoolMode = "Gateway"
 	// AgentPoolModeSystem - System agent pools are primarily for hosting critical system pods such as CoreDNS and metrics-server.
 	// System agent pools osType must be Linux. System agent pools VM SKU must have at least 2vCPUs and 4GB of memory.
 	AgentPoolModeSystem AgentPoolMode = "System"
@@ -25,6 +28,7 @@ const (
 // PossibleAgentPoolModeValues returns the possible values for the AgentPoolMode const type.
 func PossibleAgentPoolModeValues() []AgentPoolMode {
 	return []AgentPoolMode{
+		AgentPoolModeGateway,
 		AgentPoolModeSystem,
 		AgentPoolModeUser,
 	}
@@ -38,6 +42,8 @@ const (
 	AgentPoolTypeAvailabilitySet AgentPoolType = "AvailabilitySet"
 	// AgentPoolTypeVirtualMachineScaleSets - Create an Agent Pool backed by a Virtual Machine Scale Set.
 	AgentPoolTypeVirtualMachineScaleSets AgentPoolType = "VirtualMachineScaleSets"
+	// AgentPoolTypeVirtualMachines - Create an Agent Pool backed by a Single Instance VM orchestration mode.
+	AgentPoolTypeVirtualMachines AgentPoolType = "VirtualMachines"
 )
 
 // PossibleAgentPoolTypeValues returns the possible values for the AgentPoolType const type.
@@ -45,6 +51,7 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return []AgentPoolType{
 		AgentPoolTypeAvailabilitySet,
 		AgentPoolTypeVirtualMachineScaleSets,
+		AgentPoolTypeVirtualMachines,
 	}
 }
 
@@ -544,6 +551,34 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 	}
 }
 
+// NginxIngressControllerType - Ingress type for the default NginxIngressController custom resource
+type NginxIngressControllerType string
+
+const (
+	// NginxIngressControllerTypeAnnotationControlled - The default NginxIngressController will be created. Users can edit the
+	// default NginxIngressController Custom Resource to configure load balancer annotations.
+	NginxIngressControllerTypeAnnotationControlled NginxIngressControllerType = "AnnotationControlled"
+	// NginxIngressControllerTypeExternal - The default NginxIngressController will be created and the operator will provision
+	// an external loadbalancer with it. Any annotation to make the default loadbalancer internal will be overwritten.
+	NginxIngressControllerTypeExternal NginxIngressControllerType = "External"
+	// NginxIngressControllerTypeInternal - The default NginxIngressController will be created and the operator will provision
+	// an internal loadbalancer with it. Any annotation to make the default loadbalancer external will be overwritten.
+	NginxIngressControllerTypeInternal NginxIngressControllerType = "Internal"
+	// NginxIngressControllerTypeNone - The default Ingress Controller will not be created. It will not be deleted by the system
+	// if it exists. Users should delete the default NginxIngressController Custom Resource manually if desired.
+	NginxIngressControllerTypeNone NginxIngressControllerType = "None"
+)
+
+// PossibleNginxIngressControllerTypeValues returns the possible values for the NginxIngressControllerType const type.
+func PossibleNginxIngressControllerTypeValues() []NginxIngressControllerType {
+	return []NginxIngressControllerType{
+		NginxIngressControllerTypeAnnotationControlled,
+		NginxIngressControllerTypeExternal,
+		NginxIngressControllerTypeInternal,
+		NginxIngressControllerTypeNone,
+	}
+}
+
 // NodeOSUpgradeChannel - Manner in which the OS on your nodes is updated. The default is NodeImage.
 type NodeOSUpgradeChannel string
 
@@ -615,6 +650,9 @@ const (
 	OSSKUCBLMariner OSSKU = "CBLMariner"
 	// OSSKUUbuntu - Use Ubuntu as the OS for node images.
 	OSSKUUbuntu OSSKU = "Ubuntu"
+	// OSSKUUbuntu2204 - Use Ubuntu2204 as the OS for node images, however, Ubuntu 22.04 may not be supported for all nodepools.
+	// For limitations and supported kubernetes versions, see see https://aka.ms/aks/supported-ubuntu-versions
+	OSSKUUbuntu2204 OSSKU = "Ubuntu2204"
 	// OSSKUWindows2019 - Use Windows2019 as the OS for node images. Unsupported for system node pools. Windows2019 only supports
 	// Windows2019 containers; it cannot run Windows2022 containers and vice versa.
 	OSSKUWindows2019 OSSKU = "Windows2019"
@@ -629,6 +667,7 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUAzureLinux,
 		OSSKUCBLMariner,
 		OSSKUUbuntu,
+		OSSKUUbuntu2204,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
 	}
@@ -681,6 +720,30 @@ func PossibleOutboundTypeValues() []OutboundType {
 		OutboundTypeNone,
 		OutboundTypeUserAssignedNATGateway,
 		OutboundTypeUserDefinedRouting,
+	}
+}
+
+// PodIPAllocationMode - The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is
+// 'DynamicIndividual'.
+type PodIPAllocationMode string
+
+const (
+	// PodIPAllocationModeDynamicIndividual - Each node gets allocated with a non-contiguous list of IP addresses assignable to
+	// pods. This is better for maximizing a small to medium subnet of size /16 or smaller. The Azure CNI cluster with dynamic
+	// IP allocation defaults to this mode if the customer does not explicitly specify a podIPAllocationMode
+	PodIPAllocationModeDynamicIndividual PodIPAllocationMode = "DynamicIndividual"
+	// PodIPAllocationModeStaticBlock - Each node is statically allocated CIDR block(s) of size /28 = 16 IPs per block to satisfy
+	// the maxPods per node. Number of CIDR blocks >= (maxPods / 16). The block, rather than a single IP, counts against the Azure
+	// Vnet Private IP limit of 65K. Therefore block mode is suitable for running larger workloads with more than the current
+	// limit of 65K pods in a cluster. This mode is better suited to scale with larger subnets of /15 or bigger
+	PodIPAllocationModeStaticBlock PodIPAllocationMode = "StaticBlock"
+)
+
+// PossiblePodIPAllocationModeValues returns the possible values for the PodIPAllocationMode const type.
+func PossiblePodIPAllocationModeValues() []PodIPAllocationMode {
+	return []PodIPAllocationMode{
+		PodIPAllocationModeDynamicIndividual,
+		PodIPAllocationModeStaticBlock,
 	}
 }
 
@@ -923,6 +986,32 @@ func PossibleTypeValues() []Type {
 		TypeLast,
 		TypeSecond,
 		TypeThird,
+	}
+}
+
+// UndrainableNodeBehavior - Defines the behavior for undrainable nodes during upgrade. The most common cause of undrainable
+// nodes is Pod Disruption Budgets (PDBs), but other issues, such as pod termination grace period is
+// exceeding the remaining per-node drain timeout or pod is still being in a running state, can also cause undrainable nodes.
+type UndrainableNodeBehavior string
+
+const (
+	// UndrainableNodeBehaviorCordon - AKS will cordon the blocked nodes and replace them with surge nodes during upgrade. The
+	// blocked nodes will be cordoned and replaced by surge nodes. The blocked nodes will have label 'kubernetes.azure.com/upgrade-status:Quarantined'.
+	// A surge node will be retained for each blocked node. A best-effort attempt will be made to delete all other surge nodes.
+	// If there are enough surge nodes to replace blocked nodes, then the upgrade operation and the managed cluster will be in
+	// failed state. Otherwise, the upgrade operation and the managed cluster will be in canceled state.
+	UndrainableNodeBehaviorCordon UndrainableNodeBehavior = "Cordon"
+	// UndrainableNodeBehaviorSchedule - AKS will mark the blocked nodes schedulable, but the blocked nodes are not upgraded.
+	// A best-effort attempt will be made to delete all surge nodes. The upgrade operation and the managed cluster will be in
+	// failed state if there are any blocked nodes.
+	UndrainableNodeBehaviorSchedule UndrainableNodeBehavior = "Schedule"
+)
+
+// PossibleUndrainableNodeBehaviorValues returns the possible values for the UndrainableNodeBehavior const type.
+func PossibleUndrainableNodeBehaviorValues() []UndrainableNodeBehavior {
+	return []UndrainableNodeBehavior{
+		UndrainableNodeBehaviorCordon,
+		UndrainableNodeBehaviorSchedule,
 	}
 }
 

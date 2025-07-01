@@ -12,8 +12,55 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/SecurityPolicyPut.json
-func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2025-03-01-preview/IpAccessRulesSecurityPolicyPut.json
+func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putIPAccessRulesSecurityPolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicenetworking.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSecurityPoliciesInterfaceClient().BeginCreateOrUpdate(ctx, "rg1", "tc1", "sp1", armservicenetworking.SecurityPolicy{
+		Location: to.Ptr("NorthCentralUS"),
+		Properties: &armservicenetworking.SecurityPolicyProperties{
+			IPAccessRulesPolicy: &armservicenetworking.IPAccessRulesPolicy{
+				Rules: []*armservicenetworking.IPAccessRule{},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicenetworking.SecurityPoliciesInterfaceClientCreateOrUpdateResponse{
+	// 	SecurityPolicy: &armservicenetworking.SecurityPolicy{
+	// 		Name: to.Ptr("ipAccessRules-0"),
+	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armservicenetworking.SecurityPolicyProperties{
+	// 			PolicyType: to.Ptr(armservicenetworking.PolicyTypeIPAccessRules),
+	// 			IPAccessRulesPolicy: &armservicenetworking.IPAccessRulesPolicy{
+	// 				Rules: []*armservicenetworking.IPAccessRule{
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-03-01-preview/WafSecurityPolicyPut.json
+func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putWafSecurityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +105,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SecurityPolicyDelete.json
+// Generated from example definition: 2025-03-01-preview/SecurityPolicyDelete.json
 func ExampleSecurityPoliciesInterfaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +126,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SecurityPolicyGet.json
+// Generated from example definition: 2025-03-01-preview/SecurityPolicyGet.json
 func ExampleSecurityPoliciesInterfaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +161,7 @@ func ExampleSecurityPoliciesInterfaceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/SecurityPoliciesGetList.json
+// Generated from example definition: 2025-03-01-preview/SecurityPoliciesGetList.json
 func ExampleSecurityPoliciesInterfaceClient_NewListByTrafficControllerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,8 +205,50 @@ func ExampleSecurityPoliciesInterfaceClient_NewListByTrafficControllerPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/SecurityPolicyPatch.json
-func ExampleSecurityPoliciesInterfaceClient_Update() {
+// Generated from example definition: 2025-03-01-preview/IpAccessRulesSecurityPolicyPatch.json
+func ExampleSecurityPoliciesInterfaceClient_Update_updateIPAccessRulesSecurityPolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicenetworking.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSecurityPoliciesInterfaceClient().Update(ctx, "rg1", "tc1", "sp1", armservicenetworking.SecurityPolicyUpdate{
+		Properties: &armservicenetworking.SecurityPolicyUpdateProperties{
+			IPAccessRulesPolicy: &armservicenetworking.IPAccessRulesPolicy{
+				Rules: []*armservicenetworking.IPAccessRule{},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicenetworking.SecurityPoliciesInterfaceClientUpdateResponse{
+	// 	SecurityPolicy: &armservicenetworking.SecurityPolicy{
+	// 		Name: to.Ptr("ipAccessRules-0"),
+	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armservicenetworking.SecurityPolicyProperties{
+	// 			PolicyType: to.Ptr(armservicenetworking.PolicyTypeIPAccessRules),
+	// 			IPAccessRulesPolicy: &armservicenetworking.IPAccessRulesPolicy{
+	// 				Rules: []*armservicenetworking.IPAccessRule{
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armservicenetworking.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-03-01-preview/WafSecurityPolicyPatch.json
+func ExampleSecurityPoliciesInterfaceClient_Update_updateWafSecurityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

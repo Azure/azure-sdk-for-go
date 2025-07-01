@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d18a495685ccec837b72891b4deea017f62e8190/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-05-05/file.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/07c350e6126e53f3a25fe75536c4b3324f91475b/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-11-05/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -22,7 +22,7 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.61"
 ```
 
-### Updating service version to 2025-05-05
+### Updating service version to 2025-11-05
 
 ```yaml
 directive:
@@ -34,7 +34,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2025-01-05"}`, `[]string{ServiceVersion}`);
+      replaceAll(`[]string{"2025-07-05"}`, `[]string{ServiceVersion}`);
 ```
 ### Changing casing of NfsFileType
 ```yaml

@@ -4,12 +4,12 @@
 
 This is a contributing guide for the `azopenai` package. For general contributing guidelines refer to [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
 
-The `azopenai` package can be used with either Azure OpenAI or OpenAI's public service. New features are added using our code generation process, specified using TypeSpec [TypeSpec](https://github.com/Microsoft/typespec), which details all the models and protocol methods for using OpenAI. 
+The `azopenai` package can be used with either Azure OpenAI's public service. New features are added using our code generation process, specified using TypeSpec [TypeSpec](https://github.com/Microsoft/typespec), which details all the models and protocol methods for using OpenAI.
 
 ### Prerequisites
 
 For code fixes that do not require code generation:
-- [Supported](https://aka.ms/azsdk/go/supported-versions) version of Go
+- Go 1.21 (or greater)
 
 For code generation:
 - [NodeJS (use the latest LTS)](https://nodejs.org)
@@ -22,9 +22,7 @@ For code generation:
 
 ## Generating from TypeSpec
 
-The `Client` is primarily generated from TypeSpec, with some handwritten code where we've changed the interface to match Azure naming conventions (for instance, we refer to Models as Deployments). Files that do not have `custom` (ex: `client.go`, `models.go`, `models_serde.go`, etc..) are generated.
-
-Files that have `custom` in the name are handwritten (ex: `custom_client_audio.go`), while files that do not (ex: `client.go`, `models.go`, `models_serde.go`, etc..) are generated.
+The models in this package generated from TypeSpec. Files that do not have `custom` (ex: `client.go`, `models.go`, `models_serde.go`, etc..) are generated.
 
 ### Regeneration
 
@@ -53,7 +51,7 @@ There are three kinds of tests for this package: unit tests, recorded tests and 
 
 ## Unit and recorded tests
 
-Unit tests and recorded tests do not require access to OpenAI to run and will run with any PR as a check-in gate. 
+Unit tests and recorded tests do not require access to OpenAI to run and will run with any PR as a check-in gate.
 
 Recorded tests require the Azure SDK test proxy is running. See the instructions for [installing the test-proxy](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation).
 
@@ -96,7 +94,7 @@ git push
 
 ### Local development
 
-Copy the `sample.env` file to `.env`, and fill out all the values. Each value is documented to give you a general idea of what's needed, but ultimately you'll need to work with the Azure OpenAI SDK team to figure out which services are used for which features. 
+Copy the `sample.env` file to `.env`, and fill out all the values. Each value is documented to give you a general idea of what's needed, but ultimately you'll need to work with the Azure OpenAI SDK team to figure out which services are used for which features.
 
 Once filled out, the tests will automatically load environment variables from the `.env`:
 

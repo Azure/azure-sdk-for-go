@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/VolumeGroups_List_Oracle.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_List_Oracle.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracl
 		// 		{
 		// 			Name: to.Ptr("group1"),
 		// 			Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
-		// 			ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armnetapp.VolumeGroupListProperties{
 		// 				GroupMetaData: &armnetapp.VolumeGroupMetaData{
@@ -61,7 +61,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracl
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/VolumeGroups_List_SapHana.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_List_SapHana.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHa
 		// 		{
 		// 			Name: to.Ptr("group1"),
 		// 			Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
-		// 			ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armnetapp.VolumeGroupListProperties{
 		// 				GroupMetaData: &armnetapp.VolumeGroupMetaData{
@@ -104,7 +104,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHa
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/VolumeGroups_Get_Oracle.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_Get_Oracle.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// res.VolumeGroupDetails = armnetapp.VolumeGroupDetails{
 	// 	Name: to.Ptr("group1"),
 	// 	Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
-	// 	ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.VolumeGroupProperties{
 	// 		GroupMetaData: &armnetapp.VolumeGroupMetaData{
@@ -139,7 +139,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 			{
 	// 				Name: to.Ptr("account1/pool1/test-ora-data1"),
 	// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 				ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data1"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data1"),
 	// 				Properties: &armnetapp.VolumeProperties{
 	// 					CreationToken: to.Ptr("test-ora-data1"),
 	// 					ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -165,7 +165,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 						to.Ptr("NFSv4.1")},
 	// 						ProvisioningState: to.Ptr("Succeeded"),
 	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 						SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
 	// 						VolumeSpecName: to.Ptr("ora-data1"),
@@ -176,7 +176,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 					{
 	// 						Name: to.Ptr("account1/pool1/test-ora-data2"),
 	// 						Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 						ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data2"),
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data2"),
 	// 						Properties: &armnetapp.VolumeProperties{
 	// 							CreationToken: to.Ptr("test-ora-data2"),
 	// 							ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -202,7 +202,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 								to.Ptr("NFSv4.1")},
 	// 								ProvisioningState: to.Ptr("Succeeded"),
 	// 								ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 								SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 								SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 								ThroughputMibps: to.Ptr[float32](10),
 	// 								UsageThreshold: to.Ptr[int64](107374182400),
 	// 								VolumeSpecName: to.Ptr("ora-data2"),
@@ -213,7 +213,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 							{
 	// 								Name: to.Ptr("account1/pool1/test-ora-data3"),
 	// 								Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 								ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data3"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data3"),
 	// 								Properties: &armnetapp.VolumeProperties{
 	// 									CreationToken: to.Ptr("test-ora-data3"),
 	// 									ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -239,7 +239,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 										to.Ptr("NFSv4.1")},
 	// 										ProvisioningState: to.Ptr("Succeeded"),
 	// 										ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 										SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 										SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 										ThroughputMibps: to.Ptr[float32](10),
 	// 										UsageThreshold: to.Ptr[int64](107374182400),
 	// 										VolumeSpecName: to.Ptr("ora-data3"),
@@ -250,7 +250,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 									{
 	// 										Name: to.Ptr("account1/pool1/test-ora-data4"),
 	// 										Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 										ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data4"),
+	// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data4"),
 	// 										Properties: &armnetapp.VolumeProperties{
 	// 											CreationToken: to.Ptr("test-ora-data4"),
 	// 											ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -276,7 +276,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 												to.Ptr("NFSv4.1")},
 	// 												ProvisioningState: to.Ptr("Succeeded"),
 	// 												ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 												SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 												SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 												ThroughputMibps: to.Ptr[float32](10),
 	// 												UsageThreshold: to.Ptr[int64](107374182400),
 	// 												VolumeSpecName: to.Ptr("ora-data4"),
@@ -287,7 +287,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 											{
 	// 												Name: to.Ptr("account1/pool1/test-ora-data5"),
 	// 												Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 												ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data5"),
+	// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data5"),
 	// 												Properties: &armnetapp.VolumeProperties{
 	// 													CreationToken: to.Ptr("test-ora-data5"),
 	// 													ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -313,7 +313,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 														to.Ptr("NFSv4.1")},
 	// 														ProvisioningState: to.Ptr("Succeeded"),
 	// 														ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 														SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 														SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 														ThroughputMibps: to.Ptr[float32](10),
 	// 														UsageThreshold: to.Ptr[int64](107374182400),
 	// 														VolumeSpecName: to.Ptr("ora-data5"),
@@ -324,7 +324,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 													{
 	// 														Name: to.Ptr("account1/pool1/test-ora-data6"),
 	// 														Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 														ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data6"),
+	// 														ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data6"),
 	// 														Properties: &armnetapp.VolumeProperties{
 	// 															CreationToken: to.Ptr("test-ora-data6"),
 	// 															ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -350,7 +350,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																to.Ptr("NFSv4.1")},
 	// 																ProvisioningState: to.Ptr("Succeeded"),
 	// 																ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 																SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 																SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 																ThroughputMibps: to.Ptr[float32](10),
 	// 																UsageThreshold: to.Ptr[int64](107374182400),
 	// 																VolumeSpecName: to.Ptr("ora-data6"),
@@ -361,7 +361,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 															{
 	// 																Name: to.Ptr("account1/pool1/test-ora-data7"),
 	// 																Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 																ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data7"),
+	// 																ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data7"),
 	// 																Properties: &armnetapp.VolumeProperties{
 	// 																	CreationToken: to.Ptr("test-ora-data7"),
 	// 																	ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -387,7 +387,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																		to.Ptr("NFSv4.1")},
 	// 																		ProvisioningState: to.Ptr("Succeeded"),
 	// 																		ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 																		SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 																		SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 																		ThroughputMibps: to.Ptr[float32](10),
 	// 																		UsageThreshold: to.Ptr[int64](107374182400),
 	// 																		VolumeSpecName: to.Ptr("ora-data7"),
@@ -398,7 +398,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																	{
 	// 																		Name: to.Ptr("account1/pool1/test-ora-data8"),
 	// 																		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 																		ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data8"),
+	// 																		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-data8"),
 	// 																		Properties: &armnetapp.VolumeProperties{
 	// 																			CreationToken: to.Ptr("test-ora-data8"),
 	// 																			ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -424,7 +424,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																				to.Ptr("NFSv4.1")},
 	// 																				ProvisioningState: to.Ptr("Succeeded"),
 	// 																				ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 																				SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 																				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 																				ThroughputMibps: to.Ptr[float32](10),
 	// 																				UsageThreshold: to.Ptr[int64](107374182400),
 	// 																				VolumeSpecName: to.Ptr("ora-data8"),
@@ -435,7 +435,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																			{
 	// 																				Name: to.Ptr("account1/pool1/test-ora-log"),
 	// 																				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 																				ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-log"),
+	// 																				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-log"),
 	// 																				Properties: &armnetapp.VolumeProperties{
 	// 																					CreationToken: to.Ptr("test-ora-log"),
 	// 																					ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -461,7 +461,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																						to.Ptr("NFSv4.1")},
 	// 																						ProvisioningState: to.Ptr("Succeeded"),
 	// 																						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 																						SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 																						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 																						ThroughputMibps: to.Ptr[float32](10),
 	// 																						UsageThreshold: to.Ptr[int64](107374182400),
 	// 																						VolumeSpecName: to.Ptr("ora-log"),
@@ -472,7 +472,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																					{
 	// 																						Name: to.Ptr("account1/pool1/test-ora-log-mirror"),
 	// 																						Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 																						ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-log-mirror"),
+	// 																						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-log-mirror"),
 	// 																						Properties: &armnetapp.VolumeProperties{
 	// 																							CreationToken: to.Ptr("test-ora-log-mirror"),
 	// 																							ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -498,7 +498,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																								to.Ptr("NFSv4.1")},
 	// 																								ProvisioningState: to.Ptr("Succeeded"),
 	// 																								ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 																								SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 																								SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 																								ThroughputMibps: to.Ptr[float32](10),
 	// 																								UsageThreshold: to.Ptr[int64](107374182400),
 	// 																								VolumeSpecName: to.Ptr("ora-log-mirror"),
@@ -509,7 +509,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																							{
 	// 																								Name: to.Ptr("account1/pool1/test-ora-binary"),
 	// 																								Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 																								ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-binary"),
+	// 																								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-binary"),
 	// 																								Properties: &armnetapp.VolumeProperties{
 	// 																									CreationToken: to.Ptr("test-ora-binary"),
 	// 																									ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -535,7 +535,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																										to.Ptr("NFSv4.1")},
 	// 																										ProvisioningState: to.Ptr("Succeeded"),
 	// 																										ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 																										SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 																										SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 																										ThroughputMibps: to.Ptr[float32](10),
 	// 																										UsageThreshold: to.Ptr[int64](107374182400),
 	// 																										VolumeSpecName: to.Ptr("ora-binary"),
@@ -546,7 +546,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																									{
 	// 																										Name: to.Ptr("account1/pool1/test-ora-backup"),
 	// 																										Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 																										ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-backup"),
+	// 																										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-ora-backup"),
 	// 																										Properties: &armnetapp.VolumeProperties{
 	// 																											CreationToken: to.Ptr("test-ora-backup"),
 	// 																											ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -572,7 +572,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																												to.Ptr("NFSv4.1")},
 	// 																												ProvisioningState: to.Ptr("Succeeded"),
 	// 																												ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 																												SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 																												SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 																												ThroughputMibps: to.Ptr[float32](10),
 	// 																												UsageThreshold: to.Ptr[int64](107374182400),
 	// 																												VolumeSpecName: to.Ptr("ora-backup"),
@@ -584,7 +584,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// 																								}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/VolumeGroups_Get_SapHana.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_Get_SapHana.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,7 +605,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// res.VolumeGroupDetails = armnetapp.VolumeGroupDetails{
 	// 	Name: to.Ptr("group1"),
 	// 	Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
-	// 	ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.VolumeGroupProperties{
 	// 		GroupMetaData: &armnetapp.VolumeGroupMetaData{
@@ -619,7 +619,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 			{
 	// 				Name: to.Ptr("account1/pool1/test-data-mnt00001"),
 	// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 				ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-data-mnt00001"),
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-data-mnt00001"),
 	// 				Properties: &armnetapp.VolumeProperties{
 	// 					CreationToken: to.Ptr("test-data-mnt00001"),
 	// 					ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -644,9 +644,9 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 					ProtocolTypes: []*string{
 	// 						to.Ptr("NFSv4.1")},
 	// 						ProvisioningState: to.Ptr("Succeeded"),
-	// 						ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+	// 						ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 	// 						ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 						SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
 	// 						VolumeSpecName: to.Ptr("data"),
@@ -655,7 +655,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-log-mnt00001"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-log-mnt00001"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-log-mnt00001"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-log-mnt00001"),
 	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -680,9 +680,9 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 						ProtocolTypes: []*string{
 	// 							to.Ptr("NFSv4.1")},
 	// 							ProvisioningState: to.Ptr("Succeeded"),
-	// 							ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+	// 							ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 	// 							ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 							SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 							ThroughputMibps: to.Ptr[float32](10),
 	// 							UsageThreshold: to.Ptr[int64](107374182400),
 	// 							VolumeSpecName: to.Ptr("log"),
@@ -691,7 +691,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 					{
 	// 						Name: to.Ptr("account1/pool1/test-shared"),
 	// 						Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 						ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-shared"),
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-shared"),
 	// 						Properties: &armnetapp.VolumeProperties{
 	// 							CreationToken: to.Ptr("test-shared"),
 	// 							ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -716,9 +716,9 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 							ProtocolTypes: []*string{
 	// 								to.Ptr("NFSv4.1")},
 	// 								ProvisioningState: to.Ptr("Succeeded"),
-	// 								ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+	// 								ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 	// 								ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 								SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 								SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 								ThroughputMibps: to.Ptr[float32](10),
 	// 								UsageThreshold: to.Ptr[int64](107374182400),
 	// 								VolumeSpecName: to.Ptr("shared"),
@@ -727,7 +727,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 						{
 	// 							Name: to.Ptr("account1/pool1/test-data-backup"),
 	// 							Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 							ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-data-backup"),
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-data-backup"),
 	// 							Properties: &armnetapp.VolumeProperties{
 	// 								CreationToken: to.Ptr("test-data-backup"),
 	// 								ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -752,9 +752,9 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 								ProtocolTypes: []*string{
 	// 									to.Ptr("NFSv4.1")},
 	// 									ProvisioningState: to.Ptr("Succeeded"),
-	// 									ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+	// 									ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 	// 									ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 									SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 									SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 									ThroughputMibps: to.Ptr[float32](10),
 	// 									UsageThreshold: to.Ptr[int64](107374182400),
 	// 									VolumeSpecName: to.Ptr("data-backup"),
@@ -763,7 +763,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 							{
 	// 								Name: to.Ptr("account1/pool1/test-log-backup"),
 	// 								Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 								ID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-log-backup"),
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-log-backup"),
 	// 								Properties: &armnetapp.VolumeProperties{
 	// 									CreationToken: to.Ptr("test-log-backup"),
 	// 									ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -788,9 +788,9 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 									ProtocolTypes: []*string{
 	// 										to.Ptr("NFSv4.1")},
 	// 										ProvisioningState: to.Ptr("Succeeded"),
-	// 										ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+	// 										ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 	// 										ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 										SubnetID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 										SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 										ThroughputMibps: to.Ptr[float32](10),
 	// 										UsageThreshold: to.Ptr[int64](107374182400),
 	// 										VolumeSpecName: to.Ptr("log-backup"),
@@ -800,7 +800,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/VolumeGroups_Create_Oracle.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_Create_Oracle.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -823,7 +823,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data1"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data1"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -847,7 +847,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data1"),
@@ -858,7 +858,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data2"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data2"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -882,7 +882,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data2"),
@@ -893,7 +893,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data3"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data3"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -917,7 +917,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data3"),
@@ -928,7 +928,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data4"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data4"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -952,7 +952,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data4"),
@@ -963,7 +963,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data5"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data5"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -987,7 +987,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data5"),
@@ -998,7 +998,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data6"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data6"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1022,7 +1022,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data6"),
@@ -1033,7 +1033,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data7"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data7"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1057,7 +1057,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data7"),
@@ -1068,7 +1068,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-data8"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-data8"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1092,7 +1092,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-data8"),
@@ -1103,7 +1103,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-log"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-log"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1127,7 +1127,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-log"),
@@ -1138,7 +1138,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-log-mirror"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-log-mirror"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1162,7 +1162,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-log-mirror"),
@@ -1173,7 +1173,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-binary"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-binary"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1197,7 +1197,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-binary"),
@@ -1208,7 +1208,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 				{
 					Name: to.Ptr("test-ora-backup"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-ora-backup"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1232,7 +1232,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
 						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps: to.Ptr[float32](10),
 						UsageThreshold:  to.Ptr[int64](107374182400),
 						VolumeSpecName:  to.Ptr("ora-backup"),
@@ -1251,7 +1251,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/VolumeGroups_Create_SapHana.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_Create_SapHana.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1274,7 +1274,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 				{
 					Name: to.Ptr("test-data-mnt00001"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-data-mnt00001"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1297,9 +1297,9 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 						},
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
-						ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+						ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:         to.Ptr[float32](10),
 						UsageThreshold:          to.Ptr[int64](107374182400),
 						VolumeSpecName:          to.Ptr("data"),
@@ -1308,7 +1308,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 				{
 					Name: to.Ptr("test-log-mnt00001"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-log-mnt00001"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1331,9 +1331,9 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 						},
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
-						ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+						ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:         to.Ptr[float32](10),
 						UsageThreshold:          to.Ptr[int64](107374182400),
 						VolumeSpecName:          to.Ptr("log"),
@@ -1342,7 +1342,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 				{
 					Name: to.Ptr("test-shared"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-shared"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1365,9 +1365,9 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 						},
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
-						ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+						ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:         to.Ptr[float32](10),
 						UsageThreshold:          to.Ptr[int64](107374182400),
 						VolumeSpecName:          to.Ptr("shared"),
@@ -1376,7 +1376,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 				{
 					Name: to.Ptr("test-data-backup"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-data-backup"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1399,9 +1399,9 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 						},
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
-						ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+						ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:         to.Ptr[float32](10),
 						UsageThreshold:          to.Ptr[int64](107374182400),
 						VolumeSpecName:          to.Ptr("data-backup"),
@@ -1410,7 +1410,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 				{
 					Name: to.Ptr("test-log-backup"),
 					Properties: &armnetapp.VolumeProperties{
-						CapacityPoolResourceID: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+						CapacityPoolResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 						CreationToken:          to.Ptr("test-log-backup"),
 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
 							Rules: []*armnetapp.ExportPolicyRule{
@@ -1433,9 +1433,9 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 						},
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1")},
-						ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
+						ProximityPlacementGroup: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:         to.Ptr[float32](10),
 						UsageThreshold:          to.Ptr[int64](107374182400),
 						VolumeSpecName:          to.Ptr("log-backup"),
@@ -1452,7 +1452,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e6892bbc13d89929cdbe3b39385628543263f80b/specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-09-01/examples/VolumeGroups_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/VolumeGroups_Delete.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

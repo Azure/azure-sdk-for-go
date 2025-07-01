@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListCertificates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListCertificates.json
 func ExampleCertificateClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleCertificateClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("templateCert1"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/certificates"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/kjoshiarmtemplateCert1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/kjoshiarmtemplateCert1"),
 		// 			Properties: &armapimanagement.CertificateContractProperties{
 		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-23T17:03:41.000Z"); return t}()),
 		// 				Subject: to.Ptr("CN=mutual-authcert"),
@@ -60,7 +60,7 @@ func ExampleCertificateClient_NewListByServicePager() {
 		// 		{
 		// 			Name: to.Ptr("templateCertkv"),
 		// 			Type: to.Ptr("Microsoft.ApiManagement/service/certificates"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
 		// 			Properties: &armapimanagement.CertificateContractProperties{
 		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00.000Z"); return t}()),
 		// 				KeyVault: &armapimanagement.KeyVaultContractProperties{
@@ -79,7 +79,7 @@ func ExampleCertificateClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadCertificate.json
 func ExampleCertificateClient_GetEntityTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleCertificateClient_GetEntityTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetCertificate.json
 func ExampleCertificateClient_Get_apiManagementGetCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleCertificateClient_Get_apiManagementGetCertificate() {
 	// res.CertificateContract = armapimanagement.CertificateContract{
 	// 	Name: to.Ptr("templateCert1"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/certificates"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCert1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCert1"),
 	// 	Properties: &armapimanagement.CertificateContractProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-23T17:03:41.000Z"); return t}()),
 	// 		Subject: to.Ptr("CN=mutual-authcert"),
@@ -126,7 +126,7 @@ func ExampleCertificateClient_Get_apiManagementGetCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetCertificateWithKeyVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetCertificateWithKeyVault.json
 func ExampleCertificateClient_Get_apiManagementGetCertificateWithKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleCertificateClient_Get_apiManagementGetCertificateWithKeyVault() {
 	// res.CertificateContract = armapimanagement.CertificateContract{
 	// 	Name: to.Ptr("templateCertkv"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/certificates"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
 	// 	Properties: &armapimanagement.CertificateContractProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00.000Z"); return t}()),
 	// 		KeyVault: &armapimanagement.KeyVaultContractProperties{
@@ -164,7 +164,7 @@ func ExampleCertificateClient_Get_apiManagementGetCertificateWithKeyVault() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateCertificate.json
 func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificate() {
 	// res.CertificateContract = armapimanagement.CertificateContract{
 	// 	Name: to.Ptr("tempcert"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/certificates"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/tempcert"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/tempcert"),
 	// 	Properties: &armapimanagement.CertificateContractProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-17T21:55:07.000Z"); return t}()),
 	// 		Subject: to.Ptr("CN=contoso.com"),
@@ -199,7 +199,7 @@ func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateCertificateWithKeyVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateCertificateWithKeyVault.json
 func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificateWithKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificateWithK
 	// res.CertificateContract = armapimanagement.CertificateContract{
 	// 	Name: to.Ptr("templateCertkv"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/certificates"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
 	// 	Properties: &armapimanagement.CertificateContractProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00.000Z"); return t}()),
 	// 		KeyVault: &armapimanagement.KeyVaultContractProperties{
@@ -244,7 +244,7 @@ func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificateWithK
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteCertificate.json
 func ExampleCertificateClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +261,7 @@ func ExampleCertificateClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementRefreshCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementRefreshCertificate.json
 func ExampleCertificateClient_RefreshSecret() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleCertificateClient_RefreshSecret() {
 	// res.CertificateContract = armapimanagement.CertificateContract{
 	// 	Name: to.Ptr("templateCertkv"),
 	// 	Type: to.Ptr("Microsoft.ApiManagement/service/certificates"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/templateCertkv"),
 	// 	Properties: &armapimanagement.CertificateContractProperties{
 	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2037-01-01T07:00:00.000Z"); return t}()),
 	// 		KeyVault: &armapimanagement.KeyVaultContractProperties{

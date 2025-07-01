@@ -15,7 +15,7 @@ import (
 
 // Package represents a per-package report that contains additive and breaking changes.
 type Package struct {
-	AdditiveChanges *delta.Content   `json:"additiveChanges,omitempty"`
+	AdditiveChanges *AdditiveChanges `json:"additiveChanges,omitempty"`
 	BreakingChanges *BreakingChanges `json:"breakingChanges,omitempty"`
 }
 
@@ -37,12 +37,8 @@ func (p Package) IsEmpty() bool {
 
 // BreakingChanges represents a set of breaking changes.
 type BreakingChanges struct {
-	Consts      map[string]delta.Signature    `json:"consts,omitempty"`
-	TypeAliases map[string]delta.Signature    `json:"typeAliases,omitempty"`
-	Funcs       map[string]delta.FuncSig      `json:"funcs,omitempty"`
-	Interfaces  map[string]delta.InterfaceDef `json:"interfaces,omitempty"`
-	Structs     map[string]delta.StructDef    `json:"structs,omitempty"`
-	Removed     *delta.Content                `json:"removed,omitempty"`
+	Changes
+	Removed *delta.Content `json:"removed,omitempty"`
 }
 
 // Count returns the count of breaking changes
@@ -51,13 +47,58 @@ func (bc BreakingChanges) Count() int {
 	if bc.Removed != nil {
 		removed = bc.Removed.Count()
 	}
-	return len(bc.Consts) + len(bc.TypeAliases) + len(bc.Funcs) + len(bc.Interfaces) + len(bc.Structs) + removed
+	return bc.Changes.Count() + removed
 }
 
-// IsEmpty returns true if there are no breaking changes.
+// IsEmpty returns true if there are no breaking changes
 func (bc BreakingChanges) IsEmpty() bool {
-	return len(bc.Consts) == 0 && len(bc.TypeAliases) == 0 && len(bc.Funcs) == 0 && len(bc.Interfaces) == 0 && len(bc.Structs) == 0 &&
-		(bc.Removed == nil || bc.Removed.IsEmpty())
+	return bc.Changes.IsEmpty() && (bc.Removed == nil || bc.Removed.IsEmpty())
+}
+
+// AdditiveChanges represents newly added API elements
+type AdditiveChanges struct {
+	Changes
+	// Added contains additional content that was added
+	Added *delta.Content `json:"added,omitempty"`
+}
+
+// Count returns the total number of additive changes including added content
+func (ac AdditiveChanges) Count() int {
+	added := 0
+	if ac.Added != nil {
+		added = ac.Added.Count()
+	}
+	return ac.Changes.Count() + added
+}
+
+// IsEmpty returns true if there are no additive changes
+func (ac AdditiveChanges) IsEmpty() bool {
+	return ac.Changes.IsEmpty() && (ac.Added == nil || ac.Added.IsEmpty())
+}
+
+// Changes represents a collection of API changes
+type Changes struct {
+	// Consts contains changes to constant definitions
+	Consts map[string]delta.Signature `json:"consts,omitempty"`
+	// TypeAliases contains changes to type alias definitions
+	TypeAliases map[string]delta.Signature `json:"typeAliases,omitempty"`
+	// Funcs contains changes to function signatures
+	Funcs map[string]delta.FuncSig `json:"funcs,omitempty"`
+	// Interfaces contains changes to interface definitions
+	Interfaces map[string]delta.InterfaceDef `json:"interfaces,omitempty"`
+	// Structs contains changes to struct definitions
+	Structs map[string]delta.StructDef `json:"structs,omitempty"`
+}
+
+// Count returns the total number of changes
+func (c Changes) Count() int {
+	return len(c.Consts) + len(c.TypeAliases) + len(c.Funcs) + len(c.Interfaces) + len(c.Structs)
+}
+
+// IsEmpty returns true if there are no changes
+func (c Changes) IsEmpty() bool {
+	return len(c.Consts) == 0 && len(c.TypeAliases) == 0 && len(c.Funcs) == 0 &&
+		len(c.Interfaces) == 0 && len(c.Structs) == 0
 }
 
 // GenerationOption ...
@@ -77,7 +118,9 @@ func Generate(lhs, rhs exports.Content, option *GenerationOption) Package {
 	r := Package{}
 	if !onlyBreakingChanges {
 		if adds := delta.GetExports(lhs, rhs); !adds.IsEmpty() {
-			r.AdditiveChanges = &adds
+			additiveChanges := AdditiveChanges{}
+			additiveChanges.Added = &adds
+			r.AdditiveChanges = &additiveChanges
 		}
 	}
 
@@ -115,7 +158,7 @@ func (p Package) writeBreakingChanges(md *markdown.Writer) {
 	}
 	md.WriteTopLevelHeader("Breaking Changes")
 	writeRemovedContent(p.BreakingChanges.Removed, md)
-	writeSigChanges(p.BreakingChanges, md)
+	writeSigChanges(&p.BreakingChanges.Changes, md)
 }
 
 func (p Package) writeNewContent(md *markdown.Writer) {
@@ -123,10 +166,11 @@ func (p Package) writeNewContent(md *markdown.Writer) {
 		return
 	}
 	md.WriteTopLevelHeader("Additive Changes")
-	writeConsts(p.AdditiveChanges.Consts, "New Constants", md)
-	writeTypeAliases(p.AdditiveChanges.TypeAliases, "New Type Aliases", md)
-	writeFuncs(p.AdditiveChanges.Funcs, "New Funcs", md)
-	writeStructs(p.AdditiveChanges, "New Structs", "New Struct Fields", md)
+	writeConsts(p.AdditiveChanges.Added.Consts, "New Constants", md)
+	writeTypeAliases(p.AdditiveChanges.Added.TypeAliases, "New Type Aliases", md)
+	writeFuncs(p.AdditiveChanges.Added.Funcs, "New Funcs", md)
+	writeStructs(p.AdditiveChanges.Added, "New Structs", "New Struct Fields", md)
+	writeSigChanges(&p.AdditiveChanges.Changes, md)
 }
 
 // writes the subset of breaking changes pertaining to removed content
@@ -141,15 +185,15 @@ func writeRemovedContent(removed *delta.Content, md *markdown.Writer) {
 }
 
 // writes the subset of breaking changes pertaining to signature changes
-func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
-	if len(bc.Consts) == 0 && len(bc.TypeAliases) == 0 && len(bc.Funcs) == 0 && len(bc.Structs) == 0 {
+func writeSigChanges(c *Changes, md *markdown.Writer) {
+	if len(c.Consts) == 0 && len(c.TypeAliases) == 0 && len(c.Funcs) == 0 && len(c.Structs) == 0 {
 		return
 	}
 	md.WriteHeader("Signature Changes")
-	if len(bc.Consts) > 0 {
-		items := make([]string, len(bc.Consts))
+	if len(c.Consts) > 0 {
+		items := make([]string, len(c.Consts))
 		i := 0
-		for k, v := range bc.Consts {
+		for k, v := range c.Consts {
 			items[i] = fmt.Sprintf("1. %s changed type from %s to %s", k, v.From, v.To)
 			i++
 		}
@@ -159,10 +203,10 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 			md.WriteLine(item)
 		}
 	}
-	if len(bc.TypeAliases) > 0 {
-		items := make([]string, len(bc.TypeAliases))
+	if len(c.TypeAliases) > 0 {
+		items := make([]string, len(c.TypeAliases))
 		i := 0
-		for k, v := range bc.TypeAliases {
+		for k, v := range c.TypeAliases {
 			items[i] = fmt.Sprintf("1. %s changed type from %s to %s", k, v.From, v.To)
 			i++
 		}
@@ -172,11 +216,11 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 			md.WriteLine(item)
 		}
 	}
-	if len(bc.Funcs) > 0 {
+	if len(c.Funcs) > 0 {
 		// first get all the funcs so we can sort them
-		items := make([]string, len(bc.Funcs))
+		items := make([]string, len(c.Funcs))
 		i := 0
-		for k := range bc.Funcs {
+		for k := range c.Funcs {
 			items[i] = k
 			i++
 		}
@@ -184,7 +228,7 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 		md.WriteSubheader("Funcs")
 		for _, item := range items {
 			// now add params/returns info
-			changes := bc.Funcs[item]
+			changes := c.Funcs[item]
 			if changes.Params != nil {
 				item = fmt.Sprintf("%s\n\t- Params\n\t\t- From: %s\n\t\t- To: %s", item, changes.Params.From, changes.Params.To)
 			}
@@ -194,9 +238,9 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 			md.WriteLine(fmt.Sprintf("1. %s", item))
 		}
 	}
-	if len(bc.Structs) > 0 {
-		items := make([]string, 0, len(bc.Structs))
-		for k, v := range bc.Structs {
+	if len(c.Structs) > 0 {
+		items := make([]string, 0, len(c.Structs))
+		for k, v := range c.Structs {
 			for f, d := range v.Fields {
 				items = append(items, fmt.Sprintf("1. %s.%s changed type from %s to %s", k, f, d.From, d.To))
 			}

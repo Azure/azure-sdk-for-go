@@ -21,12 +21,12 @@ function Get-GoModuleVersionInfo($modPath)
 
     # finding where the version number are
     if ($content -match $VERSION_LINE_REGEX) {
-        return "$($matches["version"])", $versionFile
+      return "$($matches["version"])", $versionFile.ToString()
     }
 
     # This is an easy mistake to make (X.Y.Z instead of vX.Y.Z) so add a very clear error log to make debugging easier
     if ($content -match $NO_PREFIX_VERSION_LINE_REGEX) {
-        LogError "Version in $versionFile should be 'v$($matches["bad_version"])' not '$($matches["bad_version"])'"
+      LogError "Version in $versionFile should be 'v$($matches["bad_version"])' not '$($matches["bad_version"])'"
     }
   }
 
@@ -39,17 +39,17 @@ function Get-GoModuleProperties($goModPath)
   $goModPath = $goModPath -replace "\\", "/"
   # We should keep this regex in sync with what is in the azure-sdk repo at https://github.com/Azure/azure-sdk/blob/main/eng/scripts/Query-Azure-Packages.ps1#L238
   # The serviceName named capture group is unused but used in azure-sdk, so it's kept here for parity
-  if (!$goModPath.Contains("testdata") -and !$goModPath.Contains("sdk/samples") -and $goModPath -match "(?<modPath>(sdk|profile)/(?<serviceDir>(.*?(?<serviceName>[^/]+)/)?(?<modName>[^/]+$)))")
+  if (!$goModPath.Contains("testdata") -and !$goModPath.Contains("sdk/samples") -and $goModPath -match "(?<modPath>(sdk|profile|eng)/(?<serviceDir>(.*?(?<serviceName>[^/]+)/)?(?<modName>[^/]+$)))")
   {
     $modPath = $matches["modPath"]
     $modName = $matches["modName"] # We may need to start reading this from the go.mod file if the path and mod config start to differ
     $serviceDir = $matches["serviceDir"]
     $sdkType = "client"
     if ($modName.StartsWith("arm") -or $modPath.Contains("resourcemanager")) { $sdkType = "mgmt" }
+    if ($modPath.Contains("eng/tools")) { $sdkType = "eng" }
 
     $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
-
-    if (!$modVersion) {
+    if (!$modVersion -and $sdkType -ne "eng") {
       return $null
     }
 
@@ -133,7 +133,7 @@ function ResolveSearchPaths {
   $filters = $FilterString.Split(",")
 
   foreach($filter in $filters) {
-    if ($filter.StartsWith("sdk")) {
+    if ($filter.StartsWith("sdk") -or $filter.StartsWith("eng")) {
       $resolvedPaths += (Join-Path $RepoRoot $filter)
     }
     else {

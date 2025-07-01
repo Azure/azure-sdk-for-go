@@ -1,0 +1,27 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/resourcemanager/agricultureplatform/armagricultureplatform/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+    - sdk/resourcemanager/agricultureplatform/armagricultureplatform/
+
+extends:
+  template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: 'resourcemanager/agricultureplatform/armagricultureplatform'

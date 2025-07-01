@@ -54,6 +54,7 @@ func main() {
 // and my "homebrew" version calling the powershell scripts directly.
 func deleteUnneededTypes() error {
 	typesToDelete := []string{
+		"ACSCallParticipantEventData",
 		"ACSChatEventBaseProperties",
 		"ACSChatEventInThreadBaseProperties",
 		"ACSChatMessageEventBaseProperties",
@@ -65,6 +66,7 @@ func deleteUnneededTypes() error {
 		"ACSRouterJobEventData",
 		"ACSRouterWorkerEventData",
 		"ACSSmsEventBaseProperties",
+		"ACSSMSEventBaseProperties",
 		"AppConfigurationSnapshotEventData",
 		"AVSClusterEventData",
 		"AVSPrivateCloudEventData",

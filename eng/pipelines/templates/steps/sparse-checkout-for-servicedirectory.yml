@@ -1,0 +1,31 @@
+parameters:
+  - name: ServiceDirectory
+    type: string
+    default: ''
+
+
+steps:
+  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    parameters:
+      Paths:
+        - "/*"
+        # TODO: Uncomment below after we fully migrate to 'go - pullrequest' for PR CI
+        # Currently we need all files to handle links resolution when loading changed files in the PR
+        #${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+        #  Paths:
+        #    - "/*"
+        #    - ".vscode/"
+        #${{ else }}:
+        #  Paths:
+        #    - ".vscode/"
+        #    - ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+        #      - ${{ replace(parameters.ServiceDirectory, '../', '') }}
+        #      # this is a workaround for the eng packages that have integration tests that rely on keyvault
+        #      # todo: transform this to a more generic solution of passed sparse checkout paths
+        #      - "sdk/security"
+        #    - ${{ else }}:
+        #      - "sdk/${{ parameters.ServiceDirectory }}"
+
+  - pwsh: |
+      Get-ChildItem -Path "$(Build.SourcesDirectory)" -Recurse | % { Write-Host $_.FullName }
+    displayName: "Dump visible files"

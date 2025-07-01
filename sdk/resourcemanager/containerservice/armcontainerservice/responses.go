@@ -71,8 +71,8 @@ type MachinesClientListResponse struct {
 
 // MaintenanceConfigurationsClientCreateOrUpdateResponse contains the response from method MaintenanceConfigurationsClient.CreateOrUpdate.
 type MaintenanceConfigurationsClientCreateOrUpdateResponse struct {
-	// See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about planned
-	// maintenance.
+	// Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster. See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance)
+	// for more information about planned maintenance.
 	MaintenanceConfiguration
 }
 
@@ -83,8 +83,8 @@ type MaintenanceConfigurationsClientDeleteResponse struct {
 
 // MaintenanceConfigurationsClientGetResponse contains the response from method MaintenanceConfigurationsClient.Get.
 type MaintenanceConfigurationsClientGetResponse struct {
-	// See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about planned
-	// maintenance.
+	// Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster. See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance)
+	// for more information about planned maintenance.
 	MaintenanceConfiguration
 }
 

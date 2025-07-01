@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.1 (2025-07-03)
+## 1.0.0 (2025-07-03)
 
 ### Other Changes
 - Added examples demonstrating support for Managed Identity

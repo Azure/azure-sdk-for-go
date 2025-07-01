@@ -737,7 +737,7 @@ func TestContainerReadPartitionKeyRanges(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	resp, err := container.GetPartitionKeyRanges(context.TODO(), nil)
+	resp, err := container.getPartitionKeyRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("GetPartitionKeys failed: %v", err)
 	}
@@ -810,7 +810,7 @@ func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	resp, err := container.GetPartitionKeyRanges(context.TODO(), nil)
+	resp, err := container.getPartitionKeyRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("GetPartitionKeys failed: %v", err)
 	}

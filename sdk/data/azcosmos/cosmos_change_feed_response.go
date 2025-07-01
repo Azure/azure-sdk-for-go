@@ -18,13 +18,22 @@ type ChangeFeedResponse struct {
 	Documents []json.RawMessage `json:"Documents"`
 	// Count is the number of documents returned in this page.
 	Count int `json:"_count"`
+
+	// Selected HTTP headers that we're retrieving from the response
+	ETag              string
+	ContinuationToken string
+	LSN               string
+
 	Response
 }
 
 // newChangeFeedResponse creates a new ChangeFeedResponse from an HTTP response.
 func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	response := ChangeFeedResponse{
-		Response: newResponse(resp),
+		Response:          newResponse(resp),
+		ETag:              resp.Header.Get("etag"),
+		ContinuationToken: resp.Header.Get("x-ms-continuation"),
+		LSN:               resp.Header.Get("lsn"),
 	}
 
 	if resp.StatusCode == http.StatusNotModified {

@@ -2,12 +2,6 @@
 
 ## 0.8.1 (2025-07-03)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 - Added examples demonstrating support for Managed Identity
 - Added examples demonstrating support for deepseek-r1 reasoning.  

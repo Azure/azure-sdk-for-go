@@ -5,5 +5,5 @@ package azopenai
 
 const (
 	//nolint // required for CI, but not used since this package doesn't have a client.
-	version = "v0.8.1"
+	version = "v1.0.0"
 )

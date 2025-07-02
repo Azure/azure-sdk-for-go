@@ -7,6 +7,7 @@
 * Added support for BypassIntegratedCache option See [PR 24772](https://github.com/Azure/azure-sdk-for-go/pull/24772)
 * Added support for specifying Full-Text Search indexing policies when creating a container. See [PR 24833](https://github.com/Azure/azure-sdk-for-go/pull/24833)
 * Added support for specifying Vector Search indexing policies when creating a container. See [PR 24833](https://github.com/Azure/azure-sdk-for-go/pull/24833)
+* Added support for reading Feed Ranges from a container. See [PR 24889](https://github.com/Azure/azure-sdk-for-go/pull/24889)
 
 
 ### Breaking Changes

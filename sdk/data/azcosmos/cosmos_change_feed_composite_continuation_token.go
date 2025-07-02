@@ -3,7 +3,7 @@
 
 package azcosmos
 
-type CompositeContinuationToken struct {
+type compositeContinuationToken struct {
 	// ResourceID is the ID of the resource for which the continuation token is valid.
 	ResourceID string `json:"resourceId"`
 	// Continuation is the list of Epk Ranges part of the continuation token
@@ -13,8 +13,8 @@ type CompositeContinuationToken struct {
 // newCompositeContinuationToken creates a new CompositeContinuationToken with the specified resource ID and continuation ranges.
 // This function is used to create a continuation token for the Cosmos DB change feed.
 // It is designed for internal use only and should not be used directly by clients.
-func newCompositeContinuationToken(resourceID string, continuation []ChangeFeedRange) CompositeContinuationToken {
-	return CompositeContinuationToken{
+func newCompositeContinuationToken(resourceID string, continuation []ChangeFeedRange) compositeContinuationToken {
+	return compositeContinuationToken{
 		ResourceID:   resourceID,
 		Continuation: continuation,
 	}

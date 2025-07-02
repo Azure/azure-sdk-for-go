@@ -42,7 +42,7 @@ type OrganizationsServer struct {
 
 	// BeginUpdate is the fake for method OrganizationsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, organizationName string, properties armmongodbatlas.OrganizationResource, options *armmongodbatlas.OrganizationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmongodbatlas.OrganizationsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, organizationName string, properties armmongodbatlas.OrganizationResourceUpdate, options *armmongodbatlas.OrganizationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmongodbatlas.OrganizationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOrganizationsServerTransport creates a new instance of OrganizationsServerTransport with the provided implementation.
@@ -331,7 +331,7 @@ func (o *OrganizationsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armmongodbatlas.OrganizationResource](req)
+		body, err := server.UnmarshalRequestAsJSON[armmongodbatlas.OrganizationResourceUpdate](req)
 		if err != nil {
 			return nil, err
 		}

@@ -702,7 +702,7 @@ func (c *ContainerClient) getSpanForItems(operationType operationType) (span, er
 	return getSpanNameForItems(c.database.client.accountEndpointUrl(), operationType, c.database.id, c.id)
 }
 
-func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *PartitionKeyRangeOptions) (partitionKeyRangeResponse, error) {
+func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *partitionKeyRangeOptions) (partitionKeyRangeResponse, error) {
 	spanName, err := c.getSpanForContainer(operationTypeRead, resourceTypePartitionKeyRange, c.id)
 	if err != nil {
 		return partitionKeyRangeResponse{}, err
@@ -716,7 +716,7 @@ func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, o *Partitio
 	}
 
 	if o == nil {
-		o = &PartitionKeyRangeOptions{}
+		o = &partitionKeyRangeOptions{}
 	}
 
 	path, err := generatePathForNameBased(resourceTypePartitionKeyRange, operationContext.resourceAddress, true)

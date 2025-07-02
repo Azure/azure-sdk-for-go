@@ -66,7 +66,7 @@ type Receiver struct {
 	settler                  *messageSettler
 	defaultReleaserTimeout   time.Duration // defaults to 1min, settable for unit tests.
 
-	cachedMessages []*amqp.Message // messages that were extracted from a ReceiveAndDelete receiver, after it was closed.
+	cachedMessages atomic.Pointer[[]*amqp.Message] // messages that were extracted from a ReceiveAndDelete receiver, after it was closed.
 }
 
 // ReceiverOptions contains options for the `Client.NewReceiverForQueue` or `Client.NewReceiverForSubscription`
@@ -169,7 +169,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 
 	if receiver.receiveMode == ReceiveModeReceiveAndDelete {
 		amqpLinksArgs.PrefetchedMessagesAfterClose = func(messages []*amqp.Message) {
-			receiver.cachedMessages = messages
+			receiver.cachedMessages.Store(&messages)
 		}
 	}
 
@@ -488,19 +488,20 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 // receiveFromCache gets any messages that were retrieved after the Receiver was closed
 // It returns an empty slice when the cache has been exhausted.
 func (r *Receiver) receiveFromCache(maxMessages int) []*ReceivedMessage {
-	if len(r.cachedMessages) == 0 {
+	cachedMessages := r.cachedMessages.Load()
+	if cachedMessages == nil || len(*cachedMessages) == 0 {
 		return nil
 	}
 
-	n := min(len(r.cachedMessages), maxMessages)
+	n := min(len(*cachedMessages), maxMessages)
 
 	receivedMessages := make([]*ReceivedMessage, n)
 
 	for i := range n {
-		receivedMessages[i] = newReceivedMessage(r.cachedMessages[i], nil)
+		receivedMessages[i] = newReceivedMessage((*cachedMessages)[i], nil)
 	}
 
-	r.cachedMessages = r.cachedMessages[n:]
+	(*cachedMessages) = (*cachedMessages)[n:]
 	return receivedMessages
 }
 

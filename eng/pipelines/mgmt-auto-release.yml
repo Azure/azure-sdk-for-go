@@ -27,7 +27,7 @@ extends:
               - task: Npm@1
                 inputs:
                   command: 'custom'
-                  customCommand: 'install -g @azure-tools/typespec-client-generator-cli@v0.10.0'
+                  customCommand: 'install -g @azure-tools/typespec-client-generator-cli@v0.21.0'
 
               - task: GoTool@0
                 inputs:

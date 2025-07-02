@@ -4,9 +4,9 @@
 package azcosmos
 
 // PartitionKeyRangeOptions includes options for reading partition key ranges.
-type PartitionKeyRangeOptions struct{}
+type partitionKeyRangeOptions struct{}
 
 // toHeaders converts the options to a map of HTTP headers.
-func (options *PartitionKeyRangeOptions) toHeaders() *map[string]string {
+func (options *partitionKeyRangeOptions) toHeaders() *map[string]string {
 	return nil
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func TestPartitionKeyRangeRequestOptionsToHeaders(t *testing.T) {
-	options := &PartitionKeyRangeOptions{}
+	options := &partitionKeyRangeOptions{}
 	if options.toHeaders() != nil {
 		t.Error("toHeaders should return nil")
 	}

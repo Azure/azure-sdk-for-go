@@ -13,7 +13,7 @@ import (
 
 func TestPartitionKeyRangeSerialization(t *testing.T) {
 	etag := azcore.ETag("\"00000000-0000-0000-0000-000000000000\"")
-	pkr := PartitionKeyRange{
+	pkr := partitionKeyRange{
 		ID:                      "0",
 		ResourceID:              "rid1",
 		ETag:                    &etag,
@@ -34,7 +34,7 @@ func TestPartitionKeyRangeSerialization(t *testing.T) {
 		t.Fatalf("Failed to marshal PartitionKeyRange: %v", err)
 	}
 
-	var newPkr PartitionKeyRange
+	var newPkr partitionKeyRange
 	err = json.Unmarshal(jsonBytes, &newPkr)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal PartitionKeyRange: %v", err)

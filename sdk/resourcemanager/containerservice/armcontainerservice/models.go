@@ -150,7 +150,8 @@ type AgentPoolSecurityProfile struct {
 
 // AgentPoolStatus - Contains read-only information about the Agent Pool.
 type AgentPoolStatus struct {
-	// READ-ONLY; Preserves the detailed info of failure. If there was no error, this field is omitted.
+	// READ-ONLY; The error detail information of the agent pool. Preserves the detailed info of failure. If there was no error,
+	// this field is omitted.
 	ProvisioningError *CloudErrorBody
 }
 
@@ -194,25 +195,27 @@ type AgentPoolUpgradeProfilePropertiesUpgradesItem struct {
 
 // AgentPoolUpgradeSettings - Settings for upgrading an agentpool
 type AgentPoolUpgradeSettings struct {
-	// The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait time
-	// honors waiting on pod disruption budgets. If this time is exceeded, the upgrade
-	// fails. If not specified, the default is 30 minutes.
+	// The drain timeout for a node. The amount of time (in minutes) to wait on eviction of pods and graceful termination per
+	// node. This eviction wait time honors waiting on pod disruption budgets. If this
+	// time is exceeded, the upgrade fails. If not specified, the default is 30 minutes.
 	DrainTimeoutInMinutes *int32
 
-	// This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage
-	// of the total agent pool size at the time of the upgrade. For
-	// percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information, including best
+	// The maximum number or percentage of nodes that are surged during upgrade. This can either be set to an integer (e.g. '5')
+	// or a percentage (e.g. '50%'). If a percentage is specified, it is the
+	// percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If
+	// not specified, the default is 10%. For more information, including best
 	// practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
 	MaxSurge *string
 
-	// This can either be set to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is specified, it is the percentage
-	// of the total agent pool size at the time of the upgrade. For
-	// percentages, fractional nodes are rounded up. If not specified, the default is 0. For more information, including best
-	// practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
+	// The maximum number or percentage of nodes that can be simultaneously unavailable during upgrade. This can either be set
+	// to an integer (e.g. '1') or a percentage (e.g. '5%'). If a percentage is
+	// specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes
+	// are rounded up. If not specified, the default is 0. For more information,
+	// including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
 	MaxUnavailable *string
 
-	// The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node. If not
-	// specified, the default is 0 minutes.
+	// The soak duration for a node. The amount of time (in minutes) to wait after draining a node and before reimaging it and
+	// moving on to next node. If not specified, the default is 0 minutes.
 	NodeSoakDurationInMinutes *int32
 
 	// Defines the behavior for undrainable nodes during upgrade. The most common cause of undrainable nodes is Pod Disruption
@@ -223,8 +226,9 @@ type AgentPoolUpgradeSettings struct {
 
 // AgentPoolWindowsProfile - The Windows agent pool's specific profile.
 type AgentPoolWindowsProfile struct {
-	// The default value is false. Outbound NAT can only be disabled if the cluster outboundType is NAT Gateway and the Windows
-	// agent pool does not have node public IP enabled.
+	// Whether to disable OutboundNAT in windows nodes. The default value is false. Outbound NAT can only be disabled if the cluster
+	// outboundType is NAT Gateway and the Windows agent pool does not have node
+	// public IP enabled.
 	DisableOutboundNat *bool
 }
 
@@ -239,9 +243,9 @@ type AzureKeyVaultKms struct {
 	// Azure Key Vault key management service is disabled, leave the field empty.
 	KeyID *string
 
-	// Network access of key vault. The possible values are Public and Private. Public means the key vault allows public access
-	// from all networks. Private means the key vault disables public access and
-	// enables private link. The default value is Public.
+	// Network access of the key vault. Network access of key vault. The possible values are Public and Private. Public means
+	// the key vault allows public access from all networks. Private means the key vault
+	// disables public access and enables private link. The default value is Public.
 	KeyVaultNetworkAccess *KeyVaultNetworkAccessTypes
 
 	// Resource ID of key vault. When keyVaultNetworkAccess is Private, this field is required and must be a valid resource ID.
@@ -327,7 +331,7 @@ type DailySchedule struct {
 	IntervalDays *int32
 }
 
-// DateSpan - For example, between '2022-12-23' and '2023-01-05'.
+// DateSpan - A date range. For example, between '2022-12-23' and '2023-01-05'.
 type DateSpan struct {
 	// REQUIRED; The end date of the date span.
 	End *time.Time
@@ -465,23 +469,23 @@ type IstioServiceMesh struct {
 	Revisions []*string
 }
 
-// KubeletConfig - See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration] for
-// more details.
+// KubeletConfig - Kubelet configurations of agent nodes. See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration]
+// for more details.
 type KubeletConfig struct {
 	// Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in *).
 	AllowedUnsafeSysctls []*string
 
-	// The default is true.
+	// If CPU CFS quota enforcement is enabled for containers that specify CPU limits. The default is true.
 	CPUCfsQuota *bool
 
-	// The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit suffix. For
-	// example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and
-	// 'h'.
+	// The CPU CFS quota period value. The default is '100ms.' Valid values are a sequence of decimal numbers with an optional
+	// fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are
+	// 'ns', 'us', 'ms', 's', 'm', and 'h'.
 	CPUCfsQuotaPeriod *string
 
-	// The default is 'none'. See Kubernetes CPU management policies [https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies]
-	// for more information. Allowed
-	// values are 'none' and 'static'.
+	// The CPU Manager policy to use. The default is 'none'. See Kubernetes CPU management policies [https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies]
+	// for
+	// more information. Allowed values are 'none' and 'static'.
 	CPUManagerPolicy *string
 
 	// The maximum number of container log files that can be present for a container. The number must be ≥ 2.
@@ -493,18 +497,20 @@ type KubeletConfig struct {
 	// If set to true it will make the Kubelet fail to start if swap is enabled on the node.
 	FailSwapOn *bool
 
-	// To disable image garbage collection, set to 100. The default is 85%
+	// The percent of disk usage after which image garbage collection is always run. To disable image garbage collection, set
+	// to 100. The default is 85%
 	ImageGcHighThreshold *int32
 
-	// This cannot be set higher than imageGcHighThreshold. The default is 80%
+	// The percent of disk usage before which image garbage collection is never run. This cannot be set higher than imageGcHighThreshold.
+	// The default is 80%
 	ImageGcLowThreshold *int32
 
 	// The maximum number of processes per pod.
 	PodMaxPids *int32
 
-	// For more information see Kubernetes Topology Manager [https://kubernetes.io/docs/tasks/administer-cluster/topology-manager].
-	// The default is 'none'. Allowed values are 'none', 'best-effort',
-	// 'restricted', and 'single-numa-node'.
+	// The Topology Manager policy to use. For more information see Kubernetes Topology Manager [https://kubernetes.io/docs/tasks/administer-cluster/topology-manager].
+	// The default is 'none'. Allowed values
+	// are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
 	TopologyManagerPolicy *string
 }
 
@@ -543,8 +549,8 @@ type KubernetesVersionListResult struct {
 	Values []*KubernetesVersion
 }
 
-// LinuxOSConfig - See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration] for
-// more details.
+// LinuxOSConfig - OS configurations of Linux agent nodes. See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration]
+// for more details.
 type LinuxOSConfig struct {
 	// The size in MB of a swap file that will be created on each node.
 	SwapFileSizeMB *int32
@@ -552,12 +558,13 @@ type LinuxOSConfig struct {
 	// Sysctl settings for Linux agent nodes.
 	Sysctls *SysctlConfig
 
-	// Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more information
-	// see Transparent Hugepages
-	// [https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge].
+	// Whether the kernel should make aggressive use of memory compaction to make more hugepages available. Valid values are 'always',
+	// 'defer', 'defer+madvise', 'madvise' and 'never'. The default is
+	// 'madvise'. For more information see Transparent Hugepages [https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge].
 	TransparentHugePageDefrag *string
 
-	// Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see Transparent Hugepages
+	// Whether transparent hugepages are enabled. Valid values are 'always', 'madvise', and 'never'. The default is 'always'.
+	// For more information see Transparent Hugepages
 	// [https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge].
 	TransparentHugePageEnabled *string
 }
@@ -624,7 +631,8 @@ type MachineProperties struct {
 	ResourceID *string
 }
 
-// MaintenanceConfiguration - See planned maintenance [https://docs.microsoft.com/azure/aks/planned-maintenance] for more
+// MaintenanceConfiguration - Planned maintenance configuration, used to configure when updates can be deployed to a Managed
+// Cluster. See planned maintenance [https://docs.microsoft.com/azure/aks/planned-maintenance] for more
 // information about planned maintenance.
 type MaintenanceConfiguration struct {
 	// Properties of a default maintenance configuration.
@@ -660,7 +668,8 @@ type MaintenanceConfigurationProperties struct {
 	// Time slots on which upgrade is not allowed.
 	NotAllowedTime []*TimeSpan
 
-	// If two array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+	// Time slots during the week when planned maintenance is allowed to proceed. If two array entries specify the same day of
+	// the week, the applied configuration is the union of times in both entries.
 	TimeInWeek []*TimeInWeek
 }
 
@@ -729,7 +738,8 @@ type ManagedCluster struct {
 	Type *string
 }
 
-// ManagedClusterAADProfile - For more details see managed AAD on AKS [https://docs.microsoft.com/azure/aks/managed-aad].
+// ManagedClusterAADProfile - AADProfile specifies attributes for Azure Active Directory integration. For more details see
+// managed AAD on AKS [https://docs.microsoft.com/azure/aks/managed-aad].
 type ManagedClusterAADProfile struct {
 	// The list of AAD group object IDs that will have admin role of the cluster.
 	AdminGroupObjectIDs []*string
@@ -753,17 +763,25 @@ type ManagedClusterAADProfile struct {
 	TenantID *string
 }
 
+// ManagedClusterAIToolchainOperatorProfile - When enabling the operator, a set of AKS managed CRDs and controllers will be
+// installed in the cluster. The operator automates the deployment of OSS models for inference and/or training purposes. It
+// provides a set of preset models and enables distributed inference against them.
+type ManagedClusterAIToolchainOperatorProfile struct {
+	// Whether to enable AI toolchain operator to the cluster. Indicates if AI toolchain operator enabled or not.
+	Enabled *bool
+}
+
 // ManagedClusterAPIServerAccessProfile - Access profile for managed cluster API server.
 type ManagedClusterAPIServerAccessProfile struct {
-	// IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public
-	// IP Per Node, or clusters that are using a Basic Load Balancer. For more
-	// information see API server authorized IP ranges [https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges].
+	// The IP ranges authorized to access the Kubernetes API server. IP ranges are specified in CIDR format, e.g. 137.117.106.88/29.
+	// This feature is not compatible with clusters that use Public IP Per Node,
+	// or clusters that are using a Basic Load Balancer. For more information see API server authorized IP ranges [https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges].
 	AuthorizedIPRanges []*string
 
 	// Whether to disable run command for the cluster or not.
 	DisableRunCommand *bool
 
-	// For more details, see Creating a private AKS cluster [https://docs.microsoft.com/azure/aks/private-clusters].
+	// Whether to create the cluster as a private cluster or not. For more details, see Creating a private AKS cluster [https://docs.microsoft.com/azure/aks/private-clusters].
 	EnablePrivateCluster *bool
 
 	// Whether to create additional public FQDN for private cluster or not.
@@ -772,12 +790,12 @@ type ManagedClusterAPIServerAccessProfile struct {
 	// Whether to enable apiserver vnet integration for the cluster or not. See aka.ms/AksVnetIntegration for more details.
 	EnableVnetIntegration *bool
 
-	// The default is System. For more details see configure private DNS zone [https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone].
+	// The private DNS zone mode for the cluster. The default is System. For more details see configure private DNS zone [https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone].
 	// Allowed values are 'system' and 'none'.
 	PrivateDNSZone *string
 
-	// It is required when creating a new cluster with BYO Vnet, or when updating an existing cluster to enable apiserver vnet
-	// integration.
+	// The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new cluster with BYO Vnet,
+	// or when updating an existing cluster to enable apiserver vnet integration.
 	SubnetID *string
 }
 
@@ -831,7 +849,8 @@ type ManagedClusterAddonProfileIdentity struct {
 
 // ManagedClusterAgentPoolProfile - Profile for the container service agent pool.
 type ManagedClusterAgentPoolProfile struct {
-	// REQUIRED; Windows agent pool names must be 6 characters or less.
+	// REQUIRED; Unique name of the agent pool profile in the context of the subscription and resource group. Windows agent pool
+	// names must be 6 characters or less.
 	Name *string
 
 	// The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is 'VirtualMachineScaleSets'.
@@ -851,16 +870,19 @@ type ManagedClusterAgentPoolProfile struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool
 
-	// This is only supported on certain VM sizes and in certain Azure regions. For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption
+	// Whether to enable host based OS and data drive encryption. This is only supported on certain VM sizes and in certain Azure
+	// regions. For more information, see:
+	// https://docs.microsoft.com/azure/aks/enable-host-encryption
 	EnableEncryptionAtHost *bool
 
-	// See Add a FIPS-enabled node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview]
+	// Whether to use a FIPS-enabled OS. See Add a FIPS-enabled node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview]
 	// for more details.
 	EnableFIPS *bool
 
-	// Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is
-	// for gaming workloads, where a console needs to make a direct connection to a
-	// cloud virtual machine to minimize hops. For more information see assigning a public IP per node
+	// Whether each node is allocated its own public IP. Some scenarios may require nodes in a node pool to receive their own
+	// dedicated public IP addresses. A common scenario is for gaming workloads, where a
+	// console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning
+	// a public IP per node
 	// [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools]. The default
 	// is false.
 	EnableNodePublicIP *bool
@@ -877,7 +899,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// GPU settings for the Agent Pool.
 	GpuProfile *GPUProfile
 
-	// This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
+	// The fully qualified resource ID of the Dedicated Host Group to provision virtual machines from, used only in creation scenario
+	// and not allowed to changed once set. This is of the form:
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
 	// For more information see Azure dedicated hosts
 	// [https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts].
 	HostGroupID *string
@@ -897,16 +921,18 @@ type ManagedClusterAgentPoolProfile struct {
 	// The maximum number of pods that can run on a node.
 	MaxPods *int32
 
-	// A base64-encoded string which will be written to /etc/motd after decoding. This allows customization of the message of
-	// the day for Linux nodes. It must not be specified for Windows nodes. It must be a
-	// static string (i.e., will be printed raw and not be executed as a script).
+	// Message of the day for Linux nodes, base64-encoded. A base64-encoded string which will be written to /etc/motd after decoding.
+	// This allows customization of the message of the day for Linux nodes. It
+	// must not be specified for Windows nodes. It must be a static string (i.e., will be printed raw and not be executed as a
+	// script).
 	MessageOfTheDay *string
 
 	// The minimum number of nodes for auto-scaling
 	MinCount *int32
 
-	// A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions
-	// and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
+	// The mode of an agent pool. A cluster must have at least one 'System' Agent Pool at all times. For additional information
+	// on agent pool restrictions and best practices, see:
+	// https://docs.microsoft.com/azure/aks/use-system-pools
 	Mode *AgentPoolMode
 
 	// Network-related settings of an agent pool.
@@ -915,7 +941,8 @@ type ManagedClusterAgentPoolProfile struct {
 	// The node labels to be persisted across all nodes in agent pool.
 	NodeLabels map[string]*string
 
-	// This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}
+	// The public IP prefix ID which VM nodes should use IPs from. This is of the form:
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}
 	NodePublicIPPrefixID *string
 
 	// The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
@@ -925,9 +952,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// will apply the default osDisk size according to the vmSize specified.
 	OSDiskSizeGB *int32
 
-	// The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
-	// defaults to 'Managed'. May not be changed after creation. For more information
-	// see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
+	// The OS disk type to be used for machines in the agent pool. The default is 'Ephemeral' if the VM supports it and has a
+	// cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to
+	// 'Managed'. May not be changed after creation. For more information see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
 	OSDiskType *OSDiskType
 
 	// Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when
@@ -937,34 +964,41 @@ type ManagedClusterAgentPoolProfile struct {
 	// The operating system type. The default is Linux.
 	OSType *OSType
 
-	// Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When is specified, the latest supported GA patch version
-	// is chosen automatically. Updating the cluster with the same once it has been
-	// created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. As a best practice,
-	// you should upgrade all node pools in an AKS cluster to the same Kubernetes
-	// version. The node pool version must have the same major version as the control plane. The node pool minor version must
-	// be within two minor versions of the control plane version. The node pool version
-	// cannot be greater than the control plane version. For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
+	// The version of Kubernetes specified by the user. Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When
+	// is specified, the latest supported GA patch version is chosen automatically.
+	// Updating the cluster with the same once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if
+	// a newer patch version is available. As a best practice, you should upgrade all
+	// node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as
+	// the control plane. The node pool minor version must be within two minor versions
+	// of the control plane version. The node pool version cannot be greater than the control plane version. For more information
+	// see upgrading a node pool
+	// [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
 	OrchestratorVersion *string
 
-	// The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is 'DynamicIndividual'.
+	// Pod IP Allocation Mode. The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is
+	// 'DynamicIndividual'.
 	PodIPAllocationMode *PodIPAllocationMode
 
-	// If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
+	// The ID of the subnet which pods will join when launched. If omitted, pod IPs are statically assigned on the node subnet
+	// (see vnetSubnetID for more details). This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	PodSubnetID *string
 
-	// When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field to Stopped.
-	// A stopped Agent Pool stops all of its VMs and does not accrue billing
-	// charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded
+	// Whether the Agent Pool is running or stopped. When an Agent Pool is first created it is initially Running. The Agent Pool
+	// can be stopped by setting this field to Stopped. A stopped Agent Pool stops
+	// all of its VMs and does not accrue billing charges. An Agent Pool can only be stopped if it is Running and provisioning
+	// state is Succeeded
 	PowerState *PowerState
 
 	// The ID for Proximity Placement Group.
 	ProximityPlacementGroupID *string
 
-	// This also effects the cluster autoscaler behavior. If not specified, it defaults to Delete.
+	// The scale down mode to use when scaling the Agent Pool. This also effects the cluster autoscaler behavior. If not specified,
+	// it defaults to Delete.
 	ScaleDownMode *ScaleDownMode
 
-	// This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
+	// The Virtual Machine Scale Set eviction policy to use. This cannot be specified unless the scaleSetPriority is 'Spot'. If
+	// not specified, the default is 'Delete'.
 	ScaleSetEvictionPolicy *ScaleSetEvictionPolicy
 
 	// The Virtual Machine Scale Set priority. If not specified, the default is 'Regular'.
@@ -973,8 +1007,10 @@ type ManagedClusterAgentPoolProfile struct {
 	// The security settings of an agent pool.
 	SecurityProfile *AgentPoolSecurityProfile
 
-	// Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price.
-	// For more details on spot pricing, see spot VMs pricing
+	// The max price (in US Dollars) you are willing to pay for spot instances. Possible values are any decimal value greater
+	// than zero or -1 which indicates default price to be up-to on-demand. Possible
+	// values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more
+	// details on spot pricing, see spot VMs pricing
 	// [https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing]
 	SpotMaxPrice *float32
 
@@ -990,9 +1026,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// Settings for upgrading the agentpool
 	UpgradeSettings *AgentPoolUpgradeSettings
 
-	// VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might
-	// fail to run correctly. For more details on restricted VM sizes, see:
-	// https://docs.microsoft.com/azure/aks/quotas-skus-regions
+	// The size of the agent pool VMs. VM size availability varies by region. If a node contains insufficient compute resources
+	// (memory, cpu, etc) pods might fail to run correctly. For more details on
+	// restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions
 	VMSize *string
 
 	// The status of nodes in a VirtualMachines agent pool.
@@ -1001,8 +1037,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// Specifications on VirtualMachines agent pool.
 	VirtualMachinesProfile *VirtualMachinesProfile
 
-	// If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
-	// nodes and pods, otherwise it applies to just nodes. This is of the form:
+	// The ID of the subnet which agent pool nodes and optionally pods will join on startup. If this is not specified, a VNET
+	// and subnet will be generated and used. If no podSubnetID is specified, this
+	// applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	VnetSubnetID *string
 
@@ -1012,8 +1049,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// Determines the type of workload a node can run.
 	WorkloadRuntime *WorkloadRuntime
 
-	// READ-ONLY; If orchestratorVersion is a fully specified version , this field will be exactly equal to it. If orchestratorVersion
-	// is , this field will contain the full version being used.
+	// READ-ONLY; The version of Kubernetes the Agent Pool is running. If orchestratorVersion is a fully specified version , this
+	// field will be exactly equal to it. If orchestratorVersion is , this field will contain
+	// the full version being used.
 	CurrentOrchestratorVersion *string
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
@@ -1047,16 +1085,19 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool
 
-	// This is only supported on certain VM sizes and in certain Azure regions. For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption
+	// Whether to enable host based OS and data drive encryption. This is only supported on certain VM sizes and in certain Azure
+	// regions. For more information, see:
+	// https://docs.microsoft.com/azure/aks/enable-host-encryption
 	EnableEncryptionAtHost *bool
 
-	// See Add a FIPS-enabled node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview]
+	// Whether to use a FIPS-enabled OS. See Add a FIPS-enabled node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview]
 	// for more details.
 	EnableFIPS *bool
 
-	// Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is
-	// for gaming workloads, where a console needs to make a direct connection to a
-	// cloud virtual machine to minimize hops. For more information see assigning a public IP per node
+	// Whether each node is allocated its own public IP. Some scenarios may require nodes in a node pool to receive their own
+	// dedicated public IP addresses. A common scenario is for gaming workloads, where a
+	// console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning
+	// a public IP per node
 	// [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools]. The default
 	// is false.
 	EnableNodePublicIP *bool
@@ -1073,7 +1114,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// GPU settings for the Agent Pool.
 	GpuProfile *GPUProfile
 
-	// This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
+	// The fully qualified resource ID of the Dedicated Host Group to provision virtual machines from, used only in creation scenario
+	// and not allowed to changed once set. This is of the form:
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
 	// For more information see Azure dedicated hosts
 	// [https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts].
 	HostGroupID *string
@@ -1093,16 +1136,18 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// The maximum number of pods that can run on a node.
 	MaxPods *int32
 
-	// A base64-encoded string which will be written to /etc/motd after decoding. This allows customization of the message of
-	// the day for Linux nodes. It must not be specified for Windows nodes. It must be a
-	// static string (i.e., will be printed raw and not be executed as a script).
+	// Message of the day for Linux nodes, base64-encoded. A base64-encoded string which will be written to /etc/motd after decoding.
+	// This allows customization of the message of the day for Linux nodes. It
+	// must not be specified for Windows nodes. It must be a static string (i.e., will be printed raw and not be executed as a
+	// script).
 	MessageOfTheDay *string
 
 	// The minimum number of nodes for auto-scaling
 	MinCount *int32
 
-	// A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions
-	// and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
+	// The mode of an agent pool. A cluster must have at least one 'System' Agent Pool at all times. For additional information
+	// on agent pool restrictions and best practices, see:
+	// https://docs.microsoft.com/azure/aks/use-system-pools
 	Mode *AgentPoolMode
 
 	// Network-related settings of an agent pool.
@@ -1111,7 +1156,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// The node labels to be persisted across all nodes in agent pool.
 	NodeLabels map[string]*string
 
-	// This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}
+	// The public IP prefix ID which VM nodes should use IPs from. This is of the form:
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}
 	NodePublicIPPrefixID *string
 
 	// The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
@@ -1121,9 +1167,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// will apply the default osDisk size according to the vmSize specified.
 	OSDiskSizeGB *int32
 
-	// The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
-	// defaults to 'Managed'. May not be changed after creation. For more information
-	// see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
+	// The OS disk type to be used for machines in the agent pool. The default is 'Ephemeral' if the VM supports it and has a
+	// cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to
+	// 'Managed'. May not be changed after creation. For more information see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
 	OSDiskType *OSDiskType
 
 	// Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019 when
@@ -1133,34 +1179,41 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// The operating system type. The default is Linux.
 	OSType *OSType
 
-	// Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When is specified, the latest supported GA patch version
-	// is chosen automatically. Updating the cluster with the same once it has been
-	// created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. As a best practice,
-	// you should upgrade all node pools in an AKS cluster to the same Kubernetes
-	// version. The node pool version must have the same major version as the control plane. The node pool minor version must
-	// be within two minor versions of the control plane version. The node pool version
-	// cannot be greater than the control plane version. For more information see upgrading a node pool [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
+	// The version of Kubernetes specified by the user. Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When
+	// is specified, the latest supported GA patch version is chosen automatically.
+	// Updating the cluster with the same once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if
+	// a newer patch version is available. As a best practice, you should upgrade all
+	// node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as
+	// the control plane. The node pool minor version must be within two minor versions
+	// of the control plane version. The node pool version cannot be greater than the control plane version. For more information
+	// see upgrading a node pool
+	// [https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool].
 	OrchestratorVersion *string
 
-	// The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is 'DynamicIndividual'.
+	// Pod IP Allocation Mode. The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is
+	// 'DynamicIndividual'.
 	PodIPAllocationMode *PodIPAllocationMode
 
-	// If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
+	// The ID of the subnet which pods will join when launched. If omitted, pod IPs are statically assigned on the node subnet
+	// (see vnetSubnetID for more details). This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	PodSubnetID *string
 
-	// When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field to Stopped.
-	// A stopped Agent Pool stops all of its VMs and does not accrue billing
-	// charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded
+	// Whether the Agent Pool is running or stopped. When an Agent Pool is first created it is initially Running. The Agent Pool
+	// can be stopped by setting this field to Stopped. A stopped Agent Pool stops
+	// all of its VMs and does not accrue billing charges. An Agent Pool can only be stopped if it is Running and provisioning
+	// state is Succeeded
 	PowerState *PowerState
 
 	// The ID for Proximity Placement Group.
 	ProximityPlacementGroupID *string
 
-	// This also effects the cluster autoscaler behavior. If not specified, it defaults to Delete.
+	// The scale down mode to use when scaling the Agent Pool. This also effects the cluster autoscaler behavior. If not specified,
+	// it defaults to Delete.
 	ScaleDownMode *ScaleDownMode
 
-	// This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
+	// The Virtual Machine Scale Set eviction policy to use. This cannot be specified unless the scaleSetPriority is 'Spot'. If
+	// not specified, the default is 'Delete'.
 	ScaleSetEvictionPolicy *ScaleSetEvictionPolicy
 
 	// The Virtual Machine Scale Set priority. If not specified, the default is 'Regular'.
@@ -1169,8 +1222,10 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// The security settings of an agent pool.
 	SecurityProfile *AgentPoolSecurityProfile
 
-	// Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price.
-	// For more details on spot pricing, see spot VMs pricing
+	// The max price (in US Dollars) you are willing to pay for spot instances. Possible values are any decimal value greater
+	// than zero or -1 which indicates default price to be up-to on-demand. Possible
+	// values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more
+	// details on spot pricing, see spot VMs pricing
 	// [https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing]
 	SpotMaxPrice *float32
 
@@ -1186,9 +1241,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Settings for upgrading the agentpool
 	UpgradeSettings *AgentPoolUpgradeSettings
 
-	// VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might
-	// fail to run correctly. For more details on restricted VM sizes, see:
-	// https://docs.microsoft.com/azure/aks/quotas-skus-regions
+	// The size of the agent pool VMs. VM size availability varies by region. If a node contains insufficient compute resources
+	// (memory, cpu, etc) pods might fail to run correctly. For more details on
+	// restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions
 	VMSize *string
 
 	// The status of nodes in a VirtualMachines agent pool.
@@ -1197,8 +1252,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Specifications on VirtualMachines agent pool.
 	VirtualMachinesProfile *VirtualMachinesProfile
 
-	// If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
-	// nodes and pods, otherwise it applies to just nodes. This is of the form:
+	// The ID of the subnet which agent pool nodes and optionally pods will join on startup. If this is not specified, a VNET
+	// and subnet will be generated and used. If no podSubnetID is specified, this
+	// applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	VnetSubnetID *string
 
@@ -1208,8 +1264,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Determines the type of workload a node can run.
 	WorkloadRuntime *WorkloadRuntime
 
-	// READ-ONLY; If orchestratorVersion is a fully specified version , this field will be exactly equal to it. If orchestratorVersion
-	// is , this field will contain the full version being used.
+	// READ-ONLY; The version of Kubernetes the Agent Pool is running. If orchestratorVersion is a fully specified version , this
+	// field will be exactly equal to it. If orchestratorVersion is , this field will contain
+	// the full version being used.
 	CurrentOrchestratorVersion *string
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
@@ -1226,10 +1283,12 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 // ManagedClusterAutoUpgradeProfile - Auto upgrade profile for a managed cluster.
 type ManagedClusterAutoUpgradeProfile struct {
-	// Manner in which the OS on your nodes is updated. The default is NodeImage.
+	// Node OS Upgrade Channel. Manner in which the OS on your nodes is updated. The default is NodeImage.
 	NodeOSUpgradeChannel *NodeOSUpgradeChannel
 
-	// For more information see setting the AKS cluster auto-upgrade channel [https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel].
+	// The upgrade channel for auto upgrade. The default is 'none'. For more information see setting the AKS cluster auto-upgrade
+	// channel
+	// [https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel].
 	UpgradeChannel *UpgradeChannel
 }
 
@@ -1272,7 +1331,7 @@ type ManagedClusterAzureMonitorProfileMetrics struct {
 
 // ManagedClusterBootstrapProfile - The bootstrap profile.
 type ManagedClusterBootstrapProfile struct {
-	// The source where the artifacts are downloaded from.
+	// The artifact source. The source where the artifacts are downloaded from.
 	ArtifactSource *ArtifactSource
 
 	// The resource Id of Azure Container Registry. The registry must have private network access, premium SKU and zone redundancy.
@@ -1281,9 +1340,9 @@ type ManagedClusterBootstrapProfile struct {
 
 // ManagedClusterCostAnalysis - The cost analysis configuration for the cluster
 type ManagedClusterCostAnalysis struct {
-	// The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature. Enabling this will add Kubernetes
-	// Namespace and Deployment details to the Cost Analysis views in the Azure
-	// portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+	// Whether to enable cost analysis. The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature.
+	// Enabling this will add Kubernetes Namespace and Deployment details to the
+	// Cost Analysis views in the Azure portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
 	Enabled *bool
 }
 
@@ -1309,10 +1368,12 @@ type ManagedClusterIdentity struct {
 	// use only.
 	DelegatedResources map[string]*DelegatedResource
 
-	// For more information see use managed identities in AKS [https://docs.microsoft.com/azure/aks/use-managed-identity].
+	// The type of identity used for the managed cluster. For more information see use managed identities in AKS [https://docs.microsoft.com/azure/aks/use-managed-identity].
 	Type *ResourceIdentityType
 
-	// The keys must be ARM resource IDs in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	// The user identity associated with the managed cluster. This identity will be used in control plane. Only one user assigned
+	// identity is allowed. The keys must be ARM resource IDs in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*ManagedServiceIdentityUserAssignedIdentitiesValue
 
 	// READ-ONLY; The principal id of the system assigned identity which is used by master components.
@@ -1426,7 +1487,7 @@ type ManagedClusterManagedOutboundIPProfile struct {
 
 // ManagedClusterMetricsProfile - The metrics profile for the ManagedCluster.
 type ManagedClusterMetricsProfile struct {
-	// The cost analysis configuration for the cluster
+	// The configuration for detailed per-Kubernetes resource cost analysis.
 	CostAnalysis *ManagedClusterCostAnalysis
 }
 
@@ -1441,6 +1502,18 @@ type ManagedClusterNATGatewayProfile struct {
 
 	// READ-ONLY; The effective outbound IP resources of the cluster NAT gateway.
 	EffectiveOutboundIPs []*ResourceReference
+}
+
+type ManagedClusterNodeProvisioningProfile struct {
+	// The set of default Karpenter NodePools (CRDs) configured for node provisioning. This field has no effect unless mode is
+	// 'Auto'. Warning: Changing this from Auto to None on an existing cluster will
+	// cause the default Karpenter NodePools to be deleted, which will drain and delete the nodes associated with those pools.
+	// It is strongly recommended to not do this unless there are idle nodes ready to
+	// take the pods evicted by that action. If not specified, the default is Auto. For more information see aka.ms/aks/nap#node-pools.
+	DefaultNodePools *NodeProvisioningDefaultNodePools
+
+	// The node provisioning mode. If not specified, the default is Manual.
+	Mode *NodeProvisioningMode
 }
 
 // ManagedClusterNodeResourceGroupProfile - Node resource group lockdown profile for a managed cluster.
@@ -1479,7 +1552,9 @@ type ManagedClusterPodIdentity struct {
 	ProvisioningState *ManagedClusterPodIdentityProvisioningState
 }
 
-// ManagedClusterPodIdentityException - See disable AAD Pod Identity for a specific Pod/Application [https://azure.github.io/aad-pod-identity/docs/configure/application_exception/]
+// ManagedClusterPodIdentityException - A pod identity exception, which allows pods with certain labels to access the Azure
+// Instance Metadata Service (IMDS) endpoint without being intercepted by the node-managed identity (NMI) server. See
+// disable AAD Pod Identity for a specific Pod/Application [https://azure.github.io/aad-pod-identity/docs/configure/application_exception/]
 // for more details.
 type ManagedClusterPodIdentityException struct {
 	// REQUIRED; The name of the pod identity exception.
@@ -1492,11 +1567,12 @@ type ManagedClusterPodIdentityException struct {
 	PodLabels map[string]*string
 }
 
-// ManagedClusterPodIdentityProfile - See use AAD pod identity [https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity]
+// ManagedClusterPodIdentityProfile - The pod identity profile of the Managed Cluster. See use AAD pod identity [https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity]
 // for more details on pod identity integration.
 type ManagedClusterPodIdentityProfile struct {
-	// Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing.
-	// See using Kubenet network plugin with AAD Pod Identity
+	// Whether pod identity is allowed to run on clusters with Kubenet networking. Running in Kubenet is disabled by default due
+	// to the security related nature of AAD Pod Identity and the risks of IP
+	// spoofing. See using Kubenet network plugin with AAD Pod Identity
 	// [https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities]
 	// for more information.
 	AllowNetworkPluginKubenet *bool
@@ -1574,6 +1650,9 @@ type ManagedClusterProperties struct {
 	// The agent pool properties.
 	AgentPoolProfiles []*ManagedClusterAgentPoolProfile
 
+	// AI toolchain operator settings that apply to the whole cluster.
+	AiToolchainOperatorProfile *ManagedClusterAIToolchainOperatorProfile
+
 	// Parameters to be applied to the cluster-autoscaler when enabled
 	AutoScalerProfile *ManagedClusterPropertiesAutoScalerProfile
 
@@ -1586,21 +1665,23 @@ type ManagedClusterProperties struct {
 	// Profile of the cluster bootstrap configuration.
 	BootstrapProfile *ManagedClusterBootstrapProfile
 
-	// This cannot be updated once the Managed Cluster has been created.
+	// The DNS prefix of the Managed Cluster. This cannot be updated once the Managed Cluster has been created.
 	DNSPrefix *string
 
-	// If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters
-	// that are AAD enabled. For more details see disable local accounts
-	// [https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview].
+	// If local accounts should be disabled on the Managed Cluster. If set to true, getting static credentials will be disabled
+	// for this cluster. This must only be used on Managed Clusters that are AAD
+	// enabled. For more details see disable local accounts [https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview].
 	DisableLocalAccounts *bool
 
-	// This is of the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'
+	// The Resource ID of the disk encryption set to use for enabling encryption at rest. This is of the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'
 	DiskEncryptionSetID *string
 
 	// Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool
 
-	// This cannot be updated once the Managed Cluster has been created.
+	// The FQDN subdomain of the private cluster with custom private dns zone. This cannot be updated once the Managed Cluster
+	// has been created.
 	FqdnSubdomain *string
 
 	// Configurations for provisioning the cluster with HTTP proxy servers.
@@ -1614,13 +1695,14 @@ type ManagedClusterProperties struct {
 	// Ingress profile for the managed cluster.
 	IngressProfile *ManagedClusterIngressProfile
 
-	// Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When is specified, the latest supported GA patch version
-	// is chosen automatically. Updating the cluster with the same once it has been
-	// created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. When you upgrade
-	// a supported AKS cluster, Kubernetes minor versions cannot be skipped. All
-	// upgrades must be performed sequentially by major version number. For example, upgrades between 1.14.x -> 1.15.x or 1.15.x
-	// -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See upgrading
-	// an AKS cluster [https://docs.microsoft.com/azure/aks/upgrade-cluster] for more details.
+	// The version of Kubernetes specified by the user. Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When
+	// is specified, the latest supported GA patch version is chosen automatically.
+	// Updating the cluster with the same once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if
+	// a newer patch version is available. When you upgrade a supported AKS cluster,
+	// Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example,
+	// upgrades between 1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed,
+	// however 1.14.x -> 1.16.x is not allowed. See upgrading an AKS cluster [https://docs.microsoft.com/azure/aks/upgrade-cluster]
+	// for more details.
 	KubernetesVersion *string
 
 	// The profile for Linux VMs in the Managed Cluster.
@@ -1632,6 +1714,9 @@ type ManagedClusterProperties struct {
 	// The network configuration profile.
 	NetworkProfile *NetworkProfile
 
+	// Node provisioning settings that apply to the whole cluster.
+	NodeProvisioningProfile *ManagedClusterNodeProvisioningProfile
+
 	// The name of the resource group containing agent pool nodes.
 	NodeResourceGroup *string
 
@@ -1641,14 +1726,14 @@ type ManagedClusterProperties struct {
 	// The OIDC issuer profile of the Managed Cluster.
 	OidcIssuerProfile *ManagedClusterOIDCIssuerProfile
 
-	// See use AAD pod identity [https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity] for more details on AAD pod identity
-	// integration.
+	// The pod identity profile of the Managed Cluster. See use AAD pod identity [https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity]
+	// for more details on AAD pod identity integration.
 	PodIdentityProfile *ManagedClusterPodIdentityProfile
 
 	// Private link resources associated with the cluster.
 	PrivateLinkResources []*PrivateLinkResource
 
-	// Allow or deny public network access for AKS
+	// PublicNetworkAccess of the managedCluster. Allow or deny public network access for AKS
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// Security profile for the managed cluster.
@@ -1678,13 +1763,16 @@ type ManagedClusterProperties struct {
 	// Workload Auto-scaler profile for the managed cluster.
 	WorkloadAutoScalerProfile *ManagedClusterWorkloadAutoScalerProfile
 
-	// READ-ONLY; The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
-	// which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS,
-	// allowing the Azure Portal to function properly.
+	// READ-ONLY; The special FQDN used by the Azure Portal to access the Managed Cluster. This FQDN is for use only by the Azure
+	// Portal and should not be used by other clients. The Azure Portal requires certain
+	// Cross-Origin Resource Sharing (CORS) headers to be sent in some responses, which Kubernetes APIServer doesn't handle by
+	// default. This special FQDN supports CORS, allowing the Azure Portal to function
+	// properly.
 	AzurePortalFQDN *string
 
-	// READ-ONLY; If kubernetesVersion was a fully specified version , this field will be exactly equal to it. If kubernetesVersion
-	// was , this field will contain the full version being used.
+	// READ-ONLY; The version of Kubernetes the Managed Cluster is running. If kubernetesVersion was a fully specified version
+	// , this field will be exactly equal to it. If kubernetesVersion was , this field will
+	// contain the full version being used.
 	CurrentKubernetesVersion *string
 
 	// READ-ONLY; The FQDN of the master pool.
@@ -1709,73 +1797,90 @@ type ManagedClusterProperties struct {
 
 // ManagedClusterPropertiesAutoScalerProfile - Parameters to be applied to the cluster-autoscaler when enabled
 type ManagedClusterPropertiesAutoScalerProfile struct {
-	// Valid values are 'true' and 'false'
+	// Detects similar node pools and balances the number of nodes between them. Valid values are 'true' and 'false'
 	BalanceSimilarNodeGroups *string
 
-	// If set to true, all daemonset pods on empty nodes will be evicted before deletion of the node. If the daemonset pod cannot
-	// be evicted another node will be chosen for scaling. If set to false, the node
-	// will be deleted without ensuring that daemonset pods are deleted or evicted.
+	// DaemonSet pods will be gracefully terminated from empty nodes. If set to true, all daemonset pods on empty nodes will be
+	// evicted before deletion of the node. If the daemonset pod cannot be evicted
+	// another node will be chosen for scaling. If set to false, the node will be deleted without ensuring that daemonset pods
+	// are deleted or evicted.
 	DaemonsetEvictionForEmptyNodes *bool
 
-	// If set to true, all daemonset pods on occupied nodes will be evicted before deletion of the node. If the daemonset pod
-	// cannot be evicted another node will be chosen for scaling. If set to false, the
-	// node will be deleted without ensuring that daemonset pods are deleted or evicted.
+	// DaemonSet pods will be gracefully terminated from non-empty nodes. If set to true, all daemonset pods on occupied nodes
+	// will be evicted before deletion of the node. If the daemonset pod cannot be
+	// evicted another node will be chosen for scaling. If set to false, the node will be deleted without ensuring that daemonset
+	// pods are deleted or evicted.
 	DaemonsetEvictionForOccupiedNodes *bool
 
-	// If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
-	// for more information.
+	// The expander to use when scaling up. If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
+	// for
+	// more information.
 	Expander *Expander
 
-	// If set to true, the resources used by daemonset will be taken into account when making scaling down decisions.
+	// Should CA ignore DaemonSet pods when calculating resource utilization for scaling down. If set to true, the resources used
+	// by daemonset will be taken into account when making scaling down decisions.
 	IgnoreDaemonsetsUtilization *bool
 
-	// The default is 10.
+	// The maximum number of empty nodes that can be deleted at the same time. This must be a positive integer. The default is
+	// 10.
 	MaxEmptyBulkDelete *string
 
-	// The default is 600.
+	// The maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node. The default
+	// is 600.
 	MaxGracefulTerminationSec *string
 
-	// The default is '15m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	// The maximum time the autoscaler waits for a node to be provisioned. The default is '15m'. Values must be an integer followed
+	// by an 'm'. No unit of time other than minutes (m) is supported.
 	MaxNodeProvisionTime *string
 
+	// The maximum percentage of unready nodes in the cluster. After this percentage is exceeded, cluster autoscaler halts operations.
 	// The default is 45. The maximum is 100 and the minimum is 0.
 	MaxTotalUnreadyPercentage *string
 
-	// For scenarios like burst/batch scale where you don't want CA to act before the kubernetes scheduler could schedule all
-	// the pods, you can tell CA to ignore unscheduled pods before they're a certain
-	// age. The default is '0s'. Values must be an integer followed by a unit ('s' for seconds, 'm' for minutes, 'h' for hours,
-	// etc).
+	// Ignore unscheduled pods before they're a certain age. For scenarios like burst/batch scale where you don't want CA to act
+	// before the kubernetes scheduler could schedule all the pods, you can tell CA
+	// to ignore unscheduled pods before they're a certain age. The default is '0s'. Values must be an integer followed by a unit
+	// ('s' for seconds, 'm' for minutes, 'h' for hours, etc).
 	NewPodScaleUpDelay *string
 
-	// This must be an integer. The default is 3.
+	// The number of allowed unready nodes, irrespective of max-total-unready-percentage. This must be an integer. The default
+	// is 3.
 	OkTotalUnreadyCount *string
 
-	// The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	// How long after scale up that scale down evaluation resumes. The default is '10m'. Values must be an integer followed by
+	// an 'm'. No unit of time other than minutes (m) is supported.
 	ScaleDownDelayAfterAdd *string
 
-	// The default is the scan-interval. Values must be an integer followed by an 'm'. No unit of time other than minutes (m)
-	// is supported.
+	// How long after node deletion that scale down evaluation resumes. The default is the scan-interval. Values must be an integer
+	// followed by an 'm'. No unit of time other than minutes (m) is supported.
 	ScaleDownDelayAfterDelete *string
 
-	// The default is '3m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	// How long after scale down failure that scale down evaluation resumes. The default is '3m'. Values must be an integer followed
+	// by an 'm'. No unit of time other than minutes (m) is supported.
 	ScaleDownDelayAfterFailure *string
 
-	// The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	// How long a node should be unneeded before it is eligible for scale down. The default is '10m'. Values must be an integer
+	// followed by an 'm'. No unit of time other than minutes (m) is supported.
 	ScaleDownUnneededTime *string
 
-	// The default is '20m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	// How long an unready node should be unneeded before it is eligible for scale down. The default is '20m'. Values must be
+	// an integer followed by an 'm'. No unit of time other than minutes (m) is
+	// supported.
 	ScaleDownUnreadyTime *string
 
-	// The default is '0.5'.
+	// Node utilization level, defined as sum of requested resources divided by capacity, below which a node can be considered
+	// for scale down. The default is '0.5'.
 	ScaleDownUtilizationThreshold *string
 
-	// The default is '10'. Values must be an integer number of seconds.
+	// How often cluster is reevaluated for scale up or down. The default is '10'. Values must be an integer number of seconds.
 	ScanInterval *string
 
-	// The default is true.
+	// If cluster autoscaler will skip deleting nodes with pods with local storage, for example, EmptyDir or HostPath. The default
+	// is true.
 	SkipNodesWithLocalStorage *string
 
-	// The default is true.
+	// If cluster autoscaler will skip deleting nodes with pods from kube-system (except for DaemonSet or mirror pods). The default
+	// is true.
 	SkipNodesWithSystemPods *string
 }
 
@@ -1784,7 +1889,7 @@ type ManagedClusterSKU struct {
 	// The name of a managed cluster SKU.
 	Name *ManagedClusterSKUName
 
-	// If not specified, the default is 'Free'. See AKS Pricing Tier [https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers]
+	// The tier of a managed cluster SKU. If not specified, the default is 'Free'. See AKS Pricing Tier [https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers]
 	// for more details.
 	Tier *ManagedClusterSKUTier
 }
@@ -1857,13 +1962,14 @@ type ManagedClusterServicePrincipalProfile struct {
 
 // ManagedClusterStaticEgressGatewayProfile - The Static Egress Gateway addon configuration for the cluster.
 type ManagedClusterStaticEgressGatewayProfile struct {
-	// Indicates if Static Egress Gateway addon is enabled or not.
+	// Enable Static Egress Gateway addon. Indicates if Static Egress Gateway addon is enabled or not.
 	Enabled *bool
 }
 
 // ManagedClusterStatus - Contains read-only information about the Managed Cluster.
 type ManagedClusterStatus struct {
-	// READ-ONLY; Preserves the detailed info of failure. If there was no error, this field is omitted.
+	// READ-ONLY; The error details information of the managed cluster. Preserves the detailed info of failure. If there was no
+	// error, this field is omitted.
 	ProvisioningError *CloudErrorBody
 }
 
@@ -1953,7 +2059,7 @@ type ManagedClusterWindowsProfile struct {
 	// "Password22", "iloveyou!"
 	AdminPassword *string
 
-	// For more details on CSI proxy, see the CSI proxy GitHub repo [https://github.com/kubernetes-csi/csi-proxy].
+	// Whether to enable CSI proxy. For more details on CSI proxy, see the CSI proxy GitHub repo [https://github.com/kubernetes-csi/csi-proxy].
 	EnableCSIProxy *bool
 
 	// The Windows gMSA Profile in the Managed Cluster.
@@ -2097,15 +2203,17 @@ type NetworkProfile struct {
 	// in serviceCidr.
 	DNSServiceIP *string
 
-	// IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
+	// The IP families used to specify IP versions available to the cluster. IP families are used to determine single-stack or
+	// dual-stack clusters. For single-stack, the expected value is IPv4. For
 	// dual-stack, the expected values are IPv4 and IPv6.
 	IPFamilies []*IPFamily
 
 	// Profile of the cluster load balancer.
 	LoadBalancerProfile *ManagedClusterLoadBalancerProfile
 
-	// The default is 'standard'. See Azure Load Balancer SKUs [https://docs.microsoft.com/azure/load-balancer/skus] for more
-	// information about the differences between load balancer SKUs.
+	// The load balancer sku for the managed cluster. The default is 'standard'. See Azure Load Balancer SKUs [https://docs.microsoft.com/azure/load-balancer/skus]
+	// for more information about the differences
+	// between load balancer SKUs.
 	LoadBalancerSKU *LoadBalancerSKU
 
 	// Profile of the cluster NAT gateway.
@@ -2114,7 +2222,7 @@ type NetworkProfile struct {
 	// Network dataplane used in the Kubernetes cluster.
 	NetworkDataplane *NetworkDataplane
 
-	// This cannot be specified if networkPlugin is anything other than 'azure'.
+	// The network mode Azure CNI is configured with. This cannot be specified if networkPlugin is anything other than 'azure'.
 	NetworkMode *NetworkMode
 
 	// Network plugin used for building the Kubernetes network.
@@ -2126,21 +2234,23 @@ type NetworkProfile struct {
 	// Network policy used for building the Kubernetes network.
 	NetworkPolicy *NetworkPolicy
 
-	// This can only be set at cluster creation time and cannot be changed later. For more information see egress outbound type
+	// The outbound (egress) routing method. This can only be set at cluster creation time and cannot be changed later. For more
+	// information see egress outbound type
 	// [https://docs.microsoft.com/azure/aks/egress-outboundtype].
 	OutboundType *OutboundType
 
 	// A CIDR notation IP range from which to assign pod IPs when kubenet is used.
 	PodCidr *string
 
-	// One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
-	// networking.
+	// The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected for single-stack networking. Two CIDRs,
+	// one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
 	PodCidrs []*string
 
 	// A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges.
 	ServiceCidr *string
 
-	// One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
+	// The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4 CIDR is expected for single-stack networking.
+	// Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
 	// networking. They must not overlap with any Subnet IP ranges.
 	ServiceCidrs []*string
 
@@ -2301,7 +2411,7 @@ type RelativeMonthlySchedule struct {
 	// REQUIRED; Specifies the number of months between each set of occurrences.
 	IntervalMonths *int32
 
-	// REQUIRED; Specifies on which week of the month the dayOfWeek applies.
+	// REQUIRED; The week index. Specifies on which week of the month the dayOfWeek applies.
 	WeekIndex *Type
 }
 
@@ -2556,13 +2666,13 @@ type TimeInWeek struct {
 	// The day of the week.
 	Day *WeekDay
 
-	// Each integer hour represents a time range beginning at 0m after the hour ending at the next hour (non-inclusive). 0 corresponds
-	// to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the
-	// 00:00 - 02:00 UTC time range.
+	// A list of hours in the day used to identify a time range. Each integer hour represents a time range beginning at 0m after
+	// the hour ending at the next hour (non-inclusive). 0 corresponds to 00:00 UTC,
+	// 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC time range.
 	HourSlots []*int32
 }
 
-// TimeSpan - For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
+// TimeSpan - A time range. For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
 type TimeSpan struct {
 	// The end of a time span
 	End *time.Time
@@ -2703,7 +2813,7 @@ type WindowsGmsaProfile struct {
 	// Set it to empty if you have configured the DNS server in the vnet which is used to create the managed cluster.
 	DNSServer *string
 
-	// Specifies whether to enable Windows gMSA in the managed cluster.
+	// Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA in the managed cluster.
 	Enabled *bool
 
 	// Specifies the root domain name for Windows gMSA.

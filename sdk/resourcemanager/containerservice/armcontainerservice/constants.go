@@ -7,11 +7,12 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v7.1.0"
+	moduleVersion = "v7.2.0"
 )
 
-// AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
-// pool restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
+// AgentPoolMode - The mode of an agent pool. A cluster must have at least one 'System' Agent Pool at all times. For additional
+// information on agent pool restrictions and best practices, see:
+// https://docs.microsoft.com/azure/aks/use-system-pools
 type AgentPoolMode string
 
 const (
@@ -55,7 +56,7 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 	}
 }
 
-// ArtifactSource - The source where the artifacts are downloaded from.
+// ArtifactSource - The artifact source. The source where the artifacts are downloaded from.
 type ArtifactSource string
 
 const (
@@ -149,8 +150,9 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// Expander - If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
-// for more information.
+// Expander - The expander to use when scaling up. If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
+// for
+// more information.
 type Expander string
 
 const (
@@ -285,9 +287,9 @@ func PossibleIstioIngressGatewayModeValues() []IstioIngressGatewayMode {
 	}
 }
 
-// KeyVaultNetworkAccessTypes - Network access of key vault. The possible values are Public and Private. Public means the
-// key vault allows public access from all networks. Private means the key vault disables public access and
-// enables private link. The default value is Public.
+// KeyVaultNetworkAccessTypes - Network access of the key vault. Network access of key vault. The possible values are Public
+// and Private. Public means the key vault allows public access from all networks. Private means the key vault
+// disables public access and enables private link. The default value is Public.
 type KeyVaultNetworkAccessTypes string
 
 const (
@@ -360,8 +362,9 @@ func PossibleLicenseTypeValues() []LicenseType {
 	}
 }
 
-// LoadBalancerSKU - The default is 'standard'. See Azure Load Balancer SKUs [https://docs.microsoft.com/azure/load-balancer/skus]
-// for more information about the differences between load balancer SKUs.
+// LoadBalancerSKU - The load balancer sku for the managed cluster. The default is 'standard'. See Azure Load Balancer SKUs
+// [https://docs.microsoft.com/azure/load-balancer/skus] for more information about the differences
+// between load balancer SKUs.
 type LoadBalancerSKU string
 
 const (
@@ -420,8 +423,8 @@ func PossibleManagedClusterSKUNameValues() []ManagedClusterSKUName {
 	}
 }
 
-// ManagedClusterSKUTier - If not specified, the default is 'Free'. See AKS Pricing Tier [https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers]
-// for more details.
+// ManagedClusterSKUTier - The tier of a managed cluster SKU. If not specified, the default is 'Free'. See AKS Pricing Tier
+// [https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers] for more details.
 type ManagedClusterSKUTier string
 
 const (
@@ -466,7 +469,8 @@ func PossibleNetworkDataplaneValues() []NetworkDataplane {
 	}
 }
 
-// NetworkMode - This cannot be specified if networkPlugin is anything other than 'azure'.
+// NetworkMode - The network mode Azure CNI is configured with. This cannot be specified if networkPlugin is anything other
+// than 'azure'.
 type NetworkMode string
 
 const (
@@ -579,7 +583,7 @@ func PossibleNginxIngressControllerTypeValues() []NginxIngressControllerType {
 	}
 }
 
-// NodeOSUpgradeChannel - Manner in which the OS on your nodes is updated. The default is NodeImage.
+// NodeOSUpgradeChannel - Node OS Upgrade Channel. Manner in which the OS on your nodes is updated. The default is NodeImage.
 type NodeOSUpgradeChannel string
 
 const (
@@ -614,9 +618,51 @@ func PossibleNodeOSUpgradeChannelValues() []NodeOSUpgradeChannel {
 	}
 }
 
-// OSDiskType - The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
-// Otherwise, defaults to 'Managed'. May not be changed after creation. For more information
-// see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
+// NodeProvisioningDefaultNodePools - The set of default Karpenter NodePools (CRDs) configured for node provisioning. This
+// field has no effect unless mode is 'Auto'. Warning: Changing this from Auto to None on an existing cluster will
+// cause the default Karpenter NodePools to be deleted, which will drain and delete the nodes associated with those pools.
+// It is strongly recommended to not do this unless there are idle nodes ready to
+// take the pods evicted by that action. If not specified, the default is Auto. For more information see aka.ms/aks/nap#node-pools.
+type NodeProvisioningDefaultNodePools string
+
+const (
+	// NodeProvisioningDefaultNodePoolsAuto - A standard set of Karpenter NodePools are provisioned
+	NodeProvisioningDefaultNodePoolsAuto NodeProvisioningDefaultNodePools = "Auto"
+	// NodeProvisioningDefaultNodePoolsNone - No Karpenter NodePools are provisioned automatically. Automatic scaling will not
+	// happen unless the user creates one or more NodePool CRD instances.
+	NodeProvisioningDefaultNodePoolsNone NodeProvisioningDefaultNodePools = "None"
+)
+
+// PossibleNodeProvisioningDefaultNodePoolsValues returns the possible values for the NodeProvisioningDefaultNodePools const type.
+func PossibleNodeProvisioningDefaultNodePoolsValues() []NodeProvisioningDefaultNodePools {
+	return []NodeProvisioningDefaultNodePools{
+		NodeProvisioningDefaultNodePoolsAuto,
+		NodeProvisioningDefaultNodePoolsNone,
+	}
+}
+
+// NodeProvisioningMode - The node provisioning mode. If not specified, the default is Manual.
+type NodeProvisioningMode string
+
+const (
+	// NodeProvisioningModeAuto - Nodes are provisioned automatically by AKS using Karpenter (See aka.ms/aks/nap for more details).
+	// Fixed size Node Pools can still be created, but autoscaling Node Pools cannot be. (See aka.ms/aks/nap for more details).
+	NodeProvisioningModeAuto NodeProvisioningMode = "Auto"
+	// NodeProvisioningModeManual - Nodes are provisioned manually by the user
+	NodeProvisioningModeManual NodeProvisioningMode = "Manual"
+)
+
+// PossibleNodeProvisioningModeValues returns the possible values for the NodeProvisioningMode const type.
+func PossibleNodeProvisioningModeValues() []NodeProvisioningMode {
+	return []NodeProvisioningMode{
+		NodeProvisioningModeAuto,
+		NodeProvisioningModeManual,
+	}
+}
+
+// OSDiskType - The OS disk type to be used for machines in the agent pool. The default is 'Ephemeral' if the VM supports
+// it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to
+// 'Managed'. May not be changed after creation. For more information see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
 type OSDiskType string
 
 const (
@@ -691,8 +737,9 @@ func PossibleOSTypeValues() []OSType {
 	}
 }
 
-// OutboundType - This can only be set at cluster creation time and cannot be changed later. For more information see egress
-// outbound type [https://docs.microsoft.com/azure/aks/egress-outboundtype].
+// OutboundType - The outbound (egress) routing method. This can only be set at cluster creation time and cannot be changed
+// later. For more information see egress outbound type
+// [https://docs.microsoft.com/azure/aks/egress-outboundtype].
 type OutboundType string
 
 const (
@@ -723,8 +770,8 @@ func PossibleOutboundTypeValues() []OutboundType {
 	}
 }
 
-// PodIPAllocationMode - The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is
-// 'DynamicIndividual'.
+// PodIPAllocationMode - Pod IP Allocation Mode. The IP allocation mode for pods in the agent pool. Must be used with podSubnetId.
+// The default is 'DynamicIndividual'.
 type PodIPAllocationMode string
 
 const (
@@ -787,7 +834,7 @@ func PossibleProtocolValues() []Protocol {
 	}
 }
 
-// PublicNetworkAccess - Allow or deny public network access for AKS
+// PublicNetworkAccess - PublicNetworkAccess of the managedCluster. Allow or deny public network access for AKS
 type PublicNetworkAccess string
 
 const (
@@ -803,7 +850,8 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ResourceIdentityType - For more information see use managed identities in AKS [https://docs.microsoft.com/azure/aks/use-managed-identity].
+// ResourceIdentityType - The type of identity used for the managed cluster. For more information see use managed identities
+// in AKS [https://docs.microsoft.com/azure/aks/use-managed-identity].
 type ResourceIdentityType string
 
 const (
@@ -866,8 +914,8 @@ func PossibleScaleDownModeValues() []ScaleDownMode {
 	}
 }
 
-// ScaleSetEvictionPolicy - The eviction policy specifies what to do with the VM when it is evicted. The default is Delete.
-// For more information about eviction see spot VMs
+// ScaleSetEvictionPolicy - The Virtual Machine Scale Set eviction policy. The eviction policy specifies what to do with the
+// VM when it is evicted. The default is Delete. For more information about eviction see spot VMs
 // [https://docs.microsoft.com/azure/virtual-machines/spot-vms]
 type ScaleSetEvictionPolicy string
 
@@ -962,7 +1010,7 @@ func PossibleTrustedAccessRoleBindingProvisioningStateValues() []TrustedAccessRo
 	}
 }
 
-// Type - Specifies on which week of the month the dayOfWeek applies.
+// Type - The week index. Specifies on which week of the month the dayOfWeek applies.
 type Type string
 
 const (
@@ -1015,7 +1063,9 @@ func PossibleUndrainableNodeBehaviorValues() []UndrainableNodeBehavior {
 	}
 }
 
-// UpgradeChannel - For more information see setting the AKS cluster auto-upgrade channel [https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel].
+// UpgradeChannel - The upgrade channel for auto upgrade. The default is 'none'. For more information see setting the AKS
+// cluster auto-upgrade channel
+// [https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel].
 type UpgradeChannel string
 
 const (

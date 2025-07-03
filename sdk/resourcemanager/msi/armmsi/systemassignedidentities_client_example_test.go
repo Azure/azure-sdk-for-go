@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3d7a3848106b831a4a7f46976fe38aa605c4f44d/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/SystemAssignedIdentityGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/SystemAssignedIdentityGet.json
 func ExampleSystemAssignedIdentitiesClient_GetByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleSystemAssignedIdentitiesClient_GetByScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSystemAssignedIdentitiesClient().GetByScope(ctx, "scope", nil)
+	res, err := clientFactory.NewSystemAssignedIdentitiesClient().GetByScope(ctx, "subscriptions/subId/resourceGroups/resourceGroupName/providers/Resource.Provider/resourceType/resourceName/identities/default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -38,11 +38,11 @@ func ExampleSystemAssignedIdentitiesClient_GetByScope() {
 	// res.SystemAssignedIdentity = armmsi.SystemAssignedIdentity{
 	// 	Name: to.Ptr("resourceName"),
 	// 	Type: to.Ptr("ResourceProvider"),
-	// 	ID: to.Ptr("/scope"),
+	// 	ID: to.Ptr("/subscriptions/subId/resourceGroups/resourceGroupName/providers/Resource.Provider/resourceType/resourceName/identities/default"),
 	// 	Location: to.Ptr("cus"),
 	// 	Properties: &armmsi.SystemAssignedIdentityProperties{
 	// 		ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
-	// 		ClientSecretURL: to.Ptr("https://serviceRoot/scope/credentials?tid=tenantId&oid=principalId&aid=clientId"),
+	// 		ClientSecretURL: to.Ptr("https://serviceRoot/subscriptions/subId/resourceGroups/resourceGroupName/providers/Resource.Provider/resourceType/resourceName/identities/default/credentials/v2/identities?tid=tenantId&arpid=guid&said=clientId"),
 	// 		PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 	// 		TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
 	// 	},

@@ -846,7 +846,7 @@ func TestContainerGetChangeFeedIfModifiedSince(t *testing.T) {
 
 	modifiedSince := time.Now().Add(-time.Hour).UTC()
 	options := &ChangeFeedOptions{
-		IfModifiedSince: &modifiedSince,
+		ChangeFeedStartFrom: &modifiedSince,
 	}
 
 	resp, err := container.GetChangeFeed(context.TODO(), options)
@@ -953,7 +953,7 @@ func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
 	// Second call: with IfModifiedSince header, expect 1 doc
 	modifiedSince := time.Now().Add(-time.Hour).UTC()
 	options := &ChangeFeedOptions{
-		IfModifiedSince: &modifiedSince,
+		ChangeFeedStartFrom: &modifiedSince,
 	}
 	resp, err = container.GetChangeFeed(context.TODO(), options)
 	if err != nil {

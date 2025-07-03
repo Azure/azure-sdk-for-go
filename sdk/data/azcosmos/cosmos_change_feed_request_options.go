@@ -4,11 +4,10 @@
 package azcosmos
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ChangeFeedOptions defines the options for retrieving the change feed.
@@ -16,62 +15,45 @@ import (
 type ChangeFeedOptions struct {
 	// MaxItemCount limits the number of items returned per page.
 	// Valid values are > 0. The service may return fewer items than requested.
-	MaxItemCount int32 `json:"x-ms-max-item-count"`
+	MaxItemCount int32
 
-	// AIM is the header that indicates this is a change feed request.
-	// It should always be set to "Incremental Feed".
-	// This header is required for change feed requests.
-	AIM string `json:"A-IM"`
-
-	// IfNoneMatch can be used with an ETag to only retrieve changes if the feed has changed.
-	// If the feed hasn't changed since the ETag, a 304 Not Modified response is returned.
-	IfNoneMatch *azcore.ETag `json:"If-None-Match"`
-
-	// IfModifiedSince can be used with UTC time to retrieve changes if the feed has been modified after that
-	// specific time
-	IfModifiedSince *time.Time `json:"If-Modified-Since"`
+	// ChangeFeedStartFrom is a user-friendly way to specifiy the time for change feed
+	// Will be set to the IfModifiedSince header
+	ChangeFeedStartFrom *time.Time
 
 	// PartitionKey is the logical partition key value for the request.
 	// Use this to read from a specific logical partition.
-	PartitionKey *PartitionKey `json:"x-ms-documentdb-partitionkey"`
+	PartitionKey *PartitionKey
 
-	// PartitionKeyRangeID is the physical partition key range id for the request.
-	// Use this to read from a specific physical partition instead of all partitions.
-	// This is useful when you want to process changes from multiple physical partitions in parallel.
-	PartitionKeyRangeID *string `json:"x-ms-documentdb-partitionkeyrangeid"`
+	// Feed Range specifies the range of pk values that map to a logical partition.
+	FeedRange *FeedRange
+
+	// CompositeContinuation is used to continue reading the change feed from a specific point.
+	Continuation *string
 }
 
-func (options *ChangeFeedOptions) toHeaders() *map[string]string {
+func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []PartitionKeyRangeProperties) *map[string]string {
 	headers := make(map[string]string)
 
+	// Always setting the AIM header to "Incremental Feed" for change feed requests
+	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
+
+	// If MaxItemCount is set to a positive value, it will be included in the headers.
+	// If it is 0, negative, or not set it will be set to -1 to indicate no limit.
 	if options.MaxItemCount > 0 {
 		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
 	} else {
 		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(-1, 10)
 	}
-
-	if options.AIM != "" {
-		headers[cosmosHeaderChangeFeed] = options.AIM
-	} else {
-		headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
-	}
-
-	if options.IfNoneMatch != nil {
-		//headers[headerIfNoneMatch] = string(*options.IfNoneMatch)
-		etag := string(*options.IfNoneMatch)
-		if len(etag) > 0 && etag[0] != '"' {
-			etag = `"` + etag + `"`
-		}
-		headers[headerIfNoneMatch] = etag
-	}
 	// Formats the time as RFC1123, e.g., "Mon, 02 Jan 2006 15:04:05 MST" (e.g., "Thu, 27 Jun 2025 14:30:00 UTC")
-	if options.IfModifiedSince != nil {
-		formatted := options.IfModifiedSince.UTC().Format(time.RFC1123)
+	// If ChangeFeedStartFrom is set, will internally map to If-Modified-Since
+	if options.ChangeFeedStartFrom != nil {
+		formatted := options.ChangeFeedStartFrom.UTC().Format(time.RFC1123)
 		formatted = strings.Replace(formatted, "UTC", "GMT", 1)
-
 		headers[cosmosHeaderIfModifiedSince] = formatted
 	}
 
+	// If PartitionKey is set, convert it to JSON and add it to the headers.
 	if options.PartitionKey != nil {
 		partitionKeyJSON, err := options.PartitionKey.toJsonString()
 		if err == nil {
@@ -79,12 +61,23 @@ func (options *ChangeFeedOptions) toHeaders() *map[string]string {
 		}
 	}
 
-	if options.PartitionKeyRangeID != nil {
-		headers[cosmosHeaderPartitionKeyRangeId] = *options.PartitionKeyRangeID
+	// If FeedRange struct is set, using function FindPartitionKeyRangeId to see if there is a 1:1 match
+	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
+		if id, err := FindPartitionKeyRangeId(*options.FeedRange, partitionKeyRanges); err == nil {
+			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
+		} else {
+			fmt.Printf("FeedRange match error: %v\n", err)
+		}
+	}
+
+	// Set continuation header from composite token if present, else from Continuation
+	if options.Continuation != nil && *options.Continuation != "" {
+		headers[headerIfNoneMatch] = *options.Continuation
 	}
 
 	if len(headers) == 0 {
 		return nil
 	}
+
 	return &headers
 }

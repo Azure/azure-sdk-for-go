@@ -742,6 +742,27 @@ func (c *ContainerClient) GetChangeFeed(
 		options = &ChangeFeedOptions{}
 	}
 
+	// Fetch partition key ranges if FeedRange is set
+	var partitionKeyRanges []PartitionKeyRangeProperties
+	if options.FeedRange != nil {
+		pkrResp, err := c.GetPartitionKeyRange(ctx, nil)
+		if err != nil {
+			return ChangeFeedResponse{}, err
+		}
+		partitionKeyRanges = pkrResp.PartitionKeyRanges
+	}
+
+	headersPtr := options.toHeaders(partitionKeyRanges)
+	var addHeaders func(*policy.Request)
+	if headersPtr != nil {
+		headers := *headersPtr
+		addHeaders = func(r *policy.Request) {
+			for k, v := range headers {
+				r.Raw().Header.Set(k, v)
+			}
+		}
+	}
+
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDocument,
 		resourceAddress: c.link,
@@ -756,8 +777,9 @@ func (c *ContainerClient) GetChangeFeed(
 		path,
 		ctx,
 		operationContext,
-		options,
-		nil)
+		nil,
+		addHeaders,
+	)
 	if err != nil {
 		return ChangeFeedResponse{}, err
 	}

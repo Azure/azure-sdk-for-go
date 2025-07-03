@@ -10,7 +10,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/joho/godotenv"
 )
 
@@ -55,7 +54,6 @@ func TestCloudChangeFeed_AIMHeader(t *testing.T) {
 	}
 
 	options := &ChangeFeedOptions{
-		AIM:          "Incremental Feed",
 		MaxItemCount: 1,
 	}
 	resp, err := container.GetChangeFeed(context.Background(), options)
@@ -98,11 +96,10 @@ func TestCloudChangeFeed_IfNoneMatchHeader(t *testing.T) {
 		t.Fatalf("Failed to get container: %v", err)
 	}
 
-	// Use an ETag value of "15" (must be quoted)
-	etag := azcore.ETag(`"5"`)
-
+	// Use an ETag value of "5"
+	continuation := "5"
 	options := &ChangeFeedOptions{
-		IfNoneMatch:  &etag,
+		Continuation: &continuation,
 		MaxItemCount: 1,
 	}
 	resp, err := container.GetChangeFeed(context.Background(), options)
@@ -148,17 +145,14 @@ func TestCloudChangeFeed_IfModifiedSinceHeader(t *testing.T) {
 	// Use the fixed date: Mon, 30 Jun 2025 00:00:00 GMT
 	modifiedSince := time.Date(2025, 6, 30, 0, 0, 0, 0, time.UTC)
 	fmt.Printf("Testing with If-Modified-Since: %s\n", modifiedSince.UTC().Format(time.RFC1123))
-	if err != nil {
-		t.Fatalf("Failed to parse date: %v", err)
-	}
 
 	options := &ChangeFeedOptions{
-		AIM:             "Incremental Feed",
-		IfModifiedSince: &modifiedSince,
-		MaxItemCount:    5,
+		ChangeFeedStartFrom: &modifiedSince, // Changed from IfModifiedSince
+		MaxItemCount:        5,
 	}
 
-	headers := options.toHeaders()
+	// Note: toHeaders now requires partitionKeyRanges parameter
+	headers := options.toHeaders(nil)
 	if headers != nil {
 		for k, v := range *headers {
 			fmt.Printf("Header: %s: %s\n", k, v)
@@ -224,6 +218,69 @@ func TestIntegrationGetChangeFeedPartitionKey(t *testing.T) {
 	fmt.Printf("ETag header: %s\n", resp.ETag)
 	fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
 	fmt.Printf("LSN: %s\n", resp.LSN)
+
+	for i, doc := range resp.Documents {
+		fmt.Printf("Doc %d: %s\n", i, string(doc))
+	}
+}
+
+// Testing Change Feed with FeedRange
+func TestCloudChangeFeed_FeedRange(t *testing.T) {
+	loadEnv(t)
+	endpoint := getEnvOrSkip(t, "COSMOS_ENDPOINT")
+	key := getEnvOrSkip(t, "COSMOS_KEY")
+	dbName := getEnvOrSkip(t, "COSMOS_DATABASE")
+	containerName := getEnvOrSkip(t, "COSMOS_CONTAINER")
+
+	cred, err := NewKeyCredential(key)
+	if err != nil {
+		t.Fatalf("Failed to create KeyCredential: %v", err)
+	}
+	client, err := NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		t.Fatalf("Failed to create Cosmos client: %v", err)
+	}
+	db, err := client.NewDatabase(dbName)
+	if err != nil {
+		t.Fatalf("Failed to get database: %v", err)
+	}
+	container, err := db.NewContainer(containerName)
+	if err != nil {
+		t.Fatalf("Failed to get container: %v", err)
+	}
+
+	// First, get the partition key ranges to find a valid FeedRange
+	pkrResp, err := container.GetPartitionKeyRange(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("Failed to get partition key ranges: %v", err)
+	}
+
+	if len(pkrResp.PartitionKeyRanges) == 0 {
+		t.Skip("No partition key ranges found")
+	}
+
+	// Use the first partition key range as our FeedRange
+	firstRange := pkrResp.PartitionKeyRanges[0]
+	feedRange := &FeedRange{
+		MinInclusive: firstRange.MinInclusive,
+		MaxExclusive: firstRange.MaxExclusive,
+	}
+
+	options := &ChangeFeedOptions{
+		MaxItemCount: 5,
+		FeedRange:    feedRange,
+	}
+
+	resp, err := container.GetChangeFeed(context.Background(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed failed: %v", err)
+	}
+
+	fmt.Printf("FeedRange Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
+	fmt.Printf("ETag header: %s\n", resp.ETag)
+	fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
+	fmt.Printf("LSN: %s\n", resp.LSN)
+	fmt.Printf("Testing with FeedRange: MinInclusive=%s, MaxExclusive=%s\n", feedRange.MinInclusive, feedRange.MaxExclusive)
 
 	for i, doc := range resp.Documents {
 		fmt.Printf("Doc %d: %s\n", i, string(doc))

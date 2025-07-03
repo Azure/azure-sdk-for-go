@@ -594,27 +594,40 @@ func TestEmulatorContainerPartitionKeyRangesAndFeedRanges(t *testing.T) {
 
 	// Get Partition Key Ranges directly
 	pkRangesResponse, err := container.getPartitionKeyRanges(context.TODO(), nil)
+
+	// Log all partition key ranges for debugging
+	for i, pkRange := range pkRangesResponse.PartitionKeyRanges {
+		t.Logf("PK Range #%d: ID=%s MinInclusive=%q MaxExclusive=%q", i, pkRange.ID, pkRange.MinInclusive, pkRange.MaxExclusive)
+	}
 	if err != nil {
 		t.Fatalf("Failed to read partition key ranges: %v", err)
 	}
+
 	t.Logf("PK Ranges Response count: %d", len(pkRangesResponse.PartitionKeyRanges))
 
 	if len(pkRangesResponse.PartitionKeyRanges) == 0 {
 		t.Fatalf("Expected at least one partition key range, got none")
 	}
 
-	// Validate the first partition key range
-	pkRange := pkRangesResponse.PartitionKeyRanges[0]
-	if pkRange.ID == "" {
-		t.Errorf("Expected partition key range ID to be set, but got empty string")
-	}
-
-	if pkRange.MinInclusive == "" {
-		t.Errorf("Expected partition key range MinInclusive to be set, but got empty string")
-	}
-
-	if pkRange.MaxExclusive == "" {
-		t.Errorf("Expected partition key range MaxExclusive to be set, but got empty string")
+	// Validate all partition key ranges
+	for i, pkRange := range pkRangesResponse.PartitionKeyRanges {
+		if pkRange.ID == "" {
+			t.Errorf("PK Range #%d: Expected partition key range ID to be set, but got empty string", i)
+		}
+		// If it's the first partition key range, MinInclusive can be empty since it represents the start of the partition space.
+		if i == 0 {
+			// It's valid for the first MinInclusive to be empty
+			if pkRange.MaxExclusive == "" {
+				t.Errorf("PK Range #%d: Expected partition key range MaxExclusive to be set, but got empty string", i)
+			}
+		} else {
+			if pkRange.MinInclusive == "" {
+				t.Errorf("PK Range #%d: Expected partition key range MinInclusive to be set, but got empty string", i)
+			}
+			if pkRange.MaxExclusive == "" {
+				t.Errorf("PK Range #%d: Expected partition key range MaxExclusive to be set, but got empty string", i)
+			}
+		}
 	}
 
 	// Get Feed Ranges (which internally calls getPartitionKeyRanges)

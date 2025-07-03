@@ -19,8 +19,8 @@ type ServerFactory struct {
 	// AccountCapabilityHostsServer contains the fakes for client AccountCapabilityHostsClient
 	AccountCapabilityHostsServer AccountCapabilityHostsServer
 
-	// AccountConnectionServer contains the fakes for client AccountConnectionClient
-	AccountConnectionServer AccountConnectionServer
+	// AccountConnectionsServer contains the fakes for client AccountConnectionsClient
+	AccountConnectionsServer AccountConnectionsServer
 
 	// AccountsServer contains the fakes for client AccountsClient
 	AccountsServer AccountsServer
@@ -70,8 +70,8 @@ type ServerFactory struct {
 	// ProjectCapabilityHostsServer contains the fakes for client ProjectCapabilityHostsClient
 	ProjectCapabilityHostsServer ProjectCapabilityHostsServer
 
-	// ProjectConnectionServer contains the fakes for client ProjectConnectionClient
-	ProjectConnectionServer ProjectConnectionServer
+	// ProjectConnectionsServer contains the fakes for client ProjectConnectionsClient
+	ProjectConnectionsServer ProjectConnectionsServer
 
 	// ProjectsServer contains the fakes for client ProjectsClient
 	ProjectsServer ProjectsServer
@@ -110,7 +110,7 @@ type ServerFactoryTransport struct {
 	srv                                            *ServerFactory
 	trMu                                           sync.Mutex
 	trAccountCapabilityHostsServer                 *AccountCapabilityHostsServerTransport
-	trAccountConnectionServer                      *AccountConnectionServerTransport
+	trAccountConnectionsServer                     *AccountConnectionsServerTransport
 	trAccountsServer                               *AccountsServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
@@ -127,7 +127,7 @@ type ServerFactoryTransport struct {
 	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trProjectCapabilityHostsServer                 *ProjectCapabilityHostsServerTransport
-	trProjectConnectionServer                      *ProjectConnectionServerTransport
+	trProjectConnectionsServer                     *ProjectConnectionsServerTransport
 	trProjectsServer                               *ProjectsServerTransport
 	trRaiBlocklistItemsServer                      *RaiBlocklistItemsServerTransport
 	trRaiBlocklistsServer                          *RaiBlocklistsServerTransport
@@ -155,11 +155,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAccountCapabilityHostsServerTransport(&s.srv.AccountCapabilityHostsServer)
 		})
 		resp, err = s.trAccountCapabilityHostsServer.Do(req)
-	case "AccountConnectionClient":
-		initServer(s, &s.trAccountConnectionServer, func() *AccountConnectionServerTransport {
-			return NewAccountConnectionServerTransport(&s.srv.AccountConnectionServer)
+	case "AccountConnectionsClient":
+		initServer(s, &s.trAccountConnectionsServer, func() *AccountConnectionsServerTransport {
+			return NewAccountConnectionsServerTransport(&s.srv.AccountConnectionsServer)
 		})
-		resp, err = s.trAccountConnectionServer.Do(req)
+		resp, err = s.trAccountConnectionsServer.Do(req)
 	case "AccountsClient":
 		initServer(s, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
@@ -230,11 +230,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProjectCapabilityHostsServerTransport(&s.srv.ProjectCapabilityHostsServer)
 		})
 		resp, err = s.trProjectCapabilityHostsServer.Do(req)
-	case "ProjectConnectionClient":
-		initServer(s, &s.trProjectConnectionServer, func() *ProjectConnectionServerTransport {
-			return NewProjectConnectionServerTransport(&s.srv.ProjectConnectionServer)
+	case "ProjectConnectionsClient":
+		initServer(s, &s.trProjectConnectionsServer, func() *ProjectConnectionsServerTransport {
+			return NewProjectConnectionsServerTransport(&s.srv.ProjectConnectionsServer)
 		})
-		resp, err = s.trProjectConnectionServer.Do(req)
+		resp, err = s.trProjectConnectionsServer.Do(req)
 	case "ProjectsClient":
 		initServer(s, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)

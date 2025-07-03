@@ -43,7 +43,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListBySubscriptionPager - Get a list of all Azure AI Search quota usages across the subscription.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - location - The unique location name for a Microsoft Azure geographic region.
 //   - SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
 //     method.
@@ -88,7 +88,7 @@ func (client *UsagesClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {

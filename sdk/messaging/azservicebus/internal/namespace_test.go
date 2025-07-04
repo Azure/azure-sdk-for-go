@@ -136,11 +136,11 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	require.NoError(t, err)
 	time.Sleep(3 * time.Second) // make sure, even with variability, we get at least one renewal
 
+	cancel()
+
 	require.EqualValues(t, 2, nextRefreshDurationChecks)
 	require.EqualValues(t, 2, cbsNegotiateClaimCalled)
 	require.Empty(t, errorsLogged)
-
-	cancel()
 }
 
 func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {

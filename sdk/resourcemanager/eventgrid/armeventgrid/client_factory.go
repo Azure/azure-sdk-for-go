@@ -137,6 +137,14 @@ func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
 	}
 }
 
+// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
+	return &NetworkSecurityPerimeterConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -147,6 +155,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewPartnerConfigurationsClient creates a new instance of PartnerConfigurationsClient.
 func (c *ClientFactory) NewPartnerConfigurationsClient() *PartnerConfigurationsClient {
 	return &PartnerConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPartnerDestinationsClient creates a new instance of PartnerDestinationsClient.
+func (c *ClientFactory) NewPartnerDestinationsClient() *PartnerDestinationsClient {
+	return &PartnerDestinationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

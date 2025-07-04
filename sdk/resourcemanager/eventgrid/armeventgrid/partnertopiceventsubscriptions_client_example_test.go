@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerTopicEventSubscriptions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_Get.json
 func ExamplePartnerTopicEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,13 +39,13 @@ func ExamplePartnerTopicEventSubscriptionsClient_Get() {
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerTopics/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
 	// 			Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
 	// 				QueueName: to.Ptr("que"),
-	// 				ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
+	// 				ResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
 	// 			},
 	// 		},
 	// 		EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
@@ -65,12 +65,12 @@ func ExamplePartnerTopicEventSubscriptionsClient_Get() {
 	// 					EventTimeToLiveInMinutes: to.Ptr[int32](1440),
 	// 					MaxDeliveryAttempts: to.Ptr[int32](30),
 	// 				},
-	// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
+	// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("exampleEventSubscriptionName1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerTopics/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/exampleEventSubscriptionName1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/exampleEventSubscriptionName1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -128,12 +128,12 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	// 			EventTimeToLiveInMinutes: to.Ptr[int32](1440),
 	// 			MaxDeliveryAttempts: to.Ptr[int32](30),
 	// 		},
-	// 		Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
+	// 		Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerTopicEventSubscriptions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_Delete.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerTopicEventSubscriptions_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_Update.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerTopicEventSubscriptions_GetFullUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_GetFullUrl.json
 func ExamplePartnerTopicEventSubscriptionsClient_GetFullURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_GetFullURL() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
 func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,13 +242,13 @@ func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 		// 		{
 		// 			Name: to.Ptr("examplesubscription1"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/partnerTopics/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/examplesubscription1"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/examplesubscription1"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
 		// 					Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
 		// 						QueueName: to.Ptr("que"),
-		// 						ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
+		// 						ResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
 		// 					},
 		// 				},
 		// 				EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
@@ -263,19 +263,19 @@ func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 		// 					EventTimeToLiveInMinutes: to.Ptr[int32](1440),
 		// 					MaxDeliveryAttempts: to.Ptr[int32](10),
 		// 				},
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examplesubscription2"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/partnerTopics/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/examplesubscription2"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1/eventSubscriptions/examplesubscription2"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
 		// 					Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
 		// 						QueueName: to.Ptr("que"),
-		// 						ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
+		// 						ResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
 		// 					},
 		// 				},
 		// 				EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
@@ -295,14 +295,14 @@ func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 		// 							EventTimeToLiveInMinutes: to.Ptr[int32](1440),
 		// 							MaxDeliveryAttempts: to.Ptr[int32](30),
 		// 						},
-		// 						Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
+		// 						Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerTopics/examplePartnerTopic1"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
 func ExamplePartnerTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

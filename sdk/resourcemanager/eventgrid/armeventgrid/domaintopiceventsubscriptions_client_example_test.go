@@ -18,264 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopicEventSubscriptions_Get.json
-func ExampleDomainTopicEventSubscriptionsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDomainTopicEventSubscriptionsClient().Get(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.EventSubscription = armeventgrid.EventSubscription{
-	// 	Name: to.Ptr("examplesubscription1"),
-	// 	Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/examplesubscription1"),
-	// 	Properties: &armeventgrid.EventSubscriptionProperties{
-	// 		Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
-	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
-	// 			Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
-	// 				QueueName: to.Ptr("que"),
-	// 				ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
-	// 			},
-	// 		},
-	// 		EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
-	// 		Filter: &armeventgrid.EventSubscriptionFilter{
-	// 			IncludedEventTypes: []*string{
-	// 				to.Ptr("Microsoft.Storage.BlobCreated"),
-	// 				to.Ptr("Microsoft.Storage.BlobDeleted")},
-	// 				IsSubjectCaseSensitive: to.Ptr(false),
-	// 				SubjectBeginsWith: to.Ptr("ExamplePrefix"),
-	// 				SubjectEndsWith: to.Ptr("ExampleSuffix"),
-	// 			},
-	// 			Labels: []*string{
-	// 				to.Ptr("label1"),
-	// 				to.Ptr("label2")},
-	// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 				RetryPolicy: &armeventgrid.RetryPolicy{
-	// 					EventTimeToLiveInMinutes: to.Ptr[int32](1440),
-	// 					MaxDeliveryAttempts: to.Ptr[int32](30),
-	// 				},
-	// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1"),
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopicEventSubscriptions_CreateOrUpdate.json
-func ExampleDomainTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDomainTopicEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1", armeventgrid.EventSubscription{
-		Properties: &armeventgrid.EventSubscriptionProperties{
-			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-				Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-					EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
-				},
-			},
-			Filter: &armeventgrid.EventSubscriptionFilter{
-				IsSubjectCaseSensitive: to.Ptr(false),
-				SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
-				SubjectEndsWith:        to.Ptr("ExampleSuffix"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.EventSubscription = armeventgrid.EventSubscription{
-	// 	Name: to.Ptr("exampleEventSubscriptionName1"),
-	// 	Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/exampleEventSubscriptionName1"),
-	// 	Properties: &armeventgrid.EventSubscriptionProperties{
-	// 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-	// 			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-	// 				EndpointBaseURL: to.Ptr("https://requestb.in/15ksip71"),
-	// 			},
-	// 		},
-	// 		EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
-	// 		Filter: &armeventgrid.EventSubscriptionFilter{
-	// 			IsSubjectCaseSensitive: to.Ptr(false),
-	// 			SubjectBeginsWith: to.Ptr("ExamplePrefix"),
-	// 			SubjectEndsWith: to.Ptr("ExampleSuffix"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 		RetryPolicy: &armeventgrid.RetryPolicy{
-	// 			EventTimeToLiveInMinutes: to.Ptr[int32](1440),
-	// 			MaxDeliveryAttempts: to.Ptr[int32](30),
-	// 		},
-	// 		Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopicEventSubscriptions_Delete.json
-func ExampleDomainTopicEventSubscriptionsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDomainTopicEventSubscriptionsClient().BeginDelete(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopicEventSubscriptions_Update.json
-func ExampleDomainTopicEventSubscriptionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDomainTopicEventSubscriptionsClient().BeginUpdate(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1", armeventgrid.EventSubscriptionUpdateParameters{
-		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
-			},
-		},
-		Filter: &armeventgrid.EventSubscriptionFilter{
-			IsSubjectCaseSensitive: to.Ptr(true),
-			SubjectBeginsWith:      to.Ptr("existingPrefix"),
-			SubjectEndsWith:        to.Ptr("newSuffix"),
-		},
-		Labels: []*string{
-			to.Ptr("label1"),
-			to.Ptr("label2")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopicEventSubscriptions_GetFullUrl.json
-func ExampleDomainTopicEventSubscriptionsClient_GetFullURL() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDomainTopicEventSubscriptionsClient().GetFullURL(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.EventSubscriptionFullURL = armeventgrid.EventSubscriptionFullURL{
-	// 	EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopicEventSubscriptions_List.json
-func ExampleDomainTopicEventSubscriptionsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDomainTopicEventSubscriptionsClient().NewListPager("examplerg", "exampleDomain1", "exampleDomainTopic1", &armeventgrid.DomainTopicEventSubscriptionsClientListOptions{Filter: nil,
-		Top: nil,
-	})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.EventSubscriptionsListResult = armeventgrid.EventSubscriptionsListResult{
-		// 	Value: []*armeventgrid.EventSubscription{
-		// 		{
-		// 			Name: to.Ptr("examplesubscription1"),
-		// 			Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/examplesubscription1"),
-		// 			Properties: &armeventgrid.EventSubscriptionProperties{
-		// 				Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
-		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
-		// 					Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
-		// 						QueueName: to.Ptr("que"),
-		// 						ResourceID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
-		// 					},
-		// 				},
-		// 				EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
-		// 				Filter: &armeventgrid.EventSubscriptionFilter{
-		// 					IncludedEventTypes: []*string{
-		// 						to.Ptr("Microsoft.Storage.BlobCreated"),
-		// 						to.Ptr("Microsoft.Storage.BlobDeleted")},
-		// 						IsSubjectCaseSensitive: to.Ptr(false),
-		// 						SubjectBeginsWith: to.Ptr("ExamplePrefix"),
-		// 						SubjectEndsWith: to.Ptr("ExampleSuffix"),
-		// 					},
-		// 					Labels: []*string{
-		// 						to.Ptr("label1"),
-		// 						to.Ptr("label2")},
-		// 						ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 						RetryPolicy: &armeventgrid.RetryPolicy{
-		// 							EventTimeToLiveInMinutes: to.Ptr[int32](1440),
-		// 							MaxDeliveryAttempts: to.Ptr[int32](30),
-		// 						},
-		// 						Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1"),
-		// 					},
-		// 			}},
-		// 		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopicEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopicEventSubscriptions_GetDeliveryAttributes.json
 func ExampleDomainTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,4 +62,261 @@ func ExampleDomainTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	// 			},
 	// 	}},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopicEventSubscriptions_Get.json
+func ExampleDomainTopicEventSubscriptionsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDomainTopicEventSubscriptionsClient().Get(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.EventSubscription = armeventgrid.EventSubscription{
+	// 	Name: to.Ptr("examplesubscription1"),
+	// 	Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/examplesubscription1"),
+	// 	Properties: &armeventgrid.EventSubscriptionProperties{
+	// 		Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
+	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
+	// 			Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
+	// 				QueueName: to.Ptr("que"),
+	// 				ResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
+	// 			},
+	// 		},
+	// 		EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
+	// 		Filter: &armeventgrid.EventSubscriptionFilter{
+	// 			IncludedEventTypes: []*string{
+	// 				to.Ptr("Microsoft.Storage.BlobCreated"),
+	// 				to.Ptr("Microsoft.Storage.BlobDeleted")},
+	// 				IsSubjectCaseSensitive: to.Ptr(false),
+	// 				SubjectBeginsWith: to.Ptr("ExamplePrefix"),
+	// 				SubjectEndsWith: to.Ptr("ExampleSuffix"),
+	// 			},
+	// 			Labels: []*string{
+	// 				to.Ptr("label1"),
+	// 				to.Ptr("label2")},
+	// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
+	// 				RetryPolicy: &armeventgrid.RetryPolicy{
+	// 					EventTimeToLiveInMinutes: to.Ptr[int32](1440),
+	// 					MaxDeliveryAttempts: to.Ptr[int32](30),
+	// 				},
+	// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1"),
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopicEventSubscriptions_CreateOrUpdate.json
+func ExampleDomainTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDomainTopicEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1", armeventgrid.EventSubscription{
+		Properties: &armeventgrid.EventSubscriptionProperties{
+			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+				Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+					EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+				},
+			},
+			Filter: &armeventgrid.EventSubscriptionFilter{
+				IsSubjectCaseSensitive: to.Ptr(false),
+				SubjectBeginsWith:      to.Ptr("ExamplePrefix"),
+				SubjectEndsWith:        to.Ptr("ExampleSuffix"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.EventSubscription = armeventgrid.EventSubscription{
+	// 	Name: to.Ptr("exampleEventSubscriptionName1"),
+	// 	Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/exampleEventSubscriptionName1"),
+	// 	Properties: &armeventgrid.EventSubscriptionProperties{
+	// 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+	// 			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+	// 				EndpointBaseURL: to.Ptr("https://requestb.in/15ksip71"),
+	// 			},
+	// 		},
+	// 		EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
+	// 		Filter: &armeventgrid.EventSubscriptionFilter{
+	// 			IsSubjectCaseSensitive: to.Ptr(false),
+	// 			SubjectBeginsWith: to.Ptr("ExamplePrefix"),
+	// 			SubjectEndsWith: to.Ptr("ExampleSuffix"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
+	// 		RetryPolicy: &armeventgrid.RetryPolicy{
+	// 			EventTimeToLiveInMinutes: to.Ptr[int32](1440),
+	// 			MaxDeliveryAttempts: to.Ptr[int32](30),
+	// 		},
+	// 		Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopicEventSubscriptions_Delete.json
+func ExampleDomainTopicEventSubscriptionsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDomainTopicEventSubscriptionsClient().BeginDelete(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopicEventSubscriptions_Update.json
+func ExampleDomainTopicEventSubscriptionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDomainTopicEventSubscriptionsClient().BeginUpdate(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1", armeventgrid.EventSubscriptionUpdateParameters{
+		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
+			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
+			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
+				EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+			},
+		},
+		Filter: &armeventgrid.EventSubscriptionFilter{
+			IsSubjectCaseSensitive: to.Ptr(true),
+			SubjectBeginsWith:      to.Ptr("existingPrefix"),
+			SubjectEndsWith:        to.Ptr("newSuffix"),
+		},
+		Labels: []*string{
+			to.Ptr("label1"),
+			to.Ptr("label2")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopicEventSubscriptions_GetFullUrl.json
+func ExampleDomainTopicEventSubscriptionsClient_GetFullURL() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDomainTopicEventSubscriptionsClient().GetFullURL(ctx, "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.EventSubscriptionFullURL = armeventgrid.EventSubscriptionFullURL{
+	// 	EndpointURL: to.Ptr("https://requestb.in/15ksip71"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopicEventSubscriptions_List.json
+func ExampleDomainTopicEventSubscriptionsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDomainTopicEventSubscriptionsClient().NewListPager("examplerg", "exampleDomain1", "exampleDomainTopic1", &armeventgrid.DomainTopicEventSubscriptionsClientListOptions{Filter: nil,
+		Top: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.EventSubscriptionsListResult = armeventgrid.EventSubscriptionsListResult{
+		// 	Value: []*armeventgrid.EventSubscription{
+		// 		{
+		// 			Name: to.Ptr("examplesubscription1"),
+		// 			Type: to.Ptr("Microsoft.EventGrid/domains/domainTopics/eventSubscriptions"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1/eventSubscriptions/examplesubscription1"),
+		// 			Properties: &armeventgrid.EventSubscriptionProperties{
+		// 				Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
+		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
+		// 					Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
+		// 						QueueName: to.Ptr("que"),
+		// 						ResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.Storage/storageAccounts/testtrackedsource"),
+		// 					},
+		// 				},
+		// 				EventDeliverySchema: to.Ptr(armeventgrid.EventDeliverySchemaEventGridSchema),
+		// 				Filter: &armeventgrid.EventSubscriptionFilter{
+		// 					IncludedEventTypes: []*string{
+		// 						to.Ptr("Microsoft.Storage.BlobCreated"),
+		// 						to.Ptr("Microsoft.Storage.BlobDeleted")},
+		// 						IsSubjectCaseSensitive: to.Ptr(false),
+		// 						SubjectBeginsWith: to.Ptr("ExamplePrefix"),
+		// 						SubjectEndsWith: to.Ptr("ExampleSuffix"),
+		// 					},
+		// 					Labels: []*string{
+		// 						to.Ptr("label1"),
+		// 						to.Ptr("label2")},
+		// 						ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
+		// 						RetryPolicy: &armeventgrid.RetryPolicy{
+		// 							EventTimeToLiveInMinutes: to.Ptr[int32](1440),
+		// 							MaxDeliveryAttempts: to.Ptr[int32](30),
+		// 						},
+		// 						Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampleDomain1/domainTopics/exampleDomainTopic1"),
+		// 					},
+		// 			}},
+		// 		}
+	}
 }

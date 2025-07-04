@@ -538,13 +538,17 @@ func TestContainerFullTextSearch(t *testing.T) {
 	}
 }
 
-func TestEmulatorContainerReadPartitionKeyRanges(t *testing.T) {
+func TestEmulatorContainerPartitionKeyRangesAndFeedRanges(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
-		ExpectedSpans: []string{"create_container aContainer", "read_partition_key_ranges aContainer"},
+		ExpectedSpans: []string{
+			"create_container aContainer",
+			"read_partition_key_ranges aContainer",
+			"read_partition_key_ranges aContainer",
+		},
 	}))
 
-	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerGETPKR")
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerRangesTest")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
 	properties := ContainerProperties{
 		ID: "aContainer",
@@ -570,38 +574,89 @@ func TestEmulatorContainerReadPartitionKeyRanges(t *testing.T) {
 
 	container, _ := database.NewContainer("aContainer")
 
-	item := map[string]interface{}{
-		"id": "testitem1",
+	// Insert a few items to ensure multiple partition ranges
+	for i := 0; i < 5; i++ {
+		item := map[string]interface{}{
+			"id": "testitem" + string(rune('1'+i)),
+		}
+		itemBytes, err := json.Marshal(item)
+		if err != nil {
+			t.Fatalf("Failed to marshal item: %v", err)
+		}
+		_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("testitem"+string(rune('1'+i))), itemBytes, nil)
+		if err != nil {
+			t.Fatalf("Failed to insert item: %v", err)
+		}
 	}
-	itemBytes, err := json.Marshal(item)
-	if err != nil {
-		t.Fatalf("Failed to marshal item: %v", err)
-	}
-	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("testitem1"), itemBytes, nil)
-	if err != nil {
-		t.Fatalf("Failed to insert item: %v", err)
-	}
+
+	// Wait for partition splits to complete
 	time.Sleep(2 * time.Second)
 
+	// Get Partition Key Ranges directly
 	pkRangesResponse, err := container.getPartitionKeyRanges(context.TODO(), nil)
+
+	// Log all partition key ranges for debugging
+	for i, pkRange := range pkRangesResponse.PartitionKeyRanges {
+		t.Logf("PK Range #%d: ID=%s MinInclusive=%q MaxExclusive=%q", i, pkRange.ID, pkRange.MinInclusive, pkRange.MaxExclusive)
+	}
 	if err != nil {
 		t.Fatalf("Failed to read partition key ranges: %v", err)
 	}
-	t.Logf("PK Ranges Response: %+v", pkRangesResponse)
+
+	t.Logf("PK Ranges Response count: %d", len(pkRangesResponse.PartitionKeyRanges))
 
 	if len(pkRangesResponse.PartitionKeyRanges) == 0 {
 		t.Fatalf("Expected at least one partition key range, got none")
 	}
 
-	if pkRangesResponse.PartitionKeyRanges[1].ID == "" {
-		t.Errorf("Expected partition key range ID to be set, but got empty string")
+	// Validate all partition key ranges
+	for i, pkRange := range pkRangesResponse.PartitionKeyRanges {
+		if pkRange.ID == "" {
+			t.Errorf("PK Range #%d: Expected partition key range ID to be set, but got empty string", i)
+		}
+		// If it's the first partition key range, MinInclusive can be empty since it represents the start of the partition space.
+		if i == 0 {
+			// It's valid for the first MinInclusive to be empty
+			if pkRange.MaxExclusive == "" {
+				t.Errorf("PK Range #%d: Expected partition key range MaxExclusive to be set, but got empty string", i)
+			}
+		} else {
+			if pkRange.MinInclusive == "" {
+				t.Errorf("PK Range #%d: Expected partition key range MinInclusive to be set, but got empty string", i)
+			}
+			if pkRange.MaxExclusive == "" {
+				t.Errorf("PK Range #%d: Expected partition key range MaxExclusive to be set, but got empty string", i)
+			}
+		}
 	}
 
-	if pkRangesResponse.PartitionKeyRanges[1].MinInclusive == "" {
-		t.Errorf("Expected partition key range MinInclusive to be set, but got empty string")
+	// Get Feed Ranges (which internally calls getPartitionKeyRanges)
+	feedRanges, err := container.GetFeedRanges(context.TODO())
+	if err != nil {
+		t.Fatalf("Failed to get feed ranges: %v", err)
+	}
+	t.Logf("Feed Ranges count: %d", len(feedRanges))
+
+	if len(feedRanges) == 0 {
+		t.Fatalf("Expected at least one feed range, got none")
 	}
 
-	if pkRangesResponse.PartitionKeyRanges[1].MaxExclusive == "" {
-		t.Errorf("Expected partition key range MaxExclusive to be set, but got empty string")
+	// Validate feed ranges match partition key ranges
+	if len(feedRanges) != len(pkRangesResponse.PartitionKeyRanges) {
+		t.Errorf("Number of feed ranges (%d) doesn't match number of partition key ranges (%d)",
+			len(feedRanges), len(pkRangesResponse.PartitionKeyRanges))
+	}
+
+	// Validate the feed range properties match corresponding partition key range
+	for i, fr := range feedRanges {
+		pkr := pkRangesResponse.PartitionKeyRanges[i]
+		if fr.MinInclusive != pkr.MinInclusive {
+			t.Errorf("Feed range #%d MinInclusive (%s) doesn't match partition key range MinInclusive (%s)",
+				i, fr.MinInclusive, pkr.MinInclusive)
+		}
+		if fr.MaxExclusive != pkr.MaxExclusive {
+			t.Errorf("Feed range #%d MaxExclusive (%s) doesn't match partition key range MaxExclusive (%s)",
+				i, fr.MaxExclusive, pkr.MaxExclusive)
+		}
 	}
 }

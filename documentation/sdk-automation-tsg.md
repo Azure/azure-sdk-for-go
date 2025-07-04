@@ -1,0 +1,109 @@
+# Azure Go SDK Automation Trouble Shooting Guide
+
+## Overview
+
+The Azure Go SDK automation tool:
+
+- Generates Go SDK code from TypeSpec/OpenAPI specifications
+- Creates changelogs for API updates
+- Detects breaking changes automatically
+
+## Log Structure Analysis
+
+### Key Log Keywords
+
+1. **Start Marker**: `Reading generate input file from`
+2. **Code Generation For TypeSpec**: `Start to process typespec project`
+3. **Code Generation For Swagger**: `Start to process swagger project`
+
+### Success Indicators
+
+- **For Each TypeSpec Specification's Generation**: `Finish processing typespec project`
+- **For Each Swagger Specification's Generation**: `Finish processing swagger project`
+- **Output File**: contains both changelog details and breaking changes summary
+
+### Failure Indicators
+
+- Any `[ERROR]` messages in the log
+- Non-zero exit codes
+- Exception stack traces
+
+## Error Classification and Resolution
+
+### 1. Internal Errors
+
+**Keywords**: `The emitter encountered an internal error during preprocessing.`
+
+**Analysis Actions**:
+
+- Extract package information
+- Capture complete error message and stack trace
+- Identify the failing emitter component
+
+**Resolution**: File issue at https://github.com/Azure/autorest.go/issues with:
+
+- Complete error details
+- Package/service context
+- Stack trace information
+
+### 2. TypeSpec Configuration Errors
+
+#### Invalid Emitter Arguments
+
+**Keywords**: `Invalid arguments were passed to the emitter.`
+
+**Analysis Actions**:
+
+- Review `tspconfig.yaml` configuration
+- Compare against standard templates:
+  - [Management Plane Template](https://github.com/Azure/azure-rest-api-specs/blob/a8f97793186c7680c62519da238c6d07a20f2023/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml#L35)
+  - [Data Plane Template](https://github.com/Azure/azure-rest-api-specs/blob/a8f97793186c7680c62519da238c6d07a20f2023/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml#L41)
+
+**Resolution**: Fix `@azure-tools/typespec-go` configuration in `tspconfig.yaml`
+
+#### Module Path Errors
+
+**Keywords**: `module not found, package path:`
+
+**Analysis Actions**:
+
+- Validate module path configuration
+- Check service directory structure
+- Verify package directory alignment
+
+**Resolution**: Correct these `tspconfig.yaml` properties:
+
+- `module`: Go module path
+- `service-dir`: Service directory path
+- `package-dir`: Package directory path
+- `module-version`: Module version
+
+### 3. Naming Collision Errors
+
+**Keywords**: `The emitter automatically renamed one or more types which resulted in a type name collision.`
+
+**Context**: Go SDK automatically removes service name prefixes to prevent stuttering (e.g., `armcompute.ComputeDisk` → `armcompute.Disk`)
+
+**Analysis Actions**:
+
+- Identify conflicting type names
+- Locate the original model definitions
+- Determine rename conflicts
+
+**Resolution**: Rename conflicting models in `client.tsp` using `@clientName` decorator
+
+### 4. Unsupported TypeSpec Features
+
+**Keywords**: `UnsupportedTsp`
+
+**Common Unsupported Features**:
+
+- Paging with re-injected parameters
+- Cookie parameters
+
+**Analysis Actions**:
+
+- Identify specific unsupported feature
+- Review error message for feature details
+
+**Resolution**: Modify TypeSpec authoring to use supported patterns

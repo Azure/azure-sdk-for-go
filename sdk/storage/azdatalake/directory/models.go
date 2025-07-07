@@ -7,6 +7,9 @@
 package directory
 
 import (
+	"encoding/base64"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
@@ -37,6 +40,35 @@ type CreateOptions struct {
 	Group *string
 	// ACL is the access control list for the file.
 	ACL *string
+	// EncryptionContext stores non-encrypted data that can be used to derive the customer-provided key for a directory.
+	EncryptionContext *string
+	// Properties specifies user-defined name-value pairs associated with the directory.
+	// If no user-defined properties are specified, this value is set to nil.
+	// These properties are stored as x-ms-meta headers on the directory.
+	Properties map[string]*string
+}
+
+// formatProperties converts a metadata map to the x-ms-properties string format
+// The format is "n1=v1, n2=v2, ..." where each value is base64 encoded
+func formatProperties(properties map[string]*string) *string {
+	if properties == nil || len(properties) == 0 {
+		return nil
+	}
+
+	var pairs []string
+	for key, value := range properties {
+		if value != nil {
+			encodedValue := base64.StdEncoding.EncodeToString([]byte(*value))
+			pairs = append(pairs, key+"="+encodedValue)
+		}
+	}
+
+	if len(pairs) == 0 {
+		return nil
+	}
+
+	result := strings.Join(pairs, ", ")
+	return &result
 }
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
@@ -55,6 +87,8 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	createOpts.Permissions = o.Permissions
 	createOpts.ProposedLeaseID = o.ProposedLeaseID
 	createOpts.LeaseDuration = o.LeaseDuration
+	createOpts.EncryptionContext = o.EncryptionContext
+	createOpts.Properties = formatProperties(o.Properties)
 
 	var httpHeaders *generated.PathHTTPHeaders
 	var cpkOpts *generated.CPKInfo

@@ -6,13 +6,15 @@ package azcosmos
 import (
 	"encoding/json"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestNewCompositeContinuationToken(t *testing.T) {
-	// Creating the ResourceID, ContinuationToken to insert into the ChangeFeedRange
+	// Creating the ResourceID, ContinuationToken to insert into the changeFeedRange
 	resourceID := "testResource"
-	continuationToken := "14"
-	changeFeedRange := newChangeFeedRange(
+	continuationToken := azcore.ETag("14")
+	changeFeedRangeInstance := newChangeFeedRange(
 		"",
 		"FF",
 		&ChangeFeedRangeOptions{
@@ -20,7 +22,7 @@ func TestNewCompositeContinuationToken(t *testing.T) {
 		},
 	)
 
-	compositeContinuationToken := newCompositeContinuationToken(resourceID, []ChangeFeedRange{changeFeedRange})
+	compositeContinuationToken := newCompositeContinuationToken(resourceID, []changeFeedRange{changeFeedRangeInstance})
 	t.Logf("ResourceID: %s\nContinuation: %+v", compositeContinuationToken.ResourceID, compositeContinuationToken.Continuation)
 
 	// Marshal the compositeContinuationToken to JSON

@@ -61,3 +61,31 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 func (c ChangeFeedResponse) GetContinuation() string {
 	return c.ETag
 }
+
+// GetContRanges extracts the continuation token range from the ChangeFeedResponse.
+func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
+	if c.ContinuationToken == "" {
+		return "", "", false
+	}
+
+	// Parse the continuation token JSON
+	var contToken struct {
+		Token *string `json:"token"`
+		Range struct {
+			Min string `json:"min"`
+			Max string `json:"max"`
+		} `json:"range"`
+	}
+
+	if err := json.Unmarshal([]byte(c.ContinuationToken), &contToken); err != nil {
+		// Not a valid JSON continuation token
+		return "", "", false
+	}
+
+	// Check if range values exist
+	if contToken.Range.Min == "" || contToken.Range.Max == "" {
+		return "", "", false
+	}
+
+	return contToken.Range.Min, contToken.Range.Max, true
+}

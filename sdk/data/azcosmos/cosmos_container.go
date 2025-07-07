@@ -760,12 +760,15 @@ func (c *ContainerClient) GetChangeFeedForEPKRange(
 
 // getChangeFeed is a private helper that handles the shared logic for reading the change feed.
 // If feedRange is nil, it reads the entire container. Otherwise, it reads the specified range.
+// getChangeFeed is a private helper that handles the shared logic for reading the change feed.
+// If feedRange is nil, it reads the entire container. Otherwise, it reads the specified range.
 func (c *ContainerClient) getChangeFeed(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	feedRange *changeFeedRange,
 	options *ChangeFeedOptions,
 ) (ChangeFeedResponse, error) {
+
 	var err error
 	spanName, err := c.getSpanForItems(operationTypeRead)
 	if err != nil {
@@ -798,7 +801,27 @@ func (c *ContainerClient) getChangeFeed(
 			}
 		}
 	} else if partitionKey != nil {
-		// TODO: Handle partition key in options
+		options.PartitionKey = partitionKey
+		headersPtr := options.toHeaders(nil)
+		if headersPtr != nil {
+			headers := *headersPtr
+			addHeaders = func(r *policy.Request) {
+				for k, v := range headers {
+					r.Raw().Header.Set(k, v)
+				}
+			}
+		}
+	} else {
+		// Container-level change feed - still need to set headers
+		headersPtr := options.toHeaders(nil)
+		if headersPtr != nil {
+			headers := *headersPtr
+			addHeaders = func(r *policy.Request) {
+				for k, v := range headers {
+					r.Raw().Header.Set(k, v)
+				}
+			}
+		}
 	}
 
 	operationContext := pipelineRequestOptions{

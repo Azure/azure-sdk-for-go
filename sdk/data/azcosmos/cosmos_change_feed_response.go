@@ -56,3 +56,8 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 
 	return response, nil
 }
+
+// GetContinuation from ChangeFeedResponse
+func (c ChangeFeedResponse) GetContinuation() string {
+	return c.ETag
+}

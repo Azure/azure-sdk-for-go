@@ -56,9 +56,9 @@ func TestCloudChangeFeed_AIMHeader(t *testing.T) {
 	options := &ChangeFeedOptions{
 		MaxItemCount: 1,
 	}
-	resp, err := container.GetChangeFeed(context.Background(), options)
+	resp, err := container.getChangeFeed(context.Background(), nil, nil, options)
 	if err != nil {
-		t.Fatalf("GetChangeFeed failed: %v", err)
+		t.Fatalf("getChangeFeed failed: %v", err)
 	}
 
 	fmt.Printf("TEST AIM Header: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
@@ -102,9 +102,9 @@ func TestCloudChangeFeed_IfNoneMatchHeader(t *testing.T) {
 		Continuation: &continuation,
 		MaxItemCount: 1,
 	}
-	resp, err := container.GetChangeFeed(context.Background(), options)
+	resp, err := container.getChangeFeed(context.Background(), nil, nil, options)
 	if err != nil {
-		t.Fatalf("GetChangeFeed failed: %v", err)
+		t.Fatalf("getChangeFeed failed: %v", err)
 	}
 	fmt.Printf("If-None-Match Header Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 	fmt.Printf("ETag header: %s\n", resp.ETag)
@@ -158,9 +158,9 @@ func TestCloudChangeFeed_IfModifiedSinceHeader(t *testing.T) {
 			fmt.Printf("Header: %s: %s\n", k, v)
 		}
 	}
-	resp, err := container.GetChangeFeed(context.Background(), options)
+	resp, err := container.getChangeFeed(context.Background(), nil, nil, options)
 	if err != nil {
-		t.Fatalf("GetChangeFeed failed: %v", err)
+		t.Fatalf("getChangeFeed failed: %v", err)
 	}
 	fmt.Printf("If-Modified-Since Header Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 	fmt.Printf("ETag header: %s\n", resp.ETag)
@@ -209,9 +209,9 @@ func TestIntegrationGetChangeFeedPartitionKey(t *testing.T) {
 		PartitionKey: &partitionKey,
 	}
 
-	resp, err := container.GetChangeFeed(context.Background(), options)
+	resp, err := container.getChangeFeed(context.Background(), nil, nil, options)
 	if err != nil {
-		t.Fatalf("GetChangeFeed failed: %v", err)
+		t.Fatalf("getChangeFeed failed: %v", err)
 	}
 
 	fmt.Printf("Partition Key Header Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
@@ -271,9 +271,9 @@ func TestCloudChangeFeed_FeedRange(t *testing.T) {
 		FeedRange:    feedRange,
 	}
 
-	resp, err := container.GetChangeFeed(context.Background(), options)
+	resp, err := container.getChangeFeed(context.Background(), nil, nil, options)
 	if err != nil {
-		t.Fatalf("GetChangeFeed failed: %v", err)
+		t.Fatalf("getChangeFeed failed: %v", err)
 	}
 
 	fmt.Printf("FeedRange Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)

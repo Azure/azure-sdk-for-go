@@ -5,13 +5,15 @@ package azcosmos
 
 import (
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // newChangeFeedRange creates a new ChangeFeedRange with the specified minimum inclusive and maximum exclusive values.
 func TestNewChangeFeedRange_Basic(t *testing.T) {
 	min := ""
 	max := "1FFFFFF"
-	token := "15"
+	token := azcore.ETag("15")
 	minHeader := "minHeaderValue"
 	maxHeader := "maxHeaderValue"
 
@@ -29,7 +31,7 @@ func TestNewChangeFeedRange_Basic(t *testing.T) {
 	if cfr.MaxExclusive != max {
 		t.Errorf("MaxExclusive mismatch: got %s, want %s", cfr.MaxExclusive, max)
 	}
-	if cfr.ContinuationToken == nil || string(*cfr.ContinuationToken) != token {
+	if cfr.ContinuationToken == nil || *cfr.ContinuationToken != token {
 		t.Errorf("ContinuationToken mismatch: got %v, want %s", cfr.ContinuationToken, token)
 	}
 	if cfr.epkMinHeader != minHeader {

@@ -250,7 +250,7 @@ func TestCloudChangeFeed_FeedRange(t *testing.T) {
 	}
 
 	// First, get the partition key ranges to find a valid FeedRange
-	pkrResp, err := container.GetPartitionKeyRange(context.Background(), nil)
+	pkrResp, err := container.getPartitionKeyRanges(context.Background(), nil)
 	if err != nil {
 		t.Fatalf("Failed to get partition key ranges: %v", err)
 	}

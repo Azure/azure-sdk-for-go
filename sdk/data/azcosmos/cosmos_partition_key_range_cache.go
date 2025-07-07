@@ -12,7 +12,7 @@ import (
 // partitionKeyRangeCache provides a cache for partition key ranges of a Cosmos container.
 // It allows for efficient retrieval of partition key ranges without making repeated calls to the server.
 type partitionKeyRangeCache struct {
-	partitionKeyRangeCache map[string]PartitionKeyRangeProperties
+	partitionKeyRangeCache map[string]partitionKeyRange
 	resourceID             string
 	mu                     sync.RWMutex
 	lastRefreshed          time.Time
@@ -21,7 +21,7 @@ type partitionKeyRangeCache struct {
 // newPartitionKeyRangeCache creates a new empty cache for partition key ranges.
 func newPartitionKeyRangeCache(resourceID string) *partitionKeyRangeCache {
 	return &partitionKeyRangeCache{
-		partitionKeyRangeCache: make(map[string]PartitionKeyRangeProperties),
+		partitionKeyRangeCache: make(map[string]partitionKeyRange),
 		resourceID:             resourceID,
 		lastRefreshed:          time.Time{}, // Zero time indicates never refreshed
 	}
@@ -30,7 +30,7 @@ func newPartitionKeyRangeCache(resourceID string) *partitionKeyRangeCache {
 // refresh updates the cache with the latest partition key ranges from the container.
 // It acquires a write lock on the cache during the update.
 func (c *partitionKeyRangeCache) refresh(ctx context.Context, container *ContainerClient) error {
-	response, err := container.GetPartitionKeyRange(ctx, nil)
+	response, err := container.getPartitionKeyRanges(ctx, nil)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (c *partitionKeyRangeCache) refresh(ctx context.Context, container *Contain
 	defer c.mu.Unlock()
 
 	// Clear existing cache and populate with new data
-	c.partitionKeyRangeCache = make(map[string]PartitionKeyRangeProperties)
+	c.partitionKeyRangeCache = make(map[string]partitionKeyRange)
 	for _, pkRange := range response.PartitionKeyRanges {
 		c.partitionKeyRangeCache[pkRange.ID] = pkRange
 	}
@@ -52,7 +52,7 @@ func (c *partitionKeyRangeCache) refresh(ctx context.Context, container *Contain
 
 // getByID retrieves a partition key range by its ID.
 // It acquires a read lock on the cache during retrieval.
-func (c *partitionKeyRangeCache) getByID(id string) (PartitionKeyRangeProperties, bool) {
+func (c *partitionKeyRangeCache) getByID(id string) (partitionKeyRange, bool) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
@@ -62,11 +62,11 @@ func (c *partitionKeyRangeCache) getByID(id string) (PartitionKeyRangeProperties
 
 // getAll returns all partition key ranges in the cache.
 // It acquires a read lock on the cache during retrieval.
-func (c *partitionKeyRangeCache) getAll() []PartitionKeyRangeProperties {
+func (c *partitionKeyRangeCache) getAll() []partitionKeyRange {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
-	ranges := make([]PartitionKeyRangeProperties, 0, len(c.partitionKeyRangeCache))
+	ranges := make([]partitionKeyRange, 0, len(c.partitionKeyRangeCache))
 	for _, pkRange := range c.partitionKeyRangeCache {
 		ranges = append(ranges, pkRange)
 	}
@@ -76,11 +76,11 @@ func (c *partitionKeyRangeCache) getAll() []PartitionKeyRangeProperties {
 
 // getByMinMax finds all partition key ranges that overlap with the specified min-max range.
 // It acquires a read lock on the cache during retrieval.
-func (c *partitionKeyRangeCache) getByMinMax(minInclusive, maxExclusive string) []PartitionKeyRangeProperties {
+func (c *partitionKeyRangeCache) getByMinMax(minInclusive, maxExclusive string) []partitionKeyRange {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
-	var overlappingRanges []PartitionKeyRangeProperties
+	var overlappingRanges []partitionKeyRange
 
 	for _, pkRange := range c.partitionKeyRangeCache {
 		// A range [a,b) overlaps with [c,d) if and only if a < d and c < b

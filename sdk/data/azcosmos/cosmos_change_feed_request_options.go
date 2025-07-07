@@ -32,7 +32,7 @@ type ChangeFeedOptions struct {
 	Continuation *string
 }
 
-func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []PartitionKeyRangeProperties) *map[string]string {
+func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRange) *map[string]string {
 	headers := make(map[string]string)
 
 	// Always setting the AIM header to "Incremental Feed" for change feed requests

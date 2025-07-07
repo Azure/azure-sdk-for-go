@@ -73,7 +73,7 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	options.FeedRange = feedRange
 
 	// Test with matching partition key range
-	partitionKeyRanges := []PartitionKeyRangeProperties{
+	partitionKeyRanges := []partitionKeyRange{
 		{
 			ID:           "0",
 			MinInclusive: "00",
@@ -88,7 +88,7 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	}
 
 	// Test FeedRange with no matching partition key range
-	partitionKeyRangesNoMatch := []PartitionKeyRangeProperties{
+	partitionKeyRangesNoMatch := []partitionKeyRange{
 		{
 			ID:           "1",
 			MinInclusive: "AA",
@@ -138,7 +138,7 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 		Continuation:        &continuation,
 	}
 
-	partitionKeyRanges := []PartitionKeyRangeProperties{
+	partitionKeyRanges := []partitionKeyRange{
 		{
 			ID:           "range1",
 			MinInclusive: "10",

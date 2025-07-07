@@ -59,7 +59,7 @@ func TestGetByID(t *testing.T) {
 	cache := newPartitionKeyRangeCache("test-resource-id")
 
 	// Create test range
-	testRange := PartitionKeyRangeProperties{
+	testRange := partitionKeyRange{
 		ID:           "test-id",
 		MinInclusive: "00",
 		MaxExclusive: "FF",
@@ -89,7 +89,7 @@ func TestGetByMinMax(t *testing.T) {
 	cache := newPartitionKeyRangeCache("test-resource-id")
 
 	// Create test ranges
-	ranges := []PartitionKeyRangeProperties{
+	ranges := []partitionKeyRange{
 		{ID: "1", MinInclusive: "00", MaxExclusive: "20"},
 		{ID: "2", MinInclusive: "20", MaxExclusive: "40"},
 		{ID: "3", MinInclusive: "40", MaxExclusive: "60"},
@@ -132,7 +132,7 @@ func TestGetFeedRanges(t *testing.T) {
 	cache := newPartitionKeyRangeCache("test-resource-id")
 
 	// Create test ranges
-	ranges := []PartitionKeyRangeProperties{
+	ranges := []partitionKeyRange{
 		{ID: "1", MinInclusive: "00", MaxExclusive: "20"},
 		{ID: "2", MinInclusive: "20", MaxExclusive: "40"},
 	}

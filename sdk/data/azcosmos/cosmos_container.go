@@ -782,7 +782,7 @@ func (c *ContainerClient) getChangeFeed(
 
 	// Order of precedence considers PartitionKey First, FeedRange Second, and Container Last
 	if feedRange != nil {
-		pkrResp, err := c.GetPartitionKeyRange(ctx, nil)
+		pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
 		if err != nil {
 			return ChangeFeedResponse{}, err
 		}

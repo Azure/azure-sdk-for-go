@@ -6,7 +6,7 @@ import "fmt"
 
 // FindPartitionKeyRangeIDForFeedRange finds the partition key range ID that matches the given FeedRange.
 // Returns the ID if found, or an error if no match exists.
-func FindPartitionKeyRangeId(feedRange FeedRange, partitionKeyRanges []PartitionKeyRangeProperties) (string, error) {
+func FindPartitionKeyRangeId(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) (string, error) {
 	for _, pkr := range partitionKeyRanges {
 		if feedRange.MinInclusive == pkr.MinInclusive && feedRange.MaxExclusive == pkr.MaxExclusive {
 			return pkr.ID, nil

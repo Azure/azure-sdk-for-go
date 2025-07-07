@@ -5,8 +5,10 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
@@ -70,11 +72,11 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 
 	// Parse the continuation token JSON
 	var contToken struct {
-		Token *string `json:"token"`
+		Token *string
 		Range struct {
-			Min string `json:"min"`
-			Max string `json:"max"`
-		} `json:"range"`
+			Min string
+			Max string
+		}
 	}
 
 	if err := json.Unmarshal([]byte(c.ContinuationToken), &contToken); err != nil {
@@ -88,4 +90,40 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 	}
 
 	return contToken.Range.Min, contToken.Range.Max, true
+}
+
+// GetCompositeContinuationToken creates a composite continuation token from the response.
+// This token combines the feed range information with the ETag for use in subsequent requests.
+func (c ChangeFeedResponse) GetCompositeContinuationToken() (string, error) {
+	// Extract the range from the continuation token
+	min, max, ok := c.GetContRanges()
+	if !ok {
+		// No valid range in continuation token
+		return "", nil
+	}
+
+	// Get the ETag
+	etag := c.GetContinuation()
+	fmt.Printf("ETag is this: %s\n", etag)
+	if etag == "" {
+		// No ETag available
+		return "", nil
+	}
+
+	// Create the change feed range with continuation
+	etagValue := azcore.ETag(etag)
+	cfRange := newChangeFeedRange(min, max, &ChangeFeedRangeOptions{
+		ContinuationToken: &etagValue,
+	})
+
+	// Create composite token
+	compositeToken := newCompositeContinuationToken(c.ResourceID, []changeFeedRange{cfRange})
+
+	// Marshal to JSON
+	tokenBytes, err := json.Marshal(compositeToken)
+	if err != nil {
+		return "", err
+	}
+
+	return string(tokenBytes), nil
 }

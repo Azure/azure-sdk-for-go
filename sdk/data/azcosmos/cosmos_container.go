@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
@@ -707,7 +708,7 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	return response, err
 }
 
-// GetChangeFeed retrieves a single page of the change feed for a Cosmos container using the provided options.
+// getChangeFeed retrieves a single page of the change feed for a Cosmos container using the provided options.
 // Returns a ChangeFeedResponse containing the changed documents and metadata.
 //
 // Example usage:
@@ -716,18 +717,53 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 //	  MaxItemCount: 10,
 //	  // other options...
 //	}
-//	resp, err := container.GetChangeFeed(context.TODO(), options)
+//	resp, err := container.getChangeFeed(context.TODO(), options)
 //	if err != nil {
 //	  // handle error
 //	}
 //	for _, doc := range resp.Documents {
 //	  // process each changed document
 //	}
-//
-// GetChangeFeedWithHeaders retrieves a single page of the change feed for a Cosmos container using the provided options.
-// Supports all relevant headers: A-IM, x-ms-documentdb-partitionkey, x-ms-documentdb-partitionkeyrangeid, If-Modified-Since, If-None-Match.
-func (c *ContainerClient) GetChangeFeed(
+
+// GetChangeFeedContainer retrieves a single page of the change feed for the entire container using the provided options.
+func (c *ContainerClient) GetChangeFeedContainer(
 	ctx context.Context,
+	options *ChangeFeedOptions,
+) (ChangeFeedResponse, error) {
+	return c.getChangeFeed(ctx, nil, nil, options)
+}
+
+// GetChangeFeedForPartitionKey retrieves a single page of the change feed for a specific PartitionKey using the provided options.
+func (c *ContainerClient) GetChangeFeedForPartitionKey(
+	ctx context.Context,
+	partitionKey *PartitionKey,
+	options *ChangeFeedOptions,
+) (ChangeFeedResponse, error) {
+	return c.getChangeFeed(ctx, partitionKey, nil, options)
+}
+
+// GetChangeFeedForRange retrieves a single page of the change feed for a specific FeedRange using the provided options.
+func (c *ContainerClient) GetChangeFeedForEPKRange(
+	ctx context.Context,
+	feedRange *FeedRange,
+	options *ChangeFeedOptions,
+) (ChangeFeedResponse, error) {
+	changeFeedRangeOptions := &ChangeFeedRangeOptions{}
+	if options.Continuation != nil {
+		changeFeedRangeOptions.ContinuationToken = (*azcore.ETag)(options.Continuation)
+	}
+
+	changeFeedRange := newChangeFeedRange(feedRange.MinInclusive, feedRange.MaxExclusive, changeFeedRangeOptions)
+
+	return c.getChangeFeed(ctx, nil, &changeFeedRange, options)
+}
+
+// getChangeFeed is a private helper that handles the shared logic for reading the change feed.
+// If feedRange is nil, it reads the entire container. Otherwise, it reads the specified range.
+func (c *ContainerClient) getChangeFeed(
+	ctx context.Context,
+	partitionKey *PartitionKey,
+	feedRange *changeFeedRange,
 	options *ChangeFeedOptions,
 ) (ChangeFeedResponse, error) {
 	var err error
@@ -742,25 +778,27 @@ func (c *ContainerClient) GetChangeFeed(
 		options = &ChangeFeedOptions{}
 	}
 
-	// Fetch partition key ranges if FeedRange is set
-	var partitionKeyRanges []PartitionKeyRangeProperties
-	if options.FeedRange != nil {
+	var addHeaders func(*policy.Request)
+
+	// Order of precedence considers PartitionKey First, FeedRange Second, and Container Last
+	if feedRange != nil {
 		pkrResp, err := c.GetPartitionKeyRange(ctx, nil)
 		if err != nil {
 			return ChangeFeedResponse{}, err
 		}
-		partitionKeyRanges = pkrResp.PartitionKeyRanges
-	}
+		partitionKeyRanges := pkrResp.PartitionKeyRanges
 
-	headersPtr := options.toHeaders(partitionKeyRanges)
-	var addHeaders func(*policy.Request)
-	if headersPtr != nil {
-		headers := *headersPtr
-		addHeaders = func(r *policy.Request) {
-			for k, v := range headers {
-				r.Raw().Header.Set(k, v)
+		headersPtr := options.toHeaders(partitionKeyRanges)
+		if headersPtr != nil {
+			headers := *headersPtr
+			addHeaders = func(r *policy.Request) {
+				for k, v := range headers {
+					r.Raw().Header.Set(k, v)
+				}
 			}
 		}
+	} else if partitionKey != nil {
+		// TODO: Handle partition key in options
 	}
 
 	operationContext := pipelineRequestOptions{

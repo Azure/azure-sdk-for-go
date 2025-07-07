@@ -4,10 +4,15 @@
 package azcosmos
 
 import (
-	"fmt"
+	"encoding/json"
 	"strconv"
 	"strings"
 	"time"
+)
+
+const (
+	// cosmosDefaultMaxItemCount represents unlimited items in the response
+	cosmosDefaultMaxItemCount = -1
 )
 
 // ChangeFeedOptions defines the options for retrieving the change feed.
@@ -17,7 +22,7 @@ type ChangeFeedOptions struct {
 	// Valid values are > 0. The service may return fewer items than requested.
 	MaxItemCount int32
 
-	// ChangeFeedStartFrom is a user-friendly way to specifiy the time for change feed
+	// ChangeFeedStartFrom is a user-friendly way to specify the time for change feed
 	// Will be set to the IfModifiedSince header
 	ChangeFeedStartFrom *time.Time
 
@@ -43,7 +48,7 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 	if options.MaxItemCount > 0 {
 		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
 	} else {
-		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(-1, 10)
+		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(cosmosDefaultMaxItemCount, 10)
 	}
 	// Formats the time as RFC1123, e.g., "Mon, 02 Jan 2006 15:04:05 MST" (e.g., "Thu, 27 Jun 2025 14:30:00 UTC")
 	// If ChangeFeedStartFrom is set, will internally map to If-Modified-Since
@@ -63,16 +68,33 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 
 	// If FeedRange struct is set, using function FindPartitionKeyRangeId to see if there is a 1:1 match
 	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
-		if id, err := FindPartitionKeyRangeId(*options.FeedRange, partitionKeyRanges); err == nil {
+		if id, err := FindPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
 			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
 		} else {
-			fmt.Printf("FeedRange match error: %v\n", err)
+			return nil
 		}
 	}
 
-	// Set continuation header from composite token if present, else from Continuation
+	// Handle composite continuation token
 	if options.Continuation != nil && *options.Continuation != "" {
-		headers[headerIfNoneMatch] = *options.Continuation
+		// Try to parse as composite token first
+		var compositeToken compositeContinuationToken
+		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil && len(compositeToken.Continuation) > 0 {
+			// It's a composite token - extract the ETag from the first range
+			if compositeToken.Continuation[0].ContinuationToken != nil {
+				headers[headerIfNoneMatch] = string(*compositeToken.Continuation[0].ContinuationToken)
+			}
+			// Also set the feed range from the composite token if not already set
+			if options.FeedRange == nil {
+				options.FeedRange = &FeedRange{
+					MinInclusive: compositeToken.Continuation[0].MinInclusive,
+					MaxExclusive: compositeToken.Continuation[0].MaxExclusive,
+				}
+			}
+		} else {
+			// Not a composite token, treat as simple ETag
+			headers[headerIfNoneMatch] = *options.Continuation
+		}
 	}
 
 	if len(headers) == 0 {

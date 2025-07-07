@@ -4,9 +4,13 @@
 package azcosmos
 
 import (
+	"encoding/json"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestChangeFeedOptionsToHeaders(t *testing.T) {
@@ -18,8 +22,8 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	}
 
 	h := *headers
-	if h[cosmosHeaderMaxItemCount] != "-1" {
-		t.Errorf("Expected default MaxItemCount to be -1, got %v", h[cosmosHeaderMaxItemCount])
+	if h[cosmosHeaderMaxItemCount] != strconv.FormatInt(cosmosDefaultMaxItemCount, 10) {
+		t.Errorf("Expected default MaxItemCount to be %d, got %v", cosmosDefaultMaxItemCount, h[cosmosHeaderMaxItemCount])
 	}
 	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
 		t.Errorf("Expected default AIM to be %v, got %v", cosmosHeaderValuesChangeFeed, h[cosmosHeaderChangeFeed])
@@ -28,6 +32,9 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	// Test MaxItemCount
 	options.MaxItemCount = 10
 	headers = options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
 	h = *headers
 	if h[cosmosHeaderMaxItemCount] != "10" {
 		t.Errorf("Expected MaxItemCount to be 10, got %v", h[cosmosHeaderMaxItemCount])
@@ -40,6 +47,9 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	continuation := "test-etag"
 	options.Continuation = &continuation
 	headers = options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
 	h = *headers
 	if h[headerIfNoneMatch] != "test-etag" {
 		t.Errorf("Expected IfNoneMatch to be \"test-etag\", got %v", h[headerIfNoneMatch])
@@ -49,6 +59,9 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	now := time.Now().UTC()
 	options.ChangeFeedStartFrom = &now
 	headers = options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
 	h = *headers
 	expectedIfModifiedSince := strings.Replace(now.Format(time.RFC1123), "UTC", "GMT", 1)
 	if h[cosmosHeaderIfModifiedSince] != expectedIfModifiedSince {
@@ -59,6 +72,9 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	pk := NewPartitionKeyString("pkvalue")
 	options.PartitionKey = &pk
 	headers = options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
 	h = *headers
 	pkJSON, _ := pk.toJsonString()
 	if h[cosmosHeaderPartitionKey] != string(pkJSON) {
@@ -82,6 +98,9 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	}
 
 	headers = options.toHeaders(partitionKeyRanges)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
 	h = *headers
 	if h[headerXmsDocumentDbPartitionKeyRangeId] != "0" {
 		t.Errorf("Expected partition key range ID to be 0, got %v", h[headerXmsDocumentDbPartitionKeyRangeId])
@@ -97,15 +116,20 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	}
 
 	headers = options.toHeaders(partitionKeyRangesNoMatch)
-	h = *headers
-	if _, exists := h[headerXmsDocumentDbPartitionKeyRangeId]; exists {
-		t.Errorf("Expected no partition key range ID header when no match found")
+	if headers != nil {
+		t.Errorf("Expected nil headers when no matching partition key range found")
 	}
+
+	// Reset FeedRange for next tests
+	options.FeedRange = nil
 
 	// Test empty continuation
 	emptyContinuation := ""
 	options.Continuation = &emptyContinuation
 	headers = options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
 	h = *headers
 	if _, exists := h[headerIfNoneMatch]; exists {
 		t.Errorf("Expected no IfNoneMatch header for empty continuation")
@@ -114,6 +138,9 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	// Test nil continuation
 	options.Continuation = nil
 	headers = options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
 	h = *headers
 	if _, exists := h[headerIfNoneMatch]; exists {
 		t.Errorf("Expected no IfNoneMatch header for nil continuation")
@@ -178,5 +205,93 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 
 	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
 		t.Errorf("Expected AIM to be %v, got %v", cosmosHeaderValuesChangeFeed, h[cosmosHeaderChangeFeed])
+	}
+}
+
+func TestChangeFeedOptionsCompositeContinuationToken(t *testing.T) {
+	// Test composite continuation token parsing
+	etag := azcore.ETag("test-etag")
+	cfRange := newChangeFeedRange("00", "FF", &ChangeFeedRangeOptions{
+		ContinuationToken: &etag,
+	})
+	compositeToken := newCompositeContinuationToken("test-resource-id", []changeFeedRange{cfRange})
+
+	tokenBytes, err := json.Marshal(compositeToken)
+	if err != nil {
+		t.Fatalf("Failed to marshal composite token: %v", err)
+	}
+	tokenString := string(tokenBytes)
+
+	options := &ChangeFeedOptions{
+		Continuation: &tokenString,
+	}
+
+	headers := options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
+
+	h := *headers
+
+	// Should extract ETag from composite token
+	if h[headerIfNoneMatch] != string(etag) {
+		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
+	}
+
+	// Should set FeedRange from composite token
+	if options.FeedRange == nil {
+		t.Fatal("Expected FeedRange to be set from composite token")
+	}
+	if options.FeedRange.MinInclusive != "00" {
+		t.Errorf("Expected FeedRange.MinInclusive to be 00, got %v", options.FeedRange.MinInclusive)
+	}
+	if options.FeedRange.MaxExclusive != "FF" {
+		t.Errorf("Expected FeedRange.MaxExclusive to be FF, got %v", options.FeedRange.MaxExclusive)
+	}
+}
+
+func TestChangeFeedOptionsCompositeContinuationTokenWithExistingFeedRange(t *testing.T) {
+	// Test that explicit FeedRange takes precedence over composite token's range
+	etag := azcore.ETag("test-etag")
+	cfRange := newChangeFeedRange("00", "FF", &ChangeFeedRangeOptions{
+		ContinuationToken: &etag,
+	})
+	compositeToken := newCompositeContinuationToken("test-resource-id", []changeFeedRange{cfRange})
+
+	tokenBytes, err := json.Marshal(compositeToken)
+	if err != nil {
+		t.Fatalf("Failed to marshal composite token: %v", err)
+	}
+	tokenString := string(tokenBytes)
+
+	// Set explicit FeedRange
+	explicitFeedRange := &FeedRange{
+		MinInclusive: "AA",
+		MaxExclusive: "BB",
+	}
+
+	options := &ChangeFeedOptions{
+		Continuation: &tokenString,
+		FeedRange:    explicitFeedRange,
+	}
+
+	headers := options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
+
+	h := *headers
+
+	// Should extract ETag from composite token
+	if h[headerIfNoneMatch] != string(etag) {
+		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
+	}
+
+	// FeedRange should remain the explicit one, not overwritten by composite token
+	if options.FeedRange.MinInclusive != "AA" {
+		t.Errorf("Expected FeedRange.MinInclusive to remain AA, got %v", options.FeedRange.MinInclusive)
+	}
+	if options.FeedRange.MaxExclusive != "BB" {
+		t.Errorf("Expected FeedRange.MaxExclusive to remain BB, got %v", options.FeedRange.MaxExclusive)
 	}
 }

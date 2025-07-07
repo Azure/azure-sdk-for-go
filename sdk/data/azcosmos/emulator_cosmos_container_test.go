@@ -660,3 +660,100 @@ func TestEmulatorContainerPartitionKeyRangesAndFeedRanges(t *testing.T) {
 		}
 	}
 }
+
+func TestEmulatorContainerChangeFeed(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{"create_container aContainer"},
+	}))
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "changeFeed")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	throughput := NewManualThroughputProperties(30000)
+	_, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: &throughput})
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+
+	// Insert test items
+	testItems := []struct {
+		id   string
+		pk   string
+		data string
+	}{
+		{"item1", "pk1", "test data 1"},
+		{"item2", "pk2", "test data 2"},
+		{"item3", "pk3", "test data 3"},
+	}
+
+	for _, item := range testItems {
+		doc := map[string]interface{}{
+			"id":   item.id,
+			"pk":   item.pk,
+			"data": item.data,
+		}
+		itemBytes, err := json.Marshal(doc)
+		if err != nil {
+			t.Fatalf("Failed to marshal item: %v", err)
+		}
+		_, err = container.CreateItem(context.TODO(), NewPartitionKeyString(item.pk), itemBytes, nil)
+		if err != nil {
+			t.Fatalf("Failed to create item %s: %v", item.id, err)
+		}
+	}
+
+	// Wait for changes to be available in change feed
+	time.Sleep(2 * time.Second)
+
+	// Test change feed with only MaxItemCount (testing AIM header is set automatically)
+	t.Run("BasicChangeFeed", func(t *testing.T) {
+		options := &ChangeFeedOptions{
+			MaxItemCount: 10,
+		}
+
+		resp, err := container.GetChangeFeedContainer(context.TODO(), options)
+		if err != nil {
+			t.Fatalf("Failed to get change feed: %v", err)
+		}
+
+		// Log response details
+		t.Logf("Change Feed Response:")
+		t.Logf("  - Count: %d", resp.Count)
+		t.Logf("  - ETag: %s", resp.ETag)
+		t.Logf("  - Continuation: %s", resp.ContinuationToken)
+		t.Logf("  - LSN: %s", resp.LSN)
+		t.Logf("  - ResourceID: %s", resp.ResourceID)
+
+		if resp.ContinuationToken == "" && resp.ETag == "" {
+			t.Error("Expected either ETag or ContinuationToken to be set")
+		}
+
+		// Log documents if any
+		if resp.Count > 0 {
+			t.Logf("  - Documents returned: %d", resp.Count)
+			for i, doc := range resp.Documents {
+				var item map[string]interface{}
+				if err := json.Unmarshal(doc, &item); err == nil {
+					t.Logf("    Document %d: id=%v, pk=%v", i, item["id"], item["pk"])
+				}
+			}
+		} else {
+			t.Log("  - No documents returned (this can happen if change feed is not yet available)")
+		}
+
+		// Verify the response structure
+		if resp.Documents == nil {
+			t.Error("Expected Documents slice to be initialized (even if empty)")
+		}
+	})
+}

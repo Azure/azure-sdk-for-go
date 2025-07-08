@@ -845,7 +845,17 @@ func (c *ContainerClient) getChangeFeed(
 		return ChangeFeedResponse{}, err
 	}
 
-	return newChangeFeedResponse(azResponse)
+	response, err := newChangeFeedResponse(azResponse)
+	if err != nil {
+		return response, err
+	}
+
+	// Set the FeedRange if it was provided in options
+	if options != nil && options.FeedRange != nil {
+		response.FeedRange = options.FeedRange
+	}
+
+	return response, nil
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {

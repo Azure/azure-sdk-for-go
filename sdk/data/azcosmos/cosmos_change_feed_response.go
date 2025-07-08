@@ -26,6 +26,9 @@ type ChangeFeedResponse struct {
 	ContinuationToken string
 	LSN               string
 
+	// Store the feed range if it was used in the request
+	FeedRange *FeedRange
+
 	Response
 }
 
@@ -66,6 +69,13 @@ func (c ChangeFeedResponse) GetContinuation() string {
 
 // GetContRanges extracts the continuation token range from the ChangeFeedResponse.
 func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
+	// If FeedRange was set in the request, use it
+	if c.FeedRange != nil {
+		fmt.Printf("FeedRange is set: %s, %s\n", c.FeedRange.MinInclusive, c.FeedRange.MaxExclusive)
+		return c.FeedRange.MinInclusive, c.FeedRange.MaxExclusive, true
+	}
+
+	// Otherwise, try to extract from continuation token (fallback)
 	if c.ContinuationToken == "" {
 		return "", "", false
 	}

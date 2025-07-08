@@ -1237,7 +1237,7 @@ func TestReceiverReceiveAndDeleteDoesNotLoseMessages(t *testing.T) {
 	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
-	const totalSent = 2000
+	const totalSent = 3000
 
 	mustSendMessages(t, context.Background(), totalSent, 1000, sender)
 
@@ -1262,9 +1262,11 @@ func TestReceiverReceiveAndDeleteDoesNotLoseMessages(t *testing.T) {
 	// At this point the receiver is closed - we can continue to receive from it, even after closure. The messages
 	// are only what is cached. This lets users who are doing ReceiveAndDelete to make sure they get all messages that have
 	// arrived - previously, it was possible to have some data loss.
-	t.Logf("Now receiving after the receiver has been closed. We have %d/%d messages", len(receivedBeforeClose), totalSent)
+	t.Logf("Done with our first normal ReceiveMessages() call, when the Receiver is open. (%d/%d)", len(receivedBeforeClose), totalSent)
 
 	var after []*ReceivedMessage
+
+	totalReceived := func() int { return len(after) + len(receivedBeforeClose) }
 
 Loop:
 	for {
@@ -1275,18 +1277,60 @@ Loop:
 
 		switch {
 		case errors.As(err, &sbErr) && sbErr.Code == CodeClosed:
-			t.Logf("All messages have been extracted. Got %d", len(after))
+			t.Logf("No more prefetched messages. (%d/%d)", totalReceived(), totalSent)
 			break Loop
 		case err != nil:
 			require.NoError(t, err)
 		default:
 			require.LessOrEqual(t, len(messages), maxPerCall, "make sure we don't give more than you asked for")
-			t.Logf("More messages received. Got %d/%d", len(after), totalSent)
 			after = append(after, messages...)
+			t.Logf("Got more prefetched messages. (%d/%d)", totalReceived(), totalSent)
 		}
 	}
 
-	require.Equal(t, totalSent, len(after)+len(receivedBeforeClose))
+	require.Greater(t, len(after), 0, "should receive some messages after close")
+	require.LessOrEqual(t, totalReceived(), totalSent, "should not receive more than total sent")
+
+	remaining := func() int { return totalSent - totalReceived() }
+
+	// depending on transfer speed we might not have gotten all messages, so drain the queue
+	// and make sure that we truly didn't lose any messages.
+	func() {
+		if remaining() <= 0 {
+			t.Logf("All messages received, no need to clear queue")
+			return
+		}
+
+		// not a bug - sometimes we just don't get all the messages after waiting a second.
+		t.Logf("%d messages remaining in the queue, will receive these normally", remaining())
+
+		receiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+			ReceiveMode: ReceiveModeReceiveAndDelete,
+		})
+		require.NoError(t, err)
+
+		defer receiver.Close(context.Background())
+
+		// we might not get all the messages in our prefetch, so let's make sure we get all remaining messages
+		for {
+			if remaining() == 0 {
+				break
+			}
+
+			n := min(100, remaining())
+
+			t.Logf("Receiving %d messages", n)
+			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+			messages, err := receiver.ReceiveMessages(ctx, n, nil)
+			cancel()
+			require.NoError(t, err)
+
+			t.Logf("Got %d messages", len(messages))
+			after = append(after, messages...)
+		}
+	}()
+
+	require.Equal(t, totalSent, totalReceived(), "total received should match total sent")
 }
 
 func TestReceiverReceiveAndDeleteNoCachedMessages(t *testing.T) {

@@ -344,14 +344,14 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 		FeedRange:    feedRange,
 	}
 
-	resp1, err := container.getChangeFeed(context.Background(), nil, nil, options)
+	//resp1, err := container.getChangeFeed(context.Background(), nil, nil, options)
+	resp1, err := container.GetChangeFeedForEPKRange(context.Background(), feedRange, options)
 	if err != nil {
 		t.Fatalf("First getChangeFeed failed: %v", err)
 	}
 
 	fmt.Printf("First response: ResourceID: %s, Documents count: %d\n", resp1.ResourceID, resp1.Count)
 	fmt.Printf("ETag: %s\n", resp1.ETag)
-	fmt.Printf("Continuation Token: %s\n", resp1.ContinuationToken)
 
 	// Get the composite continuation token from the first response
 	compositeToken, err := resp1.getCompositeContinuationToken()
@@ -385,7 +385,7 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 		// Note: FeedRange is not set - it should be extracted from the composite token
 	}
 
-	resp2, err := container.getChangeFeed(context.Background(), nil, nil, options2)
+	resp2, err := container.GetChangeFeedContainer(context.Background(), options2)
 	if err != nil {
 		t.Fatalf("Second getChangeFeed failed: %v", err)
 	}
@@ -431,7 +431,7 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 				Continuation: &compositeToken2,
 			}
 
-			resp3, err := container.getChangeFeed(context.Background(), nil, nil, options3)
+			resp3, err := container.GetChangeFeedContainer(context.Background(), options3)
 			if err != nil {
 				t.Fatalf("Third getChangeFeed failed: %v", err)
 			}

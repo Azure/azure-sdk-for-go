@@ -92,9 +92,9 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 	return contToken.Range.Min, contToken.Range.Max, true
 }
 
-// GetCompositeContinuationToken creates a composite continuation token from the response.
+// getCompositeContinuationToken creates a composite continuation token from the response.
 // This token combines the feed range information with the ETag for use in subsequent requests.
-func (c ChangeFeedResponse) GetCompositeContinuationToken() (string, error) {
+func (c ChangeFeedResponse) getCompositeContinuationToken() (string, error) {
 	// Extract the range from the continuation token
 	min, max, ok := c.GetContRanges()
 	if !ok {

@@ -354,7 +354,7 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 	fmt.Printf("Continuation Token: %s\n", resp1.ContinuationToken)
 
 	// Get the composite continuation token from the first response
-	compositeToken, err := resp1.GetCompositeContinuationToken()
+	compositeToken, err := resp1.getCompositeContinuationToken()
 	if err != nil {
 		t.Fatalf("Failed to get composite continuation token: %v", err)
 	}
@@ -418,7 +418,7 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 
 	// Test continued pagination with composite token
 	if resp2.Count > 0 {
-		compositeToken2, err := resp2.GetCompositeContinuationToken()
+		compositeToken2, err := resp2.getCompositeContinuationToken()
 		if err != nil {
 			t.Fatalf("Failed to get second composite continuation token: %v", err)
 		}
@@ -503,7 +503,7 @@ func TestCloudChangeFeed_CompositeContinuationTokenMultipleRanges(t *testing.T) 
 	fmt.Printf("Response: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 
 	// Get composite token
-	compositeToken, err := resp.GetCompositeContinuationToken()
+	compositeToken, err := resp.getCompositeContinuationToken()
 	if err != nil {
 		t.Fatalf("Failed to get composite continuation token: %v", err)
 	}
@@ -580,7 +580,7 @@ func TestCloudChangeFeed_CompositeContinuationTokenWithETag(t *testing.T) {
 	// Try to get the composite continuation token from the first response
 	fmt.Printf("\n=== Attempting to Create Composite Continuation Token ===\n")
 
-	compositeToken, err := resp1.GetCompositeContinuationToken()
+	compositeToken, err := resp1.getCompositeContinuationToken()
 	if err != nil {
 		fmt.Printf("Error getting composite continuation token: %v\n", err)
 	} else if compositeToken == "" {

@@ -35,10 +35,9 @@ type ChangeFeedResponse struct {
 // newChangeFeedResponse creates a new ChangeFeedResponse from an HTTP response.
 func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	response := ChangeFeedResponse{
-		Response:          newResponse(resp),
-		ETag:              resp.Header.Get("etag"),
-		ContinuationToken: resp.Header.Get("x-ms-continuation"),
-		LSN:               resp.Header.Get("lsn"),
+		Response: newResponse(resp),
+		ETag:     resp.Header.Get("etag"),
+		LSN:      resp.Header.Get("lsn"),
 	}
 
 	if resp.StatusCode == http.StatusNotModified {
@@ -80,26 +79,7 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 		return "", "", false
 	}
 
-	// Parse the continuation token JSON
-	var contToken struct {
-		Token *string
-		Range struct {
-			Min string
-			Max string
-		}
-	}
-
-	if err := json.Unmarshal([]byte(c.ContinuationToken), &contToken); err != nil {
-		// Not a valid JSON continuation token
-		return "", "", false
-	}
-
-	// Check if range values exist
-	if contToken.Range.Min == "" || contToken.Range.Max == "" {
-		return "", "", false
-	}
-
-	return contToken.Range.Min, contToken.Range.Max, true
+	return "", "", false
 }
 
 // getCompositeContinuationToken creates a composite continuation token from the response.

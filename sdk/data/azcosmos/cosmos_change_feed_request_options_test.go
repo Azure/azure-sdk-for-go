@@ -6,7 +6,6 @@ package azcosmos
 import (
 	"encoding/json"
 	"strconv"
-	"strings"
 	"testing"
 	"time"
 
@@ -63,7 +62,7 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Fatal("toHeaders should return non-nil")
 	}
 	h = *headers
-	expectedIfModifiedSince := strings.Replace(now.Format(time.RFC1123), "UTC", "GMT", 1)
+	expectedIfModifiedSince := now.Format(time.RFC1123)
 	if h[cosmosHeaderIfModifiedSince] != expectedIfModifiedSince {
 		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])
 	}
@@ -185,7 +184,7 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 		t.Errorf("Expected MaxItemCount to be 25, got %v", h[cosmosHeaderMaxItemCount])
 	}
 
-	expectedIfModifiedSince := strings.Replace(now.Format(time.RFC1123), "UTC", "GMT", 1)
+	expectedIfModifiedSince := now.Format(time.RFC1123)
 	if h[cosmosHeaderIfModifiedSince] != expectedIfModifiedSince {
 		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])
 	}

@@ -667,7 +667,8 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		ExpectedSpans: []string{"create_container aContainer"},
 	}))
 
-	database := emulatorTests.createDatabase(t, context.TODO(), client, "changeFeed")
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "changeFeedTest")
+
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
 
 	properties := ContainerProperties{
@@ -714,6 +715,8 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 
 	// Wait for changes to be available in change feed
 	time.Sleep(2 * time.Second)
+	// Get Feed Ranges (which internally calls getPartitionKeyRanges)
+	feedRanges, _ := container.GetFeedRanges(context.TODO())
 
 	// Test change feed with only MaxItemCount (testing AIM header is set automatically)
 	t.Run("BasicChangeFeed", func(t *testing.T) {
@@ -721,7 +724,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			MaxItemCount: 10,
 		}
 
-		resp, err := container.GetChangeFeedContainer(context.TODO(), options)
+		resp, err := container.GetChangeFeedForEPKRange(context.TODO(), &feedRanges[0], options)
 		if err != nil {
 			t.Fatalf("Failed to get change feed: %v", err)
 		}
@@ -756,4 +759,46 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			t.Error("Expected Documents slice to be initialized (even if empty)")
 		}
 	})
+
+	t.Run("BasicChangeFeed", func(t *testing.T) {
+		options := &ChangeFeedOptions{
+			MaxItemCount: 10,
+		}
+
+		resp, err := container.GetChangeFeedForEPKRange(context.TODO(), &feedRanges[1], options)
+		if err != nil {
+			t.Fatalf("Failed to get change feed: %v", err)
+		}
+
+		// Log response details
+		t.Logf("Change Feed Response:")
+		t.Logf("  - Count: %d", resp.Count)
+		t.Logf("  - ETag: %s", resp.ETag)
+		t.Logf("  - Continuation: %s", resp.ContinuationToken)
+		t.Logf("  - LSN: %s", resp.LSN)
+		t.Logf("  - ResourceID: %s", resp.ResourceID)
+
+		if resp.ContinuationToken == "" && resp.ETag == "" {
+			t.Error("Expected either ETag or ContinuationToken to be set")
+		}
+
+		// Log documents if any
+		if resp.Count > 0 {
+			t.Logf("  - Documents returned: %d", resp.Count)
+			for i, doc := range resp.Documents {
+				var item map[string]interface{}
+				if err := json.Unmarshal(doc, &item); err == nil {
+					t.Logf("    Document %d: id=%v, pk=%v", i, item["id"], item["pk"])
+				}
+			}
+		} else {
+			t.Log("  - No documents returned (this can happen if change feed is not yet available)")
+		}
+
+		// Verify the response structure
+		if resp.Documents == nil {
+			t.Error("Expected Documents slice to be initialized (even if empty)")
+		}
+	})
+
 }

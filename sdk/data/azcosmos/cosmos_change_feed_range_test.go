@@ -9,7 +9,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// newChangeFeedRange creates a new ChangeFeedRange with the specified minimum inclusive and maximum exclusive values.
+// TestNewChangeFeedRange_Basic creates a new ChangeFeedRange with the
+// specified minimum inclusive and maximum exclusive values.
 func TestNewChangeFeedRange_Basic(t *testing.T) {
 	min := ""
 	max := "1FFFFFF"
@@ -42,7 +43,7 @@ func TestNewChangeFeedRange_Basic(t *testing.T) {
 	}
 }
 
-// TestNewChangeFeedRange_NilContinuationToken tests the case where we
+// TestNewChangeFeedRange_NilOptions tests the case where we
 // will only use the min and max values, without any continuation token or headers.
 func TestNewChangeFeedRange_NilOptions(t *testing.T) {
 	min := "A"

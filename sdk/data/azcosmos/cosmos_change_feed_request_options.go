@@ -12,6 +12,7 @@ import (
 const (
 	// cosmosDefaultMaxItemCount represents unlimited items in the response
 	cosmosDefaultMaxItemCount = -1
+	cosmosBaseTen             = 10
 )
 
 // ChangeFeedOptions defines the options for retrieving the change feed.
@@ -45,9 +46,9 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 	// If MaxItemCount is set to a positive value, it will be included in the headers.
 	// If it is 0, negative, or not set it will be set to -1 to indicate no limit.
 	if options.MaxItemCount > 0 {
-		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
+		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), cosmosBaseTen)
 	} else {
-		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(cosmosDefaultMaxItemCount, 10)
+		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(cosmosDefaultMaxItemCount, cosmosBaseTen)
 	}
 	// Formats the time as RFC1123, e.g., "Mon, 02 Jan 2006 15:04:05 MST" (e.g., "Thu, 27 Jun 2025 14:30:00 UTC")
 	// If ChangeFeedStartFrom is set, will internally map to If-Modified-Since

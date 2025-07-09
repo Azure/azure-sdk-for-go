@@ -14,6 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
+// TestNewChangeFeedResponse tests the creation of a ChangeFeedResponse from an HTTP response.
+// It mocks a server response and checks if the parsed response matches the expected values.
+// It also verifies that the documents are correctly unmarshaled and contain the expected IDs.
 func TestNewChangeFeedResponse(t *testing.T) {
 	jsonString := []byte(`{
 		"_rid": "ubgwAI1+zvg=",

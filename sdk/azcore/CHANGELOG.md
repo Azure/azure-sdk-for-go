@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 * Fixed incorrect request/response logging try info when logging a request that's being retried.
+* Fixed a data race in `ResourceID.String()`
 
 ### Other Changes
 

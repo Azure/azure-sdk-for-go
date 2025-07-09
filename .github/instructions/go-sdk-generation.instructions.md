@@ -11,22 +11,7 @@ Follow these steps to help users generate Go SDK from specific API specification
 
 ## Prerequisites
 
-1. Ensure Go version is 1.23 or later.
-2. Install the `generator` tool (v0.1.0) with the command:
-
-```bash
-go install github.com/Azure/azure-sdk-for-go/eng/tools/generator@v0.1.0
-```
-
-3. Ensure Node.js version is 20 or later.
-4. Install `tsp-client` tool (v0.21.0) with the command:
-
-```bash
-npm install -g @azure-tools/typespec-client-generator-cli@v0.21.0
-```
-
-5. Ensure GitHub CLI tool is installed and successfully logged in.
-6. Ensure Git is installed.
+Run `pwsh ./eng/scripts/Check-Prerequisites.ps1` to verify all prerequisites are met.
 
 ## Step 1: Prepare Generation Config
 

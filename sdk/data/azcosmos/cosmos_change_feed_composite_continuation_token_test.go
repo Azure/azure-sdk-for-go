@@ -36,22 +36,21 @@ func TestNewCompositeContinuationToken(t *testing.T) {
 	if string(data) != expectedJSON {
 		t.Errorf("Unexpected JSON output.\nExpected: %s\nActual:   %s", expectedJSON, string(data))
 	}
+}
 
-	// // Unmarshal back to struct and check fields
-	// unmarshaled := compositeContinuationToken{}
-	// if err := json.Unmarshal(data, &unmarshaled); err != nil {
-	// 	t.Fatalf("Failed to unmarshal: %v", err)
-	// }
-	// if unmarshaled.ResourceID != resourceID {
-	// 	t.Errorf("ResourceID mismatch: got %s, want %s", unmarshaled.ResourceID, resourceID)
-	// }
-	// if len(unmarshaled.Continuation) != 1 {
-	// 	t.Fatalf("Expected 1 continuation, got %d", len(unmarshaled.Continuation))
-	// }
-	// if unmarshaled.Continuation[0].MinInclusive != "" ||
-	// 	unmarshaled.Continuation[0].MaxExclusive != "FF" ||
-	// 	unmarshaled.Continuation[0].ContinuationToken == nil ||
-	// 	string(*unmarshaled.Continuation[0].ContinuationToken) != "14" {
-	// 	t.Errorf("Continuation fields mismatch: %+v", unmarshaled.Continuation[0])
-	// }
+func TestEmptyCompositeContinuationToken(t *testing.T) {
+	// Test case with no FeedRange - should return empty token
+	response := ChangeFeedResponse{
+		ResourceID: "testResource",
+		ETag:       "14",
+	}
+
+	token, err := response.getCompositeContinuationToken()
+	if err != nil {
+		t.Fatalf("Failed to get composite token: %v", err)
+	}
+
+	if token != "" {
+		t.Errorf("Expected empty token but got: %s", token)
+	}
 }

@@ -791,6 +791,13 @@ func (c *ContainerClient) getChangeFeed(
 		}
 		partitionKeyRanges := pkrResp.PartitionKeyRanges
 
+		newFeedRange := FeedRange{
+			MinInclusive: feedRange.MinInclusive,
+			MaxExclusive: feedRange.MaxExclusive,
+		}
+
+		options.FeedRange = &newFeedRange
+
 		headersPtr := options.toHeaders(partitionKeyRanges)
 		if headersPtr != nil {
 			headers := *headersPtr

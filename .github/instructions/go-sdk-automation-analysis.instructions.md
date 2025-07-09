@@ -4,8 +4,8 @@ Follow these steps to help users analyze Go SDK automation results from GitHub P
 
 ## Process Overview
 
-1. **Generate Go SDK locally** - Reproduce the automation result
-2. **Provide guidance** - Offer specific resolution steps and resources
+1. **Generate Go SDK locally** - Reproduce the automation result locally by generating the Go SDK from the API specification.
+2. **Provide guidance** - Offer specific resolution steps and resources.
 
 ## Step 1: Generate Go SDK
 

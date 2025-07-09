@@ -1,4 +1,4 @@
-# Azure Go SDK Automation Trouble Shooting Guide
+# Azure Go SDK Automation Troubleshooting Guide
 
 ## Overview
 
@@ -32,7 +32,7 @@ The Azure Go SDK automation tool:
 
 ### 1. Internal Errors
 
-**Keywords**: `The emitter encountered an internal error during preprocessing.`
+**Log Keywords**: `The emitter encountered an internal error during preprocessing.`
 
 **Analysis Actions**:
 
@@ -50,7 +50,7 @@ The Azure Go SDK automation tool:
 
 #### Invalid Emitter Arguments
 
-**Keywords**: `Invalid arguments were passed to the emitter.`
+**Log Keywords**: `Invalid arguments were passed to the emitter.`
 
 **Analysis Actions**:
 
@@ -63,7 +63,7 @@ The Azure Go SDK automation tool:
 
 #### Module Path Errors
 
-**Keywords**: `module not found, package path:`
+**Log Keywords**: `module not found, package path:`
 
 **Analysis Actions**:
 
@@ -80,7 +80,7 @@ The Azure Go SDK automation tool:
 
 ### 3. Naming Collision Errors
 
-**Keywords**: `The emitter automatically renamed one or more types which resulted in a type name collision.`
+**Log Keywords**: `The emitter automatically renamed one or more types which resulted in a type name collision.`
 
 **Context**: Go SDK automatically removes service name prefixes to prevent stuttering (e.g., `armcompute.ComputeDisk` → `armcompute.Disk`)
 
@@ -94,7 +94,7 @@ The Azure Go SDK automation tool:
 
 ### 4. Unsupported TypeSpec Features
 
-**Keywords**: `UnsupportedTsp`
+**Log Keywords**: `UnsupportedTsp`
 
 **Common Unsupported Features**:
 

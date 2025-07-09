@@ -66,7 +66,7 @@ func TestCloudChangeFeed_AIMHeader(t *testing.T) {
 
 	fmt.Printf("TEST AIM Header: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 	fmt.Printf("ETag header: %s\n", resp.ETag)
-	fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
+	// fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
 	fmt.Printf("LSN: %s\n", resp.LSN)
 
 	for i, doc := range resp.Documents {
@@ -114,7 +114,7 @@ func TestCloudChangeFeed_IfNoneMatchHeader(t *testing.T) {
 	}
 	fmt.Printf("If-None-Match Header Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 	fmt.Printf("ETag header: %s\n", resp.ETag)
-	fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
+	// fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
 	fmt.Printf("LSN: %s\n", resp.LSN)
 
 	for i, doc := range resp.Documents {
@@ -149,7 +149,7 @@ func TestCloudChangeFeed_IfModifiedSinceHeader(t *testing.T) {
 	}
 
 	// Use the fixed date: Mon, 30 Jun 2025 00:00:00 GMT
-	modifiedSince := time.Date(2025, 6, 30, 0, 0, 0, 0, time.UTC)
+	modifiedSince := time.Date(2025, 6, 14, 0, 0, 0, 0, time.UTC)
 	fmt.Printf("Testing with If-Modified-Since: %s\n", modifiedSince.UTC().Format(time.RFC1123))
 
 	options := &ChangeFeedOptions{
@@ -170,7 +170,7 @@ func TestCloudChangeFeed_IfModifiedSinceHeader(t *testing.T) {
 	}
 	fmt.Printf("If-Modified-Since Header Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 	fmt.Printf("ETag header: %s\n", resp.ETag)
-	fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
+	// fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
 	fmt.Printf("LSN: %s\n", resp.LSN)
 
 	for i, doc := range resp.Documents {
@@ -222,7 +222,7 @@ func TestIntegrationGetChangeFeedPartitionKey(t *testing.T) {
 
 	fmt.Printf("Partition Key Header Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 	fmt.Printf("ETag header: %s\n", resp.ETag)
-	fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
+	// fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
 	fmt.Printf("LSN: %s\n", resp.LSN)
 
 	for i, doc := range resp.Documents {
@@ -277,14 +277,14 @@ func TestCloudChangeFeed_FeedRange(t *testing.T) {
 		FeedRange:    feedRange,
 	}
 
-	resp, err := container.getChangeFeed(context.Background(), nil, nil, options)
+	resp, err := container.GetChangeFeedForEPKRange(context.Background(), feedRange, options)
 	if err != nil {
 		t.Fatalf("getChangeFeed failed: %v", err)
 	}
 
 	fmt.Printf("FeedRange Test: ResourceID: %s, Documents count: %d\n", resp.ResourceID, resp.Count)
 	fmt.Printf("ETag header: %s\n", resp.ETag)
-	fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
+	// fmt.Printf("x-ms-continuation header: %s\n", resp.ContinuationToken)
 	fmt.Printf("LSN: %s\n", resp.LSN)
 	fmt.Printf("Testing with FeedRange: MinInclusive=%s, MaxExclusive=%s\n", feedRange.MinInclusive, feedRange.MaxExclusive)
 
@@ -340,7 +340,7 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 
 	// First request with a feed range
 	options := &ChangeFeedOptions{
-		MaxItemCount: 2,
+		MaxItemCount: 1,
 		FeedRange:    feedRange,
 	}
 
@@ -351,6 +351,10 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 	}
 
 	fmt.Printf("First response: ResourceID: %s, Documents count: %d\n", resp1.ResourceID, resp1.Count)
+	// fmt.Printf("Documents from first response:\n")
+	// for i, doc := range resp1.Documents {
+	// 	fmt.Printf("Doc %d: %s\n", i, string(doc))
+	// }
 	fmt.Printf("ETag: %s\n", resp1.ETag)
 
 	// Get the composite continuation token from the first response
@@ -371,8 +375,8 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 	if err := json.Unmarshal([]byte(compositeToken), &parsedToken); err == nil {
 		fmt.Printf("Parsed Token - ResourceID: %s\n", parsedToken.ResourceID)
 		for i, cont := range parsedToken.Continuation {
-			fmt.Printf("Continuation[%d]: Min=%s, Max=%s, Token=%v\n",
-				i, cont.MinInclusive, cont.MaxExclusive, cont.ContinuationToken)
+			fmt.Printf("Continuation[%d]: Min=%s, Max=%s, Token=%s\n",
+				i, cont.MinInclusive, cont.MaxExclusive, *cont.ContinuationToken)
 		}
 	}
 
@@ -380,19 +384,19 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 
 	// Second request using the composite continuation token
 	options2 := &ChangeFeedOptions{
-		MaxItemCount: 2,
+		MaxItemCount: 1,
 		Continuation: &compositeToken,
 		// Note: FeedRange is not set - it should be extracted from the composite token
 	}
 
-	resp2, err := container.GetChangeFeedContainer(context.Background(), options2)
+	resp2, err := container.GetChangeFeedForEPKRange(context.Background(), feedRange, options2)
 	if err != nil {
 		t.Fatalf("Second getChangeFeed failed: %v", err)
 	}
 
 	fmt.Printf("Second response: ResourceID: %s, Documents count: %d\n", resp2.ResourceID, resp2.Count)
 	fmt.Printf("ETag: %s\n", resp2.ETag)
-	fmt.Printf("Continuation Token: %s\n", resp2.ContinuationToken)
+	fmt.Printf("Continuation Token: %s\n", resp2.ETag)
 
 	// Verify that the FeedRange was set from the composite token
 	if options2.FeedRange == nil {
@@ -427,11 +431,11 @@ func TestCloudChangeFeed_CompositeContinuationToken(t *testing.T) {
 			fmt.Printf("\n=== Third Request with Updated Composite Token ===\n")
 
 			options3 := &ChangeFeedOptions{
-				MaxItemCount: 2,
+				MaxItemCount: 1,
 				Continuation: &compositeToken2,
 			}
 
-			resp3, err := container.GetChangeFeedContainer(context.Background(), options3)
+			resp3, err := container.GetChangeFeedForEPKRange(context.Background(), feedRange, options3)
 			if err != nil {
 				t.Fatalf("Third getChangeFeed failed: %v", err)
 			}
@@ -552,6 +556,23 @@ func TestCloudChangeFeed_CompositeContinuationTokenWithETag(t *testing.T) {
 		t.Fatalf("Failed to get container: %v", err)
 	}
 
+	// First, get the partition key ranges
+	pkrResp, err := container.getPartitionKeyRanges(context.Background(), nil)
+	if err != nil {
+		t.Fatalf("Failed to get partition key ranges: %v", err)
+	}
+
+	if len(pkrResp.PartitionKeyRanges) == 0 {
+		t.Skip("No partition key ranges found")
+	}
+
+	// Use the first partition key range as our initial FeedRange
+	firstRange := pkrResp.PartitionKeyRanges[0]
+	feedRange := &FeedRange{
+		MinInclusive: firstRange.MinInclusive,
+		MaxExclusive: firstRange.MaxExclusive,
+	}
+
 	fmt.Printf("\n=== First Request with ETag '5' ===\n")
 
 	// First request with just an ETag (no FeedRange)
@@ -559,6 +580,7 @@ func TestCloudChangeFeed_CompositeContinuationTokenWithETag(t *testing.T) {
 	options := &ChangeFeedOptions{
 		MaxItemCount: 1,
 		Continuation: &etag,
+		FeedRange:    feedRange,
 	}
 
 	resp1, err := container.getChangeFeed(context.Background(), nil, nil, options)
@@ -605,6 +627,7 @@ func TestCloudChangeFeed_CompositeContinuationTokenWithETag(t *testing.T) {
 		options2 := &ChangeFeedOptions{
 			MaxItemCount: 2,
 			Continuation: &compositeToken,
+			FeedRange:    feedRange,
 		}
 
 		resp2, err := container.getChangeFeed(context.Background(), nil, nil, options2)

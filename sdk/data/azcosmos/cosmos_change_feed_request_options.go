@@ -6,7 +6,6 @@ package azcosmos
 import (
 	"encoding/json"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -54,7 +53,6 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 	// If ChangeFeedStartFrom is set, will internally map to If-Modified-Since
 	if options.ChangeFeedStartFrom != nil {
 		formatted := options.ChangeFeedStartFrom.UTC().Format(time.RFC1123)
-		formatted = strings.Replace(formatted, "UTC", "GMT", 1)
 		headers[cosmosHeaderIfModifiedSince] = formatted
 	}
 

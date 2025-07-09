@@ -7,30 +7,22 @@
 
 .DESCRIPTION
     This script verifies that all required tools are installed and properly configured
-    for Azure Go SDK generation from API specifications. It checks:
-    - Go version 1.23 or later
-    - Generator tool v0.1.0
-    - Node.js version 20 or later
-    - TypeSpec client generator CLI v0.21.0
-    - GitHub CLI tool and authentication
-    - Git installation
+    for Azure Go SDK generation from API specifications.
 
 .EXAMPLE
     .\Check-Prerequisites.ps1
     Runs all prerequisite checks and installs missing tools.
-
-.EXAMPLE
-    .\Check-Prerequisites.ps1 -CheckOnly
-    Only checks prerequisites without installing anything.
 #>
 
 param(
-    [switch]$CheckOnly = $false,
     [string]$MinGoVersion = "1.23",
-    [string]$MinNodeVersion = "22.0.0"
+    [string]$MinNodeVersion = "22.0.0",
+    [string]$GeneratorVersion = "v0.1.0"
 )
 
 $ErrorActionPreference = "Stop"
+$WarningPreference = "Stop"
+Set-StrictMode -Version Latest
 
 function Write-StatusMessage {
     param(
@@ -50,35 +42,35 @@ function Write-StatusMessage {
 
 function Test-ToolInstalled {
     param(
-        [string]$ToolName,
+        [Parameter(Mandatory = $true)]
+        [string]$Description,
+        [Parameter(Mandatory = $true)]
         [string]$Command,
         [string]$VersionFlag = "--version",
         [string]$VersionRegex = "",
-        [string]$MinVersion = "",
-        [string]$Description = ""
+        [string]$MinVersion = ""
     )
     
-    $displayName = if ($Description) { $Description } else { $ToolName }
-    Write-StatusMessage "Checking $displayName..."
+    Write-StatusMessage "Checking $Description..."
     
     try {
         # Check if tool is available
         $toolPath = Get-Command $Command -ErrorAction SilentlyContinue
         if (-not $toolPath) {
-            Write-StatusMessage "$displayName is not installed" "WARNING"
+            Write-StatusMessage "$Description is not installed" "WARNING"
             return $false
         }
         
         # Get version information
         $versionOutput = & $Command $VersionFlag 2>&1
         if ($LASTEXITCODE -ne 0) {
-            Write-StatusMessage "$displayName version check failed" "ERROR"
+            Write-StatusMessage "$Description version check failed" "ERROR"
             return $false
         }
         
         # If no version checking is needed, just confirm it's installed
         if (-not $VersionRegex -and -not $MinVersion) {
-            Write-StatusMessage "$displayName is installed ✓" "SUCCESS"
+            Write-StatusMessage "$Description is installed ✓" "SUCCESS"
             return $true
         }
         
@@ -90,31 +82,31 @@ function Test-ToolInstalled {
                 # Check minimum version if specified
                 if ($MinVersion) {
                     if (Compare-Version $version $MinVersion) {
-                        Write-StatusMessage "$displayName version $version is installed ✓" "SUCCESS"
+                        Write-StatusMessage "$Description version $version is installed ✓" "SUCCESS"
                         return $true
                     }
                     else {
-                        Write-StatusMessage "$displayName version $version is too old. Minimum required: $MinVersion" "ERROR"
+                        Write-StatusMessage "$Description version $version is too old. Minimum required: $MinVersion" "ERROR"
                         return $false
                     }
                 }
                 else {
-                    Write-StatusMessage "$displayName version $version is installed ✓" "SUCCESS"
+                    Write-StatusMessage "$Description version $version is installed ✓" "SUCCESS"
                     return $true
                 }
             }
             else {
-                Write-StatusMessage "Could not parse $displayName version: $versionOutput" "ERROR"
+                Write-StatusMessage "Could not parse $Description version: $versionOutput" "ERROR"
                 return $false
             }
         }
         else {
-            Write-StatusMessage "$displayName is installed ✓" "SUCCESS"
+            Write-StatusMessage "$Description is installed ✓" "SUCCESS"
             return $true
         }
     }
     catch {
-        Write-StatusMessage "$displayName check failed: $($_.Exception.Message)" "ERROR"
+        Write-StatusMessage "$Description check failed: $($_.Exception.Message)" "ERROR"
         return $false
     }
 }
@@ -137,15 +129,15 @@ function Compare-Version {
 }
 
 function Install-GeneratorTool {
-    if ($CheckOnly) {
-        Write-StatusMessage "Skipping generator tool installation (CheckOnly mode)" "WARNING"
-        return
-    }
-    
-    Write-StatusMessage "Installing generator tool v0.1.0..."
-    
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$GeneratorVersion
+    )
+
+    Write-StatusMessage "Installing generator tool $GeneratorVersion..."
+
     try {
-        $installResult = go install github.com/Azure/azure-sdk-for-go/eng/tools/generator@v0.1.0 2>&1
+        $installResult = go install "github.com/Azure/azure-sdk-for-go/eng/tools/generator@$GeneratorVersion" 2>&1
         if ($LASTEXITCODE -eq 0) {
             Write-StatusMessage "Generator tool installed successfully ✓" "SUCCESS"
         }
@@ -159,15 +151,10 @@ function Install-GeneratorTool {
 }
 
 function Install-TypeSpecTool {
-    if ($CheckOnly) {
-        Write-StatusMessage "Skipping TypeSpec tool installation (CheckOnly mode)" "WARNING"
-        return
-    }
-    
-    Write-StatusMessage "Installing TypeSpec client generator CLI v0.21.0..."
+    Write-StatusMessage "Installing TypeSpec client generator CLI..."
     
     try {
-        $installResult = npm install -g "@azure-tools/typespec-client-generator-cli@v0.21.0" 2>&1
+        $installResult = npm install -g @azure-tools/typespec-client-generator-cli 2>&1
         if ($LASTEXITCODE -eq 0) {
             Write-StatusMessage "TypeSpec client generator CLI installed successfully ✓" "SUCCESS"
         }
@@ -187,29 +174,29 @@ Write-StatusMessage "===============================================" "INFO"
 $failedPrerequisites = @()
 
 # Check Go version
-if (-not (Test-ToolInstalled -ToolName "Go" -Command "go" -VersionFlag "version" -VersionRegex "go version go(\d+\.\d+)" -MinVersion $MinGoVersion -Description "Go installation and version")) {
+if (-not (Test-ToolInstalled -Description "Go installation and version" -Command "go" -VersionFlag "version" -VersionRegex "go version go(\d+\.\d+)" -MinVersion $MinGoVersion)) {
     $failedPrerequisites += "Go $MinGoVersion or later (install from https://golang.org/dl/)"
 }
 
 # Check and install generator tool
-if (-not (Test-ToolInstalled -ToolName "Generator" -Command "generator" -Description "generator tool")) {
-    Install-GeneratorTool
+if (-not (Test-ToolInstalled -Description "generator tool" -Command "generator")) {
+    Install-GeneratorTool -GeneratorVersion $GeneratorVersion
     # Re-check after installation
-    if (-not (Test-ToolInstalled -ToolName "Generator" -Command "generator" -Description "generator tool")) {
+    if (-not (Test-ToolInstalled -Description "generator tool" -Command "generator")) {
         $failedPrerequisites += "Generator tool (failed to install or not working properly)"
     }
 }
 
 # Check Node.js version
-if (-not (Test-ToolInstalled -ToolName "Node.js" -Command "node" -VersionRegex "v(\d+\.\d+\.\d+)" -MinVersion $MinNodeVersion -Description "Node.js installation and version")) {
+if (-not (Test-ToolInstalled -Description "Node.js installation and version" -Command "node" -VersionRegex "v(\d+\.\d+\.\d+)" -MinVersion $MinNodeVersion)) {
     $failedPrerequisites += "Node.js $MinNodeVersion or later (install from https://nodejs.org/)"
 }
 
 # Check and install TypeSpec tool
-if (-not (Test-ToolInstalled -ToolName "TypeSpec" -Command "tsp-client" -Description "TypeSpec client generator CLI")) {
+if (-not (Test-ToolInstalled -Description "TypeSpec client generator CLI" -Command "tsp-client")) {
     Install-TypeSpecTool
     # Re-check after installation
-    if (-not (Test-ToolInstalled -ToolName "TypeSpec" -Command "tsp-client" -Description "TypeSpec client generator CLI")) {
+    if (-not (Test-ToolInstalled -Description "TypeSpec client generator CLI" -Command "tsp-client")) {
         $failedPrerequisites += "TypeSpec client generator CLI (failed to install or not working properly)"
     }
 }
@@ -217,7 +204,7 @@ if (-not (Test-ToolInstalled -ToolName "TypeSpec" -Command "tsp-client" -Descrip
 # Check GitHub CLI and authentication
 Write-StatusMessage "Checking GitHub CLI installation and authentication..."
 try {
-    if (-not (Test-ToolInstalled -ToolName "GitHub CLI" -Command "gh" -Description "GitHub CLI")) {
+    if (-not (Test-ToolInstalled -Description "GitHub CLI" -Command "gh")) {
         $failedPrerequisites += "GitHub CLI (install from https://cli.github.com/ and run 'gh auth login')"
     }
     else {
@@ -238,7 +225,7 @@ catch {
 }
 
 # Check Git
-if (-not (Test-ToolInstalled -ToolName "Git" -Command "git" -Description "Git installation")) {
+if (-not (Test-ToolInstalled -Description "Git installation" -Command "git")) {
     $failedPrerequisites += "Git (install from https://git-scm.com/)"
 }
 

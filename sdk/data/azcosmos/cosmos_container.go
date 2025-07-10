@@ -736,12 +736,10 @@ func (c *ContainerClient) GetChangeFeed(
 		options = &ChangeFeedOptions{}
 	}
 
-	// Extract feed range from composite continuation token if present
 	if options.FeedRange == nil && options.Continuation != nil && *options.Continuation != "" {
 		var compositeToken compositeContinuationToken
 		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil {
 			if len(compositeToken.Continuation) > 0 {
-				// Create a feed range from the composite token
 				options.FeedRange = &FeedRange{
 					MinInclusive: compositeToken.Continuation[0].MinInclusive,
 					MaxExclusive: compositeToken.Continuation[0].MaxExclusive,
@@ -750,9 +748,7 @@ func (c *ContainerClient) GetChangeFeed(
 		}
 	}
 
-	// Determine how to process the request based on the provided options
 	if options.FeedRange != nil {
-		// Process FeedRange option
 		return c.getChangeFeedForEPKRange(ctx, options.FeedRange, options)
 	} else {
 		// TODO: Implement logic to handle PartitionKey and Container reads in separate Helper functions
@@ -767,7 +763,6 @@ func (c *ContainerClient) GetChangeFeed(
 
 		var addHeaders func(*policy.Request)
 
-		// Set up headers based on partition key
 		headersPtr := options.toHeaders(nil)
 		if headersPtr != nil {
 			headers := *headersPtr
@@ -778,7 +773,6 @@ func (c *ContainerClient) GetChangeFeed(
 			}
 		}
 
-		// Set up operation context and path
 		operationContext := pipelineRequestOptions{
 			resourceType:    resourceTypeDocument,
 			resourceAddress: c.link,
@@ -789,7 +783,6 @@ func (c *ContainerClient) GetChangeFeed(
 			return ChangeFeedResponse{}, err
 		}
 
-		// Send the request
 		azResponse, err := c.database.client.sendGetRequest(
 			path,
 			ctx,
@@ -801,13 +794,11 @@ func (c *ContainerClient) GetChangeFeed(
 			return ChangeFeedResponse{}, err
 		}
 
-		// Create response object
 		response, err := newChangeFeedResponse(azResponse)
 		if err != nil {
 			return response, err
 		}
 
-		// Set the FeedRange if it was provided in options
 		if options.FeedRange != nil {
 			response.FeedRange = options.FeedRange
 			response.PopulateCompositeContinuationToken()
@@ -818,7 +809,6 @@ func (c *ContainerClient) GetChangeFeed(
 	}
 }
 
-// getChangeFeedForEPKRange is a private helper that retrieves a single page of the change feed for a specific FeedRange.
 func (c *ContainerClient) getChangeFeedForEPKRange(
 	ctx context.Context,
 	feedRange *FeedRange,
@@ -836,14 +826,12 @@ func (c *ContainerClient) getChangeFeedForEPKRange(
 		options = &ChangeFeedOptions{}
 	}
 
-	// Get partition key ranges for proper header construction
 	pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
 	if err != nil {
 		return ChangeFeedResponse{}, err
 	}
 	partitionKeyRanges := pkrResp.PartitionKeyRanges
 
-	// Set up request headers
 	var addHeaders func(*policy.Request)
 	headersPtr := options.toHeaders(partitionKeyRanges)
 	if headersPtr != nil {
@@ -881,7 +869,6 @@ func (c *ContainerClient) getChangeFeedForEPKRange(
 		return response, err
 	}
 
-	// Set the FeedRange and populate composite continuation token
 	response.FeedRange = feedRange
 	response.PopulateCompositeContinuationToken()
 

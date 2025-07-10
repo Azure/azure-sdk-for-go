@@ -15,9 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-// TestNewChangeFeedResponse tests the creation of a ChangeFeedResponse from an HTTP response.
-// It mocks a server response and checks if the parsed response matches the expected values.
-// It also verifies that the documents are correctly unmarshaled and contain the expected IDs.
 func TestNewChangeFeedResponse(t *testing.T) {
 	jsonString := []byte(`{
 		"_rid": "ubgwAI1+zvg=",
@@ -90,7 +87,6 @@ func TestNewChangeFeedResponse(t *testing.T) {
 		t.Fatalf("unexpected number of Documents: got %d, want 2", len(parsedResponse.Documents))
 	}
 
-	// Optionally: check document IDs in the returned raw messages
 	var doc0, doc1 map[string]interface{}
 	if err := json.Unmarshal(parsedResponse.Documents[0], &doc0); err != nil {
 		t.Fatalf("failed to unmarshal first document: %v", err)
@@ -108,7 +104,6 @@ func TestNewChangeFeedResponse(t *testing.T) {
 }
 
 func TestChangeFeedResponseWithFeedRange(t *testing.T) {
-	// Test that composite continuation token is automatically populated when FeedRange is present
 	jsonString := []byte(`{
         "_rid": "testResourceId",
         "Documents": [{"id": "doc1"}],
@@ -141,21 +136,17 @@ func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 		t.Fatalf("failed to create ChangeFeedResponse: %v", err)
 	}
 
-	// Set FeedRange to simulate what happens in GetChangeFeed
 	parsedResponse.FeedRange = &FeedRange{
 		MinInclusive: "00",
 		MaxExclusive: "FF",
 	}
 
-	// Call PopulateCompositeContinuationToken
 	parsedResponse.PopulateCompositeContinuationToken()
 
-	// Verify composite continuation token was populated
 	if parsedResponse.CompositeContinuationToken == "" {
 		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
 	}
 
-	// Parse and verify the composite token structure
 	var compositeToken compositeContinuationToken
 	err = json.Unmarshal([]byte(parsedResponse.CompositeContinuationToken), &compositeToken)
 	if err != nil {
@@ -188,7 +179,6 @@ func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 }
 
 func TestChangeFeedResponseWithoutFeedRange(t *testing.T) {
-	// Test that composite continuation token is NOT populated when FeedRange is absent
 	jsonString := []byte(`{
         "_rid": "testResourceId",
         "Documents": [{"id": "doc1"}],
@@ -219,10 +209,8 @@ func TestChangeFeedResponseWithoutFeedRange(t *testing.T) {
 		t.Fatalf("failed to create ChangeFeedResponse: %v", err)
 	}
 
-	// No FeedRange set
 	parsedResponse.PopulateCompositeContinuationToken()
 
-	// Verify composite continuation token was NOT populated
 	if parsedResponse.CompositeContinuationToken != "" {
 		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.CompositeContinuationToken)
 	}

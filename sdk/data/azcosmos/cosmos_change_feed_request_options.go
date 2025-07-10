@@ -40,24 +40,19 @@ type ChangeFeedOptions struct {
 func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRange) *map[string]string {
 	headers := make(map[string]string)
 
-	// Always setting the AIM header to "Incremental Feed" for change feed requests
 	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
 
-	// If MaxItemCount is set to a positive value, it will be included in the headers.
-	// If it is 0, negative, or not set it will be set to -1 to indicate no limit.
 	if options.MaxItemCount > 0 {
 		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), cosmosBaseTen)
 	} else {
 		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(cosmosDefaultMaxItemCount, cosmosBaseTen)
 	}
-	// Formats the time as RFC1123, e.g., "Mon, 02 Jan 2006 15:04:05 MST" (e.g., "Thu, 27 Jun 2025 14:30:00 UTC")
-	// If ChangeFeedStartFrom is set, will internally map to If-Modified-Since
+
 	if options.ChangeFeedStartFrom != nil {
 		formatted := options.ChangeFeedStartFrom.UTC().Format(time.RFC1123)
 		headers[cosmosHeaderIfModifiedSince] = formatted
 	}
 
-	// If PartitionKey is set, convert it to JSON and add it to the headers.
 	if options.PartitionKey != nil {
 		partitionKeyJSON, err := options.PartitionKey.toJsonString()
 		if err == nil {
@@ -65,7 +60,6 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 		}
 	}
 
-	// If FeedRange struct is set, using function FindPartitionKeyRangeId to see if there is a 1:1 match to set id
 	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
 		if id, err := findPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
 			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
@@ -74,16 +68,12 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 		}
 	}
 
-	// Handle composite continuation token
 	if options.Continuation != nil && *options.Continuation != "" {
-		// Try to parse as composite token first
 		var compositeToken compositeContinuationToken
 		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil && len(compositeToken.Continuation) > 0 {
-			// It's a composite token - extract the ETag from the first range
 			if compositeToken.Continuation[0].ContinuationToken != nil {
 				headers[headerIfNoneMatch] = string(*compositeToken.Continuation[0].ContinuationToken)
 			}
-			// Also set the feed range from the composite token if not already set
 			if options.FeedRange == nil {
 				options.FeedRange = &FeedRange{
 					MinInclusive: compositeToken.Continuation[0].MinInclusive,
@@ -91,7 +81,6 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 				}
 			}
 		} else {
-			// Not a composite token, treat as simple ETag
 			headers[headerIfNoneMatch] = *options.Continuation
 		}
 	}

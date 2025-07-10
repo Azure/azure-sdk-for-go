@@ -11,7 +11,6 @@ import (
 )
 
 func TestNewCompositeContinuationToken(t *testing.T) {
-	// Creating the ResourceID, ContinuationToken to insert into the changeFeedRange
 	resourceID := "testResource"
 	continuationToken := azcore.ETag("14")
 	changeFeedRangeInstance := newChangeFeedRange(
@@ -25,13 +24,11 @@ func TestNewCompositeContinuationToken(t *testing.T) {
 	compositeContinuationToken := newCompositeContinuationToken(resourceID, []changeFeedRange{changeFeedRangeInstance})
 	t.Logf("ResourceID: %s\nContinuation: %+v", compositeContinuationToken.ResourceID, compositeContinuationToken.Continuation)
 
-	// Marshal the compositeContinuationToken to JSON
 	data, err := json.Marshal(compositeContinuationToken)
 	if err != nil {
 		t.Fatalf("Failed to marshal composite token: %v", err)
 	}
 
-	// Assertting the JSON output
 	expectedJSON := `{"resourceId":"testResource","continuation":[{"minInclusive":"","maxExclusive":"FF","continuationToken":"14"}]}`
 	if string(data) != expectedJSON {
 		t.Errorf("Unexpected JSON output.\nExpected: %s\nActual:   %s", expectedJSON, string(data))
@@ -39,7 +36,6 @@ func TestNewCompositeContinuationToken(t *testing.T) {
 }
 
 func TestEmptyCompositeContinuationToken(t *testing.T) {
-	// Test case with no FeedRange - should return empty token
 	response := ChangeFeedResponse{
 		ResourceID: "testResource",
 		ETag:       "14",

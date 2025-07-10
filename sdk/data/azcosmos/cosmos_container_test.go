@@ -906,12 +906,10 @@ func TestContainerGetChangeFeedPartitionKey(t *testing.T) {
 }
 
 func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
-	// First response: 3 documents
 	changeFeedBodyAll := []byte(
 		`{"_rid":"test-rid",
         "Documents":[{"id":"doc1"},{"id":"doc2"},{"id":"doc3"}],
         "_count":3}`)
-	// Second response: 1 document (filtered)
 	changeFeedBodyFiltered := []byte(
 		`{"_rid":"test-rid",
         "Documents":[{"id":"doc3"}],
@@ -921,7 +919,6 @@ func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
 	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 
-	// Set up the mock server to return the first response, then the second
 	srv.AppendResponse(
 		mock.WithBody(changeFeedBodyAll),
 		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
@@ -950,7 +947,6 @@ func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
 		t.Errorf("Expected 3 documents, got %d", len(resp.Documents))
 	}
 
-	// Second call: with IfModifiedSince header, expect 1 doc
 	modifiedSince := time.Now().Add(-time.Hour).UTC()
 	options := &ChangeFeedOptions{
 		ChangeFeedStartFrom: &modifiedSince,
@@ -975,7 +971,6 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
 
-	// First response for the change feed
 	srv.SetResponse(
 		mock.WithBody(changeFeedBody),
 		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
@@ -983,7 +978,6 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		mock.WithHeader(cosmosHeaderRequestCharge, "3.5"),
 		mock.WithStatusCode(200))
 
-	// Second response for partition key ranges
 	pkRangesBody := []byte(`{
         "_rid": "container-rid",
         "PartitionKeyRanges": [{
@@ -1031,12 +1025,10 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Documents))
 	}
 
-	// Verify composite continuation token was automatically populated
 	if resp.CompositeContinuationToken == "" {
 		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
 	}
 
-	// Parse and verify the composite token
 	var compositeToken compositeContinuationToken
 	err = json.Unmarshal([]byte(resp.CompositeContinuationToken), &compositeToken)
 	if err != nil {
@@ -1067,13 +1059,11 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Errorf("unexpected ContinuationToken: got %q, want %q", *compositeToken.Continuation[0].ContinuationToken, "\"etag-12345\"")
 	}
 
-	// Test using the composite continuation token in the next request
 	options2 := &ChangeFeedOptions{
 		MaxItemCount: 10,
 		Continuation: &resp.CompositeContinuationToken,
 	}
 
-	// The continuation token should be parsed and used
 	headers := options2.toHeaders(nil)
 	if headers == nil {
 		t.Fatal("expected headers to be non-nil")

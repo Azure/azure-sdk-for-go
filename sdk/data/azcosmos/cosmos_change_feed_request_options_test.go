@@ -13,7 +13,6 @@ import (
 )
 
 func TestChangeFeedOptionsToHeaders(t *testing.T) {
-	// Test with no partition key ranges
 	options := &ChangeFeedOptions{}
 	headers := options.toHeaders(nil)
 	if headers == nil {
@@ -28,7 +27,6 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected default AIM to be %v, got %v", cosmosHeaderValuesChangeFeed, h[cosmosHeaderChangeFeed])
 	}
 
-	// Test MaxItemCount
 	options.MaxItemCount = 10
 	headers = options.toHeaders(nil)
 	if headers == nil {
@@ -42,7 +40,6 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected AIM to be Incremental Feed, got %v", h[cosmosHeaderChangeFeed])
 	}
 
-	// Test Continuation
 	continuation := "test-etag"
 	options.Continuation = &continuation
 	headers = options.toHeaders(nil)
@@ -54,7 +51,6 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected IfNoneMatch to be \"test-etag\", got %v", h[headerIfNoneMatch])
 	}
 
-	// Test ChangeFeedStartFrom (replaced IfModifiedSince)
 	now := time.Now().UTC()
 	options.ChangeFeedStartFrom = &now
 	headers = options.toHeaders(nil)
@@ -67,7 +63,6 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])
 	}
 
-	// Test PartitionKey
 	pk := NewPartitionKeyString("pkvalue")
 	options.PartitionKey = &pk
 	headers = options.toHeaders(nil)
@@ -80,14 +75,12 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected PartitionKey to be %v, got %v", string(pkJSON), h[cosmosHeaderPartitionKey])
 	}
 
-	// Test FeedRange with partition key ranges
 	feedRange := &FeedRange{
 		MinInclusive: "00",
 		MaxExclusive: "FF",
 	}
 	options.FeedRange = feedRange
 
-	// Test with matching partition key range
 	partitionKeyRanges := []partitionKeyRange{
 		{
 			ID:           "0",
@@ -105,7 +98,6 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected partition key range ID to be 0, got %v", h[headerXmsDocumentDbPartitionKeyRangeId])
 	}
 
-	// Test FeedRange with no matching partition key range
 	partitionKeyRangesNoMatch := []partitionKeyRange{
 		{
 			ID:           "1",
@@ -119,10 +111,8 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected nil headers when no matching partition key range found")
 	}
 
-	// Reset FeedRange for next tests
 	options.FeedRange = nil
 
-	// Test empty continuation
 	emptyContinuation := ""
 	options.Continuation = &emptyContinuation
 	headers = options.toHeaders(nil)
@@ -134,7 +124,6 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Errorf("Expected no IfNoneMatch header for empty continuation")
 	}
 
-	// Test nil continuation
 	options.Continuation = nil
 	headers = options.toHeaders(nil)
 	if headers == nil {
@@ -147,7 +136,6 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 }
 
 func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
-	// Test with all fields populated
 	now := time.Now().UTC()
 	pk := NewPartitionKeyString("testPK")
 	continuation := "test-continuation"
@@ -179,7 +167,6 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 
 	h := *headers
 
-	// Verify all headers are set correctly
 	if h[cosmosHeaderMaxItemCount] != "25" {
 		t.Errorf("Expected MaxItemCount to be 25, got %v", h[cosmosHeaderMaxItemCount])
 	}
@@ -208,7 +195,6 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 }
 
 func TestChangeFeedOptionsCompositeContinuationToken(t *testing.T) {
-	// Test composite continuation token parsing
 	etag := azcore.ETag("test-etag")
 	cfRange := newChangeFeedRange("00", "FF", &ChangeFeedRangeOptions{
 		ContinuationToken: &etag,
@@ -232,12 +218,10 @@ func TestChangeFeedOptionsCompositeContinuationToken(t *testing.T) {
 
 	h := *headers
 
-	// Should extract ETag from composite token
 	if h[headerIfNoneMatch] != string(etag) {
 		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
 	}
 
-	// Should set FeedRange from composite token
 	if options.FeedRange == nil {
 		t.Fatal("Expected FeedRange to be set from composite token")
 	}
@@ -250,7 +234,6 @@ func TestChangeFeedOptionsCompositeContinuationToken(t *testing.T) {
 }
 
 func TestChangeFeedOptionsCompositeContinuationTokenWithExistingFeedRange(t *testing.T) {
-	// Test that explicit FeedRange takes precedence over composite token's range
 	etag := azcore.ETag("test-etag")
 	cfRange := newChangeFeedRange("00", "FF", &ChangeFeedRangeOptions{
 		ContinuationToken: &etag,
@@ -263,7 +246,6 @@ func TestChangeFeedOptionsCompositeContinuationTokenWithExistingFeedRange(t *tes
 	}
 	tokenString := string(tokenBytes)
 
-	// Set explicit FeedRange
 	explicitFeedRange := &FeedRange{
 		MinInclusive: "AA",
 		MaxExclusive: "BB",
@@ -281,12 +263,10 @@ func TestChangeFeedOptionsCompositeContinuationTokenWithExistingFeedRange(t *tes
 
 	h := *headers
 
-	// Should extract ETag from composite token
 	if h[headerIfNoneMatch] != string(etag) {
 		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
 	}
 
-	// FeedRange should remain the explicit one, not overwritten by composite token
 	if options.FeedRange.MinInclusive != "AA" {
 		t.Errorf("Expected FeedRange.MinInclusive to remain AA, got %v", options.FeedRange.MinInclusive)
 	}

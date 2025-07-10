@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -44,19 +43,16 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	}
 
 	if resp.StatusCode == http.StatusNotModified {
-		// Handle 304 Not Modified response (no changes since the specified ETag)
 		response.Documents = []json.RawMessage{}
 		response.Count = 0
 		return response, nil
 	}
 
-	// For non-304 responses, unmarshal the response body
 	defer resp.Body.Close()
 	body, err := azruntime.Payload(resp)
 	if err != nil {
 		return response, err
 	}
-	// Parse the response into our response structure
 	if err := json.Unmarshal(body, &response); err != nil {
 		return response, err
 	}
@@ -81,13 +77,10 @@ func (c ChangeFeedResponse) GetContinuation() string {
 
 // GetContRanges extracts the continuation token range from the ChangeFeedResponse.
 func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
-	// If FeedRange was set in the request, use it
 	if c.FeedRange != nil {
-		fmt.Printf("FeedRange is set: %s, %s\n", c.FeedRange.MinInclusive, c.FeedRange.MaxExclusive)
 		return c.FeedRange.MinInclusive, c.FeedRange.MaxExclusive, true
 	}
 
-	// Otherwise, try to extract from continuation token (fallback)
 	if c.ContinuationToken == "" {
 		return "", "", false
 	}
@@ -98,31 +91,23 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 // GetCompositeContinuationToken creates a composite continuation token from the response.
 // This token combines the feed range information with the ETag for use in subsequent requests.
 func (c ChangeFeedResponse) GetCompositeContinuationToken() (string, error) {
-	// Extract the range from the continuation token
 	min, max, ok := c.GetContRanges()
 	if !ok {
-		// No valid range in continuation token
 		return "", nil
 	}
 
-	// Get the ETag
 	etag := c.GetContinuation()
-	fmt.Printf("ETag is this: %s\n", etag)
 	if etag == "" {
-		// No ETag available
 		return "", nil
 	}
 
-	// Create the change feed range with continuation
 	etagValue := azcore.ETag(etag)
 	cfRange := newChangeFeedRange(min, max, &ChangeFeedRangeOptions{
 		ContinuationToken: &etagValue,
 	})
 
-	// Create composite token
 	compositeToken := newCompositeContinuationToken(c.ResourceID, []changeFeedRange{cfRange})
 
-	// Marshal to JSON
 	tokenBytes, err := json.Marshal(compositeToken)
 	if err != nil {
 		return "", err

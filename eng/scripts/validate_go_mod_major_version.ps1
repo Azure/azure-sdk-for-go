@@ -22,23 +22,18 @@ if ($goModFile.Length -eq 0) {
 # fetch the major version suffix from go.mod if present
 $majorVersion = Get-GoModuleMajorVersion $goModFile
 
-$hasError = $false
 if ($majorVersion) {
     # go.mod has a major version
     # ensure it matches the major version defined in the constant
     if (-not $modVersion.StartsWith("$majorVersion.")) {
         Write-Host "Mismatched module major versions. go.mod states $majorVersion while const version states $modVersion"
-        $hasError = $true
+        exit 1
     }
 } else {
     # go.mod has no major version
     # ensure the constant is v0 or v1
     if ($modVersion -notmatch "^[01]\.") {
         Write-Host "The module's identity is missing a major version suffix for const version $modVersion"
-        $hasError = $true
+        exit 1
     }
-}
-
-if ($hasError) {
-    exit 1
 }

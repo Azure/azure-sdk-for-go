@@ -65,9 +65,9 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 		}
 	}
 
-	// If FeedRange struct is set, using function FindPartitionKeyRangeId to see if there is a 1:1 match
+	// If FeedRange struct is set, using function FindPartitionKeyRangeId to see if there is a 1:1 match to set id
 	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
-		if id, err := FindPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
+		if id, err := findPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
 			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
 		} else {
 			return nil

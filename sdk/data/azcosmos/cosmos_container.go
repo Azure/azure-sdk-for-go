@@ -841,7 +841,7 @@ func (c *ContainerClient) getChangeFeed(
 	// Set the FeedRange if it was provided in options
 	if options != nil && options.FeedRange != nil {
 		response.FeedRange = options.FeedRange
-		response.populateCompositeContinuation()
+		response.PopulateCompositeContinuationToken()
 	}
 
 	return response, nil

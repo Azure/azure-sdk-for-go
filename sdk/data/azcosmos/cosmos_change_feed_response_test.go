@@ -147,8 +147,8 @@ func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 		MaxExclusive: "FF",
 	}
 
-	// Call populateCompositeContinuation
-	parsedResponse.populateCompositeContinuation()
+	// Call PopulateCompositeContinuationToken
+	parsedResponse.PopulateCompositeContinuationToken()
 
 	// Verify composite continuation token was populated
 	if parsedResponse.CompositeContinuationToken == "" {
@@ -220,7 +220,7 @@ func TestChangeFeedResponseWithoutFeedRange(t *testing.T) {
 	}
 
 	// No FeedRange set
-	parsedResponse.populateCompositeContinuation()
+	parsedResponse.PopulateCompositeContinuationToken()
 
 	// Verify composite continuation token was NOT populated
 	if parsedResponse.CompositeContinuationToken != "" {

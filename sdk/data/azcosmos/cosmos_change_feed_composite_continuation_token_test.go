@@ -45,7 +45,7 @@ func TestEmptyCompositeContinuationToken(t *testing.T) {
 		ETag:       "14",
 	}
 
-	token, err := response.getCompositeContinuationToken()
+	token, err := response.GetCompositeContinuationToken()
 	if err != nil {
 		t.Fatalf("Failed to get composite token: %v", err)
 	}

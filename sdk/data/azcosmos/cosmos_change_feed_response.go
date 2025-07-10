@@ -64,10 +64,10 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	return response, nil
 }
 
-// populateCompositeContinuation generates and sets the composite continuation token if a feed range was used
-func (response *ChangeFeedResponse) populateCompositeContinuation() {
+// PopulateCompositeContinuationToken generates and sets the composite continuation token if a feed range was used
+func (response *ChangeFeedResponse) PopulateCompositeContinuationToken() {
 	if response.FeedRange != nil && response.ETag != "" {
-		compositeToken, err := response.getCompositeContinuationToken()
+		compositeToken, err := response.GetCompositeContinuationToken()
 		if err == nil && compositeToken != "" {
 			response.CompositeContinuationToken = compositeToken
 		}
@@ -95,15 +95,9 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 	return "", "", false
 }
 
-// GetCompositeContinuation returns a composite continuation token that can be used to resume
-// the change feed from the current position. This is only available when using feed ranges.
-func (c ChangeFeedResponse) GetCompositeContinuation() (string, error) {
-	return c.getCompositeContinuationToken()
-}
-
-// getCompositeContinuationToken creates a composite continuation token from the response.
+// GetCompositeContinuationToken creates a composite continuation token from the response.
 // This token combines the feed range information with the ETag for use in subsequent requests.
-func (c ChangeFeedResponse) getCompositeContinuationToken() (string, error) {
+func (c ChangeFeedResponse) GetCompositeContinuationToken() (string, error) {
 	// Extract the range from the continuation token
 	min, max, ok := c.GetContRanges()
 	if !ok {

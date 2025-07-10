@@ -41,8 +41,6 @@ func TestNewChangeFeedRangeBasic(t *testing.T) {
 	}
 }
 
-// TestNewChangeFeedRange_NilOptions tests the case where we
-// will only use the min and max values, without any continuation token or headers.
 func TestNewChangeFeedRangeNilOptions(t *testing.T) {
 	min := "A"
 	max := "Z"

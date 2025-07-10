@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.1 (TBD)
+## 1.9.1 (2025-07-10)
 
 ### Bugs Fixed
 

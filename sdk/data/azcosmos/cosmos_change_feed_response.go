@@ -29,6 +29,9 @@ type ChangeFeedResponse struct {
 	// Store the feed range if it was used in the request
 	FeedRange *FeedRange
 
+	// CompositeContinuationToken is automatically populated when using feed ranges
+	CompositeContinuationToken string
+
 	Response
 }
 
@@ -61,6 +64,16 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	return response, nil
 }
 
+// populateCompositeContinuation generates and sets the composite continuation token if a feed range was used
+func (response *ChangeFeedResponse) populateCompositeContinuation() {
+	if response.FeedRange != nil && response.ETag != "" {
+		compositeToken, err := response.getCompositeContinuationToken()
+		if err == nil && compositeToken != "" {
+			response.CompositeContinuationToken = compositeToken
+		}
+	}
+}
+
 // GetContinuation from ChangeFeedResponse
 func (c ChangeFeedResponse) GetContinuation() string {
 	return c.ETag
@@ -80,6 +93,12 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 	}
 
 	return "", "", false
+}
+
+// GetCompositeContinuation returns a composite continuation token that can be used to resume
+// the change feed from the current position. This is only available when using feed ranges.
+func (c ChangeFeedResponse) GetCompositeContinuation() (string, error) {
+	return c.getCompositeContinuationToken()
 }
 
 // getCompositeContinuationToken creates a composite continuation token from the response.

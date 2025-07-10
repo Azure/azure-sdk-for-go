@@ -11,7 +11,7 @@ Follow these steps to help users generate Go SDK from specific API specification
 
 ## Prerequisites
 
-Run `pwsh ./eng/scripts/Check-SDKGenerationPrerequisites.ps1` to verify all prerequisites are met.
+Run the command: `pwsh ./eng/scripts/Check-SDKGenerationPrerequisites.ps1` to verify all prerequisites are met.
 
 ## Step 1: Prepare Generation Config
 
@@ -24,14 +24,20 @@ Run `pwsh ./eng/scripts/Check-SDKGenerationPrerequisites.ps1` to verify all prer
 - **From open editor files**: If `tspconfig.yaml` or `main.tsp` files are currently open in the editor, use their parent directory as the `specPath`.
 - **From local file path**: If the user provides a local `tspconfig.yaml` file path, use its parent directory as the `specPath`.
 - **From GitHub PR link**: If user provides a GitHub PR URL:
-  - Prompt user: "Do you have a local copy of the spec repository?"
+  - Extract PR number from the URL
+  - Prompt user: "Do you have a local copy of the spec repository? If yes, please provide the local repository path."
   - **If yes**:
-    - Use the local repository path
+    - Navigate to the local repository path provided by user
+    - Use GitHub CLI to checkout the PR branch: `gh pr checkout <PR_NUMBER>`
   - **If no**:
-    - Clone the repository to system temp directory
-  - Use GitHub CLI to checkout the PR branch: `gh pr checkout <PR_NUMBER>`
-  - Analyze the PR's changed files to locate `tspconfig.yaml`
-  - Use the parent directory of the found `tspconfig.yaml` as the `specPath`
+    - Clone the repository to system temp directory using: `gh repo clone <repo>`
+    - Navigate to the cloned repository
+    - Use GitHub CLI to checkout the PR branch: `gh pr checkout <PR_NUMBER>`
+  - Use GitHub CLI to get PR's diff: `gh pr view <PR_NUMBER> --json files --jq '.files[].path'` to list changed files
+  - Filter for files with `.tsp` extension from the diff output
+  - For each changed `.tsp` file, search upward through its directory hierarchy to find `tspconfig.yaml`
+  - Use the parent directory of the first found `tspconfig.yaml` as the `specPath`
+  - **Error handling**: If no `tspconfig.yaml` is found, prompt user to manually specify the specification root path
 
 2. Split the `specPath` into two parts:
 

@@ -4,20 +4,18 @@ Param(
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
-Push-Location sdk/$serviceDir
-
-$goModFile = Get-ChildItem -Path . -Filter go.mod
-
-if ($goModFile.Length -eq 0) {
-    Write-Host "Could not find go.mod file in the directory $(Get-Location)"
-    exit 1
-}
-
 # fetch the module version from the constant
-$modVersion, $null = Get-GoModuleVersionInfo .
+$modVersion, $null = Get-GoModuleVersionInfo sdk/$serviceDir
 
 if (!$modVersion) {
     Write-Host "Could not find module version for module directory $(Get-Location)"
+    exit 1
+}
+
+$goModFile = Get-ChildItem -Path sdk/$serviceDir -Filter go.mod
+
+if ($goModFile.Length -eq 0) {
+    Write-Host "Could not find go.mod file in the directory $(Get-Location)"
     exit 1
 }
 
@@ -40,8 +38,6 @@ if ($majorVersion) {
         $hasError = $true
     }
 }
-
-Pop-Location
 
 if ($hasError) {
     exit 1

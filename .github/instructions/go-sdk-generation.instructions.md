@@ -19,45 +19,32 @@ Execute powershell [script](../../eng/scripts/Check-SDKGenerationPrerequisites.p
 
 **Actions**:
 
-1. Get API specification root path (`specPath`):
+Execute the PowerShell [script](../../eng/scripts/Prepare-GenerationConfig.ps1) to prepare the generation config. The script supports multiple input methods:
 
-- **From open editor files**: If `tspconfig.yaml` or `main.tsp` files are currently open in the editor, use their parent directory as the `specPath`.
-- **From local file path**: If the user provides a local `tspconfig.yaml` file path, use its parent directory as the `specPath`.
-- **From GitHub PR link**: If user provides a GitHub PR URL:
-  - Extract PR number from the URL
-  - Prompt user: "Do you have a local copy of the spec repository? If yes, please provide the local repository path."
-  - **If yes**:
-    - Navigate to the local repository path provided by user
-    - Use GitHub CLI to checkout the PR branch: `gh pr checkout <PR_NUMBER>`
-  - **If no**:
-    - Clone the repository to system temp directory using: `gh repo clone <repo>`
-    - Navigate to the cloned repository
-    - Use GitHub CLI to checkout the PR branch: `gh pr checkout <PR_NUMBER>`
-  - Use GitHub CLI to get PR's diff: `gh pr view <PR_NUMBER> --json files --jq '.files[].path'` to list changed files
-  - Filter for files with `.tsp` extension from the diff output
-  - For each changed `.tsp` file, search upward through its directory hierarchy to find `tspconfig.yaml`
-  - Use the parent directory of the first found `tspconfig.yaml` as the `specPath`
-  - **Error handling**: If no `tspconfig.yaml` is found, prompt user to manually specify the specification root path
+- **From open editor files**: If `tspconfig.yaml` or `main.tsp` files are currently open in the editor, use their parent directory as the input:
 
-2. Split the `specPath` into two parts:
+  ```powershell
+  .\eng\scripts\Prepare-GenerationConfig.ps1 -InputPath "<path from open editor files>"
+  ```
 
-   - The part before `/specification/` is the `specFolder`.
-   - The part after the first part is the `projectFolder`.
+- **From local file path**: If you have a local `tspconfig.yaml` file path:
 
-3. Use `git rev-parse HEAD` under `specFolder` to get the `headSha` value.
+  ```powershell
+  .\eng\scripts\Prepare-GenerationConfig.ps1 -InputPath <local file path>"
+  ```
 
-4. Use `git remote -v` under `specFolder` to determine the `repoHttpsUrl` value to be either `https://github.com/Azure/azure-rest-api-specs` or `https://github.com/Azure/azure-rest-api-specs-pr`.
+- **From GitHub PR link**: If you have a GitHub PR URL:
 
-5. Generate or replace the `generatedInput.json` file in the root folder of current workspace with the following format:
+  1. Prompt user: "Do you have a local copy of the spec repository? If yes, please provide the local repository path."
+  2. Use the appropriate command based on the response:
 
-```json
-{
-  "specFolder": "<specFolder>",
-  "headSha": "<headSha>",
-  "repoHttpsUrl": "<repoHttpsUrl>",
-  "relatedTypeSpecProjectFolder": ["<projectFolder>"]
-}
-```
+  ```powershell
+  # With local repository
+  .\eng\scripts\Prepare-GenerationConfig.ps1 -PrUrl "<pr link>" -LocalRepoPath "<local repository path>"
+
+  # Without local repository (will clone automatically)
+  .\eng\scripts\Prepare-GenerationConfig.ps1 -PrUrl "<pr link>"
+  ```
 
 **Success Criteria**: `generatedInput.json` config is successfully generated in the workspace root folder.
 

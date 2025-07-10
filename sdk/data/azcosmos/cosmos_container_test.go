@@ -963,3 +963,123 @@ func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
 		t.Errorf("Expected 1 document, got %d", len(resp.Documents))
 	}
 }
+
+func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
+	changeFeedBody := []byte(`{
+        "_rid": "test-resource-id",
+        "Documents": [{"id": "doc1"}, {"id": "doc2"}],
+        "_count": 2
+    }`)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	// First response for the change feed
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "3.5"),
+		mock.WithStatusCode(200))
+
+	// Second response for partition key ranges
+	pkRangesBody := []byte(`{
+        "_rid": "container-rid",
+        "PartitionKeyRanges": [{
+            "_rid": "range-rid",
+            "id": "0",
+            "minInclusive": "00",
+            "maxExclusive": "FF"
+        }],
+        "_count": 1
+    }`)
+	srv.AppendResponse(
+		mock.WithBody(pkRangesBody),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	feedRange := &FeedRange{
+		MinInclusive: "00",
+		MaxExclusive: "FF",
+	}
+	options := &ChangeFeedOptions{
+		MaxItemCount: 10,
+	}
+
+	resp, err := container.GetChangeFeedForEPKRange(context.TODO(), feedRange, options)
+	if err != nil {
+		t.Fatalf("GetChangeFeedForEPKRange failed: %v", err)
+	}
+
+	if resp.ResourceID != "test-resource-id" {
+		t.Errorf("unexpected ResourceID: got %q, want %q", resp.ResourceID, "test-resource-id")
+	}
+
+	if resp.Count != 2 {
+		t.Errorf("unexpected Count: got %d, want 2", resp.Count)
+	}
+
+	if len(resp.Documents) != 2 {
+		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Documents))
+	}
+
+	// Verify composite continuation token was automatically populated
+	if resp.CompositeContinuationToken == "" {
+		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
+	}
+
+	// Parse and verify the composite token
+	var compositeToken compositeContinuationToken
+	err = json.Unmarshal([]byte(resp.CompositeContinuationToken), &compositeToken)
+	if err != nil {
+		t.Fatalf("failed to unmarshal composite token: %v", err)
+	}
+
+	if compositeToken.ResourceID != "test-resource-id" {
+		t.Errorf("unexpected ResourceID in composite token: got %q, want %q", compositeToken.ResourceID, "test-resource-id")
+	}
+
+	if len(compositeToken.Continuation) != 1 {
+		t.Fatalf("unexpected number of continuation ranges: got %d, want 1", len(compositeToken.Continuation))
+	}
+
+	if compositeToken.Continuation[0].MinInclusive != "00" {
+		t.Errorf("unexpected MinInclusive: got %q, want %q", compositeToken.Continuation[0].MinInclusive, "00")
+	}
+
+	if compositeToken.Continuation[0].MaxExclusive != "FF" {
+		t.Errorf("unexpected MaxExclusive: got %q, want %q", compositeToken.Continuation[0].MaxExclusive, "FF")
+	}
+
+	if compositeToken.Continuation[0].ContinuationToken == nil {
+		t.Fatal("expected ContinuationToken to be set, but it was nil")
+	}
+
+	if *compositeToken.Continuation[0].ContinuationToken != azcore.ETag("\"etag-12345\"") {
+		t.Errorf("unexpected ContinuationToken: got %q, want %q", *compositeToken.Continuation[0].ContinuationToken, "\"etag-12345\"")
+	}
+
+	// Test using the composite continuation token in the next request
+	options2 := &ChangeFeedOptions{
+		MaxItemCount: 10,
+		Continuation: &resp.CompositeContinuationToken,
+	}
+
+	// The continuation token should be parsed and used
+	headers := options2.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("expected headers to be non-nil")
+	}
+
+	h := *headers
+	if h[headerIfNoneMatch] != "\"etag-12345\"" {
+		t.Errorf("unexpected IfNoneMatch header: got %q, want %q", h[headerIfNoneMatch], "\"etag-12345\"")
+	}
+}

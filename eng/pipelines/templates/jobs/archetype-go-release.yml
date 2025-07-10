@@ -113,7 +113,7 @@ stages:
             displayName: 'Verify go.mod major version'
             inputs:
               targetType: 'filePath'
-              filePath: ./eng/scripts/scripts/validate_go_mod_major_version.ps1
+              filePath: ./eng/scripts/validate_go_mod_major_version.ps1
               arguments: '${{ parameters.ServiceDirectory }}'
               pwsh: true
           - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml

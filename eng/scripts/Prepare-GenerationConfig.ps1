@@ -189,7 +189,7 @@ function Split-SpecPath {
     if ($normalizedPath -match '^(.+)/specification/(.+)$') {
         return @{
             SpecFolder    = $matches[1] -replace '/', '\'
-            ProjectFolder = $matches[2] -replace '/', '\'
+            ProjectFolder = "specification/$($matches[2])"
         }
     }
     

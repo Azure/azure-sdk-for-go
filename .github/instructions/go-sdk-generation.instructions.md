@@ -19,7 +19,8 @@ Execute powershell [script](../../eng/scripts/Check-SDKGenerationPrerequisites.p
 
 **Actions**:
 
-Execute the PowerShell [script](../../eng/scripts/Prepare-GenerationConfig.ps1) to prepare the generation config. The script supports multiple input methods:
+1. If user provide a GitHub PR URL, prompt user: "Do you have a local copy of the spec repository? If yes, please provide the local repository path."
+2. Execute the PowerShell [script](../../eng/scripts/Prepare-GenerationConfig.ps1) to prepare the generation config. The script supports multiple input methods:
 
 - **From open editor files**: If `tspconfig.yaml` or `main.tsp` files are currently open in the editor, use their parent directory as the input:
 
@@ -35,8 +36,7 @@ Execute the PowerShell [script](../../eng/scripts/Prepare-GenerationConfig.ps1) 
 
 - **From GitHub PR link**: If you have a GitHub PR URL:
 
-  1. Prompt user: "Do you have a local copy of the spec repository? If yes, please provide the local repository path."
-  2. Use the appropriate command based on the response:
+  Use the appropriate command based on the response:
 
   ```powershell
   # With local repository

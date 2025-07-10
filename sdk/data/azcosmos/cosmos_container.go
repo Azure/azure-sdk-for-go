@@ -708,41 +708,24 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	return response, err
 }
 
-// getChangeFeed retrieves a single page of the change feed for a Cosmos container using the provided options.
-// Returns a ChangeFeedResponse containing the changed documents and metadata.
-//
-// Example usage:
-//
-//	options := &azcosmos.ChangeFeedOptions{
-//	  MaxItemCount: 10,
-//	  // other options...
-//	}
-//	resp, err := container.getChangeFeed(context.TODO(), options)
-//	if err != nil {
-//	  // handle error
-//	}
-//	for _, doc := range resp.Documents {
-//	  // process each changed document
-//	}
+//TODO: GetChangeFeedContainer retrieves a single page of the change feed for the entire container using the provided options.
+// func (c *ContainerClient) GetChangeFeedContainer(
+// 	ctx context.Context,
+// 	options *ChangeFeedOptions,
+// ) (ChangeFeedResponse, error) {
+// 	return c.getChangeFeed(ctx, nil, nil, options)
+// }
 
-// GetChangeFeedContainer retrieves a single page of the change feed for the entire container using the provided options.
-func (c *ContainerClient) GetChangeFeedContainer(
-	ctx context.Context,
-	options *ChangeFeedOptions,
-) (ChangeFeedResponse, error) {
-	return c.getChangeFeed(ctx, nil, nil, options)
-}
+// TODO: GetChangeFeedForPartitionKey retrieves a single page of the change feed for a specific PartitionKey using the provided options.
+// func (c *ContainerClient) GetChangeFeedForPartitionKey(
+// 	ctx context.Context,
+// 	partitionKey *PartitionKey,
+// 	options *ChangeFeedOptions,
+// ) (ChangeFeedResponse, error) {
+// 	return c.getChangeFeed(ctx, partitionKey, nil, options)
+// }
 
-// GetChangeFeedForPartitionKey retrieves a single page of the change feed for a specific PartitionKey using the provided options.
-func (c *ContainerClient) GetChangeFeedForPartitionKey(
-	ctx context.Context,
-	partitionKey *PartitionKey,
-	options *ChangeFeedOptions,
-) (ChangeFeedResponse, error) {
-	return c.getChangeFeed(ctx, partitionKey, nil, options)
-}
-
-// GetChangeFeedForRange retrieves a single page of the change feed for a specific FeedRange using the provided options.
+// GetChangeFeedForEPKRange retrieves a single page of the change feed for a specific FeedRange using the provided options.
 func (c *ContainerClient) GetChangeFeedForEPKRange(
 	ctx context.Context,
 	feedRange *FeedRange,
@@ -758,8 +741,6 @@ func (c *ContainerClient) GetChangeFeedForEPKRange(
 	return c.getChangeFeed(ctx, nil, &changeFeedRange, options)
 }
 
-// getChangeFeed is a private helper that handles the shared logic for reading the change feed.
-// If feedRange is nil, it reads the entire container. Otherwise, it reads the specified range.
 // getChangeFeed is a private helper that handles the shared logic for reading the change feed.
 // If feedRange is nil, it reads the entire container. Otherwise, it reads the specified range.
 func (c *ContainerClient) getChangeFeed(

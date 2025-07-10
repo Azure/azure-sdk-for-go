@@ -11,7 +11,7 @@ Follow these steps to help users generate Go SDK from specific API specification
 
 ## Prerequisites
 
-Run the command: `pwsh ./eng/scripts/Check-SDKGenerationPrerequisites.ps1` to verify all prerequisites are met.
+Run the command: `pwsh ./eng/scripts/Check-SDKGenerationPrerequisites.ps1` in the root folder of current workspace to verify all prerequisites are met.
 
 ## Step 1: Prepare Generation Config
 

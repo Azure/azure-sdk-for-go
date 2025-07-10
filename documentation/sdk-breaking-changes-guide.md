@@ -32,8 +32,8 @@ enum Minute {
 
 **Resolution**:
 ```tsp
-@@clientName(Minute.Minute0, "MinuteZero", "go");
-@@clientName(Minute.Minute30, "MinuteThirty", "go");
+@@clientName(Minute.Minute0, "Zero", "go");
+@@clientName(Minute.Minute30, "Thirty", "go");
 ```
 
 ### Naming Changes from Stuttering Rules

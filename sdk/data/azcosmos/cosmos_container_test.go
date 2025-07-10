@@ -849,9 +849,9 @@ func TestContainerGetChangeFeedIfModifiedSince(t *testing.T) {
 		ChangeFeedStartFrom: &modifiedSince,
 	}
 
-	resp, err := container.getChangeFeed(context.TODO(), nil, nil, options)
+	resp, err := container.GetChangeFeed(context.TODO(), options)
 	if err != nil {
-		t.Fatalf("getChangeFeed returned error: %v", err)
+		t.Fatalf("GetChangeFeed returned error: %v", err)
 	}
 	if resp.ResourceID != "test-rid" {
 		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
@@ -890,9 +890,9 @@ func TestContainerGetChangeFeedPartitionKey(t *testing.T) {
 		PartitionKey: &pk,
 	}
 
-	resp, err := container.getChangeFeed(context.TODO(), nil, nil, options)
+	resp, err := container.GetChangeFeed(context.TODO(), options)
 	if err != nil {
-		t.Fatalf("getChangeFeed returned error: %v", err)
+		t.Fatalf("GetChangeFeed returned error: %v", err)
 	}
 	if resp.ResourceID != "test-rid-1" {
 		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
@@ -942,9 +942,9 @@ func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
 	container, _ := newContainer("containerId", database)
 
 	// First call: no header, expect 3 docs
-	resp, err := container.getChangeFeed(context.TODO(), nil, nil, &ChangeFeedOptions{})
+	resp, err := container.GetChangeFeed(context.TODO(), &ChangeFeedOptions{})
 	if err != nil {
-		t.Fatalf("getChangeFeed (all) returned error: %v", err)
+		t.Fatalf("GetChangeFeed (all) returned error: %v", err)
 	}
 	if resp.Count != 3 || len(resp.Documents) != 3 {
 		t.Errorf("Expected 3 documents, got %d", len(resp.Documents))
@@ -955,9 +955,9 @@ func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
 	options := &ChangeFeedOptions{
 		ChangeFeedStartFrom: &modifiedSince,
 	}
-	resp, err = container.getChangeFeed(context.TODO(), nil, nil, options)
+	resp, err = container.GetChangeFeed(context.TODO(), options)
 	if err != nil {
-		t.Fatalf("getChangeFeed (filtered) returned error: %v", err)
+		t.Fatalf("GetChangeFeed (filtered) returned error: %v", err)
 	}
 	if resp.Count != 1 || len(resp.Documents) != 1 {
 		t.Errorf("Expected 1 document, got %d", len(resp.Documents))
@@ -1013,7 +1013,8 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		MaxItemCount: 10,
 	}
 
-	resp, err := container.GetChangeFeedForEPKRange(context.TODO(), feedRange, options)
+	options.FeedRange = feedRange
+	resp, err := container.GetChangeFeed(context.TODO(), options)
 	if err != nil {
 		t.Fatalf("GetChangeFeedForEPKRange failed: %v", err)
 	}

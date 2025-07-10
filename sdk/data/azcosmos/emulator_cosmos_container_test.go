@@ -679,7 +679,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		},
 	}
 
-	throughput := NewManualThroughputProperties(30000)
+	throughput := NewManualThroughputProperties(10000)
 	_, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: &throughput})
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
@@ -726,10 +726,11 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 	// Test change feed with composite continuation token
 	t.Run("CompositeContinuationToken", func(t *testing.T) {
 		options := &ChangeFeedOptions{
-			MaxItemCount: 10,
+			MaxItemCount: 2,
 		}
 
-		resp, err := container.GetChangeFeedForEPKRange(context.TODO(), &feedRanges[0], options)
+		options.FeedRange = &feedRanges[0]
+		resp, err := container.GetChangeFeed(context.TODO(), options)
 		if err != nil {
 			t.Fatalf("Failed to get change feed: %v", err)
 		}
@@ -783,7 +784,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 				Continuation: &resp.CompositeContinuationToken,
 			}
 
-			resp2, err := container.GetChangeFeedForEPKRange(context.TODO(), &feedRanges[0], options2)
+			resp2, err := container.GetChangeFeed(context.TODO(), options2)
 			if err != nil {
 				t.Fatalf("Failed to get change feed with composite token: %v", err)
 			}
@@ -791,14 +792,14 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 	})
 
-	// Test change feed with simple string ETag continuation
-	t.Run("SimpleETagContinuation", func(t *testing.T) {
-		// Use getChangeFeed directly without feed range to get simple ETag
+	// Test change feed with simple with If-None-Match header
+	t.Run("IfNoneMatchHeader", func(t *testing.T) {
+		// Use GetChangeFeed without feed range to get simple ETag
 		options := &ChangeFeedOptions{
 			MaxItemCount: 10,
 		}
 
-		resp, err := container.getChangeFeed(context.TODO(), nil, nil, options)
+		resp, err := container.GetChangeFeed(context.TODO(), options)
 		if err != nil {
 			t.Fatalf("Failed to get change feed: %v", err)
 		}
@@ -826,7 +827,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 				Continuation: &etag,
 			}
 
-			resp2, err := container.getChangeFeed(context.TODO(), nil, nil, options2)
+			resp2, err := container.GetChangeFeed(context.TODO(), options2)
 			if err != nil {
 				t.Fatalf("Failed to get change feed with simple ETag: %v", err)
 			}
@@ -847,7 +848,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		baselineOptions := &ChangeFeedOptions{
 			MaxItemCount: 100,
 		}
-		baselineResp, err := container.getChangeFeed(context.TODO(), nil, nil, baselineOptions)
+		baselineResp, err := container.GetChangeFeed(context.TODO(), baselineOptions)
 		if err != nil {
 			t.Fatalf("Failed to get baseline change feed: %v", err)
 		}
@@ -882,7 +883,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			ChangeFeedStartFrom: &timeBefore,
 		}
 
-		resp, err := container.getChangeFeed(context.TODO(), nil, nil, options)
+		resp, err := container.GetChangeFeed(context.TODO(), options)
 		if err != nil {
 			t.Fatalf("Failed to get change feed with If-Modified-Since: %v", err)
 		}
@@ -918,7 +919,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			ChangeFeedStartFrom: &futureTime,
 		}
 
-		futureResp, err := container.getChangeFeed(context.TODO(), nil, nil, futureOptions)
+		futureResp, err := container.GetChangeFeed(context.TODO(), futureOptions)
 		if err != nil {
 			t.Fatalf("Failed to get change feed with future If-Modified-Since: %v", err)
 		}

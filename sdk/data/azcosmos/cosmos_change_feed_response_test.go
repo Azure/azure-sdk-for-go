@@ -141,7 +141,7 @@ func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 		t.Fatalf("failed to create ChangeFeedResponse: %v", err)
 	}
 
-	// Set FeedRange to simulate what happens in getChangeFeed
+	// Set FeedRange to simulate what happens in GetChangeFeed
 	parsedResponse.FeedRange = &FeedRange{
 		MinInclusive: "00",
 		MaxExclusive: "FF",

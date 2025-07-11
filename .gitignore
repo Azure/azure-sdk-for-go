@@ -34,7 +34,6 @@ _testmain.go
 *.swp
 *~
 .DS_Store
-.vscode
 .vs
 .idea
 
@@ -47,6 +46,7 @@ vendor/
 # vscode
 **/.vscode/*
 !.vscode/cspell.json
+!.vscode/mcp.json
 
 # api view file
 *.gosource

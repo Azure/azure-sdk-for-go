@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Data Migration module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2
 ```
 
 ## Authorization
@@ -55,7 +55,7 @@ clientFactory, err := armdatamigration.NewClientFactory(<subscription ID>, cred,
 A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewServicesClient()
+client := clientFactory.NewDatabaseMigrationsMongoToCosmosDbRUMongoClient()
 ```
 
 ## Fakes

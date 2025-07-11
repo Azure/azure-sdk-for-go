@@ -25,8 +25,7 @@ type GalleryInVMAccessControlProfileVersionsClient struct {
 }
 
 // NewGalleryInVMAccessControlProfileVersionsClient creates a new instance of GalleryInVMAccessControlProfileVersionsClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGalleryInVMAccessControlProfileVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryInVMAccessControlProfileVersionsClient, error) {
@@ -45,13 +44,10 @@ func NewGalleryInVMAccessControlProfileVersionsClient(subscriptionID string, cre
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the inVMAccessControlProfile resides.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile in which the inVMAccessControlProfile version
-//     is to be created.
-//   - inVMAccessControlProfileVersionName - The name of the gallery inVMAccessControlProfile version to be created. Needs to
-//     follow semantic version name pattern: The allowed characters are digit and period. Digits must be within the range of a
-//     32-bit integer. Format: ..
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
+//   - inVMAccessControlProfileVersionName - The name of the gallery inVMAccessControlProfile version to be retrieved.
 //   - galleryInVMAccessControlProfileVersion - Parameters supplied to the create or update gallery inVMAccessControlProfile version
 //     operation.
 //   - options - GalleryInVMAccessControlProfileVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for
@@ -63,7 +59,8 @@ func (client *GalleryInVMAccessControlProfileVersionsClient) BeginCreateOrUpdate
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -139,11 +136,10 @@ func (client *GalleryInVMAccessControlProfileVersionsClient) createOrUpdateCreat
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the inVMAccessControlProfile resides.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile in which the inVMAccessControlProfile version
-//     resides.
-//   - inVMAccessControlProfileVersionName - The name of the gallery inVMAccessControlProfile version to be deleted.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
+//   - inVMAccessControlProfileVersionName - The name of the gallery inVMAccessControlProfile version to be retrieved.
 //   - options - GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions contains the optional parameters for the GalleryInVMAccessControlProfileVersionsClient.BeginDelete
 //     method.
 func (client *GalleryInVMAccessControlProfileVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, options *GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions) (*runtime.Poller[GalleryInVMAccessControlProfileVersionsClientDeleteResponse], error) {
@@ -153,7 +149,8 @@ func (client *GalleryInVMAccessControlProfileVersionsClient) BeginDelete(ctx con
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryInVMAccessControlProfileVersionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -226,10 +223,9 @@ func (client *GalleryInVMAccessControlProfileVersionsClient) deleteCreateRequest
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the inVMAccessControlProfile resides.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile in which the inVMAccessControlProfile version
-//     resides.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
 //   - inVMAccessControlProfileVersionName - The name of the gallery inVMAccessControlProfile version to be retrieved.
 //   - options - GalleryInVMAccessControlProfileVersionsClientGetOptions contains the optional parameters for the GalleryInVMAccessControlProfileVersionsClient.Get
 //     method.
@@ -301,10 +297,9 @@ func (client *GalleryInVMAccessControlProfileVersionsClient) getHandleResponse(r
 // NewListByGalleryInVMAccessControlProfilePager - List gallery inVMAccessControlProfile versions in a gallery inVMAccessControlProfile
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the inVMAccessControlProfile resides.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile from which the inVMAccessControlProfile
-//     versions are to be listed.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
 //   - options - GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions contains the optional
 //     parameters for the GalleryInVMAccessControlProfileVersionsClient.NewListByGalleryInVMAccessControlProfilePager method.
 func (client *GalleryInVMAccessControlProfileVersionsClient) NewListByGalleryInVMAccessControlProfilePager(resourceGroupName string, galleryName string, inVMAccessControlProfileName string, options *GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions) *runtime.Pager[GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse] {
@@ -373,13 +368,10 @@ func (client *GalleryInVMAccessControlProfileVersionsClient) listByGalleryInVMAc
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the inVMAccessControlProfile resides.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile in which the inVMAccessControlProfile version
-//     is to be updated.
-//   - inVMAccessControlProfileVersionName - The name of the gallery inVMAccessControlProfile version to be updated. Needs to
-//     follow semantic version name pattern: The allowed characters are digit and period. Digits must be within the range of a
-//     32-bit integer. Format: ..
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
+//   - inVMAccessControlProfileVersionName - The name of the gallery inVMAccessControlProfile version to be retrieved.
 //   - galleryInVMAccessControlProfileVersion - Parameters supplied to the update gallery inVMAccessControlProfile version operation.
 //   - options - GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions contains the optional parameters for the GalleryInVMAccessControlProfileVersionsClient.BeginUpdate
 //     method.
@@ -390,7 +382,8 @@ func (client *GalleryInVMAccessControlProfileVersionsClient) BeginUpdate(ctx con
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryInVMAccessControlProfileVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {

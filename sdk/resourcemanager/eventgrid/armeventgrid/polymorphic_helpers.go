@@ -166,6 +166,8 @@ func unmarshalEventSubscriptionDestinationClassification(rawMsg json.RawMessage)
 		b = &MonitorAlertEventSubscriptionDestination{}
 	case string(EndpointTypeNamespaceTopic):
 		b = &NamespaceTopicEventSubscriptionDestination{}
+	case string(EndpointTypePartnerDestination):
+		b = &PartnerEventSubscriptionDestination{}
 	case string(EndpointTypeServiceBusQueue):
 		b = &ServiceBusQueueEventSubscriptionDestination{}
 	case string(EndpointTypeServiceBusTopic):
@@ -273,6 +275,69 @@ func unmarshalInputSchemaMappingClassification(rawMsg json.RawMessage) (InputSch
 		b = &JSONInputSchemaMapping{}
 	default:
 		b = &InputSchemaMapping{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalPartnerClientAuthenticationClassification(rawMsg json.RawMessage) (PartnerClientAuthenticationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b PartnerClientAuthenticationClassification
+	switch m["clientAuthenticationType"] {
+	case string(PartnerClientAuthenticationTypeAzureAD):
+		b = &AzureADPartnerClientAuthentication{}
+	default:
+		b = &PartnerClientAuthentication{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalPartnerDestinationInfoClassification(rawMsg json.RawMessage) (PartnerDestinationInfoClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b PartnerDestinationInfoClassification
+	switch m["endpointType"] {
+	case string(PartnerEndpointTypeWebHook):
+		b = &WebhookPartnerDestinationInfo{}
+	default:
+		b = &PartnerDestinationInfo{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalPartnerUpdateDestinationInfoClassification(rawMsg json.RawMessage) (PartnerUpdateDestinationInfoClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b PartnerUpdateDestinationInfoClassification
+	switch m["endpointType"] {
+	case string(PartnerEndpointTypeWebHook):
+		b = &WebhookUpdatePartnerDestinationInfo{}
+	default:
+		b = &PartnerUpdateDestinationInfo{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

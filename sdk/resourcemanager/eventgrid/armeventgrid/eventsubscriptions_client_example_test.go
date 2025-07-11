@@ -18,7 +18,53 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetDeliveryAttributes.json
+func ExampleEventSubscriptionsClient_GetDeliveryAttributes() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEventSubscriptionsClient().GetDeliveryAttributes(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeliveryAttributeListResult = armeventgrid.DeliveryAttributeListResult{
+	// 	Value: []armeventgrid.DeliveryAttributeMappingClassification{
+	// 		&armeventgrid.StaticDeliveryAttributeMapping{
+	// 			Name: to.Ptr("header1"),
+	// 			Type: to.Ptr(armeventgrid.DeliveryAttributeMappingTypeStatic),
+	// 			Properties: &armeventgrid.StaticDeliveryAttributeMappingProperties{
+	// 				IsSecret: to.Ptr(false),
+	// 				Value: to.Ptr("NormalValue"),
+	// 			},
+	// 		},
+	// 		&armeventgrid.DynamicDeliveryAttributeMapping{
+	// 			Name: to.Ptr("header2"),
+	// 			Type: to.Ptr(armeventgrid.DeliveryAttributeMappingTypeDynamic),
+	// 			Properties: &armeventgrid.DynamicDeliveryAttributeMappingProperties{
+	// 				SourceField: to.Ptr("data.foo"),
+	// 			},
+	// 		},
+	// 		&armeventgrid.StaticDeliveryAttributeMapping{
+	// 			Name: to.Ptr("header3"),
+	// 			Type: to.Ptr(armeventgrid.DeliveryAttributeMappingTypeStatic),
+	// 			Properties: &armeventgrid.StaticDeliveryAttributeMappingProperties{
+	// 				IsSecret: to.Ptr(true),
+	// 				Value: to.Ptr("mySecretValue"),
+	// 			},
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +75,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopic() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -39,7 +85,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopic() {
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -56,12 +102,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopic() {
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicAzureFunctionDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +118,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicAzur
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -82,7 +128,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicAzur
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.AzureFunctionEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeAzureFunction),
@@ -99,12 +145,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicAzur
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic_EventHubDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic_EventHubDestination.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicEventHubDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +161,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicEven
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -125,7 +171,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicEven
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
@@ -142,12 +188,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicEven
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicHybridConnectionDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +204,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicHybr
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -168,7 +214,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicHybr
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.HybridConnectionEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeHybridConnection),
@@ -185,12 +231,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicHybr
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServiceBusQueueDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +247,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServ
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -211,7 +257,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServ
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.ServiceBusQueueEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeServiceBusQueue),
@@ -228,12 +274,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServ
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServiceBusTopicDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +290,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServ
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -254,7 +300,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServ
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.ServiceBusTopicEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeServiceBusTopic),
@@ -271,12 +317,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicServ
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicStorageQueueDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +333,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicStor
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -297,7 +343,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicStor
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
@@ -316,12 +362,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicStor
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForCustomTopic_WebhookDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForCustomTopic_WebhookDestination.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicWebhookDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +378,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicWebh
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -342,7 +388,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicWebh
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -359,12 +405,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForCustomTopicWebh
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForResource.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +421,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResource() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -385,7 +431,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResource() {
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
@@ -402,12 +448,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResource() {
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForResourceGroup.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,7 +464,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResourceGroup()
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg", "examplesubscription2", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -428,7 +474,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResourceGroup()
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription2"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -445,12 +491,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForResourceGroup()
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetForSubscription.json
 func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,7 +507,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForSubscription() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4", "examplesubscription3", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().Get(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -471,7 +517,7 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForSubscription() 
 	// res.EventSubscription = armeventgrid.EventSubscription{
 	// 	Name: to.Ptr("examplesubscription3"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
 	// 	Properties: &armeventgrid.EventSubscriptionProperties{
 	// 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 	// 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -488,12 +534,12 @@ func ExampleEventSubscriptionsClient_Get_eventSubscriptionsGetForSubscription() 
 	// 			to.Ptr("label1"),
 	// 			to.Ptr("label2")},
 	// 			ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-	// 			Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4"),
+	// 			Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,7 +550,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			Destination: &armeventgrid.EventHubEventSubscriptionDestination{
 				EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
@@ -528,7 +574,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_AzureFunctionDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_AzureFunctionDestination.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopicAzureFunctionDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,7 +585,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 				EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
@@ -570,7 +616,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopicEventHubDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,7 +627,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 				EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
@@ -612,7 +658,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopicHybridConnectionDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +669,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 				EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
@@ -654,7 +700,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusQueueDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusQueueDestination.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopicServiceBusQueueDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -665,7 +711,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 				EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
@@ -696,7 +742,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusTopicDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusTopicDestination.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopicServiceBusTopicDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -707,7 +753,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 				EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
@@ -738,7 +784,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopicStorageQueueDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,7 +795,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 				EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
@@ -761,8 +807,9 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 			Destination: &armeventgrid.StorageQueueEventSubscriptionDestination{
 				EndpointType: to.Ptr(armeventgrid.EndpointTypeStorageQueue),
 				Properties: &armeventgrid.StorageQueueEventSubscriptionDestinationProperties{
-					QueueName:  to.Ptr("queue1"),
-					ResourceID: to.Ptr("/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
+					QueueMessageTimeToLiveInSeconds: to.Ptr[int64](300),
+					QueueName:                       to.Ptr("queue1"),
+					ResourceID:                      to.Ptr("/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg"),
 				},
 			},
 			Filter: &armeventgrid.EventSubscriptionFilter{
@@ -781,7 +828,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForCustomTopicWebhookDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -792,12 +839,12 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
-			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
-				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
-				Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
-					EndpointURL: to.Ptr("https://azurefunctionexample.azurewebsites.net/runtime/webhooks/EventGrid?functionName=EventGridTrigger1&code=PASSWORDCODE"),
+			Destination: &armeventgrid.EventHubEventSubscriptionDestination{
+				EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
+				Properties: &armeventgrid.EventHubEventSubscriptionDestinationProperties{
+					ResourceID: to.Ptr("/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.EventHub/namespaces/ContosoNamespace/eventhubs/EH1"),
 				},
 			},
 			Filter: &armeventgrid.EventSubscriptionFilter{
@@ -816,7 +863,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForResource.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -827,7 +874,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription10", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription10", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -851,7 +898,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForResourceGroup.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -862,7 +909,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg", "examplesubscription2", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -886,7 +933,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_CreateOrUpdateForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_CreateOrUpdateForSubscription.json
 func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreateOrUpdateForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -897,7 +944,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4", "examplesubscription3", armeventgrid.EventSubscription{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginCreateOrUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3", armeventgrid.EventSubscription{
 		Properties: &armeventgrid.EventSubscriptionProperties{
 			Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 				EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -919,7 +966,7 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate_eventSubscriptionsCreat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_DeleteForCustomTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_DeleteForCustomTopic.json
 func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForCustomTopic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -930,7 +977,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", nil)
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -940,7 +987,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_DeleteForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_DeleteForResource.json
 func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -951,7 +998,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForReso
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription10", nil)
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription10", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -961,7 +1008,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForReso
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_DeleteForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_DeleteForResourceGroup.json
 func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -972,7 +1019,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForReso
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg", "examplesubscription2", nil)
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -982,7 +1029,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForReso
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_DeleteForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_DeleteForSubscription.json
 func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -993,7 +1040,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForSubs
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4", "examplesubscription3", nil)
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginDelete(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1003,7 +1050,7 @@ func ExampleEventSubscriptionsClient_BeginDelete_eventSubscriptionsDeleteForSubs
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1014,7 +1061,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
 			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
@@ -1039,7 +1086,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic_AzureFunctionDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic_AzureFunctionDestination.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicAzureFunctionDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1050,7 +1097,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
 			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
@@ -1079,7 +1126,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic_EventHubDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic_EventHubDestination.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicEventHubDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1090,7 +1137,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
 			Properties: &armeventgrid.EventHubEventSubscriptionDestinationProperties{
@@ -1115,7 +1162,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic_HybridConnectionDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic_HybridConnectionDestination.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicHybridConnectionDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1126,7 +1173,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.HybridConnectionEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeHybridConnection),
 			Properties: &armeventgrid.HybridConnectionEventSubscriptionDestinationProperties{
@@ -1151,7 +1198,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic_ServiceBusQueueDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic_ServiceBusQueueDestination.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicServiceBusQueueDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1162,7 +1209,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
 			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
@@ -1191,7 +1238,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic_ServiceBusTopicDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic_ServiceBusTopicDestination.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicServiceBusTopicDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1202,7 +1249,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.ServiceBusTopicEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeServiceBusTopic),
 			Properties: &armeventgrid.ServiceBusTopicEventSubscriptionDestinationProperties{
@@ -1227,7 +1274,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic_StorageQueueDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic_StorageQueueDestination.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicStorageQueueDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1238,7 +1285,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		DeadLetterDestination: &armeventgrid.StorageBlobDeadLetterDestination{
 			EndpointType: to.Ptr(armeventgrid.DeadLetterEndPointTypeStorageBlob),
 			Properties: &armeventgrid.StorageBlobDeadLetterDestinationProperties{
@@ -1269,7 +1316,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForCustomTopic_WebhookDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForCustomTopic_WebhookDestination.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCustomTopicWebhookDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1280,7 +1327,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
 			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
@@ -1305,7 +1352,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForCust
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForResource.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1316,7 +1363,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForReso
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
 			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
@@ -1341,7 +1388,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForReso
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForResourceGroup.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1352,7 +1399,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForReso
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg", "examplesubscription2", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.EventHubEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
 			Properties: &armeventgrid.EventHubEventSubscriptionDestinationProperties{
@@ -1377,7 +1424,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForReso
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_UpdateForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_UpdateForSubscription.json
 func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1388,7 +1435,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForSubs
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4", "examplesubscription3", armeventgrid.EventSubscriptionUpdateParameters{
+	poller, err := clientFactory.NewEventSubscriptionsClient().BeginUpdate(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3", armeventgrid.EventSubscriptionUpdateParameters{
 		Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 			EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
 			Properties: &armeventgrid.WebHookEventSubscriptionDestinationProperties{
@@ -1413,7 +1460,7 @@ func ExampleEventSubscriptionsClient_BeginUpdate_eventSubscriptionsUpdateForSubs
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
 func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForCustomTopic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1424,7 +1471,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForC
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1436,7 +1483,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForC
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetFullUrlForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetFullUrlForResource.json
 func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1447,7 +1494,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForR
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1", "examplesubscription1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1459,7 +1506,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForR
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
 func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1470,7 +1517,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForR
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg", "examplesubscription2", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1482,7 +1529,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForR
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetFullUrlForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_GetFullUrlForSubscription.json
 func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1493,7 +1540,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4", "examplesubscription3", nil)
+	res, err := clientFactory.NewEventSubscriptionsClient().GetFullURL(ctx, "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1505,7 +1552,7 @@ func ExampleEventSubscriptionsClient_GetFullURL_eventSubscriptionsGetFullUrlForS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListGlobalBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListGlobalBySubscription.json
 func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1534,7 +1581,7 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("examplesubscription2"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1548,13 +1595,13 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionPager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examplesubscription4"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription4"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription4"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1568,14 +1615,14 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionPager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
 func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1604,7 +1651,7 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePage
 		// 		{
 		// 			Name: to.Ptr("examplesubscription3"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1621,14 +1668,14 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePage
 		// 					to.Ptr("Finance"),
 		// 					to.Ptr("HR")},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListGlobalByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListGlobalByResourceGroup.json
 func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1657,7 +1704,7 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("examplesubscription2"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1671,13 +1718,13 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examplesubscription4"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription4"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription4"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1691,14 +1738,14 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
 func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1727,7 +1774,7 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePag
 		// 		{
 		// 			Name: to.Ptr("examplesubscription3"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1744,14 +1791,14 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePag
 		// 					to.Ptr("Finance"),
 		// 					to.Ptr("HR")},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg"),
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListRegionalBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListRegionalBySubscription.json
 func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1780,7 +1827,7 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("examplesubscription10"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.EventHubEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeEventHub),
@@ -1797,13 +1844,13 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionPager() {
 		// 					to.Ptr("Finance"),
 		// 					to.Ptr("HR")},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("examplesubscription11"),
 		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
 		// 				Properties: &armeventgrid.EventSubscriptionProperties{
 		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1820,14 +1867,14 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionPager() {
 		// 						to.Ptr("Finance"),
 		// 						to.Ptr("HR")},
 		// 						ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 						Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 						Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListRegionalByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListRegionalByResourceGroup.json
 func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1856,7 +1903,7 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("examplesubscription10"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1873,13 +1920,13 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupPager() {
 		// 					to.Ptr("Finance"),
 		// 					to.Ptr("HR")},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("examplesubscription11"),
 		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
 		// 				Properties: &armeventgrid.EventSubscriptionProperties{
 		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1896,14 +1943,14 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupPager() {
 		// 						to.Ptr("Finance"),
 		// 						to.Ptr("HR")},
 		// 						ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 						Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 						Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
 func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1932,7 +1979,7 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePa
 		// 		{
 		// 			Name: to.Ptr("examplesubscription10"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1949,13 +1996,13 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePa
 		// 					to.Ptr("Finance"),
 		// 					to.Ptr("HR")},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("examplesubscription11"),
 		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
 		// 				Properties: &armeventgrid.EventSubscriptionProperties{
 		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -1972,14 +2019,14 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePa
 		// 						to.Ptr("Finance"),
 		// 						to.Ptr("HR")},
 		// 						ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 						Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 						Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListRegionalByResourceGroupForTopicType.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListRegionalByResourceGroupForTopicType.json
 func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2008,7 +2055,7 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypeP
 		// 		{
 		// 			Name: to.Ptr("examplesubscription10"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription10"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2025,13 +2072,13 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypeP
 		// 					to.Ptr("Finance"),
 		// 					to.Ptr("HR")},
 		// 					ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 					Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 					Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("examplesubscription11"),
 		// 				Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 				ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription11"),
 		// 				Properties: &armeventgrid.EventSubscriptionProperties{
 		// 					Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 						EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2048,14 +2095,14 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypeP
 		// 						to.Ptr("Finance"),
 		// 						to.Ptr("HR")},
 		// 						ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 						Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
+		// 						Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventhub/namespaces/examplenamespace1"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListByResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListByResource.json
 func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2084,7 +2131,7 @@ func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 		// 		{
 		// 			Name: to.Ptr("examplesubscription1"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2098,13 +2145,13 @@ func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examplesubscription2"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2118,13 +2165,13 @@ func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examplesubscription3"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2140,14 +2187,14 @@ func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 		// 				Labels: []*string{
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/topics/exampletopic2"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_ListByDomainTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/EventSubscriptions_ListByDomainTopic.json
 func ExampleEventSubscriptionsClient_NewListByDomainTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2176,7 +2223,7 @@ func ExampleEventSubscriptionsClient_NewListByDomainTopicPager() {
 		// 		{
 		// 			Name: to.Ptr("examplesubscription1"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/domain1/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/domain1/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription1"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2190,13 +2237,13 @@ func ExampleEventSubscriptionsClient_NewListByDomainTopicPager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/domains/domain1/topics/topic1"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/domains/domain1/topics/topic1"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examplesubscription2"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/domain1/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/domain1/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription2"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2210,13 +2257,13 @@ func ExampleEventSubscriptionsClient_NewListByDomainTopicPager() {
 		// 					SubjectEndsWith: to.Ptr(""),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/domains/domain1/topics/topic1"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/domains/domain1/topics/topic1"),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("examplesubscription3"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/eventSubscriptions"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/domain1/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/domain1/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/examplesubscription3"),
 		// 			Properties: &armeventgrid.EventSubscriptionProperties{
 		// 				Destination: &armeventgrid.WebHookEventSubscriptionDestination{
 		// 					EndpointType: to.Ptr(armeventgrid.EndpointTypeWebHook),
@@ -2232,44 +2279,9 @@ func ExampleEventSubscriptionsClient_NewListByDomainTopicPager() {
 		// 				Labels: []*string{
 		// 				},
 		// 				ProvisioningState: to.Ptr(armeventgrid.EventSubscriptionProvisioningStateSucceeded),
-		// 				Topic: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.eventgrid/domains/domain1/topics/topic1"),
+		// 				Topic: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/domains/domain1/topics/topic1"),
 		// 			},
 		// 	}},
 		// }
 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/EventSubscriptions_GetDeliveryAttributes.json
-func ExampleEventSubscriptionsClient_GetDeliveryAttributes() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEventSubscriptionsClient().GetDeliveryAttributes(ctx, "aaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaa", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DeliveryAttributeListResult = armeventgrid.DeliveryAttributeListResult{
-	// 	Value: []armeventgrid.DeliveryAttributeMappingClassification{
-	// 		&armeventgrid.StaticDeliveryAttributeMapping{
-	// 			Name: to.Ptr("header1"),
-	// 			Type: to.Ptr(armeventgrid.DeliveryAttributeMappingTypeStatic),
-	// 		},
-	// 		&armeventgrid.DynamicDeliveryAttributeMapping{
-	// 			Name: to.Ptr("header2"),
-	// 			Type: to.Ptr(armeventgrid.DeliveryAttributeMappingTypeDynamic),
-	// 		},
-	// 		&armeventgrid.StaticDeliveryAttributeMapping{
-	// 			Name: to.Ptr("header3"),
-	// 			Type: to.Ptr(armeventgrid.DeliveryAttributeMappingTypeStatic),
-	// 	}},
-	// }
 }

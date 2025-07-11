@@ -3,6 +3,8 @@
 
 package azcosmos
 
+import "fmt"
+
 // FeedRange represents a range of partition key values for a Cosmos container.
 // It is used to identify a specific range of documents for change feed processing.
 type FeedRange struct {
@@ -19,3 +21,24 @@ func NewFeedRange(minInclusive, maxExclusive string) FeedRange {
 		MaxExclusive: maxExclusive,
 	}
 }
+
+// findPartitionKeyRangeID finds the partition key range ID that matches the given FeedRange.
+// Returns the ID if found, or an error if no match exists.
+func findPartitionKeyRangeID(feedRange FeedRange, partitionKeyRanges []partitionKeyRange) (string, error) {
+	for _, pkr := range partitionKeyRanges {
+		if feedRange.MinInclusive == pkr.MinInclusive && feedRange.MaxExclusive == pkr.MaxExclusive {
+			return pkr.ID, nil
+		}
+	}
+	return "", fmt.Errorf("no matching partition key range found for feed range [%s, %s)", feedRange.MinInclusive, feedRange.MaxExclusive)
+}
+
+// TODO: Modify this function to use the partitionKeyRangeCache
+// findPartitionKeyRangeIDWithCache finds the partition key range ID for a FeedRange using a partitionKeyRangeCache.
+// func findPartitionKeyRangeIDWithCache(
+//     feedRange FeedRange,
+//     cache *partitionKeyRangeCache,
+// ) (string, error) {
+//     partitionKeyRanges := cache.getAll()
+//     return FindPartitionKeyRangeId(feedRange, partitionKeyRanges)
+// }

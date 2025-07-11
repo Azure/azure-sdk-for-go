@@ -822,3 +822,255 @@ func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 		t.Fatalf("Expected 0 partition key ranges, got %d", len(resp.PartitionKeyRanges))
 	}
 }
+
+func TestContainerGetChangeFeedIfModifiedSince(t *testing.T) {
+	changeFeedBody := []byte(
+		`{"_rid":"test-rid",
+		"Documents":[{"id":"doc1"},{"id":"doc2"}],
+		"_count":2}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "5.5"),
+		mock.WithStatusCode(200))
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	modifiedSince := time.Now().Add(-time.Hour).UTC()
+	options := &ChangeFeedOptions{
+		ChangeFeedStartFrom: &modifiedSince,
+	}
+
+	resp, err := container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed returned error: %v", err)
+	}
+	if resp.ResourceID != "test-rid" {
+		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
+	}
+	if resp.Count != 2 {
+		t.Errorf("Expected Count 2, got %v", resp.Count)
+	}
+	if len(resp.Documents) != 2 {
+		t.Errorf("Expected 2 documents, got %v", len(resp.Documents))
+	}
+}
+
+func TestContainerGetChangeFeedPartitionKey(t *testing.T) {
+	changeFeedBody := []byte(
+		`{"_rid":"test-rid-1",
+		"Documents":[{"id":"doc3"}],
+		"_count":1}`)
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "2.2"),
+		mock.WithStatusCode(200))
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	pk := NewPartitionKeyString("pkvalue")
+	options := &ChangeFeedOptions{
+		PartitionKey: &pk,
+	}
+
+	resp, err := container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed returned error: %v", err)
+	}
+	if resp.ResourceID != "test-rid-1" {
+		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
+	}
+	if resp.Count != 1 {
+		t.Errorf("Expected Count 1, got %v", resp.Count)
+	}
+	if len(resp.Documents) != 1 {
+		t.Errorf("Expected 1 document, got %v", len(resp.Documents))
+	}
+}
+
+func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
+	changeFeedBodyAll := []byte(
+		`{"_rid":"test-rid",
+        "Documents":[{"id":"doc1"},{"id":"doc2"},{"id":"doc3"}],
+        "_count":3}`)
+	changeFeedBodyFiltered := []byte(
+		`{"_rid":"test-rid",
+        "Documents":[{"id":"doc3"}],
+        "_count":1}`)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	srv.AppendResponse(
+		mock.WithBody(changeFeedBodyAll),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "5.5"),
+		mock.WithStatusCode(200))
+	srv.AppendResponse(
+		mock.WithBody(changeFeedBodyFiltered),
+		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "2.2"),
+		mock.WithStatusCode(200))
+
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// First call: no header, expect 3 docs
+	resp, err := container.GetChangeFeed(context.TODO(), &ChangeFeedOptions{})
+	if err != nil {
+		t.Fatalf("GetChangeFeed (all) returned error: %v", err)
+	}
+	if resp.Count != 3 || len(resp.Documents) != 3 {
+		t.Errorf("Expected 3 documents, got %d", len(resp.Documents))
+	}
+
+	modifiedSince := time.Now().Add(-time.Hour).UTC()
+	options := &ChangeFeedOptions{
+		ChangeFeedStartFrom: &modifiedSince,
+	}
+	resp, err = container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed (filtered) returned error: %v", err)
+	}
+	if resp.Count != 1 || len(resp.Documents) != 1 {
+		t.Errorf("Expected 1 document, got %d", len(resp.Documents))
+	}
+}
+
+func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
+	changeFeedBody := []byte(`{
+        "_rid": "test-resource-id",
+        "Documents": [{"id": "doc1"}, {"id": "doc2"}],
+        "_count": 2
+    }`)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
+		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "3.5"),
+		mock.WithStatusCode(200))
+
+	pkRangesBody := []byte(`{
+        "_rid": "container-rid",
+        "PartitionKeyRanges": [{
+            "_rid": "range-rid",
+            "id": "0",
+            "minInclusive": "00",
+            "maxExclusive": "FF"
+        }],
+        "_count": 1
+    }`)
+	srv.AppendResponse(
+		mock.WithBody(pkRangesBody),
+		mock.WithStatusCode(200))
+
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	feedRange := &FeedRange{
+		MinInclusive: "00",
+		MaxExclusive: "FF",
+	}
+	options := &ChangeFeedOptions{
+		MaxItemCount: 10,
+	}
+
+	options.FeedRange = feedRange
+	resp, err := container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeedForEPKRange failed: %v", err)
+	}
+
+	if resp.ResourceID != "test-resource-id" {
+		t.Errorf("unexpected ResourceID: got %q, want %q", resp.ResourceID, "test-resource-id")
+	}
+
+	if resp.Count != 2 {
+		t.Errorf("unexpected Count: got %d, want 2", resp.Count)
+	}
+
+	if len(resp.Documents) != 2 {
+		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Documents))
+	}
+
+	if resp.CompositeContinuationToken == "" {
+		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
+	}
+
+	var compositeToken compositeContinuationToken
+	err = json.Unmarshal([]byte(resp.CompositeContinuationToken), &compositeToken)
+	if err != nil {
+		t.Fatalf("failed to unmarshal composite token: %v", err)
+	}
+
+	if compositeToken.ResourceID != "test-resource-id" {
+		t.Errorf("unexpected ResourceID in composite token: got %q, want %q", compositeToken.ResourceID, "test-resource-id")
+	}
+
+	if len(compositeToken.Continuation) != 1 {
+		t.Fatalf("unexpected number of continuation ranges: got %d, want 1", len(compositeToken.Continuation))
+	}
+
+	if compositeToken.Continuation[0].MinInclusive != "00" {
+		t.Errorf("unexpected MinInclusive: got %q, want %q", compositeToken.Continuation[0].MinInclusive, "00")
+	}
+
+	if compositeToken.Continuation[0].MaxExclusive != "FF" {
+		t.Errorf("unexpected MaxExclusive: got %q, want %q", compositeToken.Continuation[0].MaxExclusive, "FF")
+	}
+
+	if compositeToken.Continuation[0].ContinuationToken == nil {
+		t.Fatal("expected ContinuationToken to be set, but it was nil")
+	}
+
+	if *compositeToken.Continuation[0].ContinuationToken != azcore.ETag("\"etag-12345\"") {
+		t.Errorf("unexpected ContinuationToken: got %q, want %q", *compositeToken.Continuation[0].ContinuationToken, "\"etag-12345\"")
+	}
+
+	options2 := &ChangeFeedOptions{
+		MaxItemCount: 10,
+		Continuation: &resp.CompositeContinuationToken,
+	}
+
+	headers := options2.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("expected headers to be non-nil")
+	}
+
+	h := *headers
+	if h[headerIfNoneMatch] != "\"etag-12345\"" {
+		t.Errorf("unexpected IfNoneMatch header: got %q, want %q", h[headerIfNoneMatch], "\"etag-12345\"")
+	}
+}

@@ -100,13 +100,56 @@ func TestNewChangeFeedResponse(t *testing.T) {
 		t.Errorf("unexpected second document id: got %v, want TraderJoes", doc1["id"])
 	}
 }
+func TestChangeFeedResponseWithContainer(t *testing.T) {
+	jsonString := []byte(`{
+		"_rid": "testResourceId",
+		"Documents": [{"id": "doc1"}],
+		"_count": 1
+	}`)
+
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+	srv.SetResponse(
+		mock.WithBody(jsonString),
+		mock.WithHeader(cosmosHeaderEtag, "\"test-etag-456\""),
+		mock.WithStatusCode(200),
+	)
+
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("failed to execute request: %v", err)
+	}
+
+	parsedResponse, err := newChangeFeedResponse(resp)
+	if err != nil {
+		t.Fatalf("failed to create ChangeFeedResponse: %v", err)
+	}
+
+	parsedResponse.PopulateCompositeContinuationToken()
+
+	if parsedResponse.CompositeContinuationToken != "" {
+		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.CompositeContinuationToken)
+	}
+
+	parsedResponse.PopulateContinuationTokenForPartitionKey()
+
+	if parsedResponse.ContinuationTokenForPartitionKey != "" {
+		t.Errorf("expected ContinuationTokenForPartitionKey to be empty, but got: %q", parsedResponse.ContinuationTokenForPartitionKey)
+	}
+}
 
 func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 	jsonString := []byte(`{
-        "_rid": "testResourceId",
-        "Documents": [{"id": "doc1"}],
-        "_count": 1
-    }`)
+		"_rid": "testResourceId",
+		"Documents": [{"id": "doc1"}],
+		"_count": 1
+	}`)
 
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
@@ -180,18 +223,19 @@ func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 	}
 }
 
-func TestChangeFeedResponseWithoutFeedRange(t *testing.T) {
+func TestChangeFeedResponseWithPartitionKey(t *testing.T) {
+	partitionKey := NewPartitionKeyString("testPK")
 	jsonString := []byte(`{
-        "_rid": "testResourceId",
-        "Documents": [{"id": "doc1"}],
-        "_count": 1
-    }`)
+		"_rid": "testResourceId",
+		"Documents": [{"id": "doc1"}],
+		"_count": 1
+	}`)
 
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 	srv.SetResponse(
 		mock.WithBody(jsonString),
-		mock.WithHeader(cosmosHeaderEtag, "\"test-etag-456\""),
+		mock.WithHeader(cosmosHeaderEtag, "\"test-etag-789\""),
 		mock.WithStatusCode(200),
 	)
 
@@ -211,9 +255,19 @@ func TestChangeFeedResponseWithoutFeedRange(t *testing.T) {
 		t.Fatalf("failed to create ChangeFeedResponse: %v", err)
 	}
 
-	parsedResponse.PopulateCompositeContinuationToken()
+	parsedResponse.PartitionKey = &partitionKey
 
 	if parsedResponse.ContinuationToken != "" {
 		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.ContinuationToken)
+	
+	if parsedResponse.PartitionKey == nil {
+		t.Fatal("PartitionKey should not be nil")
+	}
+	pkJSON, err := parsedResponse.PartitionKey.toJsonString()
+	if err != nil {
+		t.Fatalf("failed to serialize PartitionKey: %v", err)
+	}
+	if string(pkJSON) != "[\"testPK\"]" {
+		t.Fatalf("PartitionKey JSON mismatch: got %s, want %s", string(pkJSON), "[\"testPK\"]")
 	}
 }

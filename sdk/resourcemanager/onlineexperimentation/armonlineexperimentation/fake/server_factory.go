@@ -18,6 +18,12 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
 	// WorkspacesServer contains the fakes for client WorkspacesClient
 	WorkspacesServer WorkspacesServer
 }
@@ -34,10 +40,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armonlineexperimentation.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trOperationsServer *OperationsServerTransport
-	trWorkspacesServer *WorkspacesServerTransport
+	srv                                *ServerFactory
+	trMu                               sync.Mutex
+	trOperationsServer                 *OperationsServerTransport
+	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
+	trWorkspacesServer                 *WorkspacesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -56,6 +64,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PrivateEndpointConnectionsClient":
+		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
+	case "PrivateLinkResourcesClient":
+		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
+		})
+		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "WorkspacesClient":
 		initServer(s, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
 		resp, err = s.trWorkspacesServer.Do(req)

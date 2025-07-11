@@ -1,5 +1,15 @@
 # Release History
 
+## 3.0.0 (2025-07-11)
+### Breaking Changes
+
+- Struct `ErrorAdditionalInfoInfo` has been removed
+
+### Features Added
+
+- Type of `ErrorAdditionalInfo.Info` has been changed from `*ErrorAdditionalInfoInfo` to `any`
+
+
 ## 2.0.0 (2025-04-15)
 ### Breaking Changes
 

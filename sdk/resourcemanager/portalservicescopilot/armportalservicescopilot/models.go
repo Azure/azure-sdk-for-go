@@ -45,7 +45,9 @@ type CopilotSettingsResourceUpdateProperties struct {
 	AccessControlEnabled *bool
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay

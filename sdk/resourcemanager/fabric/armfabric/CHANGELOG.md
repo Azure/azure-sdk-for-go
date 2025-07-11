@@ -1,5 +1,14 @@
 # Release History
 
+## 1.1.0-beta.1 (2025-07-11)
+### Features Added
+
+- New function `*CapacitiesClient.NewListUsagesPager(string, *CapacitiesClientListUsagesOptions) *runtime.Pager[CapacitiesClientListUsagesResponse]`
+- New struct `PagedQuota`
+- New struct `Quota`
+- New struct `QuotaName`
+
+
 ## 1.0.0 (2024-10-22)
 ### Other Changes
 

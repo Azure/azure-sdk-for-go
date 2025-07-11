@@ -42,7 +42,7 @@ func NewMapsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // BeginCreateOrUpdate - Create a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *MapsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup
 // CreateOrUpdate - Create a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 func (client *MapsClient) createOrUpdate(ctx context.Context, resourceGroupName string, mapName string, resource MapsResource, options *MapsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MapsClient.BeginCreateOrUpdate"
@@ -110,7 +110,7 @@ func (client *MapsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *MapsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - options - MapsClientBeginDeleteOptions contains the optional parameters for the MapsClient.BeginDelete method.
@@ -147,7 +147,7 @@ func (client *MapsClient) BeginDelete(ctx context.Context, resourceGroupName str
 // Delete - Delete a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 func (client *MapsClient) deleteOperation(ctx context.Context, resourceGroupName string, mapName string, options *MapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MapsClient.BeginDelete"
@@ -189,7 +189,7 @@ func (client *MapsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +198,7 @@ func (client *MapsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 // BeginExportDependencies - Export dependencies
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - body - The content of the action request
@@ -224,7 +224,7 @@ func (client *MapsClient) BeginExportDependencies(ctx context.Context, resourceG
 // ExportDependencies - Export dependencies
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 func (client *MapsClient) exportDependencies(ctx context.Context, resourceGroupName string, mapName string, body ExportDependenciesRequest, options *MapsClientBeginExportDependenciesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MapsClient.BeginExportDependencies"
@@ -239,7 +239,7 @@ func (client *MapsClient) exportDependencies(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -266,7 +266,7 @@ func (client *MapsClient) exportDependenciesCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -279,7 +279,7 @@ func (client *MapsClient) exportDependenciesCreateRequest(ctx context.Context, r
 // Get - Get a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - options - MapsClientGetOptions contains the optional parameters for the MapsClient.Get method.
@@ -325,7 +325,7 @@ func (client *MapsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *MapsClient) getHandleResponse(resp *http.Response) (MapsClientGetR
 // BeginGetConnectionsForProcessOnFocusedMachine - Get network connections of a process
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - body - The content of the action request
@@ -369,7 +369,7 @@ func (client *MapsClient) BeginGetConnectionsForProcessOnFocusedMachine(ctx cont
 // GetConnectionsForProcessOnFocusedMachine - Get network connections of a process
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 func (client *MapsClient) getConnectionsForProcessOnFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, options *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MapsClient.BeginGetConnectionsForProcessOnFocusedMachine"
@@ -411,7 +411,7 @@ func (client *MapsClient) getConnectionsForProcessOnFocusedMachineCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -424,7 +424,7 @@ func (client *MapsClient) getConnectionsForProcessOnFocusedMachineCreateRequest(
 // BeginGetConnectionsWithConnectedMachineForFocusedMachine - Get network connections between machines
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - body - The content of the action request
@@ -450,7 +450,7 @@ func (client *MapsClient) BeginGetConnectionsWithConnectedMachineForFocusedMachi
 // GetConnectionsWithConnectedMachineForFocusedMachine - Get network connections between machines
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, options *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MapsClient.BeginGetConnectionsWithConnectedMachineForFocusedMachine"
@@ -492,7 +492,7 @@ func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachineCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -505,7 +505,7 @@ func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachineCre
 // BeginGetDependencyViewForFocusedMachine - Get dependency map of single machine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - body - The content of the action request
@@ -531,7 +531,7 @@ func (client *MapsClient) BeginGetDependencyViewForFocusedMachine(ctx context.Co
 // GetDependencyViewForFocusedMachine - Get dependency map of single machine
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 func (client *MapsClient) getDependencyViewForFocusedMachine(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, options *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MapsClient.BeginGetDependencyViewForFocusedMachine"
@@ -573,7 +573,7 @@ func (client *MapsClient) getDependencyViewForFocusedMachineCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -585,7 +585,7 @@ func (client *MapsClient) getDependencyViewForFocusedMachineCreateRequest(ctx co
 
 // NewListByResourceGroupPager - List MapsResource resources by resource group
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MapsClientListByResourceGroupOptions contains the optional parameters for the MapsClient.NewListByResourceGroupPager
 //     method.
@@ -628,7 +628,7 @@ func (client *MapsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -645,7 +645,7 @@ func (client *MapsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // NewListBySubscriptionPager - List MapsResource resources by subscription ID
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - options - MapsClientListBySubscriptionOptions contains the optional parameters for the MapsClient.NewListBySubscriptionPager
 //     method.
 func (client *MapsClient) NewListBySubscriptionPager(options *MapsClientListBySubscriptionOptions) *runtime.Pager[MapsClientListBySubscriptionResponse] {
@@ -683,7 +683,7 @@ func (client *MapsClient) listBySubscriptionCreateRequest(ctx context.Context, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -701,7 +701,7 @@ func (client *MapsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 // BeginUpdate - Update a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - properties - The resource properties to be updated.
@@ -726,7 +726,7 @@ func (client *MapsClient) BeginUpdate(ctx context.Context, resourceGroupName str
 // Update - Update a MapsResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-31-preview
+// Generated from API version 2025-05-01-preview
 func (client *MapsClient) update(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, options *MapsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MapsClient.BeginUpdate"
@@ -768,7 +768,7 @@ func (client *MapsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
+	reqQP.Set("api-version", "2025-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

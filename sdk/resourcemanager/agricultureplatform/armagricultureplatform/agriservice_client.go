@@ -19,7 +19,7 @@ import (
 // AgriServiceClient contains the methods for the AgriService group.
 // Don't use this type directly, use NewAgriServiceClient() instead.
 type AgriServiceClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
@@ -34,7 +34,7 @@ func NewAgriServiceClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &AgriServiceClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -114,10 +114,10 @@ func (client *AgriServiceClient) createOrUpdateCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
+if err := runtime.MarshalAsJSON(req, resource); err != nil {
+	return nil, err
+}
+;	return req, nil
 }
 
 // BeginDelete - Delete a AgriServiceResource
@@ -330,13 +330,13 @@ func (client *AgriServiceClient) listAvailableSolutionsHandleResponse(resp *http
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AgriServiceClientListByResourceGroupOptions contains the optional parameters for the AgriServiceClient.NewListByResourceGroupPager
 //     method.
-func (client *AgriServiceClient) NewListByResourceGroupPager(resourceGroupName string, options *AgriServiceClientListByResourceGroupOptions) *runtime.Pager[AgriServiceClientListByResourceGroupResponse] {
+func (client *AgriServiceClient) NewListByResourceGroupPager(resourceGroupName string, options *AgriServiceClientListByResourceGroupOptions) (*runtime.Pager[AgriServiceClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AgriServiceClientListByResourceGroupResponse]{
 		More: func(page AgriServiceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AgriServiceClientListByResourceGroupResponse) (AgriServiceClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgriServiceClient.NewListByResourceGroupPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgriServiceClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -348,7 +348,7 @@ func (client *AgriServiceClient) NewListByResourceGroupPager(resourceGroupName s
 				return AgriServiceClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -389,13 +389,13 @@ func (client *AgriServiceClient) listByResourceGroupHandleResponse(resp *http.Re
 // Generated from API version 2024-06-01-preview
 //   - options - AgriServiceClientListBySubscriptionOptions contains the optional parameters for the AgriServiceClient.NewListBySubscriptionPager
 //     method.
-func (client *AgriServiceClient) NewListBySubscriptionPager(options *AgriServiceClientListBySubscriptionOptions) *runtime.Pager[AgriServiceClientListBySubscriptionResponse] {
+func (client *AgriServiceClient) NewListBySubscriptionPager(options *AgriServiceClientListBySubscriptionOptions) (*runtime.Pager[AgriServiceClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AgriServiceClientListBySubscriptionResponse]{
 		More: func(page AgriServiceClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AgriServiceClientListBySubscriptionResponse) (AgriServiceClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgriServiceClient.NewListBySubscriptionPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgriServiceClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -407,7 +407,7 @@ func (client *AgriServiceClient) NewListBySubscriptionPager(options *AgriService
 				return AgriServiceClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -513,8 +513,9 @@ func (client *AgriServiceClient) updateCreateRequest(ctx context.Context, resour
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	return nil, err
 }
+;	return req, nil
+}
+

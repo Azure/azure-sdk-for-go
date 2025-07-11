@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_CreateOrUpdate.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_CreateOrUpdate.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimentationWorkspaceWithFreeSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,6 +69,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 	// 			LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 	// 			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 	// 			AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+	// 			PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
 	// 			Endpoint: to.Ptr("https://expworkspace7.eastus2.exp.azure.net"),
 	// 		},
 	// 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
@@ -92,7 +93,89 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 	// }
 }
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_CreateOrUpdateWithEncryption.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_CreateOrUpdateWithDisabledPublicNetworkAccess.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimentationWorkspaceWithPublicNetworkAccessDisabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armonlineexperimentation.NewClientFactory("fa5fc227-a624-475e-b696-cdd604c735bc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "res9871", "expworkspace7", armonlineexperimentation.Workspace{
+		Location: to.Ptr("eastus2"),
+		Tags: map[string]*string{
+			"newKey": to.Ptr("newVal"),
+		},
+		Properties: &armonlineexperimentation.WorkspaceProperties{
+			LogAnalyticsWorkspaceResourceID:      to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
+			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
+			AppConfigurationResourceID:           to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+			PublicNetworkAccess:                  to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeDisabled),
+		},
+		Identity: &armonlineexperimentation.ManagedServiceIdentity{
+			Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armonlineexperimentation.UserAssignedIdentity{
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
+			},
+		},
+		SKU: &armonlineexperimentation.WorkspaceSKU{
+			Name: to.Ptr(armonlineexperimentation.WorkspaceSKUNameS0),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armonlineexperimentation.WorkspacesClientCreateOrUpdateResponse{
+	// 	Workspace: &armonlineexperimentation.Workspace{
+	// 		ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace7"),
+	// 		Name: to.Ptr("expworkspace7"),
+	// 		Type: to.Ptr("Microsoft.OnlineExperimentation/workspaces"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Tags: map[string]*string{
+	// 			"newKey": to.Ptr("newVal"),
+	// 		},
+	// 		Properties: &armonlineexperimentation.WorkspaceProperties{
+	// 			WorkspaceID: to.Ptr("02270d43-f68a-401b-b526-86942525c351"),
+	// 			ProvisioningState: to.Ptr(armonlineexperimentation.ResourceProvisioningStateSucceeded),
+	// 			LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
+	// 			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
+	// 			AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+	// 			PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeDisabled),
+	// 			Endpoint: to.Ptr("https://expworkspace7.eastus2.exp.azure.net"),
+	// 		},
+	// 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armonlineexperimentation.UserAssignedIdentity{
+	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armonlineexperimentation.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": &armonlineexperimentation.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("47429305-c0d3-40bc-8595-61946c4df3dc"),
+	// 					PrincipalID: to.Ptr("bf9ebbc8-b92d-4752-8e66-c999000326e0"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SKU: &armonlineexperimentation.WorkspaceSKU{
+	// 			Name: to.Ptr(armonlineexperimentation.WorkspaceSKUNameS0),
+	// 			Tier: to.Ptr(armonlineexperimentation.WorkspaceSKUTierStandard),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_CreateOrUpdateWithEncryption.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimentationWorkspaceWithFreeSkuAndCustomerManagedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,6 +195,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 			LogAnalyticsWorkspaceResourceID:      to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 			AppConfigurationResourceID:           to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+			PublicNetworkAccess:                  to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
 			Encryption: &armonlineexperimentation.ResourceEncryptionConfiguration{
 				CustomerManagedKeyEncryption: &armonlineexperimentation.CustomerManagedKeyEncryption{
 					KeyEncryptionKeyIdentity: &armonlineexperimentation.KeyEncryptionKeyIdentity{
@@ -158,6 +242,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 	// 			LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 	// 			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 	// 			AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+	// 			PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
 	// 			Encryption: &armonlineexperimentation.ResourceEncryptionConfiguration{
 	// 				CustomerManagedKeyEncryption: &armonlineexperimentation.CustomerManagedKeyEncryption{
 	// 					KeyEncryptionKeyIdentity: &armonlineexperimentation.KeyEncryptionKeyIdentity{
@@ -190,7 +275,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 	// }
 }
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_Delete.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_Delete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +296,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_Get.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_Get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,6 +326,7 @@ func ExampleWorkspacesClient_Get() {
 	// 			LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 	// 			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 	// 			AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+	// 			PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
 	// 			Endpoint: to.Ptr("https://expworkspace3.westus2.exp.azure.net"),
 	// 		},
 	// 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
@@ -264,7 +350,7 @@ func ExampleWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_ListByResourceGroup.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_ListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,6 +386,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 		// 					LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 		// 					AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+		// 					PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
 		// 					Endpoint: to.Ptr("https://expworkspace3.westus2.exp.azure.net"),
 		// 				},
 		// 				Identity: &armonlineexperimentation.ManagedServiceIdentity{
@@ -331,7 +418,26 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 		// 					LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 		// 					AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+		// 					PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeDisabled),
 		// 					Endpoint: to.Ptr("https://expworkspace2.westus2.exp.azure.net"),
+		// 					PrivateEndpointConnections: []*armonlineexperimentation.PrivateEndpointConnection{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace2/privateEndpointConnections/connectionName"),
+		// 							Properties: &armonlineexperimentation.PrivateEndpointConnectionProperties{
+		// 								PrivateEndpoint: &armonlineexperimentation.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Network/privateEndpoints/pe1"),
+		// 								},
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("workspace-private"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armonlineexperimentation.PrivateLinkServiceConnectionState{
+		// 									Status: to.Ptr(armonlineexperimentation.PrivateEndpointServiceConnectionStatusPending),
+		// 									Description: to.Ptr("Please approve my request, thanks."),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				Identity: &armonlineexperimentation.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
@@ -357,7 +463,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_ListBySubscription.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_ListBySubscription.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,6 +499,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 		// 					LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 		// 					AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+		// 					PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
 		// 					Endpoint: to.Ptr("https://expworkspace3.westus2.exp.azure.net"),
 		// 				},
 		// 				Identity: &armonlineexperimentation.ManagedServiceIdentity{
@@ -424,7 +531,26 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 		// 					LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 		// 					AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+		// 					PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeDisabled),
 		// 					Endpoint: to.Ptr("https://expworkspace2.westus2.exp.azure.net"),
+		// 					PrivateEndpointConnections: []*armonlineexperimentation.PrivateEndpointConnection{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace2/privateEndpointConnections/connectionName"),
+		// 							Properties: &armonlineexperimentation.PrivateEndpointConnectionProperties{
+		// 								PrivateEndpoint: &armonlineexperimentation.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Network/privateEndpoints/pe1"),
+		// 								},
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("workspace-private"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armonlineexperimentation.PrivateLinkServiceConnectionState{
+		// 									Status: to.Ptr(armonlineexperimentation.PrivateEndpointServiceConnectionStatusPending),
+		// 									Description: to.Ptr("Please approve my request, thanks."),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				Identity: &armonlineexperimentation.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
@@ -512,8 +638,8 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_Update.json
-func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspace() {
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_Update.json
+func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -561,6 +687,7 @@ func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspace(
 	// 			LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
 	// 			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
 	// 			AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+	// 			PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
 	// 			Endpoint: to.Ptr("https://expworkspace3.westus2.exp.azure.net"),
 	// 		},
 	// 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
@@ -584,7 +711,73 @@ func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspace(
 	// }
 }
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_UpdateWithEncryption.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_UpdatePublicNetworkAccess.json
+func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspaceWithPublicNetworkAccess() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armonlineexperimentation.NewClientFactory("fa5fc227-a624-475e-b696-cdd604c735bc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "res9871", "expworkspace3", armonlineexperimentation.WorkspacePatch{
+		Properties: &armonlineexperimentation.WorkspacePatchProperties{
+			PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armonlineexperimentation.WorkspacesClientUpdateResponse{
+	// 	Workspace: &armonlineexperimentation.Workspace{
+	// 		ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace3"),
+	// 		Name: to.Ptr("expworkspace3"),
+	// 		Type: to.Ptr("Microsoft.OnlineExperimentation/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Tags: map[string]*string{
+	// 			"supportTeam": to.Ptr("someteam@microsoft.com"),
+	// 			"newKey": to.Ptr("newVal"),
+	// 		},
+	// 		Properties: &armonlineexperimentation.WorkspaceProperties{
+	// 			WorkspaceID: to.Ptr("02270d43-f68a-401b-b526-86942525c350"),
+	// 			ProvisioningState: to.Ptr(armonlineexperimentation.ResourceProvisioningStateSucceeded),
+	// 			LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871"),
+	// 			LogsExporterStorageAccountResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871"),
+	// 			AppConfigurationResourceID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.AppConfiguration/configurationStores/appconfig9871"),
+	// 			PublicNetworkAccess: to.Ptr(armonlineexperimentation.PublicNetworkAccessTypeEnabled),
+	// 			Endpoint: to.Ptr("https://expworkspace3.westus2.exp.azure.net"),
+	// 		},
+	// 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armonlineexperimentation.UserAssignedIdentity{
+	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armonlineexperimentation.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": &armonlineexperimentation.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("47429305-c0d3-40bc-8595-61946c4df3dc"),
+	// 					PrincipalID: to.Ptr("bf9ebbc8-b92d-4752-8e66-c999000326e0"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SKU: &armonlineexperimentation.WorkspaceSKU{
+	// 			Name: to.Ptr(armonlineexperimentation.WorkspaceSKUNameF0),
+	// 			Tier: to.Ptr(armonlineexperimentation.WorkspaceSKUTierFree),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_UpdateWithEncryption.json
 func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspaceWithCustomerManagedEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

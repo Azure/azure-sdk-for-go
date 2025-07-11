@@ -42,7 +42,7 @@ func NewDataflowEndpointClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Create a DataflowEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowEndpointName - Name of Instance dataflowEndpoint resource
@@ -69,7 +69,7 @@ func (client *DataflowEndpointClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Create a DataflowEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *DataflowEndpointClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowEndpointName string, resource DataflowEndpointResource, options *DataflowEndpointClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataflowEndpointClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *DataflowEndpointClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *DataflowEndpointClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Delete a DataflowEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowEndpointName - Name of Instance dataflowEndpoint resource
@@ -154,7 +154,7 @@ func (client *DataflowEndpointClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Delete a DataflowEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *DataflowEndpointClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, dataflowEndpointName string, options *DataflowEndpointClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataflowEndpointClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *DataflowEndpointClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *DataflowEndpointClient) deleteCreateRequest(ctx context.Context, r
 // Get - Get a DataflowEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowEndpointName - Name of Instance dataflowEndpoint resource
@@ -260,7 +260,7 @@ func (client *DataflowEndpointClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *DataflowEndpointClient) getHandleResponse(resp *http.Response) (Da
 
 // NewListByResourceGroupPager - List DataflowEndpointResource resources by InstanceResource
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - options - DataflowEndpointClientListByResourceGroupOptions contains the optional parameters for the DataflowEndpointClient.NewListByResourceGroupPager
@@ -325,7 +325,7 @@ func (client *DataflowEndpointClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

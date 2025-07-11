@@ -15,6 +15,15 @@ type Attributes struct {
 	Value *string
 }
 
+// AutoscalingSize - Represents the compute units size range for autoscaling
+type AutoscalingSize struct {
+	// REQUIRED; The maximum compute units for autoscaling
+	AutoscalingLimitMaxCu *float32
+
+	// REQUIRED; The minimum compute units for autoscaling
+	AutoscalingLimitMinCu *float32
+}
+
 // Branch - The Branch resource type.
 type Branch struct {
 	// The resource-specific properties for this resource.
@@ -47,6 +56,12 @@ type BranchProperties struct {
 	// Additional attributes for the entity
 	Attributes []*Attributes
 
+	// Name of the branch
+	Branch *string
+
+	// Unique identifier for the branch
+	BranchID *string
+
 	// Database name associated with the branch
 	DatabaseName *string
 
@@ -71,11 +86,26 @@ type BranchProperties struct {
 	// Roles associated with the branch
 	Roles []*NeonRoleProperties
 
+	// READ-ONLY; Compute hours for the branch
+	ComputeHours *string
+
 	// READ-ONLY; Timestamp indicating when the entity was created
 	CreatedAt *string
 
+	// READ-ONLY; Total data size in MB for the branch
+	DataSize *string
+
 	// READ-ONLY; Unique identifier for the entity
 	EntityID *string
+
+	// READ-ONLY; Branch default status
+	IsDefault *bool
+
+	// READ-ONLY; Last active compute for the branch
+	LastActive *string
+
+	// READ-ONLY; Branch protected status
+	Protected *bool
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
@@ -227,6 +257,12 @@ type EndpointProperties struct {
 	// The ID of the branch this endpoint belongs to
 	BranchID *string
 
+	// Name of the compute endpoint
+	ComputeName *string
+
+	// Unique identifier for the compute endpoint
+	EndpointID *string
+
 	// The type of the endpoint
 	EndpointType *EndpointType
 
@@ -236,14 +272,23 @@ type EndpointProperties struct {
 	// The ID of the project this endpoint belongs to
 	ProjectID *string
 
+	// The compute units size range for autoscaling (MinCU-MaxCU)
+	Size *AutoscalingSize
+
 	// READ-ONLY; Timestamp indicating when the entity was created
 	CreatedAt *string
 
 	// READ-ONLY; Unique identifier for the entity
 	EntityID *string
 
+	// READ-ONLY; The timestamp when the compute endpoint was last active
+	LastActive *string
+
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; The current status of the compute endpoint
+	Status *EndpointStatus
 }
 
 // MarketplaceDetails - Marketplace details for an organization
@@ -293,6 +338,9 @@ type NeonDatabaseProperties struct {
 	// The ID of the branch this database belongs to
 	BranchID *string
 
+	// Name of the database
+	DatabaseName *string
+
 	// Name of the resource
 	EntityName *string
 
@@ -304,6 +352,9 @@ type NeonDatabaseProperties struct {
 
 	// READ-ONLY; Unique identifier for the entity
 	EntityID *string
+
+	// READ-ONLY; Timestamp indicating when the database was last updated
+	LastUpdated *string
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
@@ -353,11 +404,20 @@ type NeonRoleProperties struct {
 	// Permissions assigned to the role
 	Permissions []*string
 
+	// Name of the role
+	RoleName *string
+
 	// READ-ONLY; Timestamp indicating when the entity was created
 	CreatedAt *string
 
 	// READ-ONLY; Unique identifier for the entity
 	EntityID *string
+
+	// READ-ONLY; Timestamp indicating when the role was last updated
+	LastUpdated *string
+
+	// READ-ONLY; Databases name associated with the role
+	Owns *string
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
@@ -384,7 +444,9 @@ type OfferDetails struct {
 	TermUnit *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -509,6 +571,45 @@ type PgVersion struct {
 type PgVersionsResult struct {
 	// REQUIRED; List of PostgreSQL versions
 	Versions []*PgVersion
+}
+
+// PreflightCheckParameters - Preflight check parameters for branch and child resources.
+// IMPORTANT: Only one of the property types (branchProperties, roleProperties, databaseProperties,
+// or endpointProperties) should be provided at a time, based on the entityType value:
+// - When entityType is "branch", provide only branchProperties
+// - When entityType is "role", provide only roleProperties
+// - When entityType is "database", provide only databaseProperties
+// - When entityType is "endpoint", provide only endpointProperties
+type PreflightCheckParameters struct {
+	// REQUIRED; Branch Id associated with this connection
+	BranchID *string
+
+	// REQUIRED; Entity type to be validated for deletion.
+	EntityType *EntityType
+
+	// REQUIRED; Project Id associated with this connection
+	ProjectID *string
+
+	// The branch properties - ONLY provided when entityType is 'branch'
+	BranchProperties *BranchProperties
+
+	// The database properties - ONLY provided when entityType is 'database'
+	DatabaseProperties *NeonDatabaseProperties
+
+	// The endpoint properties - ONLY provided when entityType is 'endpoint'
+	EndpointProperties *EndpointProperties
+
+	// The role properties - ONLY provided when entityType is 'role'
+	RoleProperties *NeonRoleProperties
+}
+
+// PreflightCheckResult - Result of the pre-deletion validation operation.
+type PreflightCheckResult struct {
+	// REQUIRED; Indicates whether action is allowed.
+	IsValid *bool
+
+	// Optional message in case action is not allowed.
+	Reason *string
 }
 
 // Project - The Project resource type.

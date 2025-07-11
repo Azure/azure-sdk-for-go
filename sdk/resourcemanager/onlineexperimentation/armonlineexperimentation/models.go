@@ -97,6 +97,106 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The resource identifier of the private endpoint
+	ID *string
+}
+
+// PrivateEndpointConnection - Private endpoint connection resource for an online experimentation workspace resource.
+type PrivateEndpointConnection struct {
+	// The resource-specific properties for this resource.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; The name of the PrivateEndpointConnection
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - The response of a PrivateEndpointConnection list operation.
+type PrivateEndpointConnectionListResult struct {
+	// REQUIRED; The PrivateEndpointConnection items on this page
+	Value []*PrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkResource - A private link resource.
+type PrivateLinkResource struct {
+	// The resource-specific properties for this resource.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; The name of the PrivateLinkResource
+	Name *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - The response of a PrivateLinkResource list operation.
+type PrivateLinkResourceListResult struct {
+	// REQUIRED; The PrivateLinkResource items on this page
+	Value []*PrivateLinkResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
 // ResourceEncryptionConfiguration - The encryption configuration for the online experimentation workspace resource.
 type ResourceEncryptionConfiguration struct {
 	// All Customer-managed key encryption properties for the resource.
@@ -198,6 +298,11 @@ type WorkspacePatchProperties struct {
 	// The resource identifier of storage account where logs are exported from Log Analytics workspace. online experimentation
 	// workspace uses it generating experiment analysis results.
 	LogsExporterStorageAccountResourceID *string
+
+	// Public Network Access Control for the online experimentation resource. Defaults to Enabled if set to null.
+	// - Enabled: The resource can be accessed from the public internet.
+	// - Disabled: The resource can only be accessed from a private endpoint.
+	PublicNetworkAccess *PublicNetworkAccessType
 }
 
 // WorkspaceProperties - The properties of an online experimentation workspace.
@@ -217,8 +322,16 @@ type WorkspaceProperties struct {
 	// The encryption configuration for the online experimentation workspace resource.
 	Encryption *ResourceEncryptionConfiguration
 
+	// Public Network Access Control for the online experimentation resource. Defaults to Enabled if not set.
+	// - Enabled: The resource can be accessed from the public internet.
+	// - Disabled: The resource can only be accessed from a private endpoint.
+	PublicNetworkAccess *PublicNetworkAccessType
+
 	// READ-ONLY; The data plane endpoint for the online experimentation workspace resource.
 	Endpoint *string
+
+	// READ-ONLY; The private endpoint connections associated with the online experimentation workspace resource.
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The provisioning state for the resource
 	ProvisioningState *ResourceProvisioningState

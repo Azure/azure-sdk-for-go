@@ -19,7 +19,7 @@ import (
 )
 
 // AgriServiceServer is a fake server for instances of the armagricultureplatform.AgriServiceClient type.
-type AgriServiceServer struct {
+type AgriServiceServer struct{
 	// BeginCreateOrUpdate is the fake for method AgriServiceClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, agriServiceResourceName string, resource armagricultureplatform.AgriServiceResource, options *armagricultureplatform.AgriServiceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armagricultureplatform.AgriServiceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -47,6 +47,7 @@ type AgriServiceServer struct {
 	// BeginUpdate is the fake for method AgriServiceClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, agriServiceResourceName string, properties armagricultureplatform.AgriServiceResourceUpdate, options *armagricultureplatform.AgriServiceClientBeginUpdateOptions) (resp azfake.PollerResponder[armagricultureplatform.AgriServiceClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewAgriServiceServerTransport creates a new instance of AgriServiceServerTransport with the provided implementation.
@@ -54,24 +55,24 @@ type AgriServiceServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAgriServiceServerTransport(srv *AgriServiceServer) *AgriServiceServerTransport {
 	return &AgriServiceServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armagricultureplatform.AgriServiceClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armagricultureplatform.AgriServiceClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientUpdateResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armagricultureplatform.AgriServiceClientListBySubscriptionResponse]](),
+		beginUpdate: newTracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientUpdateResponse]](),
 	}
 }
 
 // AgriServiceServerTransport connects instances of armagricultureplatform.AgriServiceClient to instances of AgriServiceServer.
 // Don't use this type directly, use NewAgriServiceServerTransport instead.
 type AgriServiceServerTransport struct {
-	srv                         *AgriServiceServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientDeleteResponse]]
+	srv *AgriServiceServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armagricultureplatform.AgriServiceClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armagricultureplatform.AgriServiceClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientUpdateResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armagricultureplatform.AgriServiceClientListBySubscriptionResponse]]
+	beginUpdate *tracker[azfake.PollerResponder[armagricultureplatform.AgriServiceClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AgriServiceServerTransport.
@@ -92,8 +93,8 @@ func (a *AgriServiceServerTransport) dispatchToMethodFake(req *http.Request, met
 	go func() {
 		var intercepted bool
 		var res result
-		if agriServiceServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = agriServiceServerTransportInterceptor.Do(req)
+		 if agriServiceServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = agriServiceServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -111,8 +112,8 @@ func (a *AgriServiceServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AgriServiceClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -136,28 +137,28 @@ func (a *AgriServiceServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	}
 	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armagricultureplatform.AgriServiceResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		agriServiceResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agriServiceResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, agriServiceResourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armagricultureplatform.AgriServiceResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	agriServiceResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agriServiceResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, agriServiceResourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		a.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -184,24 +185,24 @@ func (a *AgriServiceServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		agriServiceResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agriServiceResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, agriServiceResourceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	agriServiceResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agriServiceResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, agriServiceResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		a.beginDelete.add(req, beginDelete)
 	}
@@ -229,7 +230,7 @@ func (a *AgriServiceServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -262,7 +263,7 @@ func (a *AgriServiceServerTransport) dispatchListAvailableSolutions(req *http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAvailableSolutions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -294,17 +295,17 @@ func (a *AgriServiceServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armagricultureplatform.AgriServiceClientListByResourceGroupResponse, createLink func() string) {
@@ -331,13 +332,13 @@ func (a *AgriServiceServerTransport) dispatchNewListBySubscriptionPager(req *htt
 	}
 	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := a.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armagricultureplatform.AgriServiceClientListBySubscriptionResponse, createLink func() string) {
@@ -364,28 +365,28 @@ func (a *AgriServiceServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 	}
 	beginUpdate := a.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armagricultureplatform.AgriServiceResourceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		agriServiceResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agriServiceResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, agriServiceResourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AgriculturePlatform/agriServices/(?P<agriServiceResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armagricultureplatform.AgriServiceResourceUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	agriServiceResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agriServiceResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, agriServiceResourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginUpdate = &respr
 		a.beginUpdate.add(req, beginUpdate)
 	}

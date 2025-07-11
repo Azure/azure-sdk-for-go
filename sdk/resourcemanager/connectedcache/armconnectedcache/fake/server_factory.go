@@ -15,12 +15,6 @@ import (
 
 // ServerFactory is a fake server for instances of the armconnectedcache.ClientFactory type.
 type ServerFactory struct {
-	// CacheNodesOperationsServer contains the fakes for client CacheNodesOperationsClient
-	CacheNodesOperationsServer CacheNodesOperationsServer
-
-	// EnterpriseCustomerOperationsServer contains the fakes for client EnterpriseCustomerOperationsClient
-	EnterpriseCustomerOperationsServer EnterpriseCustomerOperationsServer
-
 	// EnterpriseMccCacheNodesOperationsServer contains the fakes for client EnterpriseMccCacheNodesOperationsClient
 	EnterpriseMccCacheNodesOperationsServer EnterpriseMccCacheNodesOperationsServer
 
@@ -35,6 +29,7 @@ type ServerFactory struct {
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -49,15 +44,13 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armconnectedcache.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                       *ServerFactory
-	trMu                                      sync.Mutex
-	trCacheNodesOperationsServer              *CacheNodesOperationsServerTransport
-	trEnterpriseCustomerOperationsServer      *EnterpriseCustomerOperationsServerTransport
+	srv *ServerFactory
+	trMu sync.Mutex
 	trEnterpriseMccCacheNodesOperationsServer *EnterpriseMccCacheNodesOperationsServerTransport
-	trEnterpriseMccCustomersServer            *EnterpriseMccCustomersServerTransport
-	trIspCacheNodesOperationsServer           *IspCacheNodesOperationsServerTransport
-	trIspCustomersServer                      *IspCustomersServerTransport
-	trOperationsServer                        *OperationsServerTransport
+	trEnterpriseMccCustomersServer *EnterpriseMccCustomersServerTransport
+	trIspCacheNodesOperationsServer *IspCacheNodesOperationsServerTransport
+	trIspCustomersServer *IspCustomersServerTransport
+	trOperationsServer *OperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -73,30 +66,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "CacheNodesOperationsClient":
-		initServer(s, &s.trCacheNodesOperationsServer, func() *CacheNodesOperationsServerTransport {
-			return NewCacheNodesOperationsServerTransport(&s.srv.CacheNodesOperationsServer)
-		})
-		resp, err = s.trCacheNodesOperationsServer.Do(req)
-	case "EnterpriseCustomerOperationsClient":
-		initServer(s, &s.trEnterpriseCustomerOperationsServer, func() *EnterpriseCustomerOperationsServerTransport {
-			return NewEnterpriseCustomerOperationsServerTransport(&s.srv.EnterpriseCustomerOperationsServer)
-		})
-		resp, err = s.trEnterpriseCustomerOperationsServer.Do(req)
 	case "EnterpriseMccCacheNodesOperationsClient":
-		initServer(s, &s.trEnterpriseMccCacheNodesOperationsServer, func() *EnterpriseMccCacheNodesOperationsServerTransport {
-			return NewEnterpriseMccCacheNodesOperationsServerTransport(&s.srv.EnterpriseMccCacheNodesOperationsServer)
-		})
+		initServer(s, &s.trEnterpriseMccCacheNodesOperationsServer, func() *EnterpriseMccCacheNodesOperationsServerTransport { return NewEnterpriseMccCacheNodesOperationsServerTransport(&s.srv.EnterpriseMccCacheNodesOperationsServer) })
 		resp, err = s.trEnterpriseMccCacheNodesOperationsServer.Do(req)
 	case "EnterpriseMccCustomersClient":
-		initServer(s, &s.trEnterpriseMccCustomersServer, func() *EnterpriseMccCustomersServerTransport {
-			return NewEnterpriseMccCustomersServerTransport(&s.srv.EnterpriseMccCustomersServer)
-		})
+		initServer(s, &s.trEnterpriseMccCustomersServer, func() *EnterpriseMccCustomersServerTransport { return NewEnterpriseMccCustomersServerTransport(&s.srv.EnterpriseMccCustomersServer) })
 		resp, err = s.trEnterpriseMccCustomersServer.Do(req)
 	case "IspCacheNodesOperationsClient":
-		initServer(s, &s.trIspCacheNodesOperationsServer, func() *IspCacheNodesOperationsServerTransport {
-			return NewIspCacheNodesOperationsServerTransport(&s.srv.IspCacheNodesOperationsServer)
-		})
+		initServer(s, &s.trIspCacheNodesOperationsServer, func() *IspCacheNodesOperationsServerTransport { return NewIspCacheNodesOperationsServerTransport(&s.srv.IspCacheNodesOperationsServer) })
 		resp, err = s.trIspCacheNodesOperationsServer.Do(req)
 	case "IspCustomersClient":
 		initServer(s, &s.trIspCustomersServer, func() *IspCustomersServerTransport { return NewIspCustomersServerTransport(&s.srv.IspCustomersServer) })

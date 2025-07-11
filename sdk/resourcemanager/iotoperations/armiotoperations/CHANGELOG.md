@@ -1,5 +1,13 @@
 # Release History
 
+## 1.1.0 (2025-07-11)
+### Features Added
+
+- New enum type `InstanceFeatureMode` with values `InstanceFeatureModeDisabled`, `InstanceFeatureModePreview`, `InstanceFeatureModeStable`
+- New struct `InstanceFeature`
+- New field `Features` in struct `InstanceProperties`
+
+
 ## 1.0.0 (2024-12-12)
 ### Breaking Changes
 

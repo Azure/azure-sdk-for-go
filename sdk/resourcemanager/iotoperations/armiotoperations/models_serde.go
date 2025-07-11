@@ -2644,6 +2644,37 @@ func (g *GenerateResourceLimits) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InstanceFeature.
+func (i InstanceFeature) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "mode", i.Mode)
+	populate(objectMap, "settings", i.Settings)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InstanceFeature.
+func (i *InstanceFeature) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "mode":
+			err = unpopulate(val, "Mode", &i.Mode)
+			delete(rawMsg, key)
+		case "settings":
+			err = unpopulate(val, "Settings", &i.Settings)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type InstancePatchModel.
 func (i InstancePatchModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2679,6 +2710,7 @@ func (i *InstancePatchModel) UnmarshalJSON(data []byte) error {
 func (i InstanceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", i.Description)
+	populate(objectMap, "features", i.Features)
 	populate(objectMap, "provisioningState", i.ProvisioningState)
 	populate(objectMap, "schemaRegistryRef", i.SchemaRegistryRef)
 	populate(objectMap, "version", i.Version)
@@ -2696,6 +2728,9 @@ func (i *InstanceProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "description":
 			err = unpopulate(val, "Description", &i.Description)
+			delete(rawMsg, key)
+		case "features":
+			err = unpopulate(val, "Features", &i.Features)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &i.ProvisioningState)

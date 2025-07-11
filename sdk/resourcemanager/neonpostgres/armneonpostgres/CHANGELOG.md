@@ -1,5 +1,35 @@
 # Release History
 
+## 2.0.0-beta.1 (2025-07-11)
+### Breaking Changes
+
+- Function `*BranchesClient.BeginUpdate` has been removed
+- Function `*ComputesClient.BeginCreateOrUpdate` has been removed
+- Function `*ComputesClient.Delete` has been removed
+- Function `*ComputesClient.Get` has been removed
+- Function `*ComputesClient.BeginUpdate` has been removed
+- Function `*EndpointsClient.Get` has been removed
+- Function `*EndpointsClient.BeginUpdate` has been removed
+- Function `*ProjectsClient.BeginUpdate` has been removed
+- Function `*NeonDatabasesClient.Get` has been removed
+- Function `*NeonDatabasesClient.BeginUpdate` has been removed
+- Function `*NeonRolesClient.Get` has been removed
+- Function `*NeonRolesClient.BeginUpdate` has been removed
+
+### Features Added
+
+- New enum type `EndpointStatus` with values `EndpointStatusActive`, `EndpointStatusIdle`, `EndpointStatusInit`
+- New enum type `EntityType` with values `EntityTypeBranch`, `EntityTypeEndpoint`, `EntityTypeNeonDatabase`, `EntityTypeNeonRole`
+- New function `*BranchesClient.Preflight(context.Context, string, string, string, string, PreflightCheckParameters, *BranchesClientPreflightOptions) (BranchesClientPreflightResponse, error)`
+- New struct `AutoscalingSize`
+- New struct `PreflightCheckParameters`
+- New struct `PreflightCheckResult`
+- New field `Branch`, `BranchID`, `ComputeHours`, `DataSize`, `IsDefault`, `LastActive`, `Protected` in struct `BranchProperties`
+- New field `ComputeName`, `EndpointID`, `LastActive`, `Size`, `Status` in struct `EndpointProperties`
+- New field `DatabaseName`, `LastUpdated` in struct `NeonDatabaseProperties`
+- New field `LastUpdated`, `Owns`, `RoleName` in struct `NeonRoleProperties`
+
+
 ## 1.0.0 (2025-04-07)
 ### Features Added
 

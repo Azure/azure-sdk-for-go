@@ -6,7 +6,7 @@ package armiotfirmwaredefense
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotfirmwaredefense/armiotfirmwaredefense"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v2.0.0-beta.2"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

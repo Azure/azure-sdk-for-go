@@ -6,7 +6,7 @@ package armneonpostgres
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -48,6 +48,27 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// EndpointStatus - The current status of the compute endpoint.
+type EndpointStatus string
+
+const (
+	// EndpointStatusActive - The compute endpoint is currently active
+	EndpointStatusActive EndpointStatus = "active"
+	// EndpointStatusIdle - The compute endpoint is currently idle
+	EndpointStatusIdle EndpointStatus = "idle"
+	// EndpointStatusInit - The compute endpoint is currently initializing
+	EndpointStatusInit EndpointStatus = "init"
+)
+
+// PossibleEndpointStatusValues returns the possible values for the EndpointStatus const type.
+func PossibleEndpointStatusValues() []EndpointStatus {
+	return []EndpointStatus{
+		EndpointStatusActive,
+		EndpointStatusIdle,
+		EndpointStatusInit,
+	}
+}
+
 // EndpointType - The compute endpoint type. Either read_write or read_only.
 type EndpointType string
 
@@ -63,6 +84,30 @@ func PossibleEndpointTypeValues() []EndpointType {
 	return []EndpointType{
 		EndpointTypeReadOnly,
 		EndpointTypeReadWrite,
+	}
+}
+
+// EntityType - Entity types allowed for preflight deletion validation.
+type EntityType string
+
+const (
+	// EntityTypeBranch - Branch entity
+	EntityTypeBranch EntityType = "branch"
+	// EntityTypeEndpoint - Endpoint entity
+	EntityTypeEndpoint EntityType = "endpoint"
+	// EntityTypeNeonDatabase - Database entity
+	EntityTypeNeonDatabase EntityType = "neonDatabase"
+	// EntityTypeNeonRole - NeonRole entity
+	EntityTypeNeonRole EntityType = "neonRole"
+)
+
+// PossibleEntityTypeValues returns the possible values for the EntityType const type.
+func PossibleEntityTypeValues() []EntityType {
+	return []EntityType{
+		EntityTypeBranch,
+		EntityTypeEndpoint,
+		EntityTypeNeonDatabase,
+		EntityTypeNeonRole,
 	}
 }
 

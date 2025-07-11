@@ -19,7 +19,7 @@ import (
 )
 
 // EnterpriseMccCustomersServer is a fake server for instances of the armconnectedcache.EnterpriseMccCustomersClient type.
-type EnterpriseMccCustomersServer struct {
+type EnterpriseMccCustomersServer struct{
 	// BeginCreateOrUpdate is the fake for method EnterpriseMccCustomersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, customerResourceName string, resource armconnectedcache.EnterpriseMccCustomerResource, options *armconnectedcache.EnterpriseMccCustomersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type EnterpriseMccCustomersServer struct {
 	// Update is the fake for method EnterpriseMccCustomersClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, customerResourceName string, properties armconnectedcache.PatchResource, options *armconnectedcache.EnterpriseMccCustomersClientUpdateOptions) (resp azfake.Responder[armconnectedcache.EnterpriseMccCustomersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewEnterpriseMccCustomersServerTransport creates a new instance of EnterpriseMccCustomersServerTransport with the provided implementation.
@@ -50,22 +51,22 @@ type EnterpriseMccCustomersServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEnterpriseMccCustomersServerTransport(srv *EnterpriseMccCustomersServer) *EnterpriseMccCustomersServerTransport {
 	return &EnterpriseMccCustomersServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armconnectedcache.EnterpriseMccCustomersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armconnectedcache.EnterpriseMccCustomersClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armconnectedcache.EnterpriseMccCustomersClientListBySubscriptionResponse]](),
 	}
 }
 
 // EnterpriseMccCustomersServerTransport connects instances of armconnectedcache.EnterpriseMccCustomersClient to instances of EnterpriseMccCustomersServer.
 // Don't use this type directly, use NewEnterpriseMccCustomersServerTransport instead.
 type EnterpriseMccCustomersServerTransport struct {
-	srv                         *EnterpriseMccCustomersServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientDeleteResponse]]
+	srv *EnterpriseMccCustomersServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armconnectedcache.EnterpriseMccCustomersClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armconnectedcache.EnterpriseMccCustomersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armconnectedcache.EnterpriseMccCustomersClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armconnectedcache.EnterpriseMccCustomersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for EnterpriseMccCustomersServerTransport.
@@ -86,8 +87,8 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchToMethodFake(req *http.R
 	go func() {
 		var intercepted bool
 		var res result
-		if enterpriseMccCustomersServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = enterpriseMccCustomersServerTransportInterceptor.Do(req)
+		 if enterpriseMccCustomersServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = enterpriseMccCustomersServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -103,8 +104,8 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = e.dispatchNewListBySubscriptionPager(req)
 			case "EnterpriseMccCustomersClient.Update":
 				res.resp, res.err = e.dispatchUpdate(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -128,28 +129,28 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchBeginCreateOrUpdate(req 
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armconnectedcache.EnterpriseMccCustomerResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, customerResourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconnectedcache.EnterpriseMccCustomerResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, customerResourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		e.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -176,24 +177,24 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchBeginDelete(req *http.Re
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameParam, customerResourceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameParam, customerResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		e.beginDelete.add(req, beginDelete)
 	}
@@ -221,7 +222,7 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchGet(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -253,17 +254,17 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchNewListByResourceGroupPa
 	}
 	newListByResourceGroupPager := e.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := e.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		e.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armconnectedcache.EnterpriseMccCustomersClientListByResourceGroupResponse, createLink func() string) {
@@ -290,13 +291,13 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchNewListBySubscriptionPag
 	}
 	newListBySubscriptionPager := e.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := e.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := e.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		e.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armconnectedcache.EnterpriseMccCustomersClientListBySubscriptionResponse, createLink func() string) {
@@ -324,7 +325,7 @@ func (e *EnterpriseMccCustomersServerTransport) dispatchUpdate(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/enterpriseMccCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armconnectedcache.PatchResource](req)

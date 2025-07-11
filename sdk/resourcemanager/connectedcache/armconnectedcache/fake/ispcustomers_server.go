@@ -19,7 +19,7 @@ import (
 )
 
 // IspCustomersServer is a fake server for instances of the armconnectedcache.IspCustomersClient type.
-type IspCustomersServer struct {
+type IspCustomersServer struct{
 	// BeginCreateOrUpdate is the fake for method IspCustomersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, customerResourceName string, resource armconnectedcache.IspCustomerResource, options *armconnectedcache.IspCustomersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armconnectedcache.IspCustomersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -43,6 +43,7 @@ type IspCustomersServer struct {
 	// Update is the fake for method IspCustomersClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, customerResourceName string, properties armconnectedcache.PatchResource, options *armconnectedcache.IspCustomersClientUpdateOptions) (resp azfake.Responder[armconnectedcache.IspCustomersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewIspCustomersServerTransport creates a new instance of IspCustomersServerTransport with the provided implementation.
@@ -50,22 +51,22 @@ type IspCustomersServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewIspCustomersServerTransport(srv *IspCustomersServer) *IspCustomersServerTransport {
 	return &IspCustomersServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armconnectedcache.IspCustomersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armconnectedcache.IspCustomersClientListBySubscriptionResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armconnectedcache.IspCustomersClientListBySubscriptionResponse]](),
 	}
 }
 
 // IspCustomersServerTransport connects instances of armconnectedcache.IspCustomersClient to instances of IspCustomersServer.
 // Don't use this type directly, use NewIspCustomersServerTransport instead.
 type IspCustomersServerTransport struct {
-	srv                         *IspCustomersServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientDeleteResponse]]
+	srv *IspCustomersServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armconnectedcache.IspCustomersClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armconnectedcache.IspCustomersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armconnectedcache.IspCustomersClientListBySubscriptionResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armconnectedcache.IspCustomersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for IspCustomersServerTransport.
@@ -86,8 +87,8 @@ func (i *IspCustomersServerTransport) dispatchToMethodFake(req *http.Request, me
 	go func() {
 		var intercepted bool
 		var res result
-		if ispCustomersServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = ispCustomersServerTransportInterceptor.Do(req)
+		 if ispCustomersServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = ispCustomersServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -103,8 +104,8 @@ func (i *IspCustomersServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
 			case "IspCustomersClient.Update":
 				res.resp, res.err = i.dispatchUpdate(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -128,28 +129,28 @@ func (i *IspCustomersServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 	}
 	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armconnectedcache.IspCustomerResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, customerResourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconnectedcache.IspCustomerResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, customerResourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		i.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -176,24 +177,24 @@ func (i *IspCustomersServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameParam, customerResourceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameParam, customerResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		i.beginDelete.add(req, beginDelete)
 	}
@@ -221,7 +222,7 @@ func (i *IspCustomersServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -253,17 +254,17 @@ func (i *IspCustomersServerTransport) dispatchNewListByResourceGroupPager(req *h
 	}
 	newListByResourceGroupPager := i.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := i.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		i.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armconnectedcache.IspCustomersClientListByResourceGroupResponse, createLink func() string) {
@@ -290,13 +291,13 @@ func (i *IspCustomersServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	}
 	newListBySubscriptionPager := i.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := i.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		i.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armconnectedcache.IspCustomersClientListBySubscriptionResponse, createLink func() string) {
@@ -324,7 +325,7 @@ func (i *IspCustomersServerTransport) dispatchUpdate(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armconnectedcache.PatchResource](req)

@@ -25,8 +25,10 @@ func ExampleAgriServiceClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewAgriServiceClient().BeginCreateOrUpdate(ctx, "rgopenapi", "abc123", armagricultureplatform.AgriServiceResource{
 		Properties: &armagricultureplatform.AgriServiceResourceProperties{
-			Config:                         &armagricultureplatform.AgriServiceConfig{},
-			ManagedOnBehalfOfConfiguration: &armagricultureplatform.ManagedOnBehalfOfConfiguration{},
+			Config: &armagricultureplatform.AgriServiceConfig{
+			},
+			ManagedOnBehalfOfConfiguration: &armagricultureplatform.ManagedOnBehalfOfConfiguration{
+			},
 			DataConnectorCredentials: []*armagricultureplatform.DataConnectorCredentialMap{
 				{
 					Key: to.Ptr("BackendAADApplicationCredentials"),
@@ -47,14 +49,15 @@ func ExampleAgriServiceClient_BeginCreateOrUpdate() {
 		Identity: &armagricultureplatform.ManagedServiceIdentity{
 			Type: to.Ptr(armagricultureplatform.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armagricultureplatform.UserAssignedIdentity{
-				"key4955": {},
+				"key4955": &armagricultureplatform.UserAssignedIdentity{
+				},
 			},
 		},
 		SKU: &armagricultureplatform.SKU{
-			Name:     to.Ptr("kfl"),
-			Tier:     to.Ptr(armagricultureplatform.SKUTierFree),
-			Size:     to.Ptr("r"),
-			Family:   to.Ptr("xerdhxyjwrypvxphavgrtjphtohf"),
+			Name: to.Ptr("kfl"),
+			Tier: to.Ptr(armagricultureplatform.SKUTierFree),
+			Size: to.Ptr("r"),
+			Family: to.Ptr("xerdhxyjwrypvxphavgrtjphtohf"),
 			Capacity: to.Ptr[int32](20),
 		},
 		Tags: map[string]*string{
@@ -520,21 +523,23 @@ func ExampleAgriServiceClient_BeginUpdate() {
 		Identity: &armagricultureplatform.ManagedServiceIdentity{
 			Type: to.Ptr(armagricultureplatform.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armagricultureplatform.UserAssignedIdentity{
-				"key4771": {},
+				"key4771": &armagricultureplatform.UserAssignedIdentity{
+				},
 			},
 		},
 		SKU: &armagricultureplatform.SKU{
-			Name:     to.Ptr("tbdtdfffkar"),
-			Tier:     to.Ptr(armagricultureplatform.SKUTierFree),
-			Size:     to.Ptr("iusaqqj"),
-			Family:   to.Ptr("hxojswlgs"),
+			Name: to.Ptr("tbdtdfffkar"),
+			Tier: to.Ptr(armagricultureplatform.SKUTierFree),
+			Size: to.Ptr("iusaqqj"),
+			Family: to.Ptr("hxojswlgs"),
 			Capacity: to.Ptr[int32](22),
 		},
 		Tags: map[string]*string{
 			"key9006": to.Ptr("kuzlwpujbql"),
 		},
 		Properties: &armagricultureplatform.AgriServiceResourceUpdateProperties{
-			Config: &armagricultureplatform.AgriServiceConfig{},
+			Config: &armagricultureplatform.AgriServiceConfig{
+			},
 			DataConnectorCredentials: []*armagricultureplatform.DataConnectorCredentialMap{
 				{
 					Key: to.Ptr("BackendAADApplicationCredentials"),
@@ -636,3 +641,4 @@ func ExampleAgriServiceClient_BeginUpdate() {
 	// 	},
 	// }
 }
+

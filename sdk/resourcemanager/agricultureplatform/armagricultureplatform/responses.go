@@ -6,7 +6,7 @@ package armagricultureplatform
 
 // AgriServiceClientCreateOrUpdateResponse contains the response from method AgriServiceClient.BeginCreateOrUpdate.
 type AgriServiceClientCreateOrUpdateResponse struct {
-	// Schema of the AgriService resource from Microsoft.AgriculturePlatform resource provider.
+// Schema of the AgriService resource from Microsoft.AgriculturePlatform resource provider.
 	AgriServiceResource
 }
 
@@ -17,36 +17,37 @@ type AgriServiceClientDeleteResponse struct {
 
 // AgriServiceClientGetResponse contains the response from method AgriServiceClient.Get.
 type AgriServiceClientGetResponse struct {
-	// Schema of the AgriService resource from Microsoft.AgriculturePlatform resource provider.
+// Schema of the AgriService resource from Microsoft.AgriculturePlatform resource provider.
 	AgriServiceResource
 }
 
 // AgriServiceClientListAvailableSolutionsResponse contains the response from method AgriServiceClient.ListAvailableSolutions.
 type AgriServiceClientListAvailableSolutionsResponse struct {
-	// The list of available agri solutions.
+// The list of available agri solutions.
 	AvailableAgriSolutionListResult
 }
 
 // AgriServiceClientListByResourceGroupResponse contains the response from method AgriServiceClient.NewListByResourceGroupPager.
 type AgriServiceClientListByResourceGroupResponse struct {
-	// The response of a AgriServiceResource list operation.
+// The response of a AgriServiceResource list operation.
 	AgriServiceResourceListResult
 }
 
 // AgriServiceClientListBySubscriptionResponse contains the response from method AgriServiceClient.NewListBySubscriptionPager.
 type AgriServiceClientListBySubscriptionResponse struct {
-	// The response of a AgriServiceResource list operation.
+// The response of a AgriServiceResource list operation.
 	AgriServiceResourceListResult
 }
 
 // AgriServiceClientUpdateResponse contains the response from method AgriServiceClient.BeginUpdate.
 type AgriServiceClientUpdateResponse struct {
-	// Schema of the AgriService resource from Microsoft.AgriculturePlatform resource provider.
+// Schema of the AgriService resource from Microsoft.AgriculturePlatform resource provider.
 	AgriServiceResource
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
 }
+

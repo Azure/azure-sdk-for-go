@@ -997,6 +997,15 @@ type GenerateResourceLimits struct {
 	CPU *OperationalMode
 }
 
+// InstanceFeature - The features of the AIO Instance.
+type InstanceFeature struct {
+	// The state of the feature.
+	Mode *InstanceFeatureMode
+
+	// The settings of the feature.
+	Settings map[string]*OperationalMode
+}
+
 // InstancePatchModel - The Instance update model.
 type InstancePatchModel struct {
 	// The managed service identities assigned to this resource.
@@ -1013,6 +1022,9 @@ type InstanceProperties struct {
 
 	// Detailed description of the Instance.
 	Description *string
+
+	// The features of the AIO Instance.
+	Features map[string]*InstanceFeature
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
@@ -1132,13 +1144,15 @@ type Metrics struct {
 	PrometheusPort *int32
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.

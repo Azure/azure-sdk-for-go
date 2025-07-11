@@ -7,19 +7,19 @@ package armagricultureplatform
 // AgriServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the AgriServiceClient.BeginCreateOrUpdate
 // method.
 type AgriServiceClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AgriServiceClientBeginDeleteOptions contains the optional parameters for the AgriServiceClient.BeginDelete method.
 type AgriServiceClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AgriServiceClientBeginUpdateOptions contains the optional parameters for the AgriServiceClient.BeginUpdate method.
 type AgriServiceClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -50,3 +50,4 @@ type AgriServiceClientListBySubscriptionOptions struct {
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
+

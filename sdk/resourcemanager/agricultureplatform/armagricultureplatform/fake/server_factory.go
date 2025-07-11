@@ -20,6 +20,7 @@ type ServerFactory struct {
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -34,10 +35,10 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armagricultureplatform.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                 *ServerFactory
-	trMu                sync.Mutex
+	srv *ServerFactory
+	trMu sync.Mutex
 	trAgriServiceServer *AgriServiceServerTransport
-	trOperationsServer  *OperationsServerTransport
+	trOperationsServer *OperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.

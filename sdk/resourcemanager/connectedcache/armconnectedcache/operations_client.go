@@ -28,22 +28,22 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 		return nil, err
 	}
 	client := &OperationsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - List the operations for the provider
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) (*runtime.Pager[OperationsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
 		More: func(page OperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -55,7 +55,7 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 				return OperationsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -68,7 +68,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -82,3 +82,4 @@ func (client *OperationsClient) listHandleResponse(resp *http.Response) (Operati
 	}
 	return result, nil
 }
+

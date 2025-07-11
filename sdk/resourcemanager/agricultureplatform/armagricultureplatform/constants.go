@@ -5,7 +5,7 @@
 package armagricultureplatform
 
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agricultureplatform/armagricultureplatform"
+	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agricultureplatform/armagricultureplatform"
 	moduleVersion = "v0.1.0"
 )
 
@@ -13,13 +13,13 @@ const (
 type ActionType string
 
 const (
-	// ActionTypeInternal - Actions are for internal-only APIs.
+// ActionTypeInternal - Actions are for internal-only APIs.
 	ActionTypeInternal ActionType = "Internal"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -28,15 +28,15 @@ func PossibleActionTypeValues() []ActionType {
 type AuthCredentialsKind string
 
 const (
-	// AuthCredentialsKindAPIKeyAuthCredentials - API Key Auth Credential type
+// AuthCredentialsKindAPIKeyAuthCredentials - API Key Auth Credential type
 	AuthCredentialsKindAPIKeyAuthCredentials AuthCredentialsKind = "ApiKeyAuthCredentials"
-	// AuthCredentialsKindOAuthClientCredentials - OAuth Client Credential type
+// AuthCredentialsKindOAuthClientCredentials - OAuth Client Credential type
 	AuthCredentialsKindOAuthClientCredentials AuthCredentialsKind = "OAuthClientCredentials"
 )
 
 // PossibleAuthCredentialsKindValues returns the possible values for the AuthCredentialsKind const type.
 func PossibleAuthCredentialsKindValues() []AuthCredentialsKind {
-	return []AuthCredentialsKind{
+	return []AuthCredentialsKind{	
 		AuthCredentialsKindAPIKeyAuthCredentials,
 		AuthCredentialsKindOAuthClientCredentials,
 	}
@@ -46,19 +46,19 @@ func PossibleAuthCredentialsKindValues() []AuthCredentialsKind {
 type CreatedByType string
 
 const (
-	// CreatedByTypeApplication - The entity was created by an application.
+// CreatedByTypeApplication - The entity was created by an application.
 	CreatedByTypeApplication CreatedByType = "Application"
-	// CreatedByTypeKey - The entity was created by a key.
+// CreatedByTypeKey - The entity was created by a key.
 	CreatedByTypeKey CreatedByType = "Key"
-	// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
+// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	// CreatedByTypeUser - The entity was created by a user.
+// CreatedByTypeUser - The entity was created by a user.
 	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -70,19 +70,19 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type ManagedServiceIdentityType string
 
 const (
-	// ManagedServiceIdentityTypeNone - No managed identity.
+// ManagedServiceIdentityTypeNone - No managed identity.
 	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
-	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
 	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
-	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
 	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
-	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
 	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{
+	return []ManagedServiceIdentityType{	
 		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
@@ -95,17 +95,17 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 type Origin string
 
 const (
-	// OriginSystem - Indicates the operation is initiated by a system.
+// OriginSystem - Indicates the operation is initiated by a system.
 	OriginSystem Origin = "system"
-	// OriginUser - Indicates the operation is initiated by a user.
+// OriginUser - Indicates the operation is initiated by a user.
 	OriginUser Origin = "user"
-	// OriginUserSystem - Indicates the operation is initiated by a user or system.
+// OriginUserSystem - Indicates the operation is initiated by a user or system.
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -116,25 +116,25 @@ func PossibleOriginValues() []Origin {
 type ProvisioningState string
 
 const (
-	// ProvisioningStateAccepted - The resource create request has been accepted
+// ProvisioningStateAccepted - The resource create request has been accepted
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
-	// ProvisioningStateCanceled - Resource creation was canceled.
+// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateDeleting - The resource is being deleted
+// ProvisioningStateDeleting - The resource is being deleted
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Resource creation failed.
+// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateProvisioning - The resource is being provisioned
+// ProvisioningStateProvisioning - The resource is being provisioned
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
-	// ProvisioningStateSucceeded - Resource has been created.
+// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	// ProvisioningStateUpdating - The resource is updating
+// ProvisioningStateUpdating - The resource is updating
 	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
@@ -150,22 +150,23 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type SKUTier string
 
 const (
-	// SKUTierBasic - The Basic service tier.
+// SKUTierBasic - The Basic service tier.
 	SKUTierBasic SKUTier = "Basic"
-	// SKUTierFree - The Free service tier.
+// SKUTierFree - The Free service tier.
 	SKUTierFree SKUTier = "Free"
-	// SKUTierPremium - The Premium service tier.
+// SKUTierPremium - The Premium service tier.
 	SKUTierPremium SKUTier = "Premium"
-	// SKUTierStandard - The Standard service tier.
+// SKUTierStandard - The Standard service tier.
 	SKUTierStandard SKUTier = "Standard"
 )
 
 // PossibleSKUTierValues returns the possible values for the SKUTier const type.
 func PossibleSKUTierValues() []SKUTier {
-	return []SKUTier{
+	return []SKUTier{	
 		SKUTierBasic,
 		SKUTierFree,
 		SKUTierPremium,
 		SKUTierStandard,
 	}
 }
+

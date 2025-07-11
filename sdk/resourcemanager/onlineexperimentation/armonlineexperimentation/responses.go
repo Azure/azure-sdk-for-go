@@ -10,6 +10,41 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	// Private endpoint connection resource for an online experimentation workspace resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
+type PrivateEndpointConnectionsClientListResponse struct {
+	// The response of a PrivateEndpointConnection list operation.
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.Update.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	// Private endpoint connection resource for an online experimentation workspace resource.
+	PrivateEndpointConnection
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	// A private link resource.
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
+type PrivateLinkResourcesClientListResponse struct {
+	// The response of a PrivateLinkResource list operation.
+	PrivateLinkResourceListResult
+}
+
 // WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.BeginCreateOrUpdate.
 type WorkspacesClientCreateOrUpdateResponse struct {
 	// An online experimentation workspace resource.

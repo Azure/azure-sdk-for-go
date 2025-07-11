@@ -13,7 +13,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	internal       *arm.Client
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -28,31 +28,15 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	return &ClientFactory{
 		subscriptionID: subscriptionID,
-		internal:       internal,
+		internal: internal,
 	}, nil
-}
-
-// NewCacheNodesOperationsClient creates a new instance of CacheNodesOperationsClient.
-func (c *ClientFactory) NewCacheNodesOperationsClient() *CacheNodesOperationsClient {
-	return &CacheNodesOperationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewEnterpriseCustomerOperationsClient creates a new instance of EnterpriseCustomerOperationsClient.
-func (c *ClientFactory) NewEnterpriseCustomerOperationsClient() *EnterpriseCustomerOperationsClient {
-	return &EnterpriseCustomerOperationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
 }
 
 // NewEnterpriseMccCacheNodesOperationsClient creates a new instance of EnterpriseMccCacheNodesOperationsClient.
 func (c *ClientFactory) NewEnterpriseMccCacheNodesOperationsClient() *EnterpriseMccCacheNodesOperationsClient {
 	return &EnterpriseMccCacheNodesOperationsClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -60,7 +44,7 @@ func (c *ClientFactory) NewEnterpriseMccCacheNodesOperationsClient() *Enterprise
 func (c *ClientFactory) NewEnterpriseMccCustomersClient() *EnterpriseMccCustomersClient {
 	return &EnterpriseMccCustomersClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -68,7 +52,7 @@ func (c *ClientFactory) NewEnterpriseMccCustomersClient() *EnterpriseMccCustomer
 func (c *ClientFactory) NewIspCacheNodesOperationsClient() *IspCacheNodesOperationsClient {
 	return &IspCacheNodesOperationsClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -76,7 +60,7 @@ func (c *ClientFactory) NewIspCacheNodesOperationsClient() *IspCacheNodesOperati
 func (c *ClientFactory) NewIspCustomersClient() *IspCustomersClient {
 	return &IspCustomersClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -86,3 +70,4 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 		internal: c.internal,
 	}
 }
+

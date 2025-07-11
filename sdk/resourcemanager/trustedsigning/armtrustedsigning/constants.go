@@ -6,7 +6,7 @@ package armtrustedsigning
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trustedsigning/armtrustedsigning"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

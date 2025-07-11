@@ -42,7 +42,7 @@ func NewDataflowClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create a DataflowResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowProfileName - Name of Instance dataflowProfile resource
@@ -70,7 +70,7 @@ func (client *DataflowClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create a DataflowResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *DataflowClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowName string, resource DataflowResource, options *DataflowClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataflowClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *DataflowClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *DataflowClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a DataflowResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowProfileName - Name of Instance dataflowProfile resource
@@ -159,7 +159,7 @@ func (client *DataflowClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a DataflowResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *DataflowClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, dataflowProfileName string, dataflowName string, options *DataflowClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataflowClient.BeginDelete"
@@ -209,7 +209,7 @@ func (client *DataflowClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,7 +218,7 @@ func (client *DataflowClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get a DataflowResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowProfileName - Name of Instance dataflowProfile resource
@@ -274,7 +274,7 @@ func (client *DataflowClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +291,7 @@ func (client *DataflowClient) getHandleResponse(resp *http.Response) (DataflowCl
 
 // NewListByResourceGroupPager - List DataflowResource resources by DataflowProfileResource
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - dataflowProfileName - Name of Instance dataflowProfile resource
@@ -344,7 +344,7 @@ func (client *DataflowClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

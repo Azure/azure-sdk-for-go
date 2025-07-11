@@ -56,6 +56,46 @@ func (c *ClientFactory) NewBillingContainersClient() *BillingContainersClient {
 	}
 }
 
+// NewNamespaceAssetsClient creates a new instance of NamespaceAssetsClient.
+func (c *ClientFactory) NewNamespaceAssetsClient() *NamespaceAssetsClient {
+	return &NamespaceAssetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNamespaceDevicesClient creates a new instance of NamespaceDevicesClient.
+func (c *ClientFactory) NewNamespaceDevicesClient() *NamespaceDevicesClient {
+	return &NamespaceDevicesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNamespaceDiscoveredAssetsClient creates a new instance of NamespaceDiscoveredAssetsClient.
+func (c *ClientFactory) NewNamespaceDiscoveredAssetsClient() *NamespaceDiscoveredAssetsClient {
+	return &NamespaceDiscoveredAssetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNamespaceDiscoveredDevicesClient creates a new instance of NamespaceDiscoveredDevicesClient.
+func (c *ClientFactory) NewNamespaceDiscoveredDevicesClient() *NamespaceDiscoveredDevicesClient {
+	return &NamespaceDiscoveredDevicesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNamespacesClient creates a new instance of NamespacesClient.
+func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
+	return &NamespacesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationStatusClient creates a new instance of OperationStatusClient.
 func (c *ClientFactory) NewOperationStatusClient() *OperationStatusClient {
 	return &OperationStatusClient{
@@ -68,5 +108,29 @@ func (c *ClientFactory) NewOperationStatusClient() *OperationStatusClient {
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewSchemaRegistriesClient creates a new instance of SchemaRegistriesClient.
+func (c *ClientFactory) NewSchemaRegistriesClient() *SchemaRegistriesClient {
+	return &SchemaRegistriesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSchemaVersionsClient creates a new instance of SchemaVersionsClient.
+func (c *ClientFactory) NewSchemaVersionsClient() *SchemaVersionsClient {
+	return &SchemaVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSchemasClient creates a new instance of SchemasClient.
+func (c *ClientFactory) NewSchemasClient() *SchemasClient {
+	return &SchemasClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }

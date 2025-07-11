@@ -8,33 +8,33 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/NeonRoles_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/NeonRoles_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleNeonRolesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNeonRolesClient().BeginCreateOrUpdate(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", armneonpostgres.NeonRole{
+	poller, err := clientFactory.NewNeonRolesClient().BeginCreateOrUpdate(ctx, "rgneon", "myOrganization", "myProject", "feature", "read_only_role", armneonpostgres.NeonRole{
 		Properties: &armneonpostgres.NeonRoleProperties{
-			EntityName: to.Ptr("entity-name"),
+			EntityName: to.Ptr("PostgresReadOnlyRole"),
 			Attributes: []*armneonpostgres.Attributes{
 				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
+					Name:  to.Ptr("on"),
+					Value: to.Ptr("qzp"),
 				},
 			},
-			BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
+			BranchID: to.Ptr("tnmwjbftrvfpepgeytoeqsyhyz"),
 			Permissions: []*string{
-				to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
+				to.Ptr("cgubrzxkomlxoqdua"),
 			},
 			IsSuperUser: to.Ptr(true),
 		},
@@ -52,49 +52,52 @@ func ExampleNeonRolesClient_BeginCreateOrUpdate() {
 	// res = armneonpostgres.NeonRolesClientCreateOrUpdateResponse{
 	// 	NeonRole: &armneonpostgres.NeonRole{
 	// 		Properties: &armneonpostgres.NeonRoleProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
+	// 			EntityID: to.Ptr("role-abc123def45"),
+	// 			EntityName: to.Ptr("PostgresReadOnlyRole"),
+	// 			CreatedAt: to.Ptr("pgpzfhnbpzcihlnyrdtgbgl"),
 	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 			Attributes: []*armneonpostgres.Attributes{
 	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 					Name: to.Ptr("on"),
+	// 					Value: to.Ptr("qzp"),
 	// 				},
 	// 			},
-	// 			BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
+	// 			BranchID: to.Ptr("tnmwjbftrvfpepgeytoeqsyhyz"),
 	// 			Permissions: []*string{
-	// 				to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
+	// 				to.Ptr("cgubrzxkomlxoqdua"),
 	// 			},
 	// 			IsSuperUser: to.Ptr(true),
+	// 			RoleName: to.Ptr("read_only_role"),
+	// 			LastUpdated: to.Ptr("eruvqn"),
+	// 			Owns: to.Ptr("neonDb + 2"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonRoles/entity-name"),
-	// 		Name: to.Ptr("tpbnco"),
-	// 		Type: to.Ptr("vqfmoiwt"),
+	// 		ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature/roles/read_only_role"),
+	// 		Name: to.Ptr("read_only_role"),
+	// 		Type: to.Ptr("Neon.Postgres/organizations/projects/branches/roles"),
 	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+	// 			CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/NeonRoles_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/NeonRoles_Delete_MaximumSet_Gen.json
 func ExampleNeonRolesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNeonRolesClient().Delete(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", nil)
+	res, err := clientFactory.NewNeonRolesClient().Delete(ctx, "rgneon", "myOrganization", "myProject", "feature", "read_only_role", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -105,70 +108,18 @@ func ExampleNeonRolesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/NeonRoles_Get_MaximumSet_Gen.json
-func ExampleNeonRolesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNeonRolesClient().Get(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armneonpostgres.NeonRolesClientGetResponse{
-	// 	NeonRole: &armneonpostgres.NeonRole{
-	// 		Properties: &armneonpostgres.NeonRoleProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
-	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 			Attributes: []*armneonpostgres.Attributes{
-	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 				},
-	// 			},
-	// 			BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
-	// 			Permissions: []*string{
-	// 				to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
-	// 			},
-	// 			IsSuperUser: to.Ptr(true),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonRoles/entity-name"),
-	// 		Name: to.Ptr("tpbnco"),
-	// 		Type: to.Ptr("vqfmoiwt"),
-	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
-	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
-	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-03-01/NeonRoles_List_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/NeonRoles_List_MaximumSet_Gen.json
 func ExampleNeonRolesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNeonRolesClient().NewListPager("rgneon", "test-org", "entity-name", "entity-name", nil)
+	pager := clientFactory.NewNeonRolesClient().NewListPager("rgneon", "myOrganization", "myProject", "feature", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -184,108 +135,40 @@ func ExampleNeonRolesClient_NewListPager() {
 		// 		Value: []*armneonpostgres.NeonRole{
 		// 			{
 		// 				Properties: &armneonpostgres.NeonRoleProperties{
-		// 					EntityID: to.Ptr("entity-id"),
-		// 					EntityName: to.Ptr("entity-name"),
-		// 					CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
+		// 					EntityID: to.Ptr("role-abc123def45"),
+		// 					EntityName: to.Ptr("PostgresReadOnlyRole"),
+		// 					CreatedAt: to.Ptr("pgpzfhnbpzcihlnyrdtgbgl"),
 		// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 		// 					Attributes: []*armneonpostgres.Attributes{
 		// 						{
-		// 							Name: to.Ptr("trhvzyvaqy"),
-		// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+		// 							Name: to.Ptr("on"),
+		// 							Value: to.Ptr("qzp"),
 		// 						},
 		// 					},
-		// 					BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
+		// 					BranchID: to.Ptr("tnmwjbftrvfpepgeytoeqsyhyz"),
 		// 					Permissions: []*string{
-		// 						to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
+		// 						to.Ptr("cgubrzxkomlxoqdua"),
 		// 					},
 		// 					IsSuperUser: to.Ptr(true),
+		// 					RoleName: to.Ptr("read_only_role"),
+		// 					LastUpdated: to.Ptr("eruvqn"),
+		// 					Owns: to.Ptr("neonDb + 2"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonRoles/entity-name"),
-		// 				Name: to.Ptr("tpbnco"),
-		// 				Type: to.Ptr("vqfmoiwt"),
+		// 				ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature/roles/read_only_role"),
+		// 				Name: to.Ptr("read_only_role"),
+		// 				Type: to.Ptr("Neon.Postgres/organizations/projects/branches/roles"),
 		// 				SystemData: &armneonpostgres.SystemData{
-		// 					CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+		// 					CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 		// 					CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 		// 					LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature/roles?api-version=2025-06-23-preview&$skiptoken=next-page"),
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-03-01/NeonRoles_Update_MaximumSet_Gen.json
-func ExampleNeonRolesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNeonRolesClient().BeginUpdate(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", armneonpostgres.NeonRole{
-		Properties: &armneonpostgres.NeonRoleProperties{
-			EntityName: to.Ptr("entity-name"),
-			Attributes: []*armneonpostgres.Attributes{
-				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
-				},
-			},
-			BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
-			Permissions: []*string{
-				to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
-			},
-			IsSuperUser: to.Ptr(true),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armneonpostgres.NeonRolesClientUpdateResponse{
-	// 	NeonRole: &armneonpostgres.NeonRole{
-	// 		Properties: &armneonpostgres.NeonRoleProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
-	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 			Attributes: []*armneonpostgres.Attributes{
-	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 				},
-	// 			},
-	// 			BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
-	// 			Permissions: []*string{
-	// 				to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
-	// 			},
-	// 			IsSuperUser: to.Ptr(true),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonRoles/entity-name"),
-	// 		Name: to.Ptr("tpbnco"),
-	// 		Type: to.Ptr("vqfmoiwt"),
-	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
-	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
-	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 		},
-	// 	},
-	// }
 }

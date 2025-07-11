@@ -6,7 +6,7 @@ package armdurabletask
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdurabletask"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -107,7 +107,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type PurgeableOrchestrationState string
 
 const (
-	// PurgeableOrchestrationStateCanceled - The orchestration is terminated
+	// PurgeableOrchestrationStateCanceled - The orchestration is canceled
 	PurgeableOrchestrationStateCanceled PurgeableOrchestrationState = "Canceled"
 	// PurgeableOrchestrationStateCompleted - The orchestration is completed
 	PurgeableOrchestrationStateCompleted PurgeableOrchestrationState = "Completed"

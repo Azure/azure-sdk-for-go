@@ -8,32 +8,32 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/NeonDatabases_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/NeonDatabases_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleNeonDatabasesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNeonDatabasesClient().BeginCreateOrUpdate(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", armneonpostgres.NeonDatabase{
+	poller, err := clientFactory.NewNeonDatabasesClient().BeginCreateOrUpdate(ctx, "rgneon", "myOrganization", "myProject", "feature", "postgres_main_db", armneonpostgres.NeonDatabase{
 		Properties: &armneonpostgres.NeonDatabaseProperties{
-			EntityName: to.Ptr("entity-name"),
+			EntityName: to.Ptr("MainDatabase"),
 			Attributes: []*armneonpostgres.Attributes{
 				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
+					Name:  to.Ptr("on"),
+					Value: to.Ptr("qzp"),
 				},
 			},
-			BranchID:  to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-			OwnerName: to.Ptr("odmbeg"),
+			BranchID:  to.Ptr("sllrohrmwkgzre"),
+			OwnerName: to.Ptr("rjpysakvuicrlwvzcbmp"),
 		},
 	}, nil)
 	if err != nil {
@@ -49,46 +49,48 @@ func ExampleNeonDatabasesClient_BeginCreateOrUpdate() {
 	// res = armneonpostgres.NeonDatabasesClientCreateOrUpdateResponse{
 	// 	NeonDatabase: &armneonpostgres.NeonDatabase{
 	// 		Properties: &armneonpostgres.NeonDatabaseProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("wgdmylla"),
+	// 			EntityID: to.Ptr("db-456efg789hij"),
+	// 			EntityName: to.Ptr("MainDatabase"),
+	// 			CreatedAt: to.Ptr("kafzh"),
 	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 			Attributes: []*armneonpostgres.Attributes{
 	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 					Name: to.Ptr("on"),
+	// 					Value: to.Ptr("qzp"),
 	// 				},
 	// 			},
-	// 			BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-	// 			OwnerName: to.Ptr("odmbeg"),
+	// 			BranchID: to.Ptr("sllrohrmwkgzre"),
+	// 			OwnerName: to.Ptr("rjpysakvuicrlwvzcbmp"),
+	// 			DatabaseName: to.Ptr("postgres_main_db"),
+	// 			LastUpdated: to.Ptr("ydungfhfqupi"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonDatabases/entity-name"),
-	// 		Name: to.Ptr("awzpsbzkfarwnmi"),
-	// 		Type: to.Ptr("eltqxh"),
+	// 		ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature/databases/postgres_main_db"),
+	// 		Name: to.Ptr("postgres_main_db"),
+	// 		Type: to.Ptr("Neon.Postgres/organizations/projects/branches/databases"),
 	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+	// 			CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/NeonDatabases_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/NeonDatabases_Delete_MaximumSet_Gen.json
 func ExampleNeonDatabasesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNeonDatabasesClient().Delete(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", nil)
+	res, err := clientFactory.NewNeonDatabasesClient().Delete(ctx, "rgneon", "myOrganization", "myProject", "feature", "postgres_main_db", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,67 +101,18 @@ func ExampleNeonDatabasesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/NeonDatabases_Get_MaximumSet_Gen.json
-func ExampleNeonDatabasesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNeonDatabasesClient().Get(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armneonpostgres.NeonDatabasesClientGetResponse{
-	// 	NeonDatabase: &armneonpostgres.NeonDatabase{
-	// 		Properties: &armneonpostgres.NeonDatabaseProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("wgdmylla"),
-	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 			Attributes: []*armneonpostgres.Attributes{
-	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 				},
-	// 			},
-	// 			BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-	// 			OwnerName: to.Ptr("odmbeg"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonDatabases/entity-name"),
-	// 		Name: to.Ptr("awzpsbzkfarwnmi"),
-	// 		Type: to.Ptr("eltqxh"),
-	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
-	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
-	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-03-01/NeonDatabases_List_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/NeonDatabases_List_MaximumSet_Gen.json
 func ExampleNeonDatabasesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNeonDatabasesClient().NewListPager("rgneon", "test-org", "entity-name", "entity-name", nil)
+	pager := clientFactory.NewNeonDatabasesClient().NewListPager("rgneon", "myOrganization", "myProject", "main", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -175,29 +128,31 @@ func ExampleNeonDatabasesClient_NewListPager() {
 		// 		Value: []*armneonpostgres.NeonDatabase{
 		// 			{
 		// 				Properties: &armneonpostgres.NeonDatabaseProperties{
-		// 					EntityID: to.Ptr("entity-id"),
-		// 					EntityName: to.Ptr("entity-name"),
-		// 					CreatedAt: to.Ptr("wgdmylla"),
+		// 					EntityID: to.Ptr("db-123abc"),
+		// 					EntityName: to.Ptr("DatabaseEntity"),
+		// 					CreatedAt: to.Ptr("kafzh"),
 		// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 		// 					Attributes: []*armneonpostgres.Attributes{
 		// 						{
-		// 							Name: to.Ptr("trhvzyvaqy"),
-		// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+		// 							Name: to.Ptr("on"),
+		// 							Value: to.Ptr("qzp"),
 		// 						},
 		// 					},
-		// 					BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-		// 					OwnerName: to.Ptr("odmbeg"),
+		// 					BranchID: to.Ptr("sllrohrmwkgzre"),
+		// 					OwnerName: to.Ptr("rjpysakvuicrlwvzcbmp"),
+		// 					DatabaseName: to.Ptr("MainDatabase"),
+		// 					LastUpdated: to.Ptr("ydungfhfqupi"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonDatabases/entity-name"),
-		// 				Name: to.Ptr("awzpsbzkfarwnmi"),
-		// 				Type: to.Ptr("eltqxh"),
+		// 				ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/main/databases/vctycgtijyr"),
+		// 				Name: to.Ptr("vctycgtijyr"),
+		// 				Type: to.Ptr("ubalvxs"),
 		// 				SystemData: &armneonpostgres.SystemData{
-		// 					CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+		// 					CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 		// 					CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 		// 					LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -205,69 +160,4 @@ func ExampleNeonDatabasesClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-03-01/NeonDatabases_Update_MaximumSet_Gen.json
-func ExampleNeonDatabasesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNeonDatabasesClient().BeginUpdate(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", armneonpostgres.NeonDatabase{
-		Properties: &armneonpostgres.NeonDatabaseProperties{
-			EntityName: to.Ptr("entity-name"),
-			Attributes: []*armneonpostgres.Attributes{
-				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
-				},
-			},
-			BranchID:  to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-			OwnerName: to.Ptr("odmbeg"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armneonpostgres.NeonDatabasesClientUpdateResponse{
-	// 	NeonDatabase: &armneonpostgres.NeonDatabase{
-	// 		Properties: &armneonpostgres.NeonDatabaseProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("wgdmylla"),
-	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 			Attributes: []*armneonpostgres.Attributes{
-	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 				},
-	// 			},
-	// 			BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-	// 			OwnerName: to.Ptr("odmbeg"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/neonDatabases/entity-name"),
-	// 		Name: to.Ptr("awzpsbzkfarwnmi"),
-	// 		Type: to.Ptr("eltqxh"),
-	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
-	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
-	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 		},
-	// 	},
-	// }
 }

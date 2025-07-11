@@ -100,6 +100,10 @@ func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMaximu
 		// 	SummaryResourceListResult: armiotfirmwaredefense.SummaryResourceListResult{
 		// 		Value: []*armiotfirmwaredefense.SummaryResource{
 		// 			{
+		// 				Properties: &armiotfirmwaredefense.SummaryResourceProperties{
+		// 					SummaryType: to.Ptr(armiotfirmwaredefense.SummaryType("SummaryResourceProperties")),
+		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
+		// 				},
 		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
 		// 				Name: to.Ptr(armiotfirmwaredefense.SummaryType("zmei")),
 		// 				Type: to.Ptr("psmxtcvsakwewovdqlcndeaisxf"),

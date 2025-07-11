@@ -5,7 +5,7 @@
 package armconnectedcache
 
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedcache/armconnectedcache"
+	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedcache/armconnectedcache"
 	moduleVersion = "v0.1.0"
 )
 
@@ -13,13 +13,13 @@ const (
 type ActionType string
 
 const (
-	// ActionTypeInternal - Actions are for internal-only APIs.
+// ActionTypeInternal - Actions are for internal-only APIs.
 	ActionTypeInternal ActionType = "Internal"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
+	return []ActionType{	
 		ActionTypeInternal,
 	}
 }
@@ -28,17 +28,17 @@ func PossibleActionTypeValues() []ActionType {
 type AutoUpdateRingType string
 
 const (
-	// AutoUpdateRingTypeFast - customer selection of fast / auto update to install mcc on their physical vm
+// AutoUpdateRingTypeFast - customer selection of fast / auto update to install mcc on their physical vm
 	AutoUpdateRingTypeFast AutoUpdateRingType = "Fast"
-	// AutoUpdateRingTypePreview - customer selection of preview update install mcc on their physical vm
+// AutoUpdateRingTypePreview - customer selection of preview update install mcc on their physical vm
 	AutoUpdateRingTypePreview AutoUpdateRingType = "Preview"
-	// AutoUpdateRingTypeSlow - customer selection of slow update to install mcc on their physical vm
+// AutoUpdateRingTypeSlow - customer selection of slow update to install mcc on their physical vm
 	AutoUpdateRingTypeSlow AutoUpdateRingType = "Slow"
 )
 
 // PossibleAutoUpdateRingTypeValues returns the possible values for the AutoUpdateRingType const type.
 func PossibleAutoUpdateRingTypeValues() []AutoUpdateRingType {
-	return []AutoUpdateRingType{
+	return []AutoUpdateRingType{	
 		AutoUpdateRingTypeFast,
 		AutoUpdateRingTypePreview,
 		AutoUpdateRingTypeSlow,
@@ -49,19 +49,19 @@ func PossibleAutoUpdateRingTypeValues() []AutoUpdateRingType {
 type BgpReviewStateEnum string
 
 const (
-	// BgpReviewStateEnumApproved - bgp is in Approved state
+// BgpReviewStateEnumApproved - bgp is in Approved state
 	BgpReviewStateEnumApproved BgpReviewStateEnum = "Approved"
-	// BgpReviewStateEnumAttentionRequired - bgp is setup need an attention for more troubleshoot
+// BgpReviewStateEnumAttentionRequired - bgp is setup need an attention for more troubleshoot
 	BgpReviewStateEnumAttentionRequired BgpReviewStateEnum = "AttentionRequired"
-	// BgpReviewStateEnumInReview - bgp is in review state
+// BgpReviewStateEnumInReview - bgp is in review state
 	BgpReviewStateEnumInReview BgpReviewStateEnum = "InReview"
-	// BgpReviewStateEnumNotConfigured - bgp not configured
+// BgpReviewStateEnumNotConfigured - bgp not configured
 	BgpReviewStateEnumNotConfigured BgpReviewStateEnum = "NotConfigured"
 )
 
 // PossibleBgpReviewStateEnumValues returns the possible values for the BgpReviewStateEnum const type.
 func PossibleBgpReviewStateEnumValues() []BgpReviewStateEnum {
-	return []BgpReviewStateEnum{
+	return []BgpReviewStateEnum{	
 		BgpReviewStateEnumApproved,
 		BgpReviewStateEnumAttentionRequired,
 		BgpReviewStateEnumInReview,
@@ -73,15 +73,15 @@ func PossibleBgpReviewStateEnumValues() []BgpReviewStateEnum {
 type ConfigurationState string
 
 const (
-	// ConfigurationStateConfigured - connected cache setup configured
+// ConfigurationStateConfigured - connected cache setup configured
 	ConfigurationStateConfigured ConfigurationState = "Configured"
-	// ConfigurationStateNotConfiguredIP - connected cache setup not configured
+// ConfigurationStateNotConfiguredIP - connected cache setup not configured
 	ConfigurationStateNotConfiguredIP ConfigurationState = "NotConfigured_Ip"
 )
 
 // PossibleConfigurationStateValues returns the possible values for the ConfigurationState const type.
 func PossibleConfigurationStateValues() []ConfigurationState {
-	return []ConfigurationState{
+	return []ConfigurationState{	
 		ConfigurationStateConfigured,
 		ConfigurationStateNotConfiguredIP,
 	}
@@ -91,19 +91,19 @@ func PossibleConfigurationStateValues() []ConfigurationState {
 type CreatedByType string
 
 const (
-	// CreatedByTypeApplication - The entity was created by an application.
+// CreatedByTypeApplication - The entity was created by an application.
 	CreatedByTypeApplication CreatedByType = "Application"
-	// CreatedByTypeKey - The entity was created by a key.
+// CreatedByTypeKey - The entity was created by a key.
 	CreatedByTypeKey CreatedByType = "Key"
-	// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
+// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	// CreatedByTypeUser - The entity was created by a user.
+// CreatedByTypeUser - The entity was created by a user.
 	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -115,41 +115,20 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type CustomerTransitState string
 
 const (
-	// CustomerTransitStateCombinedTransit - transit provider and have own subscribers
+// CustomerTransitStateCombinedTransit - transit provider and have own subscribers
 	CustomerTransitStateCombinedTransit CustomerTransitState = "CombinedTransit"
-	// CustomerTransitStateNoTransit - do not have transit
+// CustomerTransitStateNoTransit - do not have transit
 	CustomerTransitStateNoTransit CustomerTransitState = "NoTransit"
-	// CustomerTransitStateTransitOnly - pure transit provider or network service provider
+// CustomerTransitStateTransitOnly - pure transit provider or network service provider
 	CustomerTransitStateTransitOnly CustomerTransitState = "TransitOnly"
 )
 
 // PossibleCustomerTransitStateValues returns the possible values for the CustomerTransitState const type.
 func PossibleCustomerTransitStateValues() []CustomerTransitState {
-	return []CustomerTransitState{
+	return []CustomerTransitState{	
 		CustomerTransitStateCombinedTransit,
 		CustomerTransitStateNoTransit,
 		CustomerTransitStateTransitOnly,
-	}
-}
-
-// CycleType - Update Cycle type
-type CycleType string
-
-const (
-	// CycleTypeFast - customer selection of fast / auto update to install mcc on their physical vm
-	CycleTypeFast CycleType = "Fast"
-	// CycleTypePreview - customer selection of preview update install mcc on their physical vm
-	CycleTypePreview CycleType = "Preview"
-	// CycleTypeSlow - customer selection of slow update to install mcc on their physical vm
-	CycleTypeSlow CycleType = "Slow"
-)
-
-// PossibleCycleTypeValues returns the possible values for the CycleType const type.
-func PossibleCycleTypeValues() []CycleType {
-	return []CycleType{
-		CycleTypeFast,
-		CycleTypePreview,
-		CycleTypeSlow,
 	}
 }
 
@@ -158,17 +137,17 @@ func PossibleCycleTypeValues() []CycleType {
 type Origin string
 
 const (
-	// OriginSystem - Indicates the operation is initiated by a system.
+// OriginSystem - Indicates the operation is initiated by a system.
 	OriginSystem Origin = "system"
-	// OriginUser - Indicates the operation is initiated by a user.
+// OriginUser - Indicates the operation is initiated by a user.
 	OriginUser Origin = "user"
-	// OriginUserSystem - Indicates the operation is initiated by a user or system.
+// OriginUserSystem - Indicates the operation is initiated by a user or system.
 	OriginUserSystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns the possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{
+	return []Origin{	
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
@@ -179,17 +158,17 @@ func PossibleOriginValues() []Origin {
 type OsType string
 
 const (
-	// OsTypeEflow - cache node installs on Azure Eflow
+// OsTypeEflow - cache node installs on Azure Eflow
 	OsTypeEflow OsType = "Eflow"
-	// OsTypeLinux - cache node installs on Linux Operating system
+// OsTypeLinux - cache node installs on Linux Operating system
 	OsTypeLinux OsType = "Linux"
-	// OsTypeWindows - cache node installs on windows operating system
+// OsTypeWindows - cache node installs on windows operating system
 	OsTypeWindows OsType = "Windows"
 )
 
 // PossibleOsTypeValues returns the possible values for the OsType const type.
 func PossibleOsTypeValues() []OsType {
-	return []OsType{
+	return []OsType{	
 		OsTypeEflow,
 		OsTypeLinux,
 		OsTypeWindows,
@@ -200,25 +179,25 @@ func PossibleOsTypeValues() []OsType {
 type ProvisioningState string
 
 const (
-	// ProvisioningStateAccepted - Accepted state of the provisioning state during the Async Operations
+// ProvisioningStateAccepted - Accepted state of the provisioning state during the Async Operations
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
-	// ProvisioningStateCanceled - Resource creation was canceled.
+// ProvisioningStateCanceled - Resource creation was canceled.
 	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateDeleting - Deleting state of the provisioning state
+// ProvisioningStateDeleting - Deleting state of the provisioning state
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Resource creation failed.
+// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateSucceeded - Resource has been created.
+// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	// ProvisioningStateUnknown - unknown state of the provisioning state
+// ProvisioningStateUnknown - unknown state of the provisioning state
 	ProvisioningStateUnknown ProvisioningState = "Unknown"
-	// ProvisioningStateUpgrading - Upgrading state of the provisioning state
+// ProvisioningStateUpgrading - Upgrading state of the provisioning state
 	ProvisioningStateUpgrading ProvisioningState = "Upgrading"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
+	return []ProvisioningState{	
 		ProvisioningStateAccepted,
 		ProvisioningStateCanceled,
 		ProvisioningStateDeleting,
@@ -233,16 +212,17 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type ProxyRequired string
 
 const (
-	// ProxyRequiredNone - Proxy is not required in setup
+// ProxyRequiredNone - Proxy is not required in setup
 	ProxyRequiredNone ProxyRequired = "None"
-	// ProxyRequiredRequired - proxy is required in setup
+// ProxyRequiredRequired - proxy is required in setup
 	ProxyRequiredRequired ProxyRequired = "Required"
 )
 
 // PossibleProxyRequiredValues returns the possible values for the ProxyRequired const type.
 func PossibleProxyRequiredValues() []ProxyRequired {
-	return []ProxyRequired{
+	return []ProxyRequired{	
 		ProxyRequiredNone,
 		ProxyRequiredRequired,
 	}
 }
+

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -28,17 +28,9 @@ type NeonRolesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, neonRoleName string, options *armneonpostgres.NeonRolesClientDeleteOptions) (resp azfake.Responder[armneonpostgres.NeonRolesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method NeonRolesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, neonRoleName string, options *armneonpostgres.NeonRolesClientGetOptions) (resp azfake.Responder[armneonpostgres.NeonRolesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// NewListPager is the fake for method NeonRolesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, organizationName string, projectName string, branchName string, options *armneonpostgres.NeonRolesClientListOptions) (resp azfake.PagerResponder[armneonpostgres.NeonRolesClientListResponse])
-
-	// BeginUpdate is the fake for method NeonRolesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, neonRoleName string, properties armneonpostgres.NeonRole, options *armneonpostgres.NeonRolesClientBeginUpdateOptions) (resp azfake.PollerResponder[armneonpostgres.NeonRolesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNeonRolesServerTransport creates a new instance of NeonRolesServerTransport with the provided implementation.
@@ -49,7 +41,6 @@ func NewNeonRolesServerTransport(srv *NeonRolesServer) *NeonRolesServerTransport
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armneonpostgres.NeonRolesClientCreateOrUpdateResponse]](),
 		newListPager:        newTracker[azfake.PagerResponder[armneonpostgres.NeonRolesClientListResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armneonpostgres.NeonRolesClientUpdateResponse]](),
 	}
 }
 
@@ -59,7 +50,6 @@ type NeonRolesServerTransport struct {
 	srv                 *NeonRolesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armneonpostgres.NeonRolesClientCreateOrUpdateResponse]]
 	newListPager        *tracker[azfake.PagerResponder[armneonpostgres.NeonRolesClientListResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armneonpostgres.NeonRolesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NeonRolesServerTransport.
@@ -89,12 +79,8 @@ func (n *NeonRolesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NeonRolesClient.Delete":
 				res.resp, res.err = n.dispatchDelete(req)
-			case "NeonRolesClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
 			case "NeonRolesClient.NewListPager":
 				res.resp, res.err = n.dispatchNewListPager(req)
-			case "NeonRolesClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -123,7 +109,7 @@ func (n *NeonRolesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Neon\.Postgres/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/branches/(?P<branchName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/neonRoles/(?P<neonRoleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armneonpostgres.NeonRole](req)
@@ -181,7 +167,7 @@ func (n *NeonRolesServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Neon\.Postgres/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/branches/(?P<branchName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/neonRoles/(?P<neonRoleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
+	if len(matches) < 7 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -219,51 +205,6 @@ func (n *NeonRolesServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (n *NeonRolesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Neon\.Postgres/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/branches/(?P<branchName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/neonRoles/(?P<neonRoleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-	if err != nil {
-		return nil, err
-	}
-	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-	if err != nil {
-		return nil, err
-	}
-	branchNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("branchName")])
-	if err != nil {
-		return nil, err
-	}
-	neonRoleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("neonRoleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, organizationNameParam, projectNameParam, branchNameParam, neonRoleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NeonRole, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (n *NeonRolesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if n.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -273,7 +214,7 @@ func (n *NeonRolesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Neon\.Postgres/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/branches/(?P<branchName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/neonRoles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -310,66 +251,6 @@ func (n *NeonRolesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if !server.PagerResponderMore(newListPager) {
 		n.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NeonRolesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Neon\.Postgres/organizations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/branches/(?P<branchName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/neonRoles/(?P<neonRoleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armneonpostgres.NeonRole](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		organizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("organizationName")])
-		if err != nil {
-			return nil, err
-		}
-		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-		if err != nil {
-			return nil, err
-		}
-		branchNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("branchName")])
-		if err != nil {
-			return nil, err
-		}
-		neonRoleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("neonRoleName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, organizationNameParam, projectNameParam, branchNameParam, neonRoleNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

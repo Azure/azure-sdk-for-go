@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,23 +28,23 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 		Properties: &armconnectedcache.CacheNodeProperty{
 			CacheNode: &armconnectedcache.CacheNodeEntity{
 				FullyQualifiedResourceID: to.Ptr("yeinlleavzbehelhsucb"),
-				CustomerName:             to.Ptr("zsklcocjfjhkcpmzyefzkwamdzc"),
-				IPAddress:                to.Ptr("gbfkdhloyphnpnhemwrcrxlk"),
-				CustomerIndex:            to.Ptr("vafvezmelfgmjsrccjukrhppljvipg"),
-				CacheNodeID:              to.Ptr("fmrjefyddfn"),
-				CacheNodeName:            to.Ptr("qppvqxliajjfoalzjbgmxggr"),
-				CustomerAsn:              to.Ptr[int32](25),
-				IsEnabled:                to.Ptr(true),
+				CustomerName: to.Ptr("zsklcocjfjhkcpmzyefzkwamdzc"),
+				IPAddress: to.Ptr("gbfkdhloyphnpnhemwrcrxlk"),
+				CustomerIndex: to.Ptr("vafvezmelfgmjsrccjukrhppljvipg"),
+				CacheNodeID: to.Ptr("fmrjefyddfn"),
+				CacheNodeName: to.Ptr("qppvqxliajjfoalzjbgmxggr"),
+				CustomerAsn: to.Ptr[int32](25),
+				IsEnabled: to.Ptr(true),
 				MaxAllowableEgressInMbps: to.Ptr[int32](27),
-				IsEnterpriseManaged:      to.Ptr(true),
+				IsEnterpriseManaged: to.Ptr(true),
 				CidrCSV: []*string{
 					to.Ptr("nlqlvrthafvvljuupcbcw"),
 				},
-				ShouldMigrate:     to.Ptr(true),
+				ShouldMigrate: to.Ptr(true),
 				CidrSelectionType: to.Ptr[int32](11),
 			},
-			StatusCode:    to.Ptr("1"),
-			StatusText:    to.Ptr("Success"),
+			StatusCode: to.Ptr("1"),
+			StatusText: to.Ptr("Success"),
 			StatusDetails: to.Ptr("lgljxmyyoakw"),
 			AdditionalCacheNodeProperties: &armconnectedcache.AdditionalCacheNodeProperties{
 				CacheNodePropertiesDetailsIssuesList: []*string{
@@ -53,8 +53,8 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 				DriveConfiguration: []*armconnectedcache.CacheNodeDriveConfiguration{
 					{
 						PhysicalPath: to.Ptr("pcbkezoofhamkycot"),
-						SizeInGb:     to.Ptr[int32](14),
-						CacheNumber:  to.Ptr[int32](11),
+						SizeInGb: to.Ptr[int32](14),
+						CacheNumber: to.Ptr[int32](11),
 						NginxMapping: to.Ptr("cirlpkpuxg"),
 					},
 				},
@@ -64,14 +64,14 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 				ProxyURLConfiguration: &armconnectedcache.ProxyURLConfiguration{
 					ProxyURL: to.Ptr("hplstyg"),
 				},
-				ProxyURL:          to.Ptr("ihkzxlzvpcywtzrogupqozkdud"),
 				OptionalProperty1: to.Ptr("ph"),
 				OptionalProperty2: to.Ptr("soqqgpgcbhb"),
 				OptionalProperty3: to.Ptr("fpnycrbagptsujiotnjfuhlm"),
 				OptionalProperty4: to.Ptr("gesqugrxvhxlxxyvatgrautxwlmxsf"),
 				OptionalProperty5: to.Ptr("zknjgzpaqtvdqjydd"),
 			},
-			Error: &armconnectedcache.ErrorDetail{},
+			Error: &armconnectedcache.ErrorDetail{
+			},
 		},
 		Tags: map[string]*string{
 			"key259": to.Ptr("qbkixjuyjkoj"),
@@ -173,7 +173,6 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	// 				ProxyURLConfiguration: &armconnectedcache.ProxyURLConfiguration{
 	// 					ProxyURL: to.Ptr("hplstyg"),
 	// 				},
-	// 				ProxyURL: to.Ptr("ihkzxlzvpcywtzrogupqozkdud"),
 	// 				OptionalProperty1: to.Ptr("ph"),
 	// 				OptionalProperty2: to.Ptr("soqqgpgcbhb"),
 	// 				OptionalProperty3: to.Ptr("fpnycrbagptsujiotnjfuhlm"),
@@ -203,7 +202,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Delete_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +223,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +327,6 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_Get() {
 	// 				ProxyURLConfiguration: &armconnectedcache.ProxyURLConfiguration{
 	// 					ProxyURL: to.Ptr("hplstyg"),
 	// 				},
-	// 				ProxyURL: to.Ptr("ihkzxlzvpcywtzrogupqozkdud"),
 	// 				OptionalProperty1: to.Ptr("ph"),
 	// 				OptionalProperty2: to.Ptr("soqqgpgcbhb"),
 	// 				OptionalProperty3: to.Ptr("fpnycrbagptsujiotnjfuhlm"),
@@ -358,7 +356,71 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
+func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconnectedcache.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnterpriseMccCacheNodesOperationsClient().GetCacheNodeAutoUpdateHistory(ctx, "rgConnectedCache", "MccRPTest1", "MCCCachenode1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{
+	// 	MccCacheNodeAutoUpdateHistory: &armconnectedcache.MccCacheNodeAutoUpdateHistory{
+	// 		Properties: &armconnectedcache.MccCacheNodeAutoUpdateHistoryProperties{
+	// 			CustomerID: to.Ptr("fqyulypmqacwoifqnddnkcexbgm"),
+	// 			CacheNodeID: to.Ptr("elwtomk"),
+	// 			AutoUpdateHistory: []*armconnectedcache.MccCacheNodeAutoUpdateInfo{
+	// 				{
+	// 					ImageURIBeforeUpdate: to.Ptr("ne"),
+	// 					ImageURITargeted: to.Ptr("zqgjxlqoucwyjf"),
+	// 					ImageURITerminal: to.Ptr("akng"),
+	// 					AutoUpdateRingType: to.Ptr[int32](16),
+	// 					MovedToTerminalStateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:45.657Z"); return t}()),
+	// 					RuleRequestedWeek: to.Ptr[int32](1),
+	// 					RuleRequestedDay: to.Ptr[int32](9),
+	// 					CreatedDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:45.657Z"); return t}()),
+	// 					UpdatedRegistryDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:45.657Z"); return t}()),
+	// 					PlanChangeLogText: to.Ptr("uhfsokrwx"),
+	// 					AutoUpdateLastAppliedStatus: to.Ptr[int32](24),
+	// 					AutoUpdateLastAppliedStatusText: to.Ptr("cwoy"),
+	// 					AutoUpdateLastAppliedStatusDetailedText: to.Ptr("oicfonhqlnrc"),
+	// 					PlanID: to.Ptr[int64](17),
+	// 					TimeToGoLiveDateTime: to.Ptr("wqhjexgtkqzu"),
+	// 					RuleRequestedMinute: to.Ptr("ewoqhdmofybbpf"),
+	// 					RuleRequestedHour: to.Ptr("degiarxknlfqfgwz"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key5753": to.Ptr("ubrjiectme"),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/DOTest/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/MccRPTest1/enterpriseMccCacheNodes/MCCCachenode1"),
+	// 		Name: to.Ptr("cgy"),
+	// 		Type: to.Ptr("kqbnkmxgllkdxfnsogmmdogjtotj"),
+	// 		SystemData: &armconnectedcache.SystemData{
+	// 			CreatedBy: to.Ptr("gambtqj"),
+	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
+	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeInstallDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +465,114 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeInstallDetails()
 	// }
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
+func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconnectedcache.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnterpriseMccCacheNodesOperationsClient().GetCacheNodeMccIssueDetailsHistory(ctx, "rgConnectedCache", "MccRPTest1", "MCCCachenode1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{
+	// 	MccCacheNodeIssueHistory: &armconnectedcache.MccCacheNodeIssueHistory{
+	// 		Properties: &armconnectedcache.MccCacheNodeIssueHistoryProperties{
+	// 			CustomerID: to.Ptr("xqsblxpzcdxwwlzejepoyqrhbrpqgz"),
+	// 			CacheNodeID: to.Ptr("enw"),
+	// 			MccIssueHistory: []*armconnectedcache.MccIssue{
+	// 				{
+	// 					MccIssueType: to.Ptr("uznqingg"),
+	// 					ToastString: to.Ptr("tkaajhrpptywiwfjnh"),
+	// 					DetailString: to.Ptr("rziwfs"),
+	// 					HelpLink: to.Ptr("fd"),
+	// 					IssueStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:40.167Z"); return t}()),
+	// 					IssueEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:40.167Z"); return t}()),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key587": to.Ptr("tcgetdmzjjwtbvghsskfzzrmnrexgx"),
+	// 		},
+	// 		Location: to.Ptr("msgrhbbqoannzbfuplaxnl"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/DOTest/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/MccRPTest1/enterpriseMccCacheNodes/MCCCachenode1"),
+	// 		Name: to.Ptr("fizavvfblaoosm"),
+	// 		Type: to.Ptr("bkkjnjpkvvlnrcfurjsfdspsnoozu"),
+	// 		SystemData: &armconnectedcache.SystemData{
+	// 			CreatedBy: to.Ptr("gambtqj"),
+	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
+	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeTlsCertificateHistory_MaximumSet_Gen.json
+func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeTLSCertificateHistory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconnectedcache.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnterpriseMccCacheNodesOperationsClient().GetCacheNodeTLSCertificateHistory(ctx, "rgConnectedCache", "MccRPTest1", "MCCCachenode1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse{
+	// 	MccCacheNodeTLSCertificateHistory: &armconnectedcache.MccCacheNodeTLSCertificateHistory{
+	// 		Properties: &armconnectedcache.MccCacheNodeTLSCertificateProperties{
+	// 			CustomerID: to.Ptr("hzqoghvbmzvdk"),
+	// 			CacheNodeID: to.Ptr("bzbrwogbsuat"),
+	// 			TLSCertificateHistory: []*armconnectedcache.MccCacheNodeTLSCertificate{
+	// 				{
+	// 					ActionRequired: to.Ptr("iwvzhqdwdjhvpqfbwovc"),
+	// 					CertificateFileName: to.Ptr("mi"),
+	// 					Thumbprint: to.Ptr("bzztaqiu"),
+	// 					ExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:46.556Z"); return t}()),
+	// 					NotBeforeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:46.556Z"); return t}()),
+	// 					Subject: to.Ptr("vdabg"),
+	// 					SubjectAltName: to.Ptr("sbfyvvyylwjamhjubjjsmypwe"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key6995": to.Ptr("xuobdofbhsuhqzxpwzlacrxbkcgydn"),
+	// 		},
+	// 		Location: to.Ptr("dwqjj"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/DOTest/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/MccRPTest1/enterpriseMccCacheNodes/MCCCachenode1"),
+	// 		Name: to.Ptr("zvazurbeqjdbfs"),
+	// 		Type: to.Ptr("jxnyhcvyyjvkxddgymvlwvwqtewg"),
+	// 		SystemData: &armconnectedcache.SystemData{
+	// 			CreatedBy: to.Ptr("gambtqj"),
+	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
+	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_NewListByEnterpriseMccCustomerResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,7 +682,6 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_NewListByEnterpriseMccCustom
 		// 						ProxyURLConfiguration: &armconnectedcache.ProxyURLConfiguration{
 		// 							ProxyURL: to.Ptr("hplstyg"),
 		// 						},
-		// 						ProxyURL: to.Ptr("ihkzxlzvpcywtzrogupqozkdud"),
 		// 						OptionalProperty1: to.Ptr("ph"),
 		// 						OptionalProperty2: to.Ptr("soqqgpgcbhb"),
 		// 						OptionalProperty3: to.Ptr("fpnycrbagptsujiotnjfuhlm"),
@@ -547,7 +715,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_NewListByEnterpriseMccCustom
 	}
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCacheNodesOperations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Update_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -655,7 +823,6 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_Update() {
 	// 				ProxyURLConfiguration: &armconnectedcache.ProxyURLConfiguration{
 	// 					ProxyURL: to.Ptr("hplstyg"),
 	// 				},
-	// 				ProxyURL: to.Ptr("ihkzxlzvpcywtzrogupqozkdud"),
 	// 				OptionalProperty1: to.Ptr("ph"),
 	// 				OptionalProperty2: to.Ptr("soqqgpgcbhb"),
 	// 				OptionalProperty3: to.Ptr("fpnycrbagptsujiotnjfuhlm"),
@@ -682,3 +849,4 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_Update() {
 	// 	},
 	// }
 }
+

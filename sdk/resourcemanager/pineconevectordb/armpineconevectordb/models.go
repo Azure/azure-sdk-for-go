@@ -27,7 +27,7 @@ type MarketplaceDetails struct {
 	// REQUIRED; Offer details for the marketplace that is selected by the user
 	OfferDetails *OfferDetails
 
-	// Azure subscription id for the marketplace offer is purchased from
+	// Azure subscription id for the the marketplace offer is purchased from
 	SubscriptionID *string
 
 	// READ-ONLY; Marketplace subscription status
@@ -55,7 +55,9 @@ type OfferDetails struct {
 	TermUnit *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay

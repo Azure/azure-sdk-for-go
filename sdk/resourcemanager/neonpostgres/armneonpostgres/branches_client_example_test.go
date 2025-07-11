@@ -8,75 +8,79 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/Branches_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Branches_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBranchesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBranchesClient().BeginCreateOrUpdate(ctx, "rgneon", "test-org", "test-entity", "test-entity", armneonpostgres.Branch{
+	poller, err := clientFactory.NewBranchesClient().BeginCreateOrUpdate(ctx, "rgneon", "myOrganization", "myProject", "feature", armneonpostgres.Branch{
 		Properties: &armneonpostgres.BranchProperties{
-			EntityName: to.Ptr("entity-name"),
+			EntityName: to.Ptr("FeatureBranch"),
 			Attributes: []*armneonpostgres.Attributes{
 				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
+					Name:  to.Ptr("on"),
+					Value: to.Ptr("qzp"),
 				},
 			},
-			ProjectID:    to.Ptr("oik"),
-			ParentID:     to.Ptr("entity-id"),
-			RoleName:     to.Ptr("qrrairsupyosxnqotdwhbpc"),
-			DatabaseName: to.Ptr("duhxebzhd"),
+			ProjectID:    to.Ptr("cxhihpayn"),
+			ParentID:     to.Ptr("parent-123abc"),
+			RoleName:     to.Ptr("lwlafskrxvggwnfu"),
+			DatabaseName: to.Ptr("zxqetv"),
 			Roles: []*armneonpostgres.NeonRoleProperties{
 				{
-					EntityName: to.Ptr("entity-name"),
+					EntityName: to.Ptr("AdminRole"),
 					Attributes: []*armneonpostgres.Attributes{
 						{
-							Name:  to.Ptr("trhvzyvaqy"),
-							Value: to.Ptr("evpkgsskyavybxwwssm"),
+							Name:  to.Ptr("on"),
+							Value: to.Ptr("qzp"),
 						},
 					},
-					BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
+					BranchID: to.Ptr("tnmwjbftrvfpepgeytoeqsyhyz"),
 					Permissions: []*string{
-						to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
+						to.Ptr("cgubrzxkomlxoqdua"),
 					},
 					IsSuperUser: to.Ptr(true),
 				},
 			},
 			Databases: []*armneonpostgres.NeonDatabaseProperties{
 				{
-					EntityName: to.Ptr("entity-name"),
+					EntityName: to.Ptr("MainDatabase"),
 					Attributes: []*armneonpostgres.Attributes{
 						{
-							Name:  to.Ptr("trhvzyvaqy"),
-							Value: to.Ptr("evpkgsskyavybxwwssm"),
+							Name:  to.Ptr("on"),
+							Value: to.Ptr("qzp"),
 						},
 					},
-					BranchID:  to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-					OwnerName: to.Ptr("odmbeg"),
+					BranchID:  to.Ptr("sllrohrmwkgzre"),
+					OwnerName: to.Ptr("rjpysakvuicrlwvzcbmp"),
 				},
 			},
 			Endpoints: []*armneonpostgres.EndpointProperties{
 				{
-					EntityName: to.Ptr("entity-name"),
+					EntityName: to.Ptr("PrimaryEndpoint"),
 					Attributes: []*armneonpostgres.Attributes{
 						{
-							Name:  to.Ptr("trhvzyvaqy"),
-							Value: to.Ptr("evpkgsskyavybxwwssm"),
+							Name:  to.Ptr("on"),
+							Value: to.Ptr("qzp"),
 						},
 					},
-					ProjectID:    to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-					BranchID:     to.Ptr("rzsyrhpfbydxtfkpaa"),
+					ProjectID:    to.Ptr("vwwhykqyr"),
+					BranchID:     to.Ptr("blclbeuzvywzagbuvdo"),
 					EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
+					Size: &armneonpostgres.AutoscalingSize{
+						AutoscalingLimitMinCu: to.Ptr[float32](3),
+						AutoscalingLimitMaxCu: to.Ptr[float32](14),
+					},
 				},
 			},
 		},
@@ -94,100 +98,117 @@ func ExampleBranchesClient_BeginCreateOrUpdate() {
 	// res = armneonpostgres.BranchesClientCreateOrUpdateResponse{
 	// 	Branch: &armneonpostgres.Branch{
 	// 		Properties: &armneonpostgres.BranchProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("dzbqaiixq"),
+	// 			EntityID: to.Ptr("branch-1a2b3c4d5e"),
+	// 			EntityName: to.Ptr("FeatureBranch"),
+	// 			CreatedAt: to.Ptr("fredfsy"),
 	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 			Attributes: []*armneonpostgres.Attributes{
 	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 					Name: to.Ptr("on"),
+	// 					Value: to.Ptr("qzp"),
 	// 				},
 	// 			},
-	// 			ProjectID: to.Ptr("oik"),
-	// 			ParentID: to.Ptr("entity-id"),
-	// 			RoleName: to.Ptr("qrrairsupyosxnqotdwhbpc"),
-	// 			DatabaseName: to.Ptr("duhxebzhd"),
+	// 			ProjectID: to.Ptr("cxhihpayn"),
+	// 			ParentID: to.Ptr("parent-123abc"),
+	// 			RoleName: to.Ptr("lwlafskrxvggwnfu"),
+	// 			DatabaseName: to.Ptr("neonDb"),
 	// 			Roles: []*armneonpostgres.NeonRoleProperties{
 	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
+	// 					EntityID: to.Ptr("role-abc123def45"),
+	// 					EntityName: to.Ptr("PostgresReadOnlyRole"),
+	// 					CreatedAt: to.Ptr("pgpzfhnbpzcihlnyrdtgbgl"),
 	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 					Attributes: []*armneonpostgres.Attributes{
 	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 							Name: to.Ptr("on"),
+	// 							Value: to.Ptr("qzp"),
 	// 						},
 	// 					},
-	// 					BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
+	// 					BranchID: to.Ptr("tnmwjbftrvfpepgeytoeqsyhyz"),
 	// 					Permissions: []*string{
-	// 						to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
+	// 						to.Ptr("cgubrzxkomlxoqdua"),
 	// 					},
 	// 					IsSuperUser: to.Ptr(true),
+	// 					RoleName: to.Ptr("read_only_role"),
+	// 					LastUpdated: to.Ptr("eruvqn"),
+	// 					Owns: to.Ptr("neonDb + 2"),
 	// 				},
 	// 			},
 	// 			Databases: []*armneonpostgres.NeonDatabaseProperties{
 	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("wgdmylla"),
+	// 					EntityID: to.Ptr("db-456efg789hij"),
+	// 					EntityName: to.Ptr("MainDatabase"),
+	// 					CreatedAt: to.Ptr("kafzh"),
 	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 					Attributes: []*armneonpostgres.Attributes{
 	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 							Name: to.Ptr("on"),
+	// 							Value: to.Ptr("qzp"),
 	// 						},
 	// 					},
-	// 					BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-	// 					OwnerName: to.Ptr("odmbeg"),
+	// 					BranchID: to.Ptr("sllrohrmwkgzre"),
+	// 					OwnerName: to.Ptr("rjpysakvuicrlwvzcbmp"),
+	// 					DatabaseName: to.Ptr("postgres_main_db"),
+	// 					LastUpdated: to.Ptr("ydungfhfqupi"),
 	// 				},
 	// 			},
 	// 			Endpoints: []*armneonpostgres.EndpointProperties{
 	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("vhcilurdd"),
+	// 					EntityID: to.Ptr("endpoint-98765xyz"),
+	// 					EntityName: to.Ptr("PrimaryEndpoint"),
+	// 					CreatedAt: to.Ptr("fsjt"),
 	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 					Attributes: []*armneonpostgres.Attributes{
 	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 							Name: to.Ptr("on"),
+	// 							Value: to.Ptr("qzp"),
 	// 						},
 	// 					},
-	// 					ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-	// 					BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
+	// 					ProjectID: to.Ptr("vwwhykqyr"),
+	// 					BranchID: to.Ptr("blclbeuzvywzagbuvdo"),
 	// 					EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
+	// 					EndpointID: to.Ptr("ep-12345abcde"),
+	// 					ComputeName: to.Ptr("primary-endpoint"),
+	// 					Status: to.Ptr(armneonpostgres.EndpointStatus("znpmtyhxfcligjiqcfzsn")),
+	// 					LastActive: to.Ptr("cqewwerjsfgp"),
+	// 					Size: &armneonpostgres.AutoscalingSize{
+	// 						AutoscalingLimitMinCu: to.Ptr[float32](3),
+	// 						AutoscalingLimitMaxCu: to.Ptr[float32](14),
+	// 					},
 	// 				},
 	// 			},
+	// 			BranchID: to.Ptr("branch-987654321"),
+	// 			DataSize: to.Ptr("ajluwwsyjddhuplkoeknwvocwvcm"),
+	// 			LastActive: to.Ptr("ci"),
+	// 			ComputeHours: to.Ptr("tqgibzmzdlsmmlawtckpap"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/test-entity/branches/test-entity"),
-	// 		Name: to.Ptr("qdyblgfrtcnffzvm"),
-	// 		Type: to.Ptr("kciaergnu"),
+	// 		ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature"),
+	// 		Name: to.Ptr("szluwwgbunssokjlsmiuiitqoor"),
+	// 		Type: to.Ptr("zibp"),
 	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+	// 			CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Branches_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Branches_Delete_MaximumSet_Gen.json
 func ExampleBranchesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBranchesClient().Delete(ctx, "rgneon", "test-org", "entity-name", "entity-name", nil)
+	res, err := clientFactory.NewBranchesClient().Delete(ctx, "rgneon", "myOrganization", "myProject", "feature", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -198,18 +219,18 @@ func ExampleBranchesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Branches_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Branches_Get_MaximumSet_Gen.json
 func ExampleBranchesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBranchesClient().Get(ctx, "rgneon", "test-org", "entity-name", "entity-name", nil)
+	res, err := clientFactory.NewBranchesClient().Get(ctx, "rgneon", "myOrganization", "myProject", "feature", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -219,100 +240,117 @@ func ExampleBranchesClient_Get() {
 	// res = armneonpostgres.BranchesClientGetResponse{
 	// 	Branch: &armneonpostgres.Branch{
 	// 		Properties: &armneonpostgres.BranchProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("dzbqaiixq"),
+	// 			EntityID: to.Ptr("branch-1a2b3c4d5e"),
+	// 			EntityName: to.Ptr("FeatureBranch"),
+	// 			CreatedAt: to.Ptr("fredfsy"),
 	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 			Attributes: []*armneonpostgres.Attributes{
 	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 					Name: to.Ptr("on"),
+	// 					Value: to.Ptr("qzp"),
 	// 				},
 	// 			},
-	// 			ProjectID: to.Ptr("oik"),
-	// 			ParentID: to.Ptr("entity-id"),
-	// 			RoleName: to.Ptr("qrrairsupyosxnqotdwhbpc"),
-	// 			DatabaseName: to.Ptr("duhxebzhd"),
+	// 			ProjectID: to.Ptr("cxhihpayn"),
+	// 			ParentID: to.Ptr("parent-123abc"),
+	// 			RoleName: to.Ptr("lwlafskrxvggwnfu"),
+	// 			DatabaseName: to.Ptr("neonDb"),
 	// 			Roles: []*armneonpostgres.NeonRoleProperties{
 	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
+	// 					EntityID: to.Ptr("role-abc123def45"),
+	// 					EntityName: to.Ptr("PostgresReadOnlyRole"),
+	// 					CreatedAt: to.Ptr("pgpzfhnbpzcihlnyrdtgbgl"),
 	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 					Attributes: []*armneonpostgres.Attributes{
 	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 							Name: to.Ptr("on"),
+	// 							Value: to.Ptr("qzp"),
 	// 						},
 	// 					},
-	// 					BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
+	// 					BranchID: to.Ptr("tnmwjbftrvfpepgeytoeqsyhyz"),
 	// 					Permissions: []*string{
-	// 						to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
+	// 						to.Ptr("cgubrzxkomlxoqdua"),
 	// 					},
 	// 					IsSuperUser: to.Ptr(true),
+	// 					RoleName: to.Ptr("read_only_role"),
+	// 					LastUpdated: to.Ptr("eruvqn"),
+	// 					Owns: to.Ptr("neonDb + 2"),
 	// 				},
 	// 			},
 	// 			Databases: []*armneonpostgres.NeonDatabaseProperties{
 	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("wgdmylla"),
+	// 					EntityID: to.Ptr("db-456efg789hij"),
+	// 					EntityName: to.Ptr("MainDatabase"),
+	// 					CreatedAt: to.Ptr("kafzh"),
 	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 					Attributes: []*armneonpostgres.Attributes{
 	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 							Name: to.Ptr("on"),
+	// 							Value: to.Ptr("qzp"),
 	// 						},
 	// 					},
-	// 					BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-	// 					OwnerName: to.Ptr("odmbeg"),
+	// 					BranchID: to.Ptr("sllrohrmwkgzre"),
+	// 					OwnerName: to.Ptr("rjpysakvuicrlwvzcbmp"),
+	// 					DatabaseName: to.Ptr("postgres_main_db"),
+	// 					LastUpdated: to.Ptr("ydungfhfqupi"),
 	// 				},
 	// 			},
 	// 			Endpoints: []*armneonpostgres.EndpointProperties{
 	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("vhcilurdd"),
+	// 					EntityID: to.Ptr("endpoint-98765xyz"),
+	// 					EntityName: to.Ptr("PrimaryEndpoint"),
+	// 					CreatedAt: to.Ptr("fsjt"),
 	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 					Attributes: []*armneonpostgres.Attributes{
 	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 							Name: to.Ptr("on"),
+	// 							Value: to.Ptr("qzp"),
 	// 						},
 	// 					},
-	// 					ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-	// 					BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
+	// 					ProjectID: to.Ptr("vwwhykqyr"),
+	// 					BranchID: to.Ptr("blclbeuzvywzagbuvdo"),
 	// 					EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
+	// 					EndpointID: to.Ptr("ep-12345abcde"),
+	// 					ComputeName: to.Ptr("primary-endpoint"),
+	// 					Status: to.Ptr(armneonpostgres.EndpointStatus("znpmtyhxfcligjiqcfzsn")),
+	// 					LastActive: to.Ptr("cqewwerjsfgp"),
+	// 					Size: &armneonpostgres.AutoscalingSize{
+	// 						AutoscalingLimitMinCu: to.Ptr[float32](3),
+	// 						AutoscalingLimitMaxCu: to.Ptr[float32](14),
+	// 					},
 	// 				},
 	// 			},
+	// 			BranchID: to.Ptr("branch-987654321"),
+	// 			DataSize: to.Ptr("ajluwwsyjddhuplkoeknwvocwvcm"),
+	// 			LastActive: to.Ptr("ci"),
+	// 			ComputeHours: to.Ptr("tqgibzmzdlsmmlawtckpap"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/test-entity/branches/test-entity"),
-	// 		Name: to.Ptr("qdyblgfrtcnffzvm"),
-	// 		Type: to.Ptr("kciaergnu"),
+	// 		ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature"),
+	// 		Name: to.Ptr("feature"),
+	// 		Type: to.Ptr("Neon.Postgres/organizations/projects/branches"),
 	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+	// 			CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Branches_List_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Branches_List_MaximumSet_Gen.json
 func ExampleBranchesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBranchesClient().NewListPager("rgneon", "test-org", "entity-name", nil)
+	pager := clientFactory.NewBranchesClient().NewListPager("rgneon", "myOrganization", "myProject", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -328,252 +366,206 @@ func ExampleBranchesClient_NewListPager() {
 		// 		Value: []*armneonpostgres.Branch{
 		// 			{
 		// 				Properties: &armneonpostgres.BranchProperties{
-		// 					EntityID: to.Ptr("entity-id"),
-		// 					EntityName: to.Ptr("entity-name"),
-		// 					CreatedAt: to.Ptr("dzbqaiixq"),
+		// 					EntityID: to.Ptr("branch-1a2b3c4d5e"),
+		// 					EntityName: to.Ptr("FeatureBranch"),
+		// 					CreatedAt: to.Ptr("fredfsy"),
 		// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 		// 					Attributes: []*armneonpostgres.Attributes{
 		// 						{
-		// 							Name: to.Ptr("trhvzyvaqy"),
-		// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+		// 							Name: to.Ptr("on"),
+		// 							Value: to.Ptr("qzp"),
 		// 						},
 		// 					},
-		// 					ProjectID: to.Ptr("oik"),
-		// 					ParentID: to.Ptr("entity-id"),
-		// 					RoleName: to.Ptr("qrrairsupyosxnqotdwhbpc"),
-		// 					DatabaseName: to.Ptr("duhxebzhd"),
+		// 					ProjectID: to.Ptr("cxhihpayn"),
+		// 					ParentID: to.Ptr("parent-123abc"),
+		// 					RoleName: to.Ptr("lwlafskrxvggwnfu"),
+		// 					DatabaseName: to.Ptr("neonDb"),
 		// 					Roles: []*armneonpostgres.NeonRoleProperties{
 		// 						{
-		// 							EntityID: to.Ptr("entity-id"),
-		// 							EntityName: to.Ptr("entity-name"),
-		// 							CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
+		// 							EntityID: to.Ptr("role-abc123def45"),
+		// 							EntityName: to.Ptr("PostgresReadOnlyRole"),
+		// 							CreatedAt: to.Ptr("pgpzfhnbpzcihlnyrdtgbgl"),
 		// 							ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 		// 							Attributes: []*armneonpostgres.Attributes{
 		// 								{
-		// 									Name: to.Ptr("trhvzyvaqy"),
-		// 									Value: to.Ptr("evpkgsskyavybxwwssm"),
+		// 									Name: to.Ptr("on"),
+		// 									Value: to.Ptr("qzp"),
 		// 								},
 		// 							},
-		// 							BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
+		// 							BranchID: to.Ptr("tnmwjbftrvfpepgeytoeqsyhyz"),
 		// 							Permissions: []*string{
-		// 								to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
+		// 								to.Ptr("cgubrzxkomlxoqdua"),
 		// 							},
 		// 							IsSuperUser: to.Ptr(true),
+		// 							RoleName: to.Ptr("read_only_role"),
+		// 							LastUpdated: to.Ptr("eruvqn"),
+		// 							Owns: to.Ptr("neonDb + 2"),
 		// 						},
 		// 					},
 		// 					Databases: []*armneonpostgres.NeonDatabaseProperties{
 		// 						{
-		// 							EntityID: to.Ptr("entity-id"),
-		// 							EntityName: to.Ptr("entity-name"),
-		// 							CreatedAt: to.Ptr("wgdmylla"),
+		// 							EntityID: to.Ptr("db-456efg789hij"),
+		// 							EntityName: to.Ptr("MainDatabase"),
+		// 							CreatedAt: to.Ptr("kafzh"),
 		// 							ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 		// 							Attributes: []*armneonpostgres.Attributes{
 		// 								{
-		// 									Name: to.Ptr("trhvzyvaqy"),
-		// 									Value: to.Ptr("evpkgsskyavybxwwssm"),
+		// 									Name: to.Ptr("on"),
+		// 									Value: to.Ptr("qzp"),
 		// 								},
 		// 							},
-		// 							BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-		// 							OwnerName: to.Ptr("odmbeg"),
+		// 							BranchID: to.Ptr("sllrohrmwkgzre"),
+		// 							OwnerName: to.Ptr("rjpysakvuicrlwvzcbmp"),
+		// 							DatabaseName: to.Ptr("postgres_main_db"),
+		// 							LastUpdated: to.Ptr("ydungfhfqupi"),
 		// 						},
 		// 					},
 		// 					Endpoints: []*armneonpostgres.EndpointProperties{
 		// 						{
-		// 							EntityID: to.Ptr("entity-id"),
-		// 							EntityName: to.Ptr("entity-name"),
-		// 							CreatedAt: to.Ptr("vhcilurdd"),
+		// 							EntityID: to.Ptr("endpoint-98765xyz"),
+		// 							EntityName: to.Ptr("PrimaryEndpoint"),
+		// 							CreatedAt: to.Ptr("fsjt"),
 		// 							ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 		// 							Attributes: []*armneonpostgres.Attributes{
 		// 								{
-		// 									Name: to.Ptr("trhvzyvaqy"),
-		// 									Value: to.Ptr("evpkgsskyavybxwwssm"),
+		// 									Name: to.Ptr("on"),
+		// 									Value: to.Ptr("qzp"),
 		// 								},
 		// 							},
-		// 							ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-		// 							BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
+		// 							ProjectID: to.Ptr("vwwhykqyr"),
+		// 							BranchID: to.Ptr("blclbeuzvywzagbuvdo"),
 		// 							EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
+		// 							EndpointID: to.Ptr("ep-12345abcde"),
+		// 							ComputeName: to.Ptr("primary-endpoint"),
+		// 							Status: to.Ptr(armneonpostgres.EndpointStatus("znpmtyhxfcligjiqcfzsn")),
+		// 							LastActive: to.Ptr("cqewwerjsfgp"),
+		// 							Size: &armneonpostgres.AutoscalingSize{
+		// 								AutoscalingLimitMinCu: to.Ptr[float32](3),
+		// 								AutoscalingLimitMaxCu: to.Ptr[float32](14),
+		// 							},
 		// 						},
 		// 					},
+		// 					BranchID: to.Ptr("branch-987654321"),
+		// 					DataSize: to.Ptr("ajluwwsyjddhuplkoeknwvocwvcm"),
+		// 					LastActive: to.Ptr("ci"),
+		// 					ComputeHours: to.Ptr("tqgibzmzdlsmmlawtckpap"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/test-entity/branches/test-entity"),
-		// 				Name: to.Ptr("qdyblgfrtcnffzvm"),
-		// 				Type: to.Ptr("kciaergnu"),
+		// 				ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature"),
+		// 				Name: to.Ptr("feature"),
+		// 				Type: to.Ptr("Neon.Postgres/organizations/projects/branches"),
 		// 				SystemData: &armneonpostgres.SystemData{
-		// 					CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+		// 					CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 		// 					CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 		// 					LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches?api-version=2025-06-23-preview&$skiptoken=next-page"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-03-01/Branches_Update_MaximumSet_Gen.json
-func ExampleBranchesClient_BeginUpdate() {
+// Generated from example definition: 2025-06-23-preview/Branches_Preflight_Database_Gen.json
+func ExampleBranchesClient_Preflight_branchesPreflightDatabaseGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBranchesClient().BeginUpdate(ctx, "rgneon", "test-org", "entity-name", "entity-name", armneonpostgres.Branch{
-		Properties: &armneonpostgres.BranchProperties{
-			EntityName: to.Ptr("entity-name"),
-			Attributes: []*armneonpostgres.Attributes{
-				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
-				},
-			},
-			ProjectID:    to.Ptr("oik"),
-			ParentID:     to.Ptr("entity-id"),
-			RoleName:     to.Ptr("qrrairsupyosxnqotdwhbpc"),
-			DatabaseName: to.Ptr("duhxebzhd"),
-			Roles: []*armneonpostgres.NeonRoleProperties{
-				{
-					EntityName: to.Ptr("entity-name"),
-					Attributes: []*armneonpostgres.Attributes{
-						{
-							Name:  to.Ptr("trhvzyvaqy"),
-							Value: to.Ptr("evpkgsskyavybxwwssm"),
-						},
-					},
-					BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
-					Permissions: []*string{
-						to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
-					},
-					IsSuperUser: to.Ptr(true),
-				},
-			},
-			Databases: []*armneonpostgres.NeonDatabaseProperties{
-				{
-					EntityName: to.Ptr("entity-name"),
-					Attributes: []*armneonpostgres.Attributes{
-						{
-							Name:  to.Ptr("trhvzyvaqy"),
-							Value: to.Ptr("evpkgsskyavybxwwssm"),
-						},
-					},
-					BranchID:  to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-					OwnerName: to.Ptr("odmbeg"),
-				},
-			},
-			Endpoints: []*armneonpostgres.EndpointProperties{
-				{
-					EntityName: to.Ptr("entity-name"),
-					Attributes: []*armneonpostgres.Attributes{
-						{
-							Name:  to.Ptr("trhvzyvaqy"),
-							Value: to.Ptr("evpkgsskyavybxwwssm"),
-						},
-					},
-					ProjectID:    to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-					BranchID:     to.Ptr("rzsyrhpfbydxtfkpaa"),
-					EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
-				},
-			},
+	res, err := clientFactory.NewBranchesClient().Preflight(ctx, "rgneon", "myOrganization", "myProject", "myBranch", armneonpostgres.PreflightCheckParameters{
+		ProjectID:  to.Ptr("project-123"),
+		BranchID:   to.Ptr("branch-123"),
+		EntityType: to.Ptr(armneonpostgres.EntityType("database")),
+		DatabaseProperties: &armneonpostgres.NeonDatabaseProperties{
+			DatabaseName: to.Ptr("analytics"),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armneonpostgres.BranchesClientPreflightResponse{
+	// 	PreflightCheckResult: &armneonpostgres.PreflightCheckResult{
+	// 		IsValid: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-06-23-preview/Branches_Preflight_Endpoint_Gen.json
+func ExampleBranchesClient_Preflight_branchesPreflightEndpointGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBranchesClient().Preflight(ctx, "rgneon", "myOrganization", "myProject", "myBranch", armneonpostgres.PreflightCheckParameters{
+		ProjectID:  to.Ptr("project-123"),
+		BranchID:   to.Ptr("branch-123"),
+		EntityType: to.Ptr(armneonpostgres.EntityTypeEndpoint),
+		EndpointProperties: &armneonpostgres.EndpointProperties{
+			EndpointID:   to.Ptr("endpoint-456"),
+			EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadWrite),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armneonpostgres.BranchesClientUpdateResponse{
-	// 	Branch: &armneonpostgres.Branch{
-	// 		Properties: &armneonpostgres.BranchProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("dzbqaiixq"),
-	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 			Attributes: []*armneonpostgres.Attributes{
-	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 				},
-	// 			},
-	// 			ProjectID: to.Ptr("oik"),
-	// 			ParentID: to.Ptr("entity-id"),
-	// 			RoleName: to.Ptr("qrrairsupyosxnqotdwhbpc"),
-	// 			DatabaseName: to.Ptr("duhxebzhd"),
-	// 			Roles: []*armneonpostgres.NeonRoleProperties{
-	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("sqpvswctybrhimiwidhnnlxclfry"),
-	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 					Attributes: []*armneonpostgres.Attributes{
-	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 						},
-	// 					},
-	// 					BranchID: to.Ptr("wxbojkmdgaggkfiwqfakdkbyztm"),
-	// 					Permissions: []*string{
-	// 						to.Ptr("myucqecpjriewzohxvadgkhiudnyx"),
-	// 					},
-	// 					IsSuperUser: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			Databases: []*armneonpostgres.NeonDatabaseProperties{
-	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("wgdmylla"),
-	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 					Attributes: []*armneonpostgres.Attributes{
-	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 						},
-	// 					},
-	// 					BranchID: to.Ptr("orfdwdmzvfvlnrgussvcvoek"),
-	// 					OwnerName: to.Ptr("odmbeg"),
-	// 				},
-	// 			},
-	// 			Endpoints: []*armneonpostgres.EndpointProperties{
-	// 				{
-	// 					EntityID: to.Ptr("entity-id"),
-	// 					EntityName: to.Ptr("entity-name"),
-	// 					CreatedAt: to.Ptr("vhcilurdd"),
-	// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 					Attributes: []*armneonpostgres.Attributes{
-	// 						{
-	// 							Name: to.Ptr("trhvzyvaqy"),
-	// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 						},
-	// 					},
-	// 					ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-	// 					BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
-	// 					EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
-	// 				},
-	// 			},
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/test-entity/branches/test-entity"),
-	// 		Name: to.Ptr("qdyblgfrtcnffzvm"),
-	// 		Type: to.Ptr("kciaergnu"),
-	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
-	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
-	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 		},
+	// res = armneonpostgres.BranchesClientPreflightResponse{
+	// 	PreflightCheckResult: &armneonpostgres.PreflightCheckResult{
+	// 		IsValid: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-06-23-preview/Branches_Preflight_MaximumSet_Gen.json
+func ExampleBranchesClient_Preflight_branchesPreflightMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBranchesClient().Preflight(ctx, "rgneon", "myOrganization", "myProject", "myBranch", armneonpostgres.PreflightCheckParameters{
+		ProjectID:  to.Ptr("project-123"),
+		BranchID:   to.Ptr("branch-123"),
+		EntityType: to.Ptr(armneonpostgres.EntityTypeBranch),
+		BranchProperties: &armneonpostgres.BranchProperties{
+			Branch:       to.Ptr("myBranch"),
+			BranchID:     to.Ptr("branch-123"),
+			RoleName:     to.Ptr("admin"),
+			DatabaseName: to.Ptr("application"),
+			ProjectID:    to.Ptr("project-123"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armneonpostgres.BranchesClientPreflightResponse{
+	// 	PreflightCheckResult: &armneonpostgres.PreflightCheckResult{
+	// 		IsValid: to.Ptr(true),
 	// 	},
 	// }
 }

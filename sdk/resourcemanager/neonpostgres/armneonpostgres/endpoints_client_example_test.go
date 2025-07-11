@@ -8,33 +8,37 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/Endpoints_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Endpoints_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEndpointsClient().BeginCreateOrUpdate(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", armneonpostgres.Endpoint{
+	poller, err := clientFactory.NewEndpointsClient().BeginCreateOrUpdate(ctx, "rgneon", "myOrganization", "myProject", "feature", "primary-endpoint", armneonpostgres.Endpoint{
 		Properties: &armneonpostgres.EndpointProperties{
-			EntityName: to.Ptr("entity-name"),
+			EntityName: to.Ptr("PrimaryEndpoint"),
 			Attributes: []*armneonpostgres.Attributes{
 				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
+					Name:  to.Ptr("on"),
+					Value: to.Ptr("qzp"),
 				},
 			},
-			ProjectID:    to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-			BranchID:     to.Ptr("rzsyrhpfbydxtfkpaa"),
+			ProjectID:    to.Ptr("vwwhykqyr"),
+			BranchID:     to.Ptr("blclbeuzvywzagbuvdo"),
 			EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
+			Size: &armneonpostgres.AutoscalingSize{
+				AutoscalingLimitMinCu: to.Ptr[float32](3),
+				AutoscalingLimitMaxCu: to.Ptr[float32](14),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -50,47 +54,55 @@ func ExampleEndpointsClient_BeginCreateOrUpdate() {
 	// res = armneonpostgres.EndpointsClientCreateOrUpdateResponse{
 	// 	Endpoint: &armneonpostgres.Endpoint{
 	// 		Properties: &armneonpostgres.EndpointProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("vhcilurdd"),
+	// 			EntityID: to.Ptr("endpoint-98765xyz"),
+	// 			EntityName: to.Ptr("PrimaryEndpoint"),
+	// 			CreatedAt: to.Ptr("fsjt"),
 	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 	// 			Attributes: []*armneonpostgres.Attributes{
 	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
+	// 					Name: to.Ptr("on"),
+	// 					Value: to.Ptr("qzp"),
 	// 				},
 	// 			},
-	// 			ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-	// 			BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
+	// 			ProjectID: to.Ptr("vwwhykqyr"),
+	// 			BranchID: to.Ptr("blclbeuzvywzagbuvdo"),
 	// 			EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
+	// 			EndpointID: to.Ptr("ep-12345abcde"),
+	// 			ComputeName: to.Ptr("primary-endpoint"),
+	// 			Status: to.Ptr(armneonpostgres.EndpointStatusActive),
+	// 			LastActive: to.Ptr("cqewwerjsfgp"),
+	// 			Size: &armneonpostgres.AutoscalingSize{
+	// 				AutoscalingLimitMinCu: to.Ptr[float32](3),
+	// 				AutoscalingLimitMaxCu: to.Ptr[float32](14),
+	// 			},
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/endpoints/entity-name"),
-	// 		Name: to.Ptr("btfgrpluxpodftoy"),
-	// 		Type: to.Ptr("ldmicxcfahaewxfelpamtgb"),
+	// 		ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature/endpoints/primary-endpoint"),
+	// 		Name: to.Ptr("primary-endpoint"),
+	// 		Type: to.Ptr("Neon.Postgres/organizations/projects/branches/endpoints"),
 	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+	// 			CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Endpoints_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Endpoints_Delete_MaximumSet_Gen.json
 func ExampleEndpointsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().Delete(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", nil)
+	res, err := clientFactory.NewEndpointsClient().Delete(ctx, "rgneon", "myNeonOrg", "myProject", "main", "myEndpoint", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -101,68 +113,18 @@ func ExampleEndpointsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Endpoints_Get_MaximumSet_Gen.json
-func ExampleEndpointsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEndpointsClient().Get(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armneonpostgres.EndpointsClientGetResponse{
-	// 	Endpoint: &armneonpostgres.Endpoint{
-	// 		Properties: &armneonpostgres.EndpointProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("vhcilurdd"),
-	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 			Attributes: []*armneonpostgres.Attributes{
-	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 				},
-	// 			},
-	// 			ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-	// 			BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
-	// 			EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/endpoints/entity-name"),
-	// 		Name: to.Ptr("btfgrpluxpodftoy"),
-	// 		Type: to.Ptr("ldmicxcfahaewxfelpamtgb"),
-	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
-	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
-	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-03-01/Endpoints_List_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Endpoints_List_MaximumSet_Gen.json
 func ExampleEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
+	clientFactory, err := armneonpostgres.NewClientFactory("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewEndpointsClient().NewListPager("rgneon", "test-org", "entity-name", "entity-name", nil)
+	pager := clientFactory.NewEndpointsClient().NewListPager("rgneon", "myOrganization", "myProject", "feature", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -178,102 +140,43 @@ func ExampleEndpointsClient_NewListPager() {
 		// 		Value: []*armneonpostgres.Endpoint{
 		// 			{
 		// 				Properties: &armneonpostgres.EndpointProperties{
-		// 					EntityID: to.Ptr("entity-id"),
-		// 					EntityName: to.Ptr("entity-name"),
-		// 					CreatedAt: to.Ptr("vhcilurdd"),
+		// 					EntityID: to.Ptr("endpoint-98765xyz"),
+		// 					EntityName: to.Ptr("PrimaryEndpoint"),
+		// 					CreatedAt: to.Ptr("fsjt"),
 		// 					ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
 		// 					Attributes: []*armneonpostgres.Attributes{
 		// 						{
-		// 							Name: to.Ptr("trhvzyvaqy"),
-		// 							Value: to.Ptr("evpkgsskyavybxwwssm"),
+		// 							Name: to.Ptr("on"),
+		// 							Value: to.Ptr("qzp"),
 		// 						},
 		// 					},
-		// 					ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-		// 					BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
+		// 					ProjectID: to.Ptr("vwwhykqyr"),
+		// 					BranchID: to.Ptr("blclbeuzvywzagbuvdo"),
 		// 					EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
+		// 					EndpointID: to.Ptr("ep-12345abcde"),
+		// 					ComputeName: to.Ptr("primary-endpoint"),
+		// 					Status: to.Ptr(armneonpostgres.EndpointStatusActive),
+		// 					LastActive: to.Ptr("cqewwerjsfgp"),
+		// 					Size: &armneonpostgres.AutoscalingSize{
+		// 						AutoscalingLimitMinCu: to.Ptr[float32](3),
+		// 						AutoscalingLimitMaxCu: to.Ptr[float32](14),
+		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/endpoints/entity-name"),
-		// 				Name: to.Ptr("btfgrpluxpodftoy"),
-		// 				Type: to.Ptr("ldmicxcfahaewxfelpamtgb"),
+		// 				ID: to.Ptr("/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature/endpoints/primary-endpoint"),
+		// 				Name: to.Ptr("primary-endpoint"),
+		// 				Type: to.Ptr("Neon.Postgres/organizations/projects/branches/endpoints"),
 		// 				SystemData: &armneonpostgres.SystemData{
-		// 					CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
+		// 					CreatedBy: to.Ptr("jhxhapdnokzuuahtvhbtykdb"),
 		// 					CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("wuzhhzvuctzqgmgnbuhglofliifeql"),
 		// 					LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-01T09:55:42.307Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/DFF26289-4E9C-46D0-890E-F8BE27BDA8C2/resourceGroups/rgneon/providers/Neon.Postgres/organizations/myOrganization/projects/myProject/branches/feature/endpoints?api-version=2025-06-23-preview&$skiptoken=next-page"),
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-03-01/Endpoints_Update_MaximumSet_Gen.json
-func ExampleEndpointsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armneonpostgres.NewClientFactory("9B8E3300-C5FA-442B-A259-3F6F614D5BD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEndpointsClient().BeginUpdate(ctx, "rgneon", "test-org", "entity-name", "entity-name", "entity-name", armneonpostgres.Endpoint{
-		Properties: &armneonpostgres.EndpointProperties{
-			EntityName: to.Ptr("entity-name"),
-			Attributes: []*armneonpostgres.Attributes{
-				{
-					Name:  to.Ptr("trhvzyvaqy"),
-					Value: to.Ptr("evpkgsskyavybxwwssm"),
-				},
-			},
-			ProjectID:    to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-			BranchID:     to.Ptr("rzsyrhpfbydxtfkpaa"),
-			EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armneonpostgres.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armneonpostgres.Endpoint{
-	// 		Properties: &armneonpostgres.EndpointProperties{
-	// 			EntityID: to.Ptr("entity-id"),
-	// 			EntityName: to.Ptr("entity-name"),
-	// 			CreatedAt: to.Ptr("vhcilurdd"),
-	// 			ProvisioningState: to.Ptr(armneonpostgres.ResourceProvisioningStateSucceeded),
-	// 			Attributes: []*armneonpostgres.Attributes{
-	// 				{
-	// 					Name: to.Ptr("trhvzyvaqy"),
-	// 					Value: to.Ptr("evpkgsskyavybxwwssm"),
-	// 				},
-	// 			},
-	// 			ProjectID: to.Ptr("rtvdeeflqzlrpfzhjqhcsfbldw"),
-	// 			BranchID: to.Ptr("rzsyrhpfbydxtfkpaa"),
-	// 			EndpointType: to.Ptr(armneonpostgres.EndpointTypeReadOnly),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/9B8E3300-C5FA-442B-A259-3F6F614D5BD4/resourceGroups/rgneon/providers/Microsoft.Neon/organizations/test-org/projects/entity-name/branches/entity-name/endpoints/entity-name"),
-	// 		Name: to.Ptr("btfgrpluxpodftoy"),
-	// 		Type: to.Ptr("ldmicxcfahaewxfelpamtgb"),
-	// 		SystemData: &armneonpostgres.SystemData{
-	// 			CreatedBy: to.Ptr("hnyidmqyvvtsddrwkmrqlwtlew"),
-	// 			CreatedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("szuncyyauzxhpzlbcvjkeamp"),
-	// 			LastModifiedByType: to.Ptr(armneonpostgres.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-24T04:03:54.769Z"); return t}()),
-	// 		},
-	// 	},
-	// }
 }

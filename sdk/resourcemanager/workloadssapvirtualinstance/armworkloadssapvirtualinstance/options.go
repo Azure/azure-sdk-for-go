@@ -26,21 +26,21 @@ type SAPApplicationServerInstancesClientBeginDeleteOptions struct {
 // SAPApplicationServerInstancesClientBeginStartOptions contains the optional parameters for the SAPApplicationServerInstancesClient.BeginStart
 // method.
 type SAPApplicationServerInstancesClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// SAP Application server instance start request body.
 	Body *StartRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPApplicationServerInstancesClientBeginStopOptions contains the optional parameters for the SAPApplicationServerInstancesClient.BeginStop
 // method.
 type SAPApplicationServerInstancesClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// SAP Application server instance stop request body.
 	Body *StopRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPApplicationServerInstancesClientGetOptions contains the optional parameters for the SAPApplicationServerInstancesClient.Get
@@ -78,21 +78,21 @@ type SAPCentralServerInstancesClientBeginDeleteOptions struct {
 // SAPCentralServerInstancesClientBeginStartOptions contains the optional parameters for the SAPCentralServerInstancesClient.BeginStart
 // method.
 type SAPCentralServerInstancesClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// SAP Central Services instance start request body.
 	Body *StartRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPCentralServerInstancesClientBeginStopOptions contains the optional parameters for the SAPCentralServerInstancesClient.BeginStop
 // method.
 type SAPCentralServerInstancesClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// SAP Central Services instance stop request body.
 	Body *StopRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPCentralServerInstancesClientGetOptions contains the optional parameters for the SAPCentralServerInstancesClient.Get
@@ -130,21 +130,21 @@ type SAPDatabaseInstancesClientBeginDeleteOptions struct {
 // SAPDatabaseInstancesClientBeginStartOptions contains the optional parameters for the SAPDatabaseInstancesClient.BeginStart
 // method.
 type SAPDatabaseInstancesClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// SAP Database server instance start request body.
 	Body *StartRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPDatabaseInstancesClientBeginStopOptions contains the optional parameters for the SAPDatabaseInstancesClient.BeginStop
 // method.
 type SAPDatabaseInstancesClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// Stop request for the database instance of the SAP system.
 	Body *StopRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPDatabaseInstancesClientGetOptions contains the optional parameters for the SAPDatabaseInstancesClient.Get method.
@@ -180,21 +180,21 @@ type SAPVirtualInstancesClientBeginDeleteOptions struct {
 // SAPVirtualInstancesClientBeginStartOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStart
 // method.
 type SAPVirtualInstancesClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The Virtual Instance for SAP solutions resource start request body.
 	Body *StartRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPVirtualInstancesClientBeginStopOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStop
 // method.
 type SAPVirtualInstancesClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The Virtual Instance for SAP solutions resource stop request body.
 	Body *StopRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SAPVirtualInstancesClientBeginUpdateOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginUpdate

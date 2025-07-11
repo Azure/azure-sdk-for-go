@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-31-preview/OnlineExperimentationWorkspaces_OperationsList.json
+// Generated from example definition: 2025-08-01-preview/OnlineExperimentationWorkspaces_OperationsList.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Origin: to.Ptr(armonlineexperimentation.OriginUser),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.OnlineExperimentation/operations?api-version=2025-05-31-preview&$skiptoken=aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.OnlineExperimentation/operations?api-version=2025-08-01-preview&$skiptoken=aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 	},
 		// }
 	}

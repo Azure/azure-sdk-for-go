@@ -19,7 +19,7 @@ import (
 )
 
 // IspCacheNodesOperationsServer is a fake server for instances of the armconnectedcache.IspCacheNodesOperationsClient type.
-type IspCacheNodesOperationsServer struct {
+type IspCacheNodesOperationsServer struct{
 	// BeginCreateOrUpdate is the fake for method IspCacheNodesOperationsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, resource armconnectedcache.IspCacheNodeResource, options *armconnectedcache.IspCacheNodesOperationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -36,9 +36,17 @@ type IspCacheNodesOperationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetBgpCidrs func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.IspCacheNodesOperationsClientGetBgpCidrsOptions) (resp azfake.Responder[armconnectedcache.IspCacheNodesOperationsClientGetBgpCidrsResponse], errResp azfake.ErrorResponder)
 
+	// GetCacheNodeAutoUpdateHistory is the fake for method IspCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCacheNodeAutoUpdateHistory func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions) (resp azfake.Responder[armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse], errResp azfake.ErrorResponder)
+
 	// GetCacheNodeInstallDetails is the fake for method IspCacheNodesOperationsClient.GetCacheNodeInstallDetails
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCacheNodeInstallDetails func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeInstallDetailsOptions) (resp azfake.Responder[armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse], errResp azfake.ErrorResponder)
+
+	// GetCacheNodeMccIssueDetailsHistory is the fake for method IspCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory
+	// HTTP status codes to indicate success: http.StatusOK
+	GetCacheNodeMccIssueDetailsHistory func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions) (resp azfake.Responder[armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse], errResp azfake.ErrorResponder)
 
 	// NewListByIspCustomerResourcePager is the fake for method IspCacheNodesOperationsClient.NewListByIspCustomerResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -47,6 +55,7 @@ type IspCacheNodesOperationsServer struct {
 	// Update is the fake for method IspCacheNodesOperationsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, properties armconnectedcache.PatchResource, options *armconnectedcache.IspCacheNodesOperationsClientUpdateOptions) (resp azfake.Responder[armconnectedcache.IspCacheNodesOperationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewIspCacheNodesOperationsServerTransport creates a new instance of IspCacheNodesOperationsServerTransport with the provided implementation.
@@ -54,9 +63,9 @@ type IspCacheNodesOperationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewIspCacheNodesOperationsServerTransport(srv *IspCacheNodesOperationsServer) *IspCacheNodesOperationsServerTransport {
 	return &IspCacheNodesOperationsServerTransport{
-		srv:                               srv,
-		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientCreateOrUpdateResponse]](),
-		beginDelete:                       newTracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientDeleteResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientDeleteResponse]](),
 		newListByIspCustomerResourcePager: newTracker[azfake.PagerResponder[armconnectedcache.IspCacheNodesOperationsClientListByIspCustomerResourceResponse]](),
 	}
 }
@@ -64,9 +73,9 @@ func NewIspCacheNodesOperationsServerTransport(srv *IspCacheNodesOperationsServe
 // IspCacheNodesOperationsServerTransport connects instances of armconnectedcache.IspCacheNodesOperationsClient to instances of IspCacheNodesOperationsServer.
 // Don't use this type directly, use NewIspCacheNodesOperationsServerTransport instead.
 type IspCacheNodesOperationsServerTransport struct {
-	srv                               *IspCacheNodesOperationsServer
-	beginCreateOrUpdate               *tracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientCreateOrUpdateResponse]]
-	beginDelete                       *tracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientDeleteResponse]]
+	srv *IspCacheNodesOperationsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armconnectedcache.IspCacheNodesOperationsClientDeleteResponse]]
 	newListByIspCustomerResourcePager *tracker[azfake.PagerResponder[armconnectedcache.IspCacheNodesOperationsClientListByIspCustomerResourceResponse]]
 }
 
@@ -88,8 +97,8 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchToMethodFake(req *http.
 	go func() {
 		var intercepted bool
 		var res result
-		if ispCacheNodesOperationsServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = ispCacheNodesOperationsServerTransportInterceptor.Do(req)
+		 if ispCacheNodesOperationsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = ispCacheNodesOperationsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -101,14 +110,18 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = i.dispatchGet(req)
 			case "IspCacheNodesOperationsClient.GetBgpCidrs":
 				res.resp, res.err = i.dispatchGetBgpCidrs(req)
+			case "IspCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory":
+				res.resp, res.err = i.dispatchGetCacheNodeAutoUpdateHistory(req)
 			case "IspCacheNodesOperationsClient.GetCacheNodeInstallDetails":
 				res.resp, res.err = i.dispatchGetCacheNodeInstallDetails(req)
+			case "IspCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory":
+				res.resp, res.err = i.dispatchGetCacheNodeMccIssueDetailsHistory(req)
 			case "IspCacheNodesOperationsClient.NewListByIspCustomerResourcePager":
 				res.resp, res.err = i.dispatchNewListByIspCustomerResourcePager(req)
 			case "IspCacheNodesOperationsClient.Update":
 				res.resp, res.err = i.dispatchUpdate(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -132,32 +145,32 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchBeginCreateOrUpdate(req
 	}
 	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armconnectedcache.IspCacheNodeResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armconnectedcache.IspCacheNodeResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		i.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -184,28 +197,28 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchBeginDelete(req *http.R
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		i.beginDelete.add(req, beginDelete)
 	}
@@ -233,7 +246,7 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchGet(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -270,7 +283,7 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchGetBgpCidrs(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getBgpCidrs`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -300,6 +313,43 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchGetBgpCidrs(req *http.R
 	return resp, nil
 }
 
+func (i *IspCacheNodesOperationsServerTransport) dispatchGetCacheNodeAutoUpdateHistory(req *http.Request) (*http.Response, error) {
+	if i.srv.GetCacheNodeAutoUpdateHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCacheNodeAutoUpdateHistory not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCacheNodeAutoUpdateHistory`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.GetCacheNodeAutoUpdateHistory(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MccCacheNodeAutoUpdateHistory, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (i *IspCacheNodesOperationsServerTransport) dispatchGetCacheNodeInstallDetails(req *http.Request) (*http.Response, error) {
 	if i.srv.GetCacheNodeInstallDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCacheNodeInstallDetails not implemented")}
@@ -307,7 +357,7 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchGetCacheNodeInstallDeta
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCacheNodeInstallDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -337,27 +387,64 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchGetCacheNodeInstallDeta
 	return resp, nil
 }
 
+func (i *IspCacheNodesOperationsServerTransport) dispatchGetCacheNodeMccIssueDetailsHistory(req *http.Request) (*http.Response, error) {
+	if i.srv.GetCacheNodeMccIssueDetailsHistory == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetCacheNodeMccIssueDetailsHistory not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getCacheNodeMccIssueDetailsHistory`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	cacheNodeResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cacheNodeResourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.GetCacheNodeMccIssueDetailsHistory(req.Context(), resourceGroupNameParam, customerResourceNameParam, cacheNodeResourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MccCacheNodeIssueHistory, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (i *IspCacheNodesOperationsServerTransport) dispatchNewListByIspCustomerResourcePager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListByIspCustomerResourcePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByIspCustomerResourcePager not implemented")}
 	}
 	newListByIspCustomerResourcePager := i.newListByIspCustomerResourcePager.get(req)
 	if newListByIspCustomerResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListByIspCustomerResourcePager(resourceGroupNameParam, customerResourceNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	customerResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customerResourceName")])
+	if err != nil {
+		return nil, err
+	}
+resp := i.srv.NewListByIspCustomerResourcePager(resourceGroupNameParam, customerResourceNameParam, nil)
 		newListByIspCustomerResourcePager = &resp
 		i.newListByIspCustomerResourcePager.add(req, newListByIspCustomerResourcePager)
 		server.PagerResponderInjectNextLinks(newListByIspCustomerResourcePager, req, func(page *armconnectedcache.IspCacheNodesOperationsClientListByIspCustomerResourceResponse, createLink func() string) {
@@ -385,7 +472,7 @@ func (i *IspCacheNodesOperationsServerTransport) dispatchUpdate(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ConnectedCache/ispCustomers/(?P<customerResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ispCacheNodes/(?P<cacheNodeResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armconnectedcache.PatchResource](req)

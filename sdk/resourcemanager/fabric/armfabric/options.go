@@ -69,6 +69,11 @@ type CapacitiesClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CapacitiesClientListUsagesOptions contains the optional parameters for the CapacitiesClient.NewListUsagesPager method.
+type CapacitiesClientListUsagesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

@@ -1,5 +1,11 @@
 # Release History
 
+## 7.6.0 (2025-07-25)
+### Features Added
+
+- New field `NextLink` in struct `SubscriptionQuotaItemList`
+
+
 ## 8.0.0-beta.1 (2025-05-23)
 ### Breaking Changes
 

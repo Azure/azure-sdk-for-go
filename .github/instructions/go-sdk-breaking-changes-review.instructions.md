@@ -48,52 +48,22 @@ Follow [Generate Go SDK from API specification](./go-sdk-generation.instructions
 
 **Success Criteria**: Determine `<sdk-generation-type>` from the three possible values.
 
-### Get Specification Diffs
-
-**Goal**: Retrieve the specification diffs from the PR for correlation analysis.
-
-**Actions**:
-
-1. Use GitHub CLI to fetch the PR diff: `gh pr diff <PR_NUMBER> > sdk-diff.txt`
-2. Save the diff to `sdk-diff.txt` in the root folder of current workspace.
-
-**Error Handling**: If GitHub CLI fails or PR is not available, skip this step and note the limitation in the final report.
-
-**Success Criteria**: `sdk-diff.txt` contains the specification diffs, or step is skipped with documented reason.
-
 ## Step 3: Review Breaking Changes
 
 ### Categorize Breaking Changes
 
-**Goal**: Each breaking change item should be categorized by its type and impact.
+**Goal**: Group breaking change items, find the reasons and impacts, and identify potential resolutions.
 
 **Actions**:
 
-1. For each item in `<breaking-change-items>`:
-   - Follow the [Azure Go SDK Breaking Changes Review and Resolution Guide](../../documentation/sdk-breaking-changes-guide.md)
-   - Use the section corresponding to `<sdk-generation-type>`
-   - Categorize the breaking change by type (e.g., API removal, parameter changes, type changes)
+1. For items in `<breaking-change-items>`:
+   - Follow the [Azure Go SDK Breaking Changes Review and Resolution Guide](../../documentation/sdk-breaking-changes-guide.md) with `<sdk-generation-type>` section
+   - Group the breaking changes into the corresponding categories
+     - If no category matches, keep the items as "Unknown Breaking Change" and inform user to have manual review
    - Determine the root cause and impact
    - Identify potential resolution approaches
 
 **Success Criteria**: All breaking change items are categorized with type, reason, and potential resolution.
-
-### Specification Correlation
-
-**Goal**: Find correlated specification changes for each breaking change.
-
-**Actions**:
-
-1. If `sdk-diff.txt` exists and contains valid diffs:
-   - Analyze the specification changes in the diff
-   - Correlate each breaking change with specific specification modifications
-   - Document the relationship between spec changes and SDK breaking changes
-
-2. If `sdk-diff.txt` is unavailable or empty:
-   - Skip this step and note the limitation
-   - Proceed with breaking change analysis based on SDK changes only
-
-**Success Criteria**: Breaking changes are correlated with specification changes where possible, or limitations are documented.
 
 ## Step 4: Resolve Breaking Changes
 
@@ -104,19 +74,23 @@ Follow [Generate Go SDK from API specification](./go-sdk-generation.instructions
 1. Ask the user: "Would you like to resolve the breaking changes using client customization?"
 
 2. If the user responds **"No"**:
+
    - Skip to Step 5 (Gather Review Result)
-   - Include note in final report that resolution was not requested
 
 3. If the user responds **"Yes"**:
-   - Check if `client.tsp` exists in the local specification folder
-   - **If `client.tsp` exists**:
-     - Review existing customizations
-     - Propose modifications to resolve breaking changes
-     - Show specific code changes needed
-   - **If `client.tsp` does not exist**:
-     - Create a new `client.tsp` file
-     - Add customizations to resolve breaking changes
-     - Provide the complete file content
+
+   - If customizations are required, check if `client.tsp` exists in <related-typeSpec-project-folder>
+     - **If `client.tsp` exists**:
+       - Review existing customizations
+       - Propose modifications to resolve breaking changes
+     - **If `client.tsp` does not exist**:
+       - Create a new `client.tsp` file
+       - Import `main.tsp` file in `client.tsp`
+       - Using the root namespace defined in `main.tsp`
+       - Add customizations to resolve breaking changes
+   - If config changes are needed, propose modifications to `tsconfig.yaml` in <related-typeSpec-project-folder>
+
+4. Revert all changes under <package-path>, and generate the SDK locally again to see if the breaking changes are resolved.
 
 **Error Handling**: If customization cannot resolve specific breaking changes, document the limitation and suggest alternative approaches.
 
@@ -140,14 +114,12 @@ Generate the result in the following format:
 
 #### Individual Analysis
 
-For each breaking change item:
+For a group of breaking change items:
 
 ```
-🚨 **Breaking Change**: [change-description]
-📝 **Category**: [breaking-change-category]
-📋 **Reason**: [breaking-root-cause]
-🔍 **Related Spec Change**: [specification-change] | "Not available" if correlation step was skipped
-🔧 **Resolution**: [resolution-method] | "Not attempted" if resolution was skipped
+🚨 **Breaking Changes**: [changes-changelog]
+📋 **Reason**: [breaking-changes-reason]
+🔧 **Resolution**: [resolution-method]
 💡 **Impact**: [impact-assessment]
 ```
 

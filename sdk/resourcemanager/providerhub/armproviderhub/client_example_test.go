@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/GenerateManifest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/GenerateManifest.json
 func ExampleClient_GenerateManifest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,55 +46,53 @@ func ExampleClient_GenerateManifest() {
 	// 			Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
 	// 			QuotaID: to.Ptr("CSP_MG_2017-12-01"),
 	// 	}},
+	// 	CrossTenantTokenValidation: to.Ptr(armproviderhub.CrossTenantTokenValidationEnsureSecureValidation),
 	// 	GlobalNotificationEndpoints: []*armproviderhub.ResourceProviderEndpoint{
 	// 		{
 	// 			Enabled: to.Ptr(true),
 	// 			EndpointURI: to.Ptr("https://notificationendpoint.com"),
 	// 	}},
 	// 	Management: &armproviderhub.ResourceProviderManifestManagement{
-	// 		IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 		IncidentRoutingService: to.Ptr(""),
-	// 		IncidentRoutingTeam: to.Ptr(""),
-	// 		ManifestOwners: []*string{
-	// 			to.Ptr("manifestOwners-group")},
-	// 			ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceProviderManagementResourceAccessPolicyNotSpecified),
-	// 		},
-	// 		Metadata: map[string]any{
-	// 			"onboardedVia": "ProviderHub",
-	// 		},
-	// 		Namespace: to.Ptr("microsoft.contoso"),
-	// 		ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
-	// 			{
-	// 				ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-	// 				RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
-	// 		}},
-	// 		ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
-	// 		ProviderVersion: to.Ptr("2.0"),
-	// 		ReRegisterSubscriptionMetadata: &armproviderhub.ResourceProviderManifestReRegisterSubscriptionMetadata{
-	// 			ConcurrencyLimit: to.Ptr[int32](100),
-	// 			Enabled: to.Ptr(true),
-	// 		},
-	// 		ResourceTypes: []*armproviderhub.ResourceType{
-	// 			{
-	// 				Name: to.Ptr("Operations"),
-	// 				AllowedUnauthorizedActions: []*string{
-	// 					to.Ptr("microsoft.contoso/operations/read")},
-	// 					Endpoints: []*armproviderhub.ResourceProviderEndpoint{
-	// 						{
-	// 							APIVersions: []*string{
-	// 								to.Ptr("2020-01-01-preview")},
-	// 								EndpointURI: to.Ptr("https://resource-endpoint.com/"),
-	// 								Locations: []*string{
-	// 									to.Ptr("")},
-	// 									Timeout: to.Ptr("PT20S"),
+	// 		AuthorizationOwners: []*string{
+	// 			to.Ptr("authorizationOwners-group")},
+	// 			IncidentContactEmail: to.Ptr("helpme@contoso.com"),
+	// 			IncidentRoutingService: to.Ptr(""),
+	// 			IncidentRoutingTeam: to.Ptr(""),
+	// 			ManifestOwners: []*string{
+	// 				to.Ptr("manifestOwners-group")},
+	// 				ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
+	// 			},
+	// 			Metadata: map[string]any{
+	// 				"onboardedVia": "ProviderHub",
+	// 			},
+	// 			Namespace: to.Ptr("microsoft.contoso"),
+	// 			ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
+	// 				{
+	// 					ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+	// 					RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
+	// 			}},
+	// 			ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
+	// 			ProviderVersion: to.Ptr("2.0"),
+	// 			ReRegisterSubscriptionMetadata: &armproviderhub.ResourceProviderManifestReRegisterSubscriptionMetadata{
+	// 				ConcurrencyLimit: to.Ptr[int32](100),
+	// 				Enabled: to.Ptr(true),
+	// 			},
+	// 			ResourceProviderAuthorizationRules: &armproviderhub.ResourceProviderAuthorizationRules{
+	// 				AsyncOperationPollingRules: &armproviderhub.AsyncOperationPollingRules{
+	// 					AuthorizationActions: []*string{
+	// 						to.Ptr("Microsoft.Contoso/classicAdministrators/operationStatuses/read")},
+	// 					},
+	// 				},
+	// 				ResourceTypes: []*armproviderhub.ResourceType{
+	// 					{
+	// 						Name: to.Ptr("Operations"),
+	// 						AllowedUnauthorizedActions: []*string{
+	// 							to.Ptr("microsoft.contoso/operations/read")},
+	// 							AllowedUnauthorizedActionsExtensions: []*armproviderhub.AllowedUnauthorizedActionsExtension{
+	// 								{
+	// 									Action: to.Ptr("Microsoft.BizTalkServices/bizTalk/read"),
+	// 									Intent: to.Ptr(armproviderhub.IntentDEFERREDACCESSCHECK),
 	// 							}},
-	// 							LinkedOperationRules: []*armproviderhub.LinkedOperationRule{
-	// 							},
-	// 							ResourceValidation: to.Ptr(armproviderhub.ResourceValidation("ReservedWords, ProfaneWords")),
-	// 							RoutingType: to.Ptr(armproviderhub.RoutingType("ProxyOnly, Tenant")),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("Locations"),
 	// 							Endpoints: []*armproviderhub.ResourceProviderEndpoint{
 	// 								{
 	// 									APIVersions: []*string{
@@ -106,13 +104,57 @@ func ExampleClient_GenerateManifest() {
 	// 									}},
 	// 									LinkedOperationRules: []*armproviderhub.LinkedOperationRule{
 	// 									},
+	// 									Notifications: []*armproviderhub.Notification{
+	// 										{
+	// 											NotificationType: to.Ptr(armproviderhub.NotificationTypeSubscriptionNotification),
+	// 											SkipNotifications: to.Ptr(armproviderhub.SkipNotificationsDisabled),
+	// 									}},
 	// 									ResourceValidation: to.Ptr(armproviderhub.ResourceValidation("ReservedWords, ProfaneWords")),
-	// 									RoutingType: to.Ptr(armproviderhub.RoutingTypeProxyOnly),
-	// 							}},
-	// 						}
+	// 									RoutingType: to.Ptr(armproviderhub.RoutingType("ProxyOnly, Tenant")),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("Locations"),
+	// 									Endpoints: []*armproviderhub.ResourceProviderEndpoint{
+	// 										{
+	// 											APIVersions: []*string{
+	// 												to.Ptr("2020-01-01-preview")},
+	// 												EndpointURI: to.Ptr("https://resource-endpoint.com/"),
+	// 												Locations: []*string{
+	// 													to.Ptr("")},
+	// 													Timeout: to.Ptr("PT20S"),
+	// 											}},
+	// 											LinkedOperationRules: []*armproviderhub.LinkedOperationRule{
+	// 											},
+	// 											ResourceValidation: to.Ptr(armproviderhub.ResourceValidation("ReservedWords, ProfaneWords")),
+	// 											RoutingType: to.Ptr(armproviderhub.RoutingTypeProxyOnly),
+	// 										},
+	// 										{
+	// 											Name: to.Ptr("Locations/OperationStatuses"),
+	// 											AdditionalOptions: to.Ptr(armproviderhub.AdditionalOptionsProtectedAsyncOperationPolling),
+	// 											Endpoints: []*armproviderhub.ResourceProviderEndpoint{
+	// 												{
+	// 													APIVersions: []*string{
+	// 														to.Ptr("2020-01-01-preview")},
+	// 														EndpointURI: to.Ptr("https://resource-endpoint.com/"),
+	// 														Locations: []*string{
+	// 															to.Ptr("")},
+	// 															Timeout: to.Ptr("PT20S"),
+	// 													}},
+	// 													LinkedOperationRules: []*armproviderhub.LinkedOperationRule{
+	// 													},
+	// 													ResourceValidation: to.Ptr(armproviderhub.ResourceValidation("ReservedWords, ProfaneWords")),
+	// 													RoutingType: to.Ptr(armproviderhub.RoutingType("ProxyOnly, LocationBased")),
+	// 											}},
+	// 											ServiceName: to.Ptr("root"),
+	// 											Services: []*armproviderhub.ResourceProviderService{
+	// 												{
+	// 													ServiceName: to.Ptr("tags"),
+	// 													Status: to.Ptr(armproviderhub.ServiceStatusInactive),
+	// 											}},
+	// 										}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/CheckinManifest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/CheckinManifest.json
 func ExampleClient_CheckinManifest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

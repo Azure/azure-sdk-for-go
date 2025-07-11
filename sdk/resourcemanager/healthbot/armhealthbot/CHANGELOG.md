@@ -1,5 +1,22 @@
 # Release History
 
+## 2.0.0 (2025-07-24)
+### Breaking Changes
+
+- Operation `*BotsClient.Update` has been changed to LRO, use `*BotsClient.BeginUpdate` instead.
+
+### Features Added
+
+- New value `SKUNameC1`, `SKUNamePES` added to enum type `SKUName`
+- New function `*BotsClient.ListSecrets(context.Context, string, string, *BotsClientListSecretsOptions) (BotsClientListSecretsResponse, error)`
+- New function `*BotsClient.RegenerateAPIJwtSecret(context.Context, string, string, *BotsClientRegenerateAPIJwtSecretOptions) (BotsClientRegenerateAPIJwtSecretResponse, error)`
+- New struct `Key`
+- New struct `KeyVaultProperties`
+- New struct `KeysResponse`
+- New field `AccessControlMethod`, `KeyVaultProperties` in struct `Properties`
+- New field `Properties` in struct `UpdateParameters`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

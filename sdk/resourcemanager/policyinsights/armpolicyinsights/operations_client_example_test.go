@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/Operations_ListOperations.json
 func ExampleOperationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleOperationsClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.OperationsListResults = armpolicyinsights.OperationsListResults{
-	// 	ODataCount: to.Ptr[int32](3),
+	// 	ODataCount: to.Ptr[int32](4),
 	// 	Value: []*armpolicyinsights.Operation{
 	// 		{
 	// 			Name: to.Ptr("Microsoft.PolicyInsights/policyEvents/queryResults/action"),
@@ -63,6 +63,15 @@ func ExampleOperationsClient_List() {
 	// 				Operation: to.Ptr("Query Policy Latest States Summary"),
 	// 				Provider: to.Ptr("Microsoft Policy Insights"),
 	// 				Resource: to.Ptr("Policy States"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("Microsoft.PolicyInsights/componentPolicyStates/queryResults/action"),
+	// 			Display: &armpolicyinsights.OperationDisplay{
+	// 				Description: to.Ptr("Query information about component policy states."),
+	// 				Operation: to.Ptr("Query Component Policy States"),
+	// 				Provider: to.Ptr("Microsoft Policy Insights"),
+	// 				Resource: to.Ptr("Component Policy States"),
 	// 			},
 	// 	}},
 	// }

@@ -696,6 +696,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		{"item1", "pk1", "test data 1"},
 		{"item2", "pk2", "test data 2"},
 		{"item3", "pk3", "test data 3"},
+		{"item4", "pk1", "test data 4"},
 	}
 
 	for _, item := range testItems {
@@ -722,32 +723,27 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to get feed ranges: %v", err)
 	}
-
 	// Test change feed with composite continuation token
 	t.Run("CompositeContinuationToken", func(t *testing.T) {
 		options := &ChangeFeedOptions{
 			MaxItemCount: 2,
 		}
-
 		options.FeedRange = &feedRanges[0]
 		resp, err := container.GetChangeFeed(context.TODO(), options)
 		if err != nil {
 			t.Fatalf("Failed to get change feed: %v", err)
 		}
 
-		// Log response details
 		t.Logf("Change Feed Response:")
 		t.Logf("  - Count: %d", resp.Count)
 		t.Logf("  - ETag: %s", resp.ETag)
 		t.Logf("  - CompositeContinuationToken: %s", resp.ContinuationToken)
 		t.Logf("  - ResourceID: %s", resp.ResourceID)
 
-		// Verify composite continuation token is populated
-		if resp.ContinuationToken == "" {
+		if resp.CompositeContinuationToken == "" {
 			t.Error("Expected CompositeContinuationToken to be populated")
 		}
 
-		// Parse and verify the composite token structure
 		var compositeToken compositeContinuationToken
 		err = json.Unmarshal([]byte(resp.ContinuationToken), &compositeToken)
 		if err != nil {
@@ -780,13 +776,11 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			t.Errorf("Expected ContinuationToken %s, got %s", resp.ETag, *compositeToken.Continuation[0].ContinuationToken)
 		}
 
-		// Test using the composite continuation token in next request
 		if resp.Count > 0 {
 			options2 := &ChangeFeedOptions{
 				MaxItemCount: 10,
 				Continuation: &resp.ContinuationToken,
 			}
-
 			resp2, err := container.GetChangeFeed(context.TODO(), options2)
 			if err != nil {
 				t.Fatalf("Failed to get change feed with composite token: %v", err)
@@ -795,9 +789,122 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 	})
 
+	// Test change feed with continuation token for a specific PartitionKey
+	t.Run("ContinuationTokenForPartitionKey", func(t *testing.T) {
+		partitionKey := NewPartitionKeyString("pk1")
+		options := &ChangeFeedOptions{
+			MaxItemCount: 2,
+			PartitionKey: &partitionKey,
+		}
+		resp, err := container.GetChangeFeed(context.TODO(), options)
+		if err != nil {
+			t.Fatalf("Failed to get change feed for partition key: %v", err)
+		}
+
+		t.Logf("Continuation Token for PartitionKey Response:")
+		t.Logf("  - Count: %d", resp.Count)
+		t.Logf("  - ETag: %s", resp.ETag)
+		t.Logf("  - ContinuationTokenForPartitionKey: %s", resp.ContinuationTokenForPartitionKey)
+		t.Logf("  - LSN: %s", resp.LSN)
+		t.Logf("  - ResourceID: %s", resp.ResourceID)
+
+		if resp.ContinuationTokenForPartitionKey == "" {
+			t.Error("Expected ContinuationTokenForPartitionKey to be populated")
+		}
+
+		var contToken continuationTokenForPartitionKey
+		err = json.Unmarshal([]byte(resp.ContinuationTokenForPartitionKey), &contToken)
+		if err != nil {
+			t.Fatalf("Failed to unmarshal continuation token for partition key: %v", err)
+		}
+
+		if contToken.ResourceID != resp.ResourceID {
+			t.Errorf("Expected ResourceID %s, got %s", resp.ResourceID, contToken.ResourceID)
+		}
+
+		if contToken.PartitionKey == nil {
+			t.Errorf("Expected PartitionKey %v, got nil", partitionKey)
+		} else {
+			contTokenPKStr, contTokenPKErr := contToken.PartitionKey.toJsonString()
+			partitionKeyStr, partitionKeyErr := partitionKey.toJsonString()
+			if contTokenPKErr != nil || partitionKeyErr != nil || contTokenPKStr != partitionKeyStr {
+				t.Errorf("Expected PartitionKey %v, got %v", partitionKey, contToken.PartitionKey)
+			}
+		}
+
+		if contToken.Continuation == nil {
+			t.Error("Expected Continuation to be set")
+		} else if *contToken.Continuation != azcore.ETag(resp.ETag) {
+			t.Errorf("Expected Continuation %s, got %s", resp.ETag, *contToken.Continuation)
+		}
+
+		if resp.Count > 0 {
+			options2 := &ChangeFeedOptions{
+				MaxItemCount: 10,
+				Continuation: &resp.ContinuationTokenForPartitionKey,
+			}
+			resp2, err := container.GetChangeFeed(context.TODO(), options2)
+			if err != nil {
+				t.Fatalf("Failed to get change feed with continuation token for partition key: %v", err)
+			}
+			t.Logf("Second request with continuation token for partition key - Count: %d", resp2.Count)
+		}
+	})
+
+	// Test change feed with simple with If-None-Match header
+	t.Run("IfNoneMatchHeader", func(t *testing.T) {
+		options := &ChangeFeedOptions{
+			MaxItemCount: 10,
+		}
+
+		resp, err := container.GetChangeFeed(context.TODO(), options)
+		if err != nil {
+			t.Fatalf("Failed to get change feed: %v", err)
+		}
+
+		t.Logf("Simple ETag Response:")
+		t.Logf("  - Count: %d", resp.Count)
+		t.Logf("  - ETag: %s", resp.ETag)
+		t.Logf("  - CompositeContinuationToken: %s", resp.CompositeContinuationToken)
+
+		// Verify no composite continuation token when not using feed range
+		if resp.CompositeContinuationToken != "" {
+			t.Error("Expected CompositeContinuationToken to be empty for non-feed-range request")
+		}
+
+		// Verify no continuation token for partition key when not using partition key
+		if resp.ContinuationTokenForPartitionKey != "" {
+			t.Error("Expected ContinuationTokenForPartitionKey to be empty for non-partition-key request")
+		}
+
+		if resp.ETag == "" {
+			t.Error("Expected ETag to be present")
+		}
+
+		if resp.ETag != "" {
+			etag := resp.ETag
+			options2 := &ChangeFeedOptions{
+				MaxItemCount: 10,
+				Continuation: &etag,
+			}
+
+			resp2, err := container.GetChangeFeed(context.TODO(), options2)
+			if err != nil {
+				t.Fatalf("Failed to get change feed with simple ETag: %v", err)
+			}
+			t.Logf("Second request with simple ETag - Count: %d", resp2.Count)
+			// With continuation, we might get 304 Not Modified if no changes
+			if resp2.RawResponse.StatusCode == 304 {
+				t.Log("Got 304 Not Modified - no new changes since last ETag")
+				if resp2.Count != 0 {
+					t.Errorf("Expected Count to be 0 for 304 response, got %d", resp2.Count)
+				}
+			}
+		}
+	})
+
 	// Test change feed with If-Modified-Since header
 	t.Run("IfModifiedSinceHeader", func(t *testing.T) {
-		// First, get all current changes to establish a baseline
 		baselineOptions := &ChangeFeedOptions{
 			FeedRange: &FeedRange{
 				MinInclusive: "",

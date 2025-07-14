@@ -20,8 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2025-04-01-preview/examples/AccountConnection/delete.json
-func ExampleAccountConnectionClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81cb525ba1985326c5607fc368abfc64ff9f5aa2/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ProjectConnection/delete.json
+func ExampleProjectConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,14 +31,14 @@ func ExampleAccountConnectionClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewAccountConnectionClient().Delete(ctx, "resourceGroup-1", "account-1", "connection-1", nil)
+	_, err = clientFactory.NewProjectConnectionsClient().Delete(ctx, "resourceGroup-1", "account-1", "project-1", "connection-1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2025-04-01-preview/examples/AccountConnection/get.json
-func ExampleAccountConnectionClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81cb525ba1985326c5607fc368abfc64ff9f5aa2/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ProjectConnection/get.json
+func ExampleProjectConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -48,7 +48,7 @@ func ExampleAccountConnectionClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAccountConnectionClient().Get(ctx, "resourceGroup-1", "account-1", "connection-1", nil)
+	res, err := clientFactory.NewProjectConnectionsClient().Get(ctx, "resourceGroup-1", "account-1", "project-1", "connection-1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,8 +57,8 @@ func ExampleAccountConnectionClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ConnectionPropertiesV2BasicResource = armcognitiveservices.ConnectionPropertiesV2BasicResource{
 	// 	Name: to.Ptr("connection-1"),
-	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/connections/connection-1"),
+	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/connections"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/projects/project-1/connections/connection-1"),
 	// 	Properties: &armcognitiveservices.NoneAuthTypeConnectionProperties{
 	// 		AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypeNone),
 	// 		Category: to.Ptr(armcognitiveservices.ConnectionCategoryContainerRegistry),
@@ -68,8 +68,8 @@ func ExampleAccountConnectionClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2025-04-01-preview/examples/AccountConnection/update.json
-func ExampleAccountConnectionClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81cb525ba1985326c5607fc368abfc64ff9f5aa2/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ProjectConnection/update.json
+func ExampleProjectConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -79,7 +79,7 @@ func ExampleAccountConnectionClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAccountConnectionClient().Update(ctx, "test-rg", "account-1", "connection-1", &armcognitiveservices.AccountConnectionClientUpdateOptions{Body: &armcognitiveservices.ConnectionUpdateContent{
+	res, err := clientFactory.NewProjectConnectionsClient().Update(ctx, "test-rg", "account-1", "project-1", "connection-1", &armcognitiveservices.ProjectConnectionsClientUpdateOptions{Connection: &armcognitiveservices.ConnectionUpdateContent{
 		Properties: &armcognitiveservices.AccessKeyAuthTypeConnectionProperties{
 			AuthType:   to.Ptr(armcognitiveservices.ConnectionAuthTypeAccessKey),
 			Category:   to.Ptr(armcognitiveservices.ConnectionCategoryADLSGen2),
@@ -101,8 +101,8 @@ func ExampleAccountConnectionClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ConnectionPropertiesV2BasicResource = armcognitiveservices.ConnectionPropertiesV2BasicResource{
 	// 	Name: to.Ptr("connection-1"),
-	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/connections/connection-1"),
+	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/connections"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/projects/project-1/connections/connection-1"),
 	// 	Properties: &armcognitiveservices.AccessKeyAuthTypeConnectionProperties{
 	// 		AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypeAccessKey),
 	// 		Category: to.Ptr(armcognitiveservices.ConnectionCategoryADLSGen2),
@@ -114,8 +114,8 @@ func ExampleAccountConnectionClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2025-04-01-preview/examples/AccountConnection/create.json
-func ExampleAccountConnectionClient_Create() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81cb525ba1985326c5607fc368abfc64ff9f5aa2/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ProjectConnection/create.json
+func ExampleProjectConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -125,7 +125,7 @@ func ExampleAccountConnectionClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAccountConnectionClient().Create(ctx, "resourceGroup-1", "account-1", "connection-1", &armcognitiveservices.AccountConnectionClientCreateOptions{Body: &armcognitiveservices.ConnectionPropertiesV2BasicResource{
+	res, err := clientFactory.NewProjectConnectionsClient().Create(ctx, "resourceGroup-1", "account-1", "project-1", "connection-1", &armcognitiveservices.ProjectConnectionsClientCreateOptions{Connection: &armcognitiveservices.ConnectionPropertiesV2BasicResource{
 		Properties: &armcognitiveservices.NoneAuthTypeConnectionProperties{
 			AuthType:   to.Ptr(armcognitiveservices.ConnectionAuthTypeNone),
 			Category:   to.Ptr(armcognitiveservices.ConnectionCategoryContainerRegistry),
@@ -142,8 +142,8 @@ func ExampleAccountConnectionClient_Create() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ConnectionPropertiesV2BasicResource = armcognitiveservices.ConnectionPropertiesV2BasicResource{
 	// 	Name: to.Ptr("connection-1"),
-	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/connections/connection-1"),
+	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/connections"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/projects/project-1/connections/connection-1"),
 	// 	Properties: &armcognitiveservices.NoneAuthTypeConnectionProperties{
 	// 		AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypeNone),
 	// 		Category: to.Ptr(armcognitiveservices.ConnectionCategoryContainerRegistry),
@@ -153,8 +153,8 @@ func ExampleAccountConnectionClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5802c95f18bfba1003be50e545d07f8bb679c857/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/preview/2025-04-01-preview/examples/AccountConnection/list.json
-func ExampleAccountConnectionClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/81cb525ba1985326c5607fc368abfc64ff9f5aa2/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ProjectConnection/list.json
+func ExampleProjectConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -164,7 +164,7 @@ func ExampleAccountConnectionClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAccountConnectionClient().NewListPager("resourceGroup-1", "account-1", &armcognitiveservices.AccountConnectionClientListOptions{Target: to.Ptr("[tartget url]"),
+	pager := clientFactory.NewProjectConnectionsClient().NewListPager("resourceGroup-1", "account-1", "project-1", &armcognitiveservices.ProjectConnectionsClientListOptions{Target: to.Ptr("[tartget url]"),
 		Category:   to.Ptr("ContainerRegistry"),
 		IncludeAll: nil,
 	})
@@ -182,7 +182,7 @@ func ExampleAccountConnectionClient_NewListPager() {
 		// 	Value: []*armcognitiveservices.ConnectionPropertiesV2BasicResource{
 		// 		{
 		// 			Name: to.Ptr("connection-1"),
-		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
+		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/connections"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/linkedaccounts/connection-1"),
 		// 			Properties: &armcognitiveservices.PATAuthTypeConnectionProperties{
 		// 				AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypePAT),
@@ -193,7 +193,7 @@ func ExampleAccountConnectionClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("connection-2"),
-		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/connections"),
+		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/connections"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.CognitiveServices/accounts/account-1/linkedaccounts/connection-2"),
 		// 			Properties: &armcognitiveservices.PATAuthTypeConnectionProperties{
 		// 				AuthType: to.Ptr(armcognitiveservices.ConnectionAuthTypePAT),

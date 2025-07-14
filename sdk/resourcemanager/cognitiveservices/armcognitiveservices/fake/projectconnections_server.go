@@ -21,79 +21,79 @@ import (
 	"strconv"
 )
 
-// AccountConnectionServer is a fake server for instances of the armcognitiveservices.AccountConnectionClient type.
-type AccountConnectionServer struct {
-	// Create is the fake for method AccountConnectionClient.Create
+// ProjectConnectionsServer is a fake server for instances of the armcognitiveservices.ProjectConnectionsClient type.
+type ProjectConnectionsServer struct {
+	// Create is the fake for method ProjectConnectionsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK
-	Create func(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *armcognitiveservices.AccountConnectionClientCreateOptions) (resp azfake.Responder[armcognitiveservices.AccountConnectionClientCreateResponse], errResp azfake.ErrorResponder)
+	Create func(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *armcognitiveservices.ProjectConnectionsClientCreateOptions) (resp azfake.Responder[armcognitiveservices.ProjectConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method AccountConnectionClient.Delete
+	// Delete is the fake for method ProjectConnectionsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *armcognitiveservices.AccountConnectionClientDeleteOptions) (resp azfake.Responder[armcognitiveservices.AccountConnectionClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *armcognitiveservices.ProjectConnectionsClientDeleteOptions) (resp azfake.Responder[armcognitiveservices.ProjectConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AccountConnectionClient.Get
+	// Get is the fake for method ProjectConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *armcognitiveservices.AccountConnectionClientGetOptions) (resp azfake.Responder[armcognitiveservices.AccountConnectionClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *armcognitiveservices.ProjectConnectionsClientGetOptions) (resp azfake.Responder[armcognitiveservices.ProjectConnectionsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AccountConnectionClient.NewListPager
+	// NewListPager is the fake for method ProjectConnectionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.AccountConnectionClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.AccountConnectionClientListResponse])
+	NewListPager func(resourceGroupName string, accountName string, projectName string, options *armcognitiveservices.ProjectConnectionsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.ProjectConnectionsClientListResponse])
 
-	// Update is the fake for method AccountConnectionClient.Update
+	// Update is the fake for method ProjectConnectionsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *armcognitiveservices.AccountConnectionClientUpdateOptions) (resp azfake.Responder[armcognitiveservices.AccountConnectionClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *armcognitiveservices.ProjectConnectionsClientUpdateOptions) (resp azfake.Responder[armcognitiveservices.ProjectConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
-// NewAccountConnectionServerTransport creates a new instance of AccountConnectionServerTransport with the provided implementation.
-// The returned AccountConnectionServerTransport instance is connected to an instance of armcognitiveservices.AccountConnectionClient via the
+// NewProjectConnectionsServerTransport creates a new instance of ProjectConnectionsServerTransport with the provided implementation.
+// The returned ProjectConnectionsServerTransport instance is connected to an instance of armcognitiveservices.ProjectConnectionsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewAccountConnectionServerTransport(srv *AccountConnectionServer) *AccountConnectionServerTransport {
-	return &AccountConnectionServerTransport{
+func NewProjectConnectionsServerTransport(srv *ProjectConnectionsServer) *ProjectConnectionsServerTransport {
+	return &ProjectConnectionsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.AccountConnectionClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.ProjectConnectionsClientListResponse]](),
 	}
 }
 
-// AccountConnectionServerTransport connects instances of armcognitiveservices.AccountConnectionClient to instances of AccountConnectionServer.
-// Don't use this type directly, use NewAccountConnectionServerTransport instead.
-type AccountConnectionServerTransport struct {
-	srv          *AccountConnectionServer
-	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.AccountConnectionClientListResponse]]
+// ProjectConnectionsServerTransport connects instances of armcognitiveservices.ProjectConnectionsClient to instances of ProjectConnectionsServer.
+// Don't use this type directly, use NewProjectConnectionsServerTransport instead.
+type ProjectConnectionsServerTransport struct {
+	srv          *ProjectConnectionsServer
+	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.ProjectConnectionsClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for AccountConnectionServerTransport.
-func (a *AccountConnectionServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ProjectConnectionsServerTransport.
+func (p *ProjectConnectionsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return a.dispatchToMethodFake(req, method)
+	return p.dispatchToMethodFake(req, method)
 }
 
-func (a *AccountConnectionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (p *ProjectConnectionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if accountConnectionServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = accountConnectionServerTransportInterceptor.Do(req)
+		if projectConnectionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = projectConnectionsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "AccountConnectionClient.Create":
-				res.resp, res.err = a.dispatchCreate(req)
-			case "AccountConnectionClient.Delete":
-				res.resp, res.err = a.dispatchDelete(req)
-			case "AccountConnectionClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "AccountConnectionClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
-			case "AccountConnectionClient.Update":
-				res.resp, res.err = a.dispatchUpdate(req)
+			case "ProjectConnectionsClient.Create":
+				res.resp, res.err = p.dispatchCreate(req)
+			case "ProjectConnectionsClient.Delete":
+				res.resp, res.err = p.dispatchDelete(req)
+			case "ProjectConnectionsClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "ProjectConnectionsClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			case "ProjectConnectionsClient.Update":
+				res.resp, res.err = p.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -113,14 +113,14 @@ func (a *AccountConnectionServerTransport) dispatchToMethodFake(req *http.Reques
 	}
 }
 
-func (a *AccountConnectionServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if a.srv.Create == nil {
+func (p *ProjectConnectionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if p.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.ConnectionPropertiesV2BasicResource](req)
@@ -135,17 +135,21 @@ func (a *AccountConnectionServerTransport) dispatchCreate(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
 	connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
 	if err != nil {
 		return nil, err
 	}
-	var options *armcognitiveservices.AccountConnectionClientCreateOptions
+	var options *armcognitiveservices.ProjectConnectionsClientCreateOptions
 	if !reflect.ValueOf(body).IsZero() {
-		options = &armcognitiveservices.AccountConnectionClientCreateOptions{
-			Body: &body,
+		options = &armcognitiveservices.ProjectConnectionsClientCreateOptions{
+			Connection: &body,
 		}
 	}
-	respr, errRespr := a.srv.Create(req.Context(), resourceGroupNameParam, accountNameParam, connectionNameParam, options)
+	respr, errRespr := p.srv.Create(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, connectionNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -160,14 +164,14 @@ func (a *AccountConnectionServerTransport) dispatchCreate(req *http.Request) (*h
 	return resp, nil
 }
 
-func (a *AccountConnectionServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if a.srv.Delete == nil {
+func (p *ProjectConnectionsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -178,11 +182,15 @@ func (a *AccountConnectionServerTransport) dispatchDelete(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
 	connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Delete(req.Context(), resourceGroupNameParam, accountNameParam, connectionNameParam, nil)
+	respr, errRespr := p.srv.Delete(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, connectionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -197,14 +205,14 @@ func (a *AccountConnectionServerTransport) dispatchDelete(req *http.Request) (*h
 	return resp, nil
 }
 
-func (a *AccountConnectionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
+func (p *ProjectConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -215,11 +223,15 @@ func (a *AccountConnectionServerTransport) dispatchGet(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
 	connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, connectionNameParam, nil)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, connectionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -234,16 +246,16 @@ func (a *AccountConnectionServerTransport) dispatchGet(req *http.Request) (*http
 	return resp, nil
 }
 
-func (a *AccountConnectionServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
+func (p *ProjectConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListPager := a.newListPager.get(req)
+	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -252,6 +264,10 @@ func (a *AccountConnectionServerTransport) dispatchNewListPager(req *http.Reques
 			return nil, err
 		}
 		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
 		if err != nil {
 			return nil, err
 		}
@@ -273,18 +289,18 @@ func (a *AccountConnectionServerTransport) dispatchNewListPager(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		var options *armcognitiveservices.AccountConnectionClientListOptions
+		var options *armcognitiveservices.ProjectConnectionsClientListOptions
 		if targetParam != nil || categoryParam != nil || includeAllParam != nil {
-			options = &armcognitiveservices.AccountConnectionClientListOptions{
+			options = &armcognitiveservices.ProjectConnectionsClientListOptions{
 				Target:     targetParam,
 				Category:   categoryParam,
 				IncludeAll: includeAllParam,
 			}
 		}
-		resp := a.srv.NewListPager(resourceGroupNameParam, accountNameParam, options)
+		resp := p.srv.NewListPager(resourceGroupNameParam, accountNameParam, projectNameParam, options)
 		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.AccountConnectionClientListResponse, createLink func() string) {
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.ProjectConnectionsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -293,23 +309,23 @@ func (a *AccountConnectionServerTransport) dispatchNewListPager(req *http.Reques
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
+		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (a *AccountConnectionServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.Update == nil {
+func (p *ProjectConnectionsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.ConnectionUpdateContent](req)
@@ -324,17 +340,21 @@ func (a *AccountConnectionServerTransport) dispatchUpdate(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
 	connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
 	if err != nil {
 		return nil, err
 	}
-	var options *armcognitiveservices.AccountConnectionClientUpdateOptions
+	var options *armcognitiveservices.ProjectConnectionsClientUpdateOptions
 	if !reflect.ValueOf(body).IsZero() {
-		options = &armcognitiveservices.AccountConnectionClientUpdateOptions{
-			Body: &body,
+		options = &armcognitiveservices.ProjectConnectionsClientUpdateOptions{
+			Connection: &body,
 		}
 	}
-	respr, errRespr := a.srv.Update(req.Context(), resourceGroupNameParam, accountNameParam, connectionNameParam, options)
+	respr, errRespr := p.srv.Update(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, connectionNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -349,8 +369,8 @@ func (a *AccountConnectionServerTransport) dispatchUpdate(req *http.Request) (*h
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to AccountConnectionServerTransport
-var accountConnectionServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ProjectConnectionsServerTransport
+var projectConnectionsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

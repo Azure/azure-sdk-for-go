@@ -42,7 +42,7 @@ func NewCommitmentTiersClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListPager - List Commitment Tiers.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - location - Resource location.
 //   - options - CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.NewListPager
 //     method.
@@ -85,7 +85,7 @@ func (client *CommitmentTiersClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

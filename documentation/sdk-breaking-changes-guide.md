@@ -127,7 +127,7 @@ op restoreVolume is ArmResourceActionAsync<Volume, void, Volume>;
 @@clientLocation(Microsoft.ElasticSan.restoreVolume, "Management", "go");
 ```
 
-### User Standardard Operations List Operation
+### User Standard Operations List Operation
 
 **Issue**: Operations list operation is upgraded to use the standardard library's definition.
 

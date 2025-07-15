@@ -51,13 +51,14 @@ type SDKGeneratorRequest struct {
 
 // SDKGeneratorResult represents the result of SDK generation
 type SDKGeneratorResult struct {
-	Success     bool   `json:"success"`
-	Message     string `json:"message"`
-	PackageName string `json:"package_name,omitempty"`
-	PackagePath string `json:"package_path,omitempty"`
-	Version     string `json:"version,omitempty"`
-	ChangelogMD string `json:"changelog_md,omitempty"`
-	HasBreaking bool   `json:"has_breaking_changes,omitempty"`
+	Success        bool   `json:"success"`
+	Message        string `json:"message"`
+	PackageName    string `json:"package_name,omitempty"`
+	PackagePath    string `json:"package_path,omitempty"`
+	Version        string `json:"version,omitempty"`
+	ChangelogMD    string `json:"changelog_md,omitempty"`
+	HasBreaking    bool   `json:"has_breaking_changes,omitempty"`
+	GenerationType string `json:"generation_type,omitempty"`
 }
 
 // SDKGeneratorHandler handles the generate-go-sdk tool requests
@@ -314,12 +315,13 @@ func generateSDK(ctx context.Context, req SDKGeneratorRequest, tspConfigPath str
 	}
 
 	return &SDKGeneratorResult{
-		Success:     true,
-		Message:     "SDK generation completed successfully",
-		PackageName: result.PackageName,
-		PackagePath: result.PackageRelativePath,
-		Version:     result.Version,
-		ChangelogMD: result.ChangelogMD,
-		HasBreaking: result.Changelog.HasBreakingChanges(),
+		Success:        true,
+		Message:        "SDK generation completed successfully",
+		PackageName:    result.PackageName,
+		PackagePath:    result.PackageRelativePath,
+		Version:        result.Version,
+		ChangelogMD:    result.ChangelogMD,
+		HasBreaking:    result.Changelog.HasBreakingChanges(),
+		GenerationType: result.GenerationType,
 	}, nil
 }

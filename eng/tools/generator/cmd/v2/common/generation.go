@@ -40,6 +40,7 @@ type GenerateResult struct {
 	ChangelogMD         string
 	PullRequestLabels   string
 	PackageRelativePath string
+	GenerationType      string
 }
 
 type GenerateParam struct {
@@ -372,6 +373,7 @@ func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		ChangelogMD:         changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
+		GenerationType:      "SwaggerOnBoard",
 	}, nil
 }
 
@@ -499,6 +501,7 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 		ChangelogMD:         changelogMd + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
+		GenerationType:      "SwaggerUpdate",
 	}, nil
 }
 
@@ -750,6 +753,7 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, c
 		ChangelogMD:         changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
+		GenerationType:      "TypeSpecOnBoard",
 	}, nil
 }
 
@@ -878,6 +882,8 @@ func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, cha
 		log.Printf("Generate examples...")
 	}
 
+	generationType := "TypeSpecUpdate"
+
 	// remove autorest.md and build.go
 	autorestMdPath := filepath.Join(packagePath, "autorest.md")
 	if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
@@ -885,7 +891,7 @@ func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, cha
 		if err = os.Remove(autorestMdPath); err != nil {
 			return nil, err
 		}
-
+		generationType = "MigrateToTypeSpec"
 	}
 	buildGoPath := filepath.Join(packagePath, "build.go")
 	if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
@@ -908,5 +914,6 @@ func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, cha
 		ChangelogMD:         changelogMd + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
+		GenerationType:      generationType,
 	}, nil
 }

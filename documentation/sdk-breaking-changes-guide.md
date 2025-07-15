@@ -2,13 +2,7 @@
 
 This document categorizes common breaking changes in the Azure Go SDK and provides guidance on how to resolve them using `client.tsp` customizations or change `tspconfig.yaml` config.
 
-## Table of Contents
-
-- [TypeSpec Migration](#typespec-migration)
-- [TypeSpec Update](#typespec-update)
-- [Resolution Guidelines](#resolution-guidelines)
-
-## TypeSpec Migration
+## Migration to TypeSpec
 
 These breaking changes occur when migrating from Swagger to TypeSpec for API specifications. Most can be resolved using `client.tsp` customizations.
 

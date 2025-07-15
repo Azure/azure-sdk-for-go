@@ -410,7 +410,11 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 
 	previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
-	oriExports, err = GetExportsFromTag(*t.SDKRepo, packagePath, previousVersionTag)
+	relativePackagePath, err := filepath.Rel(t.SDKPath, t.PackagePath)
+	if err != nil {
+		return nil, err
+	}
+	oriExports, err = GetExportsFromTag(relativePackagePath, previousVersionTag)
 	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}
@@ -675,8 +679,13 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
-	log.Printf("##[command]Executing go get -u ./... toolchain@none in %s\n", modulePath)
-	if err := ExecuteGo(modulePath, "get", "-u", "./...", "toolchain@none"); err != nil {
+	log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azcore in %s\n", modulePath)
+	if err := ExecuteGo(modulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azcore"); err != nil {
+		return nil, err
+	}
+
+	log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azidentity in %s\n", modulePath)
+	if err := ExecuteGo(modulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azidentity"); err != nil {
 		return nil, err
 	}
 
@@ -796,7 +805,11 @@ func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*ex
 
 	previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
-	oriExports, err = GetExportsFromTag(*t.SDKRepo, packagePath, previousVersionTag)
+	relativePackagePath, err := filepath.Rel(t.SDKPath, t.PackagePath)
+	if err != nil {
+		return nil, err
+	}
+	oriExports, err = GetExportsFromTag(relativePackagePath, previousVersionTag)
 	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}

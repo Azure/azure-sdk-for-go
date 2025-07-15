@@ -224,3 +224,48 @@ func TestGetAllVersionTagsV2(t *testing.T) {
 	assert.Contains(t, tags, expected)
 	assert.GreaterOrEqual(t, len(tags), 30)
 }
+
+func TestGetExportsFromTag(t *testing.T) {
+	// Test cases with different package paths and versions
+	testCases := []struct {
+		name        string
+		packagePath string
+		tag         string
+		expectError bool
+	}{
+		{
+			name:        "IoT Firmware Defense v2.0.0-beta.1",
+			packagePath: "sdk/resourcemanager/iotfirmwaredefense/armiotfirmwaredefense",
+			tag:         "sdk/resourcemanager/iotfirmwaredefense/armiotfirmwaredefense/v2.0.0-beta.1",
+			expectError: false,
+		},
+		{
+			name:        "Compute Schedule v1.1.0",
+			packagePath: "sdk/resourcemanager/computeschedule/armcomputeschedule",
+			tag:         "sdk/resourcemanager/computeschedule/armcomputeschedule/v1.1.0",
+			expectError: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Call GetExportsFromTag
+			exports, err := common.GetExportsFromTag(tc.packagePath, tc.tag)
+
+			if tc.expectError {
+				assert.Error(t, err)
+				return
+			}
+
+			// Should not error for valid tags
+			assert.NoError(t, err)
+			assert.NotNil(t, exports)
+
+			// Log some information about the exports for debugging
+			log.Printf("Test %s: Found exports for package %s at tag %s", tc.name, tc.packagePath, tc.tag)
+
+			assert.True(t, len(exports.Funcs) > 0 || len(exports.Structs) > 0,
+				"Expected to find some exports in package")
+		})
+	}
+}

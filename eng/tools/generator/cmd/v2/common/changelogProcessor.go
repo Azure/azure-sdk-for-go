@@ -4,6 +4,7 @@
 package common
 
 import (
+	"archive/zip"
 	"encoding/json"
 	"fmt"
 	"go/ast"
@@ -187,69 +188,178 @@ func GetPreviousVersionTag(isCurrentPreview bool, allReleases []string) string {
 	}
 }
 
-func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*exports.Content, error) {
+func GetExportsFromTag(relativePackagePath, tag string) (*exports.Content, error) {
 	log.Printf("Get exports from specific tag '%s' ...", tag)
 
-	// get current head branch name
-	currentRef, err := sdkRepo.Head()
+	// Extract tag name from ref/tags/ prefix if present
+	tagName := strings.TrimPrefix(tag, "refs/tags/")
+
+	// Download and extract only the packagePath folder
+	extractedPackagePath, err := downloadAndExtractPackagePath(tagName, relativePackagePath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to download and extract package path: %v", err)
+	}
+	defer os.RemoveAll(filepath.Dir(extractedPackagePath)) // Clean up temp directory
+
+	// Check if the package path exists in the extracted source
+	if _, err := os.Stat(extractedPackagePath); os.IsNotExist(err) {
+		log.Printf("Package path '%s' does not exist in tag '%s'", relativePackagePath, tagName)
+		return &exports.Content{}, nil
 	}
 
-	// add package change
-	err = sdkRepo.Add(packagePath)
+	// Get exports from the extracted package path
+	result, err := exports.Get(extractedPackagePath)
+	// bypass the error if the package doesn't contain any exports, return empty content
+	if err != nil && strings.Contains(err.Error(), "doesn't contain any exports") {
+		return &exports.Content{}, nil
+	}
 	if err != nil {
-		return nil, err
-	}
-
-	// stash current change
-	err = sdkRepo.Stash()
-	if err != nil {
-		return nil, err
-	}
-
-	remoteName := "release_remote"
-	fetchOpts := &git.FetchOptions{
-		RemoteName: remoteName,
-		RefSpecs:   []config.RefSpec{config.RefSpec(tag + ":" + tag)},
-	}
-
-	err = FetchTagsFromRemote(sdkRepo, remoteName, fetchOpts)
-	if err != nil {
-		return nil, err
-	}
-
-	// checkout to the specific tag
-	err = sdkRepo.CheckoutTag(strings.TrimPrefix(tag, "ref/tags/"))
-	if err != nil {
-		return nil, err
-	}
-
-	// get exports
-	result, err := exports.Get(packagePath)
-	// bypass the error if the package doesn't contain any exports, return nil
-	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
-		return nil, err
-	}
-
-	// checkout back to head branch
-	err = sdkRepo.Checkout(&repo.CheckoutOptions{
-		Branch: plumbing.ReferenceName(currentRef.Name()),
-	})
-	if err != nil {
-		return nil, err
-	}
-	if err := cleanupRemote(sdkRepo, remoteName); err != nil {
-		return nil, err
-	}
-
-	// restore current change
-	err = sdkRepo.StashPop()
-	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get exports from extracted package: %v", err)
 	}
 
 	return &result, nil
+}
+
+// downloadAndExtractPackagePath downloads the source code for a specific tag and extracts only the packagePath folder
+func downloadAndExtractPackagePath(tagName, relativePackagePath string) (string, error) {
+	// Create a temporary directory
+	tempDir, err := os.MkdirTemp("", "azure-sdk-for-go-*")
+	if err != nil {
+		return "", fmt.Errorf("failed to create temp directory: %v", err)
+	}
+
+	// Download the tag archive
+	downloadURL := fmt.Sprintf("https://github.com/Azure/azure-sdk-for-go/archive/refs/tags/%s.zip", tagName)
+	log.Printf("Downloading tag source from: %s", downloadURL)
+
+	resp, err := http.Get(downloadURL)
+	if err != nil {
+		os.RemoveAll(tempDir)
+		return "", fmt.Errorf("failed to download tag archive: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		os.RemoveAll(tempDir)
+		return "", fmt.Errorf("failed to download tag archive: HTTP %d", resp.StatusCode)
+	}
+
+	// Save the zip file to temp directory
+	zipFilePath := filepath.Join(tempDir, "source.zip")
+	zipFile, err := os.Create(zipFilePath)
+	if err != nil {
+		os.RemoveAll(tempDir)
+		return "", fmt.Errorf("failed to create zip file: %v", err)
+	}
+
+	_, err = io.Copy(zipFile, resp.Body)
+	zipFile.Close()
+	if err != nil {
+		os.RemoveAll(tempDir)
+		return "", fmt.Errorf("failed to save zip file: %v", err)
+	}
+
+	// Extract only the packagePath folder from the zip file
+	extractedPackagePath, err := extractPackagePathFromZip(zipFilePath, tempDir, relativePackagePath)
+	if err != nil {
+		os.RemoveAll(tempDir)
+		return "", fmt.Errorf("failed to extract package path from zip file: %v", err)
+	}
+
+	// Remove the zip file after extraction
+	os.Remove(zipFilePath)
+
+	return extractedPackagePath, nil
+}
+
+// extractPackagePathFromZip extracts only the specified packagePath from the zip file
+func extractPackagePathFromZip(src, dest, relativePackagePath string) (string, error) {
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return "", err
+	}
+	defer r.Close()
+
+	var extractedPackagePath string
+	repoPrefix := ""
+
+	// First pass: find the repository prefix (e.g., "azure-sdk-for-go-v1.2.3/")
+	for _, f := range r.File {
+		if strings.HasPrefix(f.Name, "azure-sdk-for-go-") && strings.Contains(f.Name, "/") {
+			parts := strings.SplitN(f.Name, "/", 2)
+			if len(parts) > 0 {
+				repoPrefix = parts[0] + "/"
+				break
+			}
+		}
+	}
+
+	if repoPrefix == "" {
+		return "", fmt.Errorf("could not find repository prefix in zip file")
+	}
+
+	// Target path within the zip file
+	targetPathInZip := repoPrefix + relativePackagePath + "/"
+
+	// Create destination directory for the package
+	packageDestDir := filepath.Join(dest, relativePackagePath)
+	os.MkdirAll(packageDestDir, 0755)
+	extractedPackagePath = packageDestDir
+
+	// Second pass: extract only files under the packagePath
+	for _, f := range r.File {
+		// Check if this file is within our target package path
+		if !strings.HasPrefix(f.Name, targetPathInZip) {
+			continue
+		}
+
+		// Remove the repo prefix and package path prefix to get relative path within package
+		relativePath := strings.TrimPrefix(f.Name, targetPathInZip)
+		if relativePath == "" {
+			continue // Skip the directory itself
+		}
+
+		// Create the file path in destination
+		destPath := filepath.Join(packageDestDir, relativePath)
+
+		// Check for ZipSlip vulnerability
+		if !strings.HasPrefix(destPath, filepath.Clean(dest)+string(os.PathSeparator)) {
+			return "", fmt.Errorf("invalid file path: %s", f.Name)
+		}
+
+		if f.FileInfo().IsDir() {
+			// Create directory
+			os.MkdirAll(destPath, f.FileInfo().Mode())
+			continue
+		}
+
+		// Create the directories for file
+		if err := os.MkdirAll(filepath.Dir(destPath), 0755); err != nil {
+			return "", err
+		}
+
+		// Extract file
+		fileReader, err := f.Open()
+		if err != nil {
+			return "", err
+		}
+
+		targetFile, err := os.OpenFile(destPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.FileInfo().Mode())
+		if err != nil {
+			fileReader.Close()
+			return "", err
+		}
+
+		_, err = io.Copy(targetFile, fileReader)
+		targetFile.Close()
+		fileReader.Close()
+
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return extractedPackagePath, nil
 }
 
 func MarshalUnmarshalFilter(changelog *Changelog) {

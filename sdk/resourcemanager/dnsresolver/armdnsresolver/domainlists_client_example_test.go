@@ -18,8 +18,61 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverDomainList_Put.json
-func ExampleDomainListsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_BulkDomains_Put.json
+func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWithBulkNumberOfDomains() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdnsresolver.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDomainListsClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainList{
+		Location: to.Ptr("westus2"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+		Properties: &armdnsresolver.DomainListProperties{},
+	}, &armdnsresolver.DomainListsClientBeginCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DomainList = armdnsresolver.DomainList{
+	// 	Name: to.Ptr("sampleDnsResolverDomainList"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
+	// 	Location: to.Ptr("westus2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armdnsresolver.DomainListProperties{
+	// 		DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList/bulk"),
+	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_Put.json
+func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWithLessThan1000Domains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -75,7 +128,7 @@ func ExampleDomainListsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverDomainList_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_Patch.json
 func ExampleDomainListsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +182,7 @@ func ExampleDomainListsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverDomainList_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_Delete.json
 func ExampleDomainListsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,8 +203,49 @@ func ExampleDomainListsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverDomainList_Get.json
-func ExampleDomainListsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_BulkDomains_Get.json
+func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithBulkNumberOfDomains() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdnsresolver.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDomainListsClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DomainList = armdnsresolver.DomainList{
+	// 	Name: to.Ptr("sampleDnsResolverDomainList"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
+	// 	Location: to.Ptr("westus2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armdnsresolver.DomainListProperties{
+	// 		DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList/bulk"),
+	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_Get.json
+func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithLessThan1000Domains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -192,7 +286,7 @@ func ExampleDomainListsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverDomainList_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_ListByResourceGroup.json
 func ExampleDomainListsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,17 +348,16 @@ func ExampleDomainListsClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				Properties: &armdnsresolver.DomainListProperties{
-		// 					Domains: []*string{
-		// 						to.Ptr("contoso.com")},
-		// 						ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
-		// 						ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-		// 					},
-		// 			}},
-		// 		}
+		// 					DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList2/bulk"),
+		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
+		// 				},
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/366aaa13cdd218b9adac716680e49473673410c8/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolverDomainList_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_ListBySubscription.json
 func ExampleDomainListsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,12 +419,117 @@ func ExampleDomainListsClient_NewListPager() {
 		// 				},
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				Properties: &armdnsresolver.DomainListProperties{
-		// 					Domains: []*string{
-		// 						to.Ptr("contoso.com")},
-		// 						ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
-		// 						ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-		// 					},
-		// 			}},
-		// 		}
+		// 					DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList2/bulk"),
+		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
+		// 				},
+		// 		}},
+		// 	}
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_BulkDownload.json
+func ExampleDomainListsClient_BeginBulk_downloadDnsResolverDomainListDomains() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdnsresolver.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDomainListsClient().BeginBulk(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainListBulk{
+		Properties: &armdnsresolver.DomainListBulkProperties{
+			Action:     to.Ptr(armdnsresolver.ActionDownload),
+			StorageURL: to.Ptr("https://sampleStorageAccount.blob.core.windows.net/sample-container/sampleBlob.txt?sv=2022-11-02&sr=b&sig=39Up9jzHkxhUIhFEjEh9594DJxe7w6cIRCgOV6ICGS0%3A377&sp=rcw"),
+		},
+	}, &armdnsresolver.DomainListsClientBeginBulkOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DomainList = armdnsresolver.DomainList{
+	// 	Name: to.Ptr("sampleDnsResolverDomainList"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
+	// 	Location: to.Ptr("westus2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armdnsresolver.DomainListProperties{
+	// 		Domains: []*string{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsResolverDomainList_BulkUpload.json
+func ExampleDomainListsClient_BeginBulk_uploadDnsResolverDomainListDomains() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdnsresolver.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDomainListsClient().BeginBulk(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainListBulk{
+		Properties: &armdnsresolver.DomainListBulkProperties{
+			Action:     to.Ptr(armdnsresolver.ActionUpload),
+			StorageURL: to.Ptr("https://sampleStorageAccount.blob.core.windows.net/sample-container/sampleBlob.txt?sv=2022-11-02&sr=b&sig=39Up9jzHkxhUIhFEjEh9594DJxe7w6cIRCgOV6ICGS0%3A377&sp=rcw"),
+		},
+	}, &armdnsresolver.DomainListsClientBeginBulkOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DomainList = armdnsresolver.DomainList{
+	// 	Name: to.Ptr("sampleDnsResolverDomainList"),
+	// 	Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
+	// 	ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
+	// 	SystemData: &armdnsresolver.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-01T01:01:01.107Z"); return t}()),
+	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-02T02:03:01.197Z"); return t}()),
+	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 	},
+	// 	Location: to.Ptr("westus2"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
+	// 	Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 	Properties: &armdnsresolver.DomainListProperties{
+	// 		Domains: []*string{
+	// 		},
+	// 		ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+	// 		ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
+	// 	},
+	// }
 }

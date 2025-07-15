@@ -83,6 +83,7 @@ const (
 	cosmosHeaderQueryExecutionInfo                 string = "x-ms-cosmos-query-execution-info"
 	headerXmsItemCount                             string = "x-ms-item-count"
 	headerDedicatedGatewayMaxAge                   string = "x-ms-dedicatedgateway-max-age"
+	headerDedicatedGatewayBypassCache              string = "x-ms-dedicatedgateway-bypass-cache"
 )
 
 const (

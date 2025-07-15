@@ -11,7 +11,6 @@ import (
 	"net"
 	"net/http"
 	"reflect"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
@@ -67,6 +66,10 @@ func TransformError(err error) error {
 		// session and there are none available. It waits, up to one minute, and then
 		// returns this error.
 		return exported.NewError(exported.CodeTimeout, err)
+	}
+
+	if errors.Is(err, errClosed) {
+		return exported.NewError(exported.CodeClosed, err)
 	}
 
 	// there are a few errors that all boil down to "bad creds or unauthorized"
@@ -139,11 +142,6 @@ func IsCancelError(err error) bool {
 	}
 
 	return false
-}
-
-func IsDrainingError(err error) bool {
-	// TODO: we should be able to identify these errors programatically
-	return strings.Contains(err.Error(), "link is currently draining")
 }
 
 const errorConditionLockLost = amqp.ErrCond("com.microsoft:message-lock-lost")
@@ -248,12 +246,6 @@ func GetRecoveryKind(err error) RecoveryKind {
 		// session closures appear to leak through when the connection itself is going down.
 		errors.As(err, &sessionErr) {
 		return RecoveryKindConn
-	}
-
-	if IsDrainingError(err) {
-		// temporary, operation should just be retryable since drain will
-		// eventually complete.
-		return RecoveryKindNone
 	}
 
 	var rpcErr RPCError

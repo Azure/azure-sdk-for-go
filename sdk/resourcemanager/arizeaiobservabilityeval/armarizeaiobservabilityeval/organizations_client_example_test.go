@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-01-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-10-01/Organizations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-10-01-preview/Organizations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-10-01/Organizations_Delete_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleOrganizationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-10-01-preview/Organizations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-10-01/Organizations_Get_MaximumSet_Gen.json
 func ExampleOrganizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleOrganizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-10-01-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-10-01/Organizations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -324,7 +324,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-01-preview/Organizations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2024-10-01/Organizations_ListBySubscription_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -413,7 +413,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-01-preview/Organizations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-10-01/Organizations_Update_MaximumSet_Gen.json
 func ExampleOrganizationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -84,6 +84,10 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 			milliseconds := dedicatedGatewayRequestOptions.MaxIntegratedCacheStaleness.Milliseconds()
 			headers[headerDedicatedGatewayMaxAge] = strconv.FormatInt(milliseconds, 10)
 		}
+
+		if dedicatedGatewayRequestOptions.BypassIntegratedCache {
+			headers[headerDedicatedGatewayBypassCache] = "true"
+		}
 	}
 
 	headers[cosmosHeaderPopulateQueryMetrics] = "true"

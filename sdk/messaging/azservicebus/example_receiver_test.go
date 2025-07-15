@@ -118,6 +118,54 @@ func ExampleReceiver_ReceiveMessages() {
 	}
 }
 
+func ExampleReceiver_ReceiveMessages_receiveAndDelete() {
+	// ReceiveMessages respects the passed in context, and will gracefully stop
+	// receiving when 'ctx' is cancelled.
+	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
+	defer cancel()
+
+	messages, err = receiver.ReceiveMessages(ctx, 10, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for _, message := range messages {
+		// The message body is a []byte. For this example we're just assuming that the body
+		// was a string, converted to bytes but any []byte payload is valid.
+		var body []byte = message.Body
+		fmt.Printf("Message received with body: %s\n", string(body))
+		fmt.Printf("Received and completed the message\n")
+	}
+
+	err := receiver.Close(ctx)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// In ReceiveAndDelete mode, any messages stored in the internal cache are available after Close(). To avoid
+	// message loss you'll want to loop after closing to ensure the cache is emptied.
+	// NOTE: you don't need to do this when using PeekLock, which is the default.
+	for {
+		messages, err := receiver.ReceiveMessages(context.TODO(), 10, nil)
+
+		if sbErr := (*azservicebus.Error)(nil); errors.As(err, &sbErr) && sbErr.Code == azservicebus.CodeClosed {
+			// we've read all cached messages.
+			break
+		} else if err != nil {
+			panic(err)
+		} else {
+			// process messages
+			for _, message := range messages {
+				var body []byte = message.Body
+				fmt.Printf("Message received with body: %s\n", string(body))
+				fmt.Printf("Received and completed the message\n")
+			}
+		}
+	}
+}
+
 func ExampleReceiver_ReceiveMessages_amqpMessage() {
 	// AMQP is the underlying protocol for all interaction with Service Bus.
 	// You can, if needed, send and receive messages that have a 1:1 correspondence

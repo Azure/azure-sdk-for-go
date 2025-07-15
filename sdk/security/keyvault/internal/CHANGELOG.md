@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2025-06-12)
+
+### Other Changes
+* Upgrade dependencies
 
 ## 1.2.0-beta.1 (2025-03-11)
 

@@ -278,8 +278,7 @@ func (client *QueueClient) getPropertiesHandleResponse(resp *http.Response) (Que
 		}
 	}
 	if val := resp.Header.Get("x-ms-approximate-messages-count"); val != "" {
-		approximateMessagesCount32, err := strconv.ParseInt(val, 10, 32)
-		approximateMessagesCount := int32(approximateMessagesCount32)
+		approximateMessagesCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return QueueClientGetPropertiesResponse{}, err
 		}

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2025-06-04)
+## 1.1.0 (2025-07-15)
 ### Features Added
 
 - New function `*ScheduledActionsClient.VirtualMachinesExecuteCreate(context.Context, string, ExecuteCreateRequest, *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateResponse, error)`

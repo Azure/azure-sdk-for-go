@@ -10,7 +10,7 @@
 
 ### Prerequisites
 
-* A supported Go version (the Azure SDK supports the two most recent Go releases)
+* A supported Go version
 * An [Azure subscription][azure_subscription]
 * An [Azure Log Analytics workspace][azure_monitor_create_using_portal]
 * A [Data Collection Endpoint][data_collection_endpoint]

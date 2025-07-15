@@ -1,16 +1,12 @@
 # Release History
 
-## 1.10.2-beta.1 (Unreleased)
+## 1.11.0-beta.1 (2025-07-15)
 
 ### Features Added
 - `DefaultAzureCredential` allows selecting one of its credential types by name via environment variable
   `AZURE_TOKEN_CREDENTIALS`. It will use only the selected type at runtime. For example, set
   `AZURE_TOKEN_CREDENTIALS=WorkloadIdentityCredential` to have `DefaultAzureCredential` use only
   `WorkloadIdentityCredential`.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 - By default, `ManagedIdentityCredential` retries IMDS requests for a maximum of ~70 seconds as recommended

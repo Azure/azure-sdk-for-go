@@ -22,9 +22,9 @@ type ChangeFeedOptions struct {
 	// Valid values are > 0. The service may return fewer items than requested.
 	MaxItemCount int32
 
-	// ChangeFeedStartFrom is a user-friendly way to specify the time for change feed
+	// StartFrom is a user-friendly way to specify the time for change feed
 	// Will be set to the IfModifiedSince header
-	ChangeFeedStartFrom *time.Time
+	StartFrom *time.Time
 
 	// PartitionKey is the logical partition key value for the request.
 	// Use this to read from a specific logical partition.
@@ -48,8 +48,8 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(cosmosDefaultMaxItemCount, cosmosBaseTen)
 	}
 
-	if options.ChangeFeedStartFrom != nil {
-		formatted := options.ChangeFeedStartFrom.UTC().Format(time.RFC1123)
+	if options.StartFrom != nil {
+		formatted := options.StartFrom.UTC().Format(time.RFC1123)
 		headers[cosmosHeaderIfModifiedSince] = formatted
 	}
 

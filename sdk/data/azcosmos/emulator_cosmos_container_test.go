@@ -878,8 +878,8 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 
 		// Query change feed with If-Modified-Since set to before the new item
 		options := &ChangeFeedOptions{
-			MaxItemCount:        10,
-			ChangeFeedStartFrom: &timeBefore,
+			MaxItemCount: 10,
+			StartFrom:    &timeBefore,
 		}
 
 		resp, err := container.GetChangeFeed(context.TODO(), options)
@@ -914,8 +914,8 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		// Note: The emulator might not fully support this behavior, so we'll make this test more lenient
 		futureTime := time.Now().UTC().Add(1 * time.Hour)
 		futureOptions := &ChangeFeedOptions{
-			MaxItemCount:        10,
-			ChangeFeedStartFrom: &futureTime,
+			MaxItemCount: 10,
+			StartFrom:    &futureTime,
 		}
 
 		futureResp, err := container.GetChangeFeed(context.TODO(), futureOptions)

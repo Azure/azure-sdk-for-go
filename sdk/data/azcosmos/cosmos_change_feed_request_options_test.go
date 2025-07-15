@@ -52,7 +52,7 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	}
 
 	now := time.Now().UTC()
-	options.ChangeFeedStartFrom = &now
+	options.StartFrom = &now
 	headers = options.toHeaders(nil)
 	if headers == nil {
 		t.Fatal("toHeaders should return non-nil")
@@ -145,11 +145,11 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 	}
 
 	options := &ChangeFeedOptions{
-		MaxItemCount:        25,
-		ChangeFeedStartFrom: &now,
-		PartitionKey:        &pk,
-		FeedRange:           feedRange,
-		Continuation:        &continuation,
+		MaxItemCount: 25,
+		StartFrom:    &now,
+		PartitionKey: &pk,
+		FeedRange:    feedRange,
+		Continuation: &continuation,
 	}
 
 	partitionKeyRanges := []partitionKeyRange{

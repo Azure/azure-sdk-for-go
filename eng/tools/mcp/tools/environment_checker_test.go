@@ -206,7 +206,7 @@ func TestCheckTypeSpecCompiler(t *testing.T) {
 			// Setup mock
 			testCommandExecutor = &mockCommandExecutor{
 				responses: map[string]mockResponse{
-					"npx tsp --version": {
+					"tsp --version": {
 						output: "1.0.0",
 						err:    tt.commandError,
 					},
@@ -254,7 +254,7 @@ func TestCheckTypeSpecClientCLI(t *testing.T) {
 			// Setup mock
 			testCommandExecutor = &mockCommandExecutor{
 				responses: map[string]mockResponse{
-					"npx tsp-client --version": {
+					"tsp-client --version": {
 						output: "1.0.0",
 						err:    tt.commandError,
 					},
@@ -434,10 +434,10 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 		{
 			name: "All environment checks satisfied",
 			mockResponses: map[string]mockResponse{
-				"go version":               {output: "go version go1.23.0 windows/amd64", err: nil},
-				"node --version":           {output: "v20.5.0", err: nil},
-				"npx tsp --version":        {output: "1.0.0", err: nil},
-				"npx tsp-client --version": {output: "1.0.0", err: nil},
+				"go version":           {output: "go version go1.23.0 windows/amd64", err: nil},
+				"node --version":       {output: "v20.5.0", err: nil},
+				"tsp --version":        {output: "1.0.0", err: nil},
+				"tsp-client --version": {output: "1.0.0", err: nil},
 			},
 			expectedSuccess:     true,
 			expectedFailedCount: 0,
@@ -445,10 +445,10 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 		{
 			name: "Missing Node.js",
 			mockResponses: map[string]mockResponse{
-				"go version":               {output: "go version go1.23.0 windows/amd64", err: nil},
-				"node --version":           {output: "", err: &exec.ExitError{}},
-				"npx tsp --version":        {output: "1.0.0", err: nil},
-				"npx tsp-client --version": {output: "1.0.0", err: nil},
+				"go version":           {output: "go version go1.23.0 windows/amd64", err: nil},
+				"node --version":       {output: "", err: &exec.ExitError{}},
+				"tsp --version":        {output: "1.0.0", err: nil},
+				"tsp-client --version": {output: "1.0.0", err: nil},
 			},
 			expectedSuccess:     false,
 			expectedFailedCount: 1,
@@ -458,9 +458,9 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 			mockResponses: map[string]mockResponse{
 				"go version":                        {output: "go version go1.23.0 windows/amd64", err: nil},
 				"node --version":                    {output: "v20.5.0", err: nil},
-				"npx tsp --version":                 {output: "", err: &exec.ExitError{}},
+				"tsp --version":                     {output: "", err: &exec.ExitError{}},
 				"npm install -g @typespec/compiler": {output: "installed", err: nil},
-				"npx tsp-client --version":          {output: "", err: &exec.ExitError{}},
+				"tsp-client --version":              {output: "", err: &exec.ExitError{}},
 				"npm install -g @azure-tools/typespec-client-generator-cli": {output: "installed", err: nil},
 			},
 			expectedSuccess:     true,
@@ -483,7 +483,7 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 				callCount[key]++
 
 				// For re-checks after installation, return success
-				if callCount[key] > 1 && (key == "npx tsp --version" || key == "npx tsp-client --version") {
+				if callCount[key] > 1 && (key == "tsp --version" || key == "tsp-client --version") {
 					return "1.0.0", nil
 				}
 

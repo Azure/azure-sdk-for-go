@@ -221,7 +221,7 @@ func checkNodeVersion(minVersion string) EnvironmentChecker {
 }
 
 func checkTypeSpecCompiler() EnvironmentChecker {
-	_, err := runCommand("npx", "tsp", "--version")
+	_, err := runCommand("tsp", "--version")
 	if err != nil {
 		return EnvironmentChecker{
 			Name:        "TypeSpec Compiler",
@@ -239,7 +239,7 @@ func checkTypeSpecCompiler() EnvironmentChecker {
 }
 
 func checkTypeSpecClientCLI() EnvironmentChecker {
-	_, err := runCommand("npx", "tsp-client", "--version")
+	_, err := runCommand("tsp-client", "--version")
 	if err != nil {
 		return EnvironmentChecker{
 			Name:        "TypeSpec Client Generator CLI",

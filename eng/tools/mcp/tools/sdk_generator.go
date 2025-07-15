@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -247,6 +248,24 @@ func extractTspConfigFromPR(ctx context.Context, prLink, specRepoPath string) (s
 	return tspConfigPath, nil
 }
 
+// getSpecCommitHash gets the current Git commit hash from the spec repository
+func getSpecCommitHash(specRepoPath string) (string, error) {
+	cmd := exec.Command("git", "rev-parse", "HEAD")
+	cmd.Dir = specRepoPath
+
+	output, err := cmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("failed to get Git commit hash from spec repository: %v", err)
+	}
+
+	commitHash := strings.TrimSpace(string(output))
+	if commitHash == "" {
+		return "", fmt.Errorf("empty commit hash returned from spec repository")
+	}
+
+	return commitHash, nil
+}
+
 // generateSDK performs the actual SDK generation using the GenerateFromTypeSpec method
 func generateSDK(ctx context.Context, req SDKGeneratorRequest, tspConfigPath string) (*SDKGeneratorResult, error) {
 	// Create SDK repository reference
@@ -255,13 +274,19 @@ func generateSDK(ctx context.Context, req SDKGeneratorRequest, tspConfigPath str
 		return nil, fmt.Errorf("failed to open SDK repository: %v", err)
 	}
 
+	// Get the current commit hash from the spec repository
+	specCommitHash, err := getSpecCommitHash(req.SpecRepoPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get spec commit hash: %v", err)
+	}
+
 	// Create generation context
 	generateCtx := common.GenerateContext{
 		SDKPath:        utils.NormalizePath(req.SDKRepoPath),
 		SDKRepo:        &sdkRepo,
 		SpecPath:       utils.NormalizePath(req.SpecRepoPath),
-		SpecCommitHash: "", // Use local config
-		SpecRepoURL:    "", // Not needed for local generation
+		SpecCommitHash: specCommitHash,
+		SpecRepoURL:    "Azure/azure-rest-api-specs",
 	}
 
 	// Create generation parameters

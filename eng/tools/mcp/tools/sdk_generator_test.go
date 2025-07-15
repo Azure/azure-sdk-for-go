@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"testing"
 
@@ -234,6 +235,66 @@ options:
 		if err := json.Unmarshal([]byte(textContent.Text), &generatorResult); err != nil {
 			t.Errorf("Expected valid JSON result, got unmarshal error: %v", err)
 		}
+	}
+}
+
+func TestGetSpecCommitHash(t *testing.T) {
+	// Create a temporary directory and initialize it as a Git repository
+	tempDir := t.TempDir()
+
+	// Initialize Git repository
+	cmd := exec.Command("git", "init")
+	cmd.Dir = tempDir
+	if err := cmd.Run(); err != nil {
+		t.Skip("Git not available, skipping test")
+	}
+
+	// Configure Git user (required for commits)
+	cmd = exec.Command("git", "config", "user.email", "test@example.com")
+	cmd.Dir = tempDir
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("Failed to configure git user email: %v", err)
+	}
+
+	cmd = exec.Command("git", "config", "user.name", "Test User")
+	cmd.Dir = tempDir
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("Failed to configure git user name: %v", err)
+	}
+
+	// Create a test file and commit it
+	testFile := filepath.Join(tempDir, "test.txt")
+	if err := os.WriteFile(testFile, []byte("test content"), 0644); err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	cmd = exec.Command("git", "add", "test.txt")
+	cmd.Dir = tempDir
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("Failed to add file to git: %v", err)
+	}
+
+	cmd = exec.Command("git", "commit", "-m", "Initial commit")
+	cmd.Dir = tempDir
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("Failed to commit: %v", err)
+	}
+
+	// Test getting the commit hash
+	commitHash, err := getSpecCommitHash(tempDir)
+	if err != nil {
+		t.Errorf("Expected no error getting commit hash, got: %v", err)
+	}
+
+	if len(commitHash) != 40 {
+		t.Errorf("Expected commit hash to be 40 characters long, got %d characters: %s", len(commitHash), commitHash)
+	}
+
+	// Test with non-git directory
+	nonGitDir := t.TempDir()
+	_, err = getSpecCommitHash(nonGitDir)
+	if err == nil {
+		t.Error("Expected error for non-git directory")
 	}
 }
 

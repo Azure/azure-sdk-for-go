@@ -5,14 +5,7 @@ package azcosmos
 
 import (
 	"encoding/json"
-	"strconv"
 	"time"
-)
-
-const (
-	// cosmosDefaultMaxItemCount represents unlimited items in the response
-	cosmosDefaultMaxItemCount = -1
-	cosmosBaseTen             = 10
 )
 
 // ChangeFeedOptions defines the options for retrieving the change feed.
@@ -41,12 +34,6 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 	headers := make(map[string]string)
 
 	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
-
-	if options.MaxItemCount > 0 {
-		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), cosmosBaseTen)
-	} else {
-		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(cosmosDefaultMaxItemCount, cosmosBaseTen)
-	}
 
 	if options.StartFrom != nil {
 		formatted := options.StartFrom.UTC().Format(time.RFC1123)

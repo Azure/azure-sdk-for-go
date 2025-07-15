@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"encoding/json"
-	"strconv"
 	"testing"
 	"time"
 
@@ -20,22 +19,15 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 	}
 
 	h := *headers
-	if h[cosmosHeaderMaxItemCount] != strconv.FormatInt(cosmosDefaultMaxItemCount, 10) {
-		t.Errorf("Expected default MaxItemCount to be %d, got %v", cosmosDefaultMaxItemCount, h[cosmosHeaderMaxItemCount])
-	}
 	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
 		t.Errorf("Expected default AIM to be %v, got %v", cosmosHeaderValuesChangeFeed, h[cosmosHeaderChangeFeed])
 	}
 
-	options.MaxItemCount = 10
 	headers = options.toHeaders(nil)
 	if headers == nil {
 		t.Fatal("toHeaders should return non-nil")
 	}
 	h = *headers
-	if h[cosmosHeaderMaxItemCount] != "10" {
-		t.Errorf("Expected MaxItemCount to be 10, got %v", h[cosmosHeaderMaxItemCount])
-	}
 	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
 		t.Errorf("Expected AIM to be Incremental Feed, got %v", h[cosmosHeaderChangeFeed])
 	}
@@ -166,11 +158,6 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 	}
 
 	h := *headers
-
-	if h[cosmosHeaderMaxItemCount] != "25" {
-		t.Errorf("Expected MaxItemCount to be 25, got %v", h[cosmosHeaderMaxItemCount])
-	}
-
 	expectedIfModifiedSince := now.Format(time.RFC1123)
 	if h[cosmosHeaderIfModifiedSince] != expectedIfModifiedSince {
 		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])

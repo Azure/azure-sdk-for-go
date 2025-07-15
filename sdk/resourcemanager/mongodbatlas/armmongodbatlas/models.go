@@ -55,7 +55,9 @@ type OfferDetails struct {
 	TermUnit *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -153,6 +155,27 @@ type OrganizationResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// OrganizationResourceUpdate - The type used for update operations of the OrganizationResource.
+type OrganizationResourceUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *OrganizationResourceUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// OrganizationResourceUpdateProperties - The updatable properties of the OrganizationResource.
+type OrganizationResourceUpdateProperties struct {
+	// MongoDB properties
+	PartnerProperties *PartnerProperties
+
+	// Details of the user.
+	User *UserDetails
 }
 
 // PartnerProperties - MongoDB specific Properties

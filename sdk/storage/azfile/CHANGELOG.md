@@ -1,15 +1,12 @@
 # Release History
 
-## 1.5.2-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.5.2-beta.2 (2025-07-08)
 
 ### Bugs Fixed
 * Fixed bug where fileClient.Create API call was failing on passing permissionKey parameter. Fixes[#24632(https://github.com/Azure/azure-sdk-for-go/issues/24632)]
 
 ### Other Changes
+* Updated `azidentity` version to `1.10.1`
 
 ## 1.5.2-beta.1 (2025-05-08)
 

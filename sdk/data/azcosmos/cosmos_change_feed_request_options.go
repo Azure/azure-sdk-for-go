@@ -40,21 +40,6 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 		headers[cosmosHeaderIfModifiedSince] = formatted
 	}
 
-	if options.PartitionKey != nil {
-		partitionKeyJSON, err := options.PartitionKey.toJsonString()
-		if err == nil {
-			headers[cosmosHeaderPartitionKey] = string(partitionKeyJSON)
-		}
-	}
-
-	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
-		if id, err := findPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
-			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
-		} else {
-			return nil
-		}
-	}
-
 	if options.Continuation != nil && *options.Continuation != "" {
 		var compositeToken compositeContinuationToken
 		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil && len(compositeToken.Continuation) > 0 {
@@ -69,6 +54,21 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 			}
 		} else {
 			headers[headerIfNoneMatch] = *options.Continuation
+		}
+	}
+
+	if options.PartitionKey != nil {
+		partitionKeyJSON, err := options.PartitionKey.toJsonString()
+		if err == nil {
+			headers[cosmosHeaderPartitionKey] = string(partitionKeyJSON)
+		}
+	}
+
+	if options.FeedRange != nil && len(partitionKeyRanges) > 0 {
+		if id, err := findPartitionKeyRangeID(*options.FeedRange, partitionKeyRanges); err == nil {
+			headers[headerXmsDocumentDbPartitionKeyRangeId] = id
+		} else {
+			return nil
 		}
 	}
 

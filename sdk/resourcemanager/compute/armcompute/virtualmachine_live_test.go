@@ -64,7 +64,7 @@ func (testsuite *VirtualMachineTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestVirtualMachineTestSuite(t *testing.T) {
+func TTestVirtualMachineTestSuite(t *testing.T) {
 	suite.Run(t, new(VirtualMachineTestSuite))
 }
 

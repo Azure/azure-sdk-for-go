@@ -42,7 +42,7 @@ func NewReservationsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Create a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - reservationName - Name of the reservation.
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *ReservationsClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Create a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 func (client *ReservationsClient) create(ctx context.Context, resourceGroupName string, reservationName string, resource Reservation, options *ReservationsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReservationsClient.BeginCreate"
@@ -110,7 +110,7 @@ func (client *ReservationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *ReservationsClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - reservationName - Name of the reservation.
 //   - options - ReservationsClientBeginDeleteOptions contains the optional parameters for the ReservationsClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *ReservationsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Delete a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 func (client *ReservationsClient) deleteOperation(ctx context.Context, resourceGroupName string, reservationName string, options *ReservationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReservationsClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *ReservationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +199,7 @@ func (client *ReservationsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - reservationName - Name of the reservation.
 //   - options - ReservationsClientGetOptions contains the optional parameters for the ReservationsClient.Get method.
@@ -245,7 +245,7 @@ func (client *ReservationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +263,7 @@ func (client *ReservationsClient) getHandleResponse(resp *http.Response) (Reserv
 // GetBillingReport - Provides a summarized report along with actions for resources billed via given reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - reservationName - Name of the reservation.
 //   - options - ReservationsClientGetBillingReportOptions contains the optional parameters for the ReservationsClient.GetBillingReport
@@ -310,7 +310,7 @@ func (client *ReservationsClient) getBillingReportCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +328,7 @@ func (client *ReservationsClient) getBillingReportHandleResponse(resp *http.Resp
 // GetBillingStatus - Provides various statistics about resources billed via given reservation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - reservationName - Name of the reservation.
 //   - options - ReservationsClientGetBillingStatusOptions contains the optional parameters for the ReservationsClient.GetBillingStatus
@@ -375,7 +375,7 @@ func (client *ReservationsClient) getBillingStatusCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -393,7 +393,7 @@ func (client *ReservationsClient) getBillingStatusHandleResponse(resp *http.Resp
 // GetResourceLimits - Limits constraining certain resource properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - reservationName - Name of the reservation.
 //   - options - ReservationsClientGetResourceLimitsOptions contains the optional parameters for the ReservationsClient.GetResourceLimits
@@ -440,7 +440,7 @@ func (client *ReservationsClient) getResourceLimitsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -457,7 +457,7 @@ func (client *ReservationsClient) getResourceLimitsHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - List reservations by resource group
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ReservationsClientListByResourceGroupOptions contains the optional parameters for the ReservationsClient.NewListByResourceGroupPager
 //     method.
@@ -500,7 +500,7 @@ func (client *ReservationsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -517,7 +517,7 @@ func (client *ReservationsClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - List reservations by Azure subscription ID
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - options - ReservationsClientListBySubscriptionOptions contains the optional parameters for the ReservationsClient.NewListBySubscriptionPager
 //     method.
 func (client *ReservationsClient) NewListBySubscriptionPager(options *ReservationsClientListBySubscriptionOptions) *runtime.Pager[ReservationsClientListBySubscriptionResponse] {
@@ -555,7 +555,7 @@ func (client *ReservationsClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -573,7 +573,7 @@ func (client *ReservationsClient) listBySubscriptionHandleResponse(resp *http.Re
 // BeginUpdate - Update a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - reservationName - Name of the reservation.
 //   - properties - The resource properties to be updated.
@@ -599,7 +599,7 @@ func (client *ReservationsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Update a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2024-11-01
 func (client *ReservationsClient) update(ctx context.Context, resourceGroupName string, reservationName string, properties ReservationUpdate, options *ReservationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReservationsClient.BeginUpdate"
@@ -641,7 +641,7 @@ func (client *ReservationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

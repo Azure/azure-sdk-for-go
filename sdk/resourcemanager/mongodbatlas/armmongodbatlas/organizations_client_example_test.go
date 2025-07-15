@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-18-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-18-preview/Organizations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_Delete_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleOrganizationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-18-preview/Organizations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_Get_MaximumSet_Gen.json
 func ExampleOrganizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleOrganizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-18-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 	}
 }
 
-// Generated from example definition: 2024-11-18-preview/Organizations_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +336,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 	}
 }
 
-// Generated from example definition: 2024-11-18-preview/Organizations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_ListBySubscription_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +419,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 	}
 }
 
-// Generated from example definition: 2024-11-18-preview/Organizations_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_ListBySubscription_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +454,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 	}
 }
 
-// Generated from example definition: 2024-11-18-preview/Organizations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Organizations_Update_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,9 +465,9 @@ func ExampleOrganizationsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOrganizationsClient().BeginUpdate(ctx, "rgopenapi", "U.1-:7", armmongodbatlas.OrganizationResource{
+	poller, err := clientFactory.NewOrganizationsClient().BeginUpdate(ctx, "rgopenapi", "U.1-:7", armmongodbatlas.OrganizationResourceUpdate{
 		Tags: map[string]*string{},
-		Properties: &armmongodbatlas.OrganizationProperties{
+		Properties: &armmongodbatlas.OrganizationResourceUpdateProperties{
 			User: &armmongodbatlas.UserDetails{
 				FirstName:    to.Ptr("btyhwmlbzzihjfimviefebg"),
 				LastName:     to.Ptr("xx"),
@@ -522,6 +522,7 @@ func ExampleOrganizationsClient_BeginUpdate() {
 	// 			},
 	// 			PartnerProperties: &armmongodbatlas.PartnerProperties{
 	// 				OrganizationID: to.Ptr("vugtqrobendjkinziswxlqueouo"),
+	// 				RedirectURL: to.Ptr("cbxwtehraetlluocdihfgchvjzockn"),
 	// 				OrganizationName: to.Ptr("U.1-:7"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmongodbatlas.ResourceProvisioningStateSucceeded),

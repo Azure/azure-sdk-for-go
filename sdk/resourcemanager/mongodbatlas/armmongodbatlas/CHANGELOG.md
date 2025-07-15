@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2025-07-02)
+### Breaking Changes
+
+- Function `*OrganizationsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, OrganizationResource, *OrganizationsClientBeginUpdateOptions)` to `(context.Context, string, string, OrganizationResourceUpdate, *OrganizationsClientBeginUpdateOptions)`
+
+### Features Added
+
+- New struct `OrganizationResourceUpdate`
+- New struct `OrganizationResourceUpdateProperties`
+
+
 ## 0.1.0 (2025-05-07)
 ### Other Changes
 

@@ -34,6 +34,21 @@ function Get-GoModuleVersionInfo($modPath)
   return $null
 }
 
+# returns the major version suffix (e.g. 2) from a module's identity.
+# if there's no major version, $null is returned
+function Get-GoModuleMajorVersion($modPath)
+{
+  $content = Get-Content $modPath -Raw
+
+  # module github.com/Azure/azure-sdk-for-go/sdk/azcore/v2
+  # we want to return the 2. note that we must enable multi-line
+  # mode so that the ^ and $ anchors properly work.
+  if ($content -match "(?m)^module\s+\S+/v(?<majorVersion>\d+)\s*$") {
+    return "$($matches["majorVersion"])"
+  }
+  return $null
+}
+
 function Get-GoModuleProperties($goModPath)
 {
   $goModPath = $goModPath -replace "\\", "/"

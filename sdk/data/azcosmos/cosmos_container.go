@@ -708,21 +708,6 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	return response, err
 }
 
-// TODO: Use getChangeFeedContainer with no FeedRange or PartitionKey set in options to read the change feed for the entire container.
-// func (c *ContainerClient) getChangeFeedContainer(
-// 	ctx context.Context,
-// 	options *ChangeFeedOptions,
-// ) (ChangeFeedResponse, error) {
-// }
-
-// TODO: Use getChangeFeedForPartitionKey set in options to read the change feed for a specific partition.
-// func (c *ContainerClient) getChangeFeedForPartitionKey(
-// 	ctx context.Context,
-// 	partitionKey *PartitionKey,
-// 	options *ChangeFeedOptions,
-// ) (ChangeFeedResponse, error) {
-// }
-
 // GetChangeFeed retrieves a single page of the change feed using the provided options.
 // ctx - The context for the request.
 // options - Options for the operation
@@ -751,8 +736,6 @@ func (c *ContainerClient) GetChangeFeed(
 	if options.FeedRange != nil {
 		return c.getChangeFeedForEPKRange(ctx, options.FeedRange, options)
 	} else {
-		// TODO: Implement logic to handle PartitionKey and Container reads in separate Helper functions
-		// Below is a placeholder for this logic—it should not be used in production
 		var err error
 		spanName, err := c.getSpanForItems(operationTypeRead)
 		if err != nil {
@@ -805,7 +788,6 @@ func (c *ContainerClient) GetChangeFeed(
 		}
 
 		return response, nil
-		// return ChangeFeedResponse{}, fmt.Errorf("no FeedRange provided in options")
 	}
 }
 

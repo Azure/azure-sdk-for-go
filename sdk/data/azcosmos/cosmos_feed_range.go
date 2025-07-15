@@ -32,13 +32,3 @@ func findPartitionKeyRangeID(feedRange FeedRange, partitionKeyRanges []partition
 	}
 	return "", fmt.Errorf("no matching partition key range found for feed range [%s, %s)", feedRange.MinInclusive, feedRange.MaxExclusive)
 }
-
-// TODO: Modify this function to use the partitionKeyRangeCache
-// findPartitionKeyRangeIDWithCache finds the partition key range ID for a FeedRange using a partitionKeyRangeCache.
-// func findPartitionKeyRangeIDWithCache(
-//     feedRange FeedRange,
-//     cache *partitionKeyRangeCache,
-// ) (string, error) {
-//     partitionKeyRanges := cache.getAll()
-//     return FindPartitionKeyRangeId(feedRange, partitionKeyRanges)
-// }

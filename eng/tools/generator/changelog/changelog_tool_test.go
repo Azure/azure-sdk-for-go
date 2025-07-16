@@ -111,7 +111,7 @@ func TestGetExportsFromTag(t *testing.T) {
 		},
 		{
 			name:        "Edge Order v1.2.0",
-			packagePath: "sdk/resourcemanager/edgeorder/armedgeorder",
+			packagePath: "sdk\\resourcemanager\\edgeorder\\armedgeorder",
 			tag:         "sdk/resourcemanager/edgeorder/armedgeorder/v1.2.0",
 		},
 	}

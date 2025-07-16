@@ -272,8 +272,9 @@ func extractPackagePathFromZip(src, dest, relativePackagePath string) (string, e
 		return "", fmt.Errorf("could not find repository prefix in zip file")
 	}
 
-	// Target path within the zip file
-	targetPathInZip := repoPrefix + relativePackagePath + "/"
+	// Target path within the zip file (normalize path separators to forward slashes for zip compatibility)
+	normalizedPackagePath := filepath.ToSlash(relativePackagePath)
+	targetPathInZip := repoPrefix + normalizedPackagePath + "/"
 
 	// Create destination directory for the package
 	packageDestDir := filepath.Join(dest, relativePackagePath)

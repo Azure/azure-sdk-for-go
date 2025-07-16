@@ -38,9 +38,7 @@ func TestNewCompositeContinuationToken(t *testing.T) {
 func TestEmptyCompositeContinuationToken(t *testing.T) {
 	response := ChangeFeedResponse{
 		ResourceID: "testResource",
-		ETag:       "14",
 	}
-
 	token, err := response.GetCompositeContinuationToken()
 	if err != nil {
 		t.Fatalf("Failed to get composite token: %v", err)

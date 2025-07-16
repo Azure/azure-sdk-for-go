@@ -21,9 +21,8 @@ type ChangeFeedResponse struct {
 	Count int `json:"_count"`
 
 	// Selected HTTP headers that we're retrieving from the response
-	ETag              string
+
 	ContinuationToken string
-	LSN               string
 
 	// Store the feed range if it was used in the request
 	FeedRange *FeedRange
@@ -38,8 +37,6 @@ type ChangeFeedResponse struct {
 func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 	response := ChangeFeedResponse{
 		Response: newResponse(resp),
-		ETag:     resp.Header.Get("etag"),
-		LSN:      resp.Header.Get("lsn"),
 	}
 
 	if resp.StatusCode == http.StatusNotModified {
@@ -72,7 +69,7 @@ func (response *ChangeFeedResponse) PopulateCompositeContinuationToken() {
 
 // GetContinuation from ChangeFeedResponse
 func (c ChangeFeedResponse) GetContinuation() string {
-	return c.ETag
+	return string(c.ETag)
 }
 
 // GetContRanges extracts the continuation token range from the ChangeFeedResponse.

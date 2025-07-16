@@ -27,8 +27,7 @@ func TestNewChangeFeedResponse(t *testing.T) {
 				"_self": "dbs/ubgwAA==/colls/ubgwAI1+zvg=/docs/ubgwAI1+zvgDAAAAAAAAAA==/",
 				"_etag": "\"e1015e15-0000-0700-0000-6859bda10000\"",
 				"_attachments": "attachments/",
-				"_ts": 1750711713,
-				"_lsn": 5
+				"_ts": 1750711713
 			},
 			{
 				"id": "TraderJoes",
@@ -38,8 +37,7 @@ func TestNewChangeFeedResponse(t *testing.T) {
 				"_self": "dbs/ubgwAA==/colls/ubgwAI1+zvg=/docs/ubgwAI1+zvgBAAAAAAAACA==/",
 				"_etag": "\"9701c68b-0000-0700-0000-6859c38b0000\"",
 				"_attachments": "attachments/",
-				"_ts": 1750713227,
-				"_lsn": 15
+				"_ts": 1750713227
 			}
 		],
 		"_count": 2

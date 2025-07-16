@@ -740,7 +740,6 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		t.Logf("  - Count: %d", resp.Count)
 		t.Logf("  - ETag: %s", resp.ETag)
 		t.Logf("  - CompositeContinuationToken: %s", resp.CompositeContinuationToken)
-		t.Logf("  - LSN: %s", resp.LSN)
 		t.Logf("  - ResourceID: %s", resp.ResourceID)
 
 		// Verify composite continuation token is populated
@@ -821,7 +820,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 
 		// Test using the simple ETag in next request
 		if resp.ETag != "" {
-			etag := resp.ETag
+			etag := string(resp.ETag)
 			options2 := &ChangeFeedOptions{
 				MaxItemCount: 10,
 				Continuation: &etag,

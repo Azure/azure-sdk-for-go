@@ -5,5 +5,5 @@ package azlogs
 
 const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/monitor/ingestion/azlogs"
-	version    = "v1.1.0"
+	version    = "v1.1.1-beta.1"
 )

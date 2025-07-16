@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListBySubscriptionIds.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/ListBySubscriptionIds.json
 func ExampleVaultsClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleVaultsClient_NewListBySubscriptionIDPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/ListResources.json
 func ExampleVaultsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleVaultsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/GETVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/GETVault.json
 func ExampleVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,6 +251,12 @@ func ExampleVaultsClient_Get() {
 	// 					SoftDeleteRetentionPeriodInDays: to.Ptr[int32](14),
 	// 					SoftDeleteState: to.Ptr(armrecoveryservices.SoftDeleteStateEnabled),
 	// 				},
+	// 				SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
+	// 					SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
+	// 						OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeSystemAssigned),
+	// 					},
+	// 					State: to.Ptr(armrecoveryservices.StateEnabled),
+	// 				},
 	// 			},
 	// 		},
 	// 		SKU: &armrecoveryservices.SKU{
@@ -259,7 +265,7 @@ func ExampleVaultsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateRecoveryServicesVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +323,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateRecoveryServicesVault
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithMonitoringSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault_WithMonitoringSettings.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithMonitoringSetting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +403,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithMonitoringSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithRedundancySettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault_WithRedundancySettings.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithRedundancySetting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,7 +469,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithRedundancySe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_ResourceGuardEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault_ResourceGuardEnabled.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultPerformingCriticalOperationWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +554,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultPerformingCritic
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithCMK.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault_WithCMK.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -631,7 +637,80 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithCustomerMana
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault_WithSourceScanConfiguration.json
+func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithSourceScanConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginCreateOrUpdate(ctx, "Default-RecoveryServices-ResourceGroup", "swaggerExample", armrecoveryservices.Vault{
+		Location: to.Ptr("West US"),
+		Identity: &armrecoveryservices.IdentityData{
+			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeSystemAssigned),
+		},
+		Properties: &armrecoveryservices.VaultProperties{
+			PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+			SecuritySettings: &armrecoveryservices.SecuritySettings{
+				SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
+					SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
+						OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeSystemAssigned),
+					},
+					State: to.Ptr(armrecoveryservices.StateEnabled),
+				},
+			},
+		},
+		SKU: &armrecoveryservices.SKU{
+			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+		},
+	}, &armrecoveryservices.VaultsClientBeginCreateOrUpdateOptions{XMSAuthorizationAuxiliary: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Vault = armrecoveryservices.Vault{
+	// 	Name: to.Ptr("swaggerExample"),
+	// 	Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 	Etag: to.Ptr("W/\"datetime'2025-02-15T12%3A36%3A51.68Z'\""),
+	// 	ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/Default-RecoveryServices-ResourceGroup/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"TestUpdatedKey": to.Ptr("TestUpdatedValue"),
+	// 	},
+	// 	Identity: &armrecoveryservices.IdentityData{
+	// 		Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("1be097b0-eb5e-4927-bac2-b24ee8716f64"),
+	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 	},
+	// 	Properties: &armrecoveryservices.VaultProperties{
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		SecuritySettings: &armrecoveryservices.SecuritySettings{
+	// 			SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
+	// 				SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
+	// 					OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeSystemAssigned),
+	// 				},
+	// 				State: to.Ptr(armrecoveryservices.StateEnabled),
+	// 			},
+	// 		},
+	// 	},
+	// 	SKU: &armrecoveryservices.SKU{
+	// 		Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault_WithUserAssignedIdentity.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -695,7 +774,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithUserAssigned
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/DeleteVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/DeleteVault.json
 func ExampleVaultsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -716,7 +795,7 @@ func ExampleVaultsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PATCHVault.json
 func ExampleVaultsClient_BeginUpdate_updateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -761,7 +840,7 @@ func ExampleVaultsClient_BeginUpdate_updateResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithCMK.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PATCHVault_WithCMK.json
 func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -842,7 +921,7 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PatchVault_WithCMK2.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PatchVault_WithCMK2.json
 func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -915,7 +994,7 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys2() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithCMK3.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PATCHVault_WithCMK3.json
 func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys3() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -992,7 +1071,7 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys3() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PATCHVault_WithUserAssignedIdentity.json
 func ExampleVaultsClient_BeginUpdate_updateResourceWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1052,7 +1131,7 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithUserAssignedIdentity() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithMonitoringSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PATCHVault_WithMonitoringSettings.json
 func ExampleVaultsClient_BeginUpdate_updateVaultWithMonitoringSetting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1121,7 +1200,7 @@ func ExampleVaultsClient_BeginUpdate_updateVaultWithMonitoringSetting() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithRedundancySettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PATCHVault_WithRedundancySettings.json
 func ExampleVaultsClient_BeginUpdate_updateVaultWithRedundancySetting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1165,6 +1244,86 @@ func ExampleVaultsClient_BeginUpdate_updateVaultWithRedundancySetting() {
 	// 		RedundancySettings: &armrecoveryservices.VaultPropertiesRedundancySettings{
 	// 			CrossRegionRestore: to.Ptr(armrecoveryservices.CrossRegionRestoreEnabled),
 	// 			StandardTierStorageRedundancy: to.Ptr(armrecoveryservices.StandardTierStorageRedundancyGeoRedundant),
+	// 		},
+	// 	},
+	// 	SKU: &armrecoveryservices.SKU{
+	// 		Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PATCHVault_WithSourceScanConfiguration.json
+func ExampleVaultsClient_BeginUpdate_updateVaultWithSourceScanConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginUpdate(ctx, "HelloWorld", "swaggerExample", armrecoveryservices.PatchVault{
+		Tags: map[string]*string{
+			"PatchKey": to.Ptr("PatchKeyUpdated"),
+		},
+		Identity: &armrecoveryservices.IdentityData{
+			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": {},
+			},
+		},
+		Properties: &armrecoveryservices.VaultProperties{
+			SecuritySettings: &armrecoveryservices.SecuritySettings{
+				SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
+					SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
+						OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeUserAssigned),
+						UserAssignedIdentity:  to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+					},
+					State: to.Ptr(armrecoveryservices.StateEnabled),
+				},
+			},
+		},
+	}, &armrecoveryservices.VaultsClientBeginUpdateOptions{XMSAuthorizationAuxiliary: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Vault = armrecoveryservices.Vault{
+	// 	Name: to.Ptr("swaggerExample"),
+	// 	Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 	Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 	ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 	},
+	// 	Identity: &armrecoveryservices.IdentityData{
+	// 		Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+	// 			"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
+	// 				ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 				PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Properties: &armrecoveryservices.VaultProperties{
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		PublicNetworkAccess: to.Ptr(armrecoveryservices.PublicNetworkAccessEnabled),
+	// 		SecuritySettings: &armrecoveryservices.SecuritySettings{
+	// 			SourceScanConfiguration: &armrecoveryservices.SourceScanConfiguration{
+	// 				SourceScanIdentity: &armrecoveryservices.AssociatedIdentity{
+	// 					OperationIdentityType: to.Ptr(armrecoveryservices.IdentityTypeUserAssigned),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"),
+	// 				},
+	// 				State: to.Ptr(armrecoveryservices.StateEnabled),
+	// 			},
 	// 		},
 	// 	},
 	// 	SKU: &armrecoveryservices.SKU{

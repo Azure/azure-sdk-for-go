@@ -17,32 +17,32 @@ stages:
       strategy:
         matrix:
           Linux_Go118:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
+            pool.name: $(LINUXPOOL)
+            image.name: $(LINUXVMIMAGE)
             go.version: '1.18.10'
           Windows_Go118:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
+            pool.name: $(WINDOWSPOOL)
+            image.name: $(WINDOWSVMIMAGE)
             go.version: '1.18.10'
           Linux_Go122:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
+            pool.name: $(LINUXPOOL)
+            image.name: $(LINUXVMIMAGE)
             go.version: '1.22.8'
           Windows_Go122:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
+            pool.name: $(WINDOWSPOOL)
+            image.name: $(WINDOWSVMIMAGE)
             go.version: '1.22.8'
           Linux_Go123:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
+            pool.name: $(LINUXPOOL)
+            image.name: $(LINUXVMIMAGE)
             go.version: '1.23.2'
           Windows_Go123:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
+            pool.name: $(WINDOWSPOOL)
+            image.name: $(WINDOWSVMIMAGE)
             go.version: '1.23.2'
       pool:
         name: $(pool.name)
-        vmImage: $(image.name)
+        demands: ImageOverride -equals '$(image.name)'
       steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
@@ -58,7 +58,7 @@ stages:
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          Image: $(vm.image)
+          Image: $(image.name)
           GoVersion: $(go.version)
           TestRunTime: ${{ parameters.TestRunTime }}
 
@@ -68,7 +68,8 @@ stages:
         - template: /eng/pipelines/templates/variables/globals.yml
         - template: /eng/pipelines/templates/variables/image.yml
       pool:
-        name: azsdk-pool-mms-ubuntu-2004-general
+        name: $(LINUXPOOL)
+        demands: ImageOverride -equals '$(LINUXVMIMAGE)'
 
       steps:
       - task: GoTool@0

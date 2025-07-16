@@ -39,6 +39,14 @@ type ContainerProperties struct {
 	UniqueKeyPolicy *UniqueKeyPolicy
 	// ConflictResolutionPolicy contains the conflict resolution policy of the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy
+	// VectorEmbeddingPolicy contains the vector embedding policy of the container.
+	// This policy defines how vector embeddings are stored and searched within the container.
+	// For more information see https://docs.microsoft.com/azure/cosmos-db/nosql/vector-search
+	VectorEmbeddingPolicy *VectorEmbeddingPolicy
+	// FullTextPolicy contains the full-text policy of the container.
+	// This policy defines how text properties are indexed for full-text search operations.
+	// For more information see https://docs.microsoft.com/azure/cosmos-db/gen-ai/full-text-search
+	FullTextPolicy *FullTextPolicy
 }
 
 // MarshalJSON implements the json.Marshaler interface
@@ -108,6 +116,24 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 		}
 		buffer.WriteString(",\"conflictResolutionPolicy\":")
 		buffer.Write(conflictPolicy)
+	}
+
+	if tp.VectorEmbeddingPolicy != nil {
+		vectorPolicy, err := json.Marshal(tp.VectorEmbeddingPolicy)
+		if err != nil {
+			return nil, err
+		}
+		buffer.WriteString(",\"vectorEmbeddingPolicy\":")
+		buffer.Write(vectorPolicy)
+	}
+
+	if tp.FullTextPolicy != nil {
+		fullTextPolicy, err := json.Marshal(tp.FullTextPolicy)
+		if err != nil {
+			return nil, err
+		}
+		buffer.WriteString(",\"fullTextPolicy\":")
+		buffer.Write(fullTextPolicy)
 	}
 
 	buffer.WriteString("}")
@@ -186,6 +212,18 @@ func (tp *ContainerProperties) UnmarshalJSON(b []byte) error {
 
 	if cp, ok := attributes["conflictResolutionPolicy"]; ok {
 		if err := json.Unmarshal(cp, &tp.ConflictResolutionPolicy); err != nil {
+			return err
+		}
+	}
+
+	if vp, ok := attributes["vectorEmbeddingPolicy"]; ok {
+		if err := json.Unmarshal(vp, &tp.VectorEmbeddingPolicy); err != nil {
+			return err
+		}
+	}
+
+	if fp, ok := attributes["fullTextPolicy"]; ok {
+		if err := json.Unmarshal(fp, &tp.FullTextPolicy); err != nil {
 			return err
 		}
 	}

@@ -1570,3 +1570,40 @@ func (s *UnrecordedTestSuite) TestQueueSASUsingAccessPolicy() {
 		_require.NotNil(resp.Messages[0].MessageID)
 	}
 }
+
+func (s *UnrecordedTestSuite) TestQueueClientGetPropertiesApproximateMessagesCountInt64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(
+		fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.NoError(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := serviceClient.NewQueueClient(queueName)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer func() {
+		_, _ = queueClient.Delete(context.Background(), nil)
+	}()
+
+	const messageCount = 50
+	for i := 0; i < messageCount; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), fmt.Sprintf("msg-%d", i), nil)
+		_require.NoError(err)
+	}
+	time.Sleep(3 * time.Second)
+	propsResp, err := queueClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	count := propsResp.ApproximateMessagesCount
+	_require.NotNil(count)
+	_require.GreaterOrEqual(*count, int64(1))
+	_require.IsType(int64(0), *count)
+}

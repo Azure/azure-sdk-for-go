@@ -19,29 +19,14 @@ type ServerFactory struct {
 	// AgentPoolsServer contains the fakes for client AgentPoolsClient
 	AgentPoolsServer AgentPoolsServer
 
-	// Server contains the fakes for client Client
-	Server Server
-
-	// LoadBalancersServer contains the fakes for client LoadBalancersClient
-	LoadBalancersServer LoadBalancersServer
-
 	// MachinesServer contains the fakes for client MachinesClient
 	MachinesServer MachinesServer
 
 	// MaintenanceConfigurationsServer contains the fakes for client MaintenanceConfigurationsClient
 	MaintenanceConfigurationsServer MaintenanceConfigurationsServer
 
-	// ManagedClusterSnapshotsServer contains the fakes for client ManagedClusterSnapshotsClient
-	ManagedClusterSnapshotsServer ManagedClusterSnapshotsServer
-
 	// ManagedClustersServer contains the fakes for client ManagedClustersClient
 	ManagedClustersServer ManagedClustersServer
-
-	// NamespacesServer contains the fakes for client NamespacesClient
-	NamespacesServer NamespacesServer
-
-	// OperationStatusResultServer contains the fakes for client OperationStatusResultClient
-	OperationStatusResultServer OperationStatusResultServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
@@ -80,14 +65,9 @@ type ServerFactoryTransport struct {
 	srv                                 *ServerFactory
 	trMu                                sync.Mutex
 	trAgentPoolsServer                  *AgentPoolsServerTransport
-	trServer                            *ServerTransport
-	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
-	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
-	trNamespacesServer                  *NamespacesServerTransport
-	trOperationStatusResultServer       *OperationStatusResultServerTransport
 	trOperationsServer                  *OperationsServerTransport
 	trPrivateEndpointConnectionsServer  *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer        *PrivateLinkResourcesServerTransport
@@ -113,14 +93,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AgentPoolsClient":
 		initServer(s, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
-	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
-		resp, err = s.trServer.Do(req)
-	case "LoadBalancersClient":
-		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
-			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
-		})
-		resp, err = s.trLoadBalancersServer.Do(req)
 	case "MachinesClient":
 		initServer(s, &s.trMachinesServer, func() *MachinesServerTransport { return NewMachinesServerTransport(&s.srv.MachinesServer) })
 		resp, err = s.trMachinesServer.Do(req)
@@ -129,24 +101,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMaintenanceConfigurationsServerTransport(&s.srv.MaintenanceConfigurationsServer)
 		})
 		resp, err = s.trMaintenanceConfigurationsServer.Do(req)
-	case "ManagedClusterSnapshotsClient":
-		initServer(s, &s.trManagedClusterSnapshotsServer, func() *ManagedClusterSnapshotsServerTransport {
-			return NewManagedClusterSnapshotsServerTransport(&s.srv.ManagedClusterSnapshotsServer)
-		})
-		resp, err = s.trManagedClusterSnapshotsServer.Do(req)
 	case "ManagedClustersClient":
 		initServer(s, &s.trManagedClustersServer, func() *ManagedClustersServerTransport {
 			return NewManagedClustersServerTransport(&s.srv.ManagedClustersServer)
 		})
 		resp, err = s.trManagedClustersServer.Do(req)
-	case "NamespacesClient":
-		initServer(s, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
-		resp, err = s.trNamespacesServer.Do(req)
-	case "OperationStatusResultClient":
-		initServer(s, &s.trOperationStatusResultServer, func() *OperationStatusResultServerTransport {
-			return NewOperationStatusResultServerTransport(&s.srv.OperationStatusResultServer)
-		})
-		resp, err = s.trOperationStatusResultServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

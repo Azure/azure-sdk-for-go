@@ -373,6 +373,7 @@ const (
 	StorageErrorCodeShareNotFound                                    StorageErrorCode = "ShareNotFound"
 	StorageErrorCodeShareSnapshotCountExceeded                       StorageErrorCode = "ShareSnapshotCountExceeded"
 	StorageErrorCodeShareSnapshotInProgress                          StorageErrorCode = "ShareSnapshotInProgress"
+	StorageErrorCodeShareSnapshotNotFound                            StorageErrorCode = "ShareSnapshotNotFound"
 	StorageErrorCodeShareSnapshotOperationNotSupported               StorageErrorCode = "ShareSnapshotOperationNotSupported"
 	StorageErrorCodeSharingViolation                                 StorageErrorCode = "SharingViolation"
 	StorageErrorCodeUnsupportedHTTPVerb                              StorageErrorCode = "UnsupportedHttpVerb"
@@ -447,6 +448,7 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeShareNotFound,
 		StorageErrorCodeShareSnapshotCountExceeded,
 		StorageErrorCodeShareSnapshotInProgress,
+		StorageErrorCodeShareSnapshotNotFound,
 		StorageErrorCodeShareSnapshotOperationNotSupported,
 		StorageErrorCodeSharingViolation,
 		StorageErrorCodeUnsupportedHTTPVerb,

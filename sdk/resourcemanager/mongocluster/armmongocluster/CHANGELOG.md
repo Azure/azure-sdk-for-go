@@ -1,5 +1,35 @@
 # Release History
 
+## 1.1.0-beta.1 (2025-06-04)
+### Features Added
+
+- New enum type `AuthenticationMode` with values `AuthenticationModeMicrosoftEntraID`, `AuthenticationModeNativeAuth`
+- New enum type `DataAPIMode` with values `DataAPIModeDisabled`, `DataAPIModeEnabled`
+- New enum type `EntraPrincipalType` with values `EntraPrincipalTypeServicePrincipal`, `EntraPrincipalTypeUser`
+- New enum type `IdentityProviderType` with values `IdentityProviderTypeMicrosoftEntraID`
+- New enum type `StorageType` with values `StorageTypePremiumSSD`, `StorageTypePremiumSSDv2`
+- New enum type `UserRole` with values `UserRoleDatabaseOwner`
+- New function `*ClientFactory.NewUsersClient() *UsersClient`
+- New function `*EntraIdentityProvider.GetIdentityProvider() *IdentityProvider`
+- New function `*IdentityProvider.GetIdentityProvider() *IdentityProvider`
+- New function `NewUsersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsersClient, error)`
+- New function `*UsersClient.BeginCreateOrUpdate(context.Context, string, string, string, User, *UsersClientBeginCreateOrUpdateOptions) (*runtime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- New function `*UsersClient.BeginDelete(context.Context, string, string, string, *UsersClientBeginDeleteOptions) (*runtime.Poller[UsersClientDeleteResponse], error)`
+- New function `*UsersClient.Get(context.Context, string, string, string, *UsersClientGetOptions) (UsersClientGetResponse, error)`
+- New function `*UsersClient.NewListByMongoClusterPager(string, string, *UsersClientListByMongoClusterOptions) *runtime.Pager[UsersClientListByMongoClusterResponse]`
+- New struct `AuthConfigProperties`
+- New struct `DataAPIProperties`
+- New struct `DatabaseRole`
+- New struct `EntraIdentityProvider`
+- New struct `EntraIdentityProviderProperties`
+- New struct `User`
+- New struct `UserListResult`
+- New struct `UserProperties`
+- New field `AuthConfig`, `DataAPI` in struct `Properties`
+- New field `Iops`, `Throughput`, `Type` in struct `StorageProperties`
+- New field `AuthConfig`, `DataAPI` in struct `UpdateProperties`
+
+
 ## 1.0.1 (2024-10-14)
 ### Other Changes
 - Add examples

@@ -1,5 +1,98 @@
 # Release History
 
+## 7.1.0 (2025-06-18)
+### Features Added
+
+- New value `AgentPoolModeGateway` added to enum type `AgentPoolMode`
+- New value `AgentPoolTypeVirtualMachines` added to enum type `AgentPoolType`
+- New enum type `PodIPAllocationMode` with values `PodIPAllocationModeDynamicIndividual`, `PodIPAllocationModeStaticBlock`
+- New struct `AgentPoolGatewayProfile`
+- New struct `AgentPoolStatus`
+- New struct `CloudErrorBody`
+- New struct `ManagedClusterStaticEgressGatewayProfile`
+- New struct `ManagedClusterStatus`
+- New struct `ManualScaleProfile`
+- New struct `ScaleProfile`
+- New struct `VirtualMachineNodes`
+- New struct `VirtualMachinesProfile`
+- New field `Zones` in struct `Machine`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `GatewayProfile`, `PodIPAllocationMode`, `Status`, `VirtualMachineNodesStatus`, `VirtualMachinesProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `Status` in struct `ManagedClusterProperties`
+- New field `StaticEgressGatewayProfile` in struct `NetworkProfile`
+
+
+## 7.0.0 (2025-06-16)
+### Breaking Changes
+
+- Field `EnablePodSecurityPolicy` of struct `ManagedClusterProperties` has been removed
+
+### Features Added
+
+- New value `OSSKUUbuntu2204` added to enum type `OSSKU`
+- New enum type `UndrainableNodeBehavior` with values `UndrainableNodeBehaviorCordon`, `UndrainableNodeBehaviorSchedule`
+- New field `MaxUnavailable`, `UndrainableNodeBehavior` in struct `AgentPoolUpgradeSettings`
+- New field `EnableVnetIntegration`, `SubnetID` in struct `ManagedClusterAPIServerAccessProfile`
+
+
+## 7.0.0-beta.3 (2025-05-29)
+### Breaking Changes
+
+- Type of `AdvancedNetworkingSecurity.TransitEncryption` has been changed from `*TransitEncryption` to `*AdvancedNetworkingSecurityTransitEncryption`
+- Type of `ManagedClusterAgentPoolProfile.GpuProfile` has been changed from `*AgentPoolGPUProfile` to `*GPUProfile`
+- Type of `ManagedClusterAgentPoolProfileProperties.GpuProfile` has been changed from `*AgentPoolGPUProfile` to `*GPUProfile`
+- Enum `TransitEncryption` has been removed
+- Function `*ClientFactory.NewNamespacesClient` has been removed
+- Function `NewNamespacesClient` has been removed
+- Function `*NamespacesClient.BeginCreateOrUpdate` has been removed
+- Function `*NamespacesClient.BeginDelete` has been removed
+- Function `*NamespacesClient.Get` has been removed
+- Function `*NamespacesClient.NewListByManagedClusterPager` has been removed
+- Function `*NamespacesClient.ListCredential` has been removed
+- Function `*NamespacesClient.Update` has been removed
+- Struct `AgentPoolGPUProfile` has been removed
+- Struct `Namespace` has been removed
+- Struct `NamespaceListResult` has been removed
+- Field `EnablePodSecurityPolicy` of struct `ManagedClusterProperties` has been removed
+
+### Features Added
+
+- New value `OSSKUUbuntu2204`, `OSSKUUbuntu2404` added to enum type `OSSKU`
+- New enum type `GPUDriver` with values `GPUDriverInstall`, `GPUDriverNone`
+- New enum type `LocalDNSForwardDestination` with values `LocalDNSForwardDestinationClusterCoreDNS`, `LocalDNSForwardDestinationVnetDNS`
+- New enum type `LocalDNSForwardPolicy` with values `LocalDNSForwardPolicyRandom`, `LocalDNSForwardPolicyRoundRobin`, `LocalDNSForwardPolicySequential`
+- New enum type `LocalDNSMode` with values `LocalDNSModeDisabled`, `LocalDNSModePreferred`, `LocalDNSModeRequired`
+- New enum type `LocalDNSProtocol` with values `LocalDNSProtocolForceTCP`, `LocalDNSProtocolPreferUDP`
+- New enum type `LocalDNSQueryLogging` with values `LocalDNSQueryLoggingError`, `LocalDNSQueryLoggingLog`
+- New enum type `LocalDNSServeStale` with values `LocalDNSServeStaleDisable`, `LocalDNSServeStaleImmediate`, `LocalDNSServeStaleVerify`
+- New enum type `LocalDNSState` with values `LocalDNSStateDisabled`, `LocalDNSStateEnabled`
+- New enum type `NodeProvisioningDefaultNodePools` with values `NodeProvisioningDefaultNodePoolsAuto`, `NodeProvisioningDefaultNodePoolsNone`
+- New enum type `SchedulerConfigMode` with values `SchedulerConfigModeDefault`, `SchedulerConfigModeManagedByCRD`
+- New enum type `TransitEncryptionType` with values `TransitEncryptionTypeNone`, `TransitEncryptionTypeWireGuard`
+- New function `*ClientFactory.NewManagedNamespacesClient() *ManagedNamespacesClient`
+- New function `NewManagedNamespacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedNamespacesClient, error)`
+- New function `*ManagedNamespacesClient.BeginCreateOrUpdate(context.Context, string, string, string, ManagedNamespace, *ManagedNamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedNamespacesClientCreateOrUpdateResponse], error)`
+- New function `*ManagedNamespacesClient.BeginDelete(context.Context, string, string, string, *ManagedNamespacesClientBeginDeleteOptions) (*runtime.Poller[ManagedNamespacesClientDeleteResponse], error)`
+- New function `*ManagedNamespacesClient.Get(context.Context, string, string, string, *ManagedNamespacesClientGetOptions) (ManagedNamespacesClientGetResponse, error)`
+- New function `*ManagedNamespacesClient.NewListByManagedClusterPager(string, string, *ManagedNamespacesClientListByManagedClusterOptions) *runtime.Pager[ManagedNamespacesClientListByManagedClusterResponse]`
+- New function `*ManagedNamespacesClient.ListCredential(context.Context, string, string, string, *ManagedNamespacesClientListCredentialOptions) (ManagedNamespacesClientListCredentialResponse, error)`
+- New function `*ManagedNamespacesClient.Update(context.Context, string, string, string, TagsObject, *ManagedNamespacesClientUpdateOptions) (ManagedNamespacesClientUpdateResponse, error)`
+- New struct `AdvancedNetworkingSecurityTransitEncryption`
+- New struct `GPUProfile`
+- New struct `LocalDNSOverrides`
+- New struct `LocalDNSProfile`
+- New struct `ManagedNamespace`
+- New struct `ManagedNamespaceListResult`
+- New struct `SchedulerInstanceProfile`
+- New struct `SchedulerProfile`
+- New struct `SchedulerProfileSchedulerInstanceProfiles`
+- New field `LocalDNSProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `LocalDNSProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `Enabled` in struct `ManagedClusterHTTPProxyConfig`
+- New field `DefaultNodePools` in struct `ManagedClusterNodeProvisioningProfile`
+- New field `SchedulerProfile` in struct `ManagedClusterProperties`
+
+
 ## 7.0.0-beta.2 (2025-04-24)
 ### Breaking Changes
 

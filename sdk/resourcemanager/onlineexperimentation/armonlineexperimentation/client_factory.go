@@ -32,17 +32,17 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewOnlineExperimentWorkspacesClient creates a new instance of OnlineExperimentWorkspacesClient.
-func (c *ClientFactory) NewOnlineExperimentWorkspacesClient() *OnlineExperimentWorkspacesClient {
-	return &OnlineExperimentWorkspacesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewWorkspacesClient creates a new instance of WorkspacesClient.
+func (c *ClientFactory) NewWorkspacesClient() *WorkspacesClient {
+	return &WorkspacesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }

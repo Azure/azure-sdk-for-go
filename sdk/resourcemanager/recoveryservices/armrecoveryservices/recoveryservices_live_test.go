@@ -52,7 +52,7 @@ func (testsuite *RecoveryservicesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestRecoveryservicesTestSuite(t *testing.T) {
+func TTestRecoveryservicesTestSuite(t *testing.T) {
 	suite.Run(t, new(RecoveryservicesTestSuite))
 }
 

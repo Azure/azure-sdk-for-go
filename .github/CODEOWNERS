@@ -64,10 +64,10 @@
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus/  @richardpark-msft @chlowell @jhendrixMSFT
 
-# AzureSDKOwners: @richardpark-msft
+# AzureSDKOwners: @shankarsama @rajeshka
 # ServiceLabel: %Event Grid
 # PRLabel: %Event Grid
-/sdk/messaging/eventgrid/  @richardpark-msft @chlowell @jhendrixMSFT
+/sdk/messaging/eventgrid/  @shankarsama @rajeshka
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Event Hubs

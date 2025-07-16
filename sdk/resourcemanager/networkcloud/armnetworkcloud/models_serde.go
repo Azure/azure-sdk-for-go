@@ -162,6 +162,7 @@ func (a *AgentOptions) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AgentPool.
 func (a AgentPool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", a.Etag)
 	populate(objectMap, "extendedLocation", a.ExtendedLocation)
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "location", a.Location)
@@ -182,6 +183,9 @@ func (a *AgentPool) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &a.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &a.ExtendedLocation)
 			delete(rawMsg, key)
@@ -525,6 +529,7 @@ func (a *AvailableUpgrade) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BareMetalMachine.
 func (b BareMetalMachine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", b.Etag)
 	populate(objectMap, "extendedLocation", b.ExtendedLocation)
 	populate(objectMap, "id", b.ID)
 	populate(objectMap, "location", b.Location)
@@ -545,6 +550,9 @@ func (b *BareMetalMachine) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &b.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &b.ExtendedLocation)
 			delete(rawMsg, key)
@@ -693,6 +701,7 @@ func (b *BareMetalMachineCordonParameters) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BareMetalMachineKeySet.
 func (b BareMetalMachineKeySet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", b.Etag)
 	populate(objectMap, "extendedLocation", b.ExtendedLocation)
 	populate(objectMap, "id", b.ID)
 	populate(objectMap, "location", b.Location)
@@ -713,6 +722,9 @@ func (b *BareMetalMachineKeySet) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &b.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &b.ExtendedLocation)
 			delete(rawMsg, key)
@@ -1397,6 +1409,7 @@ func (b *BgpServiceLoadBalancerConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BmcKeySet.
 func (b BmcKeySet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", b.Etag)
 	populate(objectMap, "extendedLocation", b.ExtendedLocation)
 	populate(objectMap, "id", b.ID)
 	populate(objectMap, "location", b.Location)
@@ -1417,6 +1430,9 @@ func (b *BmcKeySet) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &b.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &b.ExtendedLocation)
 			delete(rawMsg, key)
@@ -1604,6 +1620,7 @@ func (b *BmcKeySetProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CloudServicesNetwork.
 func (c CloudServicesNetwork) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", c.Etag)
 	populate(objectMap, "extendedLocation", c.ExtendedLocation)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "location", c.Location)
@@ -1624,6 +1641,9 @@ func (c *CloudServicesNetwork) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &c.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &c.ExtendedLocation)
 			delete(rawMsg, key)
@@ -1819,6 +1839,7 @@ func (c *CloudServicesNetworkProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Cluster.
 func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", c.Etag)
 	populate(objectMap, "extendedLocation", c.ExtendedLocation)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
@@ -1840,6 +1861,9 @@ func (c *Cluster) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &c.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &c.ExtendedLocation)
 			delete(rawMsg, key)
@@ -2096,6 +2120,7 @@ func (c *ClusterList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ClusterManager.
 func (c ClusterManager) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", c.Etag)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "identity", c.Identity)
 	populate(objectMap, "location", c.Location)
@@ -2116,6 +2141,9 @@ func (c *ClusterManager) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &c.Etag)
+			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &c.ID)
 			delete(rawMsg, key)
@@ -2276,6 +2304,7 @@ func (c *ClusterManagerProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ClusterMetricsConfiguration.
 func (c ClusterMetricsConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", c.Etag)
 	populate(objectMap, "extendedLocation", c.ExtendedLocation)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "location", c.Location)
@@ -2296,6 +2325,9 @@ func (c *ClusterMetricsConfiguration) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &c.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &c.ExtendedLocation)
 			delete(rawMsg, key)
@@ -2879,6 +2911,7 @@ func (c *CommandOutputSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Console.
 func (c Console) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", c.Etag)
 	populate(objectMap, "extendedLocation", c.ExtendedLocation)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "location", c.Location)
@@ -2899,6 +2932,9 @@ func (c *Console) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &c.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &c.ExtendedLocation)
 			delete(rawMsg, key)
@@ -3713,6 +3749,7 @@ func (k *KeySetUserStatus) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type KubernetesCluster.
 func (k KubernetesCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", k.Etag)
 	populate(objectMap, "extendedLocation", k.ExtendedLocation)
 	populate(objectMap, "id", k.ID)
 	populate(objectMap, "location", k.Location)
@@ -3733,6 +3770,9 @@ func (k *KubernetesCluster) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &k.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &k.ExtendedLocation)
 			delete(rawMsg, key)
@@ -3768,6 +3808,7 @@ func (k *KubernetesCluster) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type KubernetesClusterFeature.
 func (k KubernetesClusterFeature) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", k.Etag)
 	populate(objectMap, "id", k.ID)
 	populate(objectMap, "location", k.Location)
 	populate(objectMap, "name", k.Name)
@@ -3787,6 +3828,9 @@ func (k *KubernetesClusterFeature) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &k.Etag)
+			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &k.ID)
 			delete(rawMsg, key)
@@ -4300,6 +4344,7 @@ func (k *KubernetesLabel) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type L2Network.
 func (l L2Network) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", l.Etag)
 	populate(objectMap, "extendedLocation", l.ExtendedLocation)
 	populate(objectMap, "id", l.ID)
 	populate(objectMap, "location", l.Location)
@@ -4320,6 +4365,9 @@ func (l *L2Network) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &l.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &l.ExtendedLocation)
 			delete(rawMsg, key)
@@ -4534,6 +4582,7 @@ func (l *L2ServiceLoadBalancerConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type L3Network.
 func (l L3Network) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", l.Etag)
 	populate(objectMap, "extendedLocation", l.ExtendedLocation)
 	populate(objectMap, "id", l.ID)
 	populate(objectMap, "location", l.Location)
@@ -4554,6 +4603,9 @@ func (l *L3Network) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &l.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &l.ExtendedLocation)
 			delete(rawMsg, key)
@@ -5476,6 +5528,7 @@ func (o *OsDisk) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Rack.
 func (r Rack) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", r.Etag)
 	populate(objectMap, "extendedLocation", r.ExtendedLocation)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
@@ -5496,6 +5549,9 @@ func (r *Rack) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &r.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &r.ExtendedLocation)
 			delete(rawMsg, key)
@@ -6167,6 +6223,7 @@ func (s *ServicePrincipalInformation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type StorageAppliance.
 func (s StorageAppliance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", s.Etag)
 	populate(objectMap, "extendedLocation", s.ExtendedLocation)
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "location", s.Location)
@@ -6187,6 +6244,9 @@ func (s *StorageAppliance) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &s.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &s.ExtendedLocation)
 			delete(rawMsg, key)
@@ -6643,6 +6703,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TrunkedNetwork.
 func (t TrunkedNetwork) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", t.Etag)
 	populate(objectMap, "extendedLocation", t.ExtendedLocation)
 	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
@@ -6663,6 +6724,9 @@ func (t *TrunkedNetwork) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &t.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &t.ExtendedLocation)
 			delete(rawMsg, key)
@@ -6920,6 +6984,7 @@ func (v *ValidationThreshold) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachine.
 func (v VirtualMachine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", v.Etag)
 	populate(objectMap, "extendedLocation", v.ExtendedLocation)
 	populate(objectMap, "id", v.ID)
 	populate(objectMap, "location", v.Location)
@@ -6940,6 +7005,9 @@ func (v *VirtualMachine) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &v.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &v.ExtendedLocation)
 			delete(rawMsg, key)
@@ -7253,6 +7321,7 @@ func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Volume.
 func (v Volume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", v.Etag)
 	populate(objectMap, "extendedLocation", v.ExtendedLocation)
 	populate(objectMap, "id", v.ID)
 	populate(objectMap, "location", v.Location)
@@ -7273,6 +7342,9 @@ func (v *Volume) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &v.Etag)
+			delete(rawMsg, key)
 		case "extendedLocation":
 			err = unpopulate(val, "ExtendedLocation", &v.ExtendedLocation)
 			delete(rawMsg, key)

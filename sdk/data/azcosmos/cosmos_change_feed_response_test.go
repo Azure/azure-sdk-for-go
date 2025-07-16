@@ -141,12 +141,12 @@ func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 
 	parsedResponse.PopulateCompositeContinuationToken()
 
-	if parsedResponse.CompositeContinuationToken == "" {
+	if parsedResponse.ContinuationToken == "" {
 		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
 	}
 
 	var compositeToken compositeContinuationToken
-	err = json.Unmarshal([]byte(parsedResponse.CompositeContinuationToken), &compositeToken)
+	err = json.Unmarshal([]byte(parsedResponse.ContinuationToken), &compositeToken)
 	if err != nil {
 		t.Fatalf("failed to unmarshal composite token: %v", err)
 	}
@@ -209,7 +209,7 @@ func TestChangeFeedResponseWithoutFeedRange(t *testing.T) {
 
 	parsedResponse.PopulateCompositeContinuationToken()
 
-	if parsedResponse.CompositeContinuationToken != "" {
-		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.CompositeContinuationToken)
+	if parsedResponse.ContinuationToken != "" {
+		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.ContinuationToken)
 	}
 }

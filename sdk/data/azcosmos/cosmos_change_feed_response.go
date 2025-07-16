@@ -20,15 +20,11 @@ type ChangeFeedResponse struct {
 	// Count is the number of documents returned in this page.
 	Count int `json:"_count"`
 
-	// Selected HTTP headers that we're retrieving from the response
-
+	// ContinuationToken is the token used to continue reading the change feed.
 	ContinuationToken string
 
-	// Store the feed range if it was used in the request
+	// Store the feed range if it was used in the request.
 	FeedRange *FeedRange
-
-	// CompositeContinuationToken is automatically populated when using feed ranges
-	CompositeContinuationToken string
 
 	Response
 }
@@ -62,7 +58,7 @@ func (response *ChangeFeedResponse) PopulateCompositeContinuationToken() {
 	if response.FeedRange != nil && response.ETag != "" {
 		compositeToken, err := response.GetCompositeContinuationToken()
 		if err == nil && compositeToken != "" {
-			response.CompositeContinuationToken = compositeToken
+			response.ContinuationToken = compositeToken
 		}
 	}
 }

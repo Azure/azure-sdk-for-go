@@ -739,17 +739,17 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		t.Logf("Change Feed Response:")
 		t.Logf("  - Count: %d", resp.Count)
 		t.Logf("  - ETag: %s", resp.ETag)
-		t.Logf("  - CompositeContinuationToken: %s", resp.CompositeContinuationToken)
+		t.Logf("  - CompositeContinuationToken: %s", resp.ContinuationToken)
 		t.Logf("  - ResourceID: %s", resp.ResourceID)
 
 		// Verify composite continuation token is populated
-		if resp.CompositeContinuationToken == "" {
+		if resp.ContinuationToken == "" {
 			t.Error("Expected CompositeContinuationToken to be populated")
 		}
 
 		// Parse and verify the composite token structure
 		var compositeToken compositeContinuationToken
-		err = json.Unmarshal([]byte(resp.CompositeContinuationToken), &compositeToken)
+		err = json.Unmarshal([]byte(resp.ContinuationToken), &compositeToken)
 		if err != nil {
 			t.Fatalf("Failed to unmarshal composite token: %v", err)
 		}
@@ -780,7 +780,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		if resp.Count > 0 {
 			options2 := &ChangeFeedOptions{
 				MaxItemCount: 10,
-				Continuation: &resp.CompositeContinuationToken,
+				Continuation: &resp.ContinuationToken,
 			}
 
 			resp2, err := container.GetChangeFeed(context.TODO(), options2)
@@ -806,10 +806,10 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		t.Logf("Simple ETag Response:")
 		t.Logf("  - Count: %d", resp.Count)
 		t.Logf("  - ETag: %s", resp.ETag)
-		t.Logf("  - CompositeContinuationToken: %s", resp.CompositeContinuationToken)
+		t.Logf("  - CompositeContinuationToken: %s", resp.ContinuationToken)
 
 		// Verify NO composite continuation token when not using feed range
-		if resp.CompositeContinuationToken != "" {
+		if resp.ContinuationToken != "" {
 			t.Error("Expected CompositeContinuationToken to be empty for non-feed-range request")
 		}
 

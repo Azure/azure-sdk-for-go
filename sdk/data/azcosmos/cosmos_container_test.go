@@ -1025,12 +1025,12 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Documents))
 	}
 
-	if resp.CompositeContinuationToken == "" {
+	if resp.ContinuationToken == "" {
 		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
 	}
 
 	var compositeToken compositeContinuationToken
-	err = json.Unmarshal([]byte(resp.CompositeContinuationToken), &compositeToken)
+	err = json.Unmarshal([]byte(resp.ContinuationToken), &compositeToken)
 	if err != nil {
 		t.Fatalf("failed to unmarshal composite token: %v", err)
 	}
@@ -1061,7 +1061,7 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 
 	options2 := &ChangeFeedOptions{
 		MaxItemCount: 10,
-		Continuation: &resp.CompositeContinuationToken,
+		Continuation: &resp.ContinuationToken,
 	}
 
 	headers := options2.toHeaders(nil)

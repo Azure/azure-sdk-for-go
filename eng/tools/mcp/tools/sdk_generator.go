@@ -296,6 +296,7 @@ func generateSDK(ctx context.Context, req SDKGeneratorRequest, tspConfigPath str
 		TspClientOptions: []string{"--debug"},
 		ApiVersion:       "",
 		SdkReleaseType:   "",
+		SkipUpdateDep:    true,
 	}
 
 	// Perform the generation

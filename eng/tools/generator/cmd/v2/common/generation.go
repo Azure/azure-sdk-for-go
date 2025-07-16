@@ -60,6 +60,7 @@ type GenerateParam struct {
 	ReleasedTags         []string
 	ApiVersion           string
 	SdkReleaseType       string
+	SkipUpdateDep        bool
 }
 
 type Generator interface {
@@ -679,14 +680,10 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
-	log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azcore in %s\n", modulePath)
-	if err := ExecuteGo(modulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azcore"); err != nil {
-		return nil, err
-	}
-
-	log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azidentity in %s\n", modulePath)
-	if err := ExecuteGo(modulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azidentity"); err != nil {
-		return nil, err
+	if !generateParam.SkipUpdateDep {
+		log.Printf("##[command]Executing go get -u ./... toolchain@none in %s\n", modulePath)
+		if err := ExecuteGo(modulePath, "get", "-u", "./...", "toolchain@none"); err != nil {
+		}
 	}
 
 	log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)

@@ -15,7 +15,6 @@ func main() {
 		"azure-sdk-go-mcp",
 		version,
 		server.WithToolCapabilities(false),
-		server.WithPromptCapabilities(true),
 	)
 
 	// Register all tools

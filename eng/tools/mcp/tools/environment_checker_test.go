@@ -438,6 +438,8 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 				"node --version":       {output: "v20.5.0", err: nil},
 				"tsp --version":        {output: "1.0.0", err: nil},
 				"tsp-client --version": {output: "1.0.0", err: nil},
+				"gh --version":         {output: "gh version 2.40.1 (2023-12-13)", err: nil},
+				"gh auth status":       {output: "✓ Logged in to github.com as user", err: nil},
 			},
 			expectedSuccess:     true,
 			expectedFailedCount: 0,
@@ -449,6 +451,8 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 				"node --version":       {output: "", err: &exec.ExitError{}},
 				"tsp --version":        {output: "1.0.0", err: nil},
 				"tsp-client --version": {output: "1.0.0", err: nil},
+				"gh --version":         {output: "gh version 2.40.1 (2023-12-13)", err: nil},
+				"gh auth status":       {output: "✓ Logged in to github.com as user", err: nil},
 			},
 			expectedSuccess:     false,
 			expectedFailedCount: 1,
@@ -462,6 +466,8 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 				"npm install -g @typespec/compiler": {output: "installed", err: nil},
 				"tsp-client --version":              {output: "", err: &exec.ExitError{}},
 				"npm install -g @azure-tools/typespec-client-generator-cli": {output: "installed", err: nil},
+				"gh --version":   {output: "gh version 2.40.1 (2023-12-13)", err: nil},
+				"gh auth status": {output: "✓ Logged in to github.com as user", err: nil},
 			},
 			expectedSuccess:     true,
 			expectedFailedCount: 0,
@@ -544,6 +550,118 @@ func TestEnvironmentCheckerHandler(t *testing.T) {
 			// Verify summary is set
 			if prereqResult.Summary == "" {
 				t.Error("Expected summary to be set")
+			}
+		})
+	}
+}
+
+func TestCheckGitHubCLI(t *testing.T) {
+	tests := []struct {
+		name            string
+		commandOutput   string
+		commandError    error
+		expectedStatus  string
+		expectedVersion string
+	}{
+		{
+			name:            "GitHub CLI installed",
+			commandOutput:   "gh version 2.40.1 (2023-12-13)\nhttps://github.com/cli/cli/releases/tag/v2.40.1",
+			commandError:    nil,
+			expectedStatus:  "SUCCESS",
+			expectedVersion: "2.40.1",
+		},
+		{
+			name:            "GitHub CLI not installed",
+			commandOutput:   "",
+			commandError:    &exec.ExitError{},
+			expectedStatus:  "ERROR",
+			expectedVersion: "",
+		},
+		{
+			name:            "GitHub CLI version format unexpected",
+			commandOutput:   "gh version unknown",
+			commandError:    nil,
+			expectedStatus:  "SUCCESS",
+			expectedVersion: "unknown",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Setup mock
+			originalRunCommand := runCommand
+			runCommand = func(command string, args ...string) (string, error) {
+				if command == "gh" && len(args) == 1 && args[0] == "--version" {
+					return tt.commandOutput, tt.commandError
+				}
+				return "", &exec.ExitError{}
+			}
+			defer func() { runCommand = originalRunCommand }()
+
+			result := checkGitHubCLI()
+
+			if result.Status != tt.expectedStatus {
+				t.Errorf("Expected status %s, got %s", tt.expectedStatus, result.Status)
+			}
+
+			if result.Version != tt.expectedVersion {
+				t.Errorf("Expected version %s, got %s", tt.expectedVersion, result.Version)
+			}
+
+			if result.Name != "GitHub CLI" {
+				t.Errorf("Expected name 'GitHub CLI', got %s", result.Name)
+			}
+		})
+	}
+}
+
+func TestCheckGitHubCLIAuth(t *testing.T) {
+	tests := []struct {
+		name           string
+		commandOutput  string
+		commandError   error
+		expectedStatus string
+	}{
+		{
+			name:           "GitHub CLI authenticated",
+			commandOutput:  "github.com\n  ✓ Logged in to github.com as user (oauth_token)",
+			commandError:   nil,
+			expectedStatus: "SUCCESS",
+		},
+		{
+			name:           "GitHub CLI not authenticated",
+			commandOutput:  "",
+			commandError:   &exec.ExitError{},
+			expectedStatus: "ERROR",
+		},
+		{
+			name:           "GitHub CLI auth status unclear",
+			commandOutput:  "some unexpected output",
+			commandError:   nil,
+			expectedStatus: "ERROR",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Setup mock
+			originalRunCommand := runCommand
+			runCommand = func(command string, args ...string) (string, error) {
+				if command == "gh" && len(args) == 2 && args[0] == "auth" && args[1] == "status" {
+					return tt.commandOutput, tt.commandError
+				}
+				return "", &exec.ExitError{}
+			}
+			defer func() { runCommand = originalRunCommand }()
+
+			result := checkGitHubCLIAuth()
+
+			if result.Status != tt.expectedStatus {
+				t.Errorf("Expected status %s, got %s", tt.expectedStatus, result.Status)
+			}
+
+			if result.Name != "GitHub CLI Authentication" {
+				t.Errorf("Expected name 'GitHub CLI Authentication', got %s", result.Name)
 			}
 		})
 	}

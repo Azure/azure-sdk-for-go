@@ -1,23 +1,37 @@
 # Azure Go SDK Breaking Changes Review and Resolution Guide
 
-This document categorizes common breaking changes in the Azure Go SDK and provides guidance on how to resolve them using `client.tsp` customizations or change `tspconfig.yaml` config.
+This document categorizes common breaking changes in the Azure Go SDK and provides guidance on how to resolve them using client customizations in the spec or by changing `tspconfig.yaml` configuration.
+Customizations should be implemented in a file named `client.tsp` under the service's spec directory, which contains the main entry point `main.tsp` of the service.
+
+```tsp
+import "./main.tsp";
+import "@azure-tools/typespec-client-generator-core";
+
+using Azure.ClientGenerator.Core;
+
+// Add your customizations here
+```
 
 ## Migration to TypeSpec
 
-These breaking changes occur when migrating from Swagger to TypeSpec for API specifications. Most can be resolved using `client.tsp` customizations.
+These breaking changes occur when migrating from Swagger to TypeSpec for API specifications.
 
-### Naming Changes with Numbers
-
-**Issue**: Swagger translates names with numbers to words during codegen, but TypeSpec doesn't apply this transformation.
+### 1. Naming Changes with Numbers
 
 **Changelog Pattern**:
+
+You can find removals of enum values and additions of new enum values with naming changes from words to numbers.
 
 ```md
 - `MinuteThirty`, `MinuteZero` from enum `Minute` has been removed
 - New value `Minute0`, `Minute30` added to enum type `Minute`
 ```
 
+**Reason**: Swagger translates names with numbers to words during code generation, but TypeSpec doesn't apply this transformation.
+
 **Spec Pattern**:
+
+You can find the enum and enum values in the spec by examining the names from addition items in the changelog (pattern: `New value '<enum value>' added to enum type '<enum name>'`):
 
 ```tsp
 enum Minute {
@@ -28,16 +42,18 @@ enum Minute {
 
 **Resolution**:
 
+Rename the enum values to match the names from removal items in the changelog.
+
 ```tsp
 @@clientName(Minute.Minute0, "Zero", "go");
 @@clientName(Minute.Minute30, "Thirty", "go");
 ```
 
-### Naming Changes of Enum from Stuttering Rules
-
-**Issue**: Discrepancies between stuttering rules for enum in Swagger and TypeSpec can cause method name changes.
+### 2. Naming Changes of Enum from Stuttering Rules
 
 **Changelog Pattern**:
+
+You can find removals of an enum type and additions of a new enum type with the service name prefix removed. All references to the old enum type are also changed.
 
 ```md
 - Type of `ConfigurationProperties.MaintenanceScope` has been changed from `*MaintenanceScope` to `*Scope`
@@ -46,7 +62,11 @@ enum Minute {
 - New enum type `Scope` with values `ScopeExtension`, `ScopeHost`, `ScopeInGuestPatch`, `ScopeOSImage`, `ScopeResource`, `ScopeSQLDB`, `ScopeSQLManagedInstance`
 ```
 
+**Reason**: Discrepancies between stuttering rules for enums in Swagger and TypeSpec can cause enum name changes.
+
 **Spec Pattern**:
+
+You can find the enum by examining the name from removal items in the changelog (pattern: `Enum '<enum name>' has been removed`):
 
 ```tsp
 union MaintenanceScope {
@@ -58,7 +78,7 @@ union MaintenanceScope {
 
 **Resolution**:
 
-Change the `fix-const-stuttering` config in `tspconfig.yaml` for Go from `true` to `false` to prevent stuttering in enum names:
+Change the `fix-const-stuttering` configuration in `tspconfig.yaml` for Go from `true` to `false` to prevent stuttering in enum names:
 
 ```yaml
 options:
@@ -66,20 +86,22 @@ options:
     fix-const-stuttering: false
 ```
 
-### Naming Changes of Operation
-
-**Issue**: In order to prevent collision, TypeSpec could have different operation name from swagger.
-
-**Note**: For paging operations, the method name in SDK is `New<OperationName>Pager`. For long running operations, the method name is `Begin<OperationName>`. When you resolve the breaking change, you should use the name patten in TypeSpec.
+### 3. Naming Changes of Operations
 
 **Changelog Pattern**:
+
+You can see a removal of an operation and addition of a new operation with a similar name for the same client.
 
 ```md
 - Function `*StorageTaskAssignmentClient.NewListPager` has been removed
 - New function `*StorageTaskAssignmentClient.NewStorageTaskAssignmentListPager(string, string, *StorageTaskAssignmentClientStorageTaskAssignmentListOptions) *runtime.Pager[StorageTaskAssignmentClientStorageTaskAssignmentListResponse]`
 ```
 
+**Reason**: To prevent naming collisions, TypeSpec may generate different operation names than Swagger.
+
 **Spec Pattern**:
+
+You can find the interface and operation in the spec by examining the name from addition items in the changelog (pattern: `New function *<interface name>Client.<operation name>(...)`, `New function *<interface name>Client.New<operation name>Pager(...)` for paging operations, and `New function *<interface name>Client.Begin<operation name>(...)` for long-running operations):
 
 ```tsp
 interface StorageTaskAssignment {
@@ -89,15 +111,19 @@ interface StorageTaskAssignment {
 
 **Resolution**:
 
+Rename the operation to match the name from removal items in the changelog.
+
+**Note**: For paging operations, the method name in the SDK is `New<OperationName>Pager`. For long-running operations, the method name is `Begin<OperationName>`. When resolving the breaking change, use the name in TypeSpec without the SDK-specific prefix or suffix.
+
 ```tsp
 @@clientName(StorageTaskAssignment.storageTaskAssignmentList, "list", "go");
 ```
 
-### Client Organization Changes
-
-**Issue**: Different logic for organizing client operations in TypeSpec can move operations between clients.
+### 4. Client Organization Changes
 
 **Changelog Pattern**:
+
+You can see operations moving between clients, sometimes along with client removal.
 
 ```md
 - Function `NewManagementClient` has been removed
@@ -105,27 +131,74 @@ interface StorageTaskAssignment {
 - New function `*VolumesClient.BeginRestoreVolume(context.Context, string, string, string, string, *VolumesClientBeginRestoreVolumeOptions) (*runtime.Poller[VolumesClientRestoreVolumeResponse], error)`
 ```
 
+**Reason**: Different logic for organizing client operations in TypeSpec.
+
 **Spec Pattern**:
+
+You can find the interface and operation in the spec by examining the name from addition items in the changelog (pattern: `New function *<interface name>Client.<operation name>(...)`):
 
 ```tsp
 namespace Microsoft.ElasticSan;
 
-@action("restore")
-@tag("Restore Volumes")
-op restoreVolume is ArmResourceActionAsync<Volume, void, Volume>;
+interface Volumes {
+  @action("restore")
+  op restoreVolume is ArmResourceActionAsync<Volume, void, Volume>;
+}
 ```
 
 **Resolution**:
+
+Move the operation to the correct client using `@clientLocation`. The new client name should follow the removal items in the changelog (remove the `Client` suffix).
 
 ```tsp
 @@clientLocation(Microsoft.ElasticSan.restoreVolume, "Management", "go");
 ```
 
-### User Standard Operations List Operation
-
-**Issue**: Operations list operation is upgraded to use the standardard library's definition.
+### 5. Missing Fields in Response Types
 
 **Changelog Pattern**:
+
+You can see the removal of fields in response structs named with the `xxxResponse` pattern.
+
+```md
+- Field `CacheAccessPolicyAssignment` of struct `AccessPolicyAssignmentClientCreateUpdateResponse` has been removed
+```
+
+**Reason**: Incorrect TypeSpec conversion for LRO operations.
+
+**Spec Pattern**:
+
+You can find the interface and operation in the spec by examining the name from removal items in the changelog (pattern: `Field 'xxx' of struct *<interface name>Client<operation name>Response`):
+
+```tsp
+@armResourceOperations
+interface RedisCacheAccessPolicies {
+  createUpdate is ArmResourceCreateOrReplaceAsync<
+    RedisCacheAccessPolicy,
+    LroHeaders = ArmLroLocationHeader & Azure.Core.Foundations.RetryAfterHeader
+  >;
+}
+```
+
+**Resolution**:
+
+Locate the operation and add the `FinalResult` parameter in `ArmLroLocationHeader`, `ArmAsyncOperationHeader`, or `ArmCombinedLroHeaders` with the correct type:
+
+```tsp
+@armResourceOperations
+interface RedisCacheAccessPolicies {
+  createUpdate is ArmResourceCreateOrReplaceAsync<
+    RedisCacheAccessPolicy,
+    LroHeaders = ArmLroLocationHeader<FinalResult = CacheAccessPolicyAssignment> & Azure.Core.Foundations.RetryAfterHeader
+  >;
+}
+```
+
+### 6. Use Standard Operations List Operation
+
+**Changelog Pattern**:
+
+You can see a batch of changes related to the `Operation` type and its related fields, sometimes along with changes to the `OperationList` operation.
 
 ```md
 - Type of `Operation.Display` has been changed from `*OperationInfo` to `*OperationDisplay`
@@ -138,15 +211,17 @@ op restoreVolume is ArmResourceActionAsync<Volume, void, Volume>;
 - New field `ActionType` in struct `Operation`
 ```
 
-**Impact**: Low impact for users as this operation is rarely used in SDK.
+**Reason**: The operations list operation is upgraded to use the standard library's definition.
 
-**Resolution**: Generally acceptable breaking changes that don't require `client.tsp` fixes.
+**Impact**: Low impact for users as this operation is rarely used in the SDK.
 
-### Common Types Upgrade
+**Resolution**: Accept these breaking changes.
 
-**Issue**: Common types are upgraded to latest versions during TypeSpec migration.
+### 7. Common Types Upgrade
 
 **Changelog Pattern**:
+
+You can see a batch of changes related to common types, such as `SystemData`, `Error`, and `IdentityType`.
 
 ```md
 - Type of `SystemData.LastModifiedByType` has been changed from `*LastModifiedByType` to `*CreatedByType`
@@ -156,15 +231,17 @@ op restoreVolume is ArmResourceActionAsync<Volume, void, Volume>;
 - Struct `ErrorError` has been removed
 ```
 
+**Reason**: Common types are upgraded to the latest versions during TypeSpec migration.
+
 **Impact**: Low impact for users as these are common infrastructure types.
 
-**Resolution**: Generally acceptable breaking changes that don't require `client.tsp` fixes.
+**Resolution**: Accept these breaking changes.
 
-### Removal of Unreferenced Types
-
-**Issue**: Unreferenced types are removed during TypeSpec migration.
+### 8. Removal of Unreferenced Types
 
 **Changelog Pattern**:
+
+You can see a batch of removals of unreferenced types, which are typically not used in the SDK.
 
 ```md
 - Struct `TrackedResource` has been removed
@@ -176,17 +253,17 @@ op restoreVolume is ArmResourceActionAsync<Volume, void, Volume>;
 - Struct `SCConfluentListMetadata` has been removed
 ```
 
+**Reason**: Unreferenced types are removed during TypeSpec migration.
+
 **Impact**: Low impact for users as these types are typically not directly used.
 
-**Resolution**: Generally acceptable breaking changes that don't require `client.tsp` fixes.
+**Resolution**: Accept these breaking changes.
 
 ## TypeSpec Update
 
-These breaking changes result from API specification updates in TypeSpec files. Find corresponding changes in `.tsp` file diffs.
+These breaking changes result from API specification updates in TypeSpec files.
 
-### Naming Changes
-
-#### Model/Enum/Union Name Changes
+### 1. Model/Enum/Union Name Changes
 
 **Changelog Pattern**:
 
@@ -212,7 +289,7 @@ model B {
 @@clientName(B, "A", "go");
 ```
 
-#### Property Name Changes
+### 2. Property Name Changes
 
 **Changelog Pattern**:
 
@@ -238,7 +315,7 @@ model Test {
 @@clientName(Test.b, "a", "go");
 ```
 
-#### Operation Name Changes
+### 3. Operation Name Changes
 
 **Changelog Pattern**:
 
@@ -254,7 +331,7 @@ model Test {
 op b(): void;
 ```
 
-**Impact**: Method names change in generated client.
+**Impact**: Method names change in the generated client.
 
 **Resolution**:
 
@@ -262,7 +339,7 @@ op b(): void;
 @@clientName(b, "a", "go");
 ```
 
-#### Enum Value Name Changes
+### 4. Enum Value Name Changes
 
 **Changelog Pattern**:
 
@@ -288,9 +365,7 @@ enum Test {
 @@clientName(Test.b, "a", "go");
 ```
 
-### Operation Type Changes
-
-#### Long-Running Operation (LRO) Changes
+### 5. Long-Running Operation (LRO) Changes
 
 **Changelog Pattern**:
 
@@ -301,9 +376,9 @@ enum Test {
 
 **Impact**: Method name changes and return type changes (direct result ↔ poller).
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Paging Operation Changes
+### 6. Paging Operation Changes
 
 **Changelog Pattern**:
 
@@ -314,11 +389,9 @@ enum Test {
 
 **Impact**: Method name changes and return type changes (direct result ↔ pager).
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-### Type Changes
-
-#### Property Type Changes
+### 7. Property Type Changes
 
 **Changelog Pattern**:
 
@@ -337,9 +410,9 @@ model Test {
 
 **Impact**: Field types become incompatible, requiring type casting or conversion.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Parameter Type Changes
+### 8. Parameter Type Changes
 
 **Changelog Pattern**:
 
@@ -358,9 +431,9 @@ op test(
 
 **Impact**: Method signatures change, requiring parameter type updates.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Response Type Changes
+### 9. Response Type Changes
 
 **Changelog Pattern**:
 
@@ -379,11 +452,9 @@ op test(): {
 
 **Impact**: Return types become incompatible, requiring response handling updates.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-### Deletions
-
-#### Property Deletion
+### 10. Property Deletion
 
 **Changelog Pattern**:
 
@@ -404,9 +475,9 @@ model Test {
 
 **Impact**: Fields no longer available, causing compilation errors.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Parameter Deletion
+### 11. Parameter Deletion
 
 **Changelog Pattern**:
 
@@ -425,9 +496,9 @@ op test(
 
 **Impact**: Parameters no longer available, requiring method signature updates.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Operation Deletion
+### 12. Operation Deletion
 
 **Changelog Pattern**:
 
@@ -444,9 +515,9 @@ op test(): void;
 
 **Impact**: Client methods no longer available, requiring alternative implementation.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Model Deletion
+### 13. Model Deletion
 
 **Changelog Pattern**:
 
@@ -465,11 +536,9 @@ model Test {
 
 **Impact**: Types no longer available, requiring alternative type usage.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-### Optionality Changes
-
-#### Required Parameter Addition
+### 14. Required Parameter Addition
 
 **Changelog Pattern**:
 
@@ -489,9 +558,9 @@ op test(
 
 **Impact**: Method signatures require additional parameters, breaking existing calls.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Optional to Required Parameter Changes
+### 15. Optional to Required Parameter Changes
 
 **Changelog Pattern**:
 
@@ -511,9 +580,9 @@ op test(
 
 **Impact**: Previously optional fields become mandatory, requiring parameter updates.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.
 
-#### Required to Optional Parameter Changes
+### 16. Required to Optional Parameter Changes
 
 **Changelog Pattern**:
 
@@ -533,4 +602,4 @@ op test(
 
 **Impact**: Previously mandatory fields become optional, potentially affecting validation logic.
 
-**Resolution**: Cannot be resolved with `client.tsp`.
+**Resolution**: Cannot be resolved.

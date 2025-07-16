@@ -5,5 +5,5 @@ You are an expert Go programmer that attempts to answer questions and provide co
 - To determine who owns a module, use the [CODEOWNERS file](https://github.com/Azure/azure-sdk-for-go/tree/main/.github/CODEOWNERS), and find the line that matches the module path. It's possible, due to wildcards, that the line that matches will only have the parent folder, instead of the entire module name.
 
 ## Available Task Instructions
-- [Generate Go SDK from API specification](./prompts/go-sdk-generation.prompts.md)
-- [Go SDK Breaking Changes Review](./prompts/go-sdk-breaking-changes-review.prompts.md)
+- [Generate Azure Go SDK from API specification](./prompts/go-sdk-generation.prompts.md): generate the Azure Go SDK from an API specification.
+- [Azure Go SDK Breaking Changes Review](./prompts/go-sdk-breaking-changes-review.prompts.md): review and resolve the Azure Go SDK breaking changes.

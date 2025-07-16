@@ -124,16 +124,6 @@ options:
 	if err == nil {
 		t.Error("Expected error for non-existent path")
 	}
-
-	// Test with GitHub PR link
-	prLink := "https://github.com/Azure/azure-rest-api-specs/pull/30040"
-	result, err = resolveTspConfigPath(ctx, prLink, specPath)
-	if err != nil {
-		t.Errorf("Expected no error for valid PR link, got: %v", err)
-	}
-	if result != tspConfigPath {
-		t.Errorf("Expected resolved path '%s', got '%s'", tspConfigPath, result)
-	}
 }
 
 func TestSDKGeneratorHandler_ArgumentParsing(t *testing.T) {
@@ -295,41 +285,5 @@ func TestGetSpecCommitHash(t *testing.T) {
 	_, err = getSpecCommitHash(nonGitDir)
 	if err == nil {
 		t.Error("Expected error for non-git directory")
-	}
-}
-
-func TestSDKGeneratorResult_JSON(t *testing.T) {
-	// Test JSON marshaling/unmarshaling of result struct
-	result := &SDKGeneratorResult{
-		Success:     true,
-		Message:     "Test message",
-		PackageName: "armtest",
-		PackagePath: "sdk/resourcemanager/test/armtest",
-		Version:     "v1.0.0",
-		ChangelogMD: "## Features\n- Initial release",
-		HasBreaking: false,
-	}
-
-	// Marshal to JSON
-	jsonData, err := json.Marshal(result)
-	if err != nil {
-		t.Errorf("Failed to marshal result to JSON: %v", err)
-	}
-
-	// Unmarshal back
-	var unmarshaled SDKGeneratorResult
-	if err := json.Unmarshal(jsonData, &unmarshaled); err != nil {
-		t.Errorf("Failed to unmarshal result from JSON: %v", err)
-	}
-
-	// Verify fields
-	if unmarshaled.Success != result.Success {
-		t.Errorf("Success field mismatch: expected %v, got %v", result.Success, unmarshaled.Success)
-	}
-	if unmarshaled.Message != result.Message {
-		t.Errorf("Message field mismatch: expected %q, got %q", result.Message, unmarshaled.Message)
-	}
-	if unmarshaled.PackageName != result.PackageName {
-		t.Errorf("PackageName field mismatch: expected %q, got %q", result.PackageName, unmarshaled.PackageName)
 	}
 }

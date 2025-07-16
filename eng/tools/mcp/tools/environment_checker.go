@@ -113,6 +113,22 @@ func EnvironmentCheckerHandler(ctx context.Context, request mcp.CallToolRequest)
 		}
 	}
 
+	// Check GitHub CLI installation
+	ghCheck := checkGitHubCLI()
+	result.Checks = append(result.Checks, ghCheck)
+	if ghCheck.Status == "ERROR" {
+		result.Success = false
+		result.Failed = append(result.Failed, "GitHub CLI (gh)")
+	}
+
+	// Check GitHub CLI authentication
+	ghAuthCheck := checkGitHubCLIAuth()
+	result.Checks = append(result.Checks, ghAuthCheck)
+	if ghAuthCheck.Status == "ERROR" {
+		result.Success = false
+		result.Failed = append(result.Failed, "GitHub CLI authentication")
+	}
+
 	// Generate summary
 	if result.Success {
 		result.Summary = "All environment checks are satisfied! ✓"
@@ -320,4 +336,64 @@ func compareVersions(current, minimum string) bool {
 	}
 
 	return true // All parts are equal or current has more parts
+}
+
+// checkGitHubCLI checks if GitHub CLI is installed and available
+func checkGitHubCLI() EnvironmentChecker {
+	output, err := runCommand("gh", "--version")
+	if err != nil {
+		return EnvironmentChecker{
+			Name:        "GitHub CLI",
+			Status:      "ERROR",
+			Message:     "GitHub CLI (gh) is not installed or not in PATH",
+			InstallHint: "Install from https://cli.github.com/ or run: winget install GitHub.CLI",
+		}
+	}
+
+	// Extract version from output (e.g., "gh version 2.40.1 (2023-12-13)")
+	versionPattern := regexp.MustCompile(`gh version (\d+\.\d+\.\d+)`)
+	matches := versionPattern.FindStringSubmatch(output)
+
+	var version string
+	if len(matches) > 1 {
+		version = matches[1]
+	} else {
+		version = "unknown"
+	}
+
+	return EnvironmentChecker{
+		Name:    "GitHub CLI",
+		Status:  "SUCCESS",
+		Version: version,
+		Message: fmt.Sprintf("GitHub CLI %s is installed ✓", version),
+	}
+}
+
+// checkGitHubCLIAuth checks if GitHub CLI is authenticated
+func checkGitHubCLIAuth() EnvironmentChecker {
+	output, err := runCommand("gh", "auth", "status")
+	if err != nil {
+		return EnvironmentChecker{
+			Name:        "GitHub CLI Authentication",
+			Status:      "ERROR",
+			Message:     "GitHub CLI is not authenticated",
+			InstallHint: "Run: gh auth login",
+		}
+	}
+
+	// Check if output indicates successful authentication
+	if strings.Contains(output, "Logged in to github.com") || strings.Contains(output, "✓") {
+		return EnvironmentChecker{
+			Name:    "GitHub CLI Authentication",
+			Status:  "SUCCESS",
+			Message: "GitHub CLI is authenticated ✓",
+		}
+	}
+
+	return EnvironmentChecker{
+		Name:        "GitHub CLI Authentication",
+		Status:      "ERROR",
+		Message:     "GitHub CLI authentication status unclear",
+		InstallHint: "Run: gh auth login",
+	}
 }

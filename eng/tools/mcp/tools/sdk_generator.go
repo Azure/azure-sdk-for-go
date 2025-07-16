@@ -14,19 +14,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
-	"github.com/google/go-github/v62/github"
 	"github.com/mark3labs/mcp-go/mcp"
 )
 
 // SDKGeneratorTool creates and returns the generate-go-sdk tool
 func SDKGeneratorTool() mcp.Tool {
 	return mcp.NewTool("generate-go-sdk",
-		mcp.WithDescription("Generates Azure Go SDK from TypeSpec configuration. Accepts either a direct path to tspconfig.yaml or a GitHub PR link."),
+		mcp.WithDescription("Generates Azure Go SDK from TypeSpec configuration. Provide either tsp_config_path OR github_pr_link (exactly one is required)."),
 		mcp.WithString("sdk_repo_path",
 			mcp.Description("Local path to the Azure SDK for Go repository"),
 			mcp.Required(),
@@ -36,8 +33,10 @@ func SDKGeneratorTool() mcp.Tool {
 			mcp.Required(),
 		),
 		mcp.WithString("tsp_config_path",
-			mcp.Description("Direct path to tspconfig.yaml file (relative to spec repo root) OR GitHub PR link"),
-			mcp.Required(),
+			mcp.Description("Direct path to tspconfig.yaml file (relative to spec repo root)"),
+		),
+		mcp.WithString("github_pr_link",
+			mcp.Description("GitHub PR link to extract TypeSpec configuration from"),
 		),
 	)
 }
@@ -46,7 +45,8 @@ func SDKGeneratorTool() mcp.Tool {
 type SDKGeneratorRequest struct {
 	SDKRepoPath   string `json:"sdk_repo_path"`
 	SpecRepoPath  string `json:"spec_repo_path"`
-	TspConfigPath string `json:"tsp_config_path"`
+	TspConfigPath string `json:"tsp_config_path,omitempty"`
+	GitHubPRLink  string `json:"github_pr_link,omitempty"`
 }
 
 // SDKGeneratorResult represents the result of SDK generation
@@ -55,6 +55,7 @@ type SDKGeneratorResult struct {
 	Message        string `json:"message"`
 	PackageName    string `json:"package_name,omitempty"`
 	PackagePath    string `json:"package_path,omitempty"`
+	SpecFolderPath string `json:"spec_folder_path,omitempty"`
 	Version        string `json:"version,omitempty"`
 	ChangelogMD    string `json:"changelog_md,omitempty"`
 	HasBreaking    bool   `json:"has_breaking_changes,omitempty"`
@@ -68,6 +69,7 @@ func SDKGeneratorHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 		SDKRepoPath:   mcp.ParseString(request, "sdk_repo_path", ""),
 		SpecRepoPath:  mcp.ParseString(request, "spec_repo_path", ""),
 		TspConfigPath: mcp.ParseString(request, "tsp_config_path", ""),
+		GitHubPRLink:  mcp.ParseString(request, "github_pr_link", ""),
 	}
 
 	// Validate required parameters
@@ -87,10 +89,20 @@ func SDKGeneratorHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 			IsError: true,
 		}, nil
 	}
-	if req.TspConfigPath == "" {
+
+	// Validate that exactly one of tsp_config_path or github_pr_link is provided
+	if req.TspConfigPath == "" && req.GitHubPRLink == "" {
 		return &mcp.CallToolResult{
 			Content: []mcp.Content{
-				mcp.NewTextContent("Error: tsp_config_path is required"),
+				mcp.NewTextContent("Error: either tsp_config_path or github_pr_link must be provided"),
+			},
+			IsError: true,
+		}, nil
+	}
+	if req.TspConfigPath != "" && req.GitHubPRLink != "" {
+		return &mcp.CallToolResult{
+			Content: []mcp.Content{
+				mcp.NewTextContent("Error: only one of tsp_config_path or github_pr_link should be provided, not both"),
 			},
 			IsError: true,
 		}, nil
@@ -107,7 +119,14 @@ func SDKGeneratorHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp
 	}
 
 	// Resolve tspconfig path
-	tspConfigPath, err := resolveTspConfigPath(ctx, req.TspConfigPath, req.SpecRepoPath)
+	var inputPath string
+	if req.TspConfigPath != "" {
+		inputPath = req.TspConfigPath
+	} else {
+		inputPath = req.GitHubPRLink
+	}
+
+	tspConfigPath, err := resolveTspConfigPath(ctx, inputPath, req.SpecRepoPath)
 	if err != nil {
 		return &mcp.CallToolResult{
 			Content: []mcp.Content{
@@ -186,7 +205,26 @@ func isGitHubPRLink(input string) bool {
 	return prPattern.MatchString(input)
 }
 
-// extractTspConfigFromPR extracts the tspconfig.yaml path from a GitHub PR
+// checkoutPRBranch checks out the PR branch in the spec repository using GitHub CLI
+func checkoutPRBranch(ctx context.Context, specRepoPath string, prNumber int, owner, repo string) error {
+	fmt.Printf("Checking out PR #%d using GitHub CLI\n", prNumber)
+
+	// Use GitHub CLI to checkout the PR
+	checkoutCmd := exec.Command("gh", "pr", "checkout", strconv.Itoa(prNumber))
+	checkoutCmd.Dir = specRepoPath
+
+	output, err := checkoutCmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to checkout PR #%d using GitHub CLI: %v\nOutput: %s", prNumber, err, string(output))
+	}
+
+	fmt.Printf("Successfully checked out PR #%d\n", prNumber)
+	fmt.Printf("GitHub CLI output: %s\n", string(output))
+
+	return nil
+}
+
+// extractTspConfigFromPR extracts the tspconfig.yaml path from a GitHub PR and checks out the PR branch using GitHub CLI
 func extractTspConfigFromPR(ctx context.Context, prLink, specRepoPath string) (string, error) {
 	// Extract PR number from the link
 	prPattern := regexp.MustCompile(`https://github\.com/([^/]+)/([^/]+)/pull/(\d+)`)
@@ -204,49 +242,70 @@ func extractTspConfigFromPR(ctx context.Context, prLink, specRepoPath string) (s
 		return "", fmt.Errorf("invalid PR number in link: %s", prNumberStr)
 	}
 
-	// Create GitHub client to fetch changed files
-	client := query.NewClient()
-
-	// Get changed files from the PR using pagination
-	opt := &github.ListOptions{
-		PerPage: 100,
-	}
-	var allFiles []*github.CommitFile
-	for {
-		files, resp, err := client.PullRequests.ListFiles(ctx, owner, repo, prNumber, opt)
-		if err != nil {
-			return "", fmt.Errorf("failed to get changed files from PR %d: %v", prNumber, err)
-		}
-		allFiles = append(allFiles, files...)
-		if resp.NextPage == 0 {
-			break
-		}
-		opt.Page = resp.NextPage
+	// Checkout the PR branch using GitHub CLI
+	if err := checkoutPRBranch(ctx, specRepoPath, prNumber, owner, repo); err != nil {
+		return "", fmt.Errorf("failed to checkout PR branch: %v", err)
 	}
 
-	// Convert to file paths
-	var filePaths []string
-	for _, file := range allFiles {
-		if file.GetFilename() != "" {
-			filePaths = append(filePaths, file.GetFilename())
-		}
+	// Get changed files from the PR using GitHub CLI
+	getFilesCmd := exec.Command("gh", "pr", "view", strconv.Itoa(prNumber), "--json", "files", "--jq", ".files[].path")
+	getFilesCmd.Dir = specRepoPath
+
+	output, err := getFilesCmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("failed to get changed files from PR #%d using GitHub CLI: %v", prNumber, err)
+	}
+
+	// Parse the file paths from the output
+	filePaths := strings.Split(strings.TrimSpace(string(output)), "\n")
+	if len(filePaths) == 1 && filePaths[0] == "" {
+		return "", fmt.Errorf("no changed files found in PR #%d", prNumber)
 	}
 
 	// Use the existing logic to extract tspconfig path from changed files
-	tspConfigRelativePath, err := link.GetTspConfigPathFromChangedFiles(ctx, client, filePaths)
+	// Since we no longer have the GitHub client, we'll create a minimal implementation
+	tspConfigRelativePath, err := extractTspConfigPathFromFiles(filePaths)
 	if err != nil {
 		return "", fmt.Errorf("failed to extract tspconfig path from PR: %v", err)
 	}
 
 	// Convert to absolute path
-	tspConfigPath := filepath.Join(specRepoPath, string(tspConfigRelativePath))
+	tspConfigPath := filepath.Join(specRepoPath, tspConfigRelativePath)
 
-	// Verify the file exists locally
+	// Verify the file exists locally (should exist now that we've checked out the PR branch)
 	if _, err := os.Stat(tspConfigPath); err != nil {
-		return "", fmt.Errorf("TypeSpec config file not found locally at '%s'. Make sure you have pulled the latest changes from the spec repository", tspConfigPath)
+		return "", fmt.Errorf("TypeSpec config file not found locally at '%s' after checking out PR branch", tspConfigPath)
 	}
 
 	return tspConfigPath, nil
+}
+
+// extractTspConfigPathFromFiles finds the tspconfig.yaml path from a list of changed files
+func extractTspConfigPathFromFiles(filePaths []string) (string, error) {
+	// Look for tspconfig.yaml files in the changed files
+	for _, filePath := range filePaths {
+		if strings.HasSuffix(filePath, "tspconfig.yaml") {
+			return filePath, nil
+		}
+	}
+
+	// If no tspconfig.yaml found directly, look for TypeSpec files and try to find the containing service directory
+	for _, filePath := range filePaths {
+		if strings.Contains(filePath, "specification/") && (strings.HasSuffix(filePath, ".tsp") || strings.Contains(filePath, "/")) {
+			// Extract the service directory path
+			parts := strings.Split(filePath, "/")
+			for i, part := range parts {
+				if part == "specification" && i+2 < len(parts) {
+					// Pattern: specification/{service}/{namespace}/...
+					servicePath := strings.Join(parts[:i+3], "/")
+					tspConfigPath := servicePath + "/tspconfig.yaml"
+					return tspConfigPath, nil
+				}
+			}
+		}
+	}
+
+	return "", fmt.Errorf("no tspconfig.yaml file found in changed files and unable to infer from TypeSpec files")
 }
 
 // getSpecCommitHash gets the current Git commit hash from the spec repository
@@ -315,11 +374,15 @@ func generateSDK(ctx context.Context, req SDKGeneratorRequest, tspConfigPath str
 		}, nil
 	}
 
+	specFolderPath := filepath.Dir(tspConfigPath)
+	packagePath := filepath.Join(req.SDKRepoPath, result.PackageRelativePath)
+
 	return &SDKGeneratorResult{
 		Success:        true,
 		Message:        "SDK generation completed successfully",
 		PackageName:    result.PackageName,
-		PackagePath:    result.PackageRelativePath,
+		PackagePath:    packagePath,
+		SpecFolderPath: specFolderPath,
 		Version:        result.Version,
 		ChangelogMD:    result.ChangelogMD,
 		HasBreaking:    result.Changelog.HasBreakingChanges(),

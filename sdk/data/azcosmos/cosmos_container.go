@@ -432,6 +432,28 @@ func (c *ContainerClient) ReadItem(
 	return response, err
 }
 
+// GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.
+// ctx - The context for the request.
+func (c *ContainerClient) GetFeedRanges(ctx context.Context) ([]FeedRange, error) {
+	// Get the partition key ranges from the container
+	response, err := c.getPartitionKeyRanges(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert partition key ranges to feed ranges
+	feedRanges := make([]FeedRange, 0, len(response.PartitionKeyRanges))
+	for _, pkr := range response.PartitionKeyRanges {
+		feedRange := FeedRange{
+			MinInclusive: pkr.MinInclusive,
+			MaxExclusive: pkr.MaxExclusive,
+		}
+		feedRanges = append(feedRanges, feedRange)
+	}
+
+	return feedRanges, nil
+}
+
 // DeleteItem deletes an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.

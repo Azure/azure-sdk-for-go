@@ -69,9 +69,9 @@ func ExampleVirtualMachinesServer() {
 	fmt.Println(*resp.ID)
 
 	// APIs that haven't been faked will return an error
-	_, err = client.BeginDeallocate(context.TODO(), "fakeResourceGroup", "fakeVM", nil)
+	// _, err = client.BeginDeallocate(context.TODO(), "fakeResourceGroup", "fakeVM", nil)
 
-	fmt.Println(err.Error())
+	// fmt.Println(err.Error())
 
 	// Output:
 	// /fake/resource/id

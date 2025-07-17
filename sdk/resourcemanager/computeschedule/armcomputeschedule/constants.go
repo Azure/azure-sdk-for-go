@@ -24,21 +24,6 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-type ActionType string
-
-const (
-	// ActionTypeInternal - Actions are for internal-only APIs.
-	ActionTypeInternal ActionType = "Internal"
-)
-
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
-		ActionTypeInternal,
-	}
-}
-
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

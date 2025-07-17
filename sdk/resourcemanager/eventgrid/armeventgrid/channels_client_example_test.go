@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Channels_Get.json
 func ExampleChannelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,14 +41,14 @@ func ExampleChannelsClient_Get() {
 	// res.Channel = armeventgrid.Channel{
 	// 	Name: to.Ptr("exampleChannelName1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces/channels"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
 	// 	Properties: &armeventgrid.ChannelProperties{
 	// 		ChannelType: to.Ptr(armeventgrid.ChannelTypePartnerTopic),
 	// 		ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410Z"); return t}()),
 	// 		MessageForActivation: to.Ptr("Example message to approver"),
 	// 		PartnerTopicInfo: &armeventgrid.PartnerTopicInfo{
 	// 			Name: to.Ptr("examplePartnerTopic1"),
-	// 			AzureSubscriptionID: to.Ptr("5b4b650e-28b9-4790-b3ab-ddbd88d727c4"),
+	// 			AzureSubscriptionID: to.Ptr("8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
 	// 			ResourceGroupName: to.Ptr("examplerg2"),
 	// 			Source: to.Ptr("ContosoCorp.Accounts.User1"),
 	// 		},
@@ -58,7 +58,7 @@ func ExampleChannelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Channels_CreateOrUpdate.json
 func ExampleChannelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleChannelsClient_CreateOrUpdate() {
 			MessageForActivation:            to.Ptr("Example message to approver"),
 			PartnerTopicInfo: &armeventgrid.PartnerTopicInfo{
 				Name:                to.Ptr("examplePartnerTopic1"),
-				AzureSubscriptionID: to.Ptr("5b4b650e-28b9-4790-b3ab-ddbd88d727c4"),
+				AzureSubscriptionID: to.Ptr("8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
 				ResourceGroupName:   to.Ptr("examplerg2"),
 				Source:              to.Ptr("ContosoCorp.Accounts.User1"),
 			},
@@ -91,14 +91,14 @@ func ExampleChannelsClient_CreateOrUpdate() {
 	// res.Channel = armeventgrid.Channel{
 	// 	Name: to.Ptr("exampleChannelName1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces/channels"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
 	// 	Properties: &armeventgrid.ChannelProperties{
 	// 		ChannelType: to.Ptr(armeventgrid.ChannelTypePartnerTopic),
 	// 		ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410Z"); return t}()),
 	// 		MessageForActivation: to.Ptr("Example message to approver"),
 	// 		PartnerTopicInfo: &armeventgrid.PartnerTopicInfo{
 	// 			Name: to.Ptr("examplePartnerTopic1"),
-	// 			AzureSubscriptionID: to.Ptr("5b4b650e-28b9-4790-b3ab-ddbd88d727c4"),
+	// 			AzureSubscriptionID: to.Ptr("8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
 	// 			ResourceGroupName: to.Ptr("examplerg2"),
 	// 			Source: to.Ptr("ContosoCorp.Accounts.User1"),
 	// 		},
@@ -106,7 +106,7 @@ func ExampleChannelsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Channels_Delete.json
 func ExampleChannelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleChannelsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Channels_Update.json
 func ExampleChannelsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleChannelsClient_Update() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_ListByPartnerNamespace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Channels_ListByPartnerNamespace.json
 func ExampleChannelsClient_NewListByPartnerNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,14 +177,14 @@ func ExampleChannelsClient_NewListByPartnerNamespacePager() {
 		// 		{
 		// 			Name: to.Ptr("exampleChannelName1"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces/channels"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1/changes/exampleChannelName1"),
 		// 			Properties: &armeventgrid.ChannelProperties{
 		// 				ChannelType: to.Ptr(armeventgrid.ChannelTypePartnerTopic),
 		// 				ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410Z"); return t}()),
 		// 				MessageForActivation: to.Ptr("Example message to approver"),
 		// 				PartnerTopicInfo: &armeventgrid.PartnerTopicInfo{
 		// 					Name: to.Ptr("examplePartnerTopic1"),
-		// 					AzureSubscriptionID: to.Ptr("5b4b650e-28b9-4790-b3ab-ddbd88d727c4"),
+		// 					AzureSubscriptionID: to.Ptr("8f6b6269-84f2-4d09-9e31-1127efcd1e40"),
 		// 					ResourceGroupName: to.Ptr("examplerg2"),
 		// 					Source: to.Ptr("ContosoCorp.Accounts.User1"),
 		// 				},
@@ -196,7 +196,7 @@ func ExampleChannelsClient_NewListByPartnerNamespacePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Channels_GetFullUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Channels_GetFullUrl.json
 func ExampleChannelsClient_GetFullURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

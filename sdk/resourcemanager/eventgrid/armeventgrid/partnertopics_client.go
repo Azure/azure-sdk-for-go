@@ -45,7 +45,7 @@ func NewPartnerTopicsClient(subscriptionID string, credential azcore.TokenCreden
 // Activate - Activate a newly created partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerTopicName - Name of the partner topic.
 //   - options - PartnerTopicsClientActivateOptions contains the optional parameters for the PartnerTopicsClient.Activate method.
@@ -91,7 +91,7 @@ func (client *PartnerTopicsClient) activateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *PartnerTopicsClient) activateHandleResponse(resp *http.Response) (
 // CreateOrUpdate - Asynchronously creates a new partner topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerTopicName - Name of the partner topic.
 //   - partnerTopicInfo - Partner Topic information.
@@ -157,7 +157,7 @@ func (client *PartnerTopicsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, partnerTopicInfo); err != nil {
@@ -178,7 +178,7 @@ func (client *PartnerTopicsClient) createOrUpdateHandleResponse(resp *http.Respo
 // Deactivate - Deactivate specific partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerTopicName - Name of the partner topic.
 //   - options - PartnerTopicsClientDeactivateOptions contains the optional parameters for the PartnerTopicsClient.Deactivate
@@ -225,7 +225,7 @@ func (client *PartnerTopicsClient) deactivateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,7 +243,7 @@ func (client *PartnerTopicsClient) deactivateHandleResponse(resp *http.Response)
 // BeginDelete - Delete existing partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerTopicName - Name of the partner topic.
 //   - options - PartnerTopicsClientBeginDeleteOptions contains the optional parameters for the PartnerTopicsClient.BeginDelete
@@ -268,7 +268,7 @@ func (client *PartnerTopicsClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Delete existing partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 func (client *PartnerTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerTopicName string, options *PartnerTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerTopicsClient.BeginDelete"
@@ -310,7 +310,7 @@ func (client *PartnerTopicsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -318,7 +318,7 @@ func (client *PartnerTopicsClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Get properties of a partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerTopicName - Name of the partner topic.
 //   - options - PartnerTopicsClientGetOptions contains the optional parameters for the PartnerTopicsClient.Get method.
@@ -364,7 +364,7 @@ func (client *PartnerTopicsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +381,7 @@ func (client *PartnerTopicsClient) getHandleResponse(resp *http.Response) (Partn
 
 // NewListByResourceGroupPager - List all the partner topics under a resource group.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - options - PartnerTopicsClientListByResourceGroupOptions contains the optional parameters for the PartnerTopicsClient.NewListByResourceGroupPager
 //     method.
@@ -430,7 +430,7 @@ func (client *PartnerTopicsClient) listByResourceGroupCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -447,7 +447,7 @@ func (client *PartnerTopicsClient) listByResourceGroupHandleResponse(resp *http.
 
 // NewListBySubscriptionPager - List all the partner topics under an Azure subscription.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - options - PartnerTopicsClientListBySubscriptionOptions contains the optional parameters for the PartnerTopicsClient.NewListBySubscriptionPager
 //     method.
 func (client *PartnerTopicsClient) NewListBySubscriptionPager(options *PartnerTopicsClientListBySubscriptionOptions) *runtime.Pager[PartnerTopicsClientListBySubscriptionResponse] {
@@ -491,7 +491,7 @@ func (client *PartnerTopicsClient) listBySubscriptionCreateRequest(ctx context.C
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -509,7 +509,7 @@ func (client *PartnerTopicsClient) listBySubscriptionHandleResponse(resp *http.R
 // Update - Asynchronously updates a partner topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerTopicName - Name of the partner topic.
 //   - partnerTopicUpdateParameters - PartnerTopic update information.
@@ -556,7 +556,7 @@ func (client *PartnerTopicsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, partnerTopicUpdateParameters); err != nil {

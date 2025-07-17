@@ -1,5 +1,95 @@
 # Release History
 
+## 2.4.0-beta.1 (2025-07-24)
+### Features Added
+
+- New value `ChannelProvisioningStateIdleDueToMirroredPartnerDestinationDeletion` added to enum type `ChannelProvisioningState`
+- New value `ChannelTypePartnerDestination` added to enum type `ChannelType`
+- New value `EndpointTypePartnerDestination` added to enum type `EndpointType`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New enum type `AlternativeAuthenticationNameSource` with values `AlternativeAuthenticationNameSourceClientCertificateDNS`, `AlternativeAuthenticationNameSourceClientCertificateEmail`, `AlternativeAuthenticationNameSourceClientCertificateIP`, `AlternativeAuthenticationNameSourceClientCertificateSubject`, `AlternativeAuthenticationNameSourceClientCertificateURI`
+- New enum type `CustomJwtAuthenticationManagedIdentityType` with values `CustomJwtAuthenticationManagedIdentityTypeSystemAssigned`, `CustomJwtAuthenticationManagedIdentityTypeUserAssigned`
+- New enum type `CustomWebhookAuthenticationManagedIdentityType` with values `CustomWebhookAuthenticationManagedIdentityTypeSystemAssigned`, `CustomWebhookAuthenticationManagedIdentityTypeUserAssigned`
+- New enum type `NetworkSecurityPerimeterAssociationAccessMode` with values `NetworkSecurityPerimeterAssociationAccessModeAudit`, `NetworkSecurityPerimeterAssociationAccessModeEnforced`, `NetworkSecurityPerimeterAssociationAccessModeLearning`
+- New enum type `NetworkSecurityPerimeterConfigProvisioningState` with values `NetworkSecurityPerimeterConfigProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigProvisioningStateCreating`, `NetworkSecurityPerimeterConfigProvisioningStateDeleted`, `NetworkSecurityPerimeterConfigProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigProvisioningStateFailed`, `NetworkSecurityPerimeterConfigProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigProvisioningStateUpdating`
+- New enum type `NetworkSecurityPerimeterConfigurationIssueSeverity` with values `NetworkSecurityPerimeterConfigurationIssueSeverityError`, `NetworkSecurityPerimeterConfigurationIssueSeverityWarning`
+- New enum type `NetworkSecurityPerimeterConfigurationIssueType` with values `NetworkSecurityPerimeterConfigurationIssueTypeConfigurationPropagationFailure`, `NetworkSecurityPerimeterConfigurationIssueTypeMissingIdentityConfiguration`, `NetworkSecurityPerimeterConfigurationIssueTypeMissingPerimeterConfiguration`, `NetworkSecurityPerimeterConfigurationIssueTypeOther`
+- New enum type `NetworkSecurityPerimeterProfileAccessRuleDirection` with values `NetworkSecurityPerimeterProfileAccessRuleDirectionInbound`, `NetworkSecurityPerimeterProfileAccessRuleDirectionOutbound`
+- New enum type `NetworkSecurityPerimeterResourceType` with values `NetworkSecurityPerimeterResourceTypeDomains`, `NetworkSecurityPerimeterResourceTypeTopics`
+- New enum type `PartnerClientAuthenticationType` with values `PartnerClientAuthenticationTypeAzureAD`
+- New enum type `PartnerDestinationActivationState` with values `PartnerDestinationActivationStateActivated`, `PartnerDestinationActivationStateNeverActivated`
+- New enum type `PartnerDestinationProvisioningState` with values `PartnerDestinationProvisioningStateCanceled`, `PartnerDestinationProvisioningStateCreating`, `PartnerDestinationProvisioningStateDeleting`, `PartnerDestinationProvisioningStateFailed`, `PartnerDestinationProvisioningStateIdleDueToMirroredChannelResourceDeletion`, `PartnerDestinationProvisioningStateSucceeded`, `PartnerDestinationProvisioningStateUpdating`
+- New enum type `PartnerEndpointType` with values `PartnerEndpointTypeWebHook`
+- New enum type `ResourceKind` with values `ResourceKindAzure`, `ResourceKindAzureArc`
+- New enum type `SKU` with values `SKUBasic`, `SKUPremium`
+- New function `*AzureADPartnerClientAuthentication.GetPartnerClientAuthentication() *PartnerClientAuthentication`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*ClientFactory.NewPartnerDestinationsClient() *PartnerDestinationsClient`
+- New function `*PartnerClientAuthentication.GetPartnerClientAuthentication() *PartnerClientAuthentication`
+- New function `*PartnerDestinationInfo.GetPartnerDestinationInfo() *PartnerDestinationInfo`
+- New function `NewPartnerDestinationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PartnerDestinationsClient, error)`
+- New function `*PartnerDestinationsClient.Activate(context.Context, string, string, *PartnerDestinationsClientActivateOptions) (PartnerDestinationsClientActivateResponse, error)`
+- New function `*PartnerDestinationsClient.BeginCreateOrUpdate(context.Context, string, string, PartnerDestination, *PartnerDestinationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PartnerDestinationsClientCreateOrUpdateResponse], error)`
+- New function `*PartnerDestinationsClient.BeginDelete(context.Context, string, string, *PartnerDestinationsClientBeginDeleteOptions) (*runtime.Poller[PartnerDestinationsClientDeleteResponse], error)`
+- New function `*PartnerDestinationsClient.Get(context.Context, string, string, *PartnerDestinationsClientGetOptions) (PartnerDestinationsClientGetResponse, error)`
+- New function `*PartnerDestinationsClient.NewListByResourceGroupPager(string, *PartnerDestinationsClientListByResourceGroupOptions) *runtime.Pager[PartnerDestinationsClientListByResourceGroupResponse]`
+- New function `*PartnerDestinationsClient.NewListBySubscriptionPager(*PartnerDestinationsClientListBySubscriptionOptions) *runtime.Pager[PartnerDestinationsClientListBySubscriptionResponse]`
+- New function `*PartnerDestinationsClient.BeginUpdate(context.Context, string, string, PartnerDestinationUpdateParameters, *PartnerDestinationsClientBeginUpdateOptions) (*runtime.Poller[PartnerDestinationsClientUpdateResponse], error)`
+- New function `*PartnerEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*PartnerUpdateDestinationInfo.GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo`
+- New function `*WebhookPartnerDestinationInfo.GetPartnerDestinationInfo() *PartnerDestinationInfo`
+- New function `*WebhookUpdatePartnerDestinationInfo.GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.Get(context.Context, string, NetworkSecurityPerimeterResourceType, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetOptions) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListPager(string, NetworkSecurityPerimeterResourceType, string, *NetworkSecurityPerimeterConfigurationsClientListOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile(context.Context, string, NetworkSecurityPerimeterResourceType, string, string, string, *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error)`
+- New struct `AzureADPartnerClientAuthentication`
+- New struct `AzureADPartnerClientAuthenticationProperties`
+- New struct `ClientAuthenticationSettings`
+- New struct `CustomJwtAuthenticationManagedIdentity`
+- New struct `CustomJwtAuthenticationSettings`
+- New struct `CustomWebhookAuthenticationManagedIdentity`
+- New struct `EncodedIssuerCertificateInfo`
+- New struct `ExtendedLocation`
+- New struct `FederatedIdentityCredentialInfo`
+- New struct `IssuerCertificateInfo`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationIssues`
+- New struct `NetworkSecurityPerimeterConfigurationIssuesProperties`
+- New struct `NetworkSecurityPerimeterConfigurationList`
+- New struct `NetworkSecurityPerimeterConfigurationProfile`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityPerimeterInfo`
+- New struct `NetworkSecurityPerimeterProfileAccessRule`
+- New struct `NetworkSecurityPerimeterProfileAccessRuleProperties`
+- New struct `NetworkSecurityPerimeterSubscription`
+- New struct `PartnerDestination`
+- New struct `PartnerDestinationProperties`
+- New struct `PartnerDestinationUpdateParameters`
+- New struct `PartnerDestinationsListResult`
+- New struct `PartnerEventSubscriptionDestination`
+- New struct `PartnerEventSubscriptionDestinationProperties`
+- New struct `ResourceAssociation`
+- New struct `ResourceMoveChangeHistory`
+- New struct `ResourceSKU`
+- New struct `WebhookAuthenticationSettings`
+- New struct `WebhookPartnerDestinationInfo`
+- New struct `WebhookPartnerDestinationProperties`
+- New struct `WebhookUpdatePartnerDestinationInfo`
+- New field `PartnerDestinationInfo` in struct `ChannelProperties`
+- New field `PartnerDestinationInfo` in struct `ChannelUpdateParametersProperties`
+- New field `SKU` in struct `Domain`
+- New field `SKU` in struct `DomainUpdateParameters`
+- New field `FederatedIdentityCredentialInfo` in struct `EventSubscriptionIdentity`
+- New field `Tags` in struct `SubscriptionProperties`
+- New field `Tags` in struct `SubscriptionUpdateParametersProperties`
+- New field `ExtendedLocation`, `Kind`, `SKU` in struct `Topic`
+- New field `ClientAuthentication` in struct `TopicSpacesConfiguration`
+- New field `SKU` in struct `TopicUpdateParameters`
+- New field `ClientAuthentication` in struct `UpdateTopicSpacesConfigurationInfo`
+- New field `PartnerDestinationDetails` in struct `VerifiedPartnerProperties`
+
+
 ## 2.3.0 (2025-03-28)
 ### Features Added
 

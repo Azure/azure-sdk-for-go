@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_Get.json
 func ExamplePartnerConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExamplePartnerConfigurationsClient_Get() {
 	// res.PartnerConfiguration = armeventgrid.PartnerConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
 	// 	Location: to.Ptr("global"),
 	// 	Properties: &armeventgrid.PartnerConfigurationProperties{
 	// 		PartnerAuthorization: &armeventgrid.PartnerAuthorization{
@@ -66,7 +66,7 @@ func ExamplePartnerConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_CreateOrUpdate.json
 func ExamplePartnerConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExamplePartnerConfigurationsClient_BeginCreateOrUpdate() {
 	// res.PartnerConfiguration = armeventgrid.PartnerConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
 	// 	Location: to.Ptr("global"),
 	// 	Properties: &armeventgrid.PartnerConfigurationProperties{
 	// 		PartnerAuthorization: &armeventgrid.PartnerAuthorization{
@@ -133,7 +133,7 @@ func ExamplePartnerConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_Delete.json
 func ExamplePartnerConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExamplePartnerConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_Update.json
 func ExamplePartnerConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExamplePartnerConfigurationsClient_BeginUpdate() {
 	// res.PartnerConfiguration = armeventgrid.PartnerConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
 	// 	Location: to.Ptr("global"),
 	// 	Properties: &armeventgrid.PartnerConfigurationProperties{
 	// 		PartnerAuthorization: &armeventgrid.PartnerAuthorization{
@@ -212,7 +212,7 @@ func ExamplePartnerConfigurationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_ListByResourceGroup.json
 func ExamplePartnerConfigurationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExamplePartnerConfigurationsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/partnerConfigurations"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
 		// 			Location: to.Ptr("global"),
 		// 			Properties: &armeventgrid.PartnerConfigurationProperties{
 		// 				PartnerAuthorization: &armeventgrid.PartnerAuthorization{
@@ -266,7 +266,7 @@ func ExamplePartnerConfigurationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_ListBySubscription.json
 func ExamplePartnerConfigurationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExamplePartnerConfigurationsClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/partnerConfigurations"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
 		// 			Location: to.Ptr("global"),
 		// 			Properties: &armeventgrid.PartnerConfigurationProperties{
 		// 				PartnerAuthorization: &armeventgrid.PartnerAuthorization{
@@ -322,7 +322,7 @@ func ExamplePartnerConfigurationsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_AuthorizePartner.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_AuthorizePartner.json
 func ExamplePartnerConfigurationsClient_AuthorizePartner() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,7 +347,7 @@ func ExamplePartnerConfigurationsClient_AuthorizePartner() {
 	// res.PartnerConfiguration = armeventgrid.PartnerConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
 	// 	Location: to.Ptr("global"),
 	// 	Properties: &armeventgrid.PartnerConfigurationProperties{
 	// 		PartnerAuthorization: &armeventgrid.PartnerAuthorization{
@@ -372,7 +372,7 @@ func ExamplePartnerConfigurationsClient_AuthorizePartner() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/PartnerConfigurations_UnauthorizePartner.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerConfigurations_UnauthorizePartner.json
 func ExamplePartnerConfigurationsClient_UnauthorizePartner() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +397,7 @@ func ExamplePartnerConfigurationsClient_UnauthorizePartner() {
 	// res.PartnerConfiguration = armeventgrid.PartnerConfiguration{
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerConfigurations/default"),
 	// 	Location: to.Ptr("global"),
 	// 	Properties: &armeventgrid.PartnerConfigurationProperties{
 	// 		PartnerAuthorization: &armeventgrid.PartnerAuthorization{

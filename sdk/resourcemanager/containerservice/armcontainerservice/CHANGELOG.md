@@ -1,5 +1,15 @@
 # Release History
 
+## 7.2.0 (2025-07-17)
+### Features Added
+
+- New enum type `NodeProvisioningDefaultNodePools` with values `NodeProvisioningDefaultNodePoolsAuto`, `NodeProvisioningDefaultNodePoolsNone`
+- New enum type `NodeProvisioningMode` with values `NodeProvisioningModeAuto`, `NodeProvisioningModeManual`
+- New struct `ManagedClusterAIToolchainOperatorProfile`
+- New struct `ManagedClusterNodeProvisioningProfile`
+- New field `AiToolchainOperatorProfile`, `NodeProvisioningProfile` in struct `ManagedClusterProperties`
+
+
 ## 7.1.0 (2025-06-18)
 ### Features Added
 

@@ -21,7 +21,7 @@ const azureTokenCredentials = "AZURE_TOKEN_CREDENTIALS"
 
 // bit flags NewDefaultAzureCredential uses to parse AZURE_TOKEN_CREDENTIALS
 const (
-	env = 1 << iota
+	env = uint8(1) << iota
 	workloadIdentity
 	managedIdentity
 	az
@@ -92,7 +92,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	var (
 		creds         []azcore.TokenCredential
 		errorMessages []string
-		selected      = uint8(env | workloadIdentity | managedIdentity | az | azd)
+		selected      = env | workloadIdentity | managedIdentity | az | azd
 	)
 
 	if atc, ok := os.LookupEnv(azureTokenCredentials); ok {

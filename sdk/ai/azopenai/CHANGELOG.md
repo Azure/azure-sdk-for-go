@@ -1,14 +1,10 @@
 # Release History
 
-## 0.8.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0 (2025-07-03)
 
 ### Other Changes
+- Added examples demonstrating support for Managed Identity
+- Added examples demonstrating support for deepseek-r1 reasoning.  
 
 ## 0.8.0 (2025-06-03)
 

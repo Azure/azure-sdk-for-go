@@ -395,6 +395,9 @@ func TestUserAuthentication(t *testing.T) {
 				if credential.interactive && !runManualTests {
 					t.Skipf("set %s to run this test", azidentityRunManualTests)
 				}
+				if credential.name == credNameUserPassword {
+					t.Skip("the test tenant requires MFA")
+				}
 			case recording.PlaybackMode, recording.RecordingMode:
 				if !credential.recordable {
 					t.Skip("this test can't be recorded")

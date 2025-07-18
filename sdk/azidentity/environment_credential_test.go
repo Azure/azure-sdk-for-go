@@ -253,6 +253,9 @@ func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
 }
 
 func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("the test tenant requires MFA")
+	}
 	vars := map[string]string{
 		azureClientID: developerSignOnClientID,
 		azureTenantID: liveUser.tenantID,

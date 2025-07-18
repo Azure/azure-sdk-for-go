@@ -1,14 +1,9 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.2.0 (2025-07-21)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Add fakes support
 
 ## 1.1.0 (2024-11-06)
 

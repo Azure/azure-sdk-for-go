@@ -42,7 +42,7 @@ func NewClient(credential azcore.TokenCredential, options *ClientOptions) (*Clie
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: c.Endpoint, internal: azcoreClient, apiVersion: VersionsV1}, nil
+	return &Client{endpoint: c.Endpoint, internal: azcoreClient, apiVersion: versionsV1}, nil
 }
 
 // ErrorInfo - The code and message for an error.

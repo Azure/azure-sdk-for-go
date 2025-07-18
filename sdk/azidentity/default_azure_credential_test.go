@@ -113,6 +113,28 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 	})
 }
 
+func TestDefaultAzureCredential_CLICredentialOptions(t *testing.T) {
+	require := require.New(t)
+	cred, err := NewDefaultAzureCredential(nil)
+	require.NoError(err)
+	var (
+		az  *AzureCLICredential
+		azd *AzureDeveloperCLICredential
+	)
+	for _, s := range cred.chain.sources {
+		if az == nil {
+			az, _ = s.(*AzureCLICredential)
+		}
+		if azd == nil {
+			azd, _ = s.(*AzureDeveloperCLICredential)
+		}
+	}
+	require.NotNil(az, "%T should be in the default chain", az)
+	require.True(az.opts.inDefaultChain)
+	require.NotNil(azd, "%T should be in the default chain", azd)
+	require.True(azd.opts.inDefaultChain)
+}
+
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	// ensure NewEnvironmentCredential returns an error
 	t.Setenv(azureTenantID, "")

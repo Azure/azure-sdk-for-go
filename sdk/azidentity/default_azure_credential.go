@@ -166,7 +166,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		}
 	}
 	if selected&az != 0 {
-		azCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{AdditionallyAllowedTenants: additionalTenants, TenantID: options.TenantID})
+		azCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{
+			AdditionallyAllowedTenants: additionalTenants,
+			TenantID:                   options.TenantID,
+			inDefaultChain:             true,
+		})
 		if err == nil {
 			creds = append(creds, azCred)
 		} else {
@@ -178,6 +182,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		azdCred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
 			AdditionallyAllowedTenants: additionalTenants,
 			TenantID:                   options.TenantID,
+			inDefaultChain:             true,
 		})
 		if err == nil {
 			creds = append(creds, azdCred)

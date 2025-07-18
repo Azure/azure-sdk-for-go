@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+- `DefaultAzureCredential` tries its next credential when a dev tool credential such as
+  `AzureCLICredential` returns an error
 
 ## 1.11.0-beta.1 (2025-07-15)
 

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -736,58 +737,7 @@ func (c *ContainerClient) GetChangeFeed(
 	if options.FeedRange != nil {
 		return c.getChangeFeedForEPKRange(ctx, options.FeedRange, options)
 	} else {
-		var err error
-		spanName, err := c.getSpanForItems(operationTypeRead)
-		if err != nil {
-			return ChangeFeedResponse{}, err
-		}
-		ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
-		defer func() { endSpan(err) }()
-
-		var addHeaders func(*policy.Request)
-
-		headersPtr := options.toHeaders(nil)
-		if headersPtr != nil {
-			headers := *headersPtr
-			addHeaders = func(r *policy.Request) {
-				for k, v := range headers {
-					r.Raw().Header.Set(k, v)
-				}
-			}
-		}
-
-		operationContext := pipelineRequestOptions{
-			resourceType:    resourceTypeDocument,
-			resourceAddress: c.link,
-		}
-
-		path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
-		if err != nil {
-			return ChangeFeedResponse{}, err
-		}
-
-		azResponse, err := c.database.client.sendGetRequest(
-			path,
-			ctx,
-			operationContext,
-			nil,
-			addHeaders,
-		)
-		if err != nil {
-			return ChangeFeedResponse{}, err
-		}
-
-		response, err := newChangeFeedResponse(azResponse)
-		if err != nil {
-			return response, err
-		}
-
-		if options.FeedRange != nil {
-			response.FeedRange = options.FeedRange
-			response.PopulateCompositeContinuationToken()
-		}
-
-		return response, nil
+		return ChangeFeedResponse{}, fmt.Errorf("GetChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
 	}
 }
 

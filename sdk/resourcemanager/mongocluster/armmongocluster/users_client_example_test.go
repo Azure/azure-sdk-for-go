@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/MongoClusters_UserCreateOrUpdate.json
+// Generated from example definition: 2025-07-01-preview/MongoClusters_UserCreateOrUpdate.json
 func ExampleUsersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,7 +27,7 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 		Properties: &armmongocluster.UserProperties{
 			Roles: []*armmongocluster.DatabaseRole{
 				{
-					Role: to.Ptr(armmongocluster.UserRoleDatabaseOwner),
+					Role: to.Ptr(armmongocluster.UserRoleRoot),
 					Db:   to.Ptr("admin"),
 				},
 			},
@@ -66,7 +66,7 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateInProgress),
 	// 			Roles: []*armmongocluster.DatabaseRole{
 	// 				{
-	// 					Role: to.Ptr(armmongocluster.UserRoleDatabaseOwner),
+	// 					Role: to.Ptr(armmongocluster.UserRoleRoot),
 	// 					Db: to.Ptr("admin"),
 	// 				},
 	// 			},
@@ -81,7 +81,7 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/MongoClusters_UserDelete.json
+// Generated from example definition: 2025-07-01-preview/MongoClusters_UserDelete.json
 func ExampleUsersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleUsersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/MongoClusters_UserGet.json
+// Generated from example definition: 2025-07-01-preview/MongoClusters_UserGet.json
 func ExampleUsersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleUsersClient_Get() {
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
 	// 			Roles: []*armmongocluster.DatabaseRole{
 	// 				{
-	// 					Role: to.Ptr(armmongocluster.UserRoleDatabaseOwner),
+	// 					Role: to.Ptr(armmongocluster.UserRoleRoot),
 	// 					Db: to.Ptr("admin"),
 	// 				},
 	// 			},
@@ -152,7 +152,7 @@ func ExampleUsersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/MongoClusters_UserList.json
+// Generated from example definition: 2025-07-01-preview/MongoClusters_UserList.json
 func ExampleUsersClient_NewListByMongoClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleUsersClient_NewListByMongoClusterPager() {
 		// 					ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
 		// 					Roles: []*armmongocluster.DatabaseRole{
 		// 						{
-		// 							Role: to.Ptr(armmongocluster.UserRoleDatabaseOwner),
+		// 							Role: to.Ptr(armmongocluster.UserRoleRoot),
 		// 							Db: to.Ptr("admin"),
 		// 						},
 		// 					},
@@ -221,7 +221,7 @@ func ExampleUsersClient_NewListByMongoClusterPager() {
 		// 					ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
 		// 					Roles: []*armmongocluster.DatabaseRole{
 		// 						{
-		// 							Role: to.Ptr(armmongocluster.UserRoleDatabaseOwner),
+		// 							Role: to.Ptr(armmongocluster.UserRoleRoot),
 		// 							Db: to.Ptr("admin"),
 		// 						},
 		// 					},

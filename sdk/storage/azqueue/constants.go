@@ -6,7 +6,7 @@
 
 package azqueue
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
+import "github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
 
 // GeoReplicationStatus - The status of the secondary location
 type GeoReplicationStatus = generated.GeoReplicationStatus

@@ -16,7 +16,7 @@ up to the total capacity limit of a storage account.
 Install the Azure Queue Storage SDK for Go with [go get][goget]:
 
 ```Powershell
-go get github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue
+go get github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2
 ```
 
 If you're going to authenticate with Azure Active Directory (recommended), install the [azidentity][azidentity] module.
@@ -214,8 +214,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue
-[docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/v2
+[docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2
 [rest_docs]: https://learn.microsoft.com/rest/api/storageservices/queue-service-rest-api
 [godevdl]: https://go.dev/dl/
 [goget]: https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
@@ -228,11 +228,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [storage_ad]: https://learn.microsoft.com/azure/storage/common/storage-auth-aad
 [azcore_response_error]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#ResponseError
-[samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/samples_test.go
-[queue_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/queueerror/error_codes.go
-[queue]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/queue_client.go
-[sas]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/sas
-[service]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/service_client.go
+[samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/v2/samples_test.go
+[queue_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/v2/queueerror/error_codes.go
+[queue]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/v2/queue_client.go
+[sas]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/v2/sas
+[service]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azqueue/v2/service_client.go
 [storage_contrib]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [contributing_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [cla]: https://cla.microsoft.com

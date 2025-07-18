@@ -13,12 +13,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/base"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/base"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.

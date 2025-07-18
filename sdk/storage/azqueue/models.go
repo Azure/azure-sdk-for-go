@@ -8,9 +8,9 @@ package azqueue
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
 	"time"
 )
 

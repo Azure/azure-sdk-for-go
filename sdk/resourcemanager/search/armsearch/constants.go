@@ -7,7 +7,7 @@ package armsearch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
-	moduleVersion = "v1.4.0-beta.3"
+	moduleVersion = "v1.4.0"
 )
 
 // AADAuthFailureMode - Describes what response the data plane API of a search service would send for requests that failed
@@ -31,6 +31,38 @@ func PossibleAADAuthFailureModeValues() []AADAuthFailureMode {
 	}
 }
 
+// AccessRuleDirection - Direction of Access Rule
+type AccessRuleDirection string
+
+const (
+	// AccessRuleDirectionInbound - Applies to inbound network traffic to the secured resources.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Applies to outbound network traffic from the secured resources
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
+)
+
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
+	}
+}
+
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
+
 type AdminKeyKind string
 
 const (
@@ -48,14 +80,14 @@ func PossibleAdminKeyKindValues() []AdminKeyKind {
 	}
 }
 
-// ComputeType - Configure this property to support the search service using either the default compute or Azure Confidential
+// ComputeType - Configure this property to support the search service using either the Default Compute or Azure Confidential
 // Compute.
 type ComputeType string
 
 const (
 	// ComputeTypeConfidential - Create the service with Azure Confidential Compute.
 	ComputeTypeConfidential ComputeType = "confidential"
-	// ComputeTypeDefault - Create the service with the default compute.
+	// ComputeTypeDefault - Create the service with the Default Compute.
 	ComputeTypeDefault ComputeType = "default"
 )
 
@@ -84,45 +116,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// FeatureName - The name of the feature offered in this region.
-type FeatureName string
-
-const (
-	// FeatureNameAvailabilityZones - Supports Availability Zones feature.
-	FeatureNameAvailabilityZones FeatureName = "AvailabilityZones"
-	// FeatureNameDocumentIntelligence - Supports Document Intelligence feature.
-	FeatureNameDocumentIntelligence FeatureName = "DocumentIntelligence"
-	// FeatureNameGrok - Supports Grok feature.
-	FeatureNameGrok FeatureName = "Grok"
-	// FeatureNameImageVectorization - Supports Image Vectorization feature.
-	FeatureNameImageVectorization FeatureName = "ImageVectorization"
-	// FeatureNameMegaStore - Supports Mega Store feature.
-	FeatureNameMegaStore FeatureName = "MegaStore"
-	// FeatureNameQueryRewrite - Supports Query Rewrite feature.
-	FeatureNameQueryRewrite FeatureName = "QueryRewrite"
-	// FeatureNameS3 - Supports S3 feature.
-	FeatureNameS3 FeatureName = "S3"
-	// FeatureNameSemanticSearch - Supports Semantic Search feature.
-	FeatureNameSemanticSearch FeatureName = "SemanticSearch"
-	// FeatureNameStorageOptimized - Supports Storage Optimized feature.
-	FeatureNameStorageOptimized FeatureName = "StorageOptimized"
-)
-
-// PossibleFeatureNameValues returns the possible values for the FeatureName const type.
-func PossibleFeatureNameValues() []FeatureName {
-	return []FeatureName{
-		FeatureNameAvailabilityZones,
-		FeatureNameDocumentIntelligence,
-		FeatureNameGrok,
-		FeatureNameImageVectorization,
-		FeatureNameMegaStore,
-		FeatureNameQueryRewrite,
-		FeatureNameS3,
-		FeatureNameSemanticSearch,
-		FeatureNameStorageOptimized,
 	}
 }
 
@@ -171,6 +164,79 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeSystemAssigned,
 		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
+	}
+}
+
+// IssueType - Type of issue
+type IssueType string
+
+const (
+	// IssueTypeConfigurationPropagationFailure - An error occurred while applying the network security perimeter (NSP) configuration.
+	IssueTypeConfigurationPropagationFailure IssueType = "ConfigurationPropagationFailure"
+	// IssueTypeMissingIdentityConfiguration - An managed identity hasn't been associated with the resource. The resource will
+	// still be able to validate inbound traffic from the network security perimeter (NSP) or matching inbound access rules, but
+	// it won't be able to perform outbound access as a member of the NSP.
+	IssueTypeMissingIdentityConfiguration IssueType = "MissingIdentityConfiguration"
+	// IssueTypeMissingPerimeterConfiguration - A network connectivity issue is happening on the resource which could be addressed
+	// either by adding new resources to the network security perimeter (NSP) or by modifying access rules.
+	IssueTypeMissingPerimeterConfiguration IssueType = "MissingPerimeterConfiguration"
+	// IssueTypeUnknown - Unknown issue type
+	IssueTypeUnknown IssueType = "Unknown"
+)
+
+// PossibleIssueTypeValues returns the possible values for the IssueType const type.
+func PossibleIssueTypeValues() []IssueType {
+	return []IssueType{
+		IssueTypeConfigurationPropagationFailure,
+		IssueTypeMissingIdentityConfiguration,
+		IssueTypeMissingPerimeterConfiguration,
+		IssueTypeUnknown,
+	}
+}
+
+// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of a network security perimeter configuration
+// that is being created or updated.
+type NetworkSecurityPerimeterConfigurationProvisioningState string
+
+const (
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted  NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled  NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating  NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting  NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed    NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating  NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
+	return []NetworkSecurityPerimeterConfigurationProvisioningState{
+		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
+	}
+}
+
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
 	}
 }
 
@@ -247,11 +313,11 @@ type ProvisioningState string
 
 const (
 	// ProvisioningStateFailed - The last provisioning operation has failed.
-	ProvisioningStateFailed ProvisioningState = "Failed"
+	ProvisioningStateFailed ProvisioningState = "failed"
 	// ProvisioningStateProvisioning - The search service is being provisioned or scaled up or down.
-	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
+	ProvisioningStateProvisioning ProvisioningState = "provisioning"
 	// ProvisioningStateSucceeded - The last provisioning operation has completed successfully.
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateSucceeded ProvisioningState = "succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -274,6 +340,9 @@ const (
 	PublicNetworkAccessDisabled PublicNetworkAccess = "disabled"
 	// PublicNetworkAccessEnabled - The search service is accessible from traffic originating from the public internet.
 	PublicNetworkAccessEnabled PublicNetworkAccess = "enabled"
+	// PublicNetworkAccessSecuredByPerimeter - The network security perimeter configuration rules allow or disallow public network
+	// access to the resource. Requires an associated network security perimeter.
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "securedByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -281,6 +350,30 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
+	}
+}
+
+// ResourceAssociationAccessMode - Access mode of the resource association
+type ResourceAssociationAccessMode string
+
+const (
+	// ResourceAssociationAccessModeAudit - Audit access mode - traffic to the resource that fails access checks is logged but
+	// not blocked
+	ResourceAssociationAccessModeAudit ResourceAssociationAccessMode = "Audit"
+	// ResourceAssociationAccessModeEnforced - Enforced access mode - traffic to the resource that failed access checks is blocked
+	ResourceAssociationAccessModeEnforced ResourceAssociationAccessMode = "Enforced"
+	// ResourceAssociationAccessModeLearning - Learning access mode - traffic to the resource is enabled for analysis but not
+	// blocked
+	ResourceAssociationAccessModeLearning ResourceAssociationAccessMode = "Learning"
+)
+
+// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
+func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
+	return []ResourceAssociationAccessMode{
+		ResourceAssociationAccessModeAudit,
+		ResourceAssociationAccessModeEnforced,
+		ResourceAssociationAccessModeLearning,
 	}
 }
 
@@ -328,9 +421,6 @@ func PossibleSKUNameValues() []SKUName {
 type SearchBypass string
 
 const (
-	// SearchBypassAzurePortal - Indicates that requests originating from the Azure portal can bypass the rules defined in the
-	// 'ipRules' section.
-	SearchBypassAzurePortal SearchBypass = "AzurePortal"
 	// SearchBypassAzureServices - Indicates that requests originating from Azure trusted services can bypass the rules defined
 	// in the 'ipRules' section.
 	SearchBypassAzureServices SearchBypass = "AzureServices"
@@ -341,24 +431,23 @@ const (
 // PossibleSearchBypassValues returns the possible values for the SearchBypass const type.
 func PossibleSearchBypassValues() []SearchBypass {
 	return []SearchBypass{
-		SearchBypassAzurePortal,
 		SearchBypassAzureServices,
 		SearchBypassNone,
 	}
 }
 
-// SearchDisabledDataExfiltrationOption - A specific data exfiltration scenario that is disabled for the service.
-type SearchDisabledDataExfiltrationOption string
+// SearchDataExfiltrationProtection - A specific data exfiltration scenario that is disabled for the service.
+type SearchDataExfiltrationProtection string
 
 const (
-	// SearchDisabledDataExfiltrationOptionAll - Indicates that all data exfiltration scenarios are disabled.
-	SearchDisabledDataExfiltrationOptionAll SearchDisabledDataExfiltrationOption = "All"
+	// SearchDataExfiltrationProtectionBlockAll - Indicates that all data exfiltration scenarios are disabled.
+	SearchDataExfiltrationProtectionBlockAll SearchDataExfiltrationProtection = "BlockAll"
 )
 
-// PossibleSearchDisabledDataExfiltrationOptionValues returns the possible values for the SearchDisabledDataExfiltrationOption const type.
-func PossibleSearchDisabledDataExfiltrationOptionValues() []SearchDisabledDataExfiltrationOption {
-	return []SearchDisabledDataExfiltrationOption{
-		SearchDisabledDataExfiltrationOptionAll,
+// PossibleSearchDataExfiltrationProtectionValues returns the possible values for the SearchDataExfiltrationProtection const type.
+func PossibleSearchDataExfiltrationProtectionValues() []SearchDataExfiltrationProtection {
+	return []SearchDataExfiltrationProtection{
+		SearchDataExfiltrationProtectionBlockAll,
 	}
 }
 
@@ -475,6 +564,22 @@ func PossibleSearchServiceStatusValues() []SearchServiceStatus {
 	}
 }
 
+// Severity - Severity of the issue.
+type Severity string
+
+const (
+	SeverityError   Severity = "Error"
+	SeverityWarning Severity = "Warning"
+)
+
+// PossibleSeverityValues returns the possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{
+		SeverityError,
+		SeverityWarning,
+	}
+}
+
 // SharedPrivateLinkResourceProvisioningState - The provisioning state of the shared private link resource. Valid values are
 // Updating, Deleting, Failed, Succeeded or Incomplete.
 type SharedPrivateLinkResourceProvisioningState string
@@ -548,5 +653,23 @@ func PossibleUnavailableNameReasonValues() []UnavailableNameReason {
 	return []UnavailableNameReason{
 		UnavailableNameReasonAlreadyExists,
 		UnavailableNameReasonInvalid,
+	}
+}
+
+// UpgradeAvailable - Indicates if the search service has an upgrade available.
+type UpgradeAvailable string
+
+const (
+	// UpgradeAvailableAvailable - There is an upgrade available for the service.
+	UpgradeAvailableAvailable UpgradeAvailable = "available"
+	// UpgradeAvailableNotAvailable - An upgrade is currently not available for the service.
+	UpgradeAvailableNotAvailable UpgradeAvailable = "notAvailable"
+)
+
+// PossibleUpgradeAvailableValues returns the possible values for the UpgradeAvailable const type.
+func PossibleUpgradeAvailableValues() []UpgradeAvailable {
+	return []UpgradeAvailable{
+		UpgradeAvailableAvailable,
+		UpgradeAvailableNotAvailable,
 	}
 }

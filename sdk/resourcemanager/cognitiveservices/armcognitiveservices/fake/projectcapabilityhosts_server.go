@@ -22,7 +22,7 @@ import (
 type ProjectCapabilityHostsServer struct {
 	// BeginCreateOrUpdate is the fake for method ProjectCapabilityHostsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, body armcognitiveservices.CapabilityHost, options *armcognitiveservices.ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ProjectCapabilityHostsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost armcognitiveservices.CapabilityHost, options *armcognitiveservices.ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ProjectCapabilityHostsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ProjectCapabilityHostsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent

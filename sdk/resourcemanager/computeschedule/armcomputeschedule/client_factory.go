@@ -32,9 +32,31 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewOccurrenceExtensionClient creates a new instance of OccurrenceExtensionClient.
+func (c *ClientFactory) NewOccurrenceExtensionClient() *OccurrenceExtensionClient {
+	return &OccurrenceExtensionClient{
+		internal: c.internal,
+	}
+}
+
+// NewOccurrencesClient creates a new instance of OccurrencesClient.
+func (c *ClientFactory) NewOccurrencesClient() *OccurrencesClient {
+	return &OccurrencesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
+		internal: c.internal,
+	}
+}
+
+// NewScheduledActionExtensionClient creates a new instance of ScheduledActionExtensionClient.
+func (c *ClientFactory) NewScheduledActionExtensionClient() *ScheduledActionExtensionClient {
+	return &ScheduledActionExtensionClient{
 		internal: c.internal,
 	}
 }

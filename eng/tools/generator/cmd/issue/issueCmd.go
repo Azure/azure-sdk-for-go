@@ -74,7 +74,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("include-data-plane", false, "Specify whether we include the requests from data plane RPs")
 	flagSet.BoolP("skip-validate", "l", false, "Skip the validate for readme files and tags.")
 	flagSet.IntSlice("request-issues", []int{}, "Specify the release request IDs to parse.")
-	flagSet.StringSlice("additional-options", []string{"--enum-prefix"}, "Specify the default additional options for the upcoming new version of SDK.")
 }
 
 // ParseFlags parses the flags to a Flags struct
@@ -83,7 +82,6 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		IncludeDataPlaneRequests: flags.GetBool(flagSet, "include-data-plane"),
 		SkipValidate:             flags.GetBool(flagSet, "skip-validate"),
 		ReleaseRequestIDs:        flags.GetIntSlice(flagSet, "request-issues"),
-		AdditionalOptions:        flags.GetStringSlice(flagSet, "additional-options"),
 	}
 }
 
@@ -92,7 +90,6 @@ type Flags struct {
 	IncludeDataPlaneRequests bool
 	SkipValidate             bool
 	ReleaseRequestIDs        []int
-	AdditionalOptions        []string
 }
 
 type commandContext struct {
@@ -296,7 +293,6 @@ func (c *commandContext) buildConfig(requests []request.Request) (*config.Config
 	return &config.Config{
 		Track2Requests:   track2Requests,
 		TypeSpecRequests: typespecRequests,
-		AdditionalFlags:  c.flags.AdditionalOptions,
 	}, nil
 }
 

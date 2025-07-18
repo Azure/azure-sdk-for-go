@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2
 
 go 1.23.0
 

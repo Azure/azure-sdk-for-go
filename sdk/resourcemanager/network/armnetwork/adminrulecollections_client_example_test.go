@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerAdminRuleCollectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerAdminRuleCollectionList.json
 func ExampleAdminRuleCollectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleAdminRuleCollectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerAdminRuleCollectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerAdminRuleCollectionGet.json
 func ExampleAdminRuleCollectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleAdminRuleCollectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerAdminRuleCollectionPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerAdminRuleCollectionPut.json
 func ExampleAdminRuleCollectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleAdminRuleCollectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerAdminRuleCollectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerAdminRuleCollectionDelete.json
 func ExampleAdminRuleCollectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

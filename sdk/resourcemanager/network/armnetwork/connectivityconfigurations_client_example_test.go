@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerConnectivityConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectivityConfigurationGet.json
 func ExampleConnectivityConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,11 +49,6 @@ func ExampleConnectivityConfigurationsClient_Get() {
 	// 				NetworkGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1"),
 	// 				UseHubGateway: to.Ptr(armnetwork.UseHubGatewayTrue),
 	// 		}},
-	// 		ConnectivityCapabilities: &armnetwork.ConnectivityConfigurationPropertiesConnectivityCapabilities{
-	// 			ConnectedGroupAddressOverlap: to.Ptr(armnetwork.ConnectedGroupAddressOverlapAllowed),
-	// 			ConnectedGroupPrivateEndpointsScale: to.Ptr(armnetwork.ConnectedGroupPrivateEndpointsScaleStandard),
-	// 			PeeringEnforcement: to.Ptr(armnetwork.PeeringEnforcementUnenforced),
-	// 		},
 	// 		ConnectivityTopology: to.Ptr(armnetwork.ConnectivityTopologyHubAndSpoke),
 	// 		DeleteExistingPeering: to.Ptr(armnetwork.DeleteExistingPeeringTrue),
 	// 		Hubs: []*armnetwork.Hub{
@@ -76,7 +71,7 @@ func ExampleConnectivityConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerConnectivityConfigurationPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectivityConfigurationPut.json
 func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,11 +92,6 @@ func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 					NetworkGroupID:    to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1"),
 					UseHubGateway:     to.Ptr(armnetwork.UseHubGatewayTrue),
 				}},
-			ConnectivityCapabilities: &armnetwork.ConnectivityConfigurationPropertiesConnectivityCapabilities{
-				ConnectedGroupAddressOverlap:        to.Ptr(armnetwork.ConnectedGroupAddressOverlapAllowed),
-				ConnectedGroupPrivateEndpointsScale: to.Ptr(armnetwork.ConnectedGroupPrivateEndpointsScaleStandard),
-				PeeringEnforcement:                  to.Ptr(armnetwork.PeeringEnforcementUnenforced),
-			},
 			ConnectivityTopology:  to.Ptr(armnetwork.ConnectivityTopologyHubAndSpoke),
 			DeleteExistingPeering: to.Ptr(armnetwork.DeleteExistingPeeringTrue),
 			Hubs: []*armnetwork.Hub{
@@ -131,11 +121,6 @@ func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 	// 				NetworkGroupID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/groups/group1"),
 	// 				UseHubGateway: to.Ptr(armnetwork.UseHubGatewayTrue),
 	// 		}},
-	// 		ConnectivityCapabilities: &armnetwork.ConnectivityConfigurationPropertiesConnectivityCapabilities{
-	// 			ConnectedGroupAddressOverlap: to.Ptr(armnetwork.ConnectedGroupAddressOverlapAllowed),
-	// 			ConnectedGroupPrivateEndpointsScale: to.Ptr(armnetwork.ConnectedGroupPrivateEndpointsScaleStandard),
-	// 			PeeringEnforcement: to.Ptr(armnetwork.PeeringEnforcementUnenforced),
-	// 		},
 	// 		ConnectivityTopology: to.Ptr(armnetwork.ConnectivityTopologyHubAndSpoke),
 	// 		DeleteExistingPeering: to.Ptr(armnetwork.DeleteExistingPeeringTrue),
 	// 		Hubs: []*armnetwork.Hub{
@@ -158,7 +143,7 @@ func ExampleConnectivityConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerConnectivityConfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectivityConfigurationDelete.json
 func ExampleConnectivityConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +164,7 @@ func ExampleConnectivityConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerConnectivityConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectivityConfigurationList.json
 func ExampleConnectivityConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,11 +203,6 @@ func ExampleConnectivityConfigurationsClient_NewListPager() {
 		// 						NetworkGroupID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/netwrokGroups/group1"),
 		// 						UseHubGateway: to.Ptr(armnetwork.UseHubGatewayTrue),
 		// 				}},
-		// 				ConnectivityCapabilities: &armnetwork.ConnectivityConfigurationPropertiesConnectivityCapabilities{
-		// 					ConnectedGroupAddressOverlap: to.Ptr(armnetwork.ConnectedGroupAddressOverlapAllowed),
-		// 					ConnectedGroupPrivateEndpointsScale: to.Ptr(armnetwork.ConnectedGroupPrivateEndpointsScaleStandard),
-		// 					PeeringEnforcement: to.Ptr(armnetwork.PeeringEnforcementUnenforced),
-		// 				},
 		// 				ConnectivityTopology: to.Ptr(armnetwork.ConnectivityTopologyHubAndSpoke),
 		// 				DeleteExistingPeering: to.Ptr(armnetwork.DeleteExistingPeeringTrue),
 		// 				Hubs: []*armnetwork.Hub{

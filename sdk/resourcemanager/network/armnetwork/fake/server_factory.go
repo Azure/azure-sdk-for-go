@@ -193,9 +193,6 @@ type ServerFactory struct {
 	// InterfacesServer contains the fakes for client InterfacesClient
 	InterfacesServer InterfacesServer
 
-	// IpamPoolsServer contains the fakes for client IpamPoolsClient
-	IpamPoolsServer IpamPoolsServer
-
 	// LoadBalancerBackendAddressPoolsServer contains the fakes for client LoadBalancerBackendAddressPoolsClient
 	LoadBalancerBackendAddressPoolsServer LoadBalancerBackendAddressPoolsServer
 
@@ -231,9 +228,6 @@ type ServerFactory struct {
 
 	// ManagerDeploymentStatusServer contains the fakes for client ManagerDeploymentStatusClient
 	ManagerDeploymentStatusServer ManagerDeploymentStatusServer
-
-	// ManagerRoutingConfigurationsServer contains the fakes for client ManagerRoutingConfigurationsClient
-	ManagerRoutingConfigurationsServer ManagerRoutingConfigurationsServer
 
 	// ManagersServer contains the fakes for client ManagersClient
 	ManagersServer ManagersServer
@@ -274,12 +268,6 @@ type ServerFactory struct {
 	// PublicIPPrefixesServer contains the fakes for client PublicIPPrefixesClient
 	PublicIPPrefixesServer PublicIPPrefixesServer
 
-	// ReachabilityAnalysisIntentsServer contains the fakes for client ReachabilityAnalysisIntentsClient
-	ReachabilityAnalysisIntentsServer ReachabilityAnalysisIntentsServer
-
-	// ReachabilityAnalysisRunsServer contains the fakes for client ReachabilityAnalysisRunsClient
-	ReachabilityAnalysisRunsServer ReachabilityAnalysisRunsServer
-
 	// ResourceNavigationLinksServer contains the fakes for client ResourceNavigationLinksClient
 	ResourceNavigationLinksServer ResourceNavigationLinksServer
 
@@ -301,12 +289,6 @@ type ServerFactory struct {
 	// RoutingIntentServer contains the fakes for client RoutingIntentClient
 	RoutingIntentServer RoutingIntentServer
 
-	// RoutingRuleCollectionsServer contains the fakes for client RoutingRuleCollectionsClient
-	RoutingRuleCollectionsServer RoutingRuleCollectionsServer
-
-	// RoutingRulesServer contains the fakes for client RoutingRulesClient
-	RoutingRulesServer RoutingRulesServer
-
 	// ScopeConnectionsServer contains the fakes for client ScopeConnectionsClient
 	ScopeConnectionsServer ScopeConnectionsServer
 
@@ -319,44 +301,8 @@ type ServerFactory struct {
 	// SecurityPartnerProvidersServer contains the fakes for client SecurityPartnerProvidersClient
 	SecurityPartnerProvidersServer SecurityPartnerProvidersServer
 
-	// SecurityPerimeterAccessRulesServer contains the fakes for client SecurityPerimeterAccessRulesClient
-	SecurityPerimeterAccessRulesServer SecurityPerimeterAccessRulesServer
-
-	// SecurityPerimeterAssociableResourceTypesServer contains the fakes for client SecurityPerimeterAssociableResourceTypesClient
-	SecurityPerimeterAssociableResourceTypesServer SecurityPerimeterAssociableResourceTypesServer
-
-	// SecurityPerimeterAssociationsServer contains the fakes for client SecurityPerimeterAssociationsClient
-	SecurityPerimeterAssociationsServer SecurityPerimeterAssociationsServer
-
-	// SecurityPerimeterLinkReferencesServer contains the fakes for client SecurityPerimeterLinkReferencesClient
-	SecurityPerimeterLinkReferencesServer SecurityPerimeterLinkReferencesServer
-
-	// SecurityPerimeterLinksServer contains the fakes for client SecurityPerimeterLinksClient
-	SecurityPerimeterLinksServer SecurityPerimeterLinksServer
-
-	// SecurityPerimeterLoggingConfigurationsServer contains the fakes for client SecurityPerimeterLoggingConfigurationsClient
-	SecurityPerimeterLoggingConfigurationsServer SecurityPerimeterLoggingConfigurationsServer
-
-	// SecurityPerimeterOperationStatusesServer contains the fakes for client SecurityPerimeterOperationStatusesClient
-	SecurityPerimeterOperationStatusesServer SecurityPerimeterOperationStatusesServer
-
-	// SecurityPerimeterProfilesServer contains the fakes for client SecurityPerimeterProfilesClient
-	SecurityPerimeterProfilesServer SecurityPerimeterProfilesServer
-
-	// SecurityPerimetersServer contains the fakes for client SecurityPerimetersClient
-	SecurityPerimetersServer SecurityPerimetersServer
-
 	// SecurityRulesServer contains the fakes for client SecurityRulesClient
 	SecurityRulesServer SecurityRulesServer
-
-	// SecurityUserConfigurationsServer contains the fakes for client SecurityUserConfigurationsClient
-	SecurityUserConfigurationsServer SecurityUserConfigurationsServer
-
-	// SecurityUserRuleCollectionsServer contains the fakes for client SecurityUserRuleCollectionsClient
-	SecurityUserRuleCollectionsServer SecurityUserRuleCollectionsServer
-
-	// SecurityUserRulesServer contains the fakes for client SecurityUserRulesClient
-	SecurityUserRulesServer SecurityUserRulesServer
 
 	// ServiceAssociationLinksServer contains the fakes for client ServiceAssociationLinksClient
 	ServiceAssociationLinksServer ServiceAssociationLinksServer
@@ -372,9 +318,6 @@ type ServerFactory struct {
 
 	// ServiceTagsServer contains the fakes for client ServiceTagsClient
 	ServiceTagsServer ServiceTagsServer
-
-	// StaticCidrsServer contains the fakes for client StaticCidrsClient
-	StaticCidrsServer StaticCidrsServer
 
 	// StaticMembersServer contains the fakes for client StaticMembersClient
 	StaticMembersServer StaticMembersServer
@@ -414,9 +357,6 @@ type ServerFactory struct {
 
 	// VPNSitesConfigurationServer contains the fakes for client VPNSitesConfigurationClient
 	VPNSitesConfigurationServer VPNSitesConfigurationServer
-
-	// VerifierWorkspacesServer contains the fakes for client VerifierWorkspacesClient
-	VerifierWorkspacesServer VerifierWorkspacesServer
 
 	// VipSwapServer contains the fakes for client VipSwapClient
 	VipSwapServer VipSwapServer
@@ -558,7 +498,6 @@ type ServerFactoryTransport struct {
 	trInterfaceLoadBalancersServer                          *InterfaceLoadBalancersServerTransport
 	trInterfaceTapConfigurationsServer                      *InterfaceTapConfigurationsServerTransport
 	trInterfacesServer                                      *InterfacesServerTransport
-	trIpamPoolsServer                                       *IpamPoolsServerTransport
 	trLoadBalancerBackendAddressPoolsServer                 *LoadBalancerBackendAddressPoolsServerTransport
 	trLoadBalancerFrontendIPConfigurationsServer            *LoadBalancerFrontendIPConfigurationsServerTransport
 	trLoadBalancerLoadBalancingRulesServer                  *LoadBalancerLoadBalancingRulesServerTransport
@@ -571,7 +510,6 @@ type ServerFactoryTransport struct {
 	trManagementGroupNetworkManagerConnectionsServer        *ManagementGroupNetworkManagerConnectionsServerTransport
 	trManagerCommitsServer                                  *ManagerCommitsServerTransport
 	trManagerDeploymentStatusServer                         *ManagerDeploymentStatusServerTransport
-	trManagerRoutingConfigurationsServer                    *ManagerRoutingConfigurationsServerTransport
 	trManagersServer                                        *ManagersServerTransport
 	trNatGatewaysServer                                     *NatGatewaysServerTransport
 	trNatRulesServer                                        *NatRulesServerTransport
@@ -585,8 +523,6 @@ type ServerFactoryTransport struct {
 	trProfilesServer                                        *ProfilesServerTransport
 	trPublicIPAddressesServer                               *PublicIPAddressesServerTransport
 	trPublicIPPrefixesServer                                *PublicIPPrefixesServerTransport
-	trReachabilityAnalysisIntentsServer                     *ReachabilityAnalysisIntentsServerTransport
-	trReachabilityAnalysisRunsServer                        *ReachabilityAnalysisRunsServerTransport
 	trResourceNavigationLinksServer                         *ResourceNavigationLinksServerTransport
 	trRouteFilterRulesServer                                *RouteFilterRulesServerTransport
 	trRouteFiltersServer                                    *RouteFiltersServerTransport
@@ -594,31 +530,16 @@ type ServerFactoryTransport struct {
 	trRouteTablesServer                                     *RouteTablesServerTransport
 	trRoutesServer                                          *RoutesServerTransport
 	trRoutingIntentServer                                   *RoutingIntentServerTransport
-	trRoutingRuleCollectionsServer                          *RoutingRuleCollectionsServerTransport
-	trRoutingRulesServer                                    *RoutingRulesServerTransport
 	trScopeConnectionsServer                                *ScopeConnectionsServerTransport
 	trSecurityAdminConfigurationsServer                     *SecurityAdminConfigurationsServerTransport
 	trSecurityGroupsServer                                  *SecurityGroupsServerTransport
 	trSecurityPartnerProvidersServer                        *SecurityPartnerProvidersServerTransport
-	trSecurityPerimeterAccessRulesServer                    *SecurityPerimeterAccessRulesServerTransport
-	trSecurityPerimeterAssociableResourceTypesServer        *SecurityPerimeterAssociableResourceTypesServerTransport
-	trSecurityPerimeterAssociationsServer                   *SecurityPerimeterAssociationsServerTransport
-	trSecurityPerimeterLinkReferencesServer                 *SecurityPerimeterLinkReferencesServerTransport
-	trSecurityPerimeterLinksServer                          *SecurityPerimeterLinksServerTransport
-	trSecurityPerimeterLoggingConfigurationsServer          *SecurityPerimeterLoggingConfigurationsServerTransport
-	trSecurityPerimeterOperationStatusesServer              *SecurityPerimeterOperationStatusesServerTransport
-	trSecurityPerimeterProfilesServer                       *SecurityPerimeterProfilesServerTransport
-	trSecurityPerimetersServer                              *SecurityPerimetersServerTransport
 	trSecurityRulesServer                                   *SecurityRulesServerTransport
-	trSecurityUserConfigurationsServer                      *SecurityUserConfigurationsServerTransport
-	trSecurityUserRuleCollectionsServer                     *SecurityUserRuleCollectionsServerTransport
-	trSecurityUserRulesServer                               *SecurityUserRulesServerTransport
 	trServiceAssociationLinksServer                         *ServiceAssociationLinksServerTransport
 	trServiceEndpointPoliciesServer                         *ServiceEndpointPoliciesServerTransport
 	trServiceEndpointPolicyDefinitionsServer                *ServiceEndpointPolicyDefinitionsServerTransport
 	trServiceTagInformationServer                           *ServiceTagInformationServerTransport
 	trServiceTagsServer                                     *ServiceTagsServerTransport
-	trStaticCidrsServer                                     *StaticCidrsServerTransport
 	trStaticMembersServer                                   *StaticMembersServerTransport
 	trSubnetsServer                                         *SubnetsServerTransport
 	trSubscriptionNetworkManagerConnectionsServer           *SubscriptionNetworkManagerConnectionsServerTransport
@@ -632,7 +553,6 @@ type ServerFactoryTransport struct {
 	trVPNSiteLinksServer                                    *VPNSiteLinksServerTransport
 	trVPNSitesServer                                        *VPNSitesServerTransport
 	trVPNSitesConfigurationServer                           *VPNSitesConfigurationServerTransport
-	trVerifierWorkspacesServer                              *VerifierWorkspacesServerTransport
 	trVipSwapServer                                         *VipSwapServerTransport
 	trVirtualApplianceConnectionsServer                     *VirtualApplianceConnectionsServerTransport
 	trVirtualApplianceSKUsServer                            *VirtualApplianceSKUsServerTransport
@@ -953,9 +873,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "InterfacesClient":
 		initServer(s, &s.trInterfacesServer, func() *InterfacesServerTransport { return NewInterfacesServerTransport(&s.srv.InterfacesServer) })
 		resp, err = s.trInterfacesServer.Do(req)
-	case "IpamPoolsClient":
-		initServer(s, &s.trIpamPoolsServer, func() *IpamPoolsServerTransport { return NewIpamPoolsServerTransport(&s.srv.IpamPoolsServer) })
-		resp, err = s.trIpamPoolsServer.Do(req)
 	case "LoadBalancerBackendAddressPoolsClient":
 		initServer(s, &s.trLoadBalancerBackendAddressPoolsServer, func() *LoadBalancerBackendAddressPoolsServerTransport {
 			return NewLoadBalancerBackendAddressPoolsServerTransport(&s.srv.LoadBalancerBackendAddressPoolsServer)
@@ -1014,11 +931,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagerDeploymentStatusServerTransport(&s.srv.ManagerDeploymentStatusServer)
 		})
 		resp, err = s.trManagerDeploymentStatusServer.Do(req)
-	case "ManagerRoutingConfigurationsClient":
-		initServer(s, &s.trManagerRoutingConfigurationsServer, func() *ManagerRoutingConfigurationsServerTransport {
-			return NewManagerRoutingConfigurationsServerTransport(&s.srv.ManagerRoutingConfigurationsServer)
-		})
-		resp, err = s.trManagerRoutingConfigurationsServer.Do(req)
 	case "ManagersClient":
 		initServer(s, &s.trManagersServer, func() *ManagersServerTransport { return NewManagersServerTransport(&s.srv.ManagersServer) })
 		resp, err = s.trManagersServer.Do(req)
@@ -1074,16 +986,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPublicIPPrefixesServerTransport(&s.srv.PublicIPPrefixesServer)
 		})
 		resp, err = s.trPublicIPPrefixesServer.Do(req)
-	case "ReachabilityAnalysisIntentsClient":
-		initServer(s, &s.trReachabilityAnalysisIntentsServer, func() *ReachabilityAnalysisIntentsServerTransport {
-			return NewReachabilityAnalysisIntentsServerTransport(&s.srv.ReachabilityAnalysisIntentsServer)
-		})
-		resp, err = s.trReachabilityAnalysisIntentsServer.Do(req)
-	case "ReachabilityAnalysisRunsClient":
-		initServer(s, &s.trReachabilityAnalysisRunsServer, func() *ReachabilityAnalysisRunsServerTransport {
-			return NewReachabilityAnalysisRunsServerTransport(&s.srv.ReachabilityAnalysisRunsServer)
-		})
-		resp, err = s.trReachabilityAnalysisRunsServer.Do(req)
 	case "ResourceNavigationLinksClient":
 		initServer(s, &s.trResourceNavigationLinksServer, func() *ResourceNavigationLinksServerTransport {
 			return NewResourceNavigationLinksServerTransport(&s.srv.ResourceNavigationLinksServer)
@@ -1111,14 +1013,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRoutingIntentServerTransport(&s.srv.RoutingIntentServer)
 		})
 		resp, err = s.trRoutingIntentServer.Do(req)
-	case "RoutingRuleCollectionsClient":
-		initServer(s, &s.trRoutingRuleCollectionsServer, func() *RoutingRuleCollectionsServerTransport {
-			return NewRoutingRuleCollectionsServerTransport(&s.srv.RoutingRuleCollectionsServer)
-		})
-		resp, err = s.trRoutingRuleCollectionsServer.Do(req)
-	case "RoutingRulesClient":
-		initServer(s, &s.trRoutingRulesServer, func() *RoutingRulesServerTransport { return NewRoutingRulesServerTransport(&s.srv.RoutingRulesServer) })
-		resp, err = s.trRoutingRulesServer.Do(req)
 	case "ScopeConnectionsClient":
 		initServer(s, &s.trScopeConnectionsServer, func() *ScopeConnectionsServerTransport {
 			return NewScopeConnectionsServerTransport(&s.srv.ScopeConnectionsServer)
@@ -1139,71 +1033,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSecurityPartnerProvidersServerTransport(&s.srv.SecurityPartnerProvidersServer)
 		})
 		resp, err = s.trSecurityPartnerProvidersServer.Do(req)
-	case "SecurityPerimeterAccessRulesClient":
-		initServer(s, &s.trSecurityPerimeterAccessRulesServer, func() *SecurityPerimeterAccessRulesServerTransport {
-			return NewSecurityPerimeterAccessRulesServerTransport(&s.srv.SecurityPerimeterAccessRulesServer)
-		})
-		resp, err = s.trSecurityPerimeterAccessRulesServer.Do(req)
-	case "SecurityPerimeterAssociableResourceTypesClient":
-		initServer(s, &s.trSecurityPerimeterAssociableResourceTypesServer, func() *SecurityPerimeterAssociableResourceTypesServerTransport {
-			return NewSecurityPerimeterAssociableResourceTypesServerTransport(&s.srv.SecurityPerimeterAssociableResourceTypesServer)
-		})
-		resp, err = s.trSecurityPerimeterAssociableResourceTypesServer.Do(req)
-	case "SecurityPerimeterAssociationsClient":
-		initServer(s, &s.trSecurityPerimeterAssociationsServer, func() *SecurityPerimeterAssociationsServerTransport {
-			return NewSecurityPerimeterAssociationsServerTransport(&s.srv.SecurityPerimeterAssociationsServer)
-		})
-		resp, err = s.trSecurityPerimeterAssociationsServer.Do(req)
-	case "SecurityPerimeterLinkReferencesClient":
-		initServer(s, &s.trSecurityPerimeterLinkReferencesServer, func() *SecurityPerimeterLinkReferencesServerTransport {
-			return NewSecurityPerimeterLinkReferencesServerTransport(&s.srv.SecurityPerimeterLinkReferencesServer)
-		})
-		resp, err = s.trSecurityPerimeterLinkReferencesServer.Do(req)
-	case "SecurityPerimeterLinksClient":
-		initServer(s, &s.trSecurityPerimeterLinksServer, func() *SecurityPerimeterLinksServerTransport {
-			return NewSecurityPerimeterLinksServerTransport(&s.srv.SecurityPerimeterLinksServer)
-		})
-		resp, err = s.trSecurityPerimeterLinksServer.Do(req)
-	case "SecurityPerimeterLoggingConfigurationsClient":
-		initServer(s, &s.trSecurityPerimeterLoggingConfigurationsServer, func() *SecurityPerimeterLoggingConfigurationsServerTransport {
-			return NewSecurityPerimeterLoggingConfigurationsServerTransport(&s.srv.SecurityPerimeterLoggingConfigurationsServer)
-		})
-		resp, err = s.trSecurityPerimeterLoggingConfigurationsServer.Do(req)
-	case "SecurityPerimeterOperationStatusesClient":
-		initServer(s, &s.trSecurityPerimeterOperationStatusesServer, func() *SecurityPerimeterOperationStatusesServerTransport {
-			return NewSecurityPerimeterOperationStatusesServerTransport(&s.srv.SecurityPerimeterOperationStatusesServer)
-		})
-		resp, err = s.trSecurityPerimeterOperationStatusesServer.Do(req)
-	case "SecurityPerimeterProfilesClient":
-		initServer(s, &s.trSecurityPerimeterProfilesServer, func() *SecurityPerimeterProfilesServerTransport {
-			return NewSecurityPerimeterProfilesServerTransport(&s.srv.SecurityPerimeterProfilesServer)
-		})
-		resp, err = s.trSecurityPerimeterProfilesServer.Do(req)
-	case "SecurityPerimetersClient":
-		initServer(s, &s.trSecurityPerimetersServer, func() *SecurityPerimetersServerTransport {
-			return NewSecurityPerimetersServerTransport(&s.srv.SecurityPerimetersServer)
-		})
-		resp, err = s.trSecurityPerimetersServer.Do(req)
 	case "SecurityRulesClient":
 		initServer(s, &s.trSecurityRulesServer, func() *SecurityRulesServerTransport {
 			return NewSecurityRulesServerTransport(&s.srv.SecurityRulesServer)
 		})
 		resp, err = s.trSecurityRulesServer.Do(req)
-	case "SecurityUserConfigurationsClient":
-		initServer(s, &s.trSecurityUserConfigurationsServer, func() *SecurityUserConfigurationsServerTransport {
-			return NewSecurityUserConfigurationsServerTransport(&s.srv.SecurityUserConfigurationsServer)
-		})
-		resp, err = s.trSecurityUserConfigurationsServer.Do(req)
-	case "SecurityUserRuleCollectionsClient":
-		initServer(s, &s.trSecurityUserRuleCollectionsServer, func() *SecurityUserRuleCollectionsServerTransport {
-			return NewSecurityUserRuleCollectionsServerTransport(&s.srv.SecurityUserRuleCollectionsServer)
-		})
-		resp, err = s.trSecurityUserRuleCollectionsServer.Do(req)
-	case "SecurityUserRulesClient":
-		initServer(s, &s.trSecurityUserRulesServer, func() *SecurityUserRulesServerTransport {
-			return NewSecurityUserRulesServerTransport(&s.srv.SecurityUserRulesServer)
-		})
-		resp, err = s.trSecurityUserRulesServer.Do(req)
 	case "ServiceAssociationLinksClient":
 		initServer(s, &s.trServiceAssociationLinksServer, func() *ServiceAssociationLinksServerTransport {
 			return NewServiceAssociationLinksServerTransport(&s.srv.ServiceAssociationLinksServer)
@@ -1227,9 +1061,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServiceTagsClient":
 		initServer(s, &s.trServiceTagsServer, func() *ServiceTagsServerTransport { return NewServiceTagsServerTransport(&s.srv.ServiceTagsServer) })
 		resp, err = s.trServiceTagsServer.Do(req)
-	case "StaticCidrsClient":
-		initServer(s, &s.trStaticCidrsServer, func() *StaticCidrsServerTransport { return NewStaticCidrsServerTransport(&s.srv.StaticCidrsServer) })
-		resp, err = s.trStaticCidrsServer.Do(req)
 	case "StaticMembersClient":
 		initServer(s, &s.trStaticMembersServer, func() *StaticMembersServerTransport {
 			return NewStaticMembersServerTransport(&s.srv.StaticMembersServer)
@@ -1285,11 +1116,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewVPNSitesConfigurationServerTransport(&s.srv.VPNSitesConfigurationServer)
 		})
 		resp, err = s.trVPNSitesConfigurationServer.Do(req)
-	case "VerifierWorkspacesClient":
-		initServer(s, &s.trVerifierWorkspacesServer, func() *VerifierWorkspacesServerTransport {
-			return NewVerifierWorkspacesServerTransport(&s.srv.VerifierWorkspacesServer)
-		})
-		resp, err = s.trVerifierWorkspacesServer.Do(req)
 	case "VipSwapClient":
 		initServer(s, &s.trVipSwapServer, func() *VipSwapServerTransport { return NewVipSwapServerTransport(&s.srv.VipSwapServer) })
 		resp, err = s.trVipSwapServer.Do(req)

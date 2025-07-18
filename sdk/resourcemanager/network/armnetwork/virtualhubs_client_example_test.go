@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualHubGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubGet.json
 func ExampleVirtualHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleVirtualHubsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualHubPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubPut.json
 func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualHubUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubUpdateTags.json
 func ExampleVirtualHubsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleVirtualHubsClient_UpdateTags() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualHubDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubDelete.json
 func ExampleVirtualHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleVirtualHubsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualHubListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubListByResourceGroup.json
 func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualHubList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubList.json
 func ExampleVirtualHubsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +482,7 @@ func ExampleVirtualHubsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/EffectiveRoutesListForConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/EffectiveRoutesListForConnection.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForAConnectionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,29 +509,10 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.VirtualHubEffectiveRouteList = armnetwork.VirtualHubEffectiveRouteList{
-	// 	Value: []*armnetwork.VirtualHubEffectiveRoute{
-	// 		{
-	// 			AddressPrefixes: []*string{
-	// 				to.Ptr("10.147.128.0/17")},
-	// 				AsPath: to.Ptr("65520-65520"),
-	// 				NextHopType: to.Ptr("Remote Hub"),
-	// 				NextHops: []*string{
-	// 					to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/virtualHubs/hub0")},
-	// 					RouteOrigin: to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/virtualHubs/hub0"),
-	// 				},
-	// 				{
-	// 					AddressPrefixes: []*string{
-	// 						to.Ptr("10.0.0.0/16")},
-	// 						AsPath: to.Ptr("12076-12076"),
-	// 						NextHopType: to.Ptr("ExpressRouteGateway"),
-	// 						NextHops: []*string{
-	// 							to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/expressRouteGateways/ErGw1")},
-	// 							RouteOrigin: to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/expressRouteGateways/ErGw1"),
-	// 					}},
-	// 				}
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/EffectiveRoutesListForRouteTable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/EffectiveRoutesListForRouteTable.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForARouteTableResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -558,29 +539,10 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.VirtualHubEffectiveRouteList = armnetwork.VirtualHubEffectiveRouteList{
-	// 	Value: []*armnetwork.VirtualHubEffectiveRoute{
-	// 		{
-	// 			AddressPrefixes: []*string{
-	// 				to.Ptr("10.147.128.0/17")},
-	// 				AsPath: to.Ptr("65520-65520"),
-	// 				NextHopType: to.Ptr("Remote Hub"),
-	// 				NextHops: []*string{
-	// 					to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/virtualHubs/hub0")},
-	// 					RouteOrigin: to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/virtualHubs/hub0"),
-	// 				},
-	// 				{
-	// 					AddressPrefixes: []*string{
-	// 						to.Ptr("10.0.0.0/16")},
-	// 						AsPath: to.Ptr("12076-12076"),
-	// 						NextHopType: to.Ptr("ExpressRouteGateway"),
-	// 						NextHops: []*string{
-	// 							to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/expressRouteGateways/ErGw1")},
-	// 							RouteOrigin: to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/expressRouteGateways/ErGw1"),
-	// 					}},
-	// 				}
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/EffectiveRoutesListForVirtualHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/EffectiveRoutesListForVirtualHub.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForTheVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -603,29 +565,10 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.VirtualHubEffectiveRouteList = armnetwork.VirtualHubEffectiveRouteList{
-	// 	Value: []*armnetwork.VirtualHubEffectiveRoute{
-	// 		{
-	// 			AddressPrefixes: []*string{
-	// 				to.Ptr("10.147.128.0/17")},
-	// 				AsPath: to.Ptr("65520-65520"),
-	// 				NextHopType: to.Ptr("Remote Hub"),
-	// 				NextHops: []*string{
-	// 					to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/virtualHubs/hub0")},
-	// 					RouteOrigin: to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/virtualHubs/hub0"),
-	// 				},
-	// 				{
-	// 					AddressPrefixes: []*string{
-	// 						to.Ptr("10.0.0.0/16")},
-	// 						AsPath: to.Ptr("12076-12076"),
-	// 						NextHopType: to.Ptr("ExpressRouteGateway"),
-	// 						NextHops: []*string{
-	// 							to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/expressRouteGateways/ErGw1")},
-	// 							RouteOrigin: to.Ptr("/subscriptions/testSub/resourceGroups/testRg/providers/Microsoft.Network/expressRouteGateways/ErGw1"),
-	// 					}},
-	// 				}
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/GetInboundRoutes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/GetInboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,21 +594,10 @@ func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.EffectiveRouteMapRouteList = armnetwork.EffectiveRouteMapRouteList{
-	// 	Value: []*armnetwork.EffectiveRouteMapRoute{
-	// 		{
-	// 			AsPath: to.Ptr("65520-65520"),
-	// 			BgpCommunities: to.Ptr("4293853166,12076,51004"),
-	// 			Prefix: to.Ptr("192.168.50.0/24"),
-	// 		},
-	// 		{
-	// 			AsPath: to.Ptr("65520-65520-12076-12076"),
-	// 			BgpCommunities: to.Ptr("4293787629,12076,51027,4293734188"),
-	// 			Prefix: to.Ptr("10.200.0.0/16"),
-	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/GetOutboundRoutes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/GetOutboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -691,16 +623,5 @@ func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.EffectiveRouteMapRouteList = armnetwork.EffectiveRouteMapRouteList{
-	// 	Value: []*armnetwork.EffectiveRouteMapRoute{
-	// 		{
-	// 			AsPath: to.Ptr("65520-65520"),
-	// 			BgpCommunities: to.Ptr("4293853166,12076,51004"),
-	// 			Prefix: to.Ptr("192.168.50.0/24"),
-	// 		},
-	// 		{
-	// 			AsPath: to.Ptr("65520-65520-12076-12076"),
-	// 			BgpCommunities: to.Ptr("4293787629,12076,51027,4293734188"),
-	// 			Prefix: to.Ptr("10.200.0.0/16"),
-	// 	}},
 	// }
 }

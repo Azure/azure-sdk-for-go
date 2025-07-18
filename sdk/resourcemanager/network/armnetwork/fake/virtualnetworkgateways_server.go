@@ -13,12 +13,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 	"net/http"
 	"net/url"
 	"reflect"
 	"regexp"
-	"strconv"
 )
 
 // VirtualNetworkGatewaysServer is a fake server for instances of the armnetwork.VirtualNetworkGatewaysClient type.
@@ -55,25 +54,9 @@ type VirtualNetworkGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetBgpPeerStatus func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], errResp azfake.ErrorResponder)
 
-	// BeginGetFailoverAllTestDetails is the fake for method VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetFailoverAllTestDetails func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, typeParam string, fetchLatest bool, options *armnetwork.VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse], errResp azfake.ErrorResponder)
-
-	// BeginGetFailoverSingleTestDetails is the fake for method VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetFailoverSingleTestDetails func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, failoverTestID string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetLearnedRoutes is the fake for method VirtualNetworkGatewaysClient.BeginGetLearnedRoutes
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetLearnedRoutes func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetLearnedRoutesResponse], errResp azfake.ErrorResponder)
-
-	// BeginGetResiliencyInformation is the fake for method VirtualNetworkGatewaysClient.BeginGetResiliencyInformation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetResiliencyInformation func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetResiliencyInformationResponse], errResp azfake.ErrorResponder)
-
-	// BeginGetRoutesInformation is the fake for method VirtualNetworkGatewaysClient.BeginGetRoutesInformation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetRoutesInformation func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetRoutesInformationResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetVPNProfilePackageURL is the fake for method VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -86,22 +69,6 @@ type VirtualNetworkGatewaysServer struct {
 	// BeginGetVpnclientIPSecParameters is the fake for method VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginGetVpnclientIPSecParameters func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse], errResp azfake.ErrorResponder)
-
-	// BeginInvokeAbortMigration is the fake for method VirtualNetworkGatewaysClient.BeginInvokeAbortMigration
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginInvokeAbortMigration func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginInvokeAbortMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeAbortMigrationResponse], errResp azfake.ErrorResponder)
-
-	// BeginInvokeCommitMigration is the fake for method VirtualNetworkGatewaysClient.BeginInvokeCommitMigration
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginInvokeCommitMigration func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginInvokeCommitMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeCommitMigrationResponse], errResp azfake.ErrorResponder)
-
-	// BeginInvokeExecuteMigration is the fake for method VirtualNetworkGatewaysClient.BeginInvokeExecuteMigration
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginInvokeExecuteMigration func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginInvokeExecuteMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse], errResp azfake.ErrorResponder)
-
-	// BeginInvokePrepareMigration is the fake for method VirtualNetworkGatewaysClient.BeginInvokePrepareMigration
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginInvokePrepareMigration func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, migrationParams armnetwork.VirtualNetworkGatewayMigrationParameters, options *armnetwork.VirtualNetworkGatewaysClientBeginInvokePrepareMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokePrepareMigrationResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method VirtualNetworkGatewaysClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -123,17 +90,9 @@ type VirtualNetworkGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSetVpnclientIPSecParameters func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, vpnclientIPSecParams armnetwork.VPNClientIPsecParameters, options *armnetwork.VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse], errResp azfake.ErrorResponder)
 
-	// BeginStartExpressRouteSiteFailoverSimulation is the fake for method VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartExpressRouteSiteFailoverSimulation func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, options *armnetwork.VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse], errResp azfake.ErrorResponder)
-
 	// BeginStartPacketCapture is the fake for method VirtualNetworkGatewaysClient.BeginStartPacketCapture
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStartPacketCapture func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStartPacketCaptureResponse], errResp azfake.ErrorResponder)
-
-	// BeginStopExpressRouteSiteFailoverSimulation is the fake for method VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStopExpressRouteSiteFailoverSimulation func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, stopParameters armnetwork.ExpressRouteFailoverStopAPIParameters, options *armnetwork.VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse], errResp azfake.ErrorResponder)
 
 	// BeginStopPacketCapture is the fake for method VirtualNetworkGatewaysClient.BeginStopPacketCapture
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -165,26 +124,16 @@ func NewVirtualNetworkGatewaysServerTransport(srv *VirtualNetworkGatewaysServer)
 		beginGeneratevpnclientpackage:                      newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse]](),
 		beginGetAdvertisedRoutes:                           newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]](),
 		beginGetBgpPeerStatus:                              newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]](),
-		beginGetFailoverAllTestDetails:                     newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse]](),
-		beginGetFailoverSingleTestDetails:                  newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse]](),
 		beginGetLearnedRoutes:                              newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetLearnedRoutesResponse]](),
-		beginGetResiliencyInformation:                      newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetResiliencyInformationResponse]](),
-		beginGetRoutesInformation:                          newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetRoutesInformationResponse]](),
 		beginGetVPNProfilePackageURL:                       newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse]](),
 		beginGetVpnclientConnectionHealth:                  newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse]](),
 		beginGetVpnclientIPSecParameters:                   newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse]](),
-		beginInvokeAbortMigration:                          newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeAbortMigrationResponse]](),
-		beginInvokeCommitMigration:                         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeCommitMigrationResponse]](),
-		beginInvokeExecuteMigration:                        newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse]](),
-		beginInvokePrepareMigration:                        newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokePrepareMigrationResponse]](),
 		newListPager:                                       newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse]](),
 		newListConnectionsPager:                            newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse]](),
 		beginReset:                                         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetResponse]](),
 		beginResetVPNClientSharedKey:                       newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse]](),
 		beginSetVpnclientIPSecParameters:                   newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse]](),
-		beginStartExpressRouteSiteFailoverSimulation:       newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse]](),
 		beginStartPacketCapture:                            newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStartPacketCaptureResponse]](),
-		beginStopExpressRouteSiteFailoverSimulation:        newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse]](),
 		beginStopPacketCapture:                             newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopPacketCaptureResponse]](),
 		beginUpdateTags:                                    newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientUpdateTagsResponse]](),
 	}
@@ -201,26 +150,16 @@ type VirtualNetworkGatewaysServerTransport struct {
 	beginGeneratevpnclientpackage                      *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse]]
 	beginGetAdvertisedRoutes                           *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]]
 	beginGetBgpPeerStatus                              *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]]
-	beginGetFailoverAllTestDetails                     *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse]]
-	beginGetFailoverSingleTestDetails                  *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse]]
 	beginGetLearnedRoutes                              *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetLearnedRoutesResponse]]
-	beginGetResiliencyInformation                      *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetResiliencyInformationResponse]]
-	beginGetRoutesInformation                          *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetRoutesInformationResponse]]
 	beginGetVPNProfilePackageURL                       *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse]]
 	beginGetVpnclientConnectionHealth                  *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse]]
 	beginGetVpnclientIPSecParameters                   *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse]]
-	beginInvokeAbortMigration                          *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeAbortMigrationResponse]]
-	beginInvokeCommitMigration                         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeCommitMigrationResponse]]
-	beginInvokeExecuteMigration                        *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse]]
-	beginInvokePrepareMigration                        *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientInvokePrepareMigrationResponse]]
 	newListPager                                       *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListResponse]]
 	newListConnectionsPager                            *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse]]
 	beginReset                                         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetResponse]]
 	beginResetVPNClientSharedKey                       *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse]]
 	beginSetVpnclientIPSecParameters                   *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse]]
-	beginStartExpressRouteSiteFailoverSimulation       *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse]]
 	beginStartPacketCapture                            *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStartPacketCaptureResponse]]
-	beginStopExpressRouteSiteFailoverSimulation        *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse]]
 	beginStopPacketCapture                             *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientStopPacketCaptureResponse]]
 	beginUpdateTags                                    *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientUpdateTagsResponse]]
 }
@@ -264,30 +203,14 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = v.dispatchBeginGetAdvertisedRoutes(req)
 			case "VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus":
 				res.resp, res.err = v.dispatchBeginGetBgpPeerStatus(req)
-			case "VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails":
-				res.resp, res.err = v.dispatchBeginGetFailoverAllTestDetails(req)
-			case "VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails":
-				res.resp, res.err = v.dispatchBeginGetFailoverSingleTestDetails(req)
 			case "VirtualNetworkGatewaysClient.BeginGetLearnedRoutes":
 				res.resp, res.err = v.dispatchBeginGetLearnedRoutes(req)
-			case "VirtualNetworkGatewaysClient.BeginGetResiliencyInformation":
-				res.resp, res.err = v.dispatchBeginGetResiliencyInformation(req)
-			case "VirtualNetworkGatewaysClient.BeginGetRoutesInformation":
-				res.resp, res.err = v.dispatchBeginGetRoutesInformation(req)
 			case "VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL":
 				res.resp, res.err = v.dispatchBeginGetVPNProfilePackageURL(req)
 			case "VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth":
 				res.resp, res.err = v.dispatchBeginGetVpnclientConnectionHealth(req)
 			case "VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters":
 				res.resp, res.err = v.dispatchBeginGetVpnclientIPSecParameters(req)
-			case "VirtualNetworkGatewaysClient.BeginInvokeAbortMigration":
-				res.resp, res.err = v.dispatchBeginInvokeAbortMigration(req)
-			case "VirtualNetworkGatewaysClient.BeginInvokeCommitMigration":
-				res.resp, res.err = v.dispatchBeginInvokeCommitMigration(req)
-			case "VirtualNetworkGatewaysClient.BeginInvokeExecuteMigration":
-				res.resp, res.err = v.dispatchBeginInvokeExecuteMigration(req)
-			case "VirtualNetworkGatewaysClient.BeginInvokePrepareMigration":
-				res.resp, res.err = v.dispatchBeginInvokePrepareMigration(req)
 			case "VirtualNetworkGatewaysClient.NewListPager":
 				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualNetworkGatewaysClient.NewListConnectionsPager":
@@ -298,12 +221,8 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = v.dispatchBeginResetVPNClientSharedKey(req)
 			case "VirtualNetworkGatewaysClient.BeginSetVpnclientIPSecParameters":
 				res.resp, res.err = v.dispatchBeginSetVpnclientIPSecParameters(req)
-			case "VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation":
-				res.resp, res.err = v.dispatchBeginStartExpressRouteSiteFailoverSimulation(req)
 			case "VirtualNetworkGatewaysClient.BeginStartPacketCapture":
 				res.resp, res.err = v.dispatchBeginStartPacketCapture(req)
-			case "VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation":
-				res.resp, res.err = v.dispatchBeginStopExpressRouteSiteFailoverSimulation(req)
 			case "VirtualNetworkGatewaysClient.BeginStopPacketCapture":
 				res.resp, res.err = v.dispatchBeginStopPacketCapture(req)
 			case "VirtualNetworkGatewaysClient.SupportedVPNDevices":
@@ -705,116 +624,6 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetBgpPeerStatus(re
 	return resp, nil
 }
 
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetFailoverAllTestDetails(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginGetFailoverAllTestDetails == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetFailoverAllTestDetails not implemented")}
-	}
-	beginGetFailoverAllTestDetails := v.beginGetFailoverAllTestDetails.get(req)
-	if beginGetFailoverAllTestDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFailoverAllTestsDetails`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		typeParamParam, err := url.QueryUnescape(qp.Get("type"))
-		if err != nil {
-			return nil, err
-		}
-		fetchLatestUnescaped, err := url.QueryUnescape(qp.Get("fetchLatest"))
-		if err != nil {
-			return nil, err
-		}
-		fetchLatestParam, err := strconv.ParseBool(fetchLatestUnescaped)
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginGetFailoverAllTestDetails(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, typeParamParam, fetchLatestParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetFailoverAllTestDetails = &respr
-		v.beginGetFailoverAllTestDetails.add(req, beginGetFailoverAllTestDetails)
-	}
-
-	resp, err := server.PollerResponderNext(beginGetFailoverAllTestDetails, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginGetFailoverAllTestDetails.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGetFailoverAllTestDetails) {
-		v.beginGetFailoverAllTestDetails.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetFailoverSingleTestDetails(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginGetFailoverSingleTestDetails == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetFailoverSingleTestDetails not implemented")}
-	}
-	beginGetFailoverSingleTestDetails := v.beginGetFailoverSingleTestDetails.get(req)
-	if beginGetFailoverSingleTestDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFailoverSingleTestDetails`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		peeringLocationParam, err := url.QueryUnescape(qp.Get("peeringLocation"))
-		if err != nil {
-			return nil, err
-		}
-		failoverTestIDParam, err := url.QueryUnescape(qp.Get("failoverTestId"))
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginGetFailoverSingleTestDetails(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, peeringLocationParam, failoverTestIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetFailoverSingleTestDetails = &respr
-		v.beginGetFailoverSingleTestDetails.add(req, beginGetFailoverSingleTestDetails)
-	}
-
-	resp, err := server.PollerResponderNext(beginGetFailoverSingleTestDetails, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginGetFailoverSingleTestDetails.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGetFailoverSingleTestDetails) {
-		v.beginGetFailoverSingleTestDetails.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetLearnedRoutes(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginGetLearnedRoutes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetLearnedRoutes not implemented")}
@@ -854,124 +663,6 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetLearnedRoutes(re
 	}
 	if !server.PollerResponderMore(beginGetLearnedRoutes) {
 		v.beginGetLearnedRoutes.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetResiliencyInformation(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginGetResiliencyInformation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetResiliencyInformation not implemented")}
-	}
-	beginGetResiliencyInformation := v.beginGetResiliencyInformation.get(req)
-	if beginGetResiliencyInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getResiliencyInformation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		attemptRefreshUnescaped, err := url.QueryUnescape(qp.Get("attemptRefresh"))
-		if err != nil {
-			return nil, err
-		}
-		attemptRefreshParam, err := parseOptional(attemptRefreshUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armnetwork.VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions
-		if attemptRefreshParam != nil {
-			options = &armnetwork.VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions{
-				AttemptRefresh: attemptRefreshParam,
-			}
-		}
-		respr, errRespr := v.srv.BeginGetResiliencyInformation(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetResiliencyInformation = &respr
-		v.beginGetResiliencyInformation.add(req, beginGetResiliencyInformation)
-	}
-
-	resp, err := server.PollerResponderNext(beginGetResiliencyInformation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginGetResiliencyInformation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGetResiliencyInformation) {
-		v.beginGetResiliencyInformation.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetRoutesInformation(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginGetRoutesInformation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetRoutesInformation not implemented")}
-	}
-	beginGetRoutesInformation := v.beginGetRoutesInformation.get(req)
-	if beginGetRoutesInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getRoutesInformation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		attemptRefreshUnescaped, err := url.QueryUnescape(qp.Get("attemptRefresh"))
-		if err != nil {
-			return nil, err
-		}
-		attemptRefreshParam, err := parseOptional(attemptRefreshUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armnetwork.VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions
-		if attemptRefreshParam != nil {
-			options = &armnetwork.VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions{
-				AttemptRefresh: attemptRefreshParam,
-			}
-		}
-		respr, errRespr := v.srv.BeginGetRoutesInformation(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetRoutesInformation = &respr
-		v.beginGetRoutesInformation.add(req, beginGetRoutesInformation)
-	}
-
-	resp, err := server.PollerResponderNext(beginGetRoutesInformation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginGetRoutesInformation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginGetRoutesInformation) {
-		v.beginGetRoutesInformation.remove(req)
 	}
 
 	return resp, nil
@@ -1104,186 +795,6 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetVpnclientIPSecPa
 	}
 	if !server.PollerResponderMore(beginGetVpnclientIPSecParameters) {
 		v.beginGetVpnclientIPSecParameters.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokeAbortMigration(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginInvokeAbortMigration == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginInvokeAbortMigration not implemented")}
-	}
-	beginInvokeAbortMigration := v.beginInvokeAbortMigration.get(req)
-	if beginInvokeAbortMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/abortMigration`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginInvokeAbortMigration(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginInvokeAbortMigration = &respr
-		v.beginInvokeAbortMigration.add(req, beginInvokeAbortMigration)
-	}
-
-	resp, err := server.PollerResponderNext(beginInvokeAbortMigration, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		v.beginInvokeAbortMigration.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginInvokeAbortMigration) {
-		v.beginInvokeAbortMigration.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokeCommitMigration(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginInvokeCommitMigration == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginInvokeCommitMigration not implemented")}
-	}
-	beginInvokeCommitMigration := v.beginInvokeCommitMigration.get(req)
-	if beginInvokeCommitMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitMigration`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginInvokeCommitMigration(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginInvokeCommitMigration = &respr
-		v.beginInvokeCommitMigration.add(req, beginInvokeCommitMigration)
-	}
-
-	resp, err := server.PollerResponderNext(beginInvokeCommitMigration, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		v.beginInvokeCommitMigration.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginInvokeCommitMigration) {
-		v.beginInvokeCommitMigration.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokeExecuteMigration(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginInvokeExecuteMigration == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginInvokeExecuteMigration not implemented")}
-	}
-	beginInvokeExecuteMigration := v.beginInvokeExecuteMigration.get(req)
-	if beginInvokeExecuteMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executeMigration`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginInvokeExecuteMigration(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginInvokeExecuteMigration = &respr
-		v.beginInvokeExecuteMigration.add(req, beginInvokeExecuteMigration)
-	}
-
-	resp, err := server.PollerResponderNext(beginInvokeExecuteMigration, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		v.beginInvokeExecuteMigration.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginInvokeExecuteMigration) {
-		v.beginInvokeExecuteMigration.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginInvokePrepareMigration(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginInvokePrepareMigration == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginInvokePrepareMigration not implemented")}
-	}
-	beginInvokePrepareMigration := v.beginInvokePrepareMigration.get(req)
-	if beginInvokePrepareMigration == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prepareMigration`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetwork.VirtualNetworkGatewayMigrationParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginInvokePrepareMigration(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginInvokePrepareMigration = &respr
-		v.beginInvokePrepareMigration.add(req, beginInvokePrepareMigration)
-	}
-
-	resp, err := server.PollerResponderNext(beginInvokePrepareMigration, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		v.beginInvokePrepareMigration.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginInvokePrepareMigration) {
-		v.beginInvokePrepareMigration.remove(req)
 	}
 
 	return resp, nil
@@ -1515,55 +1026,6 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginSetVpnclientIPSecPa
 	return resp, nil
 }
 
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStartExpressRouteSiteFailoverSimulation(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginStartExpressRouteSiteFailoverSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartExpressRouteSiteFailoverSimulation not implemented")}
-	}
-	beginStartExpressRouteSiteFailoverSimulation := v.beginStartExpressRouteSiteFailoverSimulation.get(req)
-	if beginStartExpressRouteSiteFailoverSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startSiteFailoverTest`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		peeringLocationParam, err := url.QueryUnescape(qp.Get("peeringLocation"))
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginStartExpressRouteSiteFailoverSimulation(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, peeringLocationParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartExpressRouteSiteFailoverSimulation = &respr
-		v.beginStartExpressRouteSiteFailoverSimulation.add(req, beginStartExpressRouteSiteFailoverSimulation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartExpressRouteSiteFailoverSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginStartExpressRouteSiteFailoverSimulation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartExpressRouteSiteFailoverSimulation) {
-		v.beginStartExpressRouteSiteFailoverSimulation.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStartPacketCapture(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginStartPacketCapture == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStartPacketCapture not implemented")}
@@ -1613,54 +1075,6 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStartPacketCapture(
 	}
 	if !server.PollerResponderMore(beginStartPacketCapture) {
 		v.beginStartPacketCapture.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginStopExpressRouteSiteFailoverSimulation(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginStopExpressRouteSiteFailoverSimulation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStopExpressRouteSiteFailoverSimulation not implemented")}
-	}
-	beginStopExpressRouteSiteFailoverSimulation := v.beginStopExpressRouteSiteFailoverSimulation.get(req)
-	if beginStopExpressRouteSiteFailoverSimulation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopSiteFailoverTest`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetwork.ExpressRouteFailoverStopAPIParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginStopExpressRouteSiteFailoverSimulation(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStopExpressRouteSiteFailoverSimulation = &respr
-		v.beginStopExpressRouteSiteFailoverSimulation.add(req, beginStopExpressRouteSiteFailoverSimulation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStopExpressRouteSiteFailoverSimulation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginStopExpressRouteSiteFailoverSimulation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStopExpressRouteSiteFailoverSimulation) {
-		v.beginStopExpressRouteSiteFailoverSimulation.remove(req)
 	}
 
 	return resp, nil

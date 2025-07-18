@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,10 +24,6 @@ type LoadBalancerLoadBalancingRulesServer struct {
 	// Get is the fake for method LoadBalancerLoadBalancingRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string, options *armnetwork.LoadBalancerLoadBalancingRulesClientGetOptions) (resp azfake.Responder[armnetwork.LoadBalancerLoadBalancingRulesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// BeginHealth is the fake for method LoadBalancerLoadBalancingRulesClient.BeginHealth
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginHealth func(ctx context.Context, groupName string, loadBalancerName string, loadBalancingRuleName string, options *armnetwork.LoadBalancerLoadBalancingRulesClientBeginHealthOptions) (resp azfake.PollerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientHealthResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method LoadBalancerLoadBalancingRulesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -40,7 +36,6 @@ type LoadBalancerLoadBalancingRulesServer struct {
 func NewLoadBalancerLoadBalancingRulesServerTransport(srv *LoadBalancerLoadBalancingRulesServer) *LoadBalancerLoadBalancingRulesServerTransport {
 	return &LoadBalancerLoadBalancingRulesServerTransport{
 		srv:          srv,
-		beginHealth:  newTracker[azfake.PollerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientHealthResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientListResponse]](),
 	}
 }
@@ -49,7 +44,6 @@ func NewLoadBalancerLoadBalancingRulesServerTransport(srv *LoadBalancerLoadBalan
 // Don't use this type directly, use NewLoadBalancerLoadBalancingRulesServerTransport instead.
 type LoadBalancerLoadBalancingRulesServerTransport struct {
 	srv          *LoadBalancerLoadBalancingRulesServer
-	beginHealth  *tracker[azfake.PollerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientHealthResponse]]
 	newListPager *tracker[azfake.PagerResponder[armnetwork.LoadBalancerLoadBalancingRulesClientListResponse]]
 }
 
@@ -78,8 +72,6 @@ func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchToMethodFake(req
 			switch method {
 			case "LoadBalancerLoadBalancingRulesClient.Get":
 				res.resp, res.err = l.dispatchGet(req)
-			case "LoadBalancerLoadBalancingRulesClient.BeginHealth":
-				res.resp, res.err = l.dispatchBeginHealth(req)
 			case "LoadBalancerLoadBalancingRulesClient.NewListPager":
 				res.resp, res.err = l.dispatchNewListPager(req)
 			default:
@@ -135,54 +127,6 @@ func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchGet(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (l *LoadBalancerLoadBalancingRulesServerTransport) dispatchBeginHealth(req *http.Request) (*http.Response, error) {
-	if l.srv.BeginHealth == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginHealth not implemented")}
-	}
-	beginHealth := l.beginHealth.get(req)
-	if beginHealth == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<groupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/loadBalancers/(?P<loadBalancerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/loadBalancingRules/(?P<loadBalancingRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/health`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		groupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupName")])
-		if err != nil {
-			return nil, err
-		}
-		loadBalancerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancerName")])
-		if err != nil {
-			return nil, err
-		}
-		loadBalancingRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("loadBalancingRuleName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := l.srv.BeginHealth(req.Context(), groupNameParam, loadBalancerNameParam, loadBalancingRuleNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginHealth = &respr
-		l.beginHealth.add(req, beginHealth)
-	}
-
-	resp, err := server.PollerResponderNext(beginHealth, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		l.beginHealth.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginHealth) {
-		l.beginHealth.remove(req)
-	}
-
 	return resp, nil
 }
 

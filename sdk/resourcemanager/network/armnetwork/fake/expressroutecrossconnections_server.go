@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -232,19 +232,7 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListPager(req *
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armnetwork.ExpressRouteCrossConnectionsClientListOptions
-		if filterParam != nil {
-			options = &armnetwork.ExpressRouteCrossConnectionsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := e.srv.NewListPager(options)
+		resp := e.srv.NewListPager(nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteCrossConnectionsClientListResponse, createLink func() string) {

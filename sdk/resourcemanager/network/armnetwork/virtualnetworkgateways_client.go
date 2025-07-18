@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -45,7 +44,7 @@ func NewVirtualNetworkGatewaysClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Creates or updates a virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - parameters - Parameters supplied to create or update virtual network gateway operation.
@@ -72,7 +71,7 @@ func (client *VirtualNetworkGatewaysClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Creates or updates a virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VirtualNetworkGateway, options *VirtualNetworkGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginCreateOrUpdate"
@@ -114,7 +113,7 @@ func (client *VirtualNetworkGatewaysClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,7 +125,7 @@ func (client *VirtualNetworkGatewaysClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Deletes the specified virtual network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginDelete
@@ -152,7 +151,7 @@ func (client *VirtualNetworkGatewaysClient) BeginDelete(ctx context.Context, res
 // Delete - Deletes the specified virtual network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginDelete"
@@ -194,7 +193,7 @@ func (client *VirtualNetworkGatewaysClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -204,7 +203,7 @@ func (client *VirtualNetworkGatewaysClient) deleteCreateRequest(ctx context.Cont
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - request - The parameters are supplied to disconnect vpn connections.
@@ -232,7 +231,7 @@ func (client *VirtualNetworkGatewaysClient) BeginDisconnectVirtualNetworkGateway
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, request P2SVPNConnectionRequest, options *VirtualNetworkGatewaysClientBeginDisconnectVirtualNetworkGatewayVPNConnectionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginDisconnectVirtualNetworkGatewayVPNConnections"
@@ -274,7 +273,7 @@ func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNCo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -287,7 +286,7 @@ func (client *VirtualNetworkGatewaysClient) disconnectVirtualNetworkGatewayVPNCo
 // group. Used for IKEV2 and radius based authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - parameters - Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -315,7 +314,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGenerateVPNProfile(ctx context.
 // Used for IKEV2 and radius based authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) generateVPNProfile(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNClientParameters, options *VirtualNetworkGatewaysClientBeginGenerateVPNProfileOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGenerateVPNProfile"
@@ -357,7 +356,7 @@ func (client *VirtualNetworkGatewaysClient) generateVPNProfileCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -370,7 +369,7 @@ func (client *VirtualNetworkGatewaysClient) generateVPNProfileCreateRequest(ctx 
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - parameters - Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -398,7 +397,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGeneratevpnclientpackage(ctx co
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) generatevpnclientpackage(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNClientParameters, options *VirtualNetworkGatewaysClientBeginGeneratevpnclientpackageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage"
@@ -440,7 +439,7 @@ func (client *VirtualNetworkGatewaysClient) generatevpnclientpackageCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -452,7 +451,7 @@ func (client *VirtualNetworkGatewaysClient) generatevpnclientpackageCreateReques
 // Get - Gets the specified virtual network gateway by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientGetOptions contains the optional parameters for the VirtualNetworkGatewaysClient.Get
@@ -499,7 +498,7 @@ func (client *VirtualNetworkGatewaysClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -518,7 +517,7 @@ func (client *VirtualNetworkGatewaysClient) getHandleResponse(resp *http.Respons
 // specified peer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - peer - The IP address of the peer.
@@ -546,7 +545,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGetAdvertisedRoutes(ctx context
 // peer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutes(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peer string, options *VirtualNetworkGatewaysClientBeginGetAdvertisedRoutesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes"
@@ -588,7 +587,7 @@ func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutesCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	reqQP.Set("peer", peer)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -598,7 +597,7 @@ func (client *VirtualNetworkGatewaysClient) getAdvertisedRoutesCreateRequest(ctx
 // BeginGetBgpPeerStatus - The GetBgpPeerStatus operation retrieves the status of all BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus
@@ -624,7 +623,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGetBgpPeerStatus(ctx context.Co
 // GetBgpPeerStatus - The GetBgpPeerStatus operation retrieves the status of all BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) getBgpPeerStatus(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus"
@@ -666,176 +665,10 @@ func (client *VirtualNetworkGatewaysClient) getBgpPeerStatusCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	if options != nil && options.Peer != nil {
 		reqQP.Set("peer", *options.Peer)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginGetFailoverAllTestDetails - This operation retrieves the details of all the failover tests performed on the gateway
-// for different peering locations
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The name of the resource group.
-//   - virtualNetworkGatewayName - The name of the virtual network gateway.
-//   - typeParam - The type of failover test
-//   - fetchLatest - Fetch only the latest tests for each peering location
-//   - options - VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails
-//     method.
-func (client *VirtualNetworkGatewaysClient) BeginGetFailoverAllTestDetails(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, typeParam string, fetchLatest bool, options *VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getFailoverAllTestDetails(ctx, resourceGroupName, virtualNetworkGatewayName, typeParam, fetchLatest, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetFailoverAllTestDetails - This operation retrieves the details of all the failover tests performed on the gateway for
-// different peering locations
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) getFailoverAllTestDetails(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, typeParam string, fetchLatest bool, options *VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getFailoverAllTestDetailsCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, typeParam, fetchLatest, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// getFailoverAllTestDetailsCreateRequest creates the GetFailoverAllTestDetails request.
-func (client *VirtualNetworkGatewaysClient) getFailoverAllTestDetailsCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, typeParam string, fetchLatest bool, _ *VirtualNetworkGatewaysClientBeginGetFailoverAllTestDetailsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getFailoverAllTestsDetails"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	reqQP.Set("fetchLatest", strconv.FormatBool(fetchLatest))
-	reqQP.Set("type", typeParam)
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginGetFailoverSingleTestDetails - This operation retrieves the details of a particular failover test performed on the
-// gateway based on the test Guid
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The name of the resource group.
-//   - virtualNetworkGatewayName - The name of the virtual network gateway.
-//   - peeringLocation - Peering location of the test
-//   - failoverTestID - The unique Guid value which identifies the test
-//   - options - VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions contains the optional parameters for the
-//     VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails method.
-func (client *VirtualNetworkGatewaysClient) BeginGetFailoverSingleTestDetails(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, failoverTestID string, options *VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getFailoverSingleTestDetails(ctx, resourceGroupName, virtualNetworkGatewayName, peeringLocation, failoverTestID, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetFailoverSingleTestDetails - This operation retrieves the details of a particular failover test performed on the gateway
-// based on the test Guid
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) getFailoverSingleTestDetails(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, failoverTestID string, options *VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getFailoverSingleTestDetailsCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, peeringLocation, failoverTestID, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// getFailoverSingleTestDetailsCreateRequest creates the GetFailoverSingleTestDetails request.
-func (client *VirtualNetworkGatewaysClient) getFailoverSingleTestDetailsCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, failoverTestID string, _ *VirtualNetworkGatewaysClientBeginGetFailoverSingleTestDetailsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getFailoverSingleTestDetails"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	reqQP.Set("failoverTestId", failoverTestID)
-	reqQP.Set("peeringLocation", peeringLocation)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -845,7 +678,7 @@ func (client *VirtualNetworkGatewaysClient) getFailoverSingleTestDetailsCreateRe
 // learned from BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetLearnedRoutes
@@ -872,7 +705,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGetLearnedRoutes(ctx context.Co
 // learned from BGP peers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) getLearnedRoutes(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetLearnedRoutesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGetLearnedRoutes"
@@ -914,170 +747,7 @@ func (client *VirtualNetworkGatewaysClient) getLearnedRoutesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginGetResiliencyInformation - This operation retrieves the resiliency information for an Express Route Gateway, including
-// the gateway's current resiliency score and recommendations to further improve the score
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The name of the resource group.
-//   - virtualNetworkGatewayName - The name of the virtual network gateway.
-//   - options - VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetResiliencyInformation
-//     method.
-func (client *VirtualNetworkGatewaysClient) BeginGetResiliencyInformation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetResiliencyInformationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getResiliencyInformation(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetResiliencyInformationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientGetResiliencyInformationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetResiliencyInformation - This operation retrieves the resiliency information for an Express Route Gateway, including
-// the gateway's current resiliency score and recommendations to further improve the score
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) getResiliencyInformation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginGetResiliencyInformation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getResiliencyInformationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// getResiliencyInformationCreateRequest creates the GetResiliencyInformation request.
-func (client *VirtualNetworkGatewaysClient) getResiliencyInformationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getResiliencyInformation"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	if options != nil && options.AttemptRefresh != nil {
-		reqQP.Set("attemptRefresh", strconv.FormatBool(*options.AttemptRefresh))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginGetRoutesInformation - This operation retrieves the route set information for an Express Route Gateway based on their
-// resiliency
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The name of the resource group.
-//   - virtualNetworkGatewayName - The name of the virtual network gateway.
-//   - options - VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetRoutesInformation
-//     method.
-func (client *VirtualNetworkGatewaysClient) BeginGetRoutesInformation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetRoutesInformationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getRoutesInformation(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientGetRoutesInformationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientGetRoutesInformationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetRoutesInformation - This operation retrieves the route set information for an Express Route Gateway based on their resiliency
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) getRoutesInformation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginGetRoutesInformation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getRoutesInformationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// getRoutesInformationCreateRequest creates the GetRoutesInformation request.
-func (client *VirtualNetworkGatewaysClient) getRoutesInformationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getRoutesInformation"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	if options != nil && options.AttemptRefresh != nil {
-		reqQP.Set("attemptRefresh", strconv.FormatBool(*options.AttemptRefresh))
-	}
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1087,7 +757,7 @@ func (client *VirtualNetworkGatewaysClient) getRoutesInformationCreateRequest(ct
 // resource group. The profile needs to be generated first using generateVpnProfile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginGetVPNProfilePackageURLOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL
@@ -1114,7 +784,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVPNProfilePackageURL(ctx con
 // resource group. The profile needs to be generated first using generateVpnProfile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURL(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVPNProfilePackageURLOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL"
@@ -1156,7 +826,7 @@ func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURLCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1166,7 +836,7 @@ func (client *VirtualNetworkGatewaysClient) getVPNProfilePackageURLCreateRequest
 // gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginGetVpnclientConnectionHealthOptions contains the optional parameters for the
@@ -1193,7 +863,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientConnectionHealth(ct
 // gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealth(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVpnclientConnectionHealthOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth"
@@ -1235,7 +905,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealthCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1246,7 +916,7 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientConnectionHealthCreateRe
 // provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The virtual network gateway name.
 //   - options - VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions contains the optional parameters for the
@@ -1274,7 +944,7 @@ func (client *VirtualNetworkGatewaysClient) BeginGetVpnclientIPSecParameters(ctx
 // provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginGetVpnclientIPSecParametersOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters"
@@ -1316,327 +986,15 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParametersCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginInvokeAbortMigration - Trigger abort migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The resource group name of the virtual network gateway.
-//   - virtualNetworkGatewayName - The name of the gateway.
-//   - options - VirtualNetworkGatewaysClientBeginInvokeAbortMigrationOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginInvokeAbortMigration
-//     method.
-func (client *VirtualNetworkGatewaysClient) BeginInvokeAbortMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginInvokeAbortMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokeAbortMigrationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.invokeAbortMigration(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientInvokeAbortMigrationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientInvokeAbortMigrationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InvokeAbortMigration - Trigger abort migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) invokeAbortMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginInvokeAbortMigrationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginInvokeAbortMigration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.invokeAbortMigrationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// invokeAbortMigrationCreateRequest creates the InvokeAbortMigration request.
-func (client *VirtualNetworkGatewaysClient) invokeAbortMigrationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, _ *VirtualNetworkGatewaysClientBeginInvokeAbortMigrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/abortMigration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginInvokeCommitMigration - Trigger commit migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The resource group name of the virtual network gateway.
-//   - virtualNetworkGatewayName - The name of the gateway.
-//   - options - VirtualNetworkGatewaysClientBeginInvokeCommitMigrationOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginInvokeCommitMigration
-//     method.
-func (client *VirtualNetworkGatewaysClient) BeginInvokeCommitMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginInvokeCommitMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokeCommitMigrationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.invokeCommitMigration(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientInvokeCommitMigrationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientInvokeCommitMigrationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InvokeCommitMigration - Trigger commit migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) invokeCommitMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginInvokeCommitMigrationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginInvokeCommitMigration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.invokeCommitMigrationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// invokeCommitMigrationCreateRequest creates the InvokeCommitMigration request.
-func (client *VirtualNetworkGatewaysClient) invokeCommitMigrationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, _ *VirtualNetworkGatewaysClientBeginInvokeCommitMigrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/commitMigration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginInvokeExecuteMigration - Trigger execute migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The resource group name of the virtual network gateway.
-//   - virtualNetworkGatewayName - The name of the gateway.
-//   - options - VirtualNetworkGatewaysClientBeginInvokeExecuteMigrationOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginInvokeExecuteMigration
-//     method.
-func (client *VirtualNetworkGatewaysClient) BeginInvokeExecuteMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginInvokeExecuteMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.invokeExecuteMigration(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InvokeExecuteMigration - Trigger execute migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) invokeExecuteMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginInvokeExecuteMigrationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginInvokeExecuteMigration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.invokeExecuteMigrationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// invokeExecuteMigrationCreateRequest creates the InvokeExecuteMigration request.
-func (client *VirtualNetworkGatewaysClient) invokeExecuteMigrationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, _ *VirtualNetworkGatewaysClientBeginInvokeExecuteMigrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/executeMigration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginInvokePrepareMigration - Trigger prepare migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The resource group name of the virtual network gateway.
-//   - virtualNetworkGatewayName - The name of the gateway.
-//   - migrationParams - Parameters supplied to the Begin Prepare migration on basic vpn gateway through Network resource provider.
-//   - options - VirtualNetworkGatewaysClientBeginInvokePrepareMigrationOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginInvokePrepareMigration
-//     method.
-func (client *VirtualNetworkGatewaysClient) BeginInvokePrepareMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, migrationParams VirtualNetworkGatewayMigrationParameters, options *VirtualNetworkGatewaysClientBeginInvokePrepareMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokePrepareMigrationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.invokePrepareMigration(ctx, resourceGroupName, virtualNetworkGatewayName, migrationParams, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientInvokePrepareMigrationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientInvokePrepareMigrationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InvokePrepareMigration - Trigger prepare migration for the virtual network gateway.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) invokePrepareMigration(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, migrationParams VirtualNetworkGatewayMigrationParameters, options *VirtualNetworkGatewaysClientBeginInvokePrepareMigrationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginInvokePrepareMigration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.invokePrepareMigrationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, migrationParams, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// invokePrepareMigrationCreateRequest creates the InvokePrepareMigration request.
-func (client *VirtualNetworkGatewaysClient) invokePrepareMigrationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, migrationParams VirtualNetworkGatewayMigrationParameters, _ *VirtualNetworkGatewaysClientBeginInvokePrepareMigrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/prepareMigration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, migrationParams); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
 // NewListPager - Gets all virtual network gateways by resource group.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListPager
 //     method.
@@ -1679,7 +1037,7 @@ func (client *VirtualNetworkGatewaysClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1696,7 +1054,7 @@ func (client *VirtualNetworkGatewaysClient) listHandleResponse(resp *http.Respon
 
 // NewListConnectionsPager - Gets all the connections in a virtual network gateway.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientListConnectionsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListConnectionsPager
@@ -1744,7 +1102,7 @@ func (client *VirtualNetworkGatewaysClient) listConnectionsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1762,7 +1120,7 @@ func (client *VirtualNetworkGatewaysClient) listConnectionsHandleResponse(resp *
 // BeginReset - Resets the primary of the virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginResetOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginReset
@@ -1788,7 +1146,7 @@ func (client *VirtualNetworkGatewaysClient) BeginReset(ctx context.Context, reso
 // Reset - Resets the primary of the virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) reset(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginResetOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginReset"
@@ -1830,7 +1188,7 @@ func (client *VirtualNetworkGatewaysClient) resetCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	if options != nil && options.GatewayVip != nil {
 		reqQP.Set("gatewayVip", *options.GatewayVip)
 	}
@@ -1843,7 +1201,7 @@ func (client *VirtualNetworkGatewaysClient) resetCreateRequest(ctx context.Conte
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginResetVPNClientSharedKeyOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey
@@ -1869,7 +1227,7 @@ func (client *VirtualNetworkGatewaysClient) BeginResetVPNClientSharedKey(ctx con
 // ResetVPNClientSharedKey - Resets the VPN client shared key of the virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginResetVPNClientSharedKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey"
@@ -1911,7 +1269,7 @@ func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKeyCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1921,7 +1279,7 @@ func (client *VirtualNetworkGatewaysClient) resetVPNClientSharedKeyCreateRequest
 // of virtual network gateway in the specified resource group through Network resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - vpnclientIPSecParams - Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network Gateway P2S client
@@ -1950,7 +1308,7 @@ func (client *VirtualNetworkGatewaysClient) BeginSetVpnclientIPSecParameters(ctx
 // of virtual network gateway in the specified resource group through Network resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, vpnclientIPSecParams VPNClientIPsecParameters, options *VirtualNetworkGatewaysClientBeginSetVpnclientIPSecParametersOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginSetVpnclientIPSecParameters"
@@ -1992,7 +1350,7 @@ func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParametersCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnclientIPSecParams); err != nil {
@@ -2001,91 +1359,10 @@ func (client *VirtualNetworkGatewaysClient) setVpnclientIPSecParametersCreateReq
 	return req, nil
 }
 
-// BeginStartExpressRouteSiteFailoverSimulation - This operation starts failover simulation on the gateway for the specified
-// peering location
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The name of the resource group.
-//   - virtualNetworkGatewayName - The name of the virtual network gateway.
-//   - peeringLocation - Peering location of the test
-//   - options - VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions contains the optional parameters
-//     for the VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation method.
-func (client *VirtualNetworkGatewaysClient) BeginStartExpressRouteSiteFailoverSimulation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, options *VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.startExpressRouteSiteFailoverSimulation(ctx, resourceGroupName, virtualNetworkGatewayName, peeringLocation, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StartExpressRouteSiteFailoverSimulation - This operation starts failover simulation on the gateway for the specified peering
-// location
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) startExpressRouteSiteFailoverSimulation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, options *VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startExpressRouteSiteFailoverSimulationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, peeringLocation, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// startExpressRouteSiteFailoverSimulationCreateRequest creates the StartExpressRouteSiteFailoverSimulation request.
-func (client *VirtualNetworkGatewaysClient) startExpressRouteSiteFailoverSimulationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, peeringLocation string, _ *VirtualNetworkGatewaysClientBeginStartExpressRouteSiteFailoverSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/startSiteFailoverTest"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	reqQP.Set("peeringLocation", peeringLocation)
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
 // BeginStartPacketCapture - Starts packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions contains the optional parameters for the VirtualNetworkGatewaysClient.BeginStartPacketCapture
@@ -2111,7 +1388,7 @@ func (client *VirtualNetworkGatewaysClient) BeginStartPacketCapture(ctx context.
 // StartPacketCapture - Starts packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) startPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginStartPacketCapture"
@@ -2153,7 +1430,7 @@ func (client *VirtualNetworkGatewaysClient) startPacketCaptureCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -2165,93 +1442,10 @@ func (client *VirtualNetworkGatewaysClient) startPacketCaptureCreateRequest(ctx 
 	return req, nil
 }
 
-// BeginStopExpressRouteSiteFailoverSimulation - This operation stops failover simulation on the gateway for the specified
-// peering location
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-//   - resourceGroupName - The name of the resource group.
-//   - virtualNetworkGatewayName - The name of the virtual network gateway.
-//   - stopParameters - Virtual network gateway stop simulation parameters supplied to stop failover simulation on gateway.
-//   - options - VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions contains the optional parameters
-//     for the VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation method.
-func (client *VirtualNetworkGatewaysClient) BeginStopExpressRouteSiteFailoverSimulation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, stopParameters ExpressRouteFailoverStopAPIParameters, options *VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopExpressRouteSiteFailoverSimulation(ctx, resourceGroupName, virtualNetworkGatewayName, stopParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StopExpressRouteSiteFailoverSimulation - This operation stops failover simulation on the gateway for the specified peering
-// location
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
-func (client *VirtualNetworkGatewaysClient) stopExpressRouteSiteFailoverSimulation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, stopParameters ExpressRouteFailoverStopAPIParameters, options *VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopExpressRouteSiteFailoverSimulationCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, stopParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// stopExpressRouteSiteFailoverSimulationCreateRequest creates the StopExpressRouteSiteFailoverSimulation request.
-func (client *VirtualNetworkGatewaysClient) stopExpressRouteSiteFailoverSimulationCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, stopParameters ExpressRouteFailoverStopAPIParameters, _ *VirtualNetworkGatewaysClientBeginStopExpressRouteSiteFailoverSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/stopSiteFailoverTest"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, stopParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // BeginStopPacketCapture - Stops packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - parameters - Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -2278,7 +1472,7 @@ func (client *VirtualNetworkGatewaysClient) BeginStopPacketCapture(ctx context.C
 // StopPacketCapture - Stops packet capture on virtual network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) stopPacketCapture(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters VPNPacketCaptureStopParameters, options *VirtualNetworkGatewaysClientBeginStopPacketCaptureOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginStopPacketCapture"
@@ -2320,7 +1514,7 @@ func (client *VirtualNetworkGatewaysClient) stopPacketCaptureCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -2332,7 +1526,7 @@ func (client *VirtualNetworkGatewaysClient) stopPacketCaptureCreateRequest(ctx c
 // SupportedVPNDevices - Gets a xml format representation for supported vpn devices.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - options - VirtualNetworkGatewaysClientSupportedVPNDevicesOptions contains the optional parameters for the VirtualNetworkGatewaysClient.SupportedVPNDevices
@@ -2379,7 +1573,7 @@ func (client *VirtualNetworkGatewaysClient) supportedVPNDevicesCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2397,7 +1591,7 @@ func (client *VirtualNetworkGatewaysClient) supportedVPNDevicesHandleResponse(re
 // BeginUpdateTags - Updates a virtual network gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayName - The name of the virtual network gateway.
 //   - parameters - Parameters supplied to update virtual network gateway tags.
@@ -2424,7 +1618,7 @@ func (client *VirtualNetworkGatewaysClient) BeginUpdateTags(ctx context.Context,
 // UpdateTags - Updates a virtual network gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *VirtualNetworkGatewaysClient) updateTags(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters TagsObject, options *VirtualNetworkGatewaysClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewaysClient.BeginUpdateTags"
@@ -2466,7 +1660,7 @@ func (client *VirtualNetworkGatewaysClient) updateTagsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -2478,7 +1672,7 @@ func (client *VirtualNetworkGatewaysClient) updateTagsCreateRequest(ctx context.
 // VPNDeviceConfigurationScript - Gets a xml format representation for vpn device configuration script.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - virtualNetworkGatewayConnectionName - The name of the virtual network gateway connection for which the configuration script
 //     is generated.
@@ -2527,7 +1721,7 @@ func (client *VirtualNetworkGatewaysClient) vpnDeviceConfigurationScriptCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

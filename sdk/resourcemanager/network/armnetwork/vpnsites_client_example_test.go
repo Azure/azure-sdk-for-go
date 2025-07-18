@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VpnSiteGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteGet.json
 func ExampleVPNSitesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleVPNSitesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VpnSitePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSitePut.json
 func ExampleVPNSitesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleVPNSitesClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VpnSiteUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteUpdateTags.json
 func ExampleVPNSitesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +241,7 @@ func ExampleVPNSitesClient_UpdateTags() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VpnSiteDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteDelete.json
 func ExampleVPNSitesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleVPNSitesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VpnSiteListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteListByResourceGroup.json
 func ExampleVPNSitesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,6 @@ func ExampleVPNSitesClient_NewListByResourceGroupPager() {
 		// 						IPAddress: to.Ptr("10.1.0.0"),
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 						VirtualWan: &armnetwork.SubResource{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualWANs/wan1"),
 		// 						},
 		// 					},
 		// 			}},
@@ -362,7 +361,7 @@ func ExampleVPNSitesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VpnSiteList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnSiteList.json
 func ExampleVPNSitesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +454,6 @@ func ExampleVPNSitesClient_NewListPager() {
 		// 						IsSecuritySite: to.Ptr(false),
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 						VirtualWan: &armnetwork.SubResource{
-		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualWANs/wan1"),
 		// 						},
 		// 					},
 		// 			}},

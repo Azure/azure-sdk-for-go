@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ServiceTagInformationListResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ServiceTagInformationListResult.json
 func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTags() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
 func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithNoAddressPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithNoA
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ServiceTagInformationListResultWithTagname.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ServiceTagInformationListResultWithTagname.json
 func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithTagName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

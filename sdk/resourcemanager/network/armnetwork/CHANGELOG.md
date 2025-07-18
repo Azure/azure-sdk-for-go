@@ -1,5 +1,346 @@
 # Release History
 
+## 8.0.0 (2025-07-18)
+### Breaking Changes
+
+- `AddressPrefixTypeNetworkGroup` from enum `AddressPrefixType` has been removed
+- `ApplicationGatewayFirewallUserSessionVariableClientAddrXFFHeader`, `ApplicationGatewayFirewallUserSessionVariableGeoLocationXFFHeader` from enum `ApplicationGatewayFirewallUserSessionVariable` has been removed
+- `BastionHostSKUNamePremium` from enum `BastionHostSKUName` has been removed
+- `ConfigurationTypeRouting`, `ConfigurationTypeSecurityUser` from enum `ConfigurationType` has been removed
+- `FirewallPolicyIDPSSignatureDirectionFive` from enum `FirewallPolicyIDPSSignatureDirection` has been removed
+- `NatGatewaySKUNameStandardV2` from enum `NatGatewaySKUName` has been removed
+- `ProvisioningStateCanceled`, `ProvisioningStateCreating` from enum `ProvisioningState` has been removed
+- `PublicIPAddressSKUNameStandardV2` from enum `PublicIPAddressSKUName` has been removed
+- `PublicIPPrefixSKUNameStandardV2` from enum `PublicIPPrefixSKUName` has been removed
+- Enum `AccessRuleDirection` has been removed
+- Enum `AddressSpaceAggregationOption` has been removed
+- Enum `AdvertisedPublicPrefixPropertiesValidationState` has been removed
+- Enum `ApplicationGatewayWafRuleSensitivityTypes` has been removed
+- Enum `AssociationAccessMode` has been removed
+- Enum `ConnectedGroupAddressOverlap` has been removed
+- Enum `ConnectedGroupPrivateEndpointsScale` has been removed
+- Enum `DisableBgpRoutePropagation` has been removed
+- Enum `ExceptionEntryMatchVariable` has been removed
+- Enum `ExceptionEntrySelectorMatchOperator` has been removed
+- Enum `ExceptionEntryValueMatchOperator` has been removed
+- Enum `FailoverConnectionStatus` has been removed
+- Enum `FailoverTestStatus` has been removed
+- Enum `FailoverTestStatusForSingleTest` has been removed
+- Enum `FailoverTestType` has been removed
+- Enum `GroupMemberType` has been removed
+- Enum `IPType` has been removed
+- Enum `NetworkProtocol` has been removed
+- Enum `NspLinkProvisioningState` has been removed
+- Enum `NspLinkStatus` has been removed
+- Enum `NspProvisioningState` has been removed
+- Enum `PeeringEnforcement` has been removed
+- Enum `PrivateEndpointVNetPolicies` has been removed
+- Enum `ProbeNoHealthyBackendsBehavior` has been removed
+- Enum `ResiliencyModel` has been removed
+- Enum `RoutingRuleDestinationType` has been removed
+- Enum `RoutingRuleNextHopType` has been removed
+- Enum `SensitivityType` has been removed
+- Enum `VirtualNetworkGatewayMigrationPhase` has been removed
+- Enum `VirtualNetworkGatewayMigrationState` has been removed
+- Enum `VirtualNetworkGatewayMigrationType` has been removed
+- Function `*ClientFactory.NewIpamPoolsClient` has been removed
+- Function `*ClientFactory.NewManagerRoutingConfigurationsClient` has been removed
+- Function `*ClientFactory.NewReachabilityAnalysisIntentsClient` has been removed
+- Function `*ClientFactory.NewReachabilityAnalysisRunsClient` has been removed
+- Function `*ClientFactory.NewRoutingRuleCollectionsClient` has been removed
+- Function `*ClientFactory.NewRoutingRulesClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterAccessRulesClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterAssociableResourceTypesClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterAssociationsClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterLinkReferencesClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterLinksClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterLoggingConfigurationsClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterOperationStatusesClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimeterProfilesClient` has been removed
+- Function `*ClientFactory.NewSecurityPerimetersClient` has been removed
+- Function `*ClientFactory.NewSecurityUserConfigurationsClient` has been removed
+- Function `*ClientFactory.NewSecurityUserRuleCollectionsClient` has been removed
+- Function `*ClientFactory.NewSecurityUserRulesClient` has been removed
+- Function `*ClientFactory.NewStaticCidrsClient` has been removed
+- Function `*ClientFactory.NewVerifierWorkspacesClient` has been removed
+- Function `*InboundSecurityRuleClient.Get` has been removed
+- Function `NewIpamPoolsClient` has been removed
+- Function `*IpamPoolsClient.BeginCreate` has been removed
+- Function `*IpamPoolsClient.BeginDelete` has been removed
+- Function `*IpamPoolsClient.Get` has been removed
+- Function `*IpamPoolsClient.GetPoolUsage` has been removed
+- Function `*IpamPoolsClient.NewListAssociatedResourcesPager` has been removed
+- Function `*IpamPoolsClient.NewListPager` has been removed
+- Function `*IpamPoolsClient.Update` has been removed
+- Function `*LoadBalancerLoadBalancingRulesClient.BeginHealth` has been removed
+- Function `NewManagerRoutingConfigurationsClient` has been removed
+- Function `*ManagerRoutingConfigurationsClient.CreateOrUpdate` has been removed
+- Function `*ManagerRoutingConfigurationsClient.BeginDelete` has been removed
+- Function `*ManagerRoutingConfigurationsClient.Get` has been removed
+- Function `*ManagerRoutingConfigurationsClient.NewListPager` has been removed
+- Function `NewReachabilityAnalysisIntentsClient` has been removed
+- Function `*ReachabilityAnalysisIntentsClient.Create` has been removed
+- Function `*ReachabilityAnalysisIntentsClient.Delete` has been removed
+- Function `*ReachabilityAnalysisIntentsClient.Get` has been removed
+- Function `*ReachabilityAnalysisIntentsClient.NewListPager` has been removed
+- Function `NewReachabilityAnalysisRunsClient` has been removed
+- Function `*ReachabilityAnalysisRunsClient.Create` has been removed
+- Function `*ReachabilityAnalysisRunsClient.BeginDelete` has been removed
+- Function `*ReachabilityAnalysisRunsClient.Get` has been removed
+- Function `*ReachabilityAnalysisRunsClient.NewListPager` has been removed
+- Function `NewRoutingRuleCollectionsClient` has been removed
+- Function `*RoutingRuleCollectionsClient.CreateOrUpdate` has been removed
+- Function `*RoutingRuleCollectionsClient.BeginDelete` has been removed
+- Function `*RoutingRuleCollectionsClient.Get` has been removed
+- Function `*RoutingRuleCollectionsClient.NewListPager` has been removed
+- Function `NewRoutingRulesClient` has been removed
+- Function `*RoutingRulesClient.CreateOrUpdate` has been removed
+- Function `*RoutingRulesClient.BeginDelete` has been removed
+- Function `*RoutingRulesClient.Get` has been removed
+- Function `*RoutingRulesClient.NewListPager` has been removed
+- Function `NewSecurityPerimeterAccessRulesClient` has been removed
+- Function `*SecurityPerimeterAccessRulesClient.CreateOrUpdate` has been removed
+- Function `*SecurityPerimeterAccessRulesClient.Delete` has been removed
+- Function `*SecurityPerimeterAccessRulesClient.Get` has been removed
+- Function `*SecurityPerimeterAccessRulesClient.NewListPager` has been removed
+- Function `*SecurityPerimeterAccessRulesClient.Reconcile` has been removed
+- Function `NewSecurityPerimeterAssociableResourceTypesClient` has been removed
+- Function `*SecurityPerimeterAssociableResourceTypesClient.NewListPager` has been removed
+- Function `NewSecurityPerimeterAssociationsClient` has been removed
+- Function `*SecurityPerimeterAssociationsClient.BeginCreateOrUpdate` has been removed
+- Function `*SecurityPerimeterAssociationsClient.BeginDelete` has been removed
+- Function `*SecurityPerimeterAssociationsClient.Get` has been removed
+- Function `*SecurityPerimeterAssociationsClient.NewListPager` has been removed
+- Function `*SecurityPerimeterAssociationsClient.Reconcile` has been removed
+- Function `NewSecurityPerimeterLinkReferencesClient` has been removed
+- Function `*SecurityPerimeterLinkReferencesClient.BeginDelete` has been removed
+- Function `*SecurityPerimeterLinkReferencesClient.Get` has been removed
+- Function `*SecurityPerimeterLinkReferencesClient.NewListPager` has been removed
+- Function `NewSecurityPerimeterLinksClient` has been removed
+- Function `*SecurityPerimeterLinksClient.CreateOrUpdate` has been removed
+- Function `*SecurityPerimeterLinksClient.BeginDelete` has been removed
+- Function `*SecurityPerimeterLinksClient.Get` has been removed
+- Function `*SecurityPerimeterLinksClient.NewListPager` has been removed
+- Function `NewSecurityPerimeterLoggingConfigurationsClient` has been removed
+- Function `*SecurityPerimeterLoggingConfigurationsClient.CreateOrUpdate` has been removed
+- Function `*SecurityPerimeterLoggingConfigurationsClient.Delete` has been removed
+- Function `*SecurityPerimeterLoggingConfigurationsClient.Get` has been removed
+- Function `*SecurityPerimeterLoggingConfigurationsClient.NewListPager` has been removed
+- Function `NewSecurityPerimeterOperationStatusesClient` has been removed
+- Function `*SecurityPerimeterOperationStatusesClient.Get` has been removed
+- Function `NewSecurityPerimeterProfilesClient` has been removed
+- Function `*SecurityPerimeterProfilesClient.CreateOrUpdate` has been removed
+- Function `*SecurityPerimeterProfilesClient.Delete` has been removed
+- Function `*SecurityPerimeterProfilesClient.Get` has been removed
+- Function `*SecurityPerimeterProfilesClient.NewListPager` has been removed
+- Function `NewSecurityPerimetersClient` has been removed
+- Function `*SecurityPerimetersClient.CreateOrUpdate` has been removed
+- Function `*SecurityPerimetersClient.BeginDelete` has been removed
+- Function `*SecurityPerimetersClient.Get` has been removed
+- Function `*SecurityPerimetersClient.NewListBySubscriptionPager` has been removed
+- Function `*SecurityPerimetersClient.NewListPager` has been removed
+- Function `*SecurityPerimetersClient.Patch` has been removed
+- Function `NewSecurityUserConfigurationsClient` has been removed
+- Function `*SecurityUserConfigurationsClient.CreateOrUpdate` has been removed
+- Function `*SecurityUserConfigurationsClient.BeginDelete` has been removed
+- Function `*SecurityUserConfigurationsClient.Get` has been removed
+- Function `*SecurityUserConfigurationsClient.NewListPager` has been removed
+- Function `NewSecurityUserRuleCollectionsClient` has been removed
+- Function `*SecurityUserRuleCollectionsClient.CreateOrUpdate` has been removed
+- Function `*SecurityUserRuleCollectionsClient.BeginDelete` has been removed
+- Function `*SecurityUserRuleCollectionsClient.Get` has been removed
+- Function `*SecurityUserRuleCollectionsClient.NewListPager` has been removed
+- Function `NewSecurityUserRulesClient` has been removed
+- Function `*SecurityUserRulesClient.CreateOrUpdate` has been removed
+- Function `*SecurityUserRulesClient.BeginDelete` has been removed
+- Function `*SecurityUserRulesClient.Get` has been removed
+- Function `*SecurityUserRulesClient.NewListPager` has been removed
+- Function `NewStaticCidrsClient` has been removed
+- Function `*StaticCidrsClient.Create` has been removed
+- Function `*StaticCidrsClient.BeginDelete` has been removed
+- Function `*StaticCidrsClient.Get` has been removed
+- Function `*StaticCidrsClient.NewListPager` has been removed
+- Function `*VPNLinkConnectionsClient.NewGetAllSharedKeysPager` has been removed
+- Function `*VPNLinkConnectionsClient.GetDefaultSharedKey` has been removed
+- Function `*VPNLinkConnectionsClient.ListDefaultSharedKey` has been removed
+- Function `*VPNLinkConnectionsClient.BeginSetOrInitDefaultSharedKey` has been removed
+- Function `NewVerifierWorkspacesClient` has been removed
+- Function `*VerifierWorkspacesClient.Create` has been removed
+- Function `*VerifierWorkspacesClient.BeginDelete` has been removed
+- Function `*VerifierWorkspacesClient.Get` has been removed
+- Function `*VerifierWorkspacesClient.NewListPager` has been removed
+- Function `*VerifierWorkspacesClient.Update` has been removed
+- Function `*VirtualAppliancesClient.BeginGetBootDiagnosticLogs` has been removed
+- Function `*VirtualAppliancesClient.BeginReimage` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginGetResiliencyInformation` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginGetRoutesInformation` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginInvokeAbortMigration` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginInvokeCommitMigration` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginInvokeExecuteMigration` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginInvokePrepareMigration` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation` has been removed
+- Function `*VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation` has been removed
+- Struct `AdvertisedPublicPrefixProperties` has been removed
+- Struct `ApplicationGatewayForContainersReferenceDefinition` has been removed
+- Struct `AzureFirewallAutoscaleConfiguration` has been removed
+- Struct `CircuitMetadataMap` has been removed
+- Struct `CommonErrorAdditionalInfo` has been removed
+- Struct `CommonErrorDetail` has been removed
+- Struct `CommonErrorResponse` has been removed
+- Struct `CommonProxyResource` has been removed
+- Struct `CommonResource` has been removed
+- Struct `CommonTrackedResource` has been removed
+- Struct `ConnectionSharedKeyResult` has been removed
+- Struct `ConnectionSharedKeyResultList` has been removed
+- Struct `ConnectivityConfigurationPropertiesConnectivityCapabilities` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ExceptionEntry` has been removed
+- Struct `ExpressRouteFailoverCircuitResourceDetails` has been removed
+- Struct `ExpressRouteFailoverConnectionResourceDetails` has been removed
+- Struct `ExpressRouteFailoverRedundantRoute` has been removed
+- Struct `ExpressRouteFailoverSingleTestDetails` has been removed
+- Struct `ExpressRouteFailoverStopAPIParameters` has been removed
+- Struct `ExpressRouteFailoverTestDetails` has been removed
+- Struct `FailoverConnectionDetails` has been removed
+- Struct `GatewayResiliencyInformation` has been removed
+- Struct `GatewayResiliencyRecommendation` has been removed
+- Struct `GatewayRouteSet` has been removed
+- Struct `GatewayRouteSetsInformation` has been removed
+- Struct `IPTraffic` has been removed
+- Struct `IntentContent` has been removed
+- Struct `IpamPool` has been removed
+- Struct `IpamPoolList` has been removed
+- Struct `IpamPoolPrefixAllocation` has been removed
+- Struct `IpamPoolPrefixAllocationPool` has been removed
+- Struct `IpamPoolProperties` has been removed
+- Struct `IpamPoolUpdate` has been removed
+- Struct `IpamPoolUpdateProperties` has been removed
+- Struct `LoadBalancerHealthPerRule` has been removed
+- Struct `LoadBalancerHealthPerRulePerBackendAddress` has been removed
+- Struct `ManagedRuleSetRuleGroup` has been removed
+- Struct `ManagerRoutingConfiguration` has been removed
+- Struct `ManagerRoutingConfigurationListResult` has been removed
+- Struct `ManagerRoutingConfigurationPropertiesFormat` has been removed
+- Struct `ManagerRoutingGroupItem` has been removed
+- Struct `NspAccessRule` has been removed
+- Struct `NspAccessRuleListResult` has been removed
+- Struct `NspAccessRuleProperties` has been removed
+- Struct `NspAssociation` has been removed
+- Struct `NspAssociationProperties` has been removed
+- Struct `NspAssociationsListResult` has been removed
+- Struct `NspLink` has been removed
+- Struct `NspLinkListResult` has been removed
+- Struct `NspLinkProperties` has been removed
+- Struct `NspLinkReference` has been removed
+- Struct `NspLinkReferenceListResult` has been removed
+- Struct `NspLinkReferenceProperties` has been removed
+- Struct `NspLoggingConfiguration` has been removed
+- Struct `NspLoggingConfigurationListResult` has been removed
+- Struct `NspLoggingConfigurationProperties` has been removed
+- Struct `NspProfile` has been removed
+- Struct `NspProfileListResult` has been removed
+- Struct `NspProfileProperties` has been removed
+- Struct `OperationStatusResult` has been removed
+- Struct `PerimeterAssociableResource` has been removed
+- Struct `PerimeterAssociableResourceProperties` has been removed
+- Struct `PerimeterAssociableResourcesListResult` has been removed
+- Struct `PerimeterBasedAccessRule` has been removed
+- Struct `PoolAssociation` has been removed
+- Struct `PoolAssociationList` has been removed
+- Struct `PoolUsage` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `ReachabilityAnalysisIntent` has been removed
+- Struct `ReachabilityAnalysisIntentListResult` has been removed
+- Struct `ReachabilityAnalysisIntentProperties` has been removed
+- Struct `ReachabilityAnalysisRun` has been removed
+- Struct `ReachabilityAnalysisRunListResult` has been removed
+- Struct `ReachabilityAnalysisRunProperties` has been removed
+- Struct `ResiliencyRecommendationComponents` has been removed
+- Struct `ResourceBasics` has been removed
+- Struct `RouteSourceDetails` has been removed
+- Struct `RoutingRule` has been removed
+- Struct `RoutingRuleCollection` has been removed
+- Struct `RoutingRuleCollectionListResult` has been removed
+- Struct `RoutingRuleCollectionPropertiesFormat` has been removed
+- Struct `RoutingRuleListResult` has been removed
+- Struct `RoutingRuleNextHop` has been removed
+- Struct `RoutingRulePropertiesFormat` has been removed
+- Struct `RoutingRuleRouteDestination` has been removed
+- Struct `SecurityPerimeter` has been removed
+- Struct `SecurityPerimeterListResult` has been removed
+- Struct `SecurityPerimeterProperties` has been removed
+- Struct `SecurityPerimeterProxyResource` has been removed
+- Struct `SecurityPerimeterResource` has been removed
+- Struct `SecurityPerimeterSystemData` has been removed
+- Struct `SecurityUserConfiguration` has been removed
+- Struct `SecurityUserConfigurationListResult` has been removed
+- Struct `SecurityUserConfigurationPropertiesFormat` has been removed
+- Struct `SecurityUserGroupItem` has been removed
+- Struct `SecurityUserRule` has been removed
+- Struct `SecurityUserRuleCollection` has been removed
+- Struct `SecurityUserRuleCollectionListResult` has been removed
+- Struct `SecurityUserRuleCollectionPropertiesFormat` has been removed
+- Struct `SecurityUserRuleListResult` has been removed
+- Struct `SecurityUserRulePropertiesFormat` has been removed
+- Struct `SharedKeyProperties` has been removed
+- Struct `StaticCidr` has been removed
+- Struct `StaticCidrList` has been removed
+- Struct `StaticCidrProperties` has been removed
+- Struct `SubscriptionID` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `UpdateTagsRequest` has been removed
+- Struct `VerifierWorkspace` has been removed
+- Struct `VerifierWorkspaceListResult` has been removed
+- Struct `VerifierWorkspaceProperties` has been removed
+- Struct `VerifierWorkspaceUpdate` has been removed
+- Struct `VerifierWorkspaceUpdateProperties` has been removed
+- Struct `VirtualApplianceBootDiagnosticParameters` has been removed
+- Struct `VirtualApplianceInstanceID` has been removed
+- Struct `VirtualNetworkGatewayConnectionTunnelProperties` has been removed
+- Struct `VirtualNetworkGatewayMigrationParameters` has been removed
+- Struct `VirtualNetworkGatewayMigrationStatus` has been removed
+- Field `IpamPoolPrefixAllocations` of struct `AddressSpace` has been removed
+- Field `Sensitivity` of struct `ApplicationGatewayFirewallRule` has been removed
+- Field `ConnectionResourceURI` of struct `AuthorizationPropertiesFormat` has been removed
+- Field `AutoscaleConfiguration` of struct `AzureFirewallPropertiesFormat` has been removed
+- Field `EnablePrivateOnlyBastion`, `EnableSessionRecording` of struct `BastionHostPropertiesFormat` has been removed
+- Field `ConnectivityCapabilities` of struct `ConnectivityConfigurationProperties` has been removed
+- Field `AdvertisedPublicPrefixInfo` of struct `ExpressRouteCircuitPeeringConfig` has been removed
+- Field `Filter` of struct `ExpressRouteCrossConnectionsClientListOptions` has been removed
+- Field `DurationInSeconds`, `FileName`, `Filters`, `Flags`, `NumberOfPacketsToCapture`, `Protocol`, `SasURL` of struct `FirewallPacketCaptureParameters` has been removed
+- Field `Identity` of struct `FlowLog` has been removed
+- Field `Identity` of struct `FlowLogInformation` has been removed
+- Field `EnabledFilteringCriteria` of struct `FlowLogProperties` has been removed
+- Field `EnabledFilteringCriteria` of struct `FlowLogPropertiesFormat` has been removed
+- Field `MemberType` of struct `GroupProperties` has been removed
+- Field `DefaultOutboundConnectivityEnabled` of struct `InterfacePropertiesFormat` has been removed
+- Field `EnableConnectionTracking` of struct `LoadBalancingRulePropertiesFormat` has been removed
+- Field `Sensitivity` of struct `ManagedRuleOverride` has been removed
+- Field `ComputedDisabledRules` of struct `ManagedRuleSet` has been removed
+- Field `Exceptions` of struct `ManagedRulesDefinition` has been removed
+- Field `PublicIPAddressesV6`, `PublicIPPrefixesV6`, `SourceVirtualNetwork` of struct `NatGatewayPropertiesFormat` has been removed
+- Field `DestinationIPAddress` of struct `PrivateLinkServiceProperties` has been removed
+- Field `NoHealthyBackendsBehavior` of struct `ProbePropertiesFormat` has been removed
+- Field `NetworkGroupAddressSpaceAggregationOption` of struct `SecurityAdminConfigurationPropertiesFormat` has been removed
+- Field `NetworkIdentifier` of struct `ServiceEndpointPropertiesFormat` has been removed
+- Field `IpamPoolPrefixAllocations` of struct `SubnetPropertiesFormat` has been removed
+- Field `Identity` of struct `VirtualNetworkGateway` has been removed
+- Field `TunnelProperties` of struct `VirtualNetworkGatewayConnectionPropertiesFormat` has been removed
+- Field `EnableHighBandwidthVPNGateway`, `ResiliencyModel`, `VirtualNetworkGatewayMigrationStatus` of struct `VirtualNetworkGatewayPropertiesFormat` has been removed
+- Field `DefaultPublicNatGateway`, `PrivateEndpointVNetPolicies` of struct `VirtualNetworkPropertiesFormat` has been removed
+- Field `ApplicationGatewayForContainers` of struct `WebApplicationFirewallPolicyPropertiesFormat` has been removed
+
+### Features Added
+
+- New function `*ConnectionMonitorsClient.BeginQuery(context.Context, string, string, string, *ConnectionMonitorsClientBeginQueryOptions) (*runtime.Poller[ConnectionMonitorsClientQueryResponse], error)`
+- New function `*ConnectionMonitorsClient.BeginStart(context.Context, string, string, string, *ConnectionMonitorsClientBeginStartOptions) (*runtime.Poller[ConnectionMonitorsClientStartResponse], error)`
+- New struct `FirewallPacketCaptureParametersFormat`
+- New field `ID`, `Properties` in struct `FirewallPacketCaptureParameters`
+
+
 ## 7.0.0 (2025-05-22)
 ### Breaking Changes
 

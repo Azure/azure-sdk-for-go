@@ -87,33 +87,13 @@ func (v *VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse) Unmarshal
 	return json.Unmarshal(data, &v.Value)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse.
-func (v *VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &v.ExpressRouteFailoverTestDetailsArray)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse.
-func (v *VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &v.ExpressRouteFailoverSingleTestDetailsArray)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse.
 func (v *VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse.
-func (v *VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &v.Value)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStartPacketCaptureResponse.
 func (v *VirtualNetworkGatewaysClientStartPacketCaptureResponse) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &v.Value)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse.
-func (v *VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &v.Value)
 }
 

@@ -44,7 +44,7 @@ func NewConnectionMonitorsClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - Create or update a connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group containing Network Watcher.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - connectionMonitorName - The name of the connection monitor.
@@ -72,7 +72,7 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - Create or update a connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *ConnectionMonitorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor, options *ConnectionMonitorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectionMonitorsClient.BeginCreateOrUpdate"
@@ -118,7 +118,7 @@ func (client *ConnectionMonitorsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	if options != nil && options.Migrate != nil {
 		reqQP.Set("migrate", *options.Migrate)
 	}
@@ -133,7 +133,7 @@ func (client *ConnectionMonitorsClient) createOrUpdateCreateRequest(ctx context.
 // BeginDelete - Deletes the specified connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group containing Network Watcher.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - connectionMonitorName - The name of the connection monitor.
@@ -160,7 +160,7 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 // Delete - Deletes the specified connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *ConnectionMonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectionMonitorsClient.BeginDelete"
@@ -206,7 +206,7 @@ func (client *ConnectionMonitorsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +215,7 @@ func (client *ConnectionMonitorsClient) deleteCreateRequest(ctx context.Context,
 // Get - Gets a connection monitor by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group containing Network Watcher.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - connectionMonitorName - The name of the connection monitor.
@@ -266,7 +266,7 @@ func (client *ConnectionMonitorsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *ConnectionMonitorsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Lists all connection monitors for the specified Network Watcher.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group containing Network Watcher.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - options - ConnectionMonitorsClientListOptions contains the optional parameters for the ConnectionMonitorsClient.NewListPager
@@ -332,7 +332,7 @@ func (client *ConnectionMonitorsClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,10 +347,174 @@ func (client *ConnectionMonitorsClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
+// BeginQuery - Query a snapshot of the most recent connection states.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01
+//   - resourceGroupName - The name of the resource group containing Network Watcher.
+//   - networkWatcherName - The name of the Network Watcher resource.
+//   - connectionMonitorName - The name given to the connection monitor.
+//   - options - ConnectionMonitorsClientBeginQueryOptions contains the optional parameters for the ConnectionMonitorsClient.BeginQuery
+//     method.
+func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginQueryOptions) (*runtime.Poller[ConnectionMonitorsClientQueryResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.query(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectionMonitorsClientQueryResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectionMonitorsClientQueryResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Query - Query a snapshot of the most recent connection states.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01
+func (client *ConnectionMonitorsClient) query(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginQueryOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectionMonitorsClient.BeginQuery"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.queryCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// queryCreateRequest creates the Query request.
+func (client *ConnectionMonitorsClient) queryCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, _ *ConnectionMonitorsClientBeginQueryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/query"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionMonitorName == "" {
+		return nil, errors.New("parameter connectionMonitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionMonitorName}", url.PathEscape(connectionMonitorName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginStart - Starts the specified connection monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01
+//   - resourceGroupName - The name of the resource group containing Network Watcher.
+//   - networkWatcherName - The name of the Network Watcher resource.
+//   - connectionMonitorName - The name of the connection monitor.
+//   - options - ConnectionMonitorsClientBeginStartOptions contains the optional parameters for the ConnectionMonitorsClient.BeginStart
+//     method.
+func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginStartOptions) (*runtime.Poller[ConnectionMonitorsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectionMonitorsClientStartResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectionMonitorsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Start - Starts the specified connection monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-11-01
+func (client *ConnectionMonitorsClient) start(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectionMonitorsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the Start request.
+func (client *ConnectionMonitorsClient) startCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, _ *ConnectionMonitorsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/start"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionMonitorName == "" {
+		return nil, errors.New("parameter connectionMonitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionMonitorName}", url.PathEscape(connectionMonitorName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-11-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // BeginStop - Stops the specified connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group containing Network Watcher.
 //   - networkWatcherName - The name of the Network Watcher resource.
 //   - connectionMonitorName - The name of the connection monitor.
@@ -377,7 +541,7 @@ func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceG
 // Stop - Stops the specified connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *ConnectionMonitorsClient) stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectionMonitorsClient.BeginStop"
@@ -423,7 +587,7 @@ func (client *ConnectionMonitorsClient) stopCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -432,7 +596,7 @@ func (client *ConnectionMonitorsClient) stopCreateRequest(ctx context.Context, r
 // UpdateTags - Update tags of the specified connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkWatcherName - The name of the network watcher.
 //   - connectionMonitorName - The name of the connection monitor.
@@ -485,7 +649,7 @@ func (client *ConnectionMonitorsClient) updateTagsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -410,6 +410,17 @@ type ConnectionMonitorsClientListResponse struct {
 	ConnectionMonitorListResult
 }
 
+// ConnectionMonitorsClientQueryResponse contains the response from method ConnectionMonitorsClient.BeginQuery.
+type ConnectionMonitorsClientQueryResponse struct {
+	// List of connection states snapshots.
+	ConnectionMonitorQueryResult
+}
+
+// ConnectionMonitorsClientStartResponse contains the response from method ConnectionMonitorsClient.BeginStart.
+type ConnectionMonitorsClientStartResponse struct {
+	// placeholder for future response values
+}
+
 // ConnectionMonitorsClientStopResponse contains the response from method ConnectionMonitorsClient.BeginStop.
 type ConnectionMonitorsClientStopResponse struct {
 	// placeholder for future response values
@@ -1276,12 +1287,6 @@ type InboundSecurityRuleClientCreateOrUpdateResponse struct {
 	InboundSecurityRule
 }
 
-// InboundSecurityRuleClientGetResponse contains the response from method InboundSecurityRuleClient.Get.
-type InboundSecurityRuleClientGetResponse struct {
-	// NVA Inbound Security Rule resource.
-	InboundSecurityRule
-}
-
 // InterfaceIPConfigurationsClientGetResponse contains the response from method InterfaceIPConfigurationsClient.Get.
 type InterfaceIPConfigurationsClientGetResponse struct {
 	// IPConfiguration in a network interface.
@@ -1418,47 +1423,6 @@ type InterfacesClientUpdateTagsResponse struct {
 	Interface
 }
 
-// IpamPoolsClientCreateResponse contains the response from method IpamPoolsClient.BeginCreate.
-type IpamPoolsClientCreateResponse struct {
-	// Instance of Pool resource.
-	IpamPool
-}
-
-// IpamPoolsClientDeleteResponse contains the response from method IpamPoolsClient.BeginDelete.
-type IpamPoolsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// IpamPoolsClientGetPoolUsageResponse contains the response from method IpamPoolsClient.GetPoolUsage.
-type IpamPoolsClientGetPoolUsageResponse struct {
-	// IpamPool usage information.
-	PoolUsage
-}
-
-// IpamPoolsClientGetResponse contains the response from method IpamPoolsClient.Get.
-type IpamPoolsClientGetResponse struct {
-	// Instance of Pool resource.
-	IpamPool
-}
-
-// IpamPoolsClientListAssociatedResourcesResponse contains the response from method IpamPoolsClient.NewListAssociatedResourcesPager.
-type IpamPoolsClientListAssociatedResourcesResponse struct {
-	// List of PoolAssociation
-	PoolAssociationList
-}
-
-// IpamPoolsClientListResponse contains the response from method IpamPoolsClient.NewListPager.
-type IpamPoolsClientListResponse struct {
-	// List of IpamPool
-	IpamPoolList
-}
-
-// IpamPoolsClientUpdateResponse contains the response from method IpamPoolsClient.Update.
-type IpamPoolsClientUpdateResponse struct {
-	// Instance of Pool resource.
-	IpamPool
-}
-
 // LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse contains the response from method LoadBalancerBackendAddressPoolsClient.BeginCreateOrUpdate.
 type LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse struct {
 	// Pool of backend IP addresses.
@@ -1498,12 +1462,6 @@ type LoadBalancerFrontendIPConfigurationsClientListResponse struct {
 type LoadBalancerLoadBalancingRulesClientGetResponse struct {
 	// A load balancing rule for a load balancer.
 	LoadBalancingRule
-}
-
-// LoadBalancerLoadBalancingRulesClientHealthResponse contains the response from method LoadBalancerLoadBalancingRulesClient.BeginHealth.
-type LoadBalancerLoadBalancingRulesClientHealthResponse struct {
-	// The response for a Health API.
-	LoadBalancerHealthPerRule
 }
 
 // LoadBalancerLoadBalancingRulesClientListResponse contains the response from method LoadBalancerLoadBalancingRulesClient.NewListPager.
@@ -1742,29 +1700,6 @@ type ManagerCommitsClientPostResponse struct {
 type ManagerDeploymentStatusClientListResponse struct {
 	// A list of Network Manager Deployment Status
 	ManagerDeploymentStatusListResult
-}
-
-// ManagerRoutingConfigurationsClientCreateOrUpdateResponse contains the response from method ManagerRoutingConfigurationsClient.CreateOrUpdate.
-type ManagerRoutingConfigurationsClientCreateOrUpdateResponse struct {
-	// Defines the routing configuration
-	ManagerRoutingConfiguration
-}
-
-// ManagerRoutingConfigurationsClientDeleteResponse contains the response from method ManagerRoutingConfigurationsClient.BeginDelete.
-type ManagerRoutingConfigurationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ManagerRoutingConfigurationsClientGetResponse contains the response from method ManagerRoutingConfigurationsClient.Get.
-type ManagerRoutingConfigurationsClientGetResponse struct {
-	// Defines the routing configuration
-	ManagerRoutingConfiguration
-}
-
-// ManagerRoutingConfigurationsClientListResponse contains the response from method ManagerRoutingConfigurationsClient.NewListPager.
-type ManagerRoutingConfigurationsClientListResponse struct {
-	// A list of network manager routing configurations
-	ManagerRoutingConfigurationListResult
 }
 
 // ManagersClientCreateOrUpdateResponse contains the response from method ManagersClient.CreateOrUpdate.
@@ -2258,52 +2193,6 @@ type PublicIPPrefixesClientUpdateTagsResponse struct {
 	PublicIPPrefix
 }
 
-// ReachabilityAnalysisIntentsClientCreateResponse contains the response from method ReachabilityAnalysisIntentsClient.Create.
-type ReachabilityAnalysisIntentsClientCreateResponse struct {
-	// Configuration information or intent on which to do the analysis on.
-	ReachabilityAnalysisIntent
-}
-
-// ReachabilityAnalysisIntentsClientDeleteResponse contains the response from method ReachabilityAnalysisIntentsClient.Delete.
-type ReachabilityAnalysisIntentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ReachabilityAnalysisIntentsClientGetResponse contains the response from method ReachabilityAnalysisIntentsClient.Get.
-type ReachabilityAnalysisIntentsClientGetResponse struct {
-	// Configuration information or intent on which to do the analysis on.
-	ReachabilityAnalysisIntent
-}
-
-// ReachabilityAnalysisIntentsClientListResponse contains the response from method ReachabilityAnalysisIntentsClient.NewListPager.
-type ReachabilityAnalysisIntentsClientListResponse struct {
-	// A list of Reachability Analysis Intents.
-	ReachabilityAnalysisIntentListResult
-}
-
-// ReachabilityAnalysisRunsClientCreateResponse contains the response from method ReachabilityAnalysisRunsClient.Create.
-type ReachabilityAnalysisRunsClientCreateResponse struct {
-	// Configuration information for analysis run.
-	ReachabilityAnalysisRun
-}
-
-// ReachabilityAnalysisRunsClientDeleteResponse contains the response from method ReachabilityAnalysisRunsClient.BeginDelete.
-type ReachabilityAnalysisRunsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ReachabilityAnalysisRunsClientGetResponse contains the response from method ReachabilityAnalysisRunsClient.Get.
-type ReachabilityAnalysisRunsClientGetResponse struct {
-	// Configuration information for analysis run.
-	ReachabilityAnalysisRun
-}
-
-// ReachabilityAnalysisRunsClientListResponse contains the response from method ReachabilityAnalysisRunsClient.NewListPager.
-type ReachabilityAnalysisRunsClientListResponse struct {
-	// A list of Reachability Analysis Run
-	ReachabilityAnalysisRunListResult
-}
-
 // ResourceNavigationLinksClientListResponse contains the response from method ResourceNavigationLinksClient.List.
 type ResourceNavigationLinksClientListResponse struct {
 	// Response for ResourceNavigationLinks_List operation.
@@ -2472,52 +2361,6 @@ type RoutingIntentClientListResponse struct {
 	ListRoutingIntentResult
 }
 
-// RoutingRuleCollectionsClientCreateOrUpdateResponse contains the response from method RoutingRuleCollectionsClient.CreateOrUpdate.
-type RoutingRuleCollectionsClientCreateOrUpdateResponse struct {
-	// Defines the routing rule collection.
-	RoutingRuleCollection
-}
-
-// RoutingRuleCollectionsClientDeleteResponse contains the response from method RoutingRuleCollectionsClient.BeginDelete.
-type RoutingRuleCollectionsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// RoutingRuleCollectionsClientGetResponse contains the response from method RoutingRuleCollectionsClient.Get.
-type RoutingRuleCollectionsClientGetResponse struct {
-	// Defines the routing rule collection.
-	RoutingRuleCollection
-}
-
-// RoutingRuleCollectionsClientListResponse contains the response from method RoutingRuleCollectionsClient.NewListPager.
-type RoutingRuleCollectionsClientListResponse struct {
-	// Routing configuration rule collection list result.
-	RoutingRuleCollectionListResult
-}
-
-// RoutingRulesClientCreateOrUpdateResponse contains the response from method RoutingRulesClient.CreateOrUpdate.
-type RoutingRulesClientCreateOrUpdateResponse struct {
-	// Network routing rule.
-	RoutingRule
-}
-
-// RoutingRulesClientDeleteResponse contains the response from method RoutingRulesClient.BeginDelete.
-type RoutingRulesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// RoutingRulesClientGetResponse contains the response from method RoutingRulesClient.Get.
-type RoutingRulesClientGetResponse struct {
-	// Network routing rule.
-	RoutingRule
-}
-
-// RoutingRulesClientListResponse contains the response from method RoutingRulesClient.NewListPager.
-type RoutingRulesClientListResponse struct {
-	// Routing configuration rule list result.
-	RoutingRuleListResult
-}
-
 // ScopeConnectionsClientCreateOrUpdateResponse contains the response from method ScopeConnectionsClient.CreateOrUpdate.
 type ScopeConnectionsClientCreateOrUpdateResponse struct {
 	// The Scope Connections resource
@@ -2634,204 +2477,6 @@ type SecurityPartnerProvidersClientUpdateTagsResponse struct {
 	SecurityPartnerProvider
 }
 
-// SecurityPerimeterAccessRulesClientCreateOrUpdateResponse contains the response from method SecurityPerimeterAccessRulesClient.CreateOrUpdate.
-type SecurityPerimeterAccessRulesClientCreateOrUpdateResponse struct {
-	// The NSP access rule resource
-	NspAccessRule
-}
-
-// SecurityPerimeterAccessRulesClientDeleteResponse contains the response from method SecurityPerimeterAccessRulesClient.Delete.
-type SecurityPerimeterAccessRulesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityPerimeterAccessRulesClientGetResponse contains the response from method SecurityPerimeterAccessRulesClient.Get.
-type SecurityPerimeterAccessRulesClientGetResponse struct {
-	// The NSP access rule resource
-	NspAccessRule
-}
-
-// SecurityPerimeterAccessRulesClientListResponse contains the response from method SecurityPerimeterAccessRulesClient.NewListPager.
-type SecurityPerimeterAccessRulesClientListResponse struct {
-	// Result of the request to list NSP access rules. Contains a list of NSP access rules and a URL link to get the next set
-	// of results.
-	NspAccessRuleListResult
-}
-
-// SecurityPerimeterAccessRulesClientReconcileResponse contains the response from method SecurityPerimeterAccessRulesClient.Reconcile.
-type SecurityPerimeterAccessRulesClientReconcileResponse struct {
-	// Anything
-	Interface any
-}
-
-// SecurityPerimeterAssociableResourceTypesClientListResponse contains the response from method SecurityPerimeterAssociableResourceTypesClient.NewListPager.
-type SecurityPerimeterAssociableResourceTypesClientListResponse struct {
-	// Paged list of perimeter associable resources.
-	PerimeterAssociableResourcesListResult
-}
-
-// SecurityPerimeterAssociationsClientCreateOrUpdateResponse contains the response from method SecurityPerimeterAssociationsClient.BeginCreateOrUpdate.
-type SecurityPerimeterAssociationsClientCreateOrUpdateResponse struct {
-	// The NSP resource association resource
-	NspAssociation
-}
-
-// SecurityPerimeterAssociationsClientDeleteResponse contains the response from method SecurityPerimeterAssociationsClient.BeginDelete.
-type SecurityPerimeterAssociationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityPerimeterAssociationsClientGetResponse contains the response from method SecurityPerimeterAssociationsClient.Get.
-type SecurityPerimeterAssociationsClientGetResponse struct {
-	// The NSP resource association resource
-	NspAssociation
-}
-
-// SecurityPerimeterAssociationsClientListResponse contains the response from method SecurityPerimeterAssociationsClient.NewListPager.
-type SecurityPerimeterAssociationsClientListResponse struct {
-	// Result of the request to list NSP resource associations. Contains a list of NSP resource associations and a URL link to
-	// get the next set of results.
-	NspAssociationsListResult
-}
-
-// SecurityPerimeterAssociationsClientReconcileResponse contains the response from method SecurityPerimeterAssociationsClient.Reconcile.
-type SecurityPerimeterAssociationsClientReconcileResponse struct {
-	// Anything
-	Interface any
-}
-
-// SecurityPerimeterLinkReferencesClientDeleteResponse contains the response from method SecurityPerimeterLinkReferencesClient.BeginDelete.
-type SecurityPerimeterLinkReferencesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityPerimeterLinkReferencesClientGetResponse contains the response from method SecurityPerimeterLinkReferencesClient.Get.
-type SecurityPerimeterLinkReferencesClientGetResponse struct {
-	// The network security perimeter linkReference resource
-	NspLinkReference
-}
-
-// SecurityPerimeterLinkReferencesClientListResponse contains the response from method SecurityPerimeterLinkReferencesClient.NewListPager.
-type SecurityPerimeterLinkReferencesClientListResponse struct {
-	// Result of the request to list NSP linkReference resources. Contains a list of NSP linkReference resources and a URL link
-	// to get the next set of results.
-	NspLinkReferenceListResult
-}
-
-// SecurityPerimeterLinksClientCreateOrUpdateResponse contains the response from method SecurityPerimeterLinksClient.CreateOrUpdate.
-type SecurityPerimeterLinksClientCreateOrUpdateResponse struct {
-	// The network security perimeter link resource
-	NspLink
-}
-
-// SecurityPerimeterLinksClientDeleteResponse contains the response from method SecurityPerimeterLinksClient.BeginDelete.
-type SecurityPerimeterLinksClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityPerimeterLinksClientGetResponse contains the response from method SecurityPerimeterLinksClient.Get.
-type SecurityPerimeterLinksClientGetResponse struct {
-	// The network security perimeter link resource
-	NspLink
-}
-
-// SecurityPerimeterLinksClientListResponse contains the response from method SecurityPerimeterLinksClient.NewListPager.
-type SecurityPerimeterLinksClientListResponse struct {
-	// Result of the request to list NSP link resources. Contains a list of NSP link resources and a URL link to get the next
-	// set of results.
-	NspLinkListResult
-}
-
-// SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse contains the response from method SecurityPerimeterLoggingConfigurationsClient.CreateOrUpdate.
-type SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse struct {
-	// The NSP logging configuration
-	NspLoggingConfiguration
-}
-
-// SecurityPerimeterLoggingConfigurationsClientDeleteResponse contains the response from method SecurityPerimeterLoggingConfigurationsClient.Delete.
-type SecurityPerimeterLoggingConfigurationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityPerimeterLoggingConfigurationsClientGetResponse contains the response from method SecurityPerimeterLoggingConfigurationsClient.Get.
-type SecurityPerimeterLoggingConfigurationsClientGetResponse struct {
-	// The NSP logging configuration
-	NspLoggingConfiguration
-}
-
-// SecurityPerimeterLoggingConfigurationsClientListResponse contains the response from method SecurityPerimeterLoggingConfigurationsClient.NewListPager.
-type SecurityPerimeterLoggingConfigurationsClientListResponse struct {
-	// Result of the request to list NSP logging configuration. Contains a list of NSP logging configurations and a URL link to
-	// get the next set of results.
-	NspLoggingConfigurationListResult
-}
-
-// SecurityPerimeterOperationStatusesClientGetResponse contains the response from method SecurityPerimeterOperationStatusesClient.Get.
-type SecurityPerimeterOperationStatusesClientGetResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
-// SecurityPerimeterProfilesClientCreateOrUpdateResponse contains the response from method SecurityPerimeterProfilesClient.CreateOrUpdate.
-type SecurityPerimeterProfilesClientCreateOrUpdateResponse struct {
-	// The network security perimeter profile resource
-	NspProfile
-}
-
-// SecurityPerimeterProfilesClientDeleteResponse contains the response from method SecurityPerimeterProfilesClient.Delete.
-type SecurityPerimeterProfilesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityPerimeterProfilesClientGetResponse contains the response from method SecurityPerimeterProfilesClient.Get.
-type SecurityPerimeterProfilesClientGetResponse struct {
-	// The network security perimeter profile resource
-	NspProfile
-}
-
-// SecurityPerimeterProfilesClientListResponse contains the response from method SecurityPerimeterProfilesClient.NewListPager.
-type SecurityPerimeterProfilesClientListResponse struct {
-	// Result of the request to list NSP profiles. Contains a list of NSP profiles and a URL link to get the next set of results.
-	NspProfileListResult
-}
-
-// SecurityPerimetersClientCreateOrUpdateResponse contains the response from method SecurityPerimetersClient.CreateOrUpdate.
-type SecurityPerimetersClientCreateOrUpdateResponse struct {
-	// The Network Security Perimeter resource
-	SecurityPerimeter
-}
-
-// SecurityPerimetersClientDeleteResponse contains the response from method SecurityPerimetersClient.BeginDelete.
-type SecurityPerimetersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityPerimetersClientGetResponse contains the response from method SecurityPerimetersClient.Get.
-type SecurityPerimetersClientGetResponse struct {
-	// The Network Security Perimeter resource
-	SecurityPerimeter
-}
-
-// SecurityPerimetersClientListBySubscriptionResponse contains the response from method SecurityPerimetersClient.NewListBySubscriptionPager.
-type SecurityPerimetersClientListBySubscriptionResponse struct {
-	// Result of the request to list NetworkSecurityPerimeter. It contains a list of network security perimeters and a URL link
-	// to get the next set of results.
-	SecurityPerimeterListResult
-}
-
-// SecurityPerimetersClientListResponse contains the response from method SecurityPerimetersClient.NewListPager.
-type SecurityPerimetersClientListResponse struct {
-	// Result of the request to list NetworkSecurityPerimeter. It contains a list of network security perimeters and a URL link
-	// to get the next set of results.
-	SecurityPerimeterListResult
-}
-
-// SecurityPerimetersClientPatchResponse contains the response from method SecurityPerimetersClient.Patch.
-type SecurityPerimetersClientPatchResponse struct {
-	// The Network Security Perimeter resource
-	SecurityPerimeter
-}
-
 // SecurityRulesClientCreateOrUpdateResponse contains the response from method SecurityRulesClient.BeginCreateOrUpdate.
 type SecurityRulesClientCreateOrUpdateResponse struct {
 	// Network security rule.
@@ -2853,75 +2498,6 @@ type SecurityRulesClientGetResponse struct {
 type SecurityRulesClientListResponse struct {
 	// Response for ListSecurityRule API service call. Retrieves all security rules that belongs to a network security group.
 	SecurityRuleListResult
-}
-
-// SecurityUserConfigurationsClientCreateOrUpdateResponse contains the response from method SecurityUserConfigurationsClient.CreateOrUpdate.
-type SecurityUserConfigurationsClientCreateOrUpdateResponse struct {
-	// Defines the security user configuration
-	SecurityUserConfiguration
-}
-
-// SecurityUserConfigurationsClientDeleteResponse contains the response from method SecurityUserConfigurationsClient.BeginDelete.
-type SecurityUserConfigurationsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityUserConfigurationsClientGetResponse contains the response from method SecurityUserConfigurationsClient.Get.
-type SecurityUserConfigurationsClientGetResponse struct {
-	// Defines the security user configuration
-	SecurityUserConfiguration
-}
-
-// SecurityUserConfigurationsClientListResponse contains the response from method SecurityUserConfigurationsClient.NewListPager.
-type SecurityUserConfigurationsClientListResponse struct {
-	// A list of network manager security user configurations
-	SecurityUserConfigurationListResult
-}
-
-// SecurityUserRuleCollectionsClientCreateOrUpdateResponse contains the response from method SecurityUserRuleCollectionsClient.CreateOrUpdate.
-type SecurityUserRuleCollectionsClientCreateOrUpdateResponse struct {
-	// Defines the security user rule collection.
-	SecurityUserRuleCollection
-}
-
-// SecurityUserRuleCollectionsClientDeleteResponse contains the response from method SecurityUserRuleCollectionsClient.BeginDelete.
-type SecurityUserRuleCollectionsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityUserRuleCollectionsClientGetResponse contains the response from method SecurityUserRuleCollectionsClient.Get.
-type SecurityUserRuleCollectionsClientGetResponse struct {
-	// Defines the security user rule collection.
-	SecurityUserRuleCollection
-}
-
-// SecurityUserRuleCollectionsClientListResponse contains the response from method SecurityUserRuleCollectionsClient.NewListPager.
-type SecurityUserRuleCollectionsClientListResponse struct {
-	// Security user configuration rule collection list result.
-	SecurityUserRuleCollectionListResult
-}
-
-// SecurityUserRulesClientCreateOrUpdateResponse contains the response from method SecurityUserRulesClient.CreateOrUpdate.
-type SecurityUserRulesClientCreateOrUpdateResponse struct {
-	// Network security user rule.
-	SecurityUserRule
-}
-
-// SecurityUserRulesClientDeleteResponse contains the response from method SecurityUserRulesClient.BeginDelete.
-type SecurityUserRulesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// SecurityUserRulesClientGetResponse contains the response from method SecurityUserRulesClient.Get.
-type SecurityUserRulesClientGetResponse struct {
-	// Network security user rule.
-	SecurityUserRule
-}
-
-// SecurityUserRulesClientListResponse contains the response from method SecurityUserRulesClient.NewListPager.
-type SecurityUserRulesClientListResponse struct {
-	// security user rule list result.
-	SecurityUserRuleListResult
 }
 
 // ServiceAssociationLinksClientListResponse contains the response from method ServiceAssociationLinksClient.List.
@@ -2999,29 +2575,6 @@ type ServiceTagInformationClientListResponse struct {
 type ServiceTagsClientListResponse struct {
 	// Response for the ListServiceTags API service call.
 	ServiceTagsListResult
-}
-
-// StaticCidrsClientCreateResponse contains the response from method StaticCidrsClient.Create.
-type StaticCidrsClientCreateResponse struct {
-	// Instance of StaticCidr resource.
-	StaticCidr
-}
-
-// StaticCidrsClientDeleteResponse contains the response from method StaticCidrsClient.BeginDelete.
-type StaticCidrsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// StaticCidrsClientGetResponse contains the response from method StaticCidrsClient.Get.
-type StaticCidrsClientGetResponse struct {
-	// Instance of StaticCidr resource.
-	StaticCidr
-}
-
-// StaticCidrsClientListResponse contains the response from method StaticCidrsClient.NewListPager.
-type StaticCidrsClientListResponse struct {
-	// List of StaticCidr
-	StaticCidrList
 }
 
 // StaticMembersClientCreateOrUpdateResponse contains the response from method StaticMembersClient.CreateOrUpdate.
@@ -3196,18 +2749,6 @@ type VPNGatewaysClientUpdateTagsResponse struct {
 	VPNGateway
 }
 
-// VPNLinkConnectionsClientGetAllSharedKeysResponse contains the response from method VPNLinkConnectionsClient.NewGetAllSharedKeysPager.
-type VPNLinkConnectionsClientGetAllSharedKeysResponse struct {
-	// The list of shared keys for the vpn link connection. It should only contain one shared key for each vpn link connection.
-	ConnectionSharedKeyResultList
-}
-
-// VPNLinkConnectionsClientGetDefaultSharedKeyResponse contains the response from method VPNLinkConnectionsClient.GetDefaultSharedKey.
-type VPNLinkConnectionsClientGetDefaultSharedKeyResponse struct {
-	// SharedKey Resource .
-	ConnectionSharedKeyResult
-}
-
 // VPNLinkConnectionsClientGetIkeSasResponse contains the response from method VPNLinkConnectionsClient.BeginGetIkeSas.
 type VPNLinkConnectionsClientGetIkeSasResponse struct {
 	Value *string
@@ -3220,21 +2761,9 @@ type VPNLinkConnectionsClientListByVPNConnectionResponse struct {
 	ListVPNSiteLinkConnectionsResult
 }
 
-// VPNLinkConnectionsClientListDefaultSharedKeyResponse contains the response from method VPNLinkConnectionsClient.ListDefaultSharedKey.
-type VPNLinkConnectionsClientListDefaultSharedKeyResponse struct {
-	// SharedKey Resource .
-	ConnectionSharedKeyResult
-}
-
 // VPNLinkConnectionsClientResetConnectionResponse contains the response from method VPNLinkConnectionsClient.BeginResetConnection.
 type VPNLinkConnectionsClientResetConnectionResponse struct {
 	// placeholder for future response values
-}
-
-// VPNLinkConnectionsClientSetOrInitDefaultSharedKeyResponse contains the response from method VPNLinkConnectionsClient.BeginSetOrInitDefaultSharedKey.
-type VPNLinkConnectionsClientSetOrInitDefaultSharedKeyResponse struct {
-	// SharedKey Resource .
-	ConnectionSharedKeyResult
 }
 
 // VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse contains the response from method VPNServerConfigurationsAssociatedWithVirtualWanClient.BeginList.
@@ -3339,35 +2868,6 @@ type VPNSitesConfigurationClientDownloadResponse struct {
 	// placeholder for future response values
 }
 
-// VerifierWorkspacesClientCreateResponse contains the response from method VerifierWorkspacesClient.Create.
-type VerifierWorkspacesClientCreateResponse struct {
-	// Instance of Verifier Workspace.
-	VerifierWorkspace
-}
-
-// VerifierWorkspacesClientDeleteResponse contains the response from method VerifierWorkspacesClient.BeginDelete.
-type VerifierWorkspacesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// VerifierWorkspacesClientGetResponse contains the response from method VerifierWorkspacesClient.Get.
-type VerifierWorkspacesClientGetResponse struct {
-	// Instance of Verifier Workspace.
-	VerifierWorkspace
-}
-
-// VerifierWorkspacesClientListResponse contains the response from method VerifierWorkspacesClient.NewListPager.
-type VerifierWorkspacesClientListResponse struct {
-	// A list of Verifier Workspace
-	VerifierWorkspaceListResult
-}
-
-// VerifierWorkspacesClientUpdateResponse contains the response from method VerifierWorkspacesClient.Update.
-type VerifierWorkspacesClientUpdateResponse struct {
-	// Instance of Verifier Workspace.
-	VerifierWorkspace
-}
-
 // VipSwapClientCreateResponse contains the response from method VipSwapClient.BeginCreate.
 type VipSwapClientCreateResponse struct {
 	// placeholder for future response values
@@ -3454,11 +2954,6 @@ type VirtualAppliancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// VirtualAppliancesClientGetBootDiagnosticLogsResponse contains the response from method VirtualAppliancesClient.BeginGetBootDiagnosticLogs.
-type VirtualAppliancesClientGetBootDiagnosticLogsResponse struct {
-	VirtualApplianceInstanceID
-}
-
 // VirtualAppliancesClientGetResponse contains the response from method VirtualAppliancesClient.Get.
 type VirtualAppliancesClientGetResponse struct {
 	// NetworkVirtualAppliance Resource.
@@ -3475,12 +2970,6 @@ type VirtualAppliancesClientListByResourceGroupResponse struct {
 type VirtualAppliancesClientListResponse struct {
 	// Response for ListNetworkVirtualAppliances API service call.
 	VirtualApplianceListResult
-}
-
-// VirtualAppliancesClientReimageResponse contains the response from method VirtualAppliancesClient.BeginReimage.
-type VirtualAppliancesClientReimageResponse struct {
-	// Specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
-	VirtualApplianceInstanceIDs
 }
 
 // VirtualAppliancesClientRestartResponse contains the response from method VirtualAppliancesClient.BeginRestart.
@@ -3760,40 +3249,16 @@ type VirtualNetworkGatewaysClientGetBgpPeerStatusResponse struct {
 	BgpPeerStatusListResult
 }
 
-// VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails.
-type VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse struct {
-	// Gateway Failover All Test Details
-	ExpressRouteFailoverTestDetailsArray []*ExpressRouteFailoverTestDetails
-}
-
-// VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails.
-type VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse struct {
-	// Gateway Failover Single Test Details Object
-	ExpressRouteFailoverSingleTestDetailsArray []*ExpressRouteFailoverSingleTestDetails
-}
-
 // VirtualNetworkGatewaysClientGetLearnedRoutesResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetLearnedRoutes.
 type VirtualNetworkGatewaysClientGetLearnedRoutesResponse struct {
 	// List of virtual network gateway routes.
 	GatewayRouteListResult
 }
 
-// VirtualNetworkGatewaysClientGetResiliencyInformationResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetResiliencyInformation.
-type VirtualNetworkGatewaysClientGetResiliencyInformationResponse struct {
-	// Gateway Resiliency Information
-	GatewayResiliencyInformation
-}
-
 // VirtualNetworkGatewaysClientGetResponse contains the response from method VirtualNetworkGatewaysClient.Get.
 type VirtualNetworkGatewaysClientGetResponse struct {
 	// A common class for general resource information.
 	VirtualNetworkGateway
-}
-
-// VirtualNetworkGatewaysClientGetRoutesInformationResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetRoutesInformation.
-type VirtualNetworkGatewaysClientGetRoutesInformationResponse struct {
-	// Gateway Route Sets Information
-	GatewayRouteSetsInformation
 }
 
 // VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse contains the response from method VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL.
@@ -3811,26 +3276,6 @@ type VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse struct {
 type VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse struct {
 	// An IPSec parameters for a virtual network gateway P2S connection.
 	VPNClientIPsecParameters
-}
-
-// VirtualNetworkGatewaysClientInvokeAbortMigrationResponse contains the response from method VirtualNetworkGatewaysClient.BeginInvokeAbortMigration.
-type VirtualNetworkGatewaysClientInvokeAbortMigrationResponse struct {
-	// placeholder for future response values
-}
-
-// VirtualNetworkGatewaysClientInvokeCommitMigrationResponse contains the response from method VirtualNetworkGatewaysClient.BeginInvokeCommitMigration.
-type VirtualNetworkGatewaysClientInvokeCommitMigrationResponse struct {
-	// placeholder for future response values
-}
-
-// VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse contains the response from method VirtualNetworkGatewaysClient.BeginInvokeExecuteMigration.
-type VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse struct {
-	// placeholder for future response values
-}
-
-// VirtualNetworkGatewaysClientInvokePrepareMigrationResponse contains the response from method VirtualNetworkGatewaysClient.BeginInvokePrepareMigration.
-type VirtualNetworkGatewaysClientInvokePrepareMigrationResponse struct {
-	// placeholder for future response values
 }
 
 // VirtualNetworkGatewaysClientListConnectionsResponse contains the response from method VirtualNetworkGatewaysClient.NewListConnectionsPager.
@@ -3862,18 +3307,8 @@ type VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse struct {
 	VPNClientIPsecParameters
 }
 
-// VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse contains the response from method VirtualNetworkGatewaysClient.BeginStartExpressRouteSiteFailoverSimulation.
-type VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse struct {
-	Value *string
-}
-
 // VirtualNetworkGatewaysClientStartPacketCaptureResponse contains the response from method VirtualNetworkGatewaysClient.BeginStartPacketCapture.
 type VirtualNetworkGatewaysClientStartPacketCaptureResponse struct {
-	Value *string
-}
-
-// VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse contains the response from method VirtualNetworkGatewaysClient.BeginStopExpressRouteSiteFailoverSimulation.
-type VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse struct {
 	Value *string
 }
 

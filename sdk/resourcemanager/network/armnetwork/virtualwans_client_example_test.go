@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualWANGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualWANGet.json
 func ExampleVirtualWansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,23 +51,19 @@ func ExampleVirtualWansClient_Get() {
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		VirtualHubs: []*armnetwork.SubResource{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
 	// 			},
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub2"),
 	// 		}},
 	// 		VPNSites: []*armnetwork.SubResource{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite1"),
 	// 			},
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite2"),
 	// 		}},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualWANPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualWANPut.json
 func ExampleVirtualWansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,23 +109,19 @@ func ExampleVirtualWansClient_BeginCreateOrUpdate() {
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		VirtualHubs: []*armnetwork.SubResource{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
 	// 			},
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub2"),
 	// 		}},
 	// 		VPNSites: []*armnetwork.SubResource{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite1"),
 	// 			},
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite2"),
 	// 		}},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualWANUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualWANUpdateTags.json
 func ExampleVirtualWansClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +172,7 @@ func ExampleVirtualWansClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualWANDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualWANDelete.json
 func ExampleVirtualWansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +193,7 @@ func ExampleVirtualWansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualWANListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualWANListByResourceGroup.json
 func ExampleVirtualWansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,17 +232,13 @@ func ExampleVirtualWansClient_NewListByResourceGroupPager() {
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				VirtualHubs: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub2"),
 		// 				}},
 		// 				VPNSites: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite2"),
 		// 				}},
 		// 			},
 		// 		},
@@ -269,17 +257,13 @@ func ExampleVirtualWansClient_NewListByResourceGroupPager() {
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				VirtualHubs: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub3"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub4"),
 		// 				}},
 		// 				VPNSites: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite3"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite4"),
 		// 				}},
 		// 			},
 		// 	}},
@@ -287,7 +271,7 @@ func ExampleVirtualWansClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/VirtualWANList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualWANList.json
 func ExampleVirtualWansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,17 +310,13 @@ func ExampleVirtualWansClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				VirtualHubs: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub2"),
 		// 				}},
 		// 				VPNSites: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite2"),
 		// 				}},
 		// 			},
 		// 		},
@@ -355,17 +335,13 @@ func ExampleVirtualWansClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				VirtualHubs: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualHubs/hub1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualHubs/hub2"),
 		// 				}},
 		// 				VPNSites: []*armnetwork.SubResource{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/vpnSites/vpnSite1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/vpnSites/vpnSite2"),
 		// 				}},
 		// 			},
 		// 	}},

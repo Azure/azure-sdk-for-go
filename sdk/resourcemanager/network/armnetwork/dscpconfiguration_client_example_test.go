@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/DscpConfigurationCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DscpConfigurationCreate.json
 func ExampleDscpConfigurationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleDscpConfigurationClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/DscpConfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DscpConfigurationDelete.json
 func ExampleDscpConfigurationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleDscpConfigurationClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/DscpConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DscpConfigurationGet.json
 func ExampleDscpConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,10 +211,8 @@ func ExampleDscpConfigurationClient_Get() {
 	// 	Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 	// 		AssociatedNetworkInterfaces: []*armnetwork.Interface{
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic1"),
 	// 			},
 	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
 	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		QosCollectionID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -273,7 +271,7 @@ func ExampleDscpConfigurationClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/DscpConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DscpConfigurationList.json
 func ExampleDscpConfigurationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,10 +303,8 @@ func ExampleDscpConfigurationClient_NewListPager() {
 		// 			Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 				AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				QosCollectionID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -373,10 +369,8 @@ func ExampleDscpConfigurationClient_NewListPager() {
 		// 					Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 						AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 							{
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic3"),
 		// 							},
 		// 							{
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic4"),
 		// 						}},
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 						QosCollectionID: to.Ptr("9as24mf6-d9cb-7a7f-a165-70867728950e"),
@@ -437,7 +431,7 @@ func ExampleDscpConfigurationClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/DscpConfigurationListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/63aa8b98c6674faa29b5d84dcdc1893830101a0a/specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DscpConfigurationListAll.json
 func ExampleDscpConfigurationClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,10 +463,8 @@ func ExampleDscpConfigurationClient_NewListAllPager() {
 		// 			Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 				AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic1"),
 		// 					},
 		// 					{
-		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
 		// 				}},
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				QosCollectionID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
@@ -537,10 +529,8 @@ func ExampleDscpConfigurationClient_NewListAllPager() {
 		// 					Properties: &armnetwork.DscpConfigurationPropertiesFormat{
 		// 						AssociatedNetworkInterfaces: []*armnetwork.Interface{
 		// 							{
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/test-nic3"),
 		// 							},
 		// 							{
-		// 								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/test-nic4"),
 		// 						}},
 		// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 						QosCollectionID: to.Ptr("9as24mf6-d9cb-7a7f-a165-70867728950e"),

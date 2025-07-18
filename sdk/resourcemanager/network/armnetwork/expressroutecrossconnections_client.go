@@ -44,7 +44,7 @@ func NewExpressRouteCrossConnectionsClient(subscriptionID string, credential azc
 // BeginCreateOrUpdate - Update the specified ExpressRouteCrossConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - crossConnectionName - The name of the ExpressRouteCrossConnection.
 //   - parameters - Parameters supplied to the update express route crossConnection operation.
@@ -71,7 +71,7 @@ func (client *ExpressRouteCrossConnectionsClient) BeginCreateOrUpdate(ctx contex
 // CreateOrUpdate - Update the specified ExpressRouteCrossConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *ExpressRouteCrossConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters ExpressRouteCrossConnection, options *ExpressRouteCrossConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate"
@@ -113,7 +113,7 @@ func (client *ExpressRouteCrossConnectionsClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +125,7 @@ func (client *ExpressRouteCrossConnectionsClient) createOrUpdateCreateRequest(ct
 // Get - Gets details about the specified ExpressRouteCrossConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group (peering location of the circuit).
 //   - crossConnectionName - The name of the ExpressRouteCrossConnection (service key of the circuit).
 //   - options - ExpressRouteCrossConnectionsClientGetOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.Get
@@ -172,7 +172,7 @@ func (client *ExpressRouteCrossConnectionsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *ExpressRouteCrossConnectionsClient) getHandleResponse(resp *http.R
 
 // NewListPager - Retrieves all the ExpressRouteCrossConnections in a subscription.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - options - ExpressRouteCrossConnectionsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.NewListPager
 //     method.
 func (client *ExpressRouteCrossConnectionsClient) NewListPager(options *ExpressRouteCrossConnectionsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListResponse] {
@@ -216,7 +216,7 @@ func (client *ExpressRouteCrossConnectionsClient) NewListPager(options *ExpressR
 }
 
 // listCreateRequest creates the List request.
-func (client *ExpressRouteCrossConnectionsClient) listCreateRequest(ctx context.Context, options *ExpressRouteCrossConnectionsClientListOptions) (*policy.Request, error) {
+func (client *ExpressRouteCrossConnectionsClient) listCreateRequest(ctx context.Context, _ *ExpressRouteCrossConnectionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCrossConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,10 +227,7 @@ func (client *ExpressRouteCrossConnectionsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -249,7 +246,7 @@ func (client *ExpressRouteCrossConnectionsClient) listHandleResponse(resp *http.
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - crossConnectionName - The name of the ExpressRouteCrossConnection.
 //   - peeringName - The name of the peering.
@@ -278,7 +275,7 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListArpTable(ctx context.
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *ExpressRouteCrossConnectionsClient) listArpTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsClientBeginListArpTableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteCrossConnectionsClient.BeginListArpTable"
@@ -328,7 +325,7 @@ func (client *ExpressRouteCrossConnectionsClient) listArpTableCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -336,7 +333,7 @@ func (client *ExpressRouteCrossConnectionsClient) listArpTableCreateRequest(ctx 
 
 // NewListByResourceGroupPager - Retrieves all the ExpressRouteCrossConnections in a resource group.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - ExpressRouteCrossConnectionsClientListByResourceGroupOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager
 //     method.
@@ -379,7 +376,7 @@ func (client *ExpressRouteCrossConnectionsClient) listByResourceGroupCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -398,7 +395,7 @@ func (client *ExpressRouteCrossConnectionsClient) listByResourceGroupHandleRespo
 // a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - crossConnectionName - The name of the ExpressRouteCrossConnection.
 //   - peeringName - The name of the peering.
@@ -427,7 +424,7 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListRoutesTable(ctx conte
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *ExpressRouteCrossConnectionsClient) listRoutesTable(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsClientBeginListRoutesTableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteCrossConnectionsClient.BeginListRoutesTable"
@@ -477,7 +474,7 @@ func (client *ExpressRouteCrossConnectionsClient) listRoutesTableCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -487,7 +484,7 @@ func (client *ExpressRouteCrossConnectionsClient) listRoutesTableCreateRequest(c
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - crossConnectionName - The name of the ExpressRouteCrossConnection.
 //   - peeringName - The name of the peering.
@@ -516,7 +513,7 @@ func (client *ExpressRouteCrossConnectionsClient) BeginListRoutesTableSummary(ct
 // group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 func (client *ExpressRouteCrossConnectionsClient) listRoutesTableSummary(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *ExpressRouteCrossConnectionsClientBeginListRoutesTableSummaryOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteCrossConnectionsClient.BeginListRoutesTableSummary"
@@ -566,7 +563,7 @@ func (client *ExpressRouteCrossConnectionsClient) listRoutesTableSummaryCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -575,7 +572,7 @@ func (client *ExpressRouteCrossConnectionsClient) listRoutesTableSummaryCreateRe
 // UpdateTags - Updates an express route cross connection tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-07-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group.
 //   - crossConnectionName - The name of the cross connection.
 //   - crossConnectionParameters - Parameters supplied to update express route cross connection tags.
@@ -623,7 +620,7 @@ func (client *ExpressRouteCrossConnectionsClient) updateTagsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, crossConnectionParameters); err != nil {

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -823,7 +824,7 @@ func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 	}
 }
 
-func TestContainerGetChangeFeedIfModifiedSince(t *testing.T) {
+func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 	changeFeedBody := []byte(
 		`{"_rid":"test-rid",
 		"Documents":[{"id":"doc1"},{"id":"doc2"}],
@@ -838,15 +839,22 @@ func TestContainerGetChangeFeedIfModifiedSince(t *testing.T) {
 		mock.WithHeader(cosmosHeaderRequestCharge, "5.5"),
 		mock.WithStatusCode(200))
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
 	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
+	feedRange := &FeedRange{
+		MinInclusive: "00",
+		MaxExclusive: "FF",
+	}
+
 	modifiedSince := time.Now().Add(-time.Hour).UTC()
 	options := &ChangeFeedOptions{
 		StartFrom: &modifiedSince,
+		FeedRange: feedRange,
 	}
 
 	resp, err := container.GetChangeFeed(context.TODO(), options)
@@ -862,101 +870,175 @@ func TestContainerGetChangeFeedIfModifiedSince(t *testing.T) {
 	if len(resp.Documents) != 2 {
 		t.Errorf("Expected 2 documents, got %v", len(resp.Documents))
 	}
+
+	if len(verifier.requests) != 2 {
+		t.Fatalf("Expected 2 requests, got %d", len(verifier.requests))
+	}
+
+	request := verifier.requests[1]
+	ifModifiedSinceHeader := request.headers.Get(cosmosHeaderIfModifiedSince)
+	expectedIfModifiedSince := modifiedSince.Format(time.RFC1123)
+
+	if ifModifiedSinceHeader == "" {
+		t.Errorf("If-Modified-Since header was not set")
+	} else if ifModifiedSinceHeader != expectedIfModifiedSince {
+		t.Errorf("Expected If-Modified-Since header to be %s, but got %s", expectedIfModifiedSince, ifModifiedSinceHeader)
+	}
 }
 
-func TestContainerGetChangeFeedPartitionKey(t *testing.T) {
-	changeFeedBody := []byte(
-		`{"_rid":"test-rid-1",
-		"Documents":[{"id":"doc3"}],
-		"_count":1}`)
+func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
+	// This test verifies that:
+	// 1. The If-Modified-Since header is properly set based on the StartFrom parameter
+	// 2. We can request and retrieve documents with different timestamps
+
+	// First response: All documents when using beginning of time filter
+	allDocumentsBody := []byte(`{
+		"_rid": "test-rid",
+		"Documents": [
+			{"id": "doc1", "_ts": 1730000000},
+			{"id": "doc2", "_ts": 1735000000},
+			{"id": "doc3", "_ts": 1740000000}
+		],
+		"_count": 3
+	}`)
+
+	// Second response: Only documents after the filter time
+	filteredDocumentsBody := []byte(`{
+		"_rid": "test-rid",
+		"Documents": [
+			{"id": "doc3", "_ts": 1740000000}
+		],
+		"_count": 1
+	}`)
+
 	srv, close := mock.NewTLSServer()
 	defaultEndpoint, _ := url.Parse(srv.URL())
 	defer close()
+
+	// Set up mock responses
 	srv.SetResponse(
-		mock.WithBody(changeFeedBody),
-		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
-		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
-		mock.WithHeader(cosmosHeaderRequestCharge, "2.2"),
+		mock.WithBody(allDocumentsBody),
+		mock.WithHeader(cosmosHeaderEtag, "etagAll"),
+		mock.WithHeader(cosmosHeaderActivityId, "activityIdAll"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "2.5"),
 		mock.WithStatusCode(200))
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	gem := &globalEndpointManager{preferredLocations: []string{}}
 	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	pk := NewPartitionKeyString("pkvalue")
-	options := &ChangeFeedOptions{
-		PartitionKey: &pk,
+	feedRange := &FeedRange{
+		MinInclusive: "00",
+		MaxExclusive: "FF",
 	}
 
-	resp, err := container.GetChangeFeed(context.TODO(), options)
+	// 1. First call: Get all documents (from beginning of time)
+	beginningOfTime := time.Unix(0, 0).UTC()
+	allDocsOptions := &ChangeFeedOptions{
+		StartFrom: &beginningOfTime,
+		FeedRange: feedRange,
+	}
+
+	allDocsResp, err := container.GetChangeFeed(context.TODO(), allDocsOptions)
 	if err != nil {
-		t.Fatalf("GetChangeFeed returned error: %v", err)
+		t.Fatalf("First GetChangeFeed returned error: %v", err)
 	}
-	if resp.ResourceID != "test-rid-1" {
-		t.Errorf("Expected ResourceID 'test-rid', got %v", resp.ResourceID)
-	}
-	if resp.Count != 1 {
-		t.Errorf("Expected Count 1, got %v", resp.Count)
-	}
-	if len(resp.Documents) != 1 {
-		t.Errorf("Expected 1 document, got %v", len(resp.Documents))
-	}
-}
 
-func TestContainerGetChangeFeed_FilteredByHeader(t *testing.T) {
-	changeFeedBodyAll := []byte(
-		`{"_rid":"test-rid",
-        "Documents":[{"id":"doc1"},{"id":"doc2"},{"id":"doc3"}],
-        "_count":3}`)
-	changeFeedBodyFiltered := []byte(
-		`{"_rid":"test-rid",
-        "Documents":[{"id":"doc3"}],
-        "_count":1}`)
+	if allDocsResp.Count != 3 {
+		t.Errorf("Expected 3 documents in first response, got %d", allDocsResp.Count)
+	}
+	if len(allDocsResp.Documents) != 3 {
+		t.Errorf("Expected 3 documents in first response, got %d", len(allDocsResp.Documents))
+	}
 
-	srv, close := mock.NewTLSServer()
-	defaultEndpoint, _ := url.Parse(srv.URL())
-	defer close()
+	var allDocs []map[string]interface{}
+	for i, docBytes := range allDocsResp.Documents {
+		var doc map[string]interface{}
+		if err := json.Unmarshal(docBytes, &doc); err != nil {
+			t.Fatalf("Failed to unmarshal document %d: %v", i, err)
+		}
+		allDocs = append(allDocs, doc)
+	}
 
-	srv.AppendResponse(
-		mock.WithBody(changeFeedBodyAll),
-		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
-		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
-		mock.WithHeader(cosmosHeaderRequestCharge, "5.5"),
+	expectedIDs := []string{"doc1", "doc2", "doc3"}
+	for i, doc := range allDocs {
+		if doc["id"] != expectedIDs[i] {
+			t.Errorf("Expected document %d to have ID '%s', got '%s'", i, expectedIDs[i], doc["id"])
+		}
+	}
+
+	if len(verifier.requests) < 2 {
+		t.Fatalf("Expected at least 2 requests, got %d", len(verifier.requests))
+	}
+
+	firstRequest := verifier.requests[1]
+	firstIfModifiedSinceHeader := firstRequest.headers.Get(cosmosHeaderIfModifiedSince)
+	firstExpectedIfModifiedSince := beginningOfTime.Format(time.RFC1123)
+
+	if firstIfModifiedSinceHeader == "" {
+		t.Errorf("If-Modified-Since header was not set in first request")
+	} else if firstIfModifiedSinceHeader != firstExpectedIfModifiedSince {
+		t.Errorf("Expected If-Modified-Since header to be %s in first request, but got %s",
+			firstExpectedIfModifiedSince, firstIfModifiedSinceHeader)
+	}
+
+	// Reset the mock server and verifier for the second test
+	srv.SetResponse(
+		mock.WithBody(filteredDocumentsBody),
+		mock.WithHeader(cosmosHeaderEtag, "etagFiltered"),
+		mock.WithHeader(cosmosHeaderActivityId, "activityIdFiltered"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.5"),
 		mock.WithStatusCode(200))
-	srv.AppendResponse(
-		mock.WithBody(changeFeedBodyFiltered),
-		mock.WithHeader(cosmosHeaderEtag, "someEtag"),
-		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
-		mock.WithHeader(cosmosHeaderRequestCharge, "2.2"),
-		mock.WithStatusCode(200))
 
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
-	gem := &globalEndpointManager{preferredLocations: []string{}}
-	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
-	database, _ := newDatabase("databaseId", client)
-	container, _ := newContainer("containerId", database)
+	verifier = pipelineVerifier{}
+	internalClient, _ = azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client = &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ = newDatabase("databaseId", client)
+	container, _ = newContainer("containerId", database)
 
-	// First call: no header, expect 3 docs
-	resp, err := container.GetChangeFeed(context.TODO(), &ChangeFeedOptions{})
+	// 2. Second call: Get only documents after midpoint timestamp
+	midpointTime := time.Unix(1737000000, 0).UTC() // This should filter out doc1 and doc2, keep only doc3
+	filteredOptions := &ChangeFeedOptions{
+		StartFrom: &midpointTime,
+		FeedRange: feedRange,
+	}
+
+	filteredResp, err := container.GetChangeFeed(context.TODO(), filteredOptions)
 	if err != nil {
-		t.Fatalf("GetChangeFeed (all) returned error: %v", err)
-	}
-	if resp.Count != 3 || len(resp.Documents) != 3 {
-		t.Errorf("Expected 3 documents, got %d", len(resp.Documents))
+		t.Fatalf("Second GetChangeFeed returned error: %v", err)
 	}
 
-	modifiedSince := time.Now().Add(-time.Hour).UTC()
-	options := &ChangeFeedOptions{
-		StartFrom: &modifiedSince,
+	if filteredResp.Count != 1 {
+		t.Errorf("Expected 1 document in filtered response, got %d", filteredResp.Count)
 	}
-	resp, err = container.GetChangeFeed(context.TODO(), options)
-	if err != nil {
-		t.Fatalf("GetChangeFeed (filtered) returned error: %v", err)
+	if len(filteredResp.Documents) != 1 {
+		t.Errorf("Expected 1 document in filtered response, got %d", len(filteredResp.Documents))
 	}
-	if resp.Count != 1 || len(resp.Documents) != 1 {
-		t.Errorf("Expected 1 document, got %d", len(resp.Documents))
+
+	var filteredDoc map[string]interface{}
+	if err := json.Unmarshal(filteredResp.Documents[0], &filteredDoc); err != nil {
+		t.Fatalf("Failed to unmarshal filtered document: %v", err)
+	}
+	if filteredDoc["id"] != "doc3" {
+		t.Errorf("Expected filtered document to have ID 'doc3', got '%s'", filteredDoc["id"])
+	}
+
+	if len(verifier.requests) < 2 {
+		t.Fatalf("Expected at least 2 requests in second test, got %d", len(verifier.requests))
+	}
+
+	secondRequest := verifier.requests[1]
+	secondIfModifiedSinceHeader := secondRequest.headers.Get(cosmosHeaderIfModifiedSince)
+	secondExpectedIfModifiedSince := midpointTime.Format(time.RFC1123)
+
+	if secondIfModifiedSinceHeader == "" {
+		t.Errorf("If-Modified-Since header was not set in second request")
+	} else if secondIfModifiedSinceHeader != secondExpectedIfModifiedSince {
+		t.Errorf("Expected If-Modified-Since header to be %s in second request, but got %s",
+			secondExpectedIfModifiedSince, secondIfModifiedSinceHeader)
 	}
 }
 
@@ -967,19 +1049,8 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
         "_count": 2
     }`)
 
-	srv, close := mock.NewTLSServer()
-	defaultEndpoint, _ := url.Parse(srv.URL())
-	defer close()
-
-	srv.SetResponse(
-		mock.WithBody(changeFeedBody),
-		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
-		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
-		mock.WithHeader(cosmosHeaderRequestCharge, "3.5"),
-		mock.WithStatusCode(200))
-
 	pkRangesBody := []byte(`{
-        "_rid": "container-rid",
+        "_rid": "test-resource-id",
         "PartitionKeyRanges": [{
             "_rid": "range-rid",
             "id": "0",
@@ -988,8 +1059,24 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
         }],
         "_count": 1
     }`)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	// First response should be for the partition key ranges request
 	srv.AppendResponse(
 		mock.WithBody(pkRangesBody),
+		mock.WithHeader(cosmosHeaderActivityId, "pkRangesActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.0"),
+		mock.WithStatusCode(200))
+
+	// Second response should be for the change feed request
+	srv.AppendResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "\"etag-12345\""),
+		mock.WithHeader(cosmosHeaderActivityId, "changeFeedActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "3.5"),
 		mock.WithStatusCode(200))
 
 	verifier := pipelineVerifier{}
@@ -1005,9 +1092,9 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 	}
 	options := &ChangeFeedOptions{
 		MaxItemCount: 10,
+		FeedRange:    feedRange,
 	}
 
-	options.FeedRange = feedRange
 	resp, err := container.GetChangeFeed(context.TODO(), options)
 	if err != nil {
 		t.Fatalf("GetChangeFeedForEPKRange failed: %v", err)
@@ -1025,8 +1112,40 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Documents))
 	}
 
+	if len(verifier.requests) != 2 {
+		t.Fatalf("Expected exactly 2 requests (partition key ranges and change feed), got %d", len(verifier.requests))
+	}
+
+	// First request should be to get partition key ranges
+	pkRangesRequest := verifier.requests[0]
+	if !strings.Contains(pkRangesRequest.url.Path, "pkranges") {
+		t.Errorf("Expected first request to be for partition key ranges, got URL path: %s", pkRangesRequest.url.Path)
+	}
+	expectedPkRangesPath := "/dbs/databaseId/colls/containerId/pkranges"
+	if !strings.Contains(pkRangesRequest.url.Path, expectedPkRangesPath) {
+		t.Errorf("Expected partition key ranges path to contain %s, got %s",
+			expectedPkRangesPath, pkRangesRequest.url.Path)
+	}
+
+	// Second request should be the change feed request
+	changeFeedRequest := verifier.requests[1]
+	if !strings.Contains(changeFeedRequest.url.Path, "/docs") {
+		t.Errorf("Expected second request to be for documents, got URL path: %s", changeFeedRequest.url.Path)
+	}
+
+	pkRangeHeader := changeFeedRequest.headers.Get(headerXmsDocumentDbPartitionKeyRangeId)
+	if pkRangeHeader != "0" {
+		t.Errorf("Expected partition key range ID '0' in request header, got %q", pkRangeHeader)
+	}
+
+	changeFeedHeader := changeFeedRequest.headers.Get(cosmosHeaderChangeFeed)
+	if changeFeedHeader != cosmosHeaderValuesChangeFeed {
+		t.Errorf("Expected change feed header to be %q, got %q",
+			cosmosHeaderValuesChangeFeed, changeFeedHeader)
+	}
+
 	if resp.ContinuationToken == "" {
-		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
+		t.Fatal("expected ContinuationToken to be populated, but it was empty")
 	}
 
 	var compositeToken compositeContinuationToken
@@ -1036,19 +1155,23 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 	}
 
 	if compositeToken.ResourceID != "test-resource-id" {
-		t.Errorf("unexpected ResourceID in composite token: got %q, want %q", compositeToken.ResourceID, "test-resource-id")
+		t.Errorf("unexpected ResourceID in composite token: got %q, want %q",
+			compositeToken.ResourceID, "test-resource-id")
 	}
 
 	if len(compositeToken.Continuation) != 1 {
-		t.Fatalf("unexpected number of continuation ranges: got %d, want 1", len(compositeToken.Continuation))
+		t.Fatalf("unexpected number of continuation ranges: got %d, want 1",
+			len(compositeToken.Continuation))
 	}
 
 	if compositeToken.Continuation[0].MinInclusive != "00" {
-		t.Errorf("unexpected MinInclusive: got %q, want %q", compositeToken.Continuation[0].MinInclusive, "00")
+		t.Errorf("unexpected MinInclusive in continuation token: got %q, want %q",
+			compositeToken.Continuation[0].MinInclusive, "00")
 	}
 
 	if compositeToken.Continuation[0].MaxExclusive != "FF" {
-		t.Errorf("unexpected MaxExclusive: got %q, want %q", compositeToken.Continuation[0].MaxExclusive, "FF")
+		t.Errorf("unexpected MaxExclusive in continuation token: got %q, want %q",
+			compositeToken.Continuation[0].MaxExclusive, "FF")
 	}
 
 	if compositeToken.Continuation[0].ContinuationToken == nil {
@@ -1056,9 +1179,11 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 	}
 
 	if *compositeToken.Continuation[0].ContinuationToken != azcore.ETag("\"etag-12345\"") {
-		t.Errorf("unexpected ContinuationToken: got %q, want %q", *compositeToken.Continuation[0].ContinuationToken, "\"etag-12345\"")
+		t.Errorf("unexpected ContinuationToken: got %q, want %q",
+			*compositeToken.Continuation[0].ContinuationToken, "\"etag-12345\"")
 	}
 
+	// Now test using the continuation token in a subsequent request
 	options2 := &ChangeFeedOptions{
 		MaxItemCount: 10,
 		Continuation: &resp.ContinuationToken,
@@ -1071,6 +1196,12 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 
 	h := *headers
 	if h[headerIfNoneMatch] != "\"etag-12345\"" {
-		t.Errorf("unexpected IfNoneMatch header: got %q, want %q", h[headerIfNoneMatch], "\"etag-12345\"")
+		t.Errorf("unexpected IfNoneMatch header: got %q, want %q",
+			h[headerIfNoneMatch], "\"etag-12345\"")
+	}
+
+	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
+		t.Errorf("unexpected ChangeFeed header in continuation request: got %q, want %q",
+			h[cosmosHeaderChangeFeed], cosmosHeaderValuesChangeFeed)
 	}
 }

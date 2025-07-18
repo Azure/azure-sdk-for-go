@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"strconv"
 	"time"
 )
 
@@ -34,6 +35,10 @@ func (options *ChangeFeedOptions) toHeaders(partitionKeyRanges []partitionKeyRan
 	headers := make(map[string]string)
 
 	headers[cosmosHeaderChangeFeed] = cosmosHeaderValuesChangeFeed
+
+	if options.MaxItemCount > 0 {
+		headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
+	}
 
 	if options.StartFrom != nil {
 		formatted := options.StartFrom.UTC().Format(time.RFC1123)

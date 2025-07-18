@@ -44,10 +44,10 @@ func main() {
 	// fix up serialization
 	regexReplace("client.go", `url\.PathEscape\(resourceID\)`, "resourceID")
 
-	// fix fakes bug
+	// Adjust URL path handling in fake/server.go to remove the "/v1" prefix from req.URL.EscapedPath().
 	regexReplace("fake/server.go", `req\.URL\.EscapedPath\(\)`, `strings.TrimPrefix(req.URL.EscapedPath(), "/v1")`)
 
-	// surpress versions constant
+	// suppress versions constant
 	regexReplace("constants.go", `Versions`, "versions")
 	regexReplace("client.go", `Versions`, "versions")
 	regexReplace("constants.go", `Possibleversions`, "possibleVersions")

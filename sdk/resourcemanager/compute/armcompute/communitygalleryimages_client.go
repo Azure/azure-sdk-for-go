@@ -25,8 +25,7 @@ type CommunityGalleryImagesClient struct {
 }
 
 // NewCommunityGalleryImagesClient creates a new instance of CommunityGalleryImagesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCommunityGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunityGalleryImagesClient, error) {
@@ -45,7 +44,7 @@ func NewCommunityGalleryImagesClient(subscriptionID string, credential azcore.To
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - location - Resource location.
+//   - location - The name of Azure region.
 //   - publicGalleryName - The public name of the community gallery.
 //   - galleryImageName - The name of the community gallery image definition.
 //   - options - CommunityGalleryImagesClientGetOptions contains the optional parameters for the CommunityGalleryImagesClient.Get
@@ -114,7 +113,7 @@ func (client *CommunityGalleryImagesClient) getHandleResponse(resp *http.Respons
 // NewListPager - List community gallery images inside a gallery.
 //
 // Generated from API version 2024-03-03
-//   - location - Resource location.
+//   - location - The name of Azure region.
 //   - publicGalleryName - The public name of the community gallery.
 //   - options - CommunityGalleryImagesClientListOptions contains the optional parameters for the CommunityGalleryImagesClient.NewListPager
 //     method.

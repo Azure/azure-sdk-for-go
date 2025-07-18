@@ -25,8 +25,7 @@ type GalleryInVMAccessControlProfilesClient struct {
 }
 
 // NewGalleryInVMAccessControlProfilesClient creates a new instance of GalleryInVMAccessControlProfilesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGalleryInVMAccessControlProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryInVMAccessControlProfilesClient, error) {
@@ -45,11 +44,9 @@ func NewGalleryInVMAccessControlProfilesClient(subscriptionID string, credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the InVMAccessControlProfile is to be created.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be created or updated. The allowed characters
-//     are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is
-//     80 characters.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
 //   - galleryInVMAccessControlProfile - Parameters supplied to the create or update gallery inVMAccessControlProfile operation.
 //   - options - GalleryInVMAccessControlProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.BeginCreateOrUpdate
 //     method.
@@ -60,7 +57,8 @@ func (client *GalleryInVMAccessControlProfilesClient) BeginCreateOrUpdate(ctx co
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryInVMAccessControlProfilesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -132,9 +130,9 @@ func (client *GalleryInVMAccessControlProfilesClient) createOrUpdateCreateReques
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - he name of the Shared Image Gallery in which the InVMAccessControlProfile resides.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be deleted.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
 //   - options - GalleryInVMAccessControlProfilesClientBeginDeleteOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.BeginDelete
 //     method.
 func (client *GalleryInVMAccessControlProfilesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, options *GalleryInVMAccessControlProfilesClientBeginDeleteOptions) (*runtime.Poller[GalleryInVMAccessControlProfilesClientDeleteResponse], error) {
@@ -144,7 +142,8 @@ func (client *GalleryInVMAccessControlProfilesClient) BeginDelete(ctx context.Co
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryInVMAccessControlProfilesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -213,8 +212,8 @@ func (client *GalleryInVMAccessControlProfilesClient) deleteCreateRequest(ctx co
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery from which the InVMAccessControlProfiles are to be retrieved.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
 //   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
 //   - options - GalleryInVMAccessControlProfilesClientGetOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.Get
 //     method.
@@ -282,8 +281,8 @@ func (client *GalleryInVMAccessControlProfilesClient) getHandleResponse(resp *ht
 // NewListByGalleryPager - List gallery inVMAccessControlProfiles in a gallery.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery from which the InVMAccessControlProfiles are to be listed.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
 //   - options - GalleryInVMAccessControlProfilesClientListByGalleryOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.NewListByGalleryPager
 //     method.
 func (client *GalleryInVMAccessControlProfilesClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryInVMAccessControlProfilesClientListByGalleryOptions) *runtime.Pager[GalleryInVMAccessControlProfilesClientListByGalleryResponse] {
@@ -348,11 +347,9 @@ func (client *GalleryInVMAccessControlProfilesClient) listByGalleryHandleRespons
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the InVMAccessControlProfile is to be updated.
-//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be updated. The allowed characters are
-//     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
-//     characters.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - inVMAccessControlProfileName - The name of the gallery inVMAccessControlProfile to be retrieved.
 //   - galleryInVMAccessControlProfile - Parameters supplied to the update gallery inVMAccessControlProfile operation.
 //   - options - GalleryInVMAccessControlProfilesClientBeginUpdateOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.BeginUpdate
 //     method.
@@ -363,7 +360,8 @@ func (client *GalleryInVMAccessControlProfilesClient) BeginUpdate(ctx context.Co
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryInVMAccessControlProfilesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {

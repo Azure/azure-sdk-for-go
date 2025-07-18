@@ -113,6 +113,9 @@ type AccessURI struct {
 
 	// READ-ONLY; A SAS uri for accessing a VM guest state.
 	SecurityDataAccessSAS *string
+
+	// READ-ONLY; A SAS uri for accessing a VM metadata.
+	SecurityMetadataAccessSAS *string
 }
 
 // AdditionalCapabilities - Enables or disables a capability on the virtual machine or virtual machine scale set.
@@ -240,6 +243,13 @@ type AutomaticZoneRebalancingPolicy struct {
 	RebalanceStrategy *RebalanceStrategy
 }
 
+// AvailabilityPolicy - In the case of an availability or connectivity issue with the data disk, specify the behavior of your
+// VM
+type AvailabilityPolicy struct {
+	// Determines on how to handle disks with slow I/O.
+	ActionOnDiskDelay *AvailabilityPolicyDiskDelay
+}
+
 // AvailabilitySet - Specifies information about the availability set that the virtual machine should be assigned to. Virtual
 // machines specified in the same availability set are allocated to different nodes to maximize
 // availability. For more information about availability sets, see Availability sets overview [https://docs.microsoft.com/azure/virtual-machines/availability-set-overview].
@@ -248,7 +258,7 @@ type AutomaticZoneRebalancingPolicy struct {
 // Currently, a VM can only be added to an
 // availability set at creation time. An existing VM cannot be added to an availability set.
 type AvailabilitySet struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The instance view of a resource.
@@ -259,22 +269,25 @@ type AvailabilitySet struct {
 	// machines with unmanaged disks. Default value is 'Classic'.
 	SKU *SKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // AvailabilitySetListResult - The List Availability Set operation response.
 type AvailabilitySetListResult struct {
-	// REQUIRED; The list of availability sets
+	// REQUIRED; The list of availability sets.
 	Value []*AvailabilitySet
 
 	// The URI to fetch the next page of AvailabilitySets. Call ListNext() with this URI to fetch the next page of AvailabilitySets.
@@ -397,7 +410,7 @@ type BootDiagnosticsInstanceView struct {
 
 // CapacityReservation - Specifies information about the capacity reservation.
 type CapacityReservation struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// REQUIRED; SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently
@@ -409,22 +422,22 @@ type CapacityReservation struct {
 	// Properties of the Capacity reservation.
 	Properties *CapacityReservationProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// Availability Zone to use for this capacity reservation. The zone has to be single value and also should be part for the
-	// list of zones specified during the capacity reservation group creation. The zone
-	// can be assigned only during creation. If not provided, the reservation supports only non-zonal deployments. If provided,
-	// enforces VM/VMSS using this capacity reservation to be in same zone.
+	// The availability zones.
 	Zones []*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -432,27 +445,28 @@ type CapacityReservation struct {
 // be assigned to. Currently, a capacity reservation can only be added to a capacity reservation group at
 // creation time. An existing capacity reservation cannot be added or moved to another capacity reservation group.
 type CapacityReservationGroup struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// capacity reservation group Properties.
 	Properties *CapacityReservationGroupProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation. If not provided,
-	// the group supports only regional resources in the region. If provided,
-	// enforces each capacity reservation in the group to be in one of the zones.
+	// The availability zones.
 	Zones []*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -467,7 +481,7 @@ type CapacityReservationGroupInstanceView struct {
 
 // CapacityReservationGroupListResult - The List capacity reservation group with resource group response.
 type CapacityReservationGroupListResult struct {
-	// REQUIRED; The list of capacity reservation groups
+	// REQUIRED; The list of capacity reservation groups.
 	Value []*CapacityReservationGroup
 
 	// The URI to fetch the next page of capacity reservation groups. Call ListNext() with this URI to fetch the next page of
@@ -530,7 +544,7 @@ type CapacityReservationInstanceViewWithName struct {
 
 // CapacityReservationListResult - The list capacity reservation operation response.
 type CapacityReservationListResult struct {
-	// REQUIRED; The list of capacity reservations
+	// REQUIRED; The list of capacity reservations.
 	Value []*CapacityReservation
 
 	// The URI to fetch the next page of capacity reservations. Call ListNext() with this URI to fetch the next page of capacity
@@ -606,9 +620,6 @@ type CloudService struct {
 	// Cloud service properties
 	Properties *CloudServiceProperties
 
-	// The system meta data relating to this resource.
-	SystemData *SystemData
-
 	// Resource tags.
 	Tags map[string]*string
 
@@ -621,6 +632,9 @@ type CloudService struct {
 
 	// READ-ONLY; Resource name.
 	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
 	Type *string
@@ -944,8 +958,7 @@ type CommunityGalleryImageList struct {
 	// REQUIRED; A list of community gallery images.
 	Value []*CommunityGalleryImage
 
-	// The URI to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of community
-	// gallery images.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -962,7 +975,7 @@ type CommunityGalleryImageProperties struct {
 	// managed image. Possible values are: Windows, Linux.
 	OSType *OperatingSystemTypes
 
-	// CPU architecture supported by an OS disk.
+	// The architecture of the image. Applicable to OS disks only.
 	Architecture *Architecture
 
 	// The artifact tags of a community gallery resource.
@@ -1131,6 +1144,10 @@ type CreationData struct {
 	// Disk source information for PIR or user images.
 	ImageReference *ImageDiskReference
 
+	// For snapshots created from Premium SSD v2 or Ultra disk, this property determines the time in minutes the snapshot is retained
+	// for instant access to enable faster restore.
+	InstantAccessDurationMinutes *int64
+
 	// Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
 	LogicalSectorSize *int32
 
@@ -1144,6 +1161,9 @@ type CreationData struct {
 
 	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
 	SecurityDataURI *string
+
+	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM metadata for Confidential VM.
+	SecurityMetadataURI *string
 
 	// If createOption is Copy, this is the ARM id of the source snapshot or disk.
 	SourceResourceID *string
@@ -1193,8 +1213,8 @@ type DataDisk struct {
 	// applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected
 	// failure from the virtual machine and the disk is still not released then
 	// use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
-	// when using this detach behavior. To force-detach a data disk update
-	// toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+	// when using this detach behavior. This feature is still in preview. To
+	// force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
 	DetachOption *DiskDetachOptionTypes
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
@@ -1291,7 +1311,7 @@ type DataDisksToDetach struct {
 
 // DedicatedHost - Specifies information about the Dedicated host.
 type DedicatedHost struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// REQUIRED; SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List Microsoft.Compute
@@ -1301,16 +1321,19 @@ type DedicatedHost struct {
 	// Properties of the dedicated host.
 	Properties *DedicatedHostProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1334,27 +1357,28 @@ type DedicatedHostAvailableCapacity struct {
 // Currently, a dedicated host can only be added to a dedicated host group at creation time. An
 // existing dedicated host cannot be added to another dedicated host group.
 type DedicatedHostGroup struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Dedicated Host Group Properties.
 	Properties *DedicatedHostGroupProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation.
-	// If not provided, the group supports all zones in the region. If provided,
-	// enforces each host in the group to be in the same zone.
+	// The availability zones.
 	Zones []*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1365,7 +1389,7 @@ type DedicatedHostGroupInstanceView struct {
 
 // DedicatedHostGroupListResult - The List Dedicated Host Group with resource group response.
 type DedicatedHostGroupListResult struct {
-	// REQUIRED; The list of dedicated host groups
+	// REQUIRED; The list of dedicated host groups.
 	Value []*DedicatedHostGroup
 
 	// The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI to fetch the next page of Dedicated
@@ -1453,7 +1477,7 @@ type DedicatedHostInstanceViewWithName struct {
 
 // DedicatedHostListResult - The list dedicated host operation response.
 type DedicatedHostListResult struct {
-	// REQUIRED; The list of dedicated hosts
+	// REQUIRED; The list of dedicated hosts.
 	Value []*DedicatedHost
 
 	// The URI to fetch the next page of dedicated hosts. Call ListNext() with this URI to fetch the next page of dedicated hosts.
@@ -1495,6 +1519,9 @@ type DedicatedHostProperties struct {
 
 // DedicatedHostSizeListResult - The List Dedicated Host sizes operation response.
 type DedicatedHostSizeListResult struct {
+	// The link to the next page of items.
+	NextLink *string
+
 	// The list of dedicated host sizes.
 	Value []*string
 }
@@ -1564,7 +1591,7 @@ type DisallowedConfiguration struct {
 
 // Disk resource.
 type Disk struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The extended location where the disk will be created. Extended location cannot be changed.
@@ -1576,13 +1603,13 @@ type Disk struct {
 	// The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, StandardSSDZRS, or PremiumV2_LRS.
 	SKU *DiskSKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
 	// The Logical zone list for Disk.
 	Zones []*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; A relative URI containing the ID of the VM that has the disk attached.
@@ -1592,42 +1619,47 @@ type Disk struct {
 	// a value greater than one for disks to allow attaching them to multiple VMs.
 	ManagedByExtended []*string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // DiskAccess - disk access resource.
 type DiskAccess struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The extended location where the disk access will be created. Extended location cannot be changed.
 	ExtendedLocation *ExtendedLocation
 	Properties       *DiskAccessProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // DiskAccessList - The List disk access operation response.
 type DiskAccessList struct {
-	// REQUIRED; A list of disk access resources.
+	// REQUIRED; The DiskAccess items on this page
 	Value []*DiskAccess
 
-	// The uri to fetch the next page of disk access resources. Call ListNext() with this to fetch the next page of disk access
-	// resources.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1651,7 +1683,7 @@ type DiskAccessUpdate struct {
 
 // DiskEncryptionSet - disk encryption set resource.
 type DiskEncryptionSet struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The managed identity for the disk encryption set. It should be given permission on the key vault before it can be used
@@ -1659,26 +1691,28 @@ type DiskEncryptionSet struct {
 	Identity   *EncryptionSetIdentity
 	Properties *EncryptionSetProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // DiskEncryptionSetList - The List disk encryption set operation response.
 type DiskEncryptionSetList struct {
-	// REQUIRED; A list of disk encryption sets.
+	// REQUIRED; The DiskEncryptionSet items on this page
 	Value []*DiskEncryptionSet
 
-	// The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk encryption
-	// sets.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1752,10 +1786,10 @@ type DiskInstanceView struct {
 
 // DiskList - The List Disks operation response.
 type DiskList struct {
-	// REQUIRED; A list of disks.
+	// REQUIRED; The Disk items on this page
 	Value []*Disk
 
-	// The uri to fetch the next page of disks. Call ListNext() with this to fetch the next page of disks.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -1763,6 +1797,9 @@ type DiskList struct {
 type DiskProperties struct {
 	// REQUIRED; Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData
+
+	// Determines how platform treats disk failures
+	AvailabilityPolicy *AvailabilityPolicy
 
 	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default.
 	// Does not apply to Ultra disks.
@@ -1895,13 +1932,16 @@ type DiskRestorePoint struct {
 	// Properties of an incremental disk restore point
 	Properties *DiskRestorePointProperties
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1929,11 +1969,10 @@ type DiskRestorePointInstanceView struct {
 
 // DiskRestorePointList - The List Disk Restore Points operation response.
 type DiskRestorePointList struct {
-	// REQUIRED; A list of disk restore points.
+	// REQUIRED; The DiskRestorePoint items on this page
 	Value []*DiskRestorePoint
 
-	// The uri to fetch the next page of disk restore points. Call ListNext() with this to fetch the next page of disk restore
-	// points.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2037,6 +2076,9 @@ type DiskUpdate struct {
 
 // DiskUpdateProperties - Disk resource update properties.
 type DiskUpdateProperties struct {
+	// Determines how platform treats disk failures
+	AvailabilityPolicy *AvailabilityPolicy
+
 	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default.
 	// Does not apply to Ultra disks.
 	BurstingEnabled *bool
@@ -2213,6 +2255,40 @@ type EncryptionSettingsElement struct {
 	KeyEncryptionKey *KeyVaultAndKeyReference
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // EventGridAndResourceGraph - Specifies eventGridAndResourceGraph related Scheduled Event related configurations.
 type EventGridAndResourceGraph struct {
 	// Specifies if event grid and resource graph is enabled for Scheduled event related configurations.
@@ -2254,7 +2330,7 @@ type Extension struct {
 
 // Gallery - Specifies information about the Shared Image Gallery that you want to create or update.
 type Gallery struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The identity of the gallery, if configured.
@@ -2263,37 +2339,43 @@ type Gallery struct {
 	// Describes the properties of a Shared Image Gallery.
 	Properties *GalleryProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // GalleryApplication - Specifies information about the gallery Application Definition that you want to create or update.
 type GalleryApplication struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a gallery Application Definition.
 	Properties *GalleryApplicationProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2333,11 +2415,10 @@ type GalleryApplicationCustomActionParameter struct {
 
 // GalleryApplicationList - The List Gallery Applications operation response.
 type GalleryApplicationList struct {
-	// REQUIRED; A list of Gallery Applications.
+	// REQUIRED; The GalleryApplication items on this page
 	Value []*GalleryApplication
 
-	// The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this to fetch
-	// the next page of gallery Application Definitions.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2387,22 +2468,25 @@ type GalleryApplicationUpdate struct {
 
 // GalleryApplicationVersion - Specifies information about the gallery Application Version that you want to create or update.
 type GalleryApplicationVersion struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a gallery image version.
 	Properties *GalleryApplicationVersionProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2536,12 +2620,6 @@ type GalleryArtifactSafetyProfileBase struct {
 	AllowDeletionOfReplicatedLocations *bool
 }
 
-// GalleryArtifactSource - The source image from which the Image Version is going to be created.
-type GalleryArtifactSource struct {
-	// REQUIRED; The managed artifact.
-	ManagedImage *ManagedArtifact
-}
-
 // GalleryArtifactVersionFullSource - The source of the gallery artifact version.
 type GalleryArtifactVersionFullSource struct {
 	// The resource Id of the source Community Gallery Image. Only required when using Community Gallery Image as a source.
@@ -2637,22 +2715,25 @@ type GalleryIdentity struct {
 
 // GalleryImage - Specifies information about the gallery image definition that you want to create or update.
 type GalleryImage struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a gallery image definition.
 	Properties *GalleryImageProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2706,7 +2787,7 @@ type GalleryImageProperties struct {
 	// Optional. Must be set to true if the gallery image features are being updated.
 	AllowUpdateImage *bool
 
-	// CPU architecture supported by an OS disk.
+	// The architecture of the image. Applicable to OS disks only.
 	Architecture *Architecture
 
 	// The description of this gallery image definition resource. This property is updatable.
@@ -2764,22 +2845,25 @@ type GalleryImageUpdate struct {
 
 // GalleryImageVersion - Specifies information about the gallery image version that you want to create or update.
 type GalleryImageVersion struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a gallery image version.
 	Properties *GalleryImageVersionProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2906,32 +2990,34 @@ type GalleryImageVersionUpdate struct {
 // GalleryInVMAccessControlProfile - Specifies information about the gallery inVMAccessControlProfile that you want to create
 // or update.
 type GalleryInVMAccessControlProfile struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a gallery inVMAccessControlProfile.
 	Properties *GalleryInVMAccessControlProfileProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // GalleryInVMAccessControlProfileList - The List Gallery InVMAccessControlProfiles operation response.
 type GalleryInVMAccessControlProfileList struct {
-	// REQUIRED; A list of Gallery InVMAccessControlProfiles.
+	// REQUIRED; The GalleryInVMAccessControlProfile items on this page
 	Value []*GalleryInVMAccessControlProfile
 
-	// The uri to fetch the next page of inVMAccessControlProfiles in the gallery. Call ListNext() with this to fetch the next
-	// page of gallery inVMAccessControlProfiles.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -2974,32 +3060,34 @@ type GalleryInVMAccessControlProfileUpdate struct {
 // GalleryInVMAccessControlProfileVersion - Specifies information about the gallery inVMAccessControlProfile version that
 // you want to create or update.
 type GalleryInVMAccessControlProfileVersion struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of an inVMAccessControlProfile version.
 	Properties *GalleryInVMAccessControlProfileVersionProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // GalleryInVMAccessControlProfileVersionList - The List Gallery InVMAccessControlProfile Versions operation response.
 type GalleryInVMAccessControlProfileVersionList struct {
-	// REQUIRED; A list of Gallery InVMAccessControlProfile Versions.
+	// REQUIRED; The GalleryInVMAccessControlProfileVersion items on this page
 	Value []*GalleryInVMAccessControlProfileVersion
 
-	// The uri to fetch the next page of inVMAccessControlProfile versions. Call ListNext() with this to fetch the next page of
-	// gallery inVMAccessControlProfile versions.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -3122,32 +3210,34 @@ type GalleryResourceProfileVersionPropertiesBase struct {
 
 // GallerySoftDeletedResource - The details information of soft-deleted resource.
 type GallerySoftDeletedResource struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a soft-deleted resource.
 	Properties *GallerySoftDeletedResourceProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // GallerySoftDeletedResourceList - The List Soft-deleted Resources operation response.
 type GallerySoftDeletedResourceList struct {
-	// REQUIRED; A list of soft-deleted resources.
+	// REQUIRED; The GallerySoftDeletedResource items on this page
 	Value []*GallerySoftDeletedResource
 
-	// The uri to fetch the next page of soft-deleted resources. Call ListNext() with this to fetch the next page of soft-deleted
-	// resources.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -3203,7 +3293,7 @@ type GalleryUpdate struct {
 
 // GrantAccessData - Data used for requesting a SAS.
 type GrantAccessData struct {
-	// REQUIRED
+	// REQUIRED; The Access Level, accepted values include None, Read, Write.
 	Access *AccessLevel
 
 	// REQUIRED; Time duration in seconds until the SAS access expires.
@@ -3251,7 +3341,7 @@ type HostEndpointSettings struct {
 // machine. If SourceImage is provided, the destination virtual hard drive must not
 // exist.
 type Image struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The extended location of the Image.
@@ -3260,16 +3350,19 @@ type Image struct {
 	// Describes the properties of an Image.
 	Properties *ImageProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3361,7 +3454,7 @@ type ImageDiskReference struct {
 
 // ImageListResult - The List Image operation response.
 type ImageListResult struct {
-	// REQUIRED; The list of Images.
+	// REQUIRED; The list of Images
 	Value []*Image
 
 	// The uri to fetch the next page of Images. Call ListNext() with this to fetch the next page of Images.
@@ -3632,15 +3725,6 @@ type LastPatchInstallationSummary struct {
 	Status *PatchOperationStatus
 }
 
-// LatestGalleryImageVersion - The gallery image version with latest version in a particular region.
-type LatestGalleryImageVersion struct {
-	// The name of the latest version in the region.
-	LatestVersionName *string
-
-	// region of the Gallery Image Version.
-	Location *string
-}
-
 // LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux
 // distributions, see Linux on Azure-Endorsed Distributions
 // [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
@@ -3821,12 +3905,6 @@ type MaintenanceRedeployStatus struct {
 
 	// Start Time for the Pre Maintenance Window.
 	PreMaintenanceWindowStartTime *time.Time
-}
-
-// ManagedArtifact - The managed artifact.
-type ManagedArtifact struct {
-	// REQUIRED; The managed artifact id.
-	ID *string
 }
 
 // ManagedDiskParameters - The parameters of a managed disk.
@@ -4185,37 +4263,53 @@ type OSVersionPropertiesBase struct {
 	Version *string
 }
 
-// OperationListResult - The List Compute Operation operation response.
+// OperationDisplay - Localized display information for this particular operation.
+type OperationDisplay struct {
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string
+
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
+	Operation *string
+
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
+	Provider *string
+
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
+	Resource *string
+}
+
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
-	// READ-ONLY; The list of compute operations
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+
+	// READ-ONLY; List of operations supported by the resource provider
 	Value []*OperationValue
 }
 
-// OperationValue - Describes the properties of a Compute Operation value.
+// OperationValue - Details of a REST API operation, returned from the Resource Provider Operations API
 type OperationValue struct {
-	// Describes the properties of a Compute Operation Value Display.
-	Display *OperationValueDisplay
+	// Localized display information for this particular operation.
+	Display *OperationDisplay
 
-	// READ-ONLY; The name of the compute operation.
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
-	// READ-ONLY; The origin of the compute operation.
-	Origin *string
-}
-
-// OperationValueDisplay - Describes the properties of a Compute Operation Value Display.
-type OperationValueDisplay struct {
-	// READ-ONLY; The description of the operation.
-	Description *string
-
-	// READ-ONLY; The display name of the compute operation.
-	Operation *string
-
-	// READ-ONLY; The resource provider for the operation.
-	Provider *string
-
-	// READ-ONLY; The display name of the resource the operation applies to.
-	Resource *string
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
 // OrchestrationServiceStateInput - The input for OrchestrationServiceState
@@ -4401,23 +4495,26 @@ type PrivateEndpointConnection struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; private endpoint connection Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; private endpoint connection name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; private endpoint connection type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // PrivateEndpointConnectionListResult - A list of private link resources
 type PrivateEndpointConnectionListResult struct {
-	// The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
-	NextLink *string
-
-	// Array of private endpoint connections
+	// REQUIRED; The PrivateEndpointConnection items on this page
 	Value []*PrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
@@ -4486,32 +4583,34 @@ type PropertyUpdatesInProgress struct {
 
 // ProximityPlacementGroup - Specifies information about the proximity placement group.
 type ProximityPlacementGroup struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a Proximity Placement Group.
 	Properties *ProximityPlacementGroupProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the
-	// proximity placement group can be created.
+	// The availability zones.
 	Zones []*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // ProximityPlacementGroupListResult - The List Proximity Placement Group operation response.
 type ProximityPlacementGroupListResult struct {
-	// REQUIRED; The list of proximity placement groups
+	// REQUIRED; The list of proximity placement groups.
 	Value []*ProximityPlacementGroup
 
 	// The URI to fetch the next page of proximity placement groups.
@@ -4575,28 +4674,19 @@ type ProxyAgentSettings struct {
 	WireServer *HostEndpointSettings
 }
 
-// ProxyOnlyResource - The ProxyOnly Resource model definition.
-type ProxyOnlyResource struct {
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// ProxyResource - The resource model definition for an Azure Resource Manager proxy resource. It will not have tags and a
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -4731,21 +4821,18 @@ type ResilientVMDeletionPolicy struct {
 	Enabled *bool
 }
 
-// Resource - The Resource model definition.
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// REQUIRED; Resource location
-	Location *string
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -4911,10 +4998,10 @@ type ResourceSKUZoneDetails struct {
 
 // ResourceSKUsResult - The List Resource Skus operation response.
 type ResourceSKUsResult struct {
-	// REQUIRED; The list of skus available for the subscription.
+	// REQUIRED; The ResourceSku items on this page
 	Value []*ResourceSKU
 
-	// The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource Skus
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -4957,44 +5044,50 @@ type RestorePoint struct {
 	// The restore point properties.
 	Properties *RestorePointProperties
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RestorePointCollection - Create or update Restore Point collection parameters.
 type RestorePointCollection struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The restore point collection properties.
 	Properties *RestorePointCollectionProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // RestorePointCollectionListResult - The List restore point collection operation response.
 type RestorePointCollectionListResult struct {
-	// The uri to fetch the next page of RestorePointCollections. Call ListNext() with this to fetch the next page of RestorePointCollections
-	NextLink *string
-
-	// Gets the list of restore point collections.
+	// REQUIRED; Gets the list of restore point collections.
 	Value []*RestorePointCollection
+
+	// The uri to fetch the next page of RestorePointCollections. Call ListNext() with this to fetch the next page of RestorePointCollections.
+	NextLink *string
 }
 
 // RestorePointCollectionProperties - The restore point collection properties.
@@ -5341,22 +5434,25 @@ type RollingUpgradeRunningStatus struct {
 
 // RollingUpgradeStatusInfo - The status of the latest virtual machine scale set rolling upgrade.
 type RollingUpgradeStatusInfo struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The status of the latest virtual machine scale set rolling upgrade.
 	Properties *RollingUpgradeStatusInfoProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -5561,22 +5657,25 @@ type SSHPublicKeyGenerateKeyPairResult struct {
 
 // SSHPublicKeyResource - Specifies information about the SSH public key.
 type SSHPublicKeyResource struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Properties of the SSH public key.
 	Properties *SSHPublicKeyResourceProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -5600,7 +5699,7 @@ type SSHPublicKeyUpdateResource struct {
 
 // SSHPublicKeysGroupListResult - The list SSH public keys operation response.
 type SSHPublicKeysGroupListResult struct {
-	// REQUIRED; The list of SSH public keys
+	// REQUIRED; The list of SSH public keys.
 	Value []*SSHPublicKeyResource
 
 	// The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to fetch the next page of SSH public keys.
@@ -5802,7 +5901,7 @@ type SharedGalleryImageProperties struct {
 	// managed image. Possible values are: Windows, Linux.
 	OSType *OperatingSystemTypes
 
-	// CPU architecture supported by an OS disk.
+	// The architecture of the image. Applicable to OS disks only.
 	Architecture *Architecture
 
 	// The artifact tags of a shared gallery resource.
@@ -5851,11 +5950,10 @@ type SharedGalleryImageVersion struct {
 
 // SharedGalleryImageVersionList - The List Shared Gallery Image versions operation response.
 type SharedGalleryImageVersionList struct {
-	// REQUIRED; A list of shared gallery images versions.
+	// REQUIRED; The SharedGalleryImageVersion items on this page
 	Value []*SharedGalleryImageVersion
 
-	// The uri to fetch the next page of shared gallery image versions. Call ListNext() with this to fetch the next page of shared
-	// gallery image versions.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -5954,7 +6052,7 @@ type SharingUpdate struct {
 
 // Snapshot resource.
 type Snapshot struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The extended location where the snapshot will be created. Extended location cannot be changed.
@@ -5968,19 +6066,22 @@ type Snapshot struct {
 	// previous snapshot
 	SKU *SnapshotSKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; Unused. Always Null.
 	ManagedBy *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -5989,7 +6090,7 @@ type SnapshotList struct {
 	// REQUIRED; A list of snapshots.
 	Value []*Snapshot
 
-	// The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
+	// The link to the next page of items
 	NextLink *string
 }
 
@@ -6062,6 +6163,9 @@ type SnapshotProperties struct {
 	// READ-ONLY; The disk provisioning state.
 	ProvisioningState *string
 
+	// READ-ONLY; The state of snapshot which determines the access availability of the snapshot.
+	SnapshotAccessState *SnapshotAccessState
+
 	// READ-ONLY; The time when the snapshot was created.
 	TimeCreated *time.Time
 
@@ -6127,6 +6231,9 @@ type SnapshotUpdateProperties struct {
 
 	// Indicates the OS on a snapshot supports hibernation.
 	SupportsHibernation *bool
+
+	// READ-ONLY; The state of snapshot which determines the access availability of the snapshot.
+	SnapshotAccessState *SnapshotAccessState
 }
 
 // SoftDeletePolicy - Contains information about the soft deletion policy of the gallery.
@@ -6221,17 +6328,30 @@ type SupportedCapabilities struct {
 
 	// The disk controllers that an OS disk supports. If set it can be SCSI or SCSI, NVME or NVME, SCSI.
 	DiskControllerTypes *string
+
+	// Refers to the security capability of the disk supported to create a Trusted launch or Confidential VM
+	SupportedSecurityOption *SupportedSecurityOption
 }
 
-// SystemData - The system meta data relating to this resource.
+// SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-	// READ-ONLY; Specifies the time in UTC at which the Cloud Service (extended support) resource was created.
-	// Minimum api-version: 2022-04-04.
+	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-	// READ-ONLY; Specifies the time in UTC at which the Cloud Service (extended support) resource was last modified.
-	// Minimum api-version: 2022-04-04.
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // TargetRegion - Describes the target region information.
@@ -6290,6 +6410,28 @@ type ThrottledRequestsInput struct {
 
 	// Group query result by User Agent.
 	GroupByUserAgent *bool
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // UefiKey - A UEFI key signature.
@@ -6631,7 +6773,7 @@ type VirtualHardDisk struct {
 
 // VirtualMachine - Describes a Virtual Machine.
 type VirtualMachine struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The extended location of the Virtual Machine.
@@ -6654,30 +6796,33 @@ type VirtualMachine struct {
 	// Describes the properties of a Virtual Machine.
 	Properties *VirtualMachineProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// The virtual machine zones.
+	// The availability zones.
 	Zones []*string
 
 	// READ-ONLY; Etag is property returned in Create/Update/Get response of the VM, so that customer can supply it in the header
 	// to ensure optimistic updates.
 	Etag *string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; ManagedBy is set to Virtual Machine Scale Set(VMSS) flex ARM resourceID, if the VM is part of the VMSS. This
 	// property is used by platform for internal resource group delete optimization.
 	ManagedBy *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
 	// READ-ONLY; The virtual machine child extension resources.
 	Resources []*VirtualMachineExtension
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -6756,22 +6901,25 @@ type VirtualMachineCaptureResult struct {
 
 // VirtualMachineExtension - Describes a Virtual Machine Extension.
 type VirtualMachineExtension struct {
-	// Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a Virtual Machine Extension.
 	Properties *VirtualMachineExtensionProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -6789,22 +6937,25 @@ type VirtualMachineExtensionHandlerInstanceView struct {
 
 // VirtualMachineExtensionImage - Describes a Virtual Machine Extension Image.
 type VirtualMachineExtensionImage struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a Virtual Machine Extension Image.
 	Properties *VirtualMachineExtensionImageProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -7018,7 +7169,9 @@ type VirtualMachineImageProperties struct {
 
 	// Describes automatic OS upgrade properties on the image.
 	AutomaticOSUpgradeProperties *AutomaticOSUpgradeProperties
-	DataDiskImages               []*DataDiskImage
+
+	// The list of data disk images information.
+	DataDiskImages []*DataDiskImage
 
 	// Specifies disallowed configuration for the VirtualMachine created from the image
 	Disallowed *DisallowedConfiguration
@@ -7059,11 +7212,10 @@ type VirtualMachineImageResource struct {
 
 // VirtualMachineImagesWithPropertiesListResult - The List Virtual Machine Images operation response.
 type VirtualMachineImagesWithPropertiesListResult struct {
-	// The URI to fetch the next page of virtual machine images. Call ListNext() with this URI to fetch the next page of virtual
-	// machine images.
+	// The link to the next page of items
 	NextLink *string
 
-	// The list of virtual machine images.
+	// The VirtualMachineImage items on this page
 	Value []*VirtualMachineImage
 }
 
@@ -7179,7 +7331,7 @@ type VirtualMachineInstanceView struct {
 	// READ-ONLY; [Preview Feature] Specifies whether the VM is currently in or out of the Standby Pool.
 	IsVMInStandbyPool *bool
 
-	// READ-ONLY; The application health status for the VM, provided through Application Health Extension.
+	// READ-ONLY; The health status for the VM.
 	VMHealth *VirtualMachineHealthStatus
 }
 
@@ -7483,22 +7635,25 @@ type VirtualMachineReimageParameters struct {
 
 // VirtualMachineRunCommand - Describes a Virtual Machine run command.
 type VirtualMachineRunCommand struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Describes the properties of a Virtual Machine run command.
 	Properties *VirtualMachineRunCommandProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -7626,7 +7781,7 @@ type VirtualMachineRunCommandUpdate struct {
 
 // VirtualMachineRunCommandsListResult - The List run command operation response
 type VirtualMachineRunCommandsListResult struct {
-	// REQUIRED; The list of run commands
+	// REQUIRED; The list of run commands.
 	Value []*VirtualMachineRunCommand
 
 	// The uri to fetch the next page of run commands.
@@ -7635,7 +7790,7 @@ type VirtualMachineRunCommandsListResult struct {
 
 // VirtualMachineScaleSet - Describes a Virtual Machine Scale Set.
 type VirtualMachineScaleSet struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The extended location of the Virtual Machine Scale Set.
@@ -7657,23 +7812,26 @@ type VirtualMachineScaleSet struct {
 	// The virtual machine scale set sku.
 	SKU *SKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// The virtual machine scale set zones.
+	// The availability zones.
 	Zones []*string
 
 	// READ-ONLY; Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the header
 	// to ensure optimistic updates
 	Etag *string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -7723,7 +7881,7 @@ type VirtualMachineScaleSetDataDisk struct {
 
 // VirtualMachineScaleSetExtension - Describes a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtension struct {
-	// The name of the extension.
+	// Resource name
 	Name *string
 
 	// Describes the properties of a Virtual Machine Scale Set Extension.
@@ -8041,9 +8199,8 @@ type VirtualMachineScaleSetNetworkProfile struct {
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
 	HealthProbe *APIEntityReference
 
-	// Specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations
-	// for Virtual Machine Scale Set with orchestration mode 'Flexible'. For
-	// support of all network properties, use '2022-11-01'.
+	// specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations
+	// for Virtual Machine Scale Set with orchestration mode 'Flexible'
 	NetworkAPIVersion *NetworkAPIVersion
 
 	// The list of network configurations.
@@ -8344,7 +8501,9 @@ type VirtualMachineScaleSetStorageProfile struct {
 	// Specifies the parameters that are used to add data disks to the virtual machines in the scale set. For more information
 	// about disks, see About disks and VHDs for Azure virtual machines
 	// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
-	DataDisks          []*VirtualMachineScaleSetDataDisk
+	DataDisks []*VirtualMachineScaleSetDataDisk
+
+	// Specifies the disk controller type configured for the virtual machines in the scale set. Minimum api-version: 2022-08-01
 	DiskControllerType *string
 
 	// Specifies information about the image to use. You can specify information about platform images, marketplace images, or
@@ -8473,9 +8632,8 @@ type VirtualMachineScaleSetUpdateNetworkProfile struct {
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
 	HealthProbe *APIEntityReference
 
-	// Specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations
-	// for Virtual Machine Scale Set with orchestration mode 'Flexible'. For
-	// support of all network properties, use '2022-11-01'.
+	// specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations
+	// for Virtual Machine Scale Set with orchestration mode 'Flexible'
 	NetworkAPIVersion *NetworkAPIVersion
 
 	// The list of network configurations.
@@ -8616,7 +8774,11 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties struct {
 // VirtualMachineScaleSetUpdateStorageProfile - Describes a virtual machine scale set storage profile.
 type VirtualMachineScaleSetUpdateStorageProfile struct {
 	// The data disks.
-	DataDisks          []*VirtualMachineScaleSetDataDisk
+	DataDisks []*VirtualMachineScaleSetDataDisk
+
+	// Specifies the disk controller type configured for the virtual machines in the scale set. Note: You need to deallocate the
+	// virtual machines in the scale set before updating its disk controller type
+	// based on the upgrade mode configured for the scale set. Minimum api-version: 2022-08-01
 	DiskControllerType *string
 
 	// The image reference.
@@ -8668,7 +8830,7 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 
 // VirtualMachineScaleSetVM - Describes a virtual machine scale set virtual machine.
 type VirtualMachineScaleSetVM struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The identity of the virtual machine, if configured.
@@ -8684,20 +8846,20 @@ type VirtualMachineScaleSetVM struct {
 	// Describes the properties of a virtual machine scale set virtual machine.
 	Properties *VirtualMachineScaleSetVMProperties
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Etag is property returned in Update/Get response of the VMSS VM, so that customer can supply it in the header
 	// to ensure optimistic updates.
 	Etag *string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; The virtual machine instance ID.
 	InstanceID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
 	// READ-ONLY; The virtual machine child extension resources.
@@ -8706,7 +8868,10 @@ type VirtualMachineScaleSetVM struct {
 	// READ-ONLY; The virtual machine SKU.
 	SKU *SKU
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 
 	// READ-ONLY; The virtual machine zones.
@@ -8724,7 +8889,7 @@ type VirtualMachineScaleSetVMExtension struct {
 	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the extension.
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; Resource type
@@ -8830,8 +8995,7 @@ type VirtualMachineScaleSetVMInstanceView struct {
 	// placement enabled. Minimum api-version: 2020-06-01.
 	AssignedHost *string
 
-	// READ-ONLY; The application health status for the VM, provided through Application Health Extension or Load Balancer Health
-	// Probes.
+	// READ-ONLY; The health status for the VM.
 	VMHealth *VirtualMachineHealthStatus
 }
 
@@ -8841,7 +9005,7 @@ type VirtualMachineScaleSetVMListResult struct {
 	Value []*VirtualMachineScaleSetVM
 
 	// The uri to fetch the next page of Virtual Machine Scale Set VMs. Call ListNext() with this to fetch the next page of VMSS
-	// VMs
+	// VMs.
 	NextLink *string
 }
 
@@ -9054,6 +9218,9 @@ type VirtualMachineSize struct {
 
 // VirtualMachineSizeListResult - The List Virtual Machine operation response.
 type VirtualMachineSizeListResult struct {
+	// The link to the next page of items.
+	NextLink *string
+
 	// The list of virtual machine sizes.
 	Value []*VirtualMachineSize
 }

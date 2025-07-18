@@ -46,4 +46,9 @@ func main() {
 
 	// fix fakes bug
 	regexReplace("fake/server.go", `req\.URL\.EscapedPath\(\)`, `strings.TrimPrefix(req.URL.EscapedPath(), "/v1")`)
+
+	// surpress versions constant
+	regexReplace("constants.go", `Versions`, "versions")
+	regexReplace("client.go", `Versions`, "versions")
+	regexReplace("constants.go", `Possibleversions`, "possibleVersions")
 }

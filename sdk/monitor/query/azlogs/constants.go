@@ -46,17 +46,17 @@ func PossibleColumnTypeValues() []ColumnType {
 	}
 }
 
-// Versions - Service API versions
-type Versions string
+// versions - Service API versions
+type versions string
 
 const (
-	// VersionsV1 - The V1 API version.
-	VersionsV1 Versions = "v1"
+	// versionsV1 - The V1 API version.
+	versionsV1 versions = "v1"
 )
 
-// PossibleVersionsValues returns the possible values for the Versions const type.
-func PossibleVersionsValues() []Versions {
-	return []Versions{
-		VersionsV1,
+// possibleVersionsValues returns the possible values for the versions const type.
+func possibleVersionsValues() []versions {
+	return []versions{
+		versionsV1,
 	}
 }

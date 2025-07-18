@@ -21,7 +21,7 @@ import (
 type Client struct {
 	internal   *azcore.Client
 	endpoint   string
-	apiVersion Versions
+	apiVersion versions
 }
 
 // QueryBatch - Execute a batch of Analytics queries

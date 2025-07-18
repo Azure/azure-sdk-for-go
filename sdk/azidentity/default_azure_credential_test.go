@@ -124,7 +124,8 @@ func TestDefaultAzureCredential_CLICredentialOptions(t *testing.T) {
 	for _, s := range cred.chain.sources {
 		if az == nil {
 			az, _ = s.(*AzureCLICredential)
-		} else if azd == nil {
+		}
+		if azd == nil {
 			azd, _ = s.(*AzureDeveloperCLICredential)
 		}
 	}

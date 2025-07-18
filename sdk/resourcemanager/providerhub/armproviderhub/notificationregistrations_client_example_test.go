@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/NotificationRegistrations_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/NotificationRegistrations_Get.json
 func ExampleNotificationRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,15 @@ func ExampleNotificationRegistrationsClient_Get() {
 	// res.NotificationRegistration = armproviderhub.NotificationRegistration{
 	// 	Name: to.Ptr("fooNotificationRegistration"),
 	// 	Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/notificationregistrations"),
-	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationregistrations/fooNotificationRegistration"),
+	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationregistrations/fooNotificationRegistration"),
+	// 	SystemData: &armproviderhub.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armproviderhub.NotificationRegistrationProperties{
 	// 		IncludedEvents: []*string{
 	// 			to.Ptr("*/write"),
@@ -62,7 +70,7 @@ func ExampleNotificationRegistrationsClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/NotificationRegistrations_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/NotificationRegistrations_CreateOrUpdate.json
 func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +111,15 @@ func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 	// res.NotificationRegistration = armproviderhub.NotificationRegistration{
 	// 	Name: to.Ptr("fooNotificationRegistration"),
 	// 	Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/notificationregistrations"),
-	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationregistrations/fooNotificationRegistration"),
+	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationregistrations/fooNotificationRegistration"),
+	// 	SystemData: &armproviderhub.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armproviderhub.NotificationRegistrationProperties{
 	// 		IncludedEvents: []*string{
 	// 			to.Ptr("*/write"),
@@ -126,7 +142,7 @@ func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/NotificationRegistrations_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/NotificationRegistrations_Delete.json
 func ExampleNotificationRegistrationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +159,7 @@ func ExampleNotificationRegistrationsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/NotificationRegistrations_ListByProviderRegistration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/NotificationRegistrations_ListByProviderRegistration.json
 func ExampleNotificationRegistrationsClient_NewListByProviderRegistrationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,6 +185,16 @@ func ExampleNotificationRegistrationsClient_NewListByProviderRegistrationPager()
 		// 	Value: []*armproviderhub.NotificationRegistration{
 		// 		{
 		// 			Name: to.Ptr("fooNotificationRegistration"),
+		// 			Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/notificationRegistration"),
+		// 			ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationRegistration/2020week01"),
+		// 			SystemData: &armproviderhub.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 			},
 		// 			Properties: &armproviderhub.NotificationRegistrationProperties{
 		// 				IncludedEvents: []*string{
 		// 					to.Ptr("*/write"),
@@ -191,6 +217,16 @@ func ExampleNotificationRegistrationsClient_NewListByProviderRegistrationPager()
 		// 					},
 		// 					{
 		// 						Name: to.Ptr("barNotificationRegistration"),
+		// 						Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/notificationRegistration"),
+		// 						ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationRegistration/2020week01"),
+		// 						SystemData: &armproviderhub.SystemData{
+		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 							CreatedBy: to.Ptr("string"),
+		// 							CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 							LastModifiedBy: to.Ptr("string"),
+		// 							LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 						},
 		// 						Properties: &armproviderhub.NotificationRegistrationProperties{
 		// 							IncludedEvents: []*string{
 		// 								to.Ptr("*/delete")},

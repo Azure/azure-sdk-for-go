@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/DefaultRollouts_Get.json
 func ExampleDefaultRolloutsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,15 @@ func ExampleDefaultRolloutsClient_Get() {
 	// res.DefaultRollout = armproviderhub.DefaultRollout{
 	// 	Name: to.Ptr("Microsoft.Contoso/2020week10"),
 	// 	Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+	// 	SystemData: &armproviderhub.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armproviderhub.DefaultRolloutProperties{
 	// 		ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
@@ -49,6 +57,9 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 					to.Ptr("centraluseuap")},
 	// 					SkipRegions: []*string{
 	// 						to.Ptr("brazilus")},
+	// 					},
+	// 					ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
+	// 						Enabled: to.Ptr(true),
 	// 					},
 	// 					HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
 	// 						Regions: []*string{
@@ -70,7 +81,7 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 								ProviderRegistration: &armproviderhub.DefaultRolloutSpecificationProviderRegistration{
 	// 									Name: to.Ptr("Microsoft.Contoso"),
 	// 									Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations"),
-	// 									ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
+	// 									ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 									Properties: &armproviderhub.ProviderRegistrationProperties{
 	// 										Capabilities: []*armproviderhub.ResourceProviderCapabilities{
 	// 											{
@@ -82,107 +93,114 @@ func ExampleDefaultRolloutsClient_Get() {
 	// 												QuotaID: to.Ptr("CSP_MG_2017-12-01"),
 	// 										}},
 	// 										Management: &armproviderhub.ResourceProviderManifestPropertiesManagement{
-	// 											IncidentContactEmail: to.Ptr("helpme@contoso.com"),
-	// 											IncidentRoutingService: to.Ptr(""),
-	// 											IncidentRoutingTeam: to.Ptr(""),
-	// 											ManifestOwners: []*string{
-	// 												to.Ptr("SPARTA-PlatformServiceAdministrator")},
-	// 												ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceProviderManagementResourceAccessPolicyNotSpecified),
-	// 											},
-	// 											Namespace: to.Ptr("microsoft.contoso"),
-	// 											ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
-	// 												{
-	// 													ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
-	// 													RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
-	// 											}},
-	// 											ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
-	// 											ProviderVersion: to.Ptr("2.0"),
-	// 											ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
-	// 												ProviderAuthentication: &armproviderhub.MetadataProviderAuthentication{
-	// 													AllowedAudiences: []*string{
-	// 														to.Ptr("https://management.core.windows.net/")},
-	// 													},
+	// 											AuthorizationOwners: []*string{
+	// 												to.Ptr("RPAAS-PlatformServiceAdministrator")},
+	// 												IncidentContactEmail: to.Ptr("helpme@contoso.com"),
+	// 												IncidentRoutingService: to.Ptr(""),
+	// 												IncidentRoutingTeam: to.Ptr(""),
+	// 												ManifestOwners: []*string{
+	// 													to.Ptr("SPARTA-PlatformServiceAdministrator")},
+	// 													ResourceAccessPolicy: to.Ptr(armproviderhub.ResourceAccessPolicyNotSpecified),
 	// 												},
-	// 												ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
+	// 												Namespace: to.Ptr("microsoft.contoso"),
+	// 												ProviderAuthorizations: []*armproviderhub.ResourceProviderAuthorization{
+	// 													{
+	// 														ApplicationID: to.Ptr("1a3b5c7d-8e9f-10g1-1h12-i13j14k1"),
+	// 														RoleDefinitionID: to.Ptr("123456bf-gkur-2098-b890-98da392a00b2"),
+	// 												}},
+	// 												ProviderType: to.Ptr(armproviderhub.ResourceProviderType("Internal, Hidden")),
+	// 												ProviderVersion: to.Ptr("2.0"),
+	// 												ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
+	// 													ProviderAuthentication: &armproviderhub.MetadataProviderAuthentication{
+	// 														AllowedAudiences: []*string{
+	// 															to.Ptr("https://management.core.windows.net/")},
+	// 														},
+	// 													},
+	// 													ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
+	// 												},
 	// 											},
-	// 										},
-	// 										ResourceTypeRegistrations: []*armproviderhub.ResourceTypeRegistration{
-	// 											{
-	// 												Name: to.Ptr("Microsoft.Contoso/employees"),
-	// 												Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourceTypeRegistrations"),
-	// 												ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourceTypeRegistrations/employees"),
-	// 												Properties: &armproviderhub.ResourceTypeRegistrationProperties{
-	// 													EnableAsyncOperation: to.Ptr(false),
-	// 													EnableThirdPartyS2S: to.Ptr(false),
-	// 													Endpoints: []*armproviderhub.ResourceTypeEndpoint{
-	// 														{
-	// 															APIVersions: []*string{
-	// 																to.Ptr("2018-11-01-preview"),
-	// 																to.Ptr("2020-01-01-preview"),
-	// 																to.Ptr("2019-01-01")},
-	// 																Locations: []*string{
-	// 																	to.Ptr("East Asia"),
-	// 																	to.Ptr("East US"),
-	// 																	to.Ptr("North Europe"),
-	// 																	to.Ptr("Southeast Asia"),
-	// 																	to.Ptr("East US 2 EUAP"),
-	// 																	to.Ptr("Central US EUAP"),
-	// 																	to.Ptr("West Europe"),
-	// 																	to.Ptr("West US"),
-	// 																	to.Ptr("West Central US"),
-	// 																	to.Ptr("West US 2")},
-	// 																	RequiredFeatures: []*string{
-	// 																		to.Ptr("Microsoft.Contoso/RPaaSSampleApp")},
-	// 																}},
-	// 																ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
-	// 																Regionality: to.Ptr(armproviderhub.RegionalityRegional),
-	// 																RoutingType: to.Ptr(armproviderhub.RoutingTypeDefault),
-	// 																SwaggerSpecifications: []*armproviderhub.SwaggerSpecification{
-	// 																	{
-	// 																		APIVersions: []*string{
-	// 																			to.Ptr("2018-11-01-preview"),
-	// 																			to.Ptr("2020-01-01-preview"),
-	// 																			to.Ptr("2019-01-01")},
-	// 																			SwaggerSpecFolderURI: to.Ptr("https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/"),
+	// 											ResourceTypeRegistrations: []*armproviderhub.ResourceTypeRegistration{
+	// 												{
+	// 													Name: to.Ptr("Microsoft.Contoso/employees"),
+	// 													Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourceTypeRegistrations"),
+	// 													ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourceTypeRegistrations/employees"),
+	// 													Properties: &armproviderhub.ResourceTypeRegistrationProperties{
+	// 														EnableAsyncOperation: to.Ptr(false),
+	// 														EnableThirdPartyS2S: to.Ptr(false),
+	// 														Endpoints: []*armproviderhub.ResourceTypeEndpoint{
+	// 															{
+	// 																APIVersions: []*string{
+	// 																	to.Ptr("2018-11-01-preview"),
+	// 																	to.Ptr("2020-01-01-preview"),
+	// 																	to.Ptr("2019-01-01")},
+	// 																	Locations: []*string{
+	// 																		to.Ptr("East Asia"),
+	// 																		to.Ptr("East US"),
+	// 																		to.Ptr("North Europe"),
+	// 																		to.Ptr("Southeast Asia"),
+	// 																		to.Ptr("East US 2 EUAP"),
+	// 																		to.Ptr("Central US EUAP"),
+	// 																		to.Ptr("West Europe"),
+	// 																		to.Ptr("West US"),
+	// 																		to.Ptr("West Central US"),
+	// 																		to.Ptr("West US 2")},
+	// 																		RequiredFeatures: []*string{
+	// 																			to.Ptr("Microsoft.Contoso/RPaaSSampleApp")},
 	// 																	}},
-	// 																},
-	// 														}},
-	// 														RestOfTheWorldGroupOne: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupOne{
-	// 															Regions: []*string{
-	// 																to.Ptr("koreacentral"),
-	// 																to.Ptr("francecentral"),
-	// 																to.Ptr("australiacentral"),
-	// 																to.Ptr("westus"),
-	// 																to.Ptr("allotherregions")},
-	// 																WaitDuration: to.Ptr("PT4H"),
-	// 															},
-	// 															RestOfTheWorldGroupTwo: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupTwo{
+	// 																	ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
+	// 																	Regionality: to.Ptr(armproviderhub.RegionalityRegional),
+	// 																	RoutingType: to.Ptr(armproviderhub.RoutingTypeDefault),
+	// 																	SwaggerSpecifications: []*armproviderhub.SwaggerSpecification{
+	// 																		{
+	// 																			APIVersions: []*string{
+	// 																				to.Ptr("2018-11-01-preview"),
+	// 																				to.Ptr("2020-01-01-preview"),
+	// 																				to.Ptr("2019-01-01")},
+	// 																				SwaggerSpecFolderURI: to.Ptr("https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/"),
+	// 																		}},
+	// 																	},
+	// 															}},
+	// 															RestOfTheWorldGroupOne: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupOne{
 	// 																Regions: []*string{
-	// 																	to.Ptr("germanynorth"),
-	// 																	to.Ptr("norwayeast"),
+	// 																	to.Ptr("koreacentral"),
+	// 																	to.Ptr("francecentral"),
+	// 																	to.Ptr("australiacentral"),
+	// 																	to.Ptr("westus"),
 	// 																	to.Ptr("allotherregions")},
 	// 																	WaitDuration: to.Ptr("PT4H"),
 	// 																},
-	// 															},
-	// 															Status: &armproviderhub.DefaultRolloutPropertiesStatus{
-	// 																CompletedRegions: []*string{
-	// 																	to.Ptr("brazilus"),
-	// 																	to.Ptr("eastus2euap"),
-	// 																	to.Ptr("centraluseuap"),
-	// 																	to.Ptr("allcompletedregions")},
-	// 																	FailedOrSkippedRegions: map[string]*armproviderhub.ExtendedErrorInfo{
-	// 																		"westus2": &armproviderhub.ExtendedErrorInfo{
-	// 																			Code: to.Ptr("RolloutStoppedByUser"),
-	// 																			Message: to.Ptr("Rollout was explicitly stopped by the user."),
-	// 																		},
+	// 																RestOfTheWorldGroupTwo: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupTwo{
+	// 																	Regions: []*string{
+	// 																		to.Ptr("germanynorth"),
+	// 																		to.Ptr("norwayeast"),
+	// 																		to.Ptr("allotherregions")},
+	// 																		WaitDuration: to.Ptr("PT4H"),
 	// 																	},
-	// 																	SubscriptionReregistrationResult: to.Ptr(armproviderhub.SubscriptionReregistrationResultConditionalUpdate),
 	// 																},
-	// 															},
-	// 														}
+	// 																Status: &armproviderhub.DefaultRolloutPropertiesStatus{
+	// 																	CompletedRegions: []*string{
+	// 																		to.Ptr("brazilus"),
+	// 																		to.Ptr("eastus2euap"),
+	// 																		to.Ptr("centraluseuap"),
+	// 																		to.Ptr("allcompletedregions")},
+	// 																		FailedOrSkippedRegions: map[string]*armproviderhub.ExtendedErrorInfo{
+	// 																			"westus2": &armproviderhub.ExtendedErrorInfo{
+	// 																				Code: to.Ptr("RolloutStoppedByUser"),
+	// 																				Message: to.Ptr("Rollout was explicitly stopped by the user."),
+	// 																			},
+	// 																		},
+	// 																		ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
+	// 																			CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
+	// 																			IsCheckedIn: to.Ptr(true),
+	// 																			StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+	// 																		},
+	// 																		SubscriptionReregistrationResult: to.Ptr(armproviderhub.SubscriptionReregistrationResultConditionalUpdate),
+	// 																	},
+	// 																},
+	// 															}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/DefaultRollouts_Delete.json
 func ExampleDefaultRolloutsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +217,7 @@ func ExampleDefaultRolloutsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/DefaultRollouts_CreateOrUpdate.json
 func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,6 +234,9 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 				Canary: &armproviderhub.DefaultRolloutSpecificationCanary{
 					SkipRegions: []*string{
 						to.Ptr("eastus2euap")},
+				},
+				ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
+					Enabled: to.Ptr(true),
 				},
 				RestOfTheWorldGroupTwo: &armproviderhub.DefaultRolloutSpecificationRestOfTheWorldGroupTwo{
 					WaitDuration: to.Ptr("PT4H"),
@@ -236,7 +257,15 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// res.DefaultRollout = armproviderhub.DefaultRollout{
 	// 	Name: to.Ptr("Microsoft.Contoso/2020week10"),
 	// 	Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+	// 	ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+	// 	SystemData: &armproviderhub.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 	},
 	// 	Properties: &armproviderhub.DefaultRolloutProperties{
 	// 		ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
@@ -286,12 +315,17 @@ func ExampleDefaultRolloutsClient_BeginCreateOrUpdate() {
 	// 										to.Ptr("eastus2euap"),
 	// 										to.Ptr("centraluseuap"),
 	// 										to.Ptr("allcompletedregions")},
+	// 										ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
+	// 											CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
+	// 											IsCheckedIn: to.Ptr(true),
+	// 											StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+	// 										},
 	// 									},
 	// 								},
 	// 							}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_ListByProviderRegistration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/DefaultRollouts_ListByProviderRegistration.json
 func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +352,15 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Contoso/2020week01"),
 		// 			Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-		// 			ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week01"),
+		// 			ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week01"),
+		// 			SystemData: &armproviderhub.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 			},
 		// 			Properties: &armproviderhub.DefaultRolloutProperties{
 		// 				ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 				Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
@@ -327,6 +369,9 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 							to.Ptr("brazilus"),
 		// 							to.Ptr("eastus2euap"),
 		// 							to.Ptr("centraluseuap")},
+		// 						},
+		// 						ExpeditedRollout: &armproviderhub.DefaultRolloutSpecificationExpeditedRollout{
+		// 							Enabled: to.Ptr(true),
 		// 						},
 		// 						HighTraffic: &armproviderhub.DefaultRolloutSpecificationHighTraffic{
 		// 							Regions: []*string{
@@ -368,13 +413,26 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 												to.Ptr("eastus2euap"),
 		// 												to.Ptr("centraluseuap"),
 		// 												to.Ptr("allcompletedregions")},
+		// 												ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
+		// 													CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
+		// 													IsCheckedIn: to.Ptr(true),
+		// 													StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+		// 												},
 		// 											},
 		// 										},
 		// 									},
 		// 									{
 		// 										Name: to.Ptr("Microsoft.Contoso/2020week10"),
 		// 										Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
-		// 										ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+		// 										ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
+		// 										SystemData: &armproviderhub.SystemData{
+		// 											CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 											CreatedBy: to.Ptr("string"),
+		// 											CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 											LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.107Z"); return t}()),
+		// 											LastModifiedBy: to.Ptr("string"),
+		// 											LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 										},
 		// 										Properties: &armproviderhub.DefaultRolloutProperties{
 		// 											ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 											Specification: &armproviderhub.DefaultRolloutPropertiesSpecification{
@@ -430,6 +488,11 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 		// 																					Message: to.Ptr("Rollout was explicitly stopped by the user."),
 		// 																				},
 		// 																			},
+		// 																			ManifestCheckinStatus: &armproviderhub.DefaultRolloutStatusManifestCheckinStatus{
+		// 																				CommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
+		// 																				IsCheckedIn: to.Ptr(true),
+		// 																				StatusMessage: to.Ptr("Manifest is successfully merged. Use the Default/Custom rollout (http://aka.ms/rpaasrollout) to roll out the manifest in ARM."),
+		// 																			},
 		// 																		},
 		// 																	},
 		// 															}},
@@ -437,7 +500,7 @@ func ExampleDefaultRolloutsClient_NewListByProviderRegistrationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/DefaultRollouts_Stop.json
 func ExampleDefaultRolloutsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,67 +13,87 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
-// APIKeysClient - Operations on API Keys under a given Nginx deployment.
-// Don't use this type directly, use NewAPIKeysClient() instead.
-type APIKeysClient struct {
+// WafPoliciesClient - Operations on WAF policies under a given Nginx deployment.
+// Don't use this type directly, use NewWafPoliciesClient() instead.
+type WafPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAPIKeysClient creates a new instance of APIKeysClient with the specified values.
+// NewWafPoliciesClient creates a new instance of WafPoliciesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIKeysClient, error) {
+func NewWafPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WafPoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &APIKeysClient{
+	client := &WafPoliciesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Creates a new API key or replaces an existing one.
+// BeginCreateOrUpdate - Create or update a WAF policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - nginxDeploymentName - The name of the Nginx deployment resource.
-//   - apiKeyName - The name of the API Key resource.
-//   - resource - The API key resource to create or update.
-//   - options - APIKeysClientCreateOrUpdateOptions contains the optional parameters for the APIKeysClient.CreateOrUpdate method.
-func (client *APIKeysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, nginxDeploymentName string, apiKeyName string, resource APIKeyRequest, options *APIKeysClientCreateOrUpdateOptions) (APIKeysClientCreateOrUpdateResponse, error) {
+//   - wafPolicyName - The name of the WafPolicy
+//   - resource - Resource create parameters.
+//   - options - WafPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the WafPoliciesClient.BeginCreateOrUpdate
+//     method.
+func (client *WafPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, resource WafPolicy, options *WafPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[WafPoliciesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, nginxDeploymentName, wafPolicyName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WafPoliciesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WafPoliciesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create or update a WAF policy.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
+func (client *WafPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, resource WafPolicy, options *WafPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "APIKeysClient.CreateOrUpdate"
+	const operationName = "WafPoliciesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, nginxDeploymentName, apiKeyName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, nginxDeploymentName, wafPolicyName, resource, options)
 	if err != nil {
-		return APIKeysClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return APIKeysClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return APIKeysClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APIKeysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, apiKeyName string, resource APIKeyRequest, _ *APIKeysClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/apiKeys/{apiKeyName}"
+func (client *WafPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, resource WafPolicy, _ *WafPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -86,10 +106,10 @@ func (client *APIKeysClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter nginxDeploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nginxDeploymentName}", url.PathEscape(nginxDeploymentName))
-	if apiKeyName == "" {
-		return nil, errors.New("parameter apiKeyName cannot be empty")
+	if wafPolicyName == "" {
+		return nil, errors.New("parameter wafPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiKeyName}", url.PathEscape(apiKeyName))
+	urlPath = strings.ReplaceAll(urlPath, "{wafPolicyName}", url.PathEscape(wafPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -105,59 +125,42 @@ func (client *APIKeysClient) createOrUpdateCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *APIKeysClient) createOrUpdateHandleResponse(resp *http.Response) (APIKeysClientCreateOrUpdateResponse, error) {
-	result := APIKeysClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return APIKeysClientCreateOrUpdateResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.APIKey); err != nil {
-		return APIKeysClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginDelete - Deletes the specified API key.
+// BeginDelete - Delete a specific WAF policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - nginxDeploymentName - The name of the Nginx deployment resource.
-//   - apiKeyName - The name of the API Key resource.
-//   - options - APIKeysClientBeginDeleteOptions contains the optional parameters for the APIKeysClient.BeginDelete method.
-func (client *APIKeysClient) BeginDelete(ctx context.Context, resourceGroupName string, nginxDeploymentName string, apiKeyName string, options *APIKeysClientBeginDeleteOptions) (*runtime.Poller[APIKeysClientDeleteResponse], error) {
+//   - wafPolicyName - The name of the WafPolicy
+//   - options - WafPoliciesClientBeginDeleteOptions contains the optional parameters for the WafPoliciesClient.BeginDelete method.
+func (client *WafPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, options *WafPoliciesClientBeginDeleteOptions) (*runtime.Poller[WafPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, nginxDeploymentName, apiKeyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, nginxDeploymentName, wafPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[APIKeysClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WafPoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[APIKeysClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WafPoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes the specified API key.
+// Delete - Delete a specific WAF policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-func (client *APIKeysClient) deleteOperation(ctx context.Context, resourceGroupName string, nginxDeploymentName string, apiKeyName string, options *APIKeysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *WafPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, options *WafPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "APIKeysClient.BeginDelete"
+	const operationName = "WafPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, nginxDeploymentName, apiKeyName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, nginxDeploymentName, wafPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -173,8 +176,8 @@ func (client *APIKeysClient) deleteOperation(ctx context.Context, resourceGroupN
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, apiKeyName string, _ *APIKeysClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/apiKeys/{apiKeyName}"
+func (client *WafPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, _ *WafPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -187,10 +190,10 @@ func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter nginxDeploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nginxDeploymentName}", url.PathEscape(nginxDeploymentName))
-	if apiKeyName == "" {
-		return nil, errors.New("parameter apiKeyName cannot be empty")
+	if wafPolicyName == "" {
+		return nil, errors.New("parameter wafPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiKeyName}", url.PathEscape(apiKeyName))
+	urlPath = strings.ReplaceAll(urlPath, "{wafPolicyName}", url.PathEscape(wafPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -202,39 +205,39 @@ func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// Get - Retrieves the properties of a specific API key.
+// Get - Read a specific WAF policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - nginxDeploymentName - The name of the Nginx deployment resource.
-//   - apiKeyName - The name of the API Key resource.
-//   - options - APIKeysClientGetOptions contains the optional parameters for the APIKeysClient.Get method.
-func (client *APIKeysClient) Get(ctx context.Context, resourceGroupName string, nginxDeploymentName string, apiKeyName string, options *APIKeysClientGetOptions) (APIKeysClientGetResponse, error) {
+//   - wafPolicyName - The name of the WafPolicy
+//   - options - WafPoliciesClientGetOptions contains the optional parameters for the WafPoliciesClient.Get method.
+func (client *WafPoliciesClient) Get(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, options *WafPoliciesClientGetOptions) (WafPoliciesClientGetResponse, error) {
 	var err error
-	const operationName = "APIKeysClient.Get"
+	const operationName = "WafPoliciesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, nginxDeploymentName, apiKeyName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, nginxDeploymentName, wafPolicyName, options)
 	if err != nil {
-		return APIKeysClientGetResponse{}, err
+		return WafPoliciesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return APIKeysClientGetResponse{}, err
+		return WafPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return APIKeysClientGetResponse{}, err
+		return WafPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, apiKeyName string, _ *APIKeysClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/apiKeys/{apiKeyName}"
+func (client *WafPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, wafPolicyName string, _ *WafPoliciesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -247,10 +250,10 @@ func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter nginxDeploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nginxDeploymentName}", url.PathEscape(nginxDeploymentName))
-	if apiKeyName == "" {
-		return nil, errors.New("parameter apiKeyName cannot be empty")
+	if wafPolicyName == "" {
+		return nil, errors.New("parameter wafPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiKeyName}", url.PathEscape(apiKeyName))
+	urlPath = strings.ReplaceAll(urlPath, "{wafPolicyName}", url.PathEscape(wafPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -263,28 +266,28 @@ func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIKeysClient) getHandleResponse(resp *http.Response) (APIKeysClientGetResponse, error) {
-	result := APIKeysClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.APIKey); err != nil {
-		return APIKeysClientGetResponse{}, err
+func (client *WafPoliciesClient) getHandleResponse(resp *http.Response) (WafPoliciesClientGetResponse, error) {
+	result := WafPoliciesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WafPolicy); err != nil {
+		return WafPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByDeploymentPager - Lists all API keys under the specified Nginx deployment.
+// NewListByDeploymentPager - List all WAF policies in a deployment.
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - nginxDeploymentName - The name of the Nginx deployment resource.
-//   - options - APIKeysClientListByDeploymentOptions contains the optional parameters for the APIKeysClient.NewListByDeploymentPager
+//   - options - WafPoliciesClientListByDeploymentOptions contains the optional parameters for the WafPoliciesClient.NewListByDeploymentPager
 //     method.
-func (client *APIKeysClient) NewListByDeploymentPager(resourceGroupName string, nginxDeploymentName string, options *APIKeysClientListByDeploymentOptions) *runtime.Pager[APIKeysClientListByDeploymentResponse] {
-	return runtime.NewPager(runtime.PagingHandler[APIKeysClientListByDeploymentResponse]{
-		More: func(page APIKeysClientListByDeploymentResponse) bool {
+func (client *WafPoliciesClient) NewListByDeploymentPager(resourceGroupName string, nginxDeploymentName string, options *WafPoliciesClientListByDeploymentOptions) *runtime.Pager[WafPoliciesClientListByDeploymentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WafPoliciesClientListByDeploymentResponse]{
+		More: func(page WafPoliciesClientListByDeploymentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *APIKeysClientListByDeploymentResponse) (APIKeysClientListByDeploymentResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIKeysClient.NewListByDeploymentPager")
+		Fetcher: func(ctx context.Context, page *WafPoliciesClientListByDeploymentResponse) (WafPoliciesClientListByDeploymentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WafPoliciesClient.NewListByDeploymentPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -293,7 +296,7 @@ func (client *APIKeysClient) NewListByDeploymentPager(resourceGroupName string, 
 				return client.listByDeploymentCreateRequest(ctx, resourceGroupName, nginxDeploymentName, options)
 			}, nil)
 			if err != nil {
-				return APIKeysClientListByDeploymentResponse{}, err
+				return WafPoliciesClientListByDeploymentResponse{}, err
 			}
 			return client.listByDeploymentHandleResponse(resp)
 		},
@@ -302,8 +305,8 @@ func (client *APIKeysClient) NewListByDeploymentPager(resourceGroupName string, 
 }
 
 // listByDeploymentCreateRequest creates the ListByDeployment request.
-func (client *APIKeysClient) listByDeploymentCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, _ *APIKeysClientListByDeploymentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/apiKeys"
+func (client *WafPoliciesClient) listByDeploymentCreateRequest(ctx context.Context, resourceGroupName string, nginxDeploymentName string, _ *WafPoliciesClientListByDeploymentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NGINX.NGINXPLUS/nginxDeployments/{nginxDeploymentName}/wafPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -328,10 +331,10 @@ func (client *APIKeysClient) listByDeploymentCreateRequest(ctx context.Context, 
 }
 
 // listByDeploymentHandleResponse handles the ListByDeployment response.
-func (client *APIKeysClient) listByDeploymentHandleResponse(resp *http.Response) (APIKeysClientListByDeploymentResponse, error) {
-	result := APIKeysClientListByDeploymentResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyListResult); err != nil {
-		return APIKeysClientListByDeploymentResponse{}, err
+func (client *WafPoliciesClient) listByDeploymentHandleResponse(resp *http.Response) (WafPoliciesClientListByDeploymentResponse, error) {
+	result := WafPoliciesClientListByDeploymentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentWafPolicyMetadataListResult); err != nil {
+		return WafPoliciesClientListByDeploymentResponse{}, err
 	}
 	return result, nil
 }

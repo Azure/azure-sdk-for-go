@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard/v2
 
 go 1.23.0
 

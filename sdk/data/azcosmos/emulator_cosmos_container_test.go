@@ -754,6 +754,10 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			t.Fatalf("Failed to unmarshal composite token: %v", err)
 		}
 
+		if compositeToken.Version != cosmosCompositeContinuationTokenVersion {
+			t.Errorf("Expected Version %d, got %d", cosmosCompositeContinuationTokenVersion, compositeToken.Version)
+		}
+
 		if compositeToken.ResourceID != resp.ResourceID {
 			t.Errorf("Expected ResourceID %s, got %s", resp.ResourceID, compositeToken.ResourceID)
 		}

@@ -29,9 +29,13 @@ func TestNewCompositeContinuationToken(t *testing.T) {
 		t.Fatalf("Failed to marshal composite token: %v", err)
 	}
 
-	expectedJSON := `{"resourceId":"testResource","continuation":[{"minInclusive":"","maxExclusive":"FF","continuationToken":"14"}]}`
+	expectedJSON := `{"version":1,"resourceId":"testResource","continuation":[{"minInclusive":"","maxExclusive":"FF","continuationToken":"14"}]}`
 	if string(data) != expectedJSON {
 		t.Errorf("Unexpected JSON output.\nExpected: %s\nActual:   %s", expectedJSON, string(data))
+	}
+
+	if compositeContinuationToken.Version != cosmosCompositeContinuationTokenVersion {
+		t.Errorf("Unexpected version. Expected: %d, Actual: %d", cosmosCompositeContinuationTokenVersion, compositeContinuationToken.Version)
 	}
 }
 

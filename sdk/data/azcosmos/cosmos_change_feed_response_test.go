@@ -151,6 +151,10 @@ func TestChangeFeedResponseWithFeedRange(t *testing.T) {
 		t.Fatalf("failed to unmarshal composite token: %v", err)
 	}
 
+	if compositeToken.Version != cosmosCompositeContinuationTokenVersion {
+		t.Errorf("expected Version %d, got %d", cosmosCompositeContinuationTokenVersion, compositeToken.Version)
+	}
+
 	if compositeToken.ResourceID != "testResourceId" {
 		t.Errorf("unexpected ResourceID: got %q, want %q", compositeToken.ResourceID, "testResourceId")
 	}

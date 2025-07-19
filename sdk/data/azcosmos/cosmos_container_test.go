@@ -1154,6 +1154,11 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Fatalf("failed to unmarshal composite token: %v", err)
 	}
 
+	if compositeToken.Version != cosmosCompositeContinuationTokenVersion {
+		t.Errorf("unexpected version in composite token: got %d, want %d",
+			compositeToken.Version, cosmosCompositeContinuationTokenVersion)
+	}
+
 	if compositeToken.ResourceID != "test-resource-id" {
 		t.Errorf("unexpected ResourceID in composite token: got %q, want %q",
 			compositeToken.ResourceID, "test-resource-id")

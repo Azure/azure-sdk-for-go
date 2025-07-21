@@ -33,7 +33,6 @@ generator issue [flags]
 - `--include-data-plane`: Include data plane RP requests
 - `-l, --skip-validate`: Skip validation for readme files and tags
 - `--request-issues`: Specify release request IDs to parse
-- `--additional-options`: Default additional options for new SDK versions
 
 **Authentication:**
 You need to provide authentication to query GitHub issues. Either:
@@ -59,8 +58,7 @@ The command outputs a JSON configuration:
       ]
     }
   },
-  "typespecRequests": {},
-  "additionalFlags": ["--enum-prefix"]
+  "typespecRequests": {}
 }
 ```
 

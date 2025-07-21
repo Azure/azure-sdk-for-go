@@ -273,7 +273,7 @@ func extractPackagePathFromZip(src, dest, relativePackagePath string) (string, e
 	}
 
 	// Target path within the zip file (normalize path separators to forward slashes for zip compatibility)
-	normalizedPackagePath := filepath.ToSlash(relativePackagePath)
+	normalizedPackagePath := strings.ReplaceAll(relativePackagePath, "\\", "/")
 	targetPathInZip := repoPrefix + normalizedPackagePath + "/"
 
 	// Create destination directory for the package

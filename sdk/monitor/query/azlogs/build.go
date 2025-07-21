@@ -1,4 +1,3 @@
-//go:generate tsp-client update
 //go:generate go run ./testdata/generate/transforms.go
 //go:generate goimports -w .
 

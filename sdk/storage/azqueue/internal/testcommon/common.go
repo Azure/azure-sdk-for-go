@@ -18,7 +18,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

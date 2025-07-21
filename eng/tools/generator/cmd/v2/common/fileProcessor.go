@@ -254,7 +254,7 @@ func GetSpecRpName(packageRootPath string) (string, error) {
 	return "", fmt.Errorf("cannot get sepc rp name from config")
 }
 
-// replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in constants.go file
+// replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in version.go file
 func ReplaceVersion(packageRootPath string, newVersion string) error {
 	path := filepath.Join(packageRootPath, "autorest.md")
 	b, err := os.ReadFile(path)
@@ -274,7 +274,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 		return err
 	}
 
-	path = filepath.Join(packageRootPath, "constants.go")
+	path = filepath.Join(packageRootPath, "version.go")
 	if b, err = os.ReadFile(path); err != nil {
 		return err
 	}

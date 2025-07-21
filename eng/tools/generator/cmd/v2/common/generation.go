@@ -460,7 +460,7 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 		return nil, err
 	}
 
-	log.Printf("Replace version in autorest.md and constants...")
+	log.Printf("Replace version in autorest.md and version.go...")
 	if err = ReplaceVersion(packagePath, version.String()); err != nil {
 		return nil, err
 	}
@@ -851,7 +851,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
-	log.Printf("Replace version in constants.go...")
+	log.Printf("Replace version in version.go...")
 	if err = ReplaceConstModuleVersion(packagePath, version.String()); err != nil {
 		return nil, err
 	}

@@ -41,9 +41,9 @@ func (c *ClientFactory) NewAccountCapabilityHostsClient() *AccountCapabilityHost
 	}
 }
 
-// NewAccountConnectionClient creates a new instance of AccountConnectionClient.
-func (c *ClientFactory) NewAccountConnectionClient() *AccountConnectionClient {
-	return &AccountConnectionClient{
+// NewAccountConnectionsClient creates a new instance of AccountConnectionsClient.
+func (c *ClientFactory) NewAccountConnectionsClient() *AccountConnectionsClient {
+	return &AccountConnectionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -176,9 +176,9 @@ func (c *ClientFactory) NewProjectCapabilityHostsClient() *ProjectCapabilityHost
 	}
 }
 
-// NewProjectConnectionClient creates a new instance of ProjectConnectionClient.
-func (c *ClientFactory) NewProjectConnectionClient() *ProjectConnectionClient {
-	return &ProjectConnectionClient{
+// NewProjectConnectionsClient creates a new instance of ProjectConnectionsClient.
+func (c *ClientFactory) NewProjectConnectionsClient() *ProjectConnectionsClient {
+	return &ProjectConnectionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

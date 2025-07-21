@@ -22,30 +22,30 @@ type AccountCapabilityHostsClientGetResponse struct {
 	CapabilityHost
 }
 
-// AccountConnectionClientCreateResponse contains the response from method AccountConnectionClient.Create.
-type AccountConnectionClientCreateResponse struct {
+// AccountConnectionsClientCreateResponse contains the response from method AccountConnectionsClient.Create.
+type AccountConnectionsClientCreateResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
 }
 
-// AccountConnectionClientDeleteResponse contains the response from method AccountConnectionClient.Delete.
-type AccountConnectionClientDeleteResponse struct {
+// AccountConnectionsClientDeleteResponse contains the response from method AccountConnectionsClient.Delete.
+type AccountConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AccountConnectionClientGetResponse contains the response from method AccountConnectionClient.Get.
-type AccountConnectionClientGetResponse struct {
+// AccountConnectionsClientGetResponse contains the response from method AccountConnectionsClient.Get.
+type AccountConnectionsClientGetResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
 }
 
-// AccountConnectionClientListResponse contains the response from method AccountConnectionClient.NewListPager.
-type AccountConnectionClientListResponse struct {
+// AccountConnectionsClientListResponse contains the response from method AccountConnectionsClient.NewListPager.
+type AccountConnectionsClientListResponse struct {
 	ConnectionPropertiesV2BasicResourceArmPaginatedResult
 }
 
-// AccountConnectionClientUpdateResponse contains the response from method AccountConnectionClient.Update.
-type AccountConnectionClientUpdateResponse struct {
+// AccountConnectionsClientUpdateResponse contains the response from method AccountConnectionsClient.Update.
+type AccountConnectionsClientUpdateResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
 }
@@ -407,30 +407,30 @@ type ProjectCapabilityHostsClientGetResponse struct {
 	CapabilityHost
 }
 
-// ProjectConnectionClientCreateResponse contains the response from method ProjectConnectionClient.Create.
-type ProjectConnectionClientCreateResponse struct {
+// ProjectConnectionsClientCreateResponse contains the response from method ProjectConnectionsClient.Create.
+type ProjectConnectionsClientCreateResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
 }
 
-// ProjectConnectionClientDeleteResponse contains the response from method ProjectConnectionClient.Delete.
-type ProjectConnectionClientDeleteResponse struct {
+// ProjectConnectionsClientDeleteResponse contains the response from method ProjectConnectionsClient.Delete.
+type ProjectConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ProjectConnectionClientGetResponse contains the response from method ProjectConnectionClient.Get.
-type ProjectConnectionClientGetResponse struct {
+// ProjectConnectionsClientGetResponse contains the response from method ProjectConnectionsClient.Get.
+type ProjectConnectionsClientGetResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
 }
 
-// ProjectConnectionClientListResponse contains the response from method ProjectConnectionClient.NewListPager.
-type ProjectConnectionClientListResponse struct {
+// ProjectConnectionsClientListResponse contains the response from method ProjectConnectionsClient.NewListPager.
+type ProjectConnectionsClientListResponse struct {
 	ConnectionPropertiesV2BasicResourceArmPaginatedResult
 }
 
-// ProjectConnectionClientUpdateResponse contains the response from method ProjectConnectionClient.Update.
-type ProjectConnectionClientUpdateResponse struct {
+// ProjectConnectionsClientUpdateResponse contains the response from method ProjectConnectionsClient.Update.
+type ProjectConnectionsClientUpdateResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
 }

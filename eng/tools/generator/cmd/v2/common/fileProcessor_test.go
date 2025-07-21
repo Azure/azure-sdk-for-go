@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
@@ -19,9 +18,9 @@ import (
 )
 
 func TestCalculateNewVersion(t *testing.T) {
-	fixChange := &changelog.Changelog{Modified: &report.Package{}}
-	breakingChange := &changelog.Changelog{RemovedPackage: true, Modified: &report.Package{}}
-	additiveChange := &changelog.Changelog{Modified: &report.Package{AdditiveChanges: &report.AdditiveChanges{Added: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}}
+	fixChange := &Changelog{Modified: &report.Package{}}
+	breakingChange := &Changelog{RemovedPackage: true, Modified: &report.Package{}}
+	additiveChange := &Changelog{Modified: &report.Package{AdditiveChanges: &report.AdditiveChanges{Added: &delta.Content{Content: exports.Content{Consts: map[string]exports.Const{"test": {}}}}}}}
 
 	// previous 0.x.x
 	// fix with stable

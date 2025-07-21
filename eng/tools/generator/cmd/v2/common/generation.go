@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/template"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
@@ -37,11 +36,10 @@ type GenerateResult struct {
 	RPName              string
 	PackageName         string
 	PackageAbsPath      string
-	Changelog           changelog.Changelog
+	Changelog           Changelog
 	ChangelogMD         string
 	PullRequestLabels   string
 	PackageRelativePath string
-	GenerationType      string
 }
 
 type GenerateParam struct {
@@ -60,15 +58,14 @@ type GenerateParam struct {
 	ReleasedTags         []string
 	ApiVersion           string
 	SdkReleaseType       string
-	SkipUpdateDep        bool
 }
 
 type Generator interface {
 	PreGenerate(generateParam *GenerateParam) error
 	Generate(generateParam *GenerateParam) error
 	PreChangeLog(generateParam *GenerateParam) (*exports.Content, error)
-	GenChangeLog(oriExports *exports.Content, newExports *exports.Content) (*changelog.Changelog, error)
-	AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error)
+	GenChangeLog(oriExports *exports.Content, newExports *exports.Content) (*Changelog, error)
+	AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error)
 }
 
 // Common steps for onboard and normal service
@@ -102,7 +99,7 @@ type TypeSpecOnBoardGenerator struct {
 	*TypeSpecCommonGenerator
 }
 
-type TypeSpecUpdateGenerator struct {
+type TypeSpecUpdateGeneraor struct {
 	*TypeSpecCommonGenerator
 	PreviousVersion  string
 	IsCurrentPreview bool
@@ -182,7 +179,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &SwaggerOnBoardGenerator{SwaggerCommonGenerator: commonGenerator}
 	} else {
-		tags, err := changelog.GetAllVersionTags(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName), *ctx.SDKRepo)
+		tags, err := GetAllVersionTagsV2(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName), *ctx.SDKRepo)
 		if err != nil {
 			return nil, err
 		}
@@ -274,18 +271,18 @@ func (t *SwaggerCommonGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 	return nil, nil
 }
 
-func (t *SwaggerCommonGenerator) GenChangeLog(oriExports *exports.Content, newExports *exports.Content) (*changelog.Changelog, error) {
-	changelogs, err := changelog.GetChangelogForPackage(oriExports, newExports)
+func (t *SwaggerCommonGenerator) GenChangeLog(oriExports *exports.Content, newExports *exports.Content) (*Changelog, error) {
+	changelog, err := GetChangelogForPackage(oriExports, newExports)
 	if err != nil {
 		return nil, err
 	}
 
 	log.Printf("filter changelog...")
-	changelog.FilterChangelog(changelogs, changelog.NonExportedFilter, changelog.MarshalUnmarshalFilter, changelog.EnumFilter, changelog.FuncFilter, changelog.LROFilter, changelog.PageableFilter, changelog.InterfaceToAnyFilter, changelog.TypeToAnyFilter)
-	return changelogs, nil
+	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter, TypeToAnyFilter)
+	return changelog, nil
 }
 
-func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	packagePath := t.PackagePath
 
 	// Example generation should be the last step because the package import relay on the new calculated version
@@ -349,7 +346,7 @@ func (t *SwaggerOnBoardGenerator) PreGenerate(generateParam *GenerateParam) erro
 	return nil
 }
 
-func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var err error
 	var prl PullRequestLabel
 	version := t.Version
@@ -375,7 +372,6 @@ func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		ChangelogMD:         changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
-		GenerationType:      "SwaggerOnBoard",
 	}, nil
 }
 
@@ -397,10 +393,11 @@ func (t *SwaggerUpdateGenerator) PreGenerate(generateParam *GenerateParam) error
 
 func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
 	var err error
+	packagePath := t.PackagePath
 	previousVersion := ""
 	isCurrentPreview := false
 	var oriExports *exports.Content
-	isCurrentPreview, err = changelog.ContainsPreviewAPIVersion(t.PackagePath)
+	isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 	if err != nil {
 		return nil, err
 	}
@@ -409,13 +406,9 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 
 	tags := generateParam.ReleasedTags
 
-	previousVersionTag := changelog.GetPreviousVersionTag(isCurrentPreview, tags)
+	previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
-	relativePackagePath, err := filepath.Rel(t.SDKPath, t.PackagePath)
-	if err != nil {
-		return nil, err
-	}
-	oriExports, err = changelog.GetExportsFromTag(relativePackagePath, previousVersionTag)
+	oriExports, err = GetExportsFromTag(*t.SDKRepo, packagePath, previousVersionTag)
 	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}
@@ -427,7 +420,7 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 	return oriExports, nil
 }
 
-func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var prl PullRequestLabel
 	var err error
 	version := t.Version
@@ -506,7 +499,6 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 		ChangelogMD:         changelogMd + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
-		GenerationType:      "SwaggerUpdate",
 	}, nil
 }
 
@@ -581,7 +573,7 @@ func (ctx *GenerateContext) GenerateForSingleTypeSpec(generateParam *GeneratePar
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		generator = &TypeSpecOnBoardGenerator{TypeSpecCommonGenerator: commonGenerator}
 	} else {
-		tags, err := changelog.GetAllVersionTags(moduleRelativePath, *ctx.SDKRepo)
+		tags, err := GetAllVersionTagsV2(moduleRelativePath, *ctx.SDKRepo)
 		if err != nil {
 			return nil, err
 		}
@@ -589,7 +581,7 @@ func (ctx *GenerateContext) GenerateForSingleTypeSpec(generateParam *GeneratePar
 			generator = &TypeSpecOnBoardGenerator{TypeSpecCommonGenerator: commonGenerator}
 		} else {
 			generateParam.ReleasedTags = tags
-			generator = &TypeSpecUpdateGenerator{TypeSpecCommonGenerator: commonGenerator}
+			generator = &TypeSpecUpdateGeneraor{TypeSpecCommonGenerator: commonGenerator}
 		}
 	}
 
@@ -651,18 +643,18 @@ func (t *TypeSpecCommonGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 	return nil, nil
 }
 
-func (t *TypeSpecCommonGenerator) GenChangeLog(oriExports *exports.Content, newExports *exports.Content) (*changelog.Changelog, error) {
-	changelogs, err := changelog.GetChangelogForPackage(oriExports, newExports)
+func (t *TypeSpecCommonGenerator) GenChangeLog(oriExports *exports.Content, newExports *exports.Content) (*Changelog, error) {
+	changelog, err := GetChangelogForPackage(oriExports, newExports)
 	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}
 
 	log.Printf("filter changelog...")
-	changelog.FilterChangelog(changelogs, changelog.NonExportedFilter, changelog.MarshalUnmarshalFilter, changelog.EnumFilter, changelog.FuncFilter, changelog.LROFilter, changelog.PageableFilter, changelog.InterfaceToAnyFilter, changelog.TypeToAnyFilter)
-	return changelogs, nil
+	FilterChangelog(changelog, NonExportedFilter, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter, PageableFilter, InterfaceToAnyFilter, TypeToAnyFilter)
+	return changelog, nil
 }
 
-func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	packagePath := t.PackagePath
 	modulePath := t.ModulePath
 	if t.IsSubPackage {
@@ -680,10 +672,9 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
-	if !generateParam.SkipUpdateDep {
-		log.Printf("##[command]Executing go get -u ./... toolchain@none in %s\n", modulePath)
-		if err := ExecuteGo(modulePath, "get", "-u", "./...", "toolchain@none"); err != nil {
-		}
+	log.Printf("##[command]Executing go get -u ./... toolchain@none in %s\n", modulePath)
+	if err := ExecuteGo(modulePath, "get", "-u", "./...", "toolchain@none"); err != nil {
+		return nil, err
 	}
 
 	log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)
@@ -726,7 +717,7 @@ func (t *TypeSpecOnBoardGenerator) PreChangeLog(generateParam *GenerateParam) (*
 	return nil, nil
 }
 
-func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var err error
 	version := t.Version
 	modulePath := t.ModulePath
@@ -759,11 +750,10 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, c
 		ChangelogMD:         changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
-		GenerationType:      "TypeSpecOnBoard",
 	}, nil
 }
 
-func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
+func (t *TypeSpecUpdateGeneraor) PreGenerate(generateParam *GenerateParam) error {
 	log.Printf("Package '%s' existed, do update process", t.PackagePath)
 	log.Printf("Remove all the generated files ...")
 	if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
@@ -772,7 +762,7 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 	return nil
 }
 
-func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
+func (t *TypeSpecUpdateGeneraor) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
 	var err error
 	version := t.Version
 	packagePath := t.PackagePath
@@ -790,7 +780,7 @@ func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 			return nil, err
 		}
 	} else {
-		isCurrentPreview, err = changelog.ContainsPreviewAPIVersion(packagePath)
+		isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
 			return nil, err
 		}
@@ -800,13 +790,9 @@ func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 
 	tags := generateParam.ReleasedTags
 
-	previousVersionTag := changelog.GetPreviousVersionTag(isCurrentPreview, tags)
+	previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
-	relativePackagePath, err := filepath.Rel(t.SDKPath, t.PackagePath)
-	if err != nil {
-		return nil, err
-	}
-	oriExports, err = changelog.GetExportsFromTag(relativePackagePath, previousVersionTag)
+	oriExports, err = GetExportsFromTag(*t.SDKRepo, packagePath, previousVersionTag)
 	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
 		return nil, err
 	}
@@ -819,7 +805,7 @@ func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 	return oriExports, nil
 }
 
-func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
+func (t *TypeSpecUpdateGeneraor) AfterGenerate(generateParam *GenerateParam, changelog *Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var prl PullRequestLabel
 	var err error
 	version := t.Version
@@ -892,8 +878,6 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		log.Printf("Generate examples...")
 	}
 
-	generationType := "TypeSpecUpdate"
-
 	// remove autorest.md and build.go
 	autorestMdPath := filepath.Join(packagePath, "autorest.md")
 	if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
@@ -901,7 +885,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		if err = os.Remove(autorestMdPath); err != nil {
 			return nil, err
 		}
-		generationType = "MigrateToTypeSpec"
+
 	}
 	buildGoPath := filepath.Join(packagePath, "build.go")
 	if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
@@ -924,6 +908,5 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		ChangelogMD:         changelogMd + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
-		GenerationType:      generationType,
 	}, nil
 }

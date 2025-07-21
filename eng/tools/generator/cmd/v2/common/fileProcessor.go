@@ -22,7 +22,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
 	"golang.org/x/tools/go/ast/astutil"
@@ -284,7 +283,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
+func CalculateNewVersion(changelog *Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
 		return nil, "", err
@@ -371,7 +370,7 @@ func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string,
 }
 
 // add new changelog md to changelog file
-func AddChangelogToFile(changelog *changelog.Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
+func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
 	path := filepath.Join(packageRootPath, ChangelogFileName)
 	b, err := os.ReadFile(path)
 	if err != nil {
@@ -401,7 +400,7 @@ func AddChangelogToFile(changelog *changelog.Changelog, version *semver.Version,
 // replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
 	var clientName string
-	for _, k := range changelog.SortFuncItem(exports.Funcs) {
+	for _, k := range SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
@@ -683,7 +682,7 @@ func replaceReadmeModule(path, packageModuleRelativePath, currentVersion string)
 func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
-	for _, k := range changelog.SortFuncItem(exports.Funcs) {
+	for _, k := range SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k

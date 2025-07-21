@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0 (2025-05-23)
+## 1.4.0 (2025-07-21)
 ### Features Added
 
 - New value `IdentityTypeSystemAssignedUserAssigned`, `IdentityTypeUserAssigned` added to enum type `IdentityType`

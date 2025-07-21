@@ -45,11 +45,6 @@ func (q *QueueClient) sharedKey() *SharedKeyCredential {
 	return base.SharedKeyComposite((*base.CompositeClient[generated.QueueClient, generated.MessagesClient])(q))
 }
 
-//
-//func (q *QueueClient) sharedKey() *sas.SharedKeyCredential {
-//	return sas.NewSharedKeyCredential(q.accountName, q.accountKey)
-//}
-
 // URL returns the URL endpoint used by the ServiceClient object.
 func (q *QueueClient) URL() string {
 	return q.queueClient().Endpoint()

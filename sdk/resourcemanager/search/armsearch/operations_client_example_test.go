@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchListOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/register/action"),
@@ -61,7 +61,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/write"),
@@ -72,7 +72,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/read"),
@@ -83,7 +83,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/delete"),
@@ -94,7 +94,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/start/action"),
@@ -105,7 +105,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/stop/action"),
@@ -116,7 +116,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/listAdminKeys/action"),
@@ -127,7 +127,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/regenerateAdminKey/action"),
@@ -138,7 +138,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/listQueryKeys/action"),
@@ -149,7 +149,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("API Keys"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/createQueryKey/action"),
@@ -160,7 +160,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Search Services"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/deleteQueryKey/delete"),
@@ -171,7 +171,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("API Keys"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/checkNameAvailability/action"),
@@ -182,7 +182,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Service Name Availability"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/diagnosticSettings/read"),
@@ -193,7 +193,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Diagnostic Settings"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("system"),
+		// 			Origin: to.Ptr(armsearch.OriginSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/diagnosticSettings/write"),
@@ -204,7 +204,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Diagnostic Settings"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("system"),
+		// 			Origin: to.Ptr(armsearch.OriginSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/metricDefinitions/read"),
@@ -215,48 +215,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("The metric definitions for the search service"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("system"),
-		// 			Properties: &armsearch.OperationProperties{
-		// 				ServiceSpecification: &armsearch.OperationServiceSpecification{
-		// 					MetricSpecifications: []*armsearch.OperationMetricsSpecification{
-		// 						{
-		// 							Name: to.Ptr("SearchLatency"),
-		// 							AggregationType: to.Ptr("Average"),
-		// 							Availabilities: []*armsearch.OperationAvailability{
-		// 								{
-		// 									BlobDuration: to.Ptr("PT1H"),
-		// 									TimeGrain: to.Ptr("PT1M"),
-		// 							}},
-		// 							DisplayDescription: to.Ptr("Average search latency for the search service"),
-		// 							DisplayName: to.Ptr("Search Latency"),
-		// 							Unit: to.Ptr("Seconds"),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("SearchQueriesPerSecond"),
-		// 							AggregationType: to.Ptr("Average"),
-		// 							Availabilities: []*armsearch.OperationAvailability{
-		// 								{
-		// 									BlobDuration: to.Ptr("PT1H"),
-		// 									TimeGrain: to.Ptr("PT1M"),
-		// 							}},
-		// 							DisplayDescription: to.Ptr("Search queries per second for the search service."),
-		// 							DisplayName: to.Ptr("Search queries per second"),
-		// 							Unit: to.Ptr("CountPerSecond"),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("ThrottledSearchQueriesPercentage"),
-		// 							AggregationType: to.Ptr("Average"),
-		// 							Availabilities: []*armsearch.OperationAvailability{
-		// 								{
-		// 									BlobDuration: to.Ptr("PT1H"),
-		// 									TimeGrain: to.Ptr("PT1M"),
-		// 							}},
-		// 							DisplayDescription: to.Ptr("Percentage of search queries that were throttled for the search service."),
-		// 							DisplayName: to.Ptr("Throttled search queries percentage"),
-		// 							Unit: to.Ptr("Percent"),
-		// 					}},
-		// 				},
-		// 			},
+		// 			Origin: to.Ptr(armsearch.OriginSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/logDefinitions/read"),
@@ -267,17 +226,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("The log definition for the search service"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("system"),
-		// 			Properties: &armsearch.OperationProperties{
-		// 				ServiceSpecification: &armsearch.OperationServiceSpecification{
-		// 					LogSpecifications: []*armsearch.OperationLogsSpecification{
-		// 						{
-		// 							Name: to.Ptr("OperationLogs"),
-		// 							BlobDuration: to.Ptr("PT1H"),
-		// 							DisplayName: to.Ptr("Operation Logs"),
-		// 					}},
-		// 				},
-		// 			},
+		// 			Origin: to.Ptr(armsearch.OriginSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnectionProxies/validate/action"),
@@ -288,7 +237,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Private Endpoint Connection Proxy"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnectionProxies/write"),
@@ -299,7 +248,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Private Endpoint Connection Proxy"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnectionProxies/read"),
@@ -310,7 +259,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Private Endpoint Connection Proxy"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnectionProxies/delete"),
@@ -321,7 +270,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Private Endpoint Connection Proxy"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections/write"),
@@ -331,7 +280,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Provider: to.Ptr("Microsoft Search"),
 		// 				Resource: to.Ptr("Private Endpoint Connection"),
 		// 			},
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections/read"),
@@ -341,7 +290,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Provider: to.Ptr("Microsoft Search"),
 		// 				Resource: to.Ptr("Private Endpoint Connection"),
 		// 			},
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections/delete"),
@@ -351,7 +300,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Provider: to.Ptr("Microsoft Search"),
 		// 				Resource: to.Ptr("Private Endpoint Connection"),
 		// 			},
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources/write"),
@@ -362,7 +311,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Shared Private Link Resource"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources/read"),
@@ -373,7 +322,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Shared Private Link Resource"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources/delete"),
@@ -384,7 +333,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Shared Private Link Resource"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources/operationStatuses/read"),
@@ -395,7 +344,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Shared Private Link Resource"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexes/read"),
@@ -406,7 +355,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Indexes"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexes/write"),
@@ -417,7 +366,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Indexes"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexes/delete"),
@@ -428,7 +377,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Indexes"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/synonymMaps/read"),
@@ -439,7 +388,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Synonym Maps"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/synonymMaps/write"),
@@ -450,7 +399,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Synonym Maps"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/synonymMaps/delete"),
@@ -461,7 +410,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Synonym Maps"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/dataSources/read"),
@@ -472,7 +421,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Data Sources"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/dataSources/write"),
@@ -483,7 +432,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Data Sources"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/dataSources/delete"),
@@ -494,7 +443,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Data Sources"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/skillsets/read"),
@@ -505,7 +454,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Skillsets"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/skillsets/write"),
@@ -516,7 +465,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Skillsets"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/skillsets/delete"),
@@ -527,7 +476,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Skillsets"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexers/read"),
@@ -538,7 +487,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Indexers"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexers/write"),
@@ -549,7 +498,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Indexers"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexers/delete"),
@@ -560,7 +509,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Indexers"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/debugSessions/read"),
@@ -571,7 +520,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Debug Sessions"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/debugSessions/write"),
@@ -582,7 +531,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Debug Sessions"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/debugSessions/delete"),
@@ -593,7 +542,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Debug Sessions"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/debugSessions/execute/action"),
@@ -604,7 +553,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Debug Sessions"),
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexes/documents/read"),
@@ -615,7 +564,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Documents"),
 		// 			},
 		// 			IsDataAction: to.Ptr(true),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexes/documents/write"),
@@ -626,7 +575,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Documents"),
 		// 			},
 		// 			IsDataAction: to.Ptr(true),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("Microsoft.Search/searchServices/indexes/documents/delete"),
@@ -637,7 +586,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Resource: to.Ptr("Documents"),
 		// 			},
 		// 			IsDataAction: to.Ptr(true),
-		// 			Origin: to.Ptr("user,system"),
+		// 			Origin: to.Ptr(armsearch.OriginUserSystem),
 		// 	}},
 		// }
 	}

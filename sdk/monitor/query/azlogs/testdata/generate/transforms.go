@@ -41,14 +41,9 @@ func main() {
 	regexReplace("client.go", `\*opts\.Options`, "opts.Options.preferHeader()")
 	regexReplace("fake/server.go", `Options\: optionsParam`, "Options: preferHeaderToQueryOptions(*optionsParam)")
 
-	// fix up serialization
-	regexReplace("client.go", `url\.PathEscape\(resourceID\)`, "resourceID")
-
 	// Adjust URL path handling in fake/server.go to remove the "/v1" prefix from req.URL.EscapedPath().
 	regexReplace("fake/server.go", `req\.URL\.EscapedPath\(\)`, `strings.TrimPrefix(req.URL.EscapedPath(), "/v1")`)
 
 	// suppress versions constant
-	regexReplace("constants.go", `Versions`, "versions")
-	regexReplace("client.go", `Versions`, "versions")
 	regexReplace("constants.go", `Possibleversions`, "possibleVersions")
 }

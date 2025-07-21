@@ -6,8 +6,8 @@ package azlogs
 
 // BatchQueryRequest - A single request in a batch.
 type BatchQueryRequest struct {
-	// REQUIRED; The Analytics query. Learn more about the [Analytics query
-	// syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
+	// REQUIRED; The Analytics query. Learn more about the
+	// [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
 	Body *QueryBody
 
 	// REQUIRED; Unique ID corresponding to each request in the batch.
@@ -81,8 +81,8 @@ type Column struct {
 	Type *ColumnType
 }
 
-// QueryBody - The Analytics query. Learn more about the [Analytics query
-// syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
+// QueryBody - The Analytics query. Learn more about the
+// [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
 type QueryBody struct {
 	// REQUIRED; The query to execute.
 	Query *string

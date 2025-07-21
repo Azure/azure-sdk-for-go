@@ -119,9 +119,6 @@ func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	host = strings.ReplaceAll(host, "{apiVersion}", string(client.apiVersion))
 	urlPath := "/{resourceId}/query"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {

@@ -822,3 +822,25 @@ func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 		t.Fatalf("Expected 0 partition key ranges, got %d", len(resp.PartitionKeyRanges))
 	}
 }
+
+func TestContainerReadPartitionKeyRangesError(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(400),
+	)
+
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	_, err := container.getPartitionKeyRanges(context.TODO(), nil)
+	if err == nil {
+		t.Fatal("Expected error, got nil")
+		return
+	}
+}

@@ -1,5 +1,53 @@
 # Release History
 
+## 1.4.0 (2025-07-21)
+### Features Added
+
+- New value `IdentityTypeSystemAssignedUserAssigned`, `IdentityTypeUserAssigned` added to enum type `IdentityType`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New value `SearchServiceStatusStopped` added to enum type `SearchServiceStatus`
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `ComputeType` with values `ComputeTypeConfidential`, `ComputeTypeDefault`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `IssueType` with values `IssueTypeConfigurationPropagationFailure`, `IssueTypeMissingIdentityConfiguration`, `IssueTypeMissingPerimeterConfiguration`, `IssueTypeUnknown`
+- New enum type `NetworkSecurityPerimeterConfigurationProvisioningState` with values `NetworkSecurityPerimeterConfigurationProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigurationProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigurationProvisioningStateCreating`, `NetworkSecurityPerimeterConfigurationProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigurationProvisioningStateFailed`, `NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigurationProvisioningStateUpdating`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `ResourceAssociationAccessMode` with values `ResourceAssociationAccessModeAudit`, `ResourceAssociationAccessModeEnforced`, `ResourceAssociationAccessModeLearning`
+- New enum type `SearchBypass` with values `SearchBypassAzureServices`, `SearchBypassNone`
+- New enum type `SearchDataExfiltrationProtection` with values `SearchDataExfiltrationProtectionBlockAll`
+- New enum type `Severity` with values `SeverityError`, `SeverityWarning`
+- New enum type `UpgradeAvailable` with values `UpgradeAvailableAvailable`, `UpgradeAvailableNotAvailable`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*ServicesClient.BeginUpgrade(context.Context, string, string, *ServicesClientBeginUpgradeOptions) (*runtime.Poller[ServicesClientUpgradeResponse], error)`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.Get(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetOptions) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListByServicePager(string, string, *NetworkSecurityPerimeterConfigurationsClientListByServiceOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListByServiceResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile(context.Context, string, string, string, *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error)`
+- New struct `AccessRule`
+- New struct `AccessRuleProperties`
+- New struct `AccessRulePropertiesSubscriptionsItem`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityProfile`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New struct `ResourceAssociation`
+- New struct `SystemData`
+- New struct `UserAssignedIdentity`
+- New field `UserAssignedIdentities` in struct `Identity`
+- New field `Bypass` in struct `NetworkRuleSet`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `Service`
+- New field `ComputeType`, `DataExfiltrationProtections`, `ETag`, `Endpoint`, `ServiceUpgradedAt`, `UpgradeAvailable` in struct `ServiceProperties`
+- New field `SystemData` in struct `ServiceUpdate`
+- New field `SystemData` in struct `SharedPrivateLinkResource`
+
+
 ## 1.4.0-beta.3 (2025-04-07)
 ### Features Added
 

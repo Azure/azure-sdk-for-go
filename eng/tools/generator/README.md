@@ -10,7 +10,7 @@ The generator tool provides several commands to support the Azure SDK for Go dev
 - **Release Generation**: Generate new SDK releases from TypeSpec or Swagger specifications  
 - **Automation**: Process batch SDK generation for CI/CD pipelines
 - **Refresh**: Regenerate all existing SDK packages
-- **Templates**: Generate package templates and scaffolding
+- **Templates**: Scaffold the package for onboard services
 
 ## Commands
 
@@ -173,48 +173,3 @@ For full functionality, ensure you have:
    ```bash
    npm install -g @azure-tools/typespec-client-generator-cli@v0.21.0
    ```
-
-## Important Notes
-
-1. **Release Request Constraints**: 
-   - Each release request can only contain one RP
-   - Each release request can only have one tag
-   - Multiple tags in one request will be output as plain text without splitting
-
-2. **Error Handling**: 
-   - Commands attempt to output usable results even when some errors occur
-   - Detailed error messages are provided for troubleshooting
-
-3. **Authentication**: 
-   - GitHub operations require personal access tokens
-   - Token permissions must include repository access for PR/issue operations
-
-4. **Working Directory**: 
-   - The `automation-v2` command must run from the azure-sdk-for-go root directory
-   - Other commands can run from any directory with proper path arguments
-
-## Examples
-
-**Generate release from GitHub issue:**
-```bash
-# First, get the configuration from issues
-generator issue -t $TOKEN > config.json
-
-# Then generate the release
-generator release-v2 ./azure-sdk-for-go ./azure-rest-api-specs ./config.json -t $TOKEN
-```
-
-**Generate single RP release:**
-```bash
-generator release-v2 ./azure-sdk-for-go ./azure-rest-api-specs compute armcompute --version-number 1.0.0
-```
-
-**Refresh all packages:**
-```bash
-generator refresh-v2 ./azure-sdk-for-go ./azure-rest-api-specs --go-version 1.23
-```
-
-**Run automation pipeline:**
-```bash
-generator automation-v2 generatedInput.json generateOutput.json 1.23
-```

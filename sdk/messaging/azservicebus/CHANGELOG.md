@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Allow a user to settle and renew message locks with only a lock token, so long as they are not using Service Bus sessions. This makes it possible to settle a message in a completely separate process or service. See [ExampleReceiver_CompleteMessage_settleWithLockToken](http://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#example-package-SettleWithLockToken) for an example. (PR#24966)
+- Allow a user to settle and renew message locks with only a lock token, so long as they are not using Service Bus sessions. This makes it possible to settle a message in a completely separate process or service. See [ExampleReceiver_CompleteMessage_settleWithLockToken](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#example-package-SettleWithLockToken) for an example. (PR#24966)
 
 ### Bugs Fixed
 

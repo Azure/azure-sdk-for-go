@@ -5,9 +5,9 @@ The Azure Go SDK generally prohibits breaking changes unless they result from se
 - Updates to a service's TypeSpec specifications
 - Migration of service specifications from Swagger to TypeSpec
 
-Breaking changes can often be resolved through client customizations in the specification or by modifying the `tspconfig.yaml` configuration.
+Breaking changes can often be resolved by:
 
-## Client Customizations
+1. Client Customizations
 
 Client customizations should be implemented in a file named `client.tsp` located in the service's specification directory alongside the main entry point `main.tsp`. This `client.tsp` becomes the new specification entry point, so import `main.tsp` in the `client.tsp` file. **Do not** import `client.tsp` in the `main.tsp` file.
 
@@ -19,6 +19,17 @@ using Azure.ClientGenerator.Core;
 
 // Add your customizations here
 ```
+
+2. TypeSpec Configuration Changes
+
+TypeSpec configuration changes should be made in the `tspconfig.yaml` file located in the service's specification directory. This file is used to configure the TypeSpec compiler and client generator options.
+
+```yaml
+options:
+  "@azure-tools/typespec-go":
+    fix-const-stuttering: false
+```
+
 
 ## Migration from Swagger to TypeSpec
 
@@ -50,7 +61,7 @@ enum Minute {
 
 **Resolution**:
 
-Use client naming customization to restore the original names from the removal entries:
+Use client customization to restore the original names from the removal entries:
 
 ```tsp
 @@clientName(Minute.Minute0, "Zero", "go");
@@ -86,13 +97,15 @@ union MaintenanceScope {
 
 **Resolution**:
 
-Disable the anti-stuttering rule for Go in `tspconfig.yaml` to preserve original enum names:
+Disable the anti-stuttering rule in TypeSpec config `tspconfig.yaml` to preserve original enum names:
 
 ```yaml
 options:
   "@azure-tools/typespec-go":
     fix-const-stuttering: false
 ```
+
+**Do not** use client customization to preserve the original enum name.
 
 ### 3. Operation Naming Changes
 
@@ -105,7 +118,7 @@ Removal of an operation and addition of a similarly named operation for the same
 - New function `*StorageTaskAssignmentClient.NewStorageTaskAssignmentListPager(string, string, *StorageTaskAssignmentClientStorageTaskAssignmentListOptions) *runtime.Pager[StorageTaskAssignmentClientStorageTaskAssignmentListResponse]`
 ```
 
-**Reason**: TypeSpec may generate different operation names than Swagger to prevent naming collisions.
+**Reason**: TypeSpec may generate different operation names than Swagger to avoid naming collisions.
 
 **Spec Pattern**:
 
@@ -123,9 +136,9 @@ interface StorageTaskAssignment {
 
 **Resolution**:
 
-Use client naming to match the original operation name from the removal entries:
+Use client naming to restore the original operation name from the removal entries:
 
-**Note**: For paging operations, the SDK method name is `New<OperationName>Pager`. For long-running operations, it's `Begin<OperationName>`. When resolving breaking changes, use the TypeSpec operation name without these SDK-specific prefixes or suffixes.
+**Note**: For paging operations, the SDK method name is `New<OperationName>Pager`. For long-running operations, it's `Begin<OperationName>`. When resolving breaking changes, use only the TypeSpec operation name without these SDK-specific prefixes or suffixes.
 
 ```tsp
 @@clientName(StorageTaskAssignment.storageTaskAssignmentList, "list", "go");

@@ -1,5 +1,7 @@
 dario.cat/mergo v1.0.2 h1:85+piFYR1tMbRrLcDwR18y4UKJ3aH1Tbzi24VRW1TK8=
 dario.cat/mergo v1.0.2/go.mod h1:E/hbnu0NxMFBjpMIE34DRGLWqDy0g5FuKDhCb31ngxA=
+github.com/Azure/azure-sdk-for-go/eng/tools/generator v0.1.0 h1:txOxu4+JZaZMZjtwaBaUjwxNJqxo6JqORWkifntBUjo=
+github.com/Azure/azure-sdk-for-go/eng/tools/generator v0.1.0/go.mod h1:3Mw9GSO9pDk3YyG105hy9cyHaOTZ+o3vE3R+Sg/4jVw=
 github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20250721044046-7bf8728236e5 h1:lb67a/NZW9eEbisldsJDwaMenbgprjNuclWnstUzU8U=
 github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20250721044046-7bf8728236e5/go.mod h1:1wiEmZuPMe5xsZ5BBhoHXpa1Qatbjwp+ETnMY/PbP84=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=

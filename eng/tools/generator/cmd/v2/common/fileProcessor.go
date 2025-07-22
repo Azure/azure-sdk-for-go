@@ -22,6 +22,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
 	"golang.org/x/tools/go/ast/astutil"
@@ -253,7 +254,7 @@ func GetSpecRpName(packageRootPath string) (string, error) {
 	return "", fmt.Errorf("cannot get sepc rp name from config")
 }
 
-// replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in constants.go file
+// replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in version.go file
 func ReplaceVersion(packageRootPath string, newVersion string) error {
 	path := filepath.Join(packageRootPath, "autorest.md")
 	b, err := os.ReadFile(path)
@@ -273,7 +274,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 		return err
 	}
 
-	path = filepath.Join(packageRootPath, "constants.go")
+	path = filepath.Join(packageRootPath, "version.go")
 	if b, err = os.ReadFile(path); err != nil {
 		return err
 	}
@@ -283,7 +284,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
+func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
 	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
 		return nil, "", err
@@ -370,7 +371,7 @@ func CalculateNewVersion(changelog *Changelog, previousVersion string, isCurrent
 }
 
 // add new changelog md to changelog file
-func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
+func AddChangelogToFile(changelog *changelog.Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
 	path := filepath.Join(packageRootPath, ChangelogFileName)
 	b, err := os.ReadFile(path)
 	if err != nil {
@@ -400,7 +401,7 @@ func AddChangelogToFile(changelog *Changelog, version *semver.Version, packageRo
 // replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
 	var clientName string
-	for _, k := range SortFuncItem(exports.Funcs) {
+	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
@@ -682,7 +683,7 @@ func replaceReadmeModule(path, packageModuleRelativePath, currentVersion string)
 func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
-	for _, k := range SortFuncItem(exports.Funcs) {
+	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
@@ -712,7 +713,7 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 }
 
 func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
-	path := filepath.Join(packagePath, "constants.go")
+	path := filepath.Join(packagePath, "version.go")
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return nil

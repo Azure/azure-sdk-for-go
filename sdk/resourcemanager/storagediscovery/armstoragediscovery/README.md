@@ -1,6 +1,6 @@
-# Azure Storagediscovery Module for Go
+# Azure Storage Discovery Module for Go
 
-The `armstoragediscovery` module provides operations for working with Azure Storagediscovery.
+The `armstoragediscovery` module provides operations for working with Azure Storage Discovery.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/storagediscovery/armstoragediscovery)
 
@@ -15,7 +15,7 @@ The `armstoragediscovery` module provides operations for working with Azure Stor
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Storagediscovery module:
+Install the Azure Storage Discovery module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagediscovery/armstoragediscovery
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagediscovery/ar
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Storagediscovery.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Storage Discovery.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Storagediscovery module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Storage Discovery module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armstoragediscovery.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Storagediscovery` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Storage Discovery` label.
 
 # Contributing
 

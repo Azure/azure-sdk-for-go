@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/eng/tools/mcp
 go 1.23.1
 
 require (
-	github.com/Azure/azure-sdk-for-go/eng/tools/generator v0.0.0-00010101000000-000000000000
+	github.com/Azure/azure-sdk-for-go/eng/tools/generator v0.1.0
 	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20250721044046-7bf8728236e5
 	github.com/mark3labs/mcp-go v0.33.0
 )
@@ -43,5 +43,3 @@ require (
 	golang.org/x/tools v0.35.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
-
-replace github.com/Azure/azure-sdk-for-go/eng/tools/generator => ../generator

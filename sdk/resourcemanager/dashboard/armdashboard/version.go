@@ -6,5 +6,5 @@ package armdashboard
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "2.0.0-beta.1"
 )

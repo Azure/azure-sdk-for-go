@@ -20,6 +20,9 @@ var defaultHTTPClient *http.Client
 func init() {
 	defaultTransport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
+		// The default dialer supports dual-stack networking (IPv4 + IPv6) automatically.
+		// IPv6 connectivity is enabled by default and will be used when available,
+		// following Go's Happy Eyeballs algorithm (RFC 8305).
 		DialContext: defaultTransportDialContext(&net.Dialer{
 			Timeout:   30 * time.Second,
 			KeepAlive: 30 * time.Second,

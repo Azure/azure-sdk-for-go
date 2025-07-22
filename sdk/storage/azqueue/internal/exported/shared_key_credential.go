@@ -22,7 +22,7 @@ import (
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
 )
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the

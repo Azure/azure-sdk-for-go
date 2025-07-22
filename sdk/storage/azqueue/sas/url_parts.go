@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
 )
 
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.

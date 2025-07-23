@@ -41,9 +41,13 @@ extends:
         autobaseline:
           isMainPipeline: true
           enableForGitHub: true
+        componentgovernance:
+          enabled: true
+          timeout: 3600 # Default time out of 600 seconds isn't enough to finish processing on windows.
       ${{ else }}: # Disable CG and SBom on all pipelines except for the core pipeline
         componentgovernance:
           enabled: false
+          justificationForDisabling: "To reduce redundant CG runs across all our pipeline jobs we are disabling and only running it for our main pipeline."
         sbom:
           enabled: false
       sourceAnalysisPool:

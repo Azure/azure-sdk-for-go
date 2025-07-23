@@ -91,8 +91,12 @@ function Process-Sdk ()
 
     if ($tidy)
     {
-        Write-Host "##[command]Executing go get -u ./... toolchain@none in " $currentDirectory
-        go get -u ./... toolchain@none
+        Write-Host "##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore in " $currentDirectory
+        go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
+        
+        Write-Host "##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity in " $currentDirectory
+        go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
         
         Write-Host "##[command]Executing go mod tidy in " $currentDirectory

@@ -3,6 +3,7 @@
 ## 1.0.1 (2025-07-23)
 ### Other Changes
 
+- Adopt latest code gen optimization.
 
 ## 1.0.0 (2024-06-21)
 ### Breaking Changes

@@ -41,6 +41,11 @@ extends:
         autobaseline:
           isMainPipeline: true
           enableForGitHub: true
+      ${{ else }}: # Disable CG and SBom on all pipelines except for the core pipeline
+        componentgovernance:
+          enabled: false
+        sbom:
+          enabled: false
       sourceAnalysisPool:
         name: azsdk-pool
         image: windows-2022

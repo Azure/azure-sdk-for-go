@@ -296,7 +296,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Properties: &armstoragediscovery.WorkspaceProperties{
 		// 					ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),
-		// 					SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+		// 					SKU: to.Ptr(armstoragediscovery.SKUFree),
 		// 					WorkspaceRoots: []*string{
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
@@ -409,7 +409,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Properties: &armstoragediscovery.WorkspaceProperties{
 		// 					ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),
-		// 					SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+		// 					SKU: to.Ptr(armstoragediscovery.SKUFree),
 		// 					WorkspaceRoots: []*string{
 		// 						to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 		// 					},
@@ -449,7 +449,7 @@ func ExampleWorkspacesClient_Update() {
 	}
 	res, err := clientFactory.NewWorkspacesClient().Update(ctx, "sample-rg", "Sample-Storage-Workspace", armstoragediscovery.WorkspaceUpdate{
 		Properties: &armstoragediscovery.WorkspacePropertiesUpdate{
-			SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+			SKU: to.Ptr(armstoragediscovery.SKUFree),
 			WorkspaceRoots: []*string{
 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 			},
@@ -490,7 +490,7 @@ func ExampleWorkspacesClient_Update() {
 	// 		},
 	// 		Properties: &armstoragediscovery.WorkspaceProperties{
 	// 			ProvisioningState: to.Ptr(armstoragediscovery.ResourceProvisioningStateSucceeded),
-	// 			SKU: to.Ptr(armstoragediscovery.SKU("Premium")),
+	// 			SKU: to.Ptr(armstoragediscovery.SKUFree),
 	// 			WorkspaceRoots: []*string{
 	// 				to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"),
 	// 			},

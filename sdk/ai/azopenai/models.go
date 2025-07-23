@@ -1,5 +1,5 @@
-//go:build go1.21
-// +build go1.21
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -376,6 +376,30 @@ type ContentFilterCitedDetectionResult struct {
 	URL *string
 }
 
+// ContentFilterCompletionTextSpan - Describes a span within generated completion text. Offset 0 is the first UTF32 code point
+// of the completion text.
+type ContentFilterCompletionTextSpan struct {
+	// REQUIRED; Offset of the first UTF32 code point which is excluded from the span. This field is always equal to completionstartoffset
+	// for empty spans. This field is always larger than completionstartoffset for
+	// non-empty spans.
+	CompletionEndOffset *int32
+
+	// REQUIRED; Offset of the UTF32 code point which begins the span.
+	CompletionStartOffset *int32
+}
+
+// ContentFilterCompletionTextSpanResult - Describes a span within generated completion text.
+type ContentFilterCompletionTextSpanResult struct {
+	// REQUIRED; The collection of completion text spans.
+	Details []ContentFilterCompletionTextSpan
+
+	// REQUIRED; A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
+	Detected *bool
+
+	// REQUIRED; A value indicating whether or not the content has been filtered.
+	Filtered *bool
+}
+
 // ContentFilterDetailedResults - Represents a structured collection of result details for content filtering.
 type ContentFilterDetailedResults struct {
 	// REQUIRED; The collection of detailed blocklist result information.
@@ -469,6 +493,9 @@ type ContentFilterResultsForChoice struct {
 	// terms, physical sexual acts, including those portrayed as an assault or a
 	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
 	Sexual *ContentFilterResult
+
+	// Information about detection of ungrounded material.
+	UngroundedMaterial *ContentFilterCompletionTextSpanResult
 
 	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
 	// weapons, etc.
@@ -631,7 +658,7 @@ type MongoDBChatExtensionParameters struct {
 	// of available authentication methods; please see the documentation of the data
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
 	// credential) authentication.
-	Authentication OnYourDataAuthenticationOptionsClassification
+	Authentication *OnYourDataUsernameAndPasswordAuthenticationOptions
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool

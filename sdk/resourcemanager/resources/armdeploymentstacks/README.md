@@ -1,4 +1,4 @@
-# Azure Resources Module for Go
+# Azure DeploymentStacks Module for Go
 
 The `armdeploymentstacks` module provides operations for working with Azure Resources.
 

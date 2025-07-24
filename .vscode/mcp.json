@@ -4,11 +4,6 @@
         "type": "stdio",
         "command": "pwsh",        
         "args": ["${workspaceFolder}/eng/common/mcp/azure-sdk-mcp.ps1", "-Run"]
-     },
-     "azure-sdk-go-mcp": {
-        "type": "stdio",
-        "command": "go",        
-        "args": ["run", "-C", "${workspaceFolder}/eng/tools/mcp", "."]
-     }
-   }
+    },
+  }
 }

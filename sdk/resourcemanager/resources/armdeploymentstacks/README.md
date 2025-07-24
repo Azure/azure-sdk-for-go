@@ -1,6 +1,6 @@
 # Azure Deployment Stacks Module for Go
 
-The `armdeploymentstacks` module provides operations for working with Azure Resources.
+The `armdeploymentstacks` module provides operations for working with Azure Deployment Stacks.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/resources/armdeploymentstacks)
 

@@ -25,8 +25,7 @@ type GalleryImageVersionsClient struct {
 }
 
 // NewGalleryImageVersionsClient creates a new instance of GalleryImageVersionsClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGalleryImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryImageVersionsClient, error) {
@@ -45,12 +44,10 @@ func NewGalleryImageVersionsClient(subscriptionID string, credential azcore.Toke
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the Image Definition resides.
-//   - galleryImageName - The name of the gallery image definition in which the Image Version is to be created.
-//   - galleryImageVersionName - The name of the gallery image version to be created. Needs to follow semantic version name pattern:
-//     The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
-//     Format: ..
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - galleryImageName - The name of the gallery image definition to be retrieved.
+//   - galleryImageVersionName - The name of the gallery image version to be retrieved.
 //   - galleryImageVersion - Parameters supplied to the create or update gallery image version operation.
 //   - options - GalleryImageVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryImageVersionsClient.BeginCreateOrUpdate
 //     method.
@@ -61,7 +58,8 @@ func (client *GalleryImageVersionsClient) BeginCreateOrUpdate(ctx context.Contex
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImageVersionsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -137,10 +135,10 @@ func (client *GalleryImageVersionsClient) createOrUpdateCreateRequest(ctx contex
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the Image Definition resides.
-//   - galleryImageName - The name of the gallery image definition in which the Image Version resides.
-//   - galleryImageVersionName - The name of the gallery image version to be deleted.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - galleryImageName - The name of the gallery image definition to be retrieved.
+//   - galleryImageVersionName - The name of the gallery image version to be retrieved.
 //   - options - GalleryImageVersionsClientBeginDeleteOptions contains the optional parameters for the GalleryImageVersionsClient.BeginDelete
 //     method.
 func (client *GalleryImageVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *GalleryImageVersionsClientBeginDeleteOptions) (*runtime.Poller[GalleryImageVersionsClientDeleteResponse], error) {
@@ -150,7 +148,8 @@ func (client *GalleryImageVersionsClient) BeginDelete(ctx context.Context, resou
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImageVersionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -223,9 +222,9 @@ func (client *GalleryImageVersionsClient) deleteCreateRequest(ctx context.Contex
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the Image Definition resides.
-//   - galleryImageName - The name of the gallery image definition in which the Image Version resides.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - galleryImageName - The name of the gallery image definition to be retrieved.
 //   - galleryImageVersionName - The name of the gallery image version to be retrieved.
 //   - options - GalleryImageVersionsClientGetOptions contains the optional parameters for the GalleryImageVersionsClient.Get
 //     method.
@@ -300,9 +299,9 @@ func (client *GalleryImageVersionsClient) getHandleResponse(resp *http.Response)
 // NewListByGalleryImagePager - List gallery image versions in a gallery image definition.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the Image Definition resides.
-//   - galleryImageName - The name of the Shared Image Gallery Image Definition from which the Image Versions are to be listed.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - galleryImageName - The name of the gallery image definition to be retrieved.
 //   - options - GalleryImageVersionsClientListByGalleryImageOptions contains the optional parameters for the GalleryImageVersionsClient.NewListByGalleryImagePager
 //     method.
 func (client *GalleryImageVersionsClient) NewListByGalleryImagePager(resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImageVersionsClientListByGalleryImageOptions) *runtime.Pager[GalleryImageVersionsClientListByGalleryImageResponse] {
@@ -371,12 +370,10 @@ func (client *GalleryImageVersionsClient) listByGalleryImageHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - resourceGroupName - The name of the resource group.
-//   - galleryName - The name of the Shared Image Gallery in which the Image Definition resides.
-//   - galleryImageName - The name of the gallery image definition in which the Image Version is to be updated.
-//   - galleryImageVersionName - The name of the gallery image version to be updated. Needs to follow semantic version name pattern:
-//     The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
-//     Format: ..
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - galleryImageName - The name of the gallery image definition to be retrieved.
+//   - galleryImageVersionName - The name of the gallery image version to be retrieved.
 //   - galleryImageVersion - Parameters supplied to the update gallery image version operation.
 //   - options - GalleryImageVersionsClientBeginUpdateOptions contains the optional parameters for the GalleryImageVersionsClient.BeginUpdate
 //     method.
@@ -387,7 +384,8 @@ func (client *GalleryImageVersionsClient) BeginUpdate(ctx context.Context, resou
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImageVersionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {

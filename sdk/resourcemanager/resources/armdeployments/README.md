@@ -1,6 +1,6 @@
 # Azure Deployments Module for Go
 
-The `armdeployments` module provides operations for working with Azure Resources.
+The `armdeployments` module provides operations for working with Azure Deployments.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/resources/armdeployments)
 

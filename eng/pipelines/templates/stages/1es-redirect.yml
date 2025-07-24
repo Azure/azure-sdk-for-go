@@ -41,15 +41,6 @@ extends:
         autobaseline:
           isMainPipeline: true
           enableForGitHub: true
-        componentgovernance:
-          enabled: true
-          timeout: 3600 # Default time out of 600 seconds isn't enough to finish processing on windows.
-      ${{ else }}: # Disable CG and SBom on all pipelines except for the core pipeline
-        componentgovernance:
-          enabled: false
-          justificationForDisabling: "To reduce redundant CG runs across all our pipeline jobs we are disabling and only running it for our main pipeline."
-        sbom:
-          enabled: false
       sourceAnalysisPool:
         name: azsdk-pool
         image: windows-2022
@@ -59,6 +50,11 @@ extends:
         toolVersion: '2.3.12.23'
       # Turn off the build warnings caused by disabling some sdl checks
       createAdoIssuesForJustificationsForDisablement: false
+      componentgovernance:
+        enabled: false
+        justificationForDisabling: "To reduce redundant CG runs across all our pipeline jobs we are disabling and only running in our main build job."
+      sbom:
+        enabled: false
       eslint:
         enabled: false
         justificationForDisabling: "ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3556850"

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package tools
+package generate
 
 import (
 	"context"
@@ -17,37 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
-	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/spf13/cobra"
 )
-
-// SDKGeneratorTool creates and returns the generate-go-sdk tool
-func SDKGeneratorTool() mcp.Tool {
-	return mcp.NewTool("generate-go-sdk",
-		mcp.WithDescription("Generates Azure Go SDK from TypeSpec configuration. Provide either tsp_config_path OR github_pr_link (exactly one is required)."),
-		mcp.WithString("sdk_repo_path",
-			mcp.Description("Local path to the Azure SDK for Go repository"),
-			mcp.Required(),
-		),
-		mcp.WithString("spec_repo_path",
-			mcp.Description("Local path to the Azure REST API Specs repository"),
-			mcp.Required(),
-		),
-		mcp.WithString("tsp_config_path",
-			mcp.Description("Direct path to tspconfig.yaml file (relative to spec repo root)"),
-		),
-		mcp.WithString("github_pr_link",
-			mcp.Description("GitHub PR link to extract TypeSpec configuration from"),
-		),
-	)
-}
-
-// SDKGeneratorRequest represents the input for SDK generation
-type SDKGeneratorRequest struct {
-	SDKRepoPath   string `json:"sdk_repo_path"`
-	SpecRepoPath  string `json:"spec_repo_path"`
-	TspConfigPath string `json:"tsp_config_path,omitempty"`
-	GitHubPRLink  string `json:"github_pr_link,omitempty"`
-}
 
 // SDKGeneratorResult represents the result of SDK generation
 type SDKGeneratorResult struct {
@@ -62,107 +33,111 @@ type SDKGeneratorResult struct {
 	GenerationType string `json:"generation_type,omitempty"`
 }
 
-// SDKGeneratorHandler handles the generate-go-sdk tool requests
-func SDKGeneratorHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	// Parse arguments using MCP's built-in parsing functions
-	req := SDKGeneratorRequest{
-		SDKRepoPath:   mcp.ParseString(request, "sdk_repo_path", ""),
-		SpecRepoPath:  mcp.ParseString(request, "spec_repo_path", ""),
-		TspConfigPath: mcp.ParseString(request, "tsp_config_path", ""),
-		GitHubPRLink:  mcp.ParseString(request, "github_pr_link", ""),
-	}
+// Command returns the generate command
+func Command() *cobra.Command {
+	var outputFormat string
+	var tspConfigPath string
+	var githubPRLink string
+	var debug bool
 
-	// Validate required parameters
-	if req.SDKRepoPath == "" {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent("Error: sdk_repo_path is required"),
-			},
-			IsError: true,
-		}, nil
-	}
-	if req.SpecRepoPath == "" {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent("Error: spec_repo_path is required"),
-			},
-			IsError: true,
-		}, nil
-	}
+	generateCmd := &cobra.Command{
+		Use:   "generate <sdk-repo-path> <spec-repo-path>",
+		Short: "Generate Azure Go SDK from TypeSpec configuration",
+		Long: `Generate Azure Go SDK from TypeSpec configuration.
 
-	// Validate that exactly one of tsp_config_path or github_pr_link is provided
-	if req.TspConfigPath == "" && req.GitHubPRLink == "" {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent("Error: either tsp_config_path or github_pr_link must be provided"),
-			},
-			IsError: true,
-		}, nil
-	}
-	if req.TspConfigPath != "" && req.GitHubPRLink != "" {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent("Error: only one of tsp_config_path or github_pr_link should be provided, not both"),
-			},
-			IsError: true,
-		}, nil
-	}
+This command generates an Azure Go SDK package from TypeSpec specifications. 
+You must provide either a direct path to tspconfig.yaml OR a GitHub PR link (exactly one is required).
 
-	// Validate paths
-	if err := validatePaths(req.SDKRepoPath, req.SpecRepoPath); err != nil {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent(fmt.Sprintf("Path validation error: %v", err)),
-			},
-			IsError: true,
-		}, nil
-	}
+Examples:
+  # Generate from direct TypeSpec config path
+  generator generate /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs --tsp-config specification/cognitiveservices/OpenAI.Inference/tspconfig.yaml
 
-	// Resolve tspconfig path
-	var inputPath string
-	if req.TspConfigPath != "" {
-		inputPath = req.TspConfigPath
-	} else {
-		inputPath = req.GitHubPRLink
-	}
+  # Generate from GitHub PR
+  generator generate /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs --github-pr https://github.com/Azure/azure-rest-api-specs/pull/12345
 
-	tspConfigPath, err := resolveTspConfigPath(ctx, inputPath, req.SpecRepoPath)
-	if err != nil {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent(fmt.Sprintf("Error resolving TypeSpec config path: %v", err)),
-			},
-			IsError: true,
-		}, nil
-	}
+The command will:
+1. Validate the provided repository paths
+2. Resolve the TypeSpec configuration (checking out PR branch if needed)
+3. Generate the Go SDK using the TypeSpec-Go emitter
+4. Output generation results in the specified format`,
+		Args: cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			sdkRepoPath := args[0]
+			specRepoPath := args[1]
 
-	// Generate SDK
-	result, err := generateSDK(ctx, req, tspConfigPath)
-	if err != nil {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent(fmt.Sprintf("SDK generation failed: %v", err)),
-			},
-			IsError: true,
-		}, nil
-	}
+			// Validate that exactly one of tsp_config_path or github_pr_link is provided
+			if tspConfigPath == "" && githubPRLink == "" {
+				return fmt.Errorf("either --tsp-config or --github-pr must be provided")
+			}
+			if tspConfigPath != "" && githubPRLink != "" {
+				return fmt.Errorf("only one of --tsp-config or --github-pr should be provided, not both")
+			}
 
-	// Format result as JSON
-	resultJSON, err := json.MarshalIndent(result, "", "  ")
-	if err != nil {
-		return &mcp.CallToolResult{
-			Content: []mcp.Content{
-				mcp.NewTextContent(fmt.Sprintf("Error formatting result: %v", err)),
-			},
-			IsError: true,
-		}, nil
-	}
+			// Validate paths
+			if err := validatePaths(sdkRepoPath, specRepoPath); err != nil {
+				return fmt.Errorf("path validation error: %v", err)
+			}
 
-	return &mcp.CallToolResult{
-		Content: []mcp.Content{
-			mcp.NewTextContent(string(resultJSON)),
+			// Resolve tspconfig path
+			var inputPath string
+			if tspConfigPath != "" {
+				inputPath = tspConfigPath
+			} else {
+				inputPath = githubPRLink
+			}
+
+			resolvedTspConfigPath, err := resolveTspConfigPath(context.Background(), inputPath, specRepoPath)
+			if err != nil {
+				return fmt.Errorf("error resolving TypeSpec config path: %v", err)
+			}
+
+			// Generate SDK
+			result, err := generateSDK(context.Background(), sdkRepoPath, specRepoPath, resolvedTspConfigPath, debug)
+			if err != nil {
+				return fmt.Errorf("SDK generation failed: %v", err)
+			}
+
+			// Output result
+			switch outputFormat {
+			case "json":
+				jsonResult, err := json.MarshalIndent(result, "", "  ")
+				if err != nil {
+					return fmt.Errorf("failed to marshal result: %v", err)
+				}
+				fmt.Println(string(jsonResult))
+			default:
+				// Human-readable output
+				if result.Success {
+					fmt.Printf("✓ SDK generation completed successfully!\n\n")
+					fmt.Printf("Package Name: %s\n", result.PackageName)
+					fmt.Printf("Package Path: %s\n", result.PackagePath)
+					fmt.Printf("Spec Folder: %s\n", result.SpecFolderPath)
+					fmt.Printf("Version: %s\n", result.Version)
+					fmt.Printf("Generation Type: %s\n", result.GenerationType)
+					if result.HasBreaking {
+						fmt.Printf("⚠ Has Breaking Changes: Yes\n")
+					} else {
+						fmt.Printf("✓ Has Breaking Changes: No\n")
+					}
+					if result.ChangelogMD != "" {
+						fmt.Printf("\nChangelog:\n%s\n", result.ChangelogMD)
+					}
+				} else {
+					fmt.Printf("✗ SDK generation failed: %s\n", result.Message)
+					return fmt.Errorf("generation failed")
+				}
+			}
+
+			return nil
 		},
-	}, nil
+	}
+
+	generateCmd.Flags().StringVarP(&outputFormat, "output", "o", "text", "Output format (text|json)")
+	generateCmd.Flags().StringVar(&tspConfigPath, "tsp-config", "", "Direct path to tspconfig.yaml file (relative to spec repo root)")
+	generateCmd.Flags().StringVar(&githubPRLink, "github-pr", "", "GitHub PR link to extract TypeSpec configuration from")
+	generateCmd.Flags().BoolVar(&debug, "debug", false, "Enable debug output")
+
+	return generateCmd
 }
 
 // validatePaths validates that the provided paths exist and are directories
@@ -263,7 +238,6 @@ func extractTspConfigFromPR(ctx context.Context, prLink, specRepoPath string) (s
 	}
 
 	// Use the existing logic to extract tspconfig path from changed files
-	// Since we no longer have the GitHub client, we'll create a minimal implementation
 	tspConfigRelativePath, err := extractTspConfigPathFromFiles(filePaths)
 	if err != nil {
 		return "", fmt.Errorf("failed to extract tspconfig path from PR: %v", err)
@@ -327,32 +301,36 @@ func getSpecCommitHash(specRepoPath string) (string, error) {
 }
 
 // generateSDK performs the actual SDK generation using the GenerateFromTypeSpec method
-func generateSDK(ctx context.Context, req SDKGeneratorRequest, tspConfigPath string) (*SDKGeneratorResult, error) {
+func generateSDK(ctx context.Context, sdkRepoPath, specRepoPath, tspConfigPath string, debug bool) (*SDKGeneratorResult, error) {
 	// Create SDK repository reference
-	sdkRepo, err := repo.OpenSDKRepository(req.SDKRepoPath)
+	sdkRepo, err := repo.OpenSDKRepository(sdkRepoPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open SDK repository: %v", err)
 	}
 
 	// Get the current commit hash from the spec repository
-	specCommitHash, err := getSpecCommitHash(req.SpecRepoPath)
+	specCommitHash, err := getSpecCommitHash(specRepoPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get spec commit hash: %v", err)
 	}
 
 	// Create generation context
 	generateCtx := common.GenerateContext{
-		SDKPath:        utils.NormalizePath(req.SDKRepoPath),
+		SDKPath:        utils.NormalizePath(sdkRepoPath),
 		SDKRepo:        &sdkRepo,
-		SpecPath:       utils.NormalizePath(req.SpecRepoPath),
+		SpecPath:       utils.NormalizePath(specRepoPath),
 		SpecCommitHash: specCommitHash,
 		SpecRepoURL:    "Azure/azure-rest-api-specs",
 	}
 
 	// Create generation parameters
+	tspClientOptions := []string{}
+	if debug {
+		tspClientOptions = append(tspClientOptions, "--debug")
+	}
+
 	generateParam := &common.GenerateParam{
-		GoVersion:        MinGoVersion,
-		TspClientOptions: []string{"--debug"},
+		TspClientOptions: tspClientOptions,
 		ApiVersion:       "",
 		SdkReleaseType:   "",
 		SkipUpdateDep:    true,
@@ -375,7 +353,7 @@ func generateSDK(ctx context.Context, req SDKGeneratorRequest, tspConfigPath str
 	}
 
 	specFolderPath := filepath.Dir(tspConfigPath)
-	packagePath := filepath.Join(req.SDKRepoPath, result.PackageRelativePath)
+	packagePath := filepath.Join(sdkRepoPath, result.PackageRelativePath)
 
 	return &SDKGeneratorResult{
 		Success:        true,

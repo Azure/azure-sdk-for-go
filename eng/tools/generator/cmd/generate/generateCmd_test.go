@@ -1,17 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package tools
+package generate
 
 import (
 	"context"
-	"encoding/json"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"testing"
-
-	"github.com/mark3labs/mcp-go/mcp"
 )
 
 func TestValidatePaths(t *testing.T) {
@@ -126,105 +123,69 @@ options:
 	}
 }
 
-func TestSDKGeneratorHandler_ArgumentParsing(t *testing.T) {
-	ctx := context.Background()
-
-	// Test with missing required parameters
-	request := mcp.CallToolRequest{
-		Params: mcp.CallToolParams{
-			Arguments: map[string]interface{}{
-				"sdk_repo_path": "",
+func TestExtractTspConfigPathFromFiles(t *testing.T) {
+	tests := []struct {
+		name      string
+		filePaths []string
+		expected  string
+		shouldErr bool
+	}{
+		{
+			name:      "Direct tspconfig.yaml file",
+			filePaths: []string{"specification/cognitiveservices/OpenAI.Inference/tspconfig.yaml"},
+			expected:  "specification/cognitiveservices/OpenAI.Inference/tspconfig.yaml",
+			shouldErr: false,
+		},
+		{
+			name: "TypeSpec files with inferrable path",
+			filePaths: []string{
+				"specification/cognitiveservices/OpenAI.Inference/main.tsp",
+				"specification/cognitiveservices/OpenAI.Inference/models.tsp",
 			},
+			expected:  "specification/cognitiveservices/OpenAI.Inference/tspconfig.yaml",
+			shouldErr: false,
+		},
+		{
+			name: "Mixed files with tspconfig.yaml",
+			filePaths: []string{
+				"specification/cognitiveservices/OpenAI.Inference/main.tsp",
+				"specification/cognitiveservices/OpenAI.Inference/tspconfig.yaml",
+				"specification/cognitiveservices/OpenAI.Inference/models.tsp",
+			},
+			expected:  "specification/cognitiveservices/OpenAI.Inference/tspconfig.yaml",
+			shouldErr: false,
+		},
+		{
+			name:      "No relevant files",
+			filePaths: []string{"README.md", "docs/guide.md"},
+			expected:  "",
+			shouldErr: true,
+		},
+		{
+			name:      "Empty file list",
+			filePaths: []string{},
+			expected:  "",
+			shouldErr: true,
 		},
 	}
 
-	result, err := SDKGeneratorHandler(ctx, request)
-	if err != nil {
-		t.Errorf("Expected no error from handler, got: %v", err)
-	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := extractTspConfigPathFromFiles(tt.filePaths)
 
-	if !result.IsError {
-		t.Error("Expected error result for missing required parameters")
-	}
-
-	// Test with valid parameters but invalid paths
-	request = mcp.CallToolRequest{
-		Params: mcp.CallToolParams{
-			Arguments: map[string]interface{}{
-				"sdk_repo_path":   "/non/existent/sdk/path",
-				"spec_repo_path":  "/non/existent/spec/path",
-				"tsp_config_path": "some/config/path",
-			},
-		},
-	}
-
-	result, err = SDKGeneratorHandler(ctx, request)
-	if err != nil {
-		t.Errorf("Expected no error from handler, got: %v", err)
-	}
-
-	if !result.IsError {
-		t.Error("Expected error result for invalid paths")
-	}
-}
-
-func TestSDKGeneratorHandler_ValidPaths(t *testing.T) {
-	ctx := context.Background()
-
-	// Create temporary directory structure
-	tempDir := t.TempDir()
-	sdkPath := filepath.Join(tempDir, "sdk")
-	specPath := filepath.Join(tempDir, "spec")
-	tspDir := filepath.Join(specPath, "specification", "test", "service")
-	tspConfigPath := filepath.Join(tspDir, "tspconfig.yaml")
-
-	// Create the directory structure
-	if err := os.MkdirAll(sdkPath, 0755); err != nil {
-		t.Fatalf("Failed to create SDK directory: %v", err)
-	}
-	if err := os.MkdirAll(tspDir, 0755); err != nil {
-		t.Fatalf("Failed to create tsp directory: %v", err)
-	}
-
-	// Create a minimal tspconfig.yaml file
-	tspContent := `
-emit:
-  - "@azure-tools/typespec-go"
-options:
-  "@azure-tools/typespec-go":
-    package-dir: "sdk/resourcemanager/test/armtest"
-`
-	if err := os.WriteFile(tspConfigPath, []byte(tspContent), 0644); err != nil {
-		t.Fatalf("Failed to create tspconfig.yaml: %v", err)
-	}
-
-	// Test with valid parameters (this will likely fail at SDK generation due to missing dependencies)
-	request := mcp.CallToolRequest{
-		Params: mcp.CallToolParams{
-			Arguments: map[string]interface{}{
-				"sdk_repo_path":   sdkPath,
-				"spec_repo_path":  specPath,
-				"tsp_config_path": "specification/test/service",
-			},
-		},
-	}
-
-	result, err := SDKGeneratorHandler(ctx, request)
-	if err != nil {
-		t.Errorf("Expected no error from handler, got: %v", err)
-	}
-
-	// The result should contain valid JSON even if generation fails
-	if len(result.Content) == 0 {
-		t.Error("Expected result content")
-	}
-
-	// Try to parse the result as JSON
-	var generatorResult SDKGeneratorResult
-	if textContent, ok := result.Content[0].(*mcp.TextContent); ok {
-		if err := json.Unmarshal([]byte(textContent.Text), &generatorResult); err != nil {
-			t.Errorf("Expected valid JSON result, got unmarshal error: %v", err)
-		}
+			if tt.shouldErr {
+				if err == nil {
+					t.Errorf("Expected error but got none")
+				}
+			} else {
+				if err != nil {
+					t.Errorf("Expected no error but got: %v", err)
+				}
+				if result != tt.expected {
+					t.Errorf("Expected %s, got %s", tt.expected, result)
+				}
+			}
+		})
 	}
 }
 

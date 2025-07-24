@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package tools
+package environment
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"os/exec"
@@ -12,21 +11,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/spf13/cobra"
 )
 
 // Configuration constants
 const (
-	MinGoVersion   = "1.23"
 	MinNodeVersion = "20.0.0"
 )
-
-// EnvironmentCheckerTool creates and returns the check-sdk-generation-environment tool
-func EnvironmentCheckerTool() mcp.Tool {
-	return mcp.NewTool("check-sdk-generation-environment",
-		mcp.WithDescription("Checks and validates environment prerequisites for Azure Go SDK generation. Automatically installs missing tools."),
-	)
-}
 
 // EnvironmentChecker represents the result of a single environment check
 type EnvironmentChecker struct {
@@ -46,153 +37,168 @@ type EnvironmentCheckResult struct {
 	Installed []string             `json:"installed,omitempty"`
 }
 
-// EnvironmentCheckerHandler handles the check-sdk-generation-environment tool requests
-func EnvironmentCheckerHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	result := &EnvironmentCheckResult{
-		Success:   true,
-		Checks:    []EnvironmentChecker{},
-		Failed:    []string{},
-		Installed: []string{},
-	}
+// Command returns the environment command
+func Command() *cobra.Command {
+	var outputFormat string
+	var autoInstall bool = true
 
-	// Check Go version
-	goCheck := checkGoVersion(MinGoVersion)
-	result.Checks = append(result.Checks, goCheck)
-	if goCheck.Status == "ERROR" {
-		result.Success = false
-		result.Failed = append(result.Failed, fmt.Sprintf("Go %s or later", MinGoVersion))
-	}
+	envCmd := &cobra.Command{
+		Use:   "environment",
+		Short: "Check and validate environment prerequisites for Azure Go SDK generation",
+		Long: `This command checks and validates environment prerequisites for Azure Go SDK generation.
+It verifies the installation and versions of required tools including:
+- Node.js (minimum version 20.0.0)
+- TypeSpec compiler
+- TypeSpec client generator CLI
+- GitHub CLI and authentication
 
-	// Check Node.js version
-	nodeCheck := checkNodeVersion(MinNodeVersion)
-	result.Checks = append(result.Checks, nodeCheck)
-	if nodeCheck.Status == "ERROR" {
-		result.Success = false
-		result.Failed = append(result.Failed, fmt.Sprintf("Node.js %s or later", MinNodeVersion))
-	}
-
-	// Check TypeSpec compiler
-	tspCheck := checkTypeSpecCompiler()
-	result.Checks = append(result.Checks, tspCheck)
-	if tspCheck.Status == "ERROR" || tspCheck.Status == "WARNING" {
-		installResult := installTypeSpecCompiler()
-		result.Checks = append(result.Checks, installResult)
-		if installResult.Status == "SUCCESS" {
-			result.Installed = append(result.Installed, "TypeSpec compiler")
-			// Re-check after installation
-			tspRecheck := checkTypeSpecCompiler()
-			result.Checks = append(result.Checks, tspRecheck)
-			if tspRecheck.Status == "ERROR" {
-				result.Success = false
-				result.Failed = append(result.Failed, "TypeSpec compiler (failed to install properly)")
+The command automatically installs missing TypeSpec tools by default. Use --auto-install=false to disable this behavior.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			result := &EnvironmentCheckResult{
+				Success:   true,
+				Checks:    []EnvironmentChecker{},
+				Failed:    []string{},
+				Installed: []string{},
 			}
-		} else {
-			result.Success = false
-			result.Failed = append(result.Failed, "TypeSpec compiler (failed to install)")
-		}
-	}
 
-	// Check TypeSpec client generator CLI
-	tspClientCheck := checkTypeSpecClientCLI()
-	result.Checks = append(result.Checks, tspClientCheck)
-	if tspClientCheck.Status == "ERROR" || tspClientCheck.Status == "WARNING" {
-		installResult := installTypeSpecClientCLI()
-		result.Checks = append(result.Checks, installResult)
-		if installResult.Status == "SUCCESS" {
-			result.Installed = append(result.Installed, "TypeSpec client generator CLI")
-			// Re-check after installation
-			tspClientRecheck := checkTypeSpecClientCLI()
-			result.Checks = append(result.Checks, tspClientRecheck)
-			if tspClientRecheck.Status == "ERROR" {
+			// Check Node.js version
+			nodeCheck := checkNodeVersion(MinNodeVersion)
+			result.Checks = append(result.Checks, nodeCheck)
+			if nodeCheck.Status == "ERROR" {
 				result.Success = false
-				result.Failed = append(result.Failed, "TypeSpec client generator CLI (failed to install properly)")
+				result.Failed = append(result.Failed, fmt.Sprintf("Node.js %s or later", MinNodeVersion))
 			}
-		} else {
-			result.Success = false
-			result.Failed = append(result.Failed, "TypeSpec client generator CLI (failed to install)")
-		}
+
+			// Check TypeSpec compiler
+			tspCheck := checkTypeSpecCompiler()
+			result.Checks = append(result.Checks, tspCheck)
+			if (tspCheck.Status == "ERROR" || tspCheck.Status == "WARNING") && autoInstall {
+				installResult := installTypeSpecCompiler()
+				result.Checks = append(result.Checks, installResult)
+				if installResult.Status == "SUCCESS" {
+					result.Installed = append(result.Installed, "TypeSpec compiler")
+					// Re-check after installation
+					tspRecheck := checkTypeSpecCompiler()
+					result.Checks = append(result.Checks, tspRecheck)
+					if tspRecheck.Status == "ERROR" {
+						result.Success = false
+						result.Failed = append(result.Failed, "TypeSpec compiler (failed to install properly)")
+					}
+				} else {
+					result.Success = false
+					result.Failed = append(result.Failed, "TypeSpec compiler (failed to install)")
+				}
+			} else if tspCheck.Status == "ERROR" || tspCheck.Status == "WARNING" {
+				result.Success = false
+				result.Failed = append(result.Failed, "TypeSpec compiler")
+			}
+
+			// Check TypeSpec client generator CLI
+			tspClientCheck := checkTypeSpecClientCLI()
+			result.Checks = append(result.Checks, tspClientCheck)
+			if (tspClientCheck.Status == "ERROR" || tspClientCheck.Status == "WARNING") && autoInstall {
+				installResult := installTypeSpecClientCLI()
+				result.Checks = append(result.Checks, installResult)
+				if installResult.Status == "SUCCESS" {
+					result.Installed = append(result.Installed, "TypeSpec client generator CLI")
+					// Re-check after installation
+					tspClientRecheck := checkTypeSpecClientCLI()
+					result.Checks = append(result.Checks, tspClientRecheck)
+					if tspClientRecheck.Status == "ERROR" {
+						result.Success = false
+						result.Failed = append(result.Failed, "TypeSpec client generator CLI (failed to install properly)")
+					}
+				} else {
+					result.Success = false
+					result.Failed = append(result.Failed, "TypeSpec client generator CLI (failed to install)")
+				}
+			} else if tspClientCheck.Status == "ERROR" || tspClientCheck.Status == "WARNING" {
+				result.Success = false
+				result.Failed = append(result.Failed, "TypeSpec client generator CLI")
+			}
+
+			// Check GitHub CLI installation
+			ghCheck := checkGitHubCLI()
+			result.Checks = append(result.Checks, ghCheck)
+			if ghCheck.Status == "ERROR" {
+				result.Success = false
+				result.Failed = append(result.Failed, "GitHub CLI (gh)")
+			}
+
+			// Check GitHub CLI authentication
+			ghAuthCheck := checkGitHubCLIAuth()
+			result.Checks = append(result.Checks, ghAuthCheck)
+			if ghAuthCheck.Status == "ERROR" {
+				result.Success = false
+				result.Failed = append(result.Failed, "GitHub CLI authentication")
+			}
+
+			// Generate summary
+			if result.Success {
+				result.Summary = "All environment checks are satisfied! ✓"
+			} else {
+				result.Summary = fmt.Sprintf("Missing environment: %s", strings.Join(result.Failed, ", "))
+			}
+
+			// Output result
+			switch outputFormat {
+			case "json":
+				jsonResult, err := json.MarshalIndent(result, "", "  ")
+				if err != nil {
+					return fmt.Errorf("failed to marshal result: %v", err)
+				}
+				fmt.Println(string(jsonResult))
+			default:
+				// Human-readable output
+				fmt.Println(result.Summary)
+				fmt.Println()
+				for _, check := range result.Checks {
+					status := getStatusSymbol(check.Status)
+					fmt.Printf("%s %s: %s\n", status, check.Name, check.Message)
+					if check.InstallHint != "" && check.Status != "SUCCESS" {
+						fmt.Printf("   Hint: %s\n", check.InstallHint)
+					}
+				}
+				if len(result.Installed) > 0 {
+					fmt.Printf("\n✓ Automatically installed: %s\n", strings.Join(result.Installed, ", "))
+				}
+			}
+
+			// Return exit code 1 if checks failed
+			if !result.Success {
+				return fmt.Errorf("environment checks failed")
+			}
+
+			return nil
+		},
 	}
 
-	// Check GitHub CLI installation
-	ghCheck := checkGitHubCLI()
-	result.Checks = append(result.Checks, ghCheck)
-	if ghCheck.Status == "ERROR" {
-		result.Success = false
-		result.Failed = append(result.Failed, "GitHub CLI (gh)")
-	}
+	envCmd.Flags().StringVarP(&outputFormat, "output", "o", "text", "Output format (text|json)")
+	envCmd.Flags().BoolVar(&autoInstall, "auto-install", true, "Automatically install missing TypeSpec tools")
 
-	// Check GitHub CLI authentication
-	ghAuthCheck := checkGitHubCLIAuth()
-	result.Checks = append(result.Checks, ghAuthCheck)
-	if ghAuthCheck.Status == "ERROR" {
-		result.Success = false
-		result.Failed = append(result.Failed, "GitHub CLI authentication")
-	}
+	return envCmd
+}
 
-	// Generate summary
-	if result.Success {
-		result.Summary = "All environment checks are satisfied! ✓"
-	} else {
-		result.Summary = fmt.Sprintf("Missing environment: %s", strings.Join(result.Failed, ", "))
+func getStatusSymbol(status string) string {
+	switch status {
+	case "SUCCESS":
+		return "✓"
+	case "WARNING":
+		return "⚠"
+	case "ERROR":
+		return "✗"
+	default:
+		return "?"
 	}
-
-	// Return result as JSON
-	jsonResult, err := json.MarshalIndent(result, "", "  ")
-	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("Failed to marshal result: %v", err)), nil
-	}
-
-	return mcp.NewToolResultText(string(jsonResult)), nil
 }
 
 // Helper functions
 
-// runCommand is a variable that can be overridden for testing
+// runCommand executes a shell command and returns the output
 var runCommand = func(command string, args ...string) (string, error) {
 	cmd := exec.Command(command, args...)
 	output, err := cmd.CombinedOutput()
 	return string(output), err
-}
-
-func checkGoVersion(minVersion string) EnvironmentChecker {
-	output, err := runCommand("go", "version")
-	if err != nil {
-		return EnvironmentChecker{
-			Name:        "Go",
-			Status:      "ERROR",
-			Message:     "Go is not installed or not in PATH",
-			InstallHint: "Install from https://golang.org/dl/",
-		}
-	}
-
-	// Extract version from "go version go1.23.0 ..."
-	re := regexp.MustCompile(`go version go(\d+\.\d+)`)
-	matches := re.FindStringSubmatch(output)
-	if len(matches) < 2 {
-		return EnvironmentChecker{
-			Name:    "Go",
-			Status:  "ERROR",
-			Message: "Could not parse Go version",
-		}
-	}
-
-	version := matches[1]
-	if compareVersions(version, minVersion) {
-		return EnvironmentChecker{
-			Name:    "Go",
-			Status:  "SUCCESS",
-			Version: version,
-			Message: fmt.Sprintf("Go version %s is installed ✓", version),
-		}
-	}
-
-	return EnvironmentChecker{
-		Name:        "Go",
-		Status:      "ERROR",
-		Version:     version,
-		Message:     fmt.Sprintf("Go version %s is too old. Minimum required: %s", version, minVersion),
-		InstallHint: "Update from https://golang.org/dl/",
-	}
 }
 
 func checkNodeVersion(minVersion string) EnvironmentChecker {
@@ -243,7 +249,7 @@ func checkTypeSpecCompiler() EnvironmentChecker {
 			Name:        "TypeSpec Compiler",
 			Status:      "WARNING",
 			Message:     "TypeSpec compiler is not installed",
-			InstallHint: "Will be installed automatically",
+			InstallHint: "Will be installed automatically, or run: npm install -g @typespec/compiler",
 		}
 	}
 
@@ -261,7 +267,7 @@ func checkTypeSpecClientCLI() EnvironmentChecker {
 			Name:        "TypeSpec Client Generator CLI",
 			Status:      "WARNING",
 			Message:     "TypeSpec client generator CLI is not installed",
-			InstallHint: "Will be installed automatically",
+			InstallHint: "Will be installed automatically, or run: npm install -g @azure-tools/typespec-client-generator-cli",
 		}
 	}
 

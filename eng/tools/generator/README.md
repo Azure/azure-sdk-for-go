@@ -6,6 +6,8 @@ This is a command line tool for generating new releases and managing automation 
 
 The generator tool provides several commands to support the Azure SDK for Go development lifecycle:
 
+- **Environment**: Check and validate development environment prerequisites
+- **Generate**: Generate individual SDK packages from TypeSpec specifications
 - **Issue Management**: Parse GitHub release request issues into configuration
 - **Release Generation**: Generate new SDK releases from TypeSpec or Swagger specifications  
 - **Automation**: Process batch SDK generation for CI/CD pipelines
@@ -15,6 +17,114 @@ The generator tool provides several commands to support the Azure SDK for Go dev
 ## Commands
 
 This CLI tool provides the following commands:
+
+### The `environment` command
+
+The `environment` command checks and validates environment prerequisites for Azure Go SDK generation. It verifies the installation and versions of required tools and can automatically install missing TypeSpec tools.
+
+**Usage:**
+```bash
+generator environment [flags]
+```
+
+**Flags:**
+- `--auto-install`: Automatically install missing TypeSpec tools (default: true)
+- `-o, --output`: Output format, either "text" or "json" (default: "text")
+
+**What it checks:**
+- **Go**: Minimum version 1.23
+- **Node.js**: Minimum version 20.0.0
+- **TypeSpec compiler**: `@typespec/compiler` package
+- **TypeSpec client generator CLI**: `@azure-tools/typespec-client-generator-cli` package
+- **GitHub CLI**: Installation and authentication status
+
+**Examples:**
+```bash
+# Check environment with auto-install (default)
+generator environment
+
+# Check environment without auto-installing missing tools
+generator environment --auto-install=false
+
+# Get results in JSON format
+generator environment --output json
+
+# Get help
+generator environment --help
+```
+
+**Sample Output:**
+```
+All environment checks are satisfied! ✓
+
+✓ Go: Go version 1.24 is installed ✓
+✓ Node.js: Node.js version 22.17.1 is installed ✓
+✓ TypeSpec Compiler: TypeSpec compiler is installed ✓
+✓ TypeSpec Client Generator CLI: TypeSpec client generator CLI is installed ✓
+✓ GitHub CLI: GitHub CLI 2.40.1 is installed ✓
+✓ GitHub CLI Authentication: GitHub CLI is authenticated ✓
+
+✓ Automatically installed: TypeSpec compiler, TypeSpec client generator CLI
+```
+
+### The `generate` command
+
+The `generate` command generates Azure Go SDK packages from TypeSpec specifications. It can work with either a direct path to a TypeSpec configuration file or a GitHub PR link.
+
+**Usage:**
+```bash
+generator generate <sdk-repo-path> <spec-repo-path> [flags]
+```
+
+**Arguments:**
+- `sdk-repo-path`: Path to the local Azure SDK for Go repository
+- `spec-repo-path`: Path to the local Azure REST API Specs repository
+
+**Flags:**
+- `--tsp-config`: Direct path to tspconfig.yaml file (relative to spec repo root)
+- `--github-pr`: GitHub PR link to extract TypeSpec configuration from
+- `--debug`: Enable debug output
+- `-o, --output`: Output format, either "text" or "json" (default: "text")
+
+**Note:** You must provide exactly one of `--tsp-config` or `--github-pr`.
+
+**Examples:**
+```bash
+# Generate from direct TypeSpec config path
+generator generate /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
+  --tsp-config specification/cognitiveservices/OpenAI.Inference/tspconfig.yaml
+
+# Generate from GitHub PR
+generator generate /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
+  --github-pr https://github.com/Azure/azure-rest-api-specs/pull/12345
+
+# Generate with debug output and JSON format
+generator generate /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
+  --tsp-config specification/service/namespace/tspconfig.yaml \
+  --debug --output json
+```
+
+**What it does:**
+1. Validates the provided repository paths
+2. Resolves the TypeSpec configuration (checking out PR branch if needed using GitHub CLI)
+3. Generates the Go SDK using the TypeSpec-Go emitter
+4. Reports generation results including package info, version, and breaking changes
+
+**Sample Output:**
+```
+✓ SDK generation completed successfully!
+
+Package Name: armcognitiveservices
+Package Path: /path/to/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices
+Spec Folder: /path/to/azure-rest-api-specs/specification/cognitiveservices/OpenAI.Inference
+Version: 1.0.0
+Generation Type: mgmt
+✓ Has Breaking Changes: No
+
+Changelog:
+### Features Added
+- New client `armcognitiveservices.ClientFactory` which is a client factory used to create any client in this module
+```
 
 ### The `issue` command
 
@@ -68,13 +178,12 @@ The `automation-v2` command processes batch SDK generation for automation pipeli
 
 **Usage:**
 ```bash
-generator automation-v2 <generate input filepath> <generate output filepath> [goVersion]
+generator automation-v2 <generate input filepath> <generate output filepath
 ```
 
 **Arguments:**
 - `generate input filepath`: Path to the generation input JSON file
 - `generate output filepath`: Path where generation output JSON will be written
-- `goVersion`: Go version to use (default: "1.18")
 
 **Input Format:**
 The input file should contain:
@@ -115,7 +224,6 @@ generator release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 - `--skip-create-branch`: Skip creating release branch
 - `--skip-generate-example`: Skip generating examples
 - `--package-config`: Additional package configuration
-- `--go-version`: Go version (default: "1.18")
 - `-t, --token`: Personal access token for GitHub operations
 - `--tsp-config`: Path to TypeSpec tspconfig.yaml
 - `--tsp-option`: TypeSpec-go emit options (format: option1=value1;option2=value2)
@@ -137,7 +245,6 @@ generator refresh-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 - `--release-date`: Release date for changelog
 - `--skip-create-branch`: Skip creating release branch
 - `--skip-generate-example`: Skip generating examples
-- `--go-version`: Go version (default: "1.18")
 - `--rps`: Comma-separated list of RPs to refresh (default: all)
 - `--update-spec-version`: Whether to update commit ID (default: true)
 
@@ -161,7 +268,13 @@ The generator supports both traditional Swagger/OpenAPI specifications and moder
 
 ## Prerequisites
 
-For full functionality, ensure you have:
+For full functionality, ensure you have the required development environment. You can use the `environment` command to check and automatically install missing prerequisites:
+
+```bash
+generator environment
+```
+
+**Required tools:**
 
 1. **Go 1.23 or later**
 2. **Node.js 20 or later** 
@@ -169,7 +282,24 @@ For full functionality, ensure you have:
    ```bash
    go install github.com/Azure/azure-sdk-for-go/eng/tools/generator@latest
    ```
-4. **tsp-client**: Install with:
+4. **TypeSpec compiler**: Install with:
    ```bash
-   npm install -g @azure-tools/typespec-client-generator-cli@v0.21.0
+   npm install -g @typespec/compiler
    ```
+5. **TypeSpec client generator CLI**: Install with:
+   ```bash
+   npm install -g @azure-tools/typespec-client-generator-cli
+   ```
+6. **GitHub CLI**: For authentication and repository operations
+   ```bash
+   # Windows (using winget)
+   winget install GitHub.CLI
+   
+   # Or download from https://cli.github.com/
+   ```
+
+**Quick Setup:**
+The `environment` command can automatically install the TypeSpec tools for you:
+```bash
+generator environment --auto-install
+```

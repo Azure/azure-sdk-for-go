@@ -6,5 +6,5 @@ package armnginx
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v3.1.0-beta.3"
 )

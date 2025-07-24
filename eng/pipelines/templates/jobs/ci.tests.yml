@@ -55,8 +55,8 @@ jobs:
   ${{ if and(eq(variables['System.TeamProject'], 'internal')eq(parameters.OSName, 'linux')) }}:
     templateContext:
       sdl:
-       componentgovernance:
-        enabled: true
+        componentgovernance:
+          enabled: true
 
   steps:
   - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml

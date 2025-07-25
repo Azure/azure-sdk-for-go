@@ -8,6 +8,9 @@ package path
 
 import (
 	"errors"
+	"net/url"
+	"strings"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -47,9 +50,27 @@ type RenameOptions struct {
 func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions, *generated.CPKInfo) {
 	// we don't need sourceModAccCond since this is not rename
 	mode := generated.PathRenameModeLegacy
+	// URL encode the source path to handle special characters
+	pathPart, queryPart, found := strings.Cut(path, "?")
+	
+	// URL encode each path segment individually to preserve structure
+	segments := strings.Split(pathPart, "/")
+	for i, segment := range segments {
+		segments[i] = url.QueryEscape(segment)
+	}
+	encodedPath := strings.Join(segments, "/")
+	
+	// If there was a query part, encode and append it
+	if found && queryPart != "" {
+		encodedQueryURL, err := runtime.EncodeQueryParams("?" + queryPart)
+		if err == nil {
+			encodedPath += encodedQueryURL
+		}
+	}
+	
 	createOpts := &generated.PathClientCreateOptions{
 		Mode:         &mode,
-		RenameSource: &path,
+		RenameSource: &encodedPath,
 	}
 	if o == nil {
 		return nil, nil, nil, createOpts, nil

@@ -30,7 +30,6 @@ options:
     fix-const-stuttering: false
 ```
 
-
 ## Migration from Swagger to TypeSpec
 
 The following breaking changes commonly occur when migrating API specifications from Swagger to TypeSpec.
@@ -104,8 +103,6 @@ options:
   "@azure-tools/typespec-go":
     fix-const-stuttering: false
 ```
-
-**Do not** use client customization to preserve the original enum name.
 
 ### 3. Operation Naming Changes
 
@@ -205,6 +202,8 @@ interface RedisCacheAccessPolicies {
 }
 ```
 
+If the response type name does not have the `<interface name>` prefix and start with `Client` directly, use the service name as the interface name instead.
+
 **Resolution**:
 
 Locate the operation and add the `FinalResult` parameter to the appropriate LRO header (`ArmLroLocationHeader`, `ArmAsyncOperationHeader`, or `ArmCombinedLroHeaders`) with the correct type:
@@ -302,6 +301,47 @@ An additional parameter is added to an operation, and a corresponding field is r
 **Impact**: This corrects the previous SDK behavior.
 
 **Resolution**: Accept these breaking changes.
+
+### 10. Naming Changes from Directive
+
+**Changelog Pattern**:
+
+Paired removal and addition entries showing naming changes for structs:
+
+```md
+- Struct `ResourceInfo` has been removed
+- New struct `RedisResource`
+```
+
+Also, in the legacy config for swagger under the spec folder: `specification/<service>/resource-manager/readme.go.md`, the renaming directives could be found:
+
+```md
+directive:
+
+- rename-model:
+  from: 'RedisResource'
+  to: 'ResourceInfo'
+```
+
+**Reason**: Swagger has directive ways to change the naming.
+
+**Spec Pattern**:
+
+Find the type definition by examining the names from the addition entries in the changelog (pattern: `New xxx '<type name>'`):
+
+```tsp
+model RedisResource {
+  ...
+}
+```
+
+**Resolution**:
+
+Use client customization to do the same renaming as the directive in the legacy config:
+
+```tsp
+@@clientName(RedisResource, "ResourceInfo", "go");
+```
 
 ## TypeSpec Specification Updates
 

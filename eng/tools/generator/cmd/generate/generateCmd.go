@@ -331,8 +331,6 @@ func generateSDK(ctx context.Context, sdkRepoPath, specRepoPath, tspConfigPath s
 
 	generateParam := &common.GenerateParam{
 		TspClientOptions: tspClientOptions,
-		ApiVersion:       "",
-		SdkReleaseType:   "",
 		SkipUpdateDep:    true,
 	}
 

@@ -68,6 +68,15 @@ type ConnectionString struct {
 	Name *string
 }
 
+// CustomerManagedKeyEncryptionProperties - Customer managed key encryption settings.
+type CustomerManagedKeyEncryptionProperties struct {
+	// REQUIRED; The identity used to access the key encryption key.
+	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
+
+	// REQUIRED; The URI of the key vault key used for encryption.
+	KeyEncryptionKeyURL *string
+}
+
 // DataAPIProperties - Data API properties.
 type DataAPIProperties struct {
 	// The mode to indicate whether the Mongo Data API is enabled for a cluster.
@@ -81,6 +90,12 @@ type DatabaseRole struct {
 
 	// REQUIRED; The role that is assigned to the user on the database scope.
 	Role *UserRole
+}
+
+// EncryptionProperties - The encryption configuration for the mongo cluster.
+type EncryptionProperties struct {
+	// Customer managed key encryption settings.
+	CustomerManagedKeyEncryption *CustomerManagedKeyEncryptionProperties
 }
 
 // EntraIdentityProvider - Defines a Microsoft Entra ID Mongo user.
@@ -160,6 +175,15 @@ type IdentityProvider struct {
 // GetIdentityProvider implements the IdentityProviderClassification interface for type IdentityProvider.
 func (i *IdentityProvider) GetIdentityProvider() *IdentityProvider { return i }
 
+// KeyEncryptionKeyIdentity - The identity used for key encryption key.
+type KeyEncryptionKeyIdentity struct {
+	// REQUIRED; The type of identity. Only 'UserAssignedIdentity' is supported.
+	IdentityType *KeyEncryptionKeyIdentityType
+
+	// REQUIRED; The user assigned identity resource id.
+	UserAssignedIdentityResourceID *string
+}
+
 // ListConnectionStringsResult - The connection strings for the given mongo cluster.
 type ListConnectionStringsResult struct {
 	// READ-ONLY; An array that contains the connection strings for a mongo cluster.
@@ -175,19 +199,38 @@ type ListResult struct {
 	NextLink *string
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // MongoCluster - Represents a mongo cluster resource.
 type MongoCluster struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// READ-ONLY; The name of the mongo cluster.
+	Name *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
 	Properties *Properties
 
 	// Resource tags.
 	Tags map[string]*string
-
-	// READ-ONLY; The name of the mongo cluster.
-	Name *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -398,6 +441,9 @@ type Properties struct {
 	// The Data API properties of the mongo cluster.
 	DataAPI *DataAPIProperties
 
+	// The encryption configuration for the cluster. Depends on identity being configured.
+	Encryption *EncryptionProperties
+
 	// The high availability properties of the mongo cluster.
 	HighAvailability *HighAvailabilityProperties
 
@@ -544,6 +590,9 @@ type SystemData struct {
 
 // Update - The type used for update operations of the MongoCluster.
 type Update struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
 	// The resource-specific properties for this resource.
 	Properties *UpdateProperties
 
@@ -603,6 +652,15 @@ type User struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 // UserListResult - The response of a User list operation.

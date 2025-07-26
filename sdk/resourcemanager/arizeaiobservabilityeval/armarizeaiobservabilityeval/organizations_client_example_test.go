@@ -19,29 +19,29 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("4DEBE8B4-8BA4-42F8-AE50-FBEF318751D1", cred, nil)
+	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("61641157-140c-4b97-b365-30ff76d9f82e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOrganizationsClient().BeginCreateOrUpdate(ctx, "rgopenapi", "test-organization-1", armarizeaiobservabilityeval.OrganizationResource{
+	poller, err := clientFactory.NewOrganizationsClient().BeginCreateOrUpdate(ctx, "yashika-rg-arize", "test-org-1", armarizeaiobservabilityeval.OrganizationResource{
 		Properties: &armarizeaiobservabilityeval.OrganizationProperties{
 			Marketplace: &armarizeaiobservabilityeval.MarketplaceDetails{
-				SubscriptionID:     to.Ptr("meaowktoejxwfqomc"),
+				SubscriptionID:     to.Ptr("61641157-140c-4b97-b365-30ff76d9f82e"),
 				SubscriptionStatus: to.Ptr(armarizeaiobservabilityeval.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 				OfferDetails: &armarizeaiobservabilityeval.OfferDetails{
-					PublisherID: to.Ptr("flrya"),
-					OfferID:     to.Ptr("hwhtxmtmmlwsu"),
-					PlanID:      to.Ptr("jozklohkdpng"),
-					PlanName:    to.Ptr("clnynwt"),
-					TermUnit:    to.Ptr("cbfktammjyqewljjjaokakilog"),
-					TermID:      to.Ptr("iugvvvoggusxuz"),
+					PublisherID: to.Ptr("arizeai1657829589668"),
+					OfferID:     to.Ptr("arize-liftr-0"),
+					PlanID:      to.Ptr("liftr-test-0"),
+					PlanName:    to.Ptr("Liftr Test 0"),
+					TermUnit:    to.Ptr("P1M"),
+					TermID:      to.Ptr("gmz7xq9ge3py"),
 				},
 			},
 			User: &armarizeaiobservabilityeval.UserDetails{
-				FirstName:    to.Ptr("aorfffgdmglvzdvfvdyjohtnblzsfw"),
-				LastName:     to.Ptr("tojbqzk"),
-				EmailAddress: to.Ptr("btables@arize.com"),
-				Upn:          to.Ptr("xzvwwbjpqakqqyfudyp"),
+				FirstName:    to.Ptr(""),
+				LastName:     to.Ptr(""),
+				EmailAddress: to.Ptr("yashikajain@microsoft.com"),
+				Upn:          to.Ptr("yashikajain@microsoft.com"),
 				PhoneNumber:  to.Ptr("akbqdbs"),
 			},
 			PartnerProperties: &armarizeaiobservabilityeval.PartnerProperties{
@@ -62,7 +62,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 			UserAssignedIdentities: map[string]*armarizeaiobservabilityeval.UserAssignedIdentity{},
 		},
 		Tags:     map[string]*string{},
-		Location: to.Ptr("gigxuxdonjfmqnljxcgctfwqapllu"),
+		Location: to.Ptr("East US"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,22 +78,22 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// 	OrganizationResource: &armarizeaiobservabilityeval.OrganizationResource{
 	// 		Properties: &armarizeaiobservabilityeval.OrganizationProperties{
 	// 			Marketplace: &armarizeaiobservabilityeval.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("meaowktoejxwfqomc"),
+	// 				SubscriptionID: to.Ptr("61641157-140c-4b97-b365-30ff76d9f82e"),
 	// 				SubscriptionStatus: to.Ptr(armarizeaiobservabilityeval.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 				OfferDetails: &armarizeaiobservabilityeval.OfferDetails{
-	// 					PublisherID: to.Ptr("flrya"),
-	// 					OfferID: to.Ptr("hwhtxmtmmlwsu"),
-	// 					PlanID: to.Ptr("jozklohkdpng"),
-	// 					PlanName: to.Ptr("clnynwt"),
-	// 					TermUnit: to.Ptr("cbfktammjyqewljjjaokakilog"),
-	// 					TermID: to.Ptr("iugvvvoggusxuz"),
+	// 					PublisherID: to.Ptr("arizeai1657829589668"),
+	// 					OfferID: to.Ptr("arize-liftr-0"),
+	// 					PlanID: to.Ptr("liftr-test-0"),
+	// 					PlanName: to.Ptr("Liftr Test 0"),
+	// 					TermUnit: to.Ptr("P1M"),
+	// 					TermID: to.Ptr("gmz7xq9ge3py"),
 	// 				},
 	// 			},
 	// 			User: &armarizeaiobservabilityeval.UserDetails{
-	// 				FirstName: to.Ptr("aorfffgdmglvzdvfvdyjohtnblzsfw"),
-	// 				LastName: to.Ptr("tojbqzk"),
-	// 				EmailAddress: to.Ptr("btables@arize.com"),
-	// 				Upn: to.Ptr("xzvwwbjpqakqqyfudyp"),
+	// 				FirstName: to.Ptr(""),
+	// 				LastName: to.Ptr(""),
+	// 				EmailAddress: to.Ptr("yashikajain@microsoft.com"),
+	// 				Upn: to.Ptr("yashikajain@microsoft.com"),
 	// 				PhoneNumber: to.Ptr("akbqdbs"),
 	// 			},
 	// 			PartnerProperties: &armarizeaiobservabilityeval.PartnerProperties{
@@ -115,12 +115,12 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// 			UserAssignedIdentities: map[string]*armarizeaiobservabilityeval.UserAssignedIdentity{
 	// 			},
 	// 			PrincipalID: to.Ptr("38fdf748-d66d-4344-ac76-ab1ebd9441fc"),
-	// 			TenantID: to.Ptr("9aaa003a-d02e-4a03-a904-c7dd89fc588a"),
+	// 			TenantID: to.Ptr("888d76fa-54b2-4ced-8ee5-aac1585adee7"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("gigxuxdonjfmqnljxcgctfwqapllu"),
-	// 		ID: to.Ptr("/subscriptions/test-subscription-1/resourceGroups/test-resourcegroup-1/providers/ArizeAi.ObservabilityEval/Organizations/test-organization-1"),
+	// 		Location: to.Ptr("East US"),
+	// 		ID: to.Ptr("/subscriptions/61641157-140c-4b97-b365-30ff76d9f82e/resourceGroups/yashika-rg-arize/providers/ArizeAi.ObservabilityEval/Organizations/test-org-1"),
 	// 		Name: to.Ptr("btywhrchehozcpizfrv"),
 	// 		Type: to.Ptr("ymstff"),
 	// 		SystemData: &armarizeaiobservabilityeval.SystemData{
@@ -142,11 +142,11 @@ func ExampleOrganizationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("4DEBE8B4-8BA4-42F8-AE50-FBEF318751D1", cred, nil)
+	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("61641157-140c-4b97-b365-30ff76d9f82e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOrganizationsClient().BeginDelete(ctx, "rgopenapi", "test-organization-1", nil)
+	poller, err := clientFactory.NewOrganizationsClient().BeginDelete(ctx, "yashika-rg-arize", "test-org-1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -163,11 +163,11 @@ func ExampleOrganizationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("4DEBE8B4-8BA4-42F8-AE50-FBEF318751D1", cred, nil)
+	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("61641157-140c-4b97-b365-30ff76d9f82e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOrganizationsClient().Get(ctx, "rgopenapi", "test-organization-1", nil)
+	res, err := clientFactory.NewOrganizationsClient().Get(ctx, "yashika-rg-arize", "test-org-1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -178,22 +178,22 @@ func ExampleOrganizationsClient_Get() {
 	// 	OrganizationResource: &armarizeaiobservabilityeval.OrganizationResource{
 	// 		Properties: &armarizeaiobservabilityeval.OrganizationProperties{
 	// 			Marketplace: &armarizeaiobservabilityeval.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("meaowktoejxwfqomc"),
+	// 				SubscriptionID: to.Ptr("61641157-140c-4b97-b365-30ff76d9f82e"),
 	// 				SubscriptionStatus: to.Ptr(armarizeaiobservabilityeval.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 				OfferDetails: &armarizeaiobservabilityeval.OfferDetails{
-	// 					PublisherID: to.Ptr("flrya"),
-	// 					OfferID: to.Ptr("hwhtxmtmmlwsu"),
-	// 					PlanID: to.Ptr("jozklohkdpng"),
-	// 					PlanName: to.Ptr("clnynwt"),
-	// 					TermUnit: to.Ptr("cbfktammjyqewljjjaokakilog"),
-	// 					TermID: to.Ptr("iugvvvoggusxuz"),
+	// 					PublisherID: to.Ptr("arizeai1657829589668"),
+	// 					OfferID: to.Ptr("arize-liftr-0"),
+	// 					PlanID: to.Ptr("liftr-test-0"),
+	// 					PlanName: to.Ptr("Liftr Test 0"),
+	// 					TermUnit: to.Ptr("P1M"),
+	// 					TermID: to.Ptr("gmz7xq9ge3py"),
 	// 				},
 	// 			},
 	// 			User: &armarizeaiobservabilityeval.UserDetails{
-	// 				FirstName: to.Ptr("aorfffgdmglvzdvfvdyjohtnblzsfw"),
-	// 				LastName: to.Ptr("tojbqzk"),
-	// 				EmailAddress: to.Ptr("btables@arize.com"),
-	// 				Upn: to.Ptr("xzvwwbjpqakqqyfudyp"),
+	// 				FirstName: to.Ptr(""),
+	// 				LastName: to.Ptr(""),
+	// 				EmailAddress: to.Ptr("yashikajain@microsoft.com"),
+	// 				Upn: to.Ptr("yashikajain@microsoft.com"),
 	// 				PhoneNumber: to.Ptr("akbqdbs"),
 	// 			},
 	// 			PartnerProperties: &armarizeaiobservabilityeval.PartnerProperties{
@@ -215,12 +215,12 @@ func ExampleOrganizationsClient_Get() {
 	// 			UserAssignedIdentities: map[string]*armarizeaiobservabilityeval.UserAssignedIdentity{
 	// 			},
 	// 			PrincipalID: to.Ptr("38fdf748-d66d-4344-ac76-ab1ebd9441fc"),
-	// 			TenantID: to.Ptr("9aaa003a-d02e-4a03-a904-c7dd89fc588a"),
+	// 			TenantID: to.Ptr("888d76fa-54b2-4ced-8ee5-aac1585adee7"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("gigxuxdonjfmqnljxcgctfwqapllu"),
-	// 		ID: to.Ptr("/subscriptions/test-subscription-1/resourceGroups/test-resourcegroup-1/providers/ArizeAi.ObservabilityEval/Organizations/test-organization-1"),
+	// 		Location: to.Ptr("East US"),
+	// 		ID: to.Ptr("/subscriptions/61641157-140c-4b97-b365-30ff76d9f82e/resourceGroups/yashika-rg-arize/providers/ArizeAi.ObservabilityEval/Organizations/test-org-1"),
 	// 		Name: to.Ptr("btywhrchehozcpizfrv"),
 	// 		Type: to.Ptr("ymstff"),
 	// 		SystemData: &armarizeaiobservabilityeval.SystemData{
@@ -242,11 +242,11 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("4DEBE8B4-8BA4-42F8-AE50-FBEF318751D1", cred, nil)
+	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("61641157-140c-4b97-b365-30ff76d9f82e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOrganizationsClient().NewListByResourceGroupPager("rgopenapi", nil)
+	pager := clientFactory.NewOrganizationsClient().NewListByResourceGroupPager("yashika-rg-arize", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -263,22 +263,22 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Properties: &armarizeaiobservabilityeval.OrganizationProperties{
 		// 					Marketplace: &armarizeaiobservabilityeval.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("meaowktoejxwfqomc"),
+		// 						SubscriptionID: to.Ptr("61641157-140c-4b97-b365-30ff76d9f82e"),
 		// 						SubscriptionStatus: to.Ptr(armarizeaiobservabilityeval.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 		// 						OfferDetails: &armarizeaiobservabilityeval.OfferDetails{
-		// 							PublisherID: to.Ptr("flrya"),
-		// 							OfferID: to.Ptr("hwhtxmtmmlwsu"),
-		// 							PlanID: to.Ptr("jozklohkdpng"),
-		// 							PlanName: to.Ptr("clnynwt"),
-		// 							TermUnit: to.Ptr("cbfktammjyqewljjjaokakilog"),
-		// 							TermID: to.Ptr("iugvvvoggusxuz"),
+		// 							PublisherID: to.Ptr("arizeai1657829589668"),
+		// 							OfferID: to.Ptr("arize-liftr-0"),
+		// 							PlanID: to.Ptr("liftr-test-0"),
+		// 							PlanName: to.Ptr("Liftr Test 0"),
+		// 							TermUnit: to.Ptr("P1M"),
+		// 							TermID: to.Ptr("gmz7xq9ge3py"),
 		// 						},
 		// 					},
 		// 					User: &armarizeaiobservabilityeval.UserDetails{
-		// 						FirstName: to.Ptr("aorfffgdmglvzdvfvdyjohtnblzsfw"),
-		// 						LastName: to.Ptr("tojbqzk"),
-		// 						EmailAddress: to.Ptr("btables@arize.com"),
-		// 						Upn: to.Ptr("xzvwwbjpqakqqyfudyp"),
+		// 						FirstName: to.Ptr(""),
+		// 						LastName: to.Ptr(""),
+		// 						EmailAddress: to.Ptr("yashikajain@microsoft.com"),
+		// 						Upn: to.Ptr("yashikajain@microsoft.com"),
 		// 						PhoneNumber: to.Ptr("akbqdbs"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armarizeaiobservabilityeval.ResourceProvisioningStateSucceeded),
@@ -297,15 +297,15 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Identity: &armarizeaiobservabilityeval.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("38fdf748-d66d-4344-ac76-ab1ebd9441fc"),
-		// 					TenantID: to.Ptr("9aaa003a-d02e-4a03-a904-c7dd89fc588a"),
+		// 					TenantID: to.Ptr("888d76fa-54b2-4ced-8ee5-aac1585adee7"),
 		// 					Type: to.Ptr(armarizeaiobservabilityeval.ManagedServiceIdentityTypeNone),
 		// 					UserAssignedIdentities: map[string]*armarizeaiobservabilityeval.UserAssignedIdentity{
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
-		// 				Location: to.Ptr("gigxuxdonjfmqnljxcgctfwqapllu"),
-		// 				ID: to.Ptr("/subscriptions/test-subscription-1/resourceGroups/test-resourcegroup-1/providers/ArizeAi.ObservabilityEval/Organizations/test-organization-1"),
+		// 				Location: to.Ptr("East US"),
+		// 				ID: to.Ptr("/subscriptions/61641157-140c-4b97-b365-30ff76d9f82e/resourceGroups/yashika-rg-arize/providers/ArizeAi.ObservabilityEval/Organizations/test-org-1"),
 		// 				Name: to.Ptr("btywhrchehozcpizfrv"),
 		// 				Type: to.Ptr("ymstff"),
 		// 				SystemData: &armarizeaiobservabilityeval.SystemData{
@@ -331,7 +331,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("4DEBE8B4-8BA4-42F8-AE50-FBEF318751D1", cred, nil)
+	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("61641157-140c-4b97-b365-30ff76d9f82e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -352,22 +352,22 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager() {
 		// 			{
 		// 				Properties: &armarizeaiobservabilityeval.OrganizationProperties{
 		// 					Marketplace: &armarizeaiobservabilityeval.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("meaowktoejxwfqomc"),
+		// 						SubscriptionID: to.Ptr("61641157-140c-4b97-b365-30ff76d9f82e"),
 		// 						SubscriptionStatus: to.Ptr(armarizeaiobservabilityeval.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 		// 						OfferDetails: &armarizeaiobservabilityeval.OfferDetails{
-		// 							PublisherID: to.Ptr("flrya"),
-		// 							OfferID: to.Ptr("hwhtxmtmmlwsu"),
-		// 							PlanID: to.Ptr("jozklohkdpng"),
-		// 							PlanName: to.Ptr("clnynwt"),
-		// 							TermUnit: to.Ptr("cbfktammjyqewljjjaokakilog"),
-		// 							TermID: to.Ptr("iugvvvoggusxuz"),
+		// 							PublisherID: to.Ptr("arizeai1657829589668"),
+		// 							OfferID: to.Ptr("arize-liftr-0"),
+		// 							PlanID: to.Ptr("liftr-test-0"),
+		// 							PlanName: to.Ptr("Liftr Test 0"),
+		// 							TermUnit: to.Ptr("P1M"),
+		// 							TermID: to.Ptr("gmz7xq9ge3py"),
 		// 						},
 		// 					},
 		// 					User: &armarizeaiobservabilityeval.UserDetails{
-		// 						FirstName: to.Ptr("aorfffgdmglvzdvfvdyjohtnblzsfw"),
-		// 						LastName: to.Ptr("tojbqzk"),
-		// 						EmailAddress: to.Ptr("btables@arize.com"),
-		// 						Upn: to.Ptr("xzvwwbjpqakqqyfudyp"),
+		// 						FirstName: to.Ptr(""),
+		// 						LastName: to.Ptr(""),
+		// 						EmailAddress: to.Ptr("yashikajain@microsoft.com"),
+		// 						Upn: to.Ptr("yashikajain@microsoft.com"),
 		// 						PhoneNumber: to.Ptr("akbqdbs"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armarizeaiobservabilityeval.ResourceProvisioningStateSucceeded),
@@ -386,15 +386,15 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Identity: &armarizeaiobservabilityeval.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("38fdf748-d66d-4344-ac76-ab1ebd9441fc"),
-		// 					TenantID: to.Ptr("9aaa003a-d02e-4a03-a904-c7dd89fc588a"),
+		// 					TenantID: to.Ptr("888d76fa-54b2-4ced-8ee5-aac1585adee7"),
 		// 					Type: to.Ptr(armarizeaiobservabilityeval.ManagedServiceIdentityTypeNone),
 		// 					UserAssignedIdentities: map[string]*armarizeaiobservabilityeval.UserAssignedIdentity{
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
-		// 				Location: to.Ptr("gigxuxdonjfmqnljxcgctfwqapllu"),
-		// 				ID: to.Ptr("/subscriptions/test-subscription-1/resourceGroups/test-resourcegroup-1/providers/ArizeAi.ObservabilityEval/Organizations/test-organization-1"),
+		// 				Location: to.Ptr("East US"),
+		// 				ID: to.Ptr("/subscriptions/61641157-140c-4b97-b365-30ff76d9f82e/resourceGroups/yashika-rg-arize/providers/ArizeAi.ObservabilityEval/Organizations/test-org-1"),
 		// 				Name: to.Ptr("btywhrchehozcpizfrv"),
 		// 				Type: to.Ptr("ymstff"),
 		// 				SystemData: &armarizeaiobservabilityeval.SystemData{
@@ -420,11 +420,11 @@ func ExampleOrganizationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("4DEBE8B4-8BA4-42F8-AE50-FBEF318751D1", cred, nil)
+	clientFactory, err := armarizeaiobservabilityeval.NewClientFactory("61641157-140c-4b97-b365-30ff76d9f82e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOrganizationsClient().Update(ctx, "rgopenapi", "test-organization-1", armarizeaiobservabilityeval.OrganizationResourceUpdate{
+	res, err := clientFactory.NewOrganizationsClient().Update(ctx, "yashika-rg-arize", "test-org-1", armarizeaiobservabilityeval.OrganizationResourceUpdate{
 		Tags: map[string]*string{},
 		Identity: &armarizeaiobservabilityeval.ManagedServiceIdentity{
 			Type:                   to.Ptr(armarizeaiobservabilityeval.ManagedServiceIdentityTypeNone),
@@ -441,22 +441,22 @@ func ExampleOrganizationsClient_Update() {
 	// 	OrganizationResource: &armarizeaiobservabilityeval.OrganizationResource{
 	// 		Properties: &armarizeaiobservabilityeval.OrganizationProperties{
 	// 			Marketplace: &armarizeaiobservabilityeval.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("meaowktoejxwfqomc"),
+	// 				SubscriptionID: to.Ptr("61641157-140c-4b97-b365-30ff76d9f82e"),
 	// 				SubscriptionStatus: to.Ptr(armarizeaiobservabilityeval.MarketplaceSubscriptionStatusPendingFulfillmentStart),
 	// 				OfferDetails: &armarizeaiobservabilityeval.OfferDetails{
-	// 					PublisherID: to.Ptr("flrya"),
-	// 					OfferID: to.Ptr("hwhtxmtmmlwsu"),
-	// 					PlanID: to.Ptr("jozklohkdpng"),
-	// 					PlanName: to.Ptr("clnynwt"),
-	// 					TermUnit: to.Ptr("cbfktammjyqewljjjaokakilog"),
-	// 					TermID: to.Ptr("iugvvvoggusxuz"),
+	// 					PublisherID: to.Ptr("arizeai1657829589668"),
+	// 					OfferID: to.Ptr("arize-liftr-0"),
+	// 					PlanID: to.Ptr("liftr-test-0"),
+	// 					PlanName: to.Ptr("Liftr Test 0"),
+	// 					TermUnit: to.Ptr("P1M"),
+	// 					TermID: to.Ptr("gmz7xq9ge3py"),
 	// 				},
 	// 			},
 	// 			User: &armarizeaiobservabilityeval.UserDetails{
-	// 				FirstName: to.Ptr("aorfffgdmglvzdvfvdyjohtnblzsfw"),
-	// 				LastName: to.Ptr("tojbqzk"),
-	// 				EmailAddress: to.Ptr("btables@arize.com"),
-	// 				Upn: to.Ptr("xzvwwbjpqakqqyfudyp"),
+	// 				FirstName: to.Ptr(""),
+	// 				LastName: to.Ptr(""),
+	// 				EmailAddress: to.Ptr("yashikajain@microsoft.com"),
+	// 				Upn: to.Ptr("yashikajain@microsoft.com"),
 	// 				PhoneNumber: to.Ptr("akbqdbs"),
 	// 			},
 	// 			PartnerProperties: &armarizeaiobservabilityeval.PartnerProperties{
@@ -478,12 +478,12 @@ func ExampleOrganizationsClient_Update() {
 	// 			UserAssignedIdentities: map[string]*armarizeaiobservabilityeval.UserAssignedIdentity{
 	// 			},
 	// 			PrincipalID: to.Ptr("38fdf748-d66d-4344-ac76-ab1ebd9441fc"),
-	// 			TenantID: to.Ptr("9aaa003a-d02e-4a03-a904-c7dd89fc588a"),
+	// 			TenantID: to.Ptr("888d76fa-54b2-4ced-8ee5-aac1585adee7"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
-	// 		Location: to.Ptr("gigxuxdonjfmqnljxcgctfwqapllu"),
-	// 		ID: to.Ptr("/subscriptions/test-subscription-1/resourceGroups/test-resourcegroup-1/providers/ArizeAi.ObservabilityEval/Organizations/test-organization-1"),
+	// 		Location: to.Ptr("East US"),
+	// 		ID: to.Ptr("/subscriptions/61641157-140c-4b97-b365-30ff76d9f82e/resourceGroups/yashika-rg-arize/providers/ArizeAi.ObservabilityEval/Organizations/test-org-1"),
 	// 		Name: to.Ptr("btywhrchehozcpizfrv"),
 	// 		Type: to.Ptr("ymstff"),
 	// 		SystemData: &armarizeaiobservabilityeval.SystemData{

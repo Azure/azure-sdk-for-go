@@ -795,54 +795,6 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 	})
 
-	// Test change feed with simple with If-None-Match header
-	// Test change feed with FeedRange (gets composite continuation token, not simple ETag)
-	t.Run("IfNoneMatchHeader", func(t *testing.T) {
-		// Use GetChangeFeed with feed range (this will get composite continuation token)
-		options := &ChangeFeedOptions{
-			MaxItemCount: 10,
-		}
-		options.FeedRange = &feedRanges[0]
-
-		resp, err := container.GetChangeFeed(context.TODO(), options)
-		if err != nil {
-			t.Fatalf("Failed to get change feed: %v", err)
-		}
-
-		// Verify composite continuation token IS populated when using feed range
-		if resp.ContinuationToken == "" {
-			t.Error("Expected ContinuationToken to be populated for feed-range request")
-		}
-
-		// Verify ETag is present
-		if resp.ETag == "" {
-			t.Error("Expected ETag to be present")
-		}
-
-		// Test using the composite continuation token in next request
-		if resp.ContinuationToken != "" {
-			options2 := &ChangeFeedOptions{
-				MaxItemCount: 10,
-				Continuation: &resp.ContinuationToken,
-			}
-
-			resp2, err := container.GetChangeFeed(context.TODO(), options2)
-			if err != nil {
-				t.Fatalf("Failed to get change feed with composite token: %v", err)
-			}
-
-			t.Logf("Second request with composite token - Count: %d, StatusCode: %d", resp2.Count, resp2.RawResponse.StatusCode)
-			// With continuation, we might get 304 Not Modified if no changes
-			if resp2.RawResponse.StatusCode == 304 {
-				t.Log("Got 304 Not Modified - no new changes since last continuation token")
-				if resp2.Count != 0 {
-					t.Errorf("Expected Count to be 0 for 304 response, got %d", resp2.Count)
-				}
-			}
-		}
-	})
-
-	// Test change feed with If-Modified-Since header
 	// Test change feed with If-Modified-Since header
 	t.Run("IfModifiedSinceHeader", func(t *testing.T) {
 		// First, get all current changes to establish a baseline

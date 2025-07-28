@@ -37,7 +37,7 @@ func (c *ContainerClient) getQueryPlanFromGateway(ctx context.Context, query str
 	return buf.Bytes(), nil
 }
 
-func (c *ContainerClient) getPartitionKeyRanges(ctx context.Context, operationContext pipelineRequestOptions) ([]byte, error) {
+func (c *ContainerClient) getPartitionKeyRangesRaw(ctx context.Context, operationContext pipelineRequestOptions) ([]byte, error) {
 	path, _ := generatePathForNameBased(resourceTypePartitionKeyRange, operationContext.resourceAddress, true)
 	azResponse, err := c.database.client.sendGetRequest(
 		path,
@@ -97,7 +97,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 				if err != nil {
 					return QueryItemsResponse{}, err
 				}
-				pkranges, err := c.getPartitionKeyRanges(ctx, operationContext)
+				pkranges, err := c.getPartitionKeyRangesRaw(ctx, operationContext)
 				if err != nil {
 					return QueryItemsResponse{}, err
 				}

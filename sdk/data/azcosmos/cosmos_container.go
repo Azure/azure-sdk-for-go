@@ -545,6 +545,13 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 		headerOptionsOverride: &h,
 	}
 
+	// For now, we short-cut straight to the preview query engine if provided.
+	// In the future, we could consider running the normal pipeline until the Gateway fails due to an unsupported query and then switch over.
+	// However, this logic could also just be handled in the query engine itself.
+	if queryOptions.QueryEngine != nil {
+		return c.executeQueryWithEngine(queryOptions.QueryEngine, query, queryOptions, operationContext)
+	}
+
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
 	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{

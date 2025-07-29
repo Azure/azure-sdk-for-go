@@ -554,7 +554,7 @@ func TestBearerTokenPolicy_CAEChallengeHandling(t *testing.T) {
 		require.EqualError(t, err, expectedErr.Error())
 		require.ErrorAs(t, err, new(errorinfo.NonRetriable))
 		// this is the crucial assertion; the retry policy would have retried the request
-		// if BearerTokenPolicy did't make the credential's error NonRetriable
+		// if BearerTokenPolicy didn't make the credential's error NonRetriable
 		require.Equal(t, 2, counter.count, "BearerTokenPolicy should make the authentication error NonRetriable")
 	})
 }

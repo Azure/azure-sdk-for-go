@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed a case in which `BearerTokenPolicy` didn't ensure an authentication error is non-retriable
+
 ### Other Changes
 
 ## 1.18.1 (2025-07-10)

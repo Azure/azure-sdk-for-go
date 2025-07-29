@@ -53,7 +53,6 @@ type GenerateParam struct {
 	SpecRPName           string
 	ReleaseDate          string
 	SkipGenerateExample  bool
-	GoVersion            string
 	RemoveTagSet         bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
@@ -142,7 +141,6 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				NamespaceName:        packageInfo.Name,
 				SpecRPName:           packageInfo.SpecName,
 				NamespaceConfig:      packageInfo.Config,
-				GoVersion:            commonGenerateParam.GoVersion,
 				ReleaseDate:          commonGenerateParam.ReleaseDate,
 				RemoveTagSet:         commonGenerateParam.RemoveTagSet,
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
@@ -337,7 +335,6 @@ func (t *SwaggerOnBoardGenerator) PreGenerate(generateParam *GenerateParam) erro
 		PackageTitle:   generateParam.SpecificPackageTitle,
 		Commit:         t.SpecCommitHash,
 		PackageConfig:  generateParam.NamespaceConfig,
-		GoVersion:      generateParam.GoVersion,
 		PackageVersion: version.String(),
 		ReleaseDate:    generateParam.ReleaseDate,
 	}); err != nil {
@@ -681,8 +678,13 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	}
 
 	if !generateParam.SkipUpdateDep {
-		log.Printf("##[command]Executing go get -u ./... toolchain@none in %s\n", modulePath)
-		if err := ExecuteGo(modulePath, "get", "-u", "./...", "toolchain@none"); err != nil {
+		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore in %s\n", modulePath)
+		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azcore"); err != nil {
+			return nil, err
+		}
+		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity in %s\n", modulePath)
+		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azidentity"); err != nil {
+			return nil, err
 		}
 	}
 
@@ -717,7 +719,6 @@ func (t *TypeSpecOnBoardGenerator) PreGenerate(generateParam *GenerateParam) err
 		"packageTitle":       generateParam.SpecificPackageTitle,
 		"packageVersion":     version.String(),
 		"releaseDate":        generateParam.ReleaseDate,
-		"goVersion":          generateParam.GoVersion,
 	}
 	return typespec.ParseTypeSpecTemplates(filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec"), modulePath, sdkBasicInfo, nil)
 }

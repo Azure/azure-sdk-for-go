@@ -1,5 +1,5 @@
-//go:build go1.21
-// +build go1.21
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -808,6 +808,72 @@ func (c *ContentFilterCitedDetectionResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ContentFilterCompletionTextSpan.
+func (c ContentFilterCompletionTextSpan) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "completion_end_offset", c.CompletionEndOffset)
+	populate(objectMap, "completion_start_offset", c.CompletionStartOffset)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentFilterCompletionTextSpan.
+func (c *ContentFilterCompletionTextSpan) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "completion_end_offset":
+			err = unpopulate(val, "CompletionEndOffset", &c.CompletionEndOffset)
+			delete(rawMsg, key)
+		case "completion_start_offset":
+			err = unpopulate(val, "CompletionStartOffset", &c.CompletionStartOffset)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContentFilterCompletionTextSpanResult.
+func (c ContentFilterCompletionTextSpanResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "details", c.Details)
+	populate(objectMap, "detected", c.Detected)
+	populate(objectMap, "filtered", c.Filtered)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ContentFilterCompletionTextSpanResult.
+func (c *ContentFilterCompletionTextSpanResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "details":
+			err = unpopulate(val, "Details", &c.Details)
+			delete(rawMsg, key)
+		case "detected":
+			err = unpopulate(val, "Detected", &c.Detected)
+			delete(rawMsg, key)
+		case "filtered":
+			err = unpopulate(val, "Filtered", &c.Filtered)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ContentFilterDetailedResults.
 func (c ContentFilterDetailedResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -971,6 +1037,7 @@ func (c ContentFilterResultsForChoice) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "protected_material_text", c.ProtectedMaterialText)
 	populate(objectMap, "self_harm", c.SelfHarm)
 	populate(objectMap, "sexual", c.Sexual)
+	populate(objectMap, "ungrounded_material", c.UngroundedMaterial)
 	populate(objectMap, "violence", c.Violence)
 	return json.Marshal(objectMap)
 }
@@ -1007,6 +1074,9 @@ func (c *ContentFilterResultsForChoice) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sexual":
 			err = unpopulate(val, "Sexual", &c.Sexual)
+			delete(rawMsg, key)
+		case "ungrounded_material":
+			err = unpopulate(val, "UngroundedMaterial", &c.UngroundedMaterial)
 			delete(rawMsg, key)
 		case "violence":
 			err = unpopulate(val, "Violence", &c.Violence)
@@ -1297,7 +1367,7 @@ func (m *MongoDBChatExtensionParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AppName", &m.AppName)
 			delete(rawMsg, key)
 		case "authentication":
-			m.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
+			err = unpopulate(val, "Authentication", &m.Authentication)
 			delete(rawMsg, key)
 		case "collection_name":
 			err = unpopulate(val, "CollectionName", &m.CollectionName)

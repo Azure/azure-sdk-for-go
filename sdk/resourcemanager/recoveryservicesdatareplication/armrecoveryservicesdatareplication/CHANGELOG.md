@@ -1,5 +1,262 @@
 # Release History
 
+## 1.0.0 (2025-06-03)
+### Breaking Changes
+
+- Function `*ProtectedItemClient.BeginPlannedFailover` parameter(s) have been changed from `(context.Context, string, string, string, *ProtectedItemClientBeginPlannedFailoverOptions)` to `(context.Context, string, string, string, PlannedFailoverModel, *ProtectedItemClientBeginPlannedFailoverOptions)`
+- Type of `EmailConfigurationModel.SystemData` has been changed from `*EmailConfigurationModelSystemData` to `*SystemData`
+- Type of `EventModel.SystemData` has been changed from `*EventModelSystemData` to `*SystemData`
+- Type of `FabricModel.SystemData` has been changed from `*FabricModelSystemData` to `*SystemData`
+- Type of `FabricModelUpdate.SystemData` has been changed from `*FabricModelUpdateSystemData` to `*SystemData`
+- Type of `PolicyModel.SystemData` has been changed from `*PolicyModelSystemData` to `*SystemData`
+- Type of `ProtectedItemModel.SystemData` has been changed from `*ProtectedItemModelSystemData` to `*SystemData`
+- Type of `ProtectedItemModelProperties.CurrentJob` has been changed from `*ProtectedItemModelPropertiesCurrentJob` to `*ProtectedItemJobProperties`
+- Type of `ProtectedItemModelProperties.LastFailedEnableProtectionJob` has been changed from `*ProtectedItemModelPropertiesLastFailedEnableProtectionJob` to `*ProtectedItemJobProperties`
+- Type of `ProtectedItemModelProperties.LastFailedPlannedFailoverJob` has been changed from `*ProtectedItemModelPropertiesLastFailedPlannedFailoverJob` to `*ProtectedItemJobProperties`
+- Type of `ProtectedItemModelProperties.LastTestFailoverJob` has been changed from `*ProtectedItemModelPropertiesLastTestFailoverJob` to `*ProtectedItemJobProperties`
+- Type of `RecoveryPointModel.SystemData` has been changed from `*RecoveryPointModelSystemData` to `*SystemData`
+- Type of `ReplicationExtensionModel.SystemData` has been changed from `*ReplicationExtensionModelSystemData` to `*SystemData`
+- Type of `VaultModel.SystemData` has been changed from `*VaultModelSystemData` to `*SystemData`
+- Type of `VaultModelUpdate.SystemData` has been changed from `*VaultModelUpdateSystemData` to `*SystemData`
+- Enum `WorkflowObjectType` has been removed
+- Enum `WorkflowState` has been removed
+- Function `NewAzureSiteRecoveryManagementServiceAPIClient` has been removed
+- Function `*AzureSiteRecoveryManagementServiceAPIClient.CheckNameAvailability` has been removed
+- Function `*AzureSiteRecoveryManagementServiceAPIClient.DeploymentPreflight` has been removed
+- Function `*ClientFactory.NewAzureSiteRecoveryManagementServiceAPIClient` has been removed
+- Function `*ClientFactory.NewDraClient` has been removed
+- Function `*ClientFactory.NewDraOperationStatusClient` has been removed
+- Function `*ClientFactory.NewFabricOperationsStatusClient` has been removed
+- Function `*ClientFactory.NewPolicyOperationStatusClient` has been removed
+- Function `*ClientFactory.NewProtectedItemOperationStatusClient` has been removed
+- Function `*ClientFactory.NewRecoveryPointsClient` has been removed
+- Function `*ClientFactory.NewReplicationExtensionOperationStatusClient` has been removed
+- Function `*ClientFactory.NewVaultOperationStatusClient` has been removed
+- Function `*ClientFactory.NewWorkflowClient` has been removed
+- Function `*ClientFactory.NewWorkflowOperationStatusClient` has been removed
+- Function `NewDraClient` has been removed
+- Function `*DraClient.BeginCreate` has been removed
+- Function `*DraClient.BeginDelete` has been removed
+- Function `*DraClient.Get` has been removed
+- Function `*DraClient.NewListPager` has been removed
+- Function `*DraModelCustomProperties.GetDraModelCustomProperties` has been removed
+- Function `NewDraOperationStatusClient` has been removed
+- Function `*DraOperationStatusClient.Get` has been removed
+- Function `NewFabricOperationsStatusClient` has been removed
+- Function `*FabricOperationsStatusClient.Get` has been removed
+- Function `*FailoverWorkflowModelCustomProperties.GetWorkflowModelCustomProperties` has been removed
+- Function `NewPolicyOperationStatusClient` has been removed
+- Function `*PolicyOperationStatusClient.Get` has been removed
+- Function `NewProtectedItemOperationStatusClient` has been removed
+- Function `*ProtectedItemOperationStatusClient.Get` has been removed
+- Function `NewRecoveryPointsClient` has been removed
+- Function `*RecoveryPointsClient.Get` has been removed
+- Function `*RecoveryPointsClient.NewListPager` has been removed
+- Function `NewReplicationExtensionOperationStatusClient` has been removed
+- Function `*ReplicationExtensionOperationStatusClient.Get` has been removed
+- Function `*TestFailoverCleanupWorkflowModelCustomProperties.GetWorkflowModelCustomProperties` has been removed
+- Function `*TestFailoverWorkflowModelCustomProperties.GetWorkflowModelCustomProperties` has been removed
+- Function `*VMwareDraModelCustomProperties.GetDraModelCustomProperties` has been removed
+- Function `NewVaultOperationStatusClient` has been removed
+- Function `*VaultOperationStatusClient.Get` has been removed
+- Function `NewWorkflowClient` has been removed
+- Function `*WorkflowClient.Get` has been removed
+- Function `*WorkflowClient.NewListPager` has been removed
+- Function `*WorkflowModelCustomProperties.GetWorkflowModelCustomProperties` has been removed
+- Function `NewWorkflowOperationStatusClient` has been removed
+- Function `*WorkflowOperationStatusClient.Get` has been removed
+- Struct `DraModel` has been removed
+- Struct `DraModelCollection` has been removed
+- Struct `DraModelProperties` has been removed
+- Struct `DraModelSystemData` has been removed
+- Struct `EmailConfigurationModelCollection` has been removed
+- Struct `EmailConfigurationModelSystemData` has been removed
+- Struct `EventModelCollection` has been removed
+- Struct `EventModelSystemData` has been removed
+- Struct `FabricModelCollection` has been removed
+- Struct `FabricModelSystemData` has been removed
+- Struct `FabricModelUpdateSystemData` has been removed
+- Struct `FailoverWorkflowModelCustomProperties` has been removed
+- Struct `PolicyModelCollection` has been removed
+- Struct `PolicyModelSystemData` has been removed
+- Struct `ProtectedItemModelCollection` has been removed
+- Struct `ProtectedItemModelPropertiesCurrentJob` has been removed
+- Struct `ProtectedItemModelPropertiesLastFailedEnableProtectionJob` has been removed
+- Struct `ProtectedItemModelPropertiesLastFailedPlannedFailoverJob` has been removed
+- Struct `ProtectedItemModelPropertiesLastTestFailoverJob` has been removed
+- Struct `ProtectedItemModelSystemData` has been removed
+- Struct `RecoveryPointModelCollection` has been removed
+- Struct `RecoveryPointModelSystemData` has been removed
+- Struct `ReplicationExtensionModelCollection` has been removed
+- Struct `ReplicationExtensionModelSystemData` has been removed
+- Struct `TestFailoverCleanupWorkflowModelCustomProperties` has been removed
+- Struct `TestFailoverWorkflowModelCustomProperties` has been removed
+- Struct `VMwareDraModelCustomProperties` has been removed
+- Struct `VaultModelCollection` has been removed
+- Struct `VaultModelSystemData` has been removed
+- Struct `VaultModelUpdateSystemData` has been removed
+- Struct `WorkflowModel` has been removed
+- Struct `WorkflowModelCollection` has been removed
+- Struct `WorkflowModelProperties` has been removed
+- Struct `WorkflowModelSystemData` has been removed
+- Field `EmailConfigurationModelCollection` of struct `EmailConfigurationClientListResponse` has been removed
+- Field `Filter` of struct `EventClientListOptions` has been removed
+- Field `EventModelCollection` of struct `EventClientListResponse` has been removed
+- Field `ContinuationToken` of struct `FabricClientListBySubscriptionOptions` has been removed
+- Field `FabricModelCollection` of struct `FabricClientListBySubscriptionResponse` has been removed
+- Field `FabricModelCollection` of struct `FabricClientListResponse` has been removed
+- Field `SourceDraName`, `TargetDraName` of struct `HyperVToAzStackHCIProtectedItemModelCustomProperties` has been removed
+- Field `PolicyModelCollection` of struct `PolicyClientListResponse` has been removed
+- Field `Body` of struct `ProtectedItemClientBeginPlannedFailoverOptions` has been removed
+- Field `ProtectedItemModelCollection` of struct `ProtectedItemClientListResponse` has been removed
+- Field `DraID`, `TargetDraID` of struct `ProtectedItemModelProperties` has been removed
+- Field `ReplicationExtensionModelCollection` of struct `ReplicationExtensionClientListResponse` has been removed
+- Field `ChildrenWorkflows` of struct `TaskModel` has been removed
+- Field `SourceDraName`, `TargetDraName` of struct `VMwareToAzStackHCIProtectedItemModelCustomProperties` has been removed
+- Field `ContinuationToken` of struct `VaultClientListBySubscriptionOptions` has been removed
+- Field `VaultModelCollection` of struct `VaultClientListBySubscriptionResponse` has been removed
+- Field `VaultModelCollection` of struct `VaultClientListResponse` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `JobObjectType` with values `JobObjectTypeAvsDiskPool`, `JobObjectTypeFabric`, `JobObjectTypeFabricAgent`, `JobObjectTypePolicy`, `JobObjectTypeProtectedItem`, `JobObjectTypeRecoveryPlan`, `JobObjectTypeReplicationExtension`, `JobObjectTypeVault`
+- New enum type `JobState` with values `JobStateCancelled`, `JobStateCancelling`, `JobStateCompletedWithErrors`, `JobStateCompletedWithInformation`, `JobStateCompletedWithWarnings`, `JobStateFailed`, `JobStatePending`, `JobStateStarted`, `JobStateSucceeded`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `PrivateEndpointConnectionStatus` with values `PrivateEndpointConnectionStatusApproved`, `PrivateEndpointConnectionStatusDisconnected`, `PrivateEndpointConnectionStatusPending`, `PrivateEndpointConnectionStatusRejected`
+- New enum type `VaultIdentityType` with values `VaultIdentityTypeNone`, `VaultIdentityTypeSystemAssigned`, `VaultIdentityTypeUserAssigned`
+- New function `NewCheckNameAvailabilityClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CheckNameAvailabilityClient, error)`
+- New function `*CheckNameAvailabilityClient.Post(context.Context, string, *CheckNameAvailabilityClientPostOptions) (CheckNameAvailabilityClientPostResponse, error)`
+- New function `*ClientFactory.NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient`
+- New function `*ClientFactory.NewDeploymentPreflightClient() *DeploymentPreflightClient`
+- New function `*ClientFactory.NewFabricAgentClient() *FabricAgentClient`
+- New function `*ClientFactory.NewJobClient() *JobClient`
+- New function `*ClientFactory.NewLocationBasedOperationResultsClient() *LocationBasedOperationResultsClient`
+- New function `*ClientFactory.NewOperationResultsClient() *OperationResultsClient`
+- New function `*ClientFactory.NewPrivateEndpointConnectionProxiesClient() *PrivateEndpointConnectionProxiesClient`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `*ClientFactory.NewRecoveryPointClient() *RecoveryPointClient`
+- New function `NewDeploymentPreflightClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DeploymentPreflightClient, error)`
+- New function `*DeploymentPreflightClient.Post(context.Context, string, string, *DeploymentPreflightClientPostOptions) (DeploymentPreflightClientPostResponse, error)`
+- New function `NewFabricAgentClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FabricAgentClient, error)`
+- New function `*FabricAgentClient.BeginCreate(context.Context, string, string, string, FabricAgentModel, *FabricAgentClientBeginCreateOptions) (*runtime.Poller[FabricAgentClientCreateResponse], error)`
+- New function `*FabricAgentClient.BeginDelete(context.Context, string, string, string, *FabricAgentClientBeginDeleteOptions) (*runtime.Poller[FabricAgentClientDeleteResponse], error)`
+- New function `*FabricAgentClient.Get(context.Context, string, string, string, *FabricAgentClientGetOptions) (FabricAgentClientGetResponse, error)`
+- New function `*FabricAgentClient.NewListPager(string, string, *FabricAgentClientListOptions) *runtime.Pager[FabricAgentClientListResponse]`
+- New function `*FabricAgentModelCustomProperties.GetFabricAgentModelCustomProperties() *FabricAgentModelCustomProperties`
+- New function `*FailoverJobModelCustomProperties.GetJobModelCustomProperties() *JobModelCustomProperties`
+- New function `*HyperVToAzStackHCIProtectedItemModelCustomPropertiesUpdate.GetProtectedItemModelCustomPropertiesUpdate() *ProtectedItemModelCustomPropertiesUpdate`
+- New function `NewJobClient(string, azcore.TokenCredential, *arm.ClientOptions) (*JobClient, error)`
+- New function `*JobClient.Get(context.Context, string, string, string, *JobClientGetOptions) (JobClientGetResponse, error)`
+- New function `*JobClient.NewListPager(string, string, *JobClientListOptions) *runtime.Pager[JobClientListResponse]`
+- New function `*JobModelCustomProperties.GetJobModelCustomProperties() *JobModelCustomProperties`
+- New function `NewLocationBasedOperationResultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LocationBasedOperationResultsClient, error)`
+- New function `*LocationBasedOperationResultsClient.Get(context.Context, string, string, string, *LocationBasedOperationResultsClientGetOptions) (LocationBasedOperationResultsClientGetResponse, error)`
+- New function `NewOperationResultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OperationResultsClient, error)`
+- New function `*OperationResultsClient.Get(context.Context, string, string, *OperationResultsClientGetOptions) (OperationResultsClientGetResponse, error)`
+- New function `NewPrivateEndpointConnectionProxiesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateEndpointConnectionProxiesClient, error)`
+- New function `*PrivateEndpointConnectionProxiesClient.Create(context.Context, string, string, string, PrivateEndpointConnectionProxy, *PrivateEndpointConnectionProxiesClientCreateOptions) (PrivateEndpointConnectionProxiesClientCreateResponse, error)`
+- New function `*PrivateEndpointConnectionProxiesClient.BeginDelete(context.Context, string, string, string, *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionProxiesClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionProxiesClient.Get(context.Context, string, string, string, *PrivateEndpointConnectionProxiesClientGetOptions) (PrivateEndpointConnectionProxiesClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionProxiesClient.NewListPager(string, string, *PrivateEndpointConnectionProxiesClientListOptions) *runtime.Pager[PrivateEndpointConnectionProxiesClientListResponse]`
+- New function `*PrivateEndpointConnectionProxiesClient.Validate(context.Context, string, string, string, PrivateEndpointConnectionProxy, *PrivateEndpointConnectionProxiesClientValidateOptions) (PrivateEndpointConnectionProxiesClientValidateResponse, error)`
+- New function `NewPrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginDelete(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.Get(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.Update(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientUpdateOptions) (PrivateEndpointConnectionsClientUpdateResponse, error)`
+- New function `NewPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.Get(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error)`
+- New function `*PrivateLinkResourcesClient.NewListPager(string, string, *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse]`
+- New function `*ProtectedItemClient.BeginUpdate(context.Context, string, string, string, ProtectedItemModelUpdate, *ProtectedItemClientBeginUpdateOptions) (*runtime.Poller[ProtectedItemClientUpdateResponse], error)`
+- New function `*ProtectedItemModelCustomPropertiesUpdate.GetProtectedItemModelCustomPropertiesUpdate() *ProtectedItemModelCustomPropertiesUpdate`
+- New function `NewRecoveryPointClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RecoveryPointClient, error)`
+- New function `*RecoveryPointClient.Get(context.Context, string, string, string, string, *RecoveryPointClientGetOptions) (RecoveryPointClientGetResponse, error)`
+- New function `*RecoveryPointClient.NewListPager(string, string, string, *RecoveryPointClientListOptions) *runtime.Pager[RecoveryPointClientListResponse]`
+- New function `*TestFailoverCleanupJobModelCustomProperties.GetJobModelCustomProperties() *JobModelCustomProperties`
+- New function `*TestFailoverJobModelCustomProperties.GetJobModelCustomProperties() *JobModelCustomProperties`
+- New function `*VMwareFabricAgentModelCustomProperties.GetFabricAgentModelCustomProperties() *FabricAgentModelCustomProperties`
+- New function `*VMwareToAzStackHCIEventModelCustomProperties.GetEventModelCustomProperties() *EventModelCustomProperties`
+- New function `*VMwareToAzStackHCIProtectedItemModelCustomPropertiesUpdate.GetProtectedItemModelCustomPropertiesUpdate() *ProtectedItemModelCustomPropertiesUpdate`
+- New function `*VMwareToAzStackHCIRecoveryPointModelCustomProperties.GetRecoveryPointModelCustomProperties() *RecoveryPointModelCustomProperties`
+- New struct `AffectedObjectDetails`
+- New struct `ConnectionDetails`
+- New struct `DiskControllerInputs`
+- New struct `EmailConfigurationModelListResult`
+- New struct `EventModelListResult`
+- New struct `FabricAgentModel`
+- New struct `FabricAgentModelListResult`
+- New struct `FabricAgentModelProperties`
+- New struct `FabricModelListResult`
+- New struct `FailoverJobModelCustomProperties`
+- New struct `GroupConnectivityInformation`
+- New struct `HyperVToAzStackHCIProtectedItemModelCustomPropertiesUpdate`
+- New struct `JobModel`
+- New struct `JobModelListResult`
+- New struct `JobModelProperties`
+- New struct `ManagedServiceIdentity`
+- New struct `PolicyModelListResult`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProxy`
+- New struct `PrivateEndpointConnectionProxyListResult`
+- New struct `PrivateEndpointConnectionProxyProperties`
+- New struct `PrivateEndpointConnectionResponseProperties`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnection`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `PrivateLinkServiceProxy`
+- New struct `ProtectedItemJobProperties`
+- New struct `ProtectedItemModelListResult`
+- New struct `ProtectedItemModelPropertiesUpdate`
+- New struct `ProtectedItemModelUpdate`
+- New struct `RecoveryPointModelListResult`
+- New struct `RemotePrivateEndpoint`
+- New struct `RemotePrivateEndpointConnection`
+- New struct `ReplicationExtensionModelListResult`
+- New struct `SystemData`
+- New struct `TestFailoverCleanupJobModelCustomProperties`
+- New struct `TestFailoverJobModelCustomProperties`
+- New struct `UserAssignedIdentity`
+- New struct `VMwareFabricAgentModelCustomProperties`
+- New struct `VMwareToAzStackHCIEventModelCustomProperties`
+- New struct `VMwareToAzStackHCIProtectedItemModelCustomPropertiesUpdate`
+- New struct `VMwareToAzStackHCIRecoveryPointModelCustomProperties`
+- New struct `VaultIdentityModel`
+- New struct `VaultModelListResult`
+- New field `Properties` in struct `DeploymentPreflightResource`
+- New anonymous field `EmailConfigurationModelListResult` in struct `EmailConfigurationClientListResponse`
+- New field `ProvisioningState` in struct `EmailConfigurationModelProperties`
+- New field `OdataOptions`, `PageSize` in struct `EventClientListOptions`
+- New anonymous field `EventModelListResult` in struct `EventClientListResponse`
+- New field `ProvisioningState` in struct `EventModelProperties`
+- New anonymous field `FabricModelListResult` in struct `FabricClientListBySubscriptionResponse`
+- New anonymous field `FabricModelListResult` in struct `FabricClientListResponse`
+- New field `DiskBlockSize`, `DiskController`, `DiskIdentifier`, `DiskLogicalSectorSize`, `DiskPhysicalSectorSize` in struct `HyperVToAzStackHCIDiskInput`
+- New field `IsMacMigrationEnabled`, `IsStaticIPMigrationEnabled` in struct `HyperVToAzStackHCINicInput`
+- New field `DiskBlockSize`, `DiskLogicalSectorSize`, `DiskPhysicalSectorSize` in struct `HyperVToAzStackHCIProtectedDiskProperties`
+- New field `SourceFabricAgentName`, `TargetFabricAgentName` in struct `HyperVToAzStackHCIProtectedItemModelCustomProperties`
+- New anonymous field `PolicyModelListResult` in struct `PolicyClientListResponse`
+- New field `ContinuationToken`, `OdataOptions`, `PageSize` in struct `ProtectedItemClientListOptions`
+- New anonymous field `ProtectedItemModelListResult` in struct `ProtectedItemClientListResponse`
+- New field `FabricAgentID`, `TargetFabricAgentID` in struct `ProtectedItemModelProperties`
+- New field `ProvisioningState` in struct `RecoveryPointModelProperties`
+- New anonymous field `ReplicationExtensionModelListResult` in struct `ReplicationExtensionClientListResponse`
+- New field `ChildrenJobs` in struct `TaskModel`
+- New field `DiskBlockSize`, `DiskController`, `DiskIdentifier`, `DiskLogicalSectorSize`, `DiskPhysicalSectorSize` in struct `VMwareToAzStackHCIDiskInput`
+- New field `IsMacMigrationEnabled`, `IsStaticIPMigrationEnabled` in struct `VMwareToAzStackHCINicInput`
+- New field `DiskBlockSize`, `DiskLogicalSectorSize`, `DiskPhysicalSectorSize` in struct `VMwareToAzStackHCIProtectedDiskProperties`
+- New field `SourceFabricAgentName`, `TargetFabricAgentName` in struct `VMwareToAzStackHCIProtectedItemModelCustomProperties`
+- New anonymous field `VaultModelListResult` in struct `VaultClientListBySubscriptionResponse`
+- New anonymous field `VaultModelListResult` in struct `VaultClientListResponse`
+- New field `Identity` in struct `VaultModel`
+- New field `Identity` in struct `VaultModelUpdate`
+
+
 ## 0.2.0 (2023-11-24)
 ### Features Added
 

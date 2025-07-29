@@ -1,5 +1,20 @@
 # Release History
 
+## 1.5.3-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.5.2 (2025-07-23)
+
+### Other Changes
+* Updated `azcore` version to `1.18.1`
+
 ## 1.5.2-beta.2 (2025-07-08)
 
 ### Bugs Fixed

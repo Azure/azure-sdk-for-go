@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The base resource name."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "The location of the resource. By default, this is the same as the resource group."
+      }
+    },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal to assign the role to. This is application object id."
+      }
+    }
+  },
+  "variables": {
+    "faceAccountName": "[concat(parameters('baseName'), 'face')]",
+    "cognitiveServicesUserRoleId": "a97b65f3-24c7-4388-baec-2e87135dc908"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.CognitiveServices/accounts",
+      "apiVersion": "2021-10-01",
+      "name": "[variables('faceAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "S0"
+      },
+      "kind": "Face",
+      "properties": {
+        "customSubDomainName": "[variables('faceAccountName')]",
+        "networkAcls": {
+          "defaultAction": "Allow"
+        },
+        "publicNetworkAccess": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('cognitiveServicesUserRoleId'))]",
+      "dependsOn": [
+        "[variables('faceAccountName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('cognitiveServicesUserRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    }
+  ],
+  "outputs": {
+    "FACE_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(variables('faceAccountName')).endpoint]"
+    },
+    "FACE_ACCOUNT_NAME": {
+      "type": "string",
+      "value": "[variables('faceAccountName')]"
+    },
+    "FACE_SUBSCRIPTION_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('faceAccountName'), '2021-10-01').key1]"
+    }
+  }
+}

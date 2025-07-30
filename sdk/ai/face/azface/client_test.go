@@ -4,10 +4,10 @@
 package azface_test
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/face/azface"
@@ -22,13 +22,24 @@ func downloadTestImage(t *testing.T) io.ReadSeekCloser {
 	resp, err := http.Get(sampleImageURL)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
+	defer resp.Body.Close()
 	
-	// Read the image into memory and return as ReadSeekCloser
+	// Read the image into memory
 	imageData, err := io.ReadAll(resp.Body)
-	resp.Body.Close()
 	require.NoError(t, err)
 	
-	return io.NopCloser(strings.NewReader(string(imageData))).(io.ReadSeekCloser)
+	// Return a bytes.Reader wrapped with a NopCloser equivalent
+	reader := bytes.NewReader(imageData)
+	return &readSeekCloser{reader}
+}
+
+// readSeekCloser implements io.ReadSeekCloser by wrapping a bytes.Reader
+type readSeekCloser struct {
+	*bytes.Reader
+}
+
+func (r *readSeekCloser) Close() error {
+	return nil
 }
 
 func TestClient_DetectFromURL(t *testing.T) {

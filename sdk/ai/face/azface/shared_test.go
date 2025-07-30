@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/face/azface"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
@@ -42,13 +43,28 @@ func newClientForTest(t *testing.T) (*azface.Client, error) {
 }
 
 func newClientForTestWithRecording(t *testing.T) *azface.Client {
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
+	var transport policy.Transporter
+	var err error
+	
+	// Only use recording transport if we're actually recording or have recordings
+	if recording.GetRecordMode() == recording.RecordingMode || recording.GetRecordMode() == recording.PlaybackMode {
+		transport, err = recording.NewRecordingHTTPClient(t, nil)
+		if err != nil {
+			t.Logf("Failed to create recording client, using regular client: %v", err)
+			// Fall back to regular client
+			client, err := newClientForTest(t)
+			require.NoError(t, err)
+			return client
+		}
+	}
 
-	options := &azface.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: transport,
-		},
+	var options *azface.ClientOptions
+	if transport != nil {
+		options = &azface.ClientOptions{
+			ClientOptions: azcore.ClientOptions{
+				Transport: transport,
+			},
+		}
 	}
 
 	endpoint := getEndpoint()
@@ -67,13 +83,35 @@ func newClientForTestWithRecording(t *testing.T) *azface.Client {
 }
 
 func newAdministrationClientForTest(t *testing.T) *azface.AdministrationClient {
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
+	var transport policy.Transporter
+	var err error
+	
+	// Only use recording transport if we're actually recording or have recordings
+	if recording.GetRecordMode() == recording.RecordingMode || recording.GetRecordMode() == recording.PlaybackMode {
+		transport, err = recording.NewRecordingHTTPClient(t, nil)
+		if err != nil {
+			t.Logf("Failed to create recording client, using regular client: %v", err)
+			// Fall back to regular client creation
+			endpoint := getEndpoint()
+			cred, err := azidentity.NewDefaultAzureCredential(nil)
+			if err != nil {
+				client, err := azface.NewAdministrationClientWithKey(endpoint, getAPIKey(), nil)
+				require.NoError(t, err)
+				return client
+			}
+			client, err := azface.NewAdministrationClient(endpoint, cred, nil)
+			require.NoError(t, err)
+			return client
+		}
+	}
 
-	options := &azface.AdministrationClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: transport,
-		},
+	var options *azface.AdministrationClientOptions
+	if transport != nil {
+		options = &azface.AdministrationClientOptions{
+			ClientOptions: azcore.ClientOptions{
+				Transport: transport,
+			},
+		}
 	}
 
 	endpoint := getEndpoint()

@@ -146,7 +146,7 @@ func (m *MockQueryPipeline) Run() (*queryengine.PipelineResult, error) {
 
 	items := make([][]byte, 0)
 
-	// Loop, merging items from each partition, until all partitions are exhausted, or we need more data to conitnue.
+	// Loop, merging items from each partition, until all partitions are exhausted, or we need more data to continue.
 	for {
 		// Iterate through each partition to find the item with the lowest MergeOrder.
 		var lowestMergeOrder int

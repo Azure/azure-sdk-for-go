@@ -20,7 +20,7 @@ const (
 	partition2Key string = "partition2"
 	partition3Key string = "partition3"
 
-	ruCount int32 = 40000
+	ruCountForMultiplePartitions int32 = 40000
 
 	partitionCount    int = 3
 	itemsPerPartition int = 10
@@ -37,7 +37,7 @@ func createTestItems(t *testing.T, database *DatabaseClient) (*ContainerClient, 
 	}
 
 	// Force the creation of a container with multiple physical partitions
-	throughput := NewManualThroughputProperties(ruCount)
+	throughput := NewManualThroughputProperties(ruCountForMultiplePartitions)
 	_, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{
 		ThroughputProperties: &throughput,
 	})

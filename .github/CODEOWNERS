@@ -54,10 +54,10 @@
 # PRLabel: %Tables
 /sdk/data/aztables/           @jhendrixMSFT @richardpark-msft
 
-# AzureSDKOwners: @gracewilcox
+# AzureSDKOwners: @gracewilcox @Azure/azure-sdk-write-keyvault
 # ServiceLabel: %KeyVault
 # PRLabel: %KeyVault
-/sdk/security/keyvault/       @chlowell @jhendrixMSFT @gracewilcox
+/sdk/security/keyvault/       @chlowell @jhendrixMSFT @gracewilcox @Azure/azure-sdk-write-keyvault
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus

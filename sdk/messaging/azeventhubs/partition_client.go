@@ -380,3 +380,10 @@ func getStartExpression(startPosition StartPosition) (string, error) {
 func formatStartExpressionForSequence(op string, sequenceNumber int64) string {
 	return fmt.Sprintf("amqp.annotation.x-opt-sequence-number %s '%d'", op, sequenceNumber)
 }
+
+// GetPartitionProperties gets properties for the partition. This includes data like the
+// last enqueued sequence number, the first sequence number and when an event was last enqueued
+// to the partition.
+func (pc *PartitionClient) GetPartitionProperties(ctx context.Context, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+	return getPartitionProperties(ctx, EventConsumer, pc.namespace, pc.links, pc.eventHub, pc.partitionID, pc.retryOptions, options)
+}

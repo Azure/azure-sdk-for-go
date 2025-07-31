@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Accessing GetPartitionProperties function from PartitionClient instance (PR#25039)
+
 ### Breaking Changes
 
 ### Bugs Fixed

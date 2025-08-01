@@ -89,6 +89,9 @@
 # PRLabel: %Monitor
 /sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT @Azure/azure-sdk-write-monitor-data-plane
 
+# PRLabel: %Monitor
+/sdk/monitor/query/azmetrics/ @Azure/azure-sdk-write-monitor-query-metrics
+
 # AzureSDKOwners: @lirenhe
 # ServiceLabel: %Mgmt
 # PRLabel: %Mgmt

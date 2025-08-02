@@ -2205,6 +2205,44 @@ func (s *RecordedTestSuite) TestCreateDirectoryInFileSystemSetOptions() {
 
 }
 
+func (s *UnrecordedTestSuite) TestCreateDirectoryWithEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	createDirOptions := &filesystem.CreateDirectoryOptions{
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	}
+
+	resp, err := fsClient.CreateDirectory(context.Background(), dirName, createDirOptions)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	dirClient := fsClient.NewDirectoryClient(dirName)
+	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(testcommon.TestEncryptionContext, *response.EncryptionContext)
+
+	// Create a directory without encryption context
+	dirName2 := testcommon.GenerateDirName(testName + "2")
+	resp2, err := fsClient.CreateDirectory(context.Background(), dirName2, nil)
+	_require.NoError(err)
+	_require.NotNil(resp2)
+
+	dirClient2 := fsClient.NewDirectoryClient(dirName2)
+	response2, err := dirClient2.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Nil(response2.EncryptionContext)
+}
+
 func (s *RecordedTestSuite) TestFSCreateDefaultAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

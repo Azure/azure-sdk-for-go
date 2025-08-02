@@ -37,6 +37,8 @@ type CreateOptions struct {
 	Group *string
 	// ACL is the access control list for the file.
 	ACL *string
+	// EncryptionContext stores non-encrypted data that can be used to derive the customer-provided key for a directory.
+	EncryptionContext *string
 }
 
 func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
@@ -55,6 +57,7 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	createOpts.Permissions = o.Permissions
 	createOpts.ProposedLeaseID = o.ProposedLeaseID
 	createOpts.LeaseDuration = o.LeaseDuration
+	createOpts.EncryptionContext = o.EncryptionContext
 
 	var httpHeaders *generated.PathHTTPHeaders
 	var cpkOpts *generated.CPKInfo

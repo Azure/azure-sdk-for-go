@@ -64,6 +64,7 @@ type PartitionClient struct {
 	eventHub         string
 	instanceID       string
 	links            internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
+	namespace        internal.NamespaceForAMQPLinks
 	offsetExpression string
 	ownerLevel       *int64
 	partitionID      string
@@ -296,6 +297,7 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 		prefetch:         options.Prefetch,
 		retryOptions:     args.retryOptions,
 		instanceID:       args.instanceID,
+		namespace:        args.namespace,
 	}
 
 	client.links = internal.NewLinks(args.namespace, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubConsumerLink)

@@ -328,7 +328,7 @@ kAF/AQQQAAQBQAAkCNADCBADI==
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	mockCredential := &WorkloadIdentityCredential{
 		identityBinding:         true,
 		kubernetesTokenEndpoint: kubernetesURL,
@@ -343,7 +343,7 @@ kAF/AQQQAAQBQAAkCNADCBADI==
 		kubernetesSNIName: "kubernetes.default.svc",
 	}
 
-	// Test with Azure authority host request (should be redirected)
+	// Test with token endpoint request (should be redirected)
 	req := &http.Request{
 		Method: "POST",
 		Header: make(http.Header),
@@ -362,7 +362,7 @@ kAF/AQQQAAQBQAAkCNADCBADI==
 		t.Error("expected an error due to network connectivity")
 	}
 
-	// Test with non-Azure host request (should not be redirected)
+	// Test with non-token request (should not be redirected)
 	req2 := &http.Request{
 		Method: "GET",
 		Header: make(http.Header),
@@ -405,7 +405,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_Success(t *testing.T) {
 	if err != nil {
 		t.Skipf("test certificate not found, run: cd /tmp/test-certs && openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 1 -nodes -subj \"/C=US/ST=Test/L=Test/O=Test/OU=Test/CN=kubernetes.default.svc\"")
 	}
-	
+
 	if err := os.WriteFile(caFile, caCert, os.ModePerm); err != nil {
 		t.Fatalf("failed to write CA file: %v", err)
 	}
@@ -479,7 +479,7 @@ klmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghij
 klmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghij
 klmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghij
 -----END CERTIFICATE-----`
-	
+
 	if err := os.WriteFile(caFile, []byte(caCert), os.ModePerm); err != nil {
 		t.Fatalf("failed to write CA file: %v", err)
 	}

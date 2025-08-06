@@ -259,7 +259,7 @@ func TestChangeFeedResponseWithPartitionKey(t *testing.T) {
 
 	if parsedResponse.ContinuationToken != "" {
 		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.ContinuationToken)
-	
+	}
 	if parsedResponse.PartitionKey == nil {
 		t.Fatal("PartitionKey should not be nil")
 	}

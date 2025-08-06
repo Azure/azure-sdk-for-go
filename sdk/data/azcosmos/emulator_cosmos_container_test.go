@@ -805,7 +805,6 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		t.Logf("  - Count: %d", resp.Count)
 		t.Logf("  - ETag: %s", resp.ETag)
 		t.Logf("  - ContinuationTokenForPartitionKey: %s", resp.ContinuationTokenForPartitionKey)
-		t.Logf("  - LSN: %s", resp.LSN)
 		t.Logf("  - ResourceID: %s", resp.ResourceID)
 
 		if resp.ContinuationTokenForPartitionKey == "" {
@@ -882,10 +881,8 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 
 		if resp.ETag != "" {
-			etag := resp.ETag
 			options2 := &ChangeFeedOptions{
 				MaxItemCount: 10,
-				Continuation: &etag,
 			}
 
 			resp2, err := container.GetChangeFeed(context.TODO(), options2)

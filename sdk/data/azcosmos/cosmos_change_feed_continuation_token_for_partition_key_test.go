@@ -78,7 +78,6 @@ func TestEmptyContinuationTokenForPartitionKey(t *testing.T) {
 	// Test case with no FeedRange - should return empty token
 	response := ChangeFeedResponse{
 		ResourceID: "testResource",
-		ETag:       "14",
 	}
 
 	token, err := response.GetContinuationTokenForPartitionKey()

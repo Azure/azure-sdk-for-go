@@ -127,6 +127,22 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		w.kubernetesTokenEndpoint = kubernetesTokenEndpoint
 		w.kubernetesSNIName = kubernetesSNIName
 		w.kubernetesCAFile = kubernetesCAFile
+		
+		// Validate CA file exists and is readable during construction
+		if _, err := os.Stat(kubernetesCAFile); err != nil {
+			return nil, fmt.Errorf("failed to read Kubernetes CA file: %w", err)
+		}
+		
+		// Validate CA certificate is parseable during construction
+		caCert, err := os.ReadFile(kubernetesCAFile)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read Kubernetes CA file: %w", err)
+		}
+		
+		caCertPool := x509.NewCertPool()
+		if !caCertPool.AppendCertsFromPEM(caCert) {
+			return nil, errors.New("failed to parse Kubernetes CA certificate")
+		}
 	}
 
 	caco := ClientAssertionCredentialOptions{

@@ -8,8 +8,14 @@ package azidentity
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"errors"
+	"fmt"
+	"net/http"
+	"net/url"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -29,6 +35,15 @@ type WorkloadIdentityCredential struct {
 	cred            *ClientAssertionCredential
 	expires         time.Time
 	mtx             *sync.RWMutex
+	// identity binding mode fields
+	identityBinding         bool
+	kubernetesCAFile        string
+	kubernetesSNIName       string
+	kubernetesTokenEndpoint *url.URL
+	// CA certificate caching fields
+	caCert     []byte
+	caCertPool *x509.CertPool
+	caExpires  time.Time
 }
 
 // WorkloadIdentityCredentialOptions contains optional parameters for WorkloadIdentityCredential.
@@ -87,13 +102,30 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 			return nil, errors.New("no tenant ID specified. Check pod configuration or set TenantID in the options")
 		}
 	}
+
 	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
+
+	// Configure identity binding if environment variables are present
+	if err := w.configureIdentityBinding(); err != nil {
+		return nil, err
+	}
+
 	caco := ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Cache:                      options.Cache,
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
+
+	// If identity binding mode is enabled, configure a custom HTTP client
+	if w.identityBinding {
+		// Override the client options to use our custom transport
+		caco.ClientOptions.Transport = &identityBindingTransport{
+			credential:        &w,
+			kubernetesSNIName: w.kubernetesSNIName,
+		}
+	}
+
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
 	if err != nil {
 		return nil, err
@@ -138,4 +170,130 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 		defer w.mtx.RUnlock()
 	}
 	return w.assertion, nil
+}
+
+// configureIdentityBinding configures identity binding mode if the required environment variables are present
+func (w *WorkloadIdentityCredential) configureIdentityBinding() error {
+	// Check for identity binding mode environment variables
+	kubernetesTokenEndpointStr := os.Getenv(azureKubernetesTokenEndpoint)
+	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
+	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
+
+	// If any of the identity binding environment variables are present, enable identity binding mode
+	if kubernetesTokenEndpointStr != "" || kubernetesSNIName != "" || kubernetesCAFile != "" {
+		// All three variables must be present for identity binding mode
+		if kubernetesTokenEndpointStr == "" || kubernetesSNIName == "" || kubernetesCAFile == "" {
+			return errors.New("identity binding mode requires all three environment variables: AZURE_KUBERNETES_TOKEN_ENDPOINT, AZURE_KUBERNETES_SNI_NAME, and AZURE_KUBERNETES_CA_FILE")
+		}
+
+		// Parse the Kubernetes token endpoint URL
+		kubernetesTokenEndpoint, err := url.Parse(kubernetesTokenEndpointStr)
+		if err != nil {
+			return fmt.Errorf("failed to parse Kubernetes token endpoint URL: %w", err)
+		}
+
+		w.identityBinding = true
+		w.kubernetesTokenEndpoint = kubernetesTokenEndpoint
+		w.kubernetesSNIName = kubernetesSNIName
+		w.kubernetesCAFile = kubernetesCAFile
+
+		// Validate CA file exists and is readable during construction
+		if _, err := os.Stat(kubernetesCAFile); err != nil {
+			return fmt.Errorf("failed to read Kubernetes CA file: %w", err)
+		}
+
+		// Validate CA certificate is parseable during construction
+		caCert, err := os.ReadFile(kubernetesCAFile)
+		if err != nil {
+			return fmt.Errorf("failed to read Kubernetes CA file: %w", err)
+		}
+
+		caCertPool := x509.NewCertPool()
+		if !caCertPool.AppendCertsFromPEM(caCert) {
+			return errors.New("failed to parse Kubernetes CA certificate")
+		}
+	}
+
+	return nil
+}
+
+// loadKubernetesCA loads and caches the Kubernetes CA certificate
+func (w *WorkloadIdentityCredential) loadKubernetesCA() (*x509.CertPool, error) {
+	w.mtx.RLock()
+	if w.caExpires.After(time.Now()) && w.caCertPool != nil {
+		defer w.mtx.RUnlock()
+		return w.caCertPool, nil
+	}
+
+	// ensure only one goroutine at a time updates the CA cert
+	w.mtx.RUnlock()
+	w.mtx.Lock()
+	defer w.mtx.Unlock()
+
+	// double check because another goroutine may have acquired the write lock first and done the update
+	if now := time.Now(); w.caExpires.After(now) && w.caCertPool != nil {
+		return w.caCertPool, nil
+	}
+
+	// Load the CA certificate for the Kubernetes endpoint
+	caCert, err := os.ReadFile(w.kubernetesCAFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read Kubernetes CA file: %w", err)
+	}
+
+	caCertPool := x509.NewCertPool()
+	if !caCertPool.AppendCertsFromPEM(caCert) {
+		return nil, errors.New("failed to parse Kubernetes CA certificate")
+	}
+
+	// Cache the CA certificate for 10 minutes (same as token assertion)
+	w.caCert = caCert
+	w.caCertPool = caCertPool
+	w.caExpires = time.Now().Add(10 * time.Minute)
+
+	return caCertPool, nil
+}
+
+// identityBindingTransport is a custom HTTP transport that redirects token requests
+// to the Kubernetes token endpoint when in identity binding mode
+type identityBindingTransport struct {
+	credential        *WorkloadIdentityCredential
+	kubernetesSNIName string
+}
+
+func (t *identityBindingTransport) Do(req *http.Request) (*http.Response, error) {
+	// Return early if this is not a token request
+	if !strings.HasSuffix(req.URL.Path, "/oauth2/v2.0/token") {
+		return http.DefaultTransport.RoundTrip(req)
+	}
+
+	// This is a token request, redirect to Kubernetes endpoint
+
+	// Load the CA certificate (this will use cached version if still valid)
+	caCertPool, err := t.credential.loadKubernetesCA()
+	if err != nil {
+		return nil, err
+	}
+
+	// Create custom transport with the CA and SNI configuration
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			RootCAs:    caCertPool,
+			ServerName: t.kubernetesSNIName,
+		},
+	}
+
+	// Clone the request to avoid modifying the original
+	newReq := req.Clone(req.Context())
+
+	// Update the URL to point to the Kubernetes endpoint
+	newReq.URL.Scheme = t.credential.kubernetesTokenEndpoint.Scheme
+	newReq.URL.Host = t.credential.kubernetesTokenEndpoint.Host
+	newReq.Host = t.credential.kubernetesTokenEndpoint.Host
+
+	// Preserve the original path (contains tenant ID and token endpoint path)
+	// The path should be something like "/tenant-id/oauth2/v2.0/token"
+	// Keep the original path to maintain the token request structure
+
+	return transport.RoundTrip(newReq)
 }

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/FleetMembers_Create.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Create.json
 func ExampleFleetMembersClient_BeginCreate_createsAFleetMemberResourceWithALongRunningOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleFleetMembersClient_BeginCreate_createsAFleetMemberResourceWithALongR
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_Create_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Create_MaximumSet_Gen.json
 func ExampleFleetMembersClient_BeginCreate_createsAFleetMemberResourceWithALongRunningOperationGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleFleetMembersClient_BeginCreate_createsAFleetMemberResourceWithALongR
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_Delete.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Delete.json
 func ExampleFleetMembersClient_BeginDelete_deletesAFleetMemberResourceAsynchronouslyWithALongRunningOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleFleetMembersClient_BeginDelete_deletesAFleetMemberResourceAsynchrono
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Delete_MaximumSet_Gen.json
 func ExampleFleetMembersClient_BeginDelete_deletesAFleetMemberResourceAsynchronouslyWithALongRunningOperationGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleFleetMembersClient_BeginDelete_deletesAFleetMemberResourceAsynchrono
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_Get.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Get.json
 func ExampleFleetMembersClient_Get_getsAFleetMemberResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleFleetMembersClient_Get_getsAFleetMemberResource() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Get_MaximumSet_Gen.json
 func ExampleFleetMembersClient_Get_getsAFleetMemberResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleFleetMembersClient_Get_getsAFleetMemberResourceGeneratedByMaximumSet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_ListByFleet.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_ListByFleet.json
 func ExampleFleetMembersClient_NewListByFleetPager_listsTheMembersOfAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleFleetMembersClient_NewListByFleetPager_listsTheMembersOfAFleet() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_ListByFleet_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_ListByFleet_MaximumSet_Gen.json
 func ExampleFleetMembersClient_NewListByFleetPager_listsTheMembersOfAFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExampleFleetMembersClient_NewListByFleetPager_listsTheMembersOfAFleetGenera
 	}
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_Update.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Update.json
 func ExampleFleetMembersClient_BeginUpdateAsync_updatesAFleetMemberResourceSynchronously() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExampleFleetMembersClient_BeginUpdateAsync_updatesAFleetMemberResourceSynch
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetMembers_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetMembers_Update_MaximumSet_Gen.json
 func ExampleFleetMembersClient_BeginUpdateAsync_updatesAFleetMemberResourceSynchronouslyGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

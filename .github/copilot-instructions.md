@@ -23,3 +23,7 @@ Run `ReleasePackage` to release the package. This tool requires package name and
 - Identify the release pipeline
 - Trigger the release pipeline.
 User needs to approve the release stage in the pipeline after it is triggered.
+
+### Changelog checking
+
+If the CHANGELOG.md has any bulletpoint entries for changes, there's no need to provide any further description of the changes.

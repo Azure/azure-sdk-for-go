@@ -10,6 +10,7 @@ import (
 	"net"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
@@ -178,6 +179,9 @@ func (cc *ConsumerClient) getDetails() consumerClientDetails {
 
 // Close releases resources for this client.
 func (cc *ConsumerClient) Close(ctx context.Context) error {
+	if err := cc.links.Close(ctx); err != nil {
+		azlog.Writef(EventConsumer, "Failed when closing links while shutting down consumer client: %s", err.Error())
+	}
 	return cc.namespace.Close(ctx, true)
 }
 

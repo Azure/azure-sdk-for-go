@@ -144,7 +144,9 @@ func (tc *TypeSpecConfig) GetModuleRelativePath() string {
 		}
 		return m
 	})
-	return strings.ReplaceAll(module, "github.com/Azure/azure-sdk-for-go/", "")
+
+	re = regexp.MustCompile(`github\.com/Azure/azure-sdk-for-go/|/v\d+$`)
+	return re.ReplaceAllString(module, "")
 }
 
 func (tc *TypeSpecConfig) EditOptions(emit string, option map[string]any, append bool) {

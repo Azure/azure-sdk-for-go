@@ -47,7 +47,6 @@ azure-rest-api-specs directory: the directory path of the azure-rest-api-specs w
 }
 
 type Flags struct {
-	VersionNumber       string
 	SwaggerRepo         string
 	SDKRepo             string
 	ReleaseDate         string
@@ -58,7 +57,6 @@ type Flags struct {
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
-	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
@@ -70,7 +68,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber:       flags.GetString(flagSet, "version-number"),
 		SDKRepo:             flags.GetString(flagSet, "sdk-repo"),
 		SwaggerRepo:         flags.GetString(flagSet, "spec-repo"),
 		ReleaseDate:         flags.GetString(flagSet, "release-date"),
@@ -141,7 +138,6 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 				RPName:               rpName,
 				NamespaceName:        namespace.Name(),
 				SpecificPackageTitle: "",
-				SpecificVersion:      c.flags.VersionNumber,
 				SpecRPName:           specRpName,
 				ReleaseDate:          c.flags.ReleaseDate,
 				SkipGenerateExample:  c.flags.SkipGenerateExample,

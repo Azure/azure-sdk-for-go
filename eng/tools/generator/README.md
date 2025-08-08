@@ -248,7 +248,6 @@ generator release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 - `namespaceName`: Namespace name (default: "arm" + rp-name)
 
 **Flags:**
-- `--version-number`: Specify the version number for release
 - `--package-title`: Package title for the release
 - `--sdk-repo`: SDK repository URL (default: https://github.com/Azure/azure-sdk-for-go)
 - `--spec-repo`: Spec repository URL (default: https://github.com/Azure/azure-rest-api-specs)
@@ -274,9 +273,8 @@ generator release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 # Generate release for a specific RP
 generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs network
 
-# Generate with custom version and TypeSpec config
+# Generate with custom TypeSpec config
 generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs network \
-  --version-number v2.0.0 \
   --tsp-config specification/network/tspconfig.yaml
 
 # Generate from release request config file
@@ -301,7 +299,6 @@ generator refresh-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 - `azure-rest-api-specs directory`: Path to azure-rest-api-specs repository
 
 **Flags:**
-- `--version-number`: Specify version number for refresh
 - `--sdk-repo`: SDK repository URL
 - `--spec-repo`: Spec repository URL  
 - `--release-date`: Release date for changelog
@@ -330,9 +327,9 @@ generator refresh-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
 generator refresh-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
   --skip-create-branch --skip-generate-example
 
-# Refresh with custom version and release date
+# Refresh with custom release date
 generator refresh-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
-  --version-number v1.1.0 --release-date 2024-01-15
+  --release-date 2024-01-15
 ```
 
 ### The `template` command

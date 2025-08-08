@@ -78,7 +78,6 @@ type Flags struct {
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
-	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("package-title", "", "Specifies the title of this package")
 	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")

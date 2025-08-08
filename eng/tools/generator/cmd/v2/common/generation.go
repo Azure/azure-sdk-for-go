@@ -441,29 +441,16 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 		return nil, err
 	}
 
-	oldModuleVersion, err := getModuleVersion(filepath.Join(packagePath, "autorest.md"))
-	if err != nil {
-		return nil, err
-	}
-
 	log.Printf("Replace version in autorest.md and version.go...")
 	if err = ReplaceVersion(packagePath, version.String()); err != nil {
 		return nil, err
 	}
 
-	if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
-		log.Printf("Replace fake module v2+...")
-		if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
-			"fake", ".go"); err != nil {
-			return nil, err
-		}
-	}
-
-	// When sdk has major version bump, the live test needs to update the module referenced in the code.
-	if oldModuleVersion.Major() != version.Major() && existSuffixFile(packagePath, "_live_test.go") {
-		log.Printf("Replace live test module v2+...")
-		if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
-			"", "_live_test.go"); err != nil {
+	// Replace import for module v2+
+	baseModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName)
+	if version.Major() > 1 {
+		log.Printf("Replace import for module v2+...")
+		if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
 			return nil, err
 		}
 	}
@@ -799,8 +786,7 @@ func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var prl PullRequestLabel
 	var err error
-	version := t.Version
-	defaultModuleVersion := version.String()
+	var version *semver.Version
 	packagePath := t.PackagePath
 	modulePath := t.ModulePath
 	packageRelativePath := t.PackageRelativePath
@@ -831,23 +817,11 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
-	oldModuleVersion, err := semver.NewVersion(defaultModuleVersion)
-	if err != nil {
-		return nil, err
-	}
-
+	// Replace import for module v2+
 	baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", moduleRelativePath)
-	if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
-		log.Printf("Replace fake module v2+...")
+	if version.Major() > 1 {
+		log.Printf("Replace import for module v2+...")
 		if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
-			return nil, err
-		}
-	}
-
-	// When sdk has major version bump, the live test needs to update the module referenced in the code.
-	if existSuffixFile(packagePath, "_live_test.go") {
-		log.Printf("Replace live test module v2+...")
-		if err = ReplaceModule(version, packagePath, baseModule, "_live_test.go"); err != nil {
 			return nil, err
 		}
 	}

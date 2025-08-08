@@ -48,7 +48,6 @@ type GenerateParam struct {
 	RPName               string
 	NamespaceName        string
 	NamespaceConfig      string
-	SpecificVersion      string
 	SpecificPackageTitle string
 	SpecRPName           string
 	ReleaseDate          string
@@ -144,7 +143,6 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				ReleaseDate:          commonGenerateParam.ReleaseDate,
 				RemoveTagSet:         commonGenerateParam.RemoveTagSet,
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
-				SpecificVersion:      commonGenerateParam.SpecificVersion,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
 			})
 			if err != nil {
@@ -165,13 +163,6 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
 		return nil, err
-	}
-	if generateParam.SpecificVersion != "" {
-		log.Printf("Use specific version: %s", generateParam.SpecificVersion)
-		version, err = semver.NewVersion(generateParam.SpecificVersion)
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	// check if the package is onboard or update, to init different generator
@@ -433,11 +424,9 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 	packagePath := t.PackagePath
 
 	log.Printf("Calculate new version...")
-	if generateParam.SpecificVersion == "" {
-		version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
-		if err != nil {
-			return nil, err
-		}
+	version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+	if err != nil {
+		return nil, err
 	}
 
 	log.Printf("Add changelog to file...")
@@ -555,13 +544,6 @@ func (ctx *GenerateContext) GenerateForSingleTypeSpec(generateParam *GeneratePar
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
 		return nil, err
-	}
-	if generateParam.SpecificVersion != "" {
-		log.Printf("Use specific version: %s", generateParam.SpecificVersion)
-		version, err = semver.NewVersion(generateParam.SpecificVersion)
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	// check if the package is onboard or update, to init different generator
@@ -775,7 +757,6 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 
 func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
 	var err error
-	version := t.Version
 	packagePath := t.PackagePath
 
 	previousVersion := ""
@@ -785,11 +766,6 @@ func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 		isCurrentPreview = true
 	} else if generateParam.SdkReleaseType == SDKReleaseTypeStable {
 		isCurrentPreview = false
-	} else if generateParam.SpecificVersion != "" {
-		isCurrentPreview, err = IsBetaVersion(version.String())
-		if err != nil {
-			return nil, err
-		}
 	} else {
 		isCurrentPreview, err = changelog.ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
@@ -833,11 +809,9 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	isCurrentPreview := t.IsCurrentPreview
 
 	log.Printf("Calculate new version...")
-	if generateParam.SpecificVersion == "" {
-		version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
-		if err != nil {
-			return nil, err
-		}
+	version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+	if err != nil {
+		return nil, err
 	}
 
 	log.Printf("Add changelog to file...")

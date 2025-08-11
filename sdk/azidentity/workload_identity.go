@@ -7,6 +7,7 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -35,15 +36,6 @@ type WorkloadIdentityCredential struct {
 	cred            *ClientAssertionCredential
 	expires         time.Time
 	mtx             *sync.RWMutex
-	// identity binding mode fields
-	identityBinding         bool
-	kubernetesCAFile        string
-	kubernetesSNIName       string
-	kubernetesTokenEndpoint *url.URL
-	// CA certificate caching fields
-	caCert     []byte
-	caCertPool *x509.CertPool
-	caExpires  time.Time
 }
 
 // WorkloadIdentityCredentialOptions contains optional parameters for WorkloadIdentityCredential.
@@ -104,29 +96,20 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 	}
 
 	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
-
-	// Configure identity binding if environment variables are present
-	if err := w.configureIdentityBinding(); err != nil {
-		return nil, err
-	}
-
-	caco := ClientAssertionCredentialOptions{
+	caco := &ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Cache:                      options.Cache,
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	// If identity binding mode is enabled, configure a custom HTTP client
-	if w.identityBinding {
-		// Override the client options to use our custom transport
-		caco.ClientOptions.Transport = &identityBindingTransport{
-			credential:        &w,
-			kubernetesSNIName: w.kubernetesSNIName,
-		}
+	// configure identity binding if environment variables are present.
+	// In identity binding enabled mode, a dedicated transport will be used for proxying token requests to a dedicated endpoint.
+	if err := w.configureIdentityBinding(caco); err != nil {
+		return nil, err
 	}
 
-	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
+	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, caco)
 	if err != nil {
 		return nil, err
 	}
@@ -173,127 +156,198 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 }
 
 // configureIdentityBinding configures identity binding mode if the required environment variables are present
-func (w *WorkloadIdentityCredential) configureIdentityBinding() error {
-	// Check for identity binding mode environment variables
+func (w *WorkloadIdentityCredential) configureIdentityBinding(caco *ClientAssertionCredentialOptions) error {
+	// check for identity binding mode environment variables
 	kubernetesTokenEndpointStr := os.Getenv(azureKubernetesTokenEndpoint)
 	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
 	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
 
-	// If any of the identity binding environment variables are present, enable identity binding mode
-	if kubernetesTokenEndpointStr != "" || kubernetesSNIName != "" || kubernetesCAFile != "" {
-		// All three variables must be present for identity binding mode
-		if kubernetesTokenEndpointStr == "" || kubernetesSNIName == "" || kubernetesCAFile == "" {
-			return errors.New("identity binding mode requires all three environment variables: AZURE_KUBERNETES_TOKEN_ENDPOINT, AZURE_KUBERNETES_SNI_NAME, and AZURE_KUBERNETES_CA_FILE")
-		}
-
-		// Parse the Kubernetes token endpoint URL
-		kubernetesTokenEndpoint, err := url.Parse(kubernetesTokenEndpointStr)
-		if err != nil {
-			return fmt.Errorf("failed to parse Kubernetes token endpoint URL: %w", err)
-		}
-
-		w.identityBinding = true
-		w.kubernetesTokenEndpoint = kubernetesTokenEndpoint
-		w.kubernetesSNIName = kubernetesSNIName
-		w.kubernetesCAFile = kubernetesCAFile
-
-		// Validate CA file exists and is readable during construction
-		if _, err := os.Stat(kubernetesCAFile); err != nil {
-			return fmt.Errorf("failed to read Kubernetes CA file: %w", err)
-		}
-
-		// Validate CA certificate is parseable during construction
-		caCert, err := os.ReadFile(kubernetesCAFile)
-		if err != nil {
-			return fmt.Errorf("failed to read Kubernetes CA file: %w", err)
-		}
-
-		caCertPool := x509.NewCertPool()
-		if !caCertPool.AppendCertsFromPEM(caCert) {
-			return errors.New("failed to parse Kubernetes CA certificate")
-		}
+	if kubernetesTokenEndpointStr == "" && kubernetesSNIName == "" && kubernetesCAFile == "" {
+		// identity binding is not set
+		return nil
 	}
 
+	// All three variables must be present for identity binding mode
+	if kubernetesTokenEndpointStr == "" || kubernetesSNIName == "" || kubernetesCAFile == "" {
+		return errors.New("identity binding mode requires all three environment variables: AZURE_KUBERNETES_TOKEN_ENDPOINT, AZURE_KUBERNETES_SNI_NAME, and AZURE_KUBERNETES_CA_FILE")
+	}
+
+	transporter, err := newIdentityBindingTransport(
+		kubernetesCAFile, kubernetesSNIName, kubernetesTokenEndpointStr,
+		caco.Transport,
+	)
+	if err != nil {
+		return err
+	}
+	caco.Transport = transporter
 	return nil
 }
 
-// loadKubernetesCA loads and caches the Kubernetes CA certificate
-func (w *WorkloadIdentityCredential) loadKubernetesCA() (*x509.CertPool, error) {
-	w.mtx.RLock()
-	if w.caExpires.After(time.Now()) && w.caCertPool != nil {
-		defer w.mtx.RUnlock()
-		return w.caCertPool, nil
-	}
-
-	// ensure only one goroutine at a time updates the CA cert
-	w.mtx.RUnlock()
-	w.mtx.Lock()
-	defer w.mtx.Unlock()
-
-	// double check because another goroutine may have acquired the write lock first and done the update
-	if now := time.Now(); w.caExpires.After(now) && w.caCertPool != nil {
-		return w.caCertPool, nil
-	}
-
-	// Load the CA certificate for the Kubernetes endpoint
-	caCert, err := os.ReadFile(w.kubernetesCAFile)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read Kubernetes CA file: %w", err)
-	}
-
-	caCertPool := x509.NewCertPool()
-	if !caCertPool.AppendCertsFromPEM(caCert) {
-		return nil, errors.New("failed to parse Kubernetes CA certificate")
-	}
-
-	// Cache the CA certificate for 10 minutes (same as token assertion)
-	w.caCert = caCert
-	w.caCertPool = caCertPool
-	w.caExpires = time.Now().Add(10 * time.Minute)
-
-	return caCertPool, nil
-}
+const (
+	tokenEndpointSuffix = "/oauth2/v2.0/token"
+	caReloadInterval    = 10 * time.Minute
+)
 
 // identityBindingTransport is a custom HTTP transport that redirects token requests
 // to the Kubernetes token endpoint when in identity binding mode
 type identityBindingTransport struct {
-	credential        *WorkloadIdentityCredential
-	kubernetesSNIName string
+	caFile              string
+	sniName             string
+	tokenEndpoint       *url.URL
+	fallbackTransporter policy.Transporter
+
+	mtx *sync.RWMutex
+
+	nextRead  time.Time
+	currentCA []byte
+	transport *http.Transport
 }
 
-func (t *identityBindingTransport) Do(req *http.Request) (*http.Response, error) {
-	// Return early if this is not a token request
-	if !strings.HasSuffix(req.URL.Path, "/oauth2/v2.0/token") {
-		return http.DefaultTransport.RoundTrip(req)
+func newIdentityBindingTransport(
+	caFile, sniName, tokenEndpointStr string,
+	fallbackTransporter policy.Transporter,
+) (*identityBindingTransport, error) {
+	tokenEndpoint, err := url.Parse(tokenEndpointStr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse token endpoint URL %q: %w", tokenEndpointStr, err)
 	}
 
-	// This is a token request, redirect to Kubernetes endpoint
+	initialTransport := func() *http.Transport {
+		// try reusing the user provided transport if available
+		if fallbackTransporter != nil {
+			if httpClient, ok := fallbackTransporter.(*http.Client); ok {
+				if transport, ok := httpClient.Transport.(*http.Transport); ok {
+					return transport.Clone()
+				}
+			}
+		}
 
-	// Load the CA certificate (this will use cached version if still valid)
-	caCertPool, err := t.credential.loadKubernetesCA()
+		// if the user did not provide a transport, we use the default one
+		// FIXME: can we callback to the defaultHTTPClient from azcore/runtime?
+		if transport, ok := http.DefaultTransport.(*http.Transport); ok {
+			return transport.Clone()
+		}
+
+		// this should not happen, but if the user mutates the net/http.DefaultTransport
+		// to something else, we fall back to a sane default
+		return &http.Transport{
+			ForceAttemptHTTP2:   true,
+			MaxIdleConns:        100,
+			IdleConnTimeout:     90 * time.Second,
+			TLSHandshakeTimeout: 10 * time.Second,
+		}
+	}()
+
+	tr := &identityBindingTransport{
+		caFile:              caFile,
+		sniName:             sniName,
+		tokenEndpoint:       tokenEndpoint,
+		fallbackTransporter: fallbackTransporter,
+		mtx:                 &sync.RWMutex{},
+		transport:           initialTransport,
+	}
+
+	// perform an initial load to surface any issues with the CA file and transport settings.
+	// Lock is not held here as this is called in the constructor
+	if err := tr.reloadCA(); err != nil {
+		return nil, err
+	}
+
+	return tr, nil
+}
+
+func (i *identityBindingTransport) Do(req *http.Request) (*http.Response, error) {
+	if !strings.HasSuffix(req.URL.Path, tokenEndpointSuffix) {
+		// not a token request, fallback to the original transporter
+		return i.fallbackTransporter.Do(req)
+	}
+
+	tr, err := i.getTokenTransporter()
 	if err != nil {
 		return nil, err
 	}
 
-	// Create custom transport with the CA and SNI configuration
-	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{
-			RootCAs:    caCertPool,
-			ServerName: t.kubernetesSNIName,
-		},
+	newReq := req.Clone(req.Context())
+	newReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
+	newReq.URL.Host = i.tokenEndpoint.Host
+	newReq.Host = i.tokenEndpoint.Host
+
+	return tr.RoundTrip(newReq)
+}
+
+func (i *identityBindingTransport) getTokenTransporter() (*http.Transport, error) {
+	i.mtx.RLock()
+	if i.nextRead.Before(time.Now()) {
+		i.mtx.RUnlock()
+		i.mtx.Lock()
+		defer i.mtx.Unlock()
+		// double check on the read time
+		if now := time.Now(); i.nextRead.Before(now) {
+			if err := i.reloadCA(); err != nil {
+				// we return error if any attempt of reloading CA fails
+				// This should surface in the token calls and we expect the caller to
+				// have proper error handling / rate limit so we don't fall into deadloop here
+				// due to scenario like broken CA file.
+				return nil, err
+			}
+		}
+	} else {
+		defer i.mtx.RUnlock()
+	}
+	return i.transport, nil
+}
+
+func (i *identityBindingTransport) createTransportWithCAPool(
+	fromTransport *http.Transport,
+	caPool *x509.CertPool,
+) *http.Transport {
+	transport := fromTransport.Clone()
+	if transport.TLSClientConfig == nil {
+		transport.TLSClientConfig = &tls.Config{}
+	}
+	transport.TLSClientConfig.ServerName = i.sniName
+	transport.TLSClientConfig.RootCAs = caPool
+	return transport
+}
+
+// reloadCA attempts to read the latest CA from the CA file and updates the transport if the content has changed.
+// If a new CA is discovered, the existing transport will be replaced with a new one that uses the new CA.
+// It expects the caller to hold the write lock on i.mtx to ensure thread safety.
+func (i *identityBindingTransport) reloadCA() error {
+	newCA, err := os.ReadFile(i.caFile)
+	if err != nil {
+		return fmt.Errorf("read CA file %q: %w", i.caFile, err)
 	}
 
-	// Clone the request to avoid modifying the original
-	newReq := req.Clone(req.Context())
+	if len(newCA) == 0 {
+		// the CA file might be in the middle of rotation without the content written.
+		// We return nil and rely on next check.
+		return nil
+	}
 
-	// Update the URL to point to the Kubernetes endpoint
-	newReq.URL.Scheme = t.credential.kubernetesTokenEndpoint.Scheme
-	newReq.URL.Host = t.credential.kubernetesTokenEndpoint.Host
-	newReq.Host = t.credential.kubernetesTokenEndpoint.Host
+	if bytes.Equal(i.currentCA, newCA) {
+		// no change in CA content, no need to replace
+		i.nextRead = time.Now().Add(caReloadInterval)
+		return nil
+	}
 
-	// Preserve the original path (contains tenant ID and token endpoint path)
-	// The path should be something like "/tenant-id/oauth2/v2.0/token"
-	// Keep the original path to maintain the token request structure
+	newCAPool := x509.NewCertPool()
+	if !newCAPool.AppendCertsFromPEM(newCA) {
+		return fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
+	}
 
-	return transport.RoundTrip(newReq)
+	newTransport := i.createTransportWithCAPool(i.transport, newCAPool)
+	oldTransport := i.transport
+
+	i.transport = newTransport
+	i.currentCA = newCA
+	i.nextRead = time.Now().Add(caReloadInterval)
+
+	if oldTransport != nil {
+		// drop any idle connections from previous transport so new requests can be
+		// moved to the new transport
+		oldTransport.CloseIdleConnections()
+	}
+
+	return nil
 }

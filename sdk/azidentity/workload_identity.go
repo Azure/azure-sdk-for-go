@@ -212,17 +212,21 @@ func newIdentityBindingTransport(
 		return nil, fmt.Errorf("failed to parse token endpoint URL %q: %w", tokenEndpointStr, err)
 	}
 
+	if fallbackTransporter == nil {
+		// FIXME: can we callback to the defaultHTTPClient from azcore/runtime?
+		fallbackTransporter = http.DefaultClient
+	}
+
 	initialTransport := func() *http.Transport {
 		// try reusing the user provided transport if available
-		if fallbackTransporter != nil {
-			if httpClient, ok := fallbackTransporter.(*http.Client); ok {
-				if transport, ok := httpClient.Transport.(*http.Transport); ok {
-					return transport.Clone()
-				}
+		if httpClient, ok := fallbackTransporter.(*http.Client); ok {
+			if transport, ok := httpClient.Transport.(*http.Transport); ok {
+				return transport.Clone()
 			}
 		}
 
-		// if the user did not provide a transport, we use the default one
+		// if the user did not provide a policy.Transporter or it's not a *http.Client,
+		// we fall back to the default one.
 		// FIXME: can we callback to the defaultHTTPClient from azcore/runtime?
 		if transport, ok := http.DefaultTransport.(*http.Transport); ok {
 			return transport.Clone()

@@ -300,7 +300,7 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 // createTestCA generates a self-signed CA certificate for testing
 func createTestCA(t *testing.T) ([]byte, string) {
 	t.Helper()
-	
+
 	// Generate private key
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)
 	require.NoError(t, err)
@@ -316,11 +316,11 @@ func createTestCA(t *testing.T) ([]byte, string) {
 			StreetAddress: []string{""},
 			PostalCode:    []string{""},
 		},
-		NotBefore:    time.Now(),
-		NotAfter:     time.Now().Add(365 * 24 * time.Hour),
-		KeyUsage:     x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
-		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
-		IsCA:         true,
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().Add(365 * 24 * time.Hour),
+		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+		IsCA:                  true,
 		BasicConstraintsValid: true,
 	}
 
@@ -333,7 +333,7 @@ func createTestCA(t *testing.T) ([]byte, string) {
 
 	// Write to temporary file
 	caFile := filepath.Join(t.TempDir(), "ca.crt")
-	err = os.WriteFile(caFile, certPEM, 0644)
+	err = os.WriteFile(caFile, certPEM, 0600)
 	require.NoError(t, err)
 
 	return certPEM, caFile
@@ -448,7 +448,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_Detection(t *testing.T) {
 
 			// Set up required workload identity variables
 			tempTokenFile := filepath.Join(t.TempDir(), "token")
-			err := os.WriteFile(tempTokenFile, []byte("test-token"), 0644)
+			err := os.WriteFile(tempTokenFile, []byte("test-token"), 0600)
 			require.NoError(t, err)
 
 			t.Setenv(azureClientID, fakeClientID)
@@ -501,7 +501,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_InvalidCAFile(t *testing.T) 
 func TestWorkloadIdentityCredential_IdentityBinding_InvalidCAContent(t *testing.T) {
 	// Create invalid CA file
 	caFile := filepath.Join(t.TempDir(), "invalid-ca.crt")
-	err := os.WriteFile(caFile, []byte("not a valid certificate"), 0644)
+	err := os.WriteFile(caFile, []byte("not a valid certificate"), 0600)
 	require.NoError(t, err)
 
 	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc")
@@ -527,7 +527,8 @@ func TestWorkloadIdentityCredential_IdentityBinding_TransportRedirection(t *test
 	require.NoError(t, err)
 
 	// Test token request (should be redirected)
-	req, _ := http.NewRequest("POST", "https://login.microsoftonline.com/tenant-id/oauth2/v2.0/token", nil)
+	req, err := http.NewRequest("POST", "https://login.microsoftonline.com/tenant-id/oauth2/v2.0/token", nil)
+	require.NoError(t, err)
 	_, _ = transport.Do(req)
 
 	// Since token requests go through the custom transport's internal logic and don't hit the fallback transport,
@@ -537,7 +538,8 @@ func TestWorkloadIdentityCredential_IdentityBinding_TransportRedirection(t *test
 	require.Len(t, requests, 0, "Token requests should not go through fallback transport")
 
 	// Test non-token request (should go through fallback transport)
-	req2, _ := http.NewRequest("GET", "https://login.microsoftonline.com/common/discovery/instance", nil)
+	req2, err := http.NewRequest("GET", "https://login.microsoftonline.com/common/discovery/instance", nil)
+	require.NoError(t, err)
 	_, _ = transport.Do(req2)
 
 	// Verify fallback transport was used for non-token request
@@ -597,7 +599,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAReloading(t *testing.T) {
 
 	// Create initial CA
 	initialCA, _ := createTestCA(t)
-	err := os.WriteFile(caFile, initialCA, 0644)
+	err := os.WriteFile(caFile, initialCA, 0600)
 	require.NoError(t, err)
 
 	// Create transport recorder
@@ -619,7 +621,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAReloading(t *testing.T) {
 
 	// Create new CA and update file
 	newCA, _ := createTestCA(t)
-	err = os.WriteFile(caFile, newCA, 0644)
+	err = os.WriteFile(caFile, newCA, 0600)
 	require.NoError(t, err)
 
 	// Get transport again to trigger reload
@@ -639,7 +641,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_EmptyCAFile(t *testing.T) {
 	caFile := filepath.Join(tempDir, "empty-ca.crt")
 
 	// Create empty CA file
-	err := os.WriteFile(caFile, []byte(""), 0644)
+	err := os.WriteFile(caFile, []byte(""), 0600)
 	require.NoError(t, err)
 
 	// Create transport recorder
@@ -658,7 +660,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T)
 
 	// Create initial CA
 	initialCA, _ := createTestCA(t)
-	err := os.WriteFile(caFile, initialCA, 0644)
+	err := os.WriteFile(caFile, initialCA, 0600)
 	require.NoError(t, err)
 
 	// Create transport recorder
@@ -669,7 +671,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T)
 	require.NoError(t, err)
 
 	// Simulate file rotation - write empty file first (common during rotation)
-	err = os.WriteFile(caFile, []byte(""), 0644)
+	err = os.WriteFile(caFile, []byte(""), 0600)
 	require.NoError(t, err)
 
 	// Force reload with empty file
@@ -681,7 +683,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T)
 
 	// Write new CA content
 	newCA, _ := createTestCA(t)
-	err = os.WriteFile(caFile, newCA, 0644)
+	err = os.WriteFile(caFile, newCA, 0600)
 	require.NoError(t, err)
 
 	// Force another reload
@@ -721,6 +723,59 @@ func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccess(t *testing.
 	wg.Wait() // Should complete without hanging
 }
 
+func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccessWithCARotation(t *testing.T) {
+	tempDir := t.TempDir()
+	caFile := filepath.Join(tempDir, "ca.crt")
+
+	// Create initial CA
+	initialCA, _ := createTestCA(t)
+	err := os.WriteFile(caFile, initialCA, 0600)
+	require.NoError(t, err)
+
+	// Create transport recorder
+	recorder := &identityBindingTransportRecorder{}
+
+	// Create identity binding transport
+	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	require.NoError(t, err)
+
+	// Test concurrent access while rotating CA
+	var wg sync.WaitGroup
+
+	// Start concurrent readers
+	for i := 0; i < 5; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for j := 0; j < 10; j++ {
+				_, _ = transport.getTokenTransporter() // Should not panic or deadlock
+				time.Sleep(time.Millisecond * 10)      // Small delay to create overlap
+			}
+		}()
+	}
+
+	// Start CA rotation goroutine
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for k := 0; k < 3; k++ {
+			time.Sleep(time.Millisecond * 50)
+			// Generate new CA and update file
+			newCA, _ := createTestCA(t)
+			err := os.WriteFile(caFile, newCA, 0600)
+			if err != nil {
+				return // File might be locked during concurrent access
+			}
+			// Force reload by updating nextRead time
+			transport.mtx.Lock()
+			transport.nextRead = time.Now().Add(-time.Hour)
+			transport.mtx.Unlock()
+		}
+	}()
+
+	wg.Wait() // Should complete without hanging or deadlock
+}
+
 func TestWorkloadIdentityCredential_IdentityBinding_TLSConfiguration(t *testing.T) {
 	_, caFile := createTestCA(t)
 
@@ -744,7 +799,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_TLSConfiguration(t *testing.
 func TestWorkloadIdentityCredential_IdentityBinding_BackwardCompatibility(t *testing.T) {
 	// Test that standard workload identity still works when no identity binding variables are set
 	tempTokenFile := filepath.Join(t.TempDir(), "token")
-	err := os.WriteFile(tempTokenFile, []byte(tokenValue), 0644)
+	err := os.WriteFile(tempTokenFile, []byte(tokenValue), 0600)
 	require.NoError(t, err)
 
 	// Set up standard workload identity environment (no binding variables)

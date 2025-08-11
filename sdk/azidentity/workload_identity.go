@@ -274,6 +274,7 @@ func (i *identityBindingTransport) Do(req *http.Request) (*http.Response, error)
 	newReq := req.Clone(req.Context())
 	newReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
 	newReq.URL.Host = i.tokenEndpoint.Host
+	newReq.URL.Path = ""
 	newReq.Host = i.tokenEndpoint.Host
 
 	return tr.RoundTrip(newReq)

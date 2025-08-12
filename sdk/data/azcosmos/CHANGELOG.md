@@ -9,6 +9,7 @@
 * Added support for specifying Vector Search indexing policies when creating a container. See [PR 24833](https://github.com/Azure/azure-sdk-for-go/pull/24833)
 * Added support for reading Feed Ranges from a container. See [PR 24889](https://github.com/Azure/azure-sdk-for-go/pull/24889)
 * Added support for reading Change Feed through Feed Ranges from a container. See [PR 24898](https://github.com/Azure/azure-sdk-for-go/pull/24898)
+* Added support for reading Change Feed through Parition Keys from a container. Also configures Change Feed to read from a single partition when not provided a Feed Range or Partition Key. See [PR 25077] (https://github.com/Azure/azure-sdk-for-go/pull/25077)
 
 ### Breaking Changes
 

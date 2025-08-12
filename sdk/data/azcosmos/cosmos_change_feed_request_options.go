@@ -9,12 +9,6 @@ import (
 	"time"
 )
 
-const (
-	// cosmosDefaultMaxItemCount represents unlimited items in the response
-	cosmosDefaultMaxItemCount = -1
-	cosmosBaseTen             = 10
-)
-
 // ChangeFeedResourceType represents the resource type for change feed operations.
 type ChangeFeedResourceType int
 

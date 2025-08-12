@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-03-01/examples/BackupsUnderAccount_Migrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/15aab4e6057c5a6ca351ec7a93fbd9c82885ace8/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupsUnderAccount_Migrate.json
 func ExampleBackupsUnderAccountClient_BeginMigrateBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

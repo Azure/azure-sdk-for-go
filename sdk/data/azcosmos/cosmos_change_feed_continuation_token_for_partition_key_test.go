@@ -29,8 +29,11 @@ func TestNewContinuationTokenForPartitionKey(t *testing.T) {
 	require.NoError(t, err, "Failed to marshal token for partition key")
 
 	// Verify the token serializes with the expected format
-	expectedJSON := `{"resourceId":"testResource","partitionKey":["testPartitionKey"],"continuation":"14"}`
+	expectedJSON := `{"version":1,"resourceId":"testResource","partitionKey":["testPartitionKey"],"continuation":"14"}`
 	require.Equal(t, expectedJSON, string(data), "Unexpected JSON output")
+	if tokenForPartitionKey.Version != cosmosContinuationTokenForPartitionKeyVersion {
+		t.Errorf("Unexpected version. Expected: %d, Actual: %d", cosmosContinuationTokenForPartitionKeyVersion, tokenForPartitionKey.Version)
+	}
 
 	// Test deserialization
 	var unmarshaled continuationTokenForPartitionKey
@@ -60,7 +63,7 @@ func TestContinuationTokenForPartitionKeyWithComplexKey(t *testing.T) {
 	require.NoError(t, err, "Failed to marshal complex token")
 
 	// Verify serialization result with the expected format
-	expectedJSON := `{"resourceId":"complexResource","partitionKey":["level1",42,true],"continuation":"complex-token"}`
+	expectedJSON := `{"version":1,"resourceId":"complexResource","partitionKey":["level1",42,true],"continuation":"complex-token"}`
 	require.Equal(t, expectedJSON, string(data), "Unexpected JSON for complex token")
 
 	// Test deserialization

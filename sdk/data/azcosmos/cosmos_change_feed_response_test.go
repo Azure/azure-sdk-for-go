@@ -133,14 +133,14 @@ func TestChangeFeedResponseWithContainer(t *testing.T) {
 
 	parsedResponse.PopulateCompositeContinuationToken()
 
-	if parsedResponse.CompositeContinuationToken != "" {
-		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.CompositeContinuationToken)
+	if parsedResponse.ContinuationToken != "" {
+		t.Errorf("expected ContinuationToken to be empty, but got: %q", parsedResponse.ContinuationToken)
 	}
 
 	parsedResponse.PopulateContinuationTokenForPartitionKey()
 
-	if parsedResponse.ContinuationTokenForPartitionKey != "" {
-		t.Errorf("expected ContinuationTokenForPartitionKey to be empty, but got: %q", parsedResponse.ContinuationTokenForPartitionKey)
+	if parsedResponse.ContinuationToken != "" {
+		t.Errorf("expected ContinuationToken to be empty, but got: %q", parsedResponse.ContinuationToken)
 	}
 }
 
@@ -257,9 +257,33 @@ func TestChangeFeedResponseWithPartitionKey(t *testing.T) {
 
 	parsedResponse.PartitionKey = &partitionKey
 
-	if parsedResponse.ContinuationToken != "" {
-		t.Errorf("expected CompositeContinuationToken to be empty, but got: %q", parsedResponse.ContinuationToken)
+	parsedResponse.PopulateContinuationTokenForPartitionKey()
+
+	if parsedResponse.ContinuationToken == "" {
+		t.Fatal("expected CompositeContinuationToken to be populated, but it was empty")
 	}
+
+	var continuationToken continuationTokenForPartitionKey
+	err = json.Unmarshal([]byte(parsedResponse.ContinuationToken), &continuationToken)
+	if err != nil {
+		t.Fatalf("failed to unmarshal continuation token: %v", err)
+	}
+	if continuationToken.Version != cosmosContinuationTokenForPartitionKeyVersion {
+		t.Errorf("expected Version %d, got %d", cosmosContinuationTokenForPartitionKeyVersion, continuationToken.Version)
+	}
+
+	if continuationToken.ResourceID != "testResourceId" {
+		t.Errorf("unexpected ResourceID: got %q, want %q", continuationToken.ResourceID, "testResourceId")
+	}
+
+	if continuationToken.Continuation == nil {
+		t.Fatal("expected Continuation to be set, but it was nil")
+	}
+
+	if *continuationToken.Continuation != azcore.ETag("\"test-etag-789\"") {
+		t.Errorf("unexpected Continuation: got %q, want %q", *continuationToken.Continuation, "\"test-etag-789\"")
+	}
+
 	if parsedResponse.PartitionKey == nil {
 		t.Fatal("PartitionKey should not be nil")
 	}

@@ -23,17 +23,11 @@ type ChangeFeedResponse struct {
 	// ContinuationToken is the token used to continue reading the change feed.
 	ContinuationToken string
 
-	// Store the feed range if it was used in the request.
+	// Store the feed range if it was used in the request, if any.
 	FeedRange *FeedRange
 
 	// PartitionKey is the partition key used in the request, if any.
 	PartitionKey *PartitionKey
-
-	// CompositeContinuationToken is automatically populated when using feed ranges
-	CompositeContinuationToken string
-
-	// ContinuationTokenForPartitionKey is automatically populated when using partition key
-	ContinuationTokenForPartitionKey string
 
 	Response
 }
@@ -123,7 +117,7 @@ func (response *ChangeFeedResponse) PopulateContinuationTokenForPartitionKey() {
 	if response.PartitionKey != nil && response.ETag != "" {
 		token, err := response.GetContinuationTokenForPartitionKey()
 		if err == nil && token != "" {
-			response.ContinuationTokenForPartitionKey = token
+			response.ContinuationToken = token
 		}
 	}
 }

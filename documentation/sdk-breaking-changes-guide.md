@@ -337,7 +337,7 @@ model RedisResource {
 
 **Resolution**:
 
-Use client customization to do the same renaming as the directive in the legacy config:
+Use client customization to do the same renaming as the directives in the legacy config:
 
 ```tsp
 @@clientName(RedisResource, "ResourceInfo", "go");

@@ -1210,3 +1210,280 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 			h[cosmosHeaderChangeFeed], cosmosHeaderValuesChangeFeed)
 	}
 }
+
+func TestContainerGetChangeFeedForPartitionKey(t *testing.T) {
+	changeFeedBody := []byte(`{
+        "_rid": "test-resource-id",
+        "Documents": [{"id": "doc1", "pk": "test-pk"}, {"id": "doc2", "pk": "test-pk"}],
+        "_count": 2
+    }`)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	// Set up mock response
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "\"etag-pk-123\""),
+		mock.WithHeader(cosmosHeaderActivityId, "pkChangeFeedActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "2.5"),
+		mock.WithStatusCode(200))
+
+	// Set up verifier to capture request details
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// Create request with partition key
+	partitionKey := NewPartitionKeyString("test-pk")
+	options := &ChangeFeedOptions{
+		MaxItemCount: 10,
+		PartitionKey: &partitionKey,
+	}
+
+	resp, err := container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed with PartitionKey failed: %v", err)
+	}
+
+	// Validate response content
+	if resp.ResourceID != "test-resource-id" {
+		t.Errorf("unexpected ResourceID: got %q, want %q", resp.ResourceID, "test-resource-id")
+	}
+
+	if resp.Count != 2 {
+		t.Errorf("unexpected document count: got %d, want 2", resp.Count)
+	}
+
+	if len(resp.Documents) != 2 {
+		t.Errorf("unexpected number of documents: got %d, want 2", len(resp.Documents))
+	}
+
+	// Validate the partition key was properly set
+	if resp.PartitionKey == nil {
+		t.Fatal("expected PartitionKey to be set, but it was nil")
+	}
+
+	pkJSON, err := resp.PartitionKey.toJsonString()
+	if err != nil {
+		t.Fatalf("failed to convert partition key to JSON: %v", err)
+	}
+
+	if string(pkJSON) != "[\"test-pk\"]" {
+		t.Errorf("unexpected partition key value: got %q, want %q", string(pkJSON), "[\"test-pk\"]")
+	}
+
+	// Validate request
+	if len(verifier.requests) == 0 {
+		t.Fatal("no requests were made")
+	}
+	request := verifier.requests[0]
+
+	// Verify the partition key is present in the header
+	partitionKeyHeader := request.headers.Get(cosmosHeaderPartitionKey)
+	expectedPKHeader := "[\"test-pk\"]"
+	if partitionKeyHeader != expectedPKHeader {
+		t.Errorf("unexpected partition key header: got %q, want %q", partitionKeyHeader, expectedPKHeader)
+	}
+
+	// Verify change feed header
+	changeFeedHeader := request.headers.Get(cosmosHeaderChangeFeed)
+	if changeFeedHeader != cosmosHeaderValuesChangeFeed {
+		t.Errorf("incorrect change feed header: got %q, want %q", changeFeedHeader, cosmosHeaderValuesChangeFeed)
+	}
+
+	// Verify continuation token is populated correctly
+	if resp.ContinuationToken == "" {
+		t.Fatal("expected ContinuationToken to be populated, but it was empty")
+	}
+
+	// Unmarshal and validate continuation token
+	var contToken continuationTokenForPartitionKey
+	err = json.Unmarshal([]byte(resp.ContinuationToken), &contToken)
+	if err != nil {
+		t.Fatalf("failed to unmarshal continuation token: %v", err)
+	}
+
+	if contToken.Version != cosmosContinuationTokenForPartitionKeyVersion {
+		t.Errorf("incorrect token version: got %q, want %q", contToken.Version, cosmosContinuationTokenForPartitionKeyVersion)
+	}
+
+	if contToken.ResourceID != "test-resource-id" {
+		t.Errorf("incorrect ResourceID in token: got %q, want %q", contToken.ResourceID, "test-resource-id")
+	}
+
+	if contToken.Continuation == nil {
+		t.Fatal("Continuation should not be nil")
+	}
+
+	expectedEtag := azcore.ETag("\"etag-pk-123\"")
+	if *contToken.Continuation != expectedEtag {
+		t.Errorf("incorrect continuation token: got %q, want %q", *contToken.Continuation, expectedEtag)
+	}
+
+	// Verify we can use the token in a subsequent request
+	srv.SetResponse(
+		mock.WithBody([]byte(`{"_rid": "test-resource-id", "Documents": [], "_count": 0}`)),
+		mock.WithHeader(cosmosHeaderEtag, "\"etag-pk-456\""),
+		mock.WithStatusCode(200))
+
+	verifier = pipelineVerifier{}
+	internalClient, _ = azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client = &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ = newDatabase("databaseId", client)
+	container, _ = newContainer("containerId", database)
+
+	// Create request with continuation token
+	options2 := &ChangeFeedOptions{
+		MaxItemCount: 10,
+		Continuation: &resp.ContinuationToken,
+	}
+
+	resp2, err := container.GetChangeFeed(context.TODO(), options2)
+	if err != nil {
+		t.Fatalf("GetChangeFeed with continuation token failed: %v", err)
+	}
+
+	if resp2.Count != 0 {
+		t.Errorf("unexpected document count in second response: got %d, want 0", resp2.Count)
+	}
+
+	// Verify the continuation token is properly sent in headers
+	if len(verifier.requests) == 0 {
+		t.Fatal("no requests were made in second call")
+	}
+	request2 := verifier.requests[0]
+
+	ifNoneMatchHeader := request2.headers.Get(headerIfNoneMatch)
+	if ifNoneMatchHeader != "\"etag-pk-123\"" {
+		t.Errorf("incorrect If-None-Match header: got %q, want %q", ifNoneMatchHeader, "\"etag-pk-123\"")
+	}
+}
+
+func TestContainerGetChangeFeedForContainer(t *testing.T) {
+	changeFeedBody := []byte(`{
+        "_rid": "test-container-resource-id",
+        "Documents": [{"id": "doc1"}, {"id": "doc2"}, {"id": "doc3"}],
+        "_count": 3
+    }`)
+
+	srv, close := mock.NewTLSServer()
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	defer close()
+
+	// Set up mock response
+	srv.SetResponse(
+		mock.WithBody(changeFeedBody),
+		mock.WithHeader(cosmosHeaderEtag, "\"etag-container-123\""),
+		mock.WithHeader(cosmosHeaderActivityId, "containerChangeFeedActivityId"),
+		mock.WithHeader(cosmosHeaderRequestCharge, "3.5"),
+		mock.WithStatusCode(200))
+
+	// Set up verifier to capture request details
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	// Create request without partition key or feed range (container level)
+	options := &ChangeFeedOptions{
+		MaxItemCount: 10,
+	}
+
+	resp, err := container.GetChangeFeed(context.TODO(), options)
+	if err != nil {
+		t.Fatalf("GetChangeFeed for container failed: %v", err)
+	}
+
+	// Validate response content
+	if resp.ResourceID != "test-container-resource-id" {
+		t.Errorf("unexpected ResourceID: got %q, want %q", resp.ResourceID, "test-container-resource-id")
+	}
+
+	if resp.Count != 3 {
+		t.Errorf("unexpected document count: got %d, want 3", resp.Count)
+	}
+
+	if len(resp.Documents) != 3 {
+		t.Errorf("unexpected number of documents: got %d, want 3", len(resp.Documents))
+	}
+
+	// Validate request
+	if len(verifier.requests) == 0 {
+		t.Fatal("no requests were made")
+	}
+	request := verifier.requests[0]
+
+	// Verify the partition key is not present in the header
+	partitionKeyHeader := request.headers.Get(cosmosHeaderPartitionKey)
+	if partitionKeyHeader != "" {
+		t.Errorf("unexpected partition key header: should be empty but got %q", partitionKeyHeader)
+	}
+
+	// Verify change feed header is present
+	changeFeedHeader := request.headers.Get(cosmosHeaderChangeFeed)
+	if changeFeedHeader != cosmosHeaderValuesChangeFeed {
+		t.Errorf("incorrect change feed header: got %q, want %q", changeFeedHeader, cosmosHeaderValuesChangeFeed)
+	}
+
+	// Verify max item count header
+	maxItemCountHeader := request.headers.Get(cosmosHeaderMaxItemCount)
+	if maxItemCountHeader != "10" {
+		t.Errorf("incorrect max item count header: got %q, want %q", maxItemCountHeader, "10")
+	}
+
+	// Verify URL path is correct
+	expectedPath := "/dbs/databaseId/colls/containerId/docs"
+	if !strings.Contains(request.url.Path, expectedPath) {
+		t.Errorf("expected URL path to contain %q, got %q", expectedPath, request.url.Path)
+	}
+
+	// Verify continuation token behavior - should be empty for first request
+	if resp.ContinuationToken != "" {
+		t.Errorf("expected ContinuationToken to be empty for container-level request, got %q", resp.ContinuationToken)
+	}
+
+	// Test with ETag as continuation token
+	srv.SetResponse(
+		mock.WithBody([]byte(`{"_rid": "test-container-resource-id", "Documents": [], "_count": 0}`)),
+		mock.WithStatusCode(200))
+
+	verifier = pipelineVerifier{}
+	internalClient, _ = azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client = &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ = newDatabase("databaseId", client)
+	container, _ = newContainer("containerId", database)
+
+	// Use the ETag as continuation token
+	etag := string(resp.ETag)
+	options2 := &ChangeFeedOptions{
+		MaxItemCount: 10,
+		Continuation: &etag,
+	}
+
+	resp2, err := container.GetChangeFeed(context.TODO(), options2)
+	if err != nil {
+		t.Fatalf("GetChangeFeed with ETag continuation token failed: %v", err)
+	}
+
+	if resp2.Count != 0 {
+		t.Errorf("unexpected document count in second response: got %d, want 0", resp2.Count)
+	}
+
+	// Verify the If-None-Match header was set correctly
+	if len(verifier.requests) == 0 {
+		t.Fatal("no requests were made in second call")
+	}
+	request2 := verifier.requests[0]
+
+	ifNoneMatchHeader := request2.headers.Get(headerIfNoneMatch)
+	if ifNoneMatchHeader != etag {
+		t.Errorf("incorrect If-None-Match header: got %q, want %q", ifNoneMatchHeader, etag)
+	}
+}

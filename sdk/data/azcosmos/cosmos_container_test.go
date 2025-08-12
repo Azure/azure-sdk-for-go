@@ -1316,6 +1316,16 @@ func TestContainerGetChangeFeedForPartitionKey(t *testing.T) {
 		t.Errorf("incorrect ResourceID in token: got %q, want %q", contToken.ResourceID, "test-resource-id")
 	}
 
+	if contToken.PartitionKey == nil {
+		t.Errorf("Expected PartitionKey %v, got nil", partitionKey)
+	} else {
+		contTokenPKStr, contTokenPKErr := contToken.PartitionKey.toJsonString()
+		partitionKeyStr, partitionKeyErr := partitionKey.toJsonString()
+		if contTokenPKErr != nil || partitionKeyErr != nil || contTokenPKStr != partitionKeyStr {
+			t.Errorf("Expected PartitionKey %v, got %v", partitionKey, contToken.PartitionKey)
+		}
+	}
+
 	if contToken.Continuation == nil {
 		t.Fatal("Continuation should not be nil")
 	}

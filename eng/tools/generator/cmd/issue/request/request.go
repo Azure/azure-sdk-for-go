@@ -115,13 +115,13 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	if err != nil {
 		releaseDate = time.Now()
 	}
-	link := parseLink(contents[linkKeyword])
-	if link == "" {
-		link = parseLink(contents[linkKeywordNew])
+	targetLink := parseLink(contents[linkKeyword])
+	if targetLink == "" {
+		targetLink = parseLink(contents[linkKeywordNew])
 	}
 	return &ReleaseRequestIssue{
 		IssueLink:   issue.GetHTMLURL(),
-		TargetLink:  link,
+		TargetLink:  targetLink,
 		Tag:         contents[tagKeyword],
 		ReleaseDate: releaseDate,
 		Labels:      issue.Labels,

@@ -250,7 +250,7 @@ func TestNewClientIPv6(t *testing.T) {
 
 	go func() {
 		err = server.Serve(listener)
-		require.Error(t, err)
+		require.Equal(t, http.ErrServerClosed, err)
 	}()
 	defer func() {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)

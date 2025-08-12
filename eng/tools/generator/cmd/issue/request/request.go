@@ -53,6 +53,7 @@ const (
 
 const (
 	linkKeyword        = "**Link**: "
+	linkKeywordNew     = "**API spec pull request link**: "
 	tagKeyword         = "**Readme Tag**: "
 	releaseDateKeyword = "**Target release date**: "
 )
@@ -105,7 +106,7 @@ type ReleaseRequestIssue struct {
 func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	body := issue.GetBody()
 	contents := getRawContent(strings.Split(body, "\n"), []string{
-		linkKeyword, tagKeyword, releaseDateKeyword,
+		linkKeyword, linkKeywordNew, tagKeyword, releaseDateKeyword,
 	})
 
 	// get release date
@@ -114,10 +115,13 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	if err != nil {
 		releaseDate = time.Now()
 	}
-
+	link := parseLink(contents[linkKeyword])
+	if link == "" {
+		link = parseLink(contents[linkKeywordNew])
+	}
 	return &ReleaseRequestIssue{
 		IssueLink:   issue.GetHTMLURL(),
-		TargetLink:  parseLink(contents[linkKeyword]),
+		TargetLink:  link,
 		Tag:         contents[tagKeyword],
 		ReleaseDate: releaseDate,
 		Labels:      issue.Labels,

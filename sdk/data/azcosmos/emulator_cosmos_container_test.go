@@ -740,7 +740,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		t.Logf("  - CompositeContinuationToken: %s", resp.ContinuationToken)
 		t.Logf("  - ResourceID: %s", resp.ResourceID)
 
-		if resp.CompositeContinuationToken == "" {
+		if resp.ContinuationToken == "" {
 			t.Error("Expected CompositeContinuationToken to be populated")
 		}
 
@@ -804,17 +804,21 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		t.Logf("Continuation Token for PartitionKey Response:")
 		t.Logf("  - Count: %d", resp.Count)
 		t.Logf("  - ETag: %s", resp.ETag)
-		t.Logf("  - ContinuationTokenForPartitionKey: %s", resp.ContinuationTokenForPartitionKey)
+		t.Logf("  - ContinuationTokenForPartitionKey: %s", resp.ContinuationToken)
 		t.Logf("  - ResourceID: %s", resp.ResourceID)
 
-		if resp.ContinuationTokenForPartitionKey == "" {
+		if resp.ContinuationToken == "" {
 			t.Error("Expected ContinuationTokenForPartitionKey to be populated")
 		}
 
 		var contToken continuationTokenForPartitionKey
-		err = json.Unmarshal([]byte(resp.ContinuationTokenForPartitionKey), &contToken)
+		err = json.Unmarshal([]byte(resp.ContinuationToken), &contToken)
 		if err != nil {
 			t.Fatalf("Failed to unmarshal continuation token for partition key: %v", err)
+		}
+
+		if contToken.Version != cosmosContinuationTokenForPartitionKeyVersion {
+			t.Errorf("Expected Version %d, got %d", cosmosContinuationTokenForPartitionKeyVersion, contToken.Version)
 		}
 
 		if contToken.ResourceID != resp.ResourceID {
@@ -840,7 +844,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		if resp.Count > 0 {
 			options2 := &ChangeFeedOptions{
 				MaxItemCount: 10,
-				Continuation: &resp.ContinuationTokenForPartitionKey,
+				Continuation: &resp.ContinuationToken,
 			}
 			resp2, err := container.GetChangeFeed(context.TODO(), options2)
 			if err != nil {
@@ -864,15 +868,15 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		t.Logf("Simple ETag Response:")
 		t.Logf("  - Count: %d", resp.Count)
 		t.Logf("  - ETag: %s", resp.ETag)
-		t.Logf("  - CompositeContinuationToken: %s", resp.CompositeContinuationToken)
+		t.Logf("  - ContinuationToken: %s", resp.ContinuationToken)
 
 		// Verify no composite continuation token when not using feed range
-		if resp.CompositeContinuationToken != "" {
+		if resp.ContinuationToken != "" {
 			t.Error("Expected CompositeContinuationToken to be empty for non-feed-range request")
 		}
 
 		// Verify no continuation token for partition key when not using partition key
-		if resp.ContinuationTokenForPartitionKey != "" {
+		if resp.ContinuationToken != "" {
 			t.Error("Expected ContinuationTokenForPartitionKey to be empty for non-partition-key request")
 		}
 

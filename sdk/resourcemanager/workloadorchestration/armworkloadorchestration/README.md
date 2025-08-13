@@ -1,6 +1,6 @@
-# Azure Workloadorchestration Module for Go
+# Azure Workload Orchestration Module for Go
 
-The `armworkloadorchestration` module provides operations for working with Azure Workloadorchestration.
+The `armworkloadorchestration` module provides operations for working with Azure Workload Orchestration.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/workloadorchestration/armworkloadorchestration)
 
@@ -15,7 +15,7 @@ The `armworkloadorchestration` module provides operations for working with Azure
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Workloadorchestration module:
+Install the Azure Workload Orchestration module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadorchestration/armworkloadorchestration
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadorchestrati
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Workloadorchestration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Workload Orchestration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Workloadorchestration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Workload Orchestration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armworkloadorchestration.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Workloadorchestration` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Workload Orchestration` label.
 
 # Contributing
 

@@ -8,9 +8,13 @@ package azcore
 
 import (
 	"context"
+	"fmt"
+	"io"
+	"net"
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -226,4 +230,51 @@ func TestNewKeyCredential(t *testing.T) {
 
 func TestNewSASCredential(t *testing.T) {
 	require.NotNil(t, NewSASCredential("foo"))
+}
+
+// Test to ensure our default transport handles IPv6 automatically
+func TestNewClientIPv6(t *testing.T) {
+	// Create an IPv6-only listener
+	listener, err := net.Listen("tcp6", "[::1]:0")
+	require.NoError(t, err)
+	defer listener.Close()
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{"message":"IPv6 connection successful"}`)
+	})
+	server := &http.Server{
+		Handler: mux,
+	}
+
+	go func() {
+		err = server.Serve(listener)
+		require.Equal(t, http.ErrServerClosed, err)
+	}()
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		err = server.Shutdown(ctx)
+		require.NoError(t, err)
+	}()
+
+	addr := listener.Addr().(*net.TCPAddr)
+	serverURL := fmt.Sprintf("http://[%s]:%d", addr.IP.String(), addr.Port)
+	client, err := NewClient("package.Client", "v1.0.0", runtime.PipelineOptions{}, &ClientOptions{})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	req, err := exported.NewRequest(context.Background(), http.MethodGet, serverURL+"/test")
+	require.NoError(t, err)
+
+	resp, err := client.Pipeline().Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.Contains(t, string(body), "IPv6 connection successful")
 }

@@ -103,9 +103,9 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	// configure identity binding if environment variables are present.
-	// In identity binding enabled mode, a dedicated transport will be used for proxying token requests to a dedicated endpoint.
-	if err := w.configureIdentityBinding(caco); err != nil {
+	// configure custom token endpoint if environment variables are present.
+	// In custom token endpoint mode, a dedicated transport will be used for proxying token requests to a dedicated endpoint.
+	if err := w.configureCustomTokenEndpoint(caco); err != nil {
 		return nil, err
 	}
 
@@ -155,22 +155,19 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 	return w.assertion, nil
 }
 
-// configureIdentityBinding configures identity binding mode if the required environment variables are present
-func (w *WorkloadIdentityCredential) configureIdentityBinding(caco *ClientAssertionCredentialOptions) error {
-	// check for identity binding mode environment variables
+// configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present
+func (w *WorkloadIdentityCredential) configureCustomTokenEndpoint(caco *ClientAssertionCredentialOptions) error {
+	// check for custom token endpoint environment variables
 	kubernetesTokenEndpointStr := os.Getenv(azureKubernetesTokenEndpoint)
-	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
-	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
-
-	if kubernetesTokenEndpointStr == "" && kubernetesSNIName == "" && kubernetesCAFile == "" {
-		// identity binding is not set
+	
+	if kubernetesTokenEndpointStr == "" {
+		// custom token endpoint is not set, skip configuration
 		return nil
 	}
 
-	// All three variables must be present for identity binding mode
-	if kubernetesTokenEndpointStr == "" || kubernetesSNIName == "" || kubernetesCAFile == "" {
-		return errors.New("identity binding mode requires all three environment variables: AZURE_KUBERNETES_TOKEN_ENDPOINT, AZURE_KUBERNETES_SNI_NAME, and AZURE_KUBERNETES_CA_FILE")
-	}
+	// capture values of kubernetesSNIName and kubernetesCAFile
+	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
+	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
 
 	transporter, err := newIdentityBindingTransport(
 		kubernetesCAFile, kubernetesSNIName, kubernetesTokenEndpointStr,
@@ -188,9 +185,9 @@ const (
 	caReloadInterval    = 10 * time.Minute
 )
 
-// identityBindingTransport is a custom HTTP transport that redirects token requests
-// to the Kubernetes token endpoint when in identity binding mode
-type identityBindingTransport struct {
+// customTokenEndpointTransport is a custom HTTP transport that redirects token requests
+// to the Kubernetes token endpoint when in custom token endpoint mode
+type customTokenEndpointTransport struct {
 	caFile              string
 	sniName             string
 	tokenEndpoint       *url.URL
@@ -206,10 +203,15 @@ type identityBindingTransport struct {
 func newIdentityBindingTransport(
 	caFile, sniName, tokenEndpointStr string,
 	fallbackTransporter policy.Transporter,
-) (*identityBindingTransport, error) {
+) (*customTokenEndpointTransport, error) {
 	tokenEndpoint, err := url.Parse(tokenEndpointStr)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse token endpoint URL %q: %w", tokenEndpointStr, err)
+	}
+
+	// Require the tokenEndpoint to use https scheme
+	if tokenEndpoint.Scheme != "https" {
+		return nil, fmt.Errorf("token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
 	}
 
 	if fallbackTransporter == nil {
@@ -242,7 +244,7 @@ func newIdentityBindingTransport(
 		}
 	}()
 
-	tr := &identityBindingTransport{
+	tr := &customTokenEndpointTransport{
 		caFile:              caFile,
 		sniName:             sniName,
 		tokenEndpoint:       tokenEndpoint,
@@ -260,7 +262,7 @@ func newIdentityBindingTransport(
 	return tr, nil
 }
 
-func (i *identityBindingTransport) Do(req *http.Request) (*http.Response, error) {
+func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, error) {
 	if !strings.HasSuffix(req.URL.Path, tokenEndpointSuffix) {
 		// not a token request, fallback to the original transporter
 		return i.fallbackTransporter.Do(req)
@@ -274,13 +276,13 @@ func (i *identityBindingTransport) Do(req *http.Request) (*http.Response, error)
 	newReq := req.Clone(req.Context())
 	newReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
 	newReq.URL.Host = i.tokenEndpoint.Host
-	newReq.URL.Path = ""
+	newReq.URL.Path = i.tokenEndpoint.Path // copy the path from tokenEndpoint
 	newReq.Host = i.tokenEndpoint.Host
 
 	return tr.RoundTrip(newReq)
 }
 
-func (i *identityBindingTransport) getTokenTransporter() (*http.Transport, error) {
+func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
 	i.mtx.RLock()
 	if i.nextRead.Before(time.Now()) {
 		i.mtx.RUnlock()
@@ -302,7 +304,7 @@ func (i *identityBindingTransport) getTokenTransporter() (*http.Transport, error
 	return i.transport, nil
 }
 
-func (i *identityBindingTransport) createTransportWithCAPool(
+func (i *customTokenEndpointTransport) createTransportWithCAPool(
 	fromTransport *http.Transport,
 	caPool *x509.CertPool,
 ) *http.Transport {
@@ -318,7 +320,7 @@ func (i *identityBindingTransport) createTransportWithCAPool(
 // reloadCA attempts to read the latest CA from the CA file and updates the transport if the content has changed.
 // If a new CA is discovered, the existing transport will be replaced with a new one that uses the new CA.
 // It expects the caller to hold the write lock on i.mtx to ensure thread safety.
-func (i *identityBindingTransport) reloadCA() error {
+func (i *customTokenEndpointTransport) reloadCA() error {
 	newCA, err := os.ReadFile(i.caFile)
 	if err != nil {
 		return fmt.Errorf("read CA file %q: %w", i.caFile, err)

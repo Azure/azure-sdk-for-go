@@ -339,15 +339,15 @@ func createTestCA(t *testing.T) ([]byte, string) {
 	return certPEM, caFile
 }
 
-// identityBindingTransportRecorder records HTTP requests made by the transport
-type identityBindingTransportRecorder struct {
+// customTokenEndpointTransportRecorder records HTTP requests made by the transport
+type customTokenEndpointTransportRecorder struct {
 	requests []*http.Request
 	response *http.Response
 	err      error
 	mtx      sync.Mutex
 }
 
-func (r *identityBindingTransportRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
+func (r *customTokenEndpointTransportRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	r.requests = append(r.requests, req)
@@ -363,11 +363,11 @@ func (r *identityBindingTransportRecorder) RoundTrip(req *http.Request) (*http.R
 	}, nil
 }
 
-func (r *identityBindingTransportRecorder) Do(req *http.Request) (*http.Response, error) {
+func (r *customTokenEndpointTransportRecorder) Do(req *http.Request) (*http.Response, error) {
 	return r.RoundTrip(req)
 }
 
-func (r *identityBindingTransportRecorder) getRequests() []*http.Request {
+func (r *customTokenEndpointTransportRecorder) getRequests() []*http.Request {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 	// Return copy to avoid race conditions
@@ -398,37 +398,35 @@ func TestWorkloadIdentityCredential_IdentityBinding_Detection(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "only token endpoint present - should error",
+			name: "only token endpoint present - should error on missing CA file",
 			envVars: map[string]string{
 				azureKubernetesTokenEndpoint: "https://kubernetes.default.svc",
 			},
 			wantErr:    true,
-			wantErrMsg: "identity binding mode requires all three environment variables",
+			wantErrMsg: "read CA file",
 		},
 		{
-			name: "only SNI name present - should error",
+			name: "only SNI name present - should use standard mode",
 			envVars: map[string]string{
 				azureKubernetesSNIName: "test.cluster.local",
 			},
-			wantErr:    true,
-			wantErrMsg: "identity binding mode requires all three environment variables",
+			wantErr: false,
 		},
 		{
-			name: "only CA file present - should error",
+			name: "only CA file present - should use standard mode",
 			envVars: map[string]string{
 				azureKubernetesCAFile: "test-ca.crt",
 			},
-			wantErr:    true,
-			wantErrMsg: "identity binding mode requires all three environment variables",
+			wantErr: false,
 		},
 		{
-			name: "two of three variables present - should error",
+			name: "two of three variables present - should error on missing CA file",
 			envVars: map[string]string{
 				azureKubernetesTokenEndpoint: "https://kubernetes.default.svc",
 				azureKubernetesSNIName:       "test.cluster.local",
 			},
 			wantErr:    true,
-			wantErrMsg: "identity binding mode requires all three environment variables",
+			wantErrMsg: "read CA file",
 		},
 	}
 
@@ -485,6 +483,21 @@ func TestWorkloadIdentityCredential_IdentityBinding_InvalidURL(t *testing.T) {
 	require.Contains(t, err.Error(), "failed to parse token endpoint URL")
 }
 
+func TestWorkloadIdentityCredential_IdentityBinding_NonHTTPS(t *testing.T) {
+	_, caFile := createTestCA(t)
+
+	t.Setenv(azureKubernetesTokenEndpoint, "http://kubernetes.default.svc")
+	t.Setenv(azureKubernetesSNIName, "test.cluster.local")
+	t.Setenv(azureKubernetesCAFile, caFile)
+	t.Setenv(azureClientID, fakeClientID)
+	t.Setenv(azureTenantID, fakeTenantID)
+	t.Setenv(azureFederatedTokenFile, filepath.Join(t.TempDir(), "token"))
+
+	_, err := NewWorkloadIdentityCredential(nil)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "token endpoint must use https scheme")
+}
+
 func TestWorkloadIdentityCredential_IdentityBinding_InvalidCAFile(t *testing.T) {
 	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc")
 	t.Setenv(azureKubernetesSNIName, "test.cluster.local")
@@ -520,7 +533,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_TransportRedirection(t *test
 	_, caFile := createTestCA(t)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport directly
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc:443", recorder)
@@ -556,7 +569,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_NonTokenRequestPassthrough(t
 	t.Setenv(azureKubernetesCAFile, caFile)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
@@ -576,7 +589,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_TokenRequestRedirection(t *t
 	_, caFile := createTestCA(t)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
 	ibTransport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc:443", recorder)
@@ -603,7 +616,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAReloading(t *testing.T) {
 	require.NoError(t, err)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
@@ -645,7 +658,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_EmptyCAFile(t *testing.T) {
 	require.NoError(t, err)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport - empty files are handled gracefully during construction
 	// The implementation allows empty files to handle CA file rotation scenarios
@@ -664,7 +677,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T)
 	require.NoError(t, err)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
@@ -704,7 +717,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccess(t *testing.
 	_, caFile := createTestCA(t)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
@@ -733,7 +746,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccessWithCARotati
 	require.NoError(t, err)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
@@ -780,7 +793,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_TLSConfiguration(t *testing.
 	_, caFile := createTestCA(t)
 
 	// Create transport recorder
-	recorder := &identityBindingTransportRecorder{}
+	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
 	transport, err := newIdentityBindingTransport(caFile, "custom-sni.cluster.local", "https://kubernetes.default.svc", recorder)

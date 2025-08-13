@@ -403,7 +403,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_Detection(t *testing.T) {
 				azureKubernetesTokenEndpoint: "https://kubernetes.default.svc",
 			},
 			wantErr:    true,
-			wantErrMsg: "read CA file",
+			wantErrMsg: "at least one of AZURE_KUBERNETES_CA_FILE or AZURE_KUBERNETES_CA_DATA must be specified",
 		},
 		{
 			name: "only SNI name present - should use standard mode",
@@ -426,7 +426,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_Detection(t *testing.T) {
 				azureKubernetesSNIName:       "test.cluster.local",
 			},
 			wantErr:    true,
-			wantErrMsg: "read CA file",
+			wantErrMsg: "at least one of AZURE_KUBERNETES_CA_FILE or AZURE_KUBERNETES_CA_DATA must be specified",
 		},
 	}
 
@@ -499,14 +499,19 @@ func TestWorkloadIdentityCredential_IdentityBinding_NonHTTPS(t *testing.T) {
 }
 
 func TestWorkloadIdentityCredential_IdentityBinding_InvalidCAFile(t *testing.T) {
-	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc")
-	t.Setenv(azureKubernetesSNIName, "test.cluster.local")
-	t.Setenv(azureKubernetesCAFile, "/nonexistent/ca.crt")
-	t.Setenv(azureClientID, fakeClientID)
-	t.Setenv(azureTenantID, fakeTenantID)
-	t.Setenv(azureFederatedTokenFile, filepath.Join(t.TempDir(), "token"))
+	// Create transport recorder
+	recorder := &customTokenEndpointTransportRecorder{}
 
-	_, err := NewWorkloadIdentityCredential(nil)
+	// Test with nonexistent CA file
+	transport, err := newCustomTokenEndpointTransport("/nonexistent/ca.crt", "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	require.NoError(t, err) // Construction should succeed
+	
+	// Create token request
+	req, err := http.NewRequest("POST", "https://login.microsoftonline.com/tenant-id/oauth2/v2.0/token", nil)
+	require.NoError(t, err)
+	
+	// Token request should fail when trying to read CA file
+	_, err = transport.Do(req)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "read CA file")
 }
@@ -517,14 +522,19 @@ func TestWorkloadIdentityCredential_IdentityBinding_InvalidCAContent(t *testing.
 	err := os.WriteFile(caFile, []byte("not a valid certificate"), 0600)
 	require.NoError(t, err)
 
-	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc")
-	t.Setenv(azureKubernetesSNIName, "test.cluster.local")
-	t.Setenv(azureKubernetesCAFile, caFile)
-	t.Setenv(azureClientID, fakeClientID)
-	t.Setenv(azureTenantID, fakeTenantID)
-	t.Setenv(azureFederatedTokenFile, filepath.Join(t.TempDir(), "token"))
+	// Create transport recorder
+	recorder := &customTokenEndpointTransportRecorder{}
 
-	_, err = NewWorkloadIdentityCredential(nil)
+	// Test with invalid CA content
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	require.NoError(t, err) // Construction should succeed
+	
+	// Create token request
+	req, err := http.NewRequest("POST", "https://login.microsoftonline.com/tenant-id/oauth2/v2.0/token", nil)
+	require.NoError(t, err)
+	
+	// Token request should fail when trying to parse CA content
+	_, err = transport.Do(req)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "no valid certificates found")
 }
@@ -536,7 +546,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_TransportRedirection(t *test
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport directly
-	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc:443", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc:443", recorder)
 	require.NoError(t, err)
 
 	// Test token request (should be redirected)
@@ -572,7 +582,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_NonTokenRequestPassthrough(t
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
-	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 
 	// Test non-token request (should pass through to fallback transport)
@@ -592,7 +602,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_TokenRequestRedirection(t *t
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
-	ibTransport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc:443", recorder)
+	ibTransport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc:443", recorder)
 	require.NoError(t, err)
 
 	// Test token request (should be redirected)
@@ -619,7 +629,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAReloading(t *testing.T) {
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
-	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 
 	// Get initial transport
@@ -650,7 +660,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_EmptyCAFile(t *testing.T) {
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport - construction succeeds
-	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 	require.NotNil(t, transport)
 
@@ -673,7 +683,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T)
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
-	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 
 	// Simulate file rotation - write empty file first (common during rotation)
@@ -702,7 +712,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccess(t *testing.
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
-	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 
 	// Test concurrent access to transport
@@ -731,7 +741,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccessWithCARotati
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
-	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 
 	// Test concurrent access while rotating CA
@@ -774,7 +784,7 @@ func TestWorkloadIdentityCredential_IdentityBinding_TLSConfiguration(t *testing.
 	recorder := &customTokenEndpointTransportRecorder{}
 
 	// Create identity binding transport
-	transport, err := newIdentityBindingTransport(caFile, "custom-sni.cluster.local", "https://kubernetes.default.svc", recorder)
+	transport, err := newCustomTokenEndpointTransport(caFile, "", "custom-sni.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 
 	// Get the configured transport
@@ -813,4 +823,110 @@ func TestWorkloadIdentityCredential_IdentityBinding_BackwardCompatibility(t *tes
 
 	// Should be able to get token using standard flow
 	testGetTokenSuccess(t, cred)
+}
+
+func TestWorkloadIdentityCredential_IdentityBinding_CADataSupport(t *testing.T) {
+	// Test CA data from environment variable instead of file
+	caCert, _ := createTestCA(t)
+	
+	// Create transport recorder
+	recorder := &customTokenEndpointTransportRecorder{}
+
+	// Test with CA data instead of CA file
+	transport, err := newCustomTokenEndpointTransport("", string(caCert), "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	require.NoError(t, err)
+	
+	// Create token request
+	req, err := http.NewRequest("POST", "https://login.microsoftonline.com/tenant-id/oauth2/v2.0/token", nil)
+	require.NoError(t, err)
+	
+	// Should succeed with valid CA data (this will fail on network since we're using a fake CA)
+	// but the important part is that it doesn't fail on parsing the CA data
+	_, err = transport.Do(req)
+	// We expect a network error since we're using invalid CA with real network call
+	if err != nil {
+		// Just verify it's not a CA parsing error
+		require.NotContains(t, err.Error(), "parse CA data")
+		require.NotContains(t, err.Error(), "missing CA")
+	}
+}
+
+func TestWorkloadIdentityCredential_IdentityBinding_CADataEmpty(t *testing.T) {
+	// Create transport recorder
+	recorder := &customTokenEndpointTransportRecorder{}
+
+	// Test with empty CA data
+	transport, err := newCustomTokenEndpointTransport("", "", "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	require.NoError(t, err) // Construction should succeed
+	
+	// Create token request
+	req, err := http.NewRequest("POST", "https://login.microsoftonline.com/tenant-id/oauth2/v2.0/token", nil)
+	require.NoError(t, err)
+	
+	// Token request should fail due to missing CA
+	_, err = transport.Do(req)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "missing CA: neither CA file nor CA data provided")
+}
+
+func TestWorkloadIdentityCredential_IdentityBinding_CADataInvalid(t *testing.T) {
+	// Create transport recorder
+	recorder := &customTokenEndpointTransportRecorder{}
+
+	// Test with invalid CA data
+	transport, err := newCustomTokenEndpointTransport("", "invalid ca data", "test.cluster.local", "https://kubernetes.default.svc", recorder)
+	require.NoError(t, err) // Construction should succeed
+	
+	// Create token request
+	req, err := http.NewRequest("POST", "https://login.microsoftonline.com/tenant-id/oauth2/v2.0/token", nil)
+	require.NoError(t, err)
+	
+	// Token request should fail due to invalid CA data
+	_, err = transport.Do(req)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "parse CA data: no valid certificates found")
+}
+
+func TestWorkloadIdentityCredential_IdentityBinding_MutuallyExclusiveCA(t *testing.T) {
+	// Test that CA file and CA data cannot both be specified
+	tempTokenFile := filepath.Join(t.TempDir(), "token")
+	err := os.WriteFile(tempTokenFile, []byte(tokenValue), 0600)
+	require.NoError(t, err)
+
+	_, caFile := createTestCA(t)
+	caCert, _ := createTestCA(t)
+
+	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc")
+	t.Setenv(azureKubernetesSNIName, "test.cluster.local")
+	t.Setenv(azureKubernetesCAFile, caFile)
+	t.Setenv(azureKubernetesCAData, string(caCert))
+	t.Setenv(azureClientID, fakeClientID)
+	t.Setenv(azureTenantID, fakeTenantID)
+	t.Setenv(azureFederatedTokenFile, tempTokenFile)
+
+	_, err = NewWorkloadIdentityCredential(nil)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified")
+}
+
+func TestWorkloadIdentityCredential_IdentityBinding_CADataWithEnvironment(t *testing.T) {
+	// Test full credential creation with CA data from environment
+	tempTokenFile := filepath.Join(t.TempDir(), "token")
+	err := os.WriteFile(tempTokenFile, []byte(tokenValue), 0600)
+	require.NoError(t, err)
+
+	caCert, _ := createTestCA(t)
+
+	// Test using CA data from environment variable
+	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc")
+	t.Setenv(azureKubernetesSNIName, "test.cluster.local")  
+	t.Setenv(azureKubernetesCAData, string(caCert))
+	t.Setenv(azureClientID, fakeClientID)
+	t.Setenv(azureTenantID, fakeTenantID)
+	t.Setenv(azureFederatedTokenFile, tempTokenFile)
+
+	// Create credential
+	cred, err := NewWorkloadIdentityCredential(nil)
+	require.NoError(t, err)
+	require.NotNil(t, cred)
 }

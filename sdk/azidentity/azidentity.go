@@ -34,6 +34,7 @@ const (
 	azureClientID                   = "AZURE_CLIENT_ID"
 	azureClientSecret               = "AZURE_CLIENT_SECRET"
 	azureFederatedTokenFile         = "AZURE_FEDERATED_TOKEN_FILE"
+	azureKubernetesCAData           = "AZURE_KUBERNETES_CA_DATA"
 	azureKubernetesCAFile           = "AZURE_KUBERNETES_CA_FILE"
 	azureKubernetesSNIName          = "AZURE_KUBERNETES_SNI_NAME"
 	azureKubernetesTokenEndpoint    = "AZURE_KUBERNETES_TOKEN_ENDPOINT"

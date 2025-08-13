@@ -164,12 +164,21 @@ func (w *WorkloadIdentityCredential) configureCustomTokenEndpoint(caco *ClientAs
 		return nil
 	}
 
-	// capture values of kubernetesSNIName and kubernetesCAFile
+	// capture values of kubernetesSNIName, kubernetesCAFile, and kubernetesCAData
 	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
 	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
+	kubernetesCAData := os.Getenv(azureKubernetesCAData)
 
-	transporter, err := newIdentityBindingTransport(
-		kubernetesCAFile, kubernetesSNIName, kubernetesTokenEndpointStr,
+	// Only one of CAFile and CAData can be specified, and at least one must be set
+	if kubernetesCAFile != "" && kubernetesCAData != "" {
+		return fmt.Errorf("only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified")
+	}
+	if kubernetesCAFile == "" && kubernetesCAData == "" {
+		return fmt.Errorf("at least one of AZURE_KUBERNETES_CA_FILE or AZURE_KUBERNETES_CA_DATA must be specified")
+	}
+
+	transporter, err := newCustomTokenEndpointTransport(
+		kubernetesCAFile, kubernetesCAData, kubernetesSNIName, kubernetesTokenEndpointStr,
 		caco.Transport,
 	)
 	if err != nil {
@@ -187,14 +196,15 @@ const (
 // to the Kubernetes token endpoint when in custom token endpoint mode
 type customTokenEndpointTransport struct {
 	caFile              string
+	caData              string
 	sniName             string
 	tokenEndpoint       *url.URL
 	fallbackTransporter policy.Transporter
 	baseTransport       *http.Transport
 }
 
-func newIdentityBindingTransport(
-	caFile, sniName, tokenEndpointStr string,
+func newCustomTokenEndpointTransport(
+	caFile, caData, sniName, tokenEndpointStr string,
 	fallbackTransporter policy.Transporter,
 ) (*customTokenEndpointTransport, error) {
 	tokenEndpoint, err := url.Parse(tokenEndpointStr)
@@ -205,11 +215,6 @@ func newIdentityBindingTransport(
 	// Require the tokenEndpoint to use https scheme
 	if tokenEndpoint.Scheme != "https" {
 		return nil, fmt.Errorf("token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
-	}
-
-	// Use default Kubernetes CA file location if none specified
-	if caFile == "" {
-		caFile = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 	}
 
 	if fallbackTransporter == nil {
@@ -244,28 +249,11 @@ func newIdentityBindingTransport(
 
 	tr := &customTokenEndpointTransport{
 		caFile:              caFile,
+		caData:              caData,
 		sniName:             sniName,
 		tokenEndpoint:       tokenEndpoint,
 		fallbackTransporter: fallbackTransporter,
 		baseTransport:       initialTransport,
-	}
-
-	// Validate CA file exists and can be parsed
-	if _, err := os.Stat(caFile); err != nil {
-		return nil, fmt.Errorf("read CA file %q: %w", caFile, err)
-	}
-	
-	// Test parsing the CA file
-	caData, err := os.ReadFile(caFile)
-	if err != nil {
-		return nil, fmt.Errorf("read CA file %q: %w", caFile, err)
-	}
-	
-	if len(caData) > 0 {
-		caPool := x509.NewCertPool()
-		if !caPool.AppendCertsFromPEM(caData) {
-			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", caFile)
-		}
 	}
 
 	return tr, nil
@@ -296,20 +284,41 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
 	transport := i.baseTransport.Clone()
 	
-	// Load and configure custom CA
-	caData, err := os.ReadFile(i.caFile)
-	if err != nil {
-		return nil, fmt.Errorf("read CA file %q: %w", i.caFile, err)
-	}
+	// Update the CA loading logic:
+	// - if ca file is set, read from ca file
+	// - if ca data is set, parse from the ca data content
+	// - otherwise error out for missing ca
+	var caDataBytes []byte
+	var err error
 	
-	// Error out if CA file is empty
-	if len(caData) == 0 {
-		return nil, fmt.Errorf("CA file %q is empty", i.caFile)
+	if i.caFile != "" {
+		caDataBytes, err = os.ReadFile(i.caFile)
+		if err != nil {
+			return nil, fmt.Errorf("read CA file %q: %w", i.caFile, err)
+		}
+		
+		// Error out if CA file is empty
+		if len(caDataBytes) == 0 {
+			return nil, fmt.Errorf("CA file %q is empty", i.caFile)
+		}
+	} else if i.caData != "" {
+		caDataBytes = []byte(i.caData)
+		
+		// Error out if CA data is empty
+		if len(caDataBytes) == 0 {
+			return nil, fmt.Errorf("CA data is empty")
+		}
+	} else {
+		return nil, fmt.Errorf("missing CA: neither CA file nor CA data provided")
 	}
 	
 	caPool := x509.NewCertPool()
-	if !caPool.AppendCertsFromPEM(caData) {
-		return nil, fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
+	if !caPool.AppendCertsFromPEM(caDataBytes) {
+		if i.caFile != "" {
+			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
+		} else {
+			return nil, fmt.Errorf("parse CA data: no valid certificates found")
+		}
 	}
 	
 	if transport.TLSClientConfig == nil {

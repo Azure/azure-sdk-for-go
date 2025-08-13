@@ -289,20 +289,19 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 		if err != nil {
 			return nil, fmt.Errorf("read CA file %q: %w", i.caFile, err)
 		}
-		
-		// Error out if CA file is empty
-		if len(caDataBytes) == 0 {
-			return nil, fmt.Errorf("CA file %q is empty", i.caFile)
-		}
 	} else if i.caData != "" {
 		caDataBytes = []byte(i.caData)
-		
-		// Error out if CA data is empty
-		if len(caDataBytes) == 0 {
-			return nil, fmt.Errorf("CA data is empty")
-		}
 	} else {
 		return nil, fmt.Errorf("missing CA: neither CA file nor CA data provided")
+	}
+	
+	// Error out if CA data is empty
+	if len(caDataBytes) == 0 {
+		if i.caFile != "" {
+			return nil, fmt.Errorf("CA file %q is empty", i.caFile)
+		} else {
+			return nil, fmt.Errorf("CA data is empty")
+		}
 	}
 	
 	caPool := x509.NewCertPool()

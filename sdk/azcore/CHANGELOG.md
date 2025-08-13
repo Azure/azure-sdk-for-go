@@ -1,8 +1,10 @@
 # Release History
 
-## 1.18.3-beta.1 (Unreleased)
+## 1.19.0 (Unreleased)
 
 ### Features Added
+
+* Added `runtime.APIVersionLocationPath` to be set by clients that set the API version in the path.
 
 ### Breaking Changes
 

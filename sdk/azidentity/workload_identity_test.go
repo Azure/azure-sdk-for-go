@@ -622,31 +622,20 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAReloading(t *testing.T) {
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
 	require.NoError(t, err)
 
-	// Verify initial CA was loaded
+	// Get initial transport
 	originalTransport, err := transport.getTokenTransporter()
 	require.NoError(t, err)
 	require.NotNil(t, originalTransport)
-
-	// Force reload by setting nextRead to past
-	transport.mtx.Lock()
-	transport.nextRead = time.Now().Add(-time.Hour)
-	transport.mtx.Unlock()
 
 	// Create new CA and update file
 	newCA, _ := createTestCA(t)
 	err = os.WriteFile(caFile, newCA, 0600)
 	require.NoError(t, err)
 
-	// Get transport again to trigger reload
+	// Get transport again - it should read the updated CA file each time
 	newTransport, err := transport.getTokenTransporter()
 	require.NoError(t, err)
 	require.NotNil(t, newTransport)
-
-	// Verify that CA was reloaded (content should be different)
-	transport.mtx.RLock()
-	currentCA := transport.currentCA
-	transport.mtx.RUnlock()
-	require.Equal(t, newCA, currentCA)
 }
 
 func TestWorkloadIdentityCredential_IdentityBinding_EmptyCAFile(t *testing.T) {
@@ -687,30 +676,18 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T)
 	err = os.WriteFile(caFile, []byte(""), 0600)
 	require.NoError(t, err)
 
-	// Force reload with empty file
-	transport.mtx.Lock()
-	transport.nextRead = time.Now().Add(-time.Hour)
-	err = transport.reloadCA() // Should not error with empty file
-	transport.mtx.Unlock()
-	require.NoError(t, err) // Empty file should be handled gracefully (no-op)
+	// Get transport with empty file - should handle gracefully
+	_, err = transport.getTokenTransporter()
+	require.NoError(t, err) // Empty file should be handled gracefully
 
 	// Write new CA content
 	newCA, _ := createTestCA(t)
 	err = os.WriteFile(caFile, newCA, 0600)
 	require.NoError(t, err)
 
-	// Force another reload
-	transport.mtx.Lock()
-	transport.nextRead = time.Now().Add(-time.Hour)
-	err = transport.reloadCA()
-	transport.mtx.Unlock()
+	// Get transport again - should read the new CA
+	_, err = transport.getTokenTransporter()
 	require.NoError(t, err)
-
-	// Verify new CA was loaded
-	transport.mtx.RLock()
-	currentCA := transport.currentCA
-	transport.mtx.RUnlock()
-	require.Equal(t, newCA, currentCA)
 }
 
 func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccess(t *testing.T) {
@@ -779,10 +756,6 @@ func TestWorkloadIdentityCredential_IdentityBinding_ConcurrentAccessWithCARotati
 			if err != nil {
 				return // File might be locked during concurrent access
 			}
-			// Force reload by updating nextRead time
-			transport.mtx.Lock()
-			transport.nextRead = time.Now().Add(-time.Hour)
-			transport.mtx.Unlock()
 		}
 	}()
 

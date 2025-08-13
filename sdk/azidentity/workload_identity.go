@@ -7,7 +7,6 @@
 package azidentity
 
 import (
-	"bytes"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -182,7 +181,6 @@ func (w *WorkloadIdentityCredential) configureCustomTokenEndpoint(caco *ClientAs
 
 const (
 	tokenEndpointSuffix = "/oauth2/v2.0/token"
-	caReloadInterval    = 10 * time.Minute
 )
 
 // customTokenEndpointTransport is a custom HTTP transport that redirects token requests
@@ -192,12 +190,7 @@ type customTokenEndpointTransport struct {
 	sniName             string
 	tokenEndpoint       *url.URL
 	fallbackTransporter policy.Transporter
-
-	mtx *sync.RWMutex
-
-	nextRead  time.Time
-	currentCA []byte
-	transport *http.Transport
+	baseTransport       *http.Transport
 }
 
 func newIdentityBindingTransport(
@@ -212,6 +205,11 @@ func newIdentityBindingTransport(
 	// Require the tokenEndpoint to use https scheme
 	if tokenEndpoint.Scheme != "https" {
 		return nil, fmt.Errorf("token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
+	}
+
+	// Use default Kubernetes CA file location if none specified
+	if caFile == "" {
+		caFile = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 	}
 
 	if fallbackTransporter == nil {
@@ -249,14 +247,25 @@ func newIdentityBindingTransport(
 		sniName:             sniName,
 		tokenEndpoint:       tokenEndpoint,
 		fallbackTransporter: fallbackTransporter,
-		mtx:                 &sync.RWMutex{},
-		transport:           initialTransport,
+		baseTransport:       initialTransport,
 	}
 
-	// perform an initial load to surface any issues with the CA file and transport settings.
-	// Lock is not held here as this is called in the constructor
-	if err := tr.reloadCA(); err != nil {
-		return nil, err
+	// Validate CA file exists and can be parsed
+	if _, err := os.Stat(caFile); err != nil {
+		return nil, fmt.Errorf("read CA file %q: %w", caFile, err)
+	}
+	
+	// Test parsing the CA file
+	caData, err := os.ReadFile(caFile)
+	if err != nil {
+		return nil, fmt.Errorf("read CA file %q: %w", caFile, err)
+	}
+	
+	if len(caData) > 0 {
+		caPool := x509.NewCertPool()
+		if !caPool.AppendCertsFromPEM(caData) {
+			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", caFile)
+		}
 	}
 
 	return tr, nil
@@ -276,85 +285,43 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 	newReq := req.Clone(req.Context())
 	newReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
 	newReq.URL.Host = i.tokenEndpoint.Host
-	newReq.URL.Path = i.tokenEndpoint.Path // copy the path from tokenEndpoint
+	newReq.URL.Path = i.tokenEndpoint.Path
 	newReq.Host = i.tokenEndpoint.Host
 
 	return tr.RoundTrip(newReq)
 }
 
+// getTokenTransporter rebuilds the HTTP transport every time it's called.
+// This approach is acceptable because token requests are infrequent due to token caching at higher levels.
 func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
-	i.mtx.RLock()
-	if i.nextRead.Before(time.Now()) {
-		i.mtx.RUnlock()
-		i.mtx.Lock()
-		defer i.mtx.Unlock()
-		// double check on the read time
-		if now := time.Now(); i.nextRead.Before(now) {
-			if err := i.reloadCA(); err != nil {
-				// we return error if any attempt of reloading CA fails
-				// This should surface in the token calls and we expect the caller to
-				// have proper error handling / rate limit so we don't fall into deadloop here
-				// due to scenario like broken CA file.
-				return nil, err
-			}
-		}
-	} else {
-		defer i.mtx.RUnlock()
+	transport := i.baseTransport.Clone()
+	
+	// Load and configure custom CA
+	caData, err := os.ReadFile(i.caFile)
+	if err != nil {
+		return nil, fmt.Errorf("read CA file %q: %w", i.caFile, err)
 	}
-	return i.transport, nil
-}
-
-func (i *customTokenEndpointTransport) createTransportWithCAPool(
-	fromTransport *http.Transport,
-	caPool *x509.CertPool,
-) *http.Transport {
-	transport := fromTransport.Clone()
+	
+	// Handle empty files during rotation
+	if len(caData) == 0 {
+		// CA file might be empty during rotation, use base transport without custom CA
+		return transport, nil
+	}
+	
+	caPool := x509.NewCertPool()
+	if !caPool.AppendCertsFromPEM(caData) {
+		return nil, fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
+	}
+	
 	if transport.TLSClientConfig == nil {
 		transport.TLSClientConfig = &tls.Config{}
 	}
-	transport.TLSClientConfig.ServerName = i.sniName
 	transport.TLSClientConfig.RootCAs = caPool
-	return transport
-}
-
-// reloadCA attempts to read the latest CA from the CA file and updates the transport if the content has changed.
-// If a new CA is discovered, the existing transport will be replaced with a new one that uses the new CA.
-// It expects the caller to hold the write lock on i.mtx to ensure thread safety.
-func (i *customTokenEndpointTransport) reloadCA() error {
-	newCA, err := os.ReadFile(i.caFile)
-	if err != nil {
-		return fmt.Errorf("read CA file %q: %w", i.caFile, err)
+	
+	// Configure SNI if specified
+	if i.sniName != "" {
+		transport.TLSClientConfig.ServerName = i.sniName
 	}
-
-	if len(newCA) == 0 {
-		// the CA file might be in the middle of rotation without the content written.
-		// We return nil and rely on next check.
-		return nil
-	}
-
-	if bytes.Equal(i.currentCA, newCA) {
-		// no change in CA content, no need to replace
-		i.nextRead = time.Now().Add(caReloadInterval)
-		return nil
-	}
-
-	newCAPool := x509.NewCertPool()
-	if !newCAPool.AppendCertsFromPEM(newCA) {
-		return fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
-	}
-
-	newTransport := i.createTransportWithCAPool(i.transport, newCAPool)
-	oldTransport := i.transport
-
-	i.transport = newTransport
-	i.currentCA = newCA
-	i.nextRead = time.Now().Add(caReloadInterval)
-
-	if oldTransport != nil {
-		// drop any idle connections from previous transport so new requests can be
-		// moved to the new transport
-		oldTransport.CloseIdleConnections()
-	}
-
-	return nil
+	
+	return transport, nil
 }

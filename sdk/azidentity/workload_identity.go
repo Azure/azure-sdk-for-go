@@ -279,15 +279,8 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 	return tr.RoundTrip(newReq)
 }
 
-// getTokenTransporter rebuilds the HTTP transport every time it's called.
-// This approach is acceptable because token requests are infrequent due to token caching at higher levels.
-func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
-	transport := i.baseTransport.Clone()
-	
-	// Update the CA loading logic:
-	// - if ca file is set, read from ca file
-	// - if ca data is set, parse from the ca data content
-	// - otherwise error out for missing ca
+// loadCAPool loads the CA certificate pool from either file or data
+func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 	var caDataBytes []byte
 	var err error
 	
@@ -319,6 +312,19 @@ func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, e
 		} else {
 			return nil, fmt.Errorf("parse CA data: no valid certificates found")
 		}
+	}
+	
+	return caPool, nil
+}
+
+// getTokenTransporter rebuilds the HTTP transport every time it's called.
+// This approach is acceptable because token requests are infrequent due to token caching at higher levels.
+func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
+	transport := i.baseTransport.Clone()
+	
+	caPool, err := i.loadCAPool()
+	if err != nil {
+		return nil, err
 	}
 	
 	if transport.TLSClientConfig == nil {

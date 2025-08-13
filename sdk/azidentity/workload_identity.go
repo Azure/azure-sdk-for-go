@@ -302,10 +302,9 @@ func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, e
 		return nil, fmt.Errorf("read CA file %q: %w", i.caFile, err)
 	}
 	
-	// Handle empty files during rotation
+	// Error out if CA file is empty
 	if len(caData) == 0 {
-		// CA file might be empty during rotation, use base transport without custom CA
-		return transport, nil
+		return nil, fmt.Errorf("CA file %q is empty", i.caFile)
 	}
 	
 	caPool := x509.NewCertPool()

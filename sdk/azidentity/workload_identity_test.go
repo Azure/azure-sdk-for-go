@@ -649,11 +649,15 @@ func TestWorkloadIdentityCredential_IdentityBinding_EmptyCAFile(t *testing.T) {
 	// Create transport recorder
 	recorder := &customTokenEndpointTransportRecorder{}
 
-	// Create identity binding transport - empty files are handled gracefully during construction
-	// The implementation allows empty files to handle CA file rotation scenarios
+	// Create identity binding transport - construction succeeds
 	transport, err := newIdentityBindingTransport(caFile, "test.cluster.local", "https://kubernetes.default.svc", recorder)
-	require.NoError(t, err) // Empty file should not error during construction
+	require.NoError(t, err)
 	require.NotNil(t, transport)
+
+	// But getTokenTransporter should error out when CA file is empty
+	_, err = transport.getTokenTransporter()
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "is empty")
 }
 
 func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T) {
@@ -676,9 +680,10 @@ func TestWorkloadIdentityCredential_IdentityBinding_CAFileRotation(t *testing.T)
 	err = os.WriteFile(caFile, []byte(""), 0600)
 	require.NoError(t, err)
 
-	// Get transport with empty file - should handle gracefully
+	// Get transport with empty file - should error out
 	_, err = transport.getTokenTransporter()
-	require.NoError(t, err) // Empty file should be handled gracefully
+	require.Error(t, err) // Empty file should error out
+	require.Contains(t, err.Error(), "is empty")
 
 	// Write new CA content
 	newCA, _ := createTestCA(t)

@@ -1,9 +1,9 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
 # https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
 
-#############
-# SDK (track2)
-#############
+####################
+# Client Libraries
+####################
 
 # Catch all for non-code project files and unowned files | folders
 /**                           @rickwinter @jhendrixMSFT
@@ -633,6 +633,10 @@
 
 # ServiceLabel: %Consumption - RIandShowBack
 #/<NotInRepo>/          @ccmshowbackdevs
+
+####################
+# Management Libraries
+####################
 
 ###########
 # Eng Sys

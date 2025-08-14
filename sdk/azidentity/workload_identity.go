@@ -7,11 +7,13 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -22,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -104,7 +107,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 
 	// configure custom token endpoint if environment variables are present.
 	// In custom token endpoint mode, a dedicated transport will be used for proxying token requests to a dedicated endpoint.
-	if err := w.configureCustomTokenEndpoint(caco); err != nil {
+	if err := configureCustomTokenEndpoint(&caco.ClientOptions); err != nil {
 		return nil, err
 	}
 
@@ -155,13 +158,21 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 }
 
 // configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present
-func (w *WorkloadIdentityCredential) configureCustomTokenEndpoint(caco *ClientAssertionCredentialOptions) error {
+func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 	// check for custom token endpoint environment variables
 	kubernetesTokenEndpointStr := os.Getenv(azureKubernetesTokenEndpoint)
-	
 	if kubernetesTokenEndpointStr == "" {
 		// custom token endpoint is not set, skip configuration
 		return nil
+	}
+
+	tokenEndpoint, err := url.Parse(kubernetesTokenEndpointStr)
+	if err != nil {
+		return fmt.Errorf("failed to parse token endpoint URL %q: %w", kubernetesTokenEndpointStr, err)
+	}
+	// Require the tokenEndpoint to use https scheme
+	if tokenEndpoint.Scheme != "https" {
+		return fmt.Errorf("token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
 	}
 
 	// capture values of kubernetesSNIName, kubernetesCAFile, and kubernetesCAData
@@ -169,7 +180,7 @@ func (w *WorkloadIdentityCredential) configureCustomTokenEndpoint(caco *ClientAs
 	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
 	kubernetesCAData := os.Getenv(azureKubernetesCAData)
 
-	// Only one of CAFile and CAData can be specified, and at least one must be set
+	// only one of CAFile and CAData can be specified, and at least one must be set
 	if kubernetesCAFile != "" && kubernetesCAData != "" {
 		return fmt.Errorf("only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified")
 	}
@@ -177,62 +188,18 @@ func (w *WorkloadIdentityCredential) configureCustomTokenEndpoint(caco *ClientAs
 		return fmt.Errorf("at least one of AZURE_KUBERNETES_CA_FILE or AZURE_KUBERNETES_CA_DATA must be specified")
 	}
 
-	transporter, err := newCustomTokenEndpointTransport(
-		kubernetesCAFile, kubernetesCAData, kubernetesSNIName, kubernetesTokenEndpointStr,
-		caco.Transport,
-	)
+	// creating a new azcore client to maintain the same behavior as confidential client's usage.
+	// This fallback client is expected to be used for requesting the tenant discovery settings (non skippable).
+	fallbackClient, err := azcore.NewClient(module, version, runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: traceNamespace,
+		},
+	}, clientOptions)
 	if err != nil {
 		return err
 	}
-	caco.Transport = transporter
-	return nil
-}
 
-const (
-	tokenEndpointSuffix = "/oauth2/v2.0/token"
-)
-
-// customTokenEndpointTransport is a custom HTTP transport that redirects token requests
-// to the Kubernetes token endpoint when in custom token endpoint mode
-type customTokenEndpointTransport struct {
-	caFile              string
-	caData              string
-	sniName             string
-	tokenEndpoint       *url.URL
-	fallbackTransporter policy.Transporter
-	baseTransport       *http.Transport
-}
-
-func newCustomTokenEndpointTransport(
-	caFile, caData, sniName, tokenEndpointStr string,
-	fallbackTransporter policy.Transporter,
-) (*customTokenEndpointTransport, error) {
-	tokenEndpoint, err := url.Parse(tokenEndpointStr)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse token endpoint URL %q: %w", tokenEndpointStr, err)
-	}
-
-	// Require the tokenEndpoint to use https scheme
-	if tokenEndpoint.Scheme != "https" {
-		return nil, fmt.Errorf("token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
-	}
-
-	if fallbackTransporter == nil {
-		// FIXME: can we callback to the defaultHTTPClient from azcore/runtime?
-		fallbackTransporter = http.DefaultClient
-	}
-
-	initialTransport := func() *http.Transport {
-		// try reusing the user provided transport if available
-		if httpClient, ok := fallbackTransporter.(*http.Client); ok {
-			if transport, ok := httpClient.Transport.(*http.Transport); ok {
-				return transport.Clone()
-			}
-		}
-
-		// if the user did not provide a policy.Transporter or it's not a *http.Client,
-		// we fall back to the default one.
-		// FIXME: can we callback to the defaultHTTPClient from azcore/runtime?
+	baseTransport := func() *http.Transport {
 		if transport, ok := http.DefaultTransport.(*http.Transport); ok {
 			return transport.Clone()
 		}
@@ -247,22 +214,34 @@ func newCustomTokenEndpointTransport(
 		}
 	}()
 
-	tr := &customTokenEndpointTransport{
-		caFile:              caFile,
-		caData:              caData,
-		sniName:             sniName,
-		tokenEndpoint:       tokenEndpoint,
-		fallbackTransporter: fallbackTransporter,
-		baseTransport:       initialTransport,
+	clientOptions.Transport = &customTokenEndpointTransport{
+		caFile:         kubernetesCAFile,
+		caData:         kubernetesCAData,
+		sniName:        kubernetesSNIName,
+		tokenEndpoint:  tokenEndpoint,
+		fallbackClient: fallbackClient,
+		baseTransport:  baseTransport,
 	}
+	return nil
+}
 
-	return tr, nil
+// customTokenEndpointTransport is a custom HTTP transport that redirects token requests
+// to the custom token endpoint when in custom token endpoint mode.
+//
+// All non-token requests are forwarded to the fallback client.
+type customTokenEndpointTransport struct {
+	caFile         string
+	caData         string
+	sniName        string
+	tokenEndpoint  *url.URL
+	fallbackClient *azcore.Client
+	baseTransport  *http.Transport
 }
 
 func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, error) {
-	if !strings.HasSuffix(req.URL.Path, tokenEndpointSuffix) {
+	if !i.isTokenRequest(req) {
 		// not a token request, fallback to the original transporter
-		return i.fallbackTransporter.Do(req)
+		return doForClient(i.fallbackClient, req)
 	}
 
 	tr, err := i.getTokenTransporter()
@@ -283,7 +262,7 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 	var caDataBytes []byte
 	var err error
-	
+
 	if i.caFile != "" {
 		caDataBytes, err = os.ReadFile(i.caFile)
 		if err != nil {
@@ -294,7 +273,7 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 	} else {
 		return nil, fmt.Errorf("missing CA: neither CA file nor CA data provided")
 	}
-	
+
 	// Error out if CA data is empty
 	if len(caDataBytes) == 0 {
 		if i.caFile != "" {
@@ -303,7 +282,7 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 			return nil, fmt.Errorf("CA data is empty")
 		}
 	}
-	
+
 	caPool := x509.NewCertPool()
 	if !caPool.AppendCertsFromPEM(caDataBytes) {
 		if i.caFile != "" {
@@ -312,7 +291,7 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 			return nil, fmt.Errorf("parse CA data: no valid certificates found")
 		}
 	}
-	
+
 	return caPool, nil
 }
 
@@ -320,21 +299,54 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 // This approach is acceptable because token requests are infrequent due to token caching at higher levels.
 func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
 	transport := i.baseTransport.Clone()
-	
+
 	caPool, err := i.loadCAPool()
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if transport.TLSClientConfig == nil {
 		transport.TLSClientConfig = &tls.Config{}
 	}
 	transport.TLSClientConfig.RootCAs = caPool
-	
+
 	// Configure SNI if specified
 	if i.sniName != "" {
 		transport.TLSClientConfig.ServerName = i.sniName
 	}
-	
+
 	return transport, nil
+}
+
+const (
+	tokenRequestClientAssertionField     = "client_assertion"
+	tokenRequestClientAssertionTypeField = "client_assertion_type"
+)
+
+func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) bool {
+	if !strings.EqualFold(req.Method, http.MethodPost) {
+		return false
+	}
+
+	if req.Body == nil || req.Body == http.NoBody {
+		return false
+	}
+
+	b, err := io.ReadAll(req.Body)
+	if err != nil {
+		return false
+	}
+	req.Body.Close()                                   // close the original body to avoid resource leaks
+	req.Body = streaming.NopCloser(bytes.NewReader(b)) // reset the body for future reads
+
+	qs, err := url.ParseQuery(string(b))
+	if err != nil {
+		return false // unable to process
+	}
+	if qs.Has(tokenRequestClientAssertionField) && qs.Has(tokenRequestClientAssertionTypeField) {
+		// this is a token request with client assertion set
+		return true
+	}
+
+	return false
 }

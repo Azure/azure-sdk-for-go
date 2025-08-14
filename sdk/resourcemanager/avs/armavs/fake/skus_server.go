@@ -5,39 +5,35 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
 	"net/http"
 	"regexp"
 )
 
 // SKUsServer is a fake server for instances of the armavs.SKUsClient type.
 type SKUsServer struct {
-	// NewListPager is the fake for method SKUsClient.NewListPager
+	// List is the fake for method SKUsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armavs.SKUsClientListOptions) (resp azfake.PagerResponder[armavs.SKUsClientListResponse])
+	List func(ctx context.Context, options *armavs.SKUsClientListOptions) (resp azfake.Responder[armavs.SKUsClientListResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSKUsServerTransport creates a new instance of SKUsServerTransport with the provided implementation.
 // The returned SKUsServerTransport instance is connected to an instance of armavs.SKUsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSKUsServerTransport(srv *SKUsServer) *SKUsServerTransport {
-	return &SKUsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armavs.SKUsClientListResponse]](),
-	}
+	return &SKUsServerTransport{srv: srv}
 }
 
 // SKUsServerTransport connects instances of armavs.SKUsClient to instances of SKUsServer.
 // Don't use this type directly, use NewSKUsServerTransport instead.
 type SKUsServerTransport struct {
-	srv          *SKUsServer
-	newListPager *tracker[azfake.PagerResponder[armavs.SKUsClientListResponse]]
+	srv *SKUsServer
 }
 
 // Do implements the policy.Transporter interface for SKUsServerTransport.
@@ -63,8 +59,8 @@ func (s *SKUsServerTransport) dispatchToMethodFake(req *http.Request, method str
 		}
 		if !intercepted {
 			switch method {
-			case "SKUsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
+			case "SKUsClient.List":
+				res.resp, res.err = s.dispatchList(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -84,35 +80,27 @@ func (s *SKUsServerTransport) dispatchToMethodFake(req *http.Request, method str
 	}
 }
 
-func (s *SKUsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (s *SKUsServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if s.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/skus`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armavs.SKUsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/skus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	respr, errRespr := s.srv.List(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PagedResourceSKU, req)
 	if err != nil {
 		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

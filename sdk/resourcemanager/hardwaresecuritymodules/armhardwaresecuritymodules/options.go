@@ -30,7 +30,7 @@ type CloudHsmClusterPrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions contains the optional parameters for the CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager
+// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions contains the optional parameters for the CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster
 // method.
 type CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions struct {
 	// placeholder for future optional parameters
@@ -155,7 +155,7 @@ type DedicatedHsmClientListBySubscriptionOptions struct {
 	Top *int32
 }
 
-// DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DedicatedHsmClient.NewListOutboundNetworkDependenciesEndpointsPager
+// DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints
 // method.
 type DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters

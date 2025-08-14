@@ -40,7 +40,7 @@ func ExampleStoragePoolsClient_BeginCreate() {
 		Identity: &armpurestorageblock.ManagedServiceIdentity{
 			Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
-				"key4211": {},
+				"key4211": &armpurestorageblock.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{
@@ -566,7 +566,7 @@ func ExampleStoragePoolsClient_BeginUpdate() {
 		Identity: &armpurestorageblock.ManagedServiceIdentity{
 			Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
-				"key4211": {},
+				"key4211": &armpurestorageblock.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{

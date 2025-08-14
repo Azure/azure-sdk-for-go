@@ -27,7 +27,7 @@ type CloudHsmClusterPrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse contains the response from method CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager.
+// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse contains the response from method CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster.
 type CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse struct {
 	// A list of private link resources.
 	PrivateLinkResourceListResult
@@ -139,7 +139,7 @@ type DedicatedHsmClientListBySubscriptionResponse struct {
 	DedicatedHsmListResult
 }
 
-// DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method DedicatedHsmClient.NewListOutboundNetworkDependenciesEndpointsPager.
+// DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints.
 type DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse struct {
 	// Collection of OutboundEnvironmentEndpoint
 	OutboundEnvironmentEndpointCollection

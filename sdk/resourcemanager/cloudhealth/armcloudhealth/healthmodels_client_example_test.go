@@ -34,7 +34,7 @@ func ExampleHealthModelsClient_BeginCreate() {
 		Identity: &armcloudhealth.ManagedServiceIdentity{
 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
 			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": {},
+				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": &armcloudhealth.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{
@@ -315,7 +315,7 @@ func ExampleHealthModelsClient_BeginUpdate() {
 		Identity: &armcloudhealth.ManagedServiceIdentity{
 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
 			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": {},
+				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": &armcloudhealth.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{

@@ -21,7 +21,7 @@ type SitesByServiceGroupClientGetResponse struct {
 	Site
 }
 
-// SitesByServiceGroupClientListByServiceGroupResponse contains the response from method SitesByServiceGroupClient.NewListByServiceGroupPager.
+// SitesByServiceGroupClientListByServiceGroupResponse contains the response from method SitesByServiceGroupClient.ListByServiceGroup.
 type SitesByServiceGroupClientListByServiceGroupResponse struct {
 	// The response of a Site list operation.
 	SiteListResult

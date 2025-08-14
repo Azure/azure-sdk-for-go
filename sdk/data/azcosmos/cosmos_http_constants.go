@@ -16,6 +16,8 @@ const (
 	cosmosHeaderSessionToken                       string = "x-ms-session-token"
 	cosmosHeaderConsistencyLevel                   string = "x-ms-consistency-level"
 	cosmosHeaderPartitionKey                       string = "x-ms-documentdb-partitionkey"
+	cosmosHeaderChangeFeed                         string = "A-IM"
+	cosmosHeaderIfModifiedSince                    string = "If-Modified-Since"
 	cosmosHeaderPrefer                             string = "Prefer"
 	cosmosHeaderIsUpsert                           string = "x-ms-documentdb-is-upsert"
 	cosmosHeaderOfferThroughput                    string = "x-ms-offer-throughput"
@@ -89,6 +91,7 @@ const (
 const (
 	cosmosHeaderValuesPreferMinimal string = "return=minimal"
 	cosmosHeaderValuesQuery         string = "application/query+json"
+	cosmosHeaderValuesChangeFeed    string = "Incremental feed"
 )
 
 // Substatus Codes

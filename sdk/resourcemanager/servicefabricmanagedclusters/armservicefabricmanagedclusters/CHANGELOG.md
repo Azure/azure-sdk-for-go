@@ -1,5 +1,13 @@
 # Release History
 
+## 0.5.0 (2025-08-12)
+### Features Added
+
+- New field `EnableOutboundOnlyNodeTypes` in struct `ManagedClusterProperties`
+- New field `IsOutboundOnly` in struct `NodeTypeProperties`
+- New field `NetworkIdentifier` in struct `ServiceEndpoint`
+
+
 ## 0.4.0 (2025-06-24)
 ### Breaking Changes
 

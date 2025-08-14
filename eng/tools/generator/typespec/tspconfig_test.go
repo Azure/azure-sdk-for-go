@@ -138,6 +138,45 @@ func TestTypeSpecConfig_GetModuleRelativePath(t *testing.T) {
 			},
 			expected: "sdk/security/keyvault/azadmin",
 		},
+		{
+			name: "Module with major version suffix removed",
+			config: typespec.TypeSpecConfig{
+				TypeSpecProjectSchema: typespec.TypeSpecProjectSchema{
+					Options: map[string]any{
+						"@azure-tools/typespec-go": map[string]any{
+							"module": "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5",
+						},
+					},
+				},
+			},
+			expected: "sdk/resourcemanager/compute/armcompute",
+		},
+		{
+			name: "Module with v2 major version suffix removed",
+			config: typespec.TypeSpecConfig{
+				TypeSpecProjectSchema: typespec.TypeSpecProjectSchema{
+					Options: map[string]any{
+						"@azure-tools/typespec-go": map[string]any{
+							"module": "github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/v2",
+						},
+					},
+				},
+			},
+			expected: "sdk/messaging/eventgrid/azsystemevents",
+		},
+		{
+			name: "Module with double-digit major version suffix removed",
+			config: typespec.TypeSpecConfig{
+				TypeSpecProjectSchema: typespec.TypeSpecProjectSchema{
+					Options: map[string]any{
+						"@azure-tools/typespec-go": map[string]any{
+							"module": "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/v12",
+						},
+					},
+				},
+			},
+			expected: "sdk/storage/azblob",
+		},
 	}
 
 	for _, tt := range tests {

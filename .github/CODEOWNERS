@@ -54,10 +54,10 @@
 # PRLabel: %Tables
 /sdk/data/aztables/           @jhendrixMSFT @richardpark-msft
 
-# AzureSDKOwners: @gracewilcox
+# AzureSDKOwners: @gracewilcox @Azure/azure-sdk-write-keyvault
 # ServiceLabel: %KeyVault
 # PRLabel: %KeyVault
-/sdk/security/keyvault/       @chlowell @jhendrixMSFT @gracewilcox
+/sdk/security/keyvault/       @chlowell @jhendrixMSFT @gracewilcox @Azure/azure-sdk-write-keyvault
 
 # AzureSDKOwners: @richardpark-msft
 # ServiceLabel: %Service Bus
@@ -88,6 +88,12 @@
 # ServiceLabel: %Monitor
 # PRLabel: %Monitor
 /sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT @Azure/azure-sdk-write-monitor-data-plane
+
+# PRLabel: %Monitor
+/sdk/monitor/query/azlogs/    @Azure/azure-sdk-write-monitor-query-logs
+
+# PRLabel: %Monitor
+/sdk/monitor/query/azmetrics/ @Azure/azure-sdk-write-monitor-query-metrics
 
 # AzureSDKOwners: @lirenhe
 # ServiceLabel: %Mgmt

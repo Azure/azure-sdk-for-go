@@ -1,12 +1,16 @@
 # Release History
 
-## 1.11.0-beta.2 (Unreleased)
+## 1.11.1-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.11.0 (2025-08-05)
 
 ### Other Changes
 - `DefaultAzureCredential` tries its next credential when a dev tool credential such as

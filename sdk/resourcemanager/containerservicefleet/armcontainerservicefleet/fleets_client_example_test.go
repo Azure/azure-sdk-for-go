@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/Fleets_CreateOrUpdate.json
+// Generated from example definition: 2025-04-01-preview/Fleets_CreateOrUpdate.json
 func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperat
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperationGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperat
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_Delete.json
+// Generated from example definition: 2025-04-01-preview/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete_deletesAFleetResourceAsynchronouslyWithALongRunningOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleFleetsClient_BeginDelete_deletesAFleetResourceAsynchronouslyWithALon
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Fleets_Delete_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginDelete_deletesAFleetResourceAsynchronouslyWithALongRunningOperationGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleFleetsClient_BeginDelete_deletesAFleetResourceAsynchronouslyWithALon
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_Get.json
+// Generated from example definition: 2025-04-01-preview/Fleets_Get.json
 func ExampleFleetsClient_Get_getsAFleetResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleFleetsClient_Get_getsAFleetResource() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Fleets_Get_MaximumSet_Gen.json
 func ExampleFleetsClient_Get_getsAFleetResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -368,7 +368,7 @@ func ExampleFleetsClient_Get_getsAFleetResourceGeneratedByMaximumSetRule() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_ListByResourceGroup.json
+// Generated from example definition: 2025-04-01-preview/Fleets_ListByResourceGroup.json
 func ExampleFleetsClient_NewListByResourceGroupPager_listsTheFleetResourcesInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager_listsTheFleetResourcesInARe
 	}
 }
 
-// Generated from example definition: 2025-03-01/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListByResourceGroupPager_listsTheFleetResourcesInAResourceGroupGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -515,7 +515,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager_listsTheFleetResourcesInARe
 	}
 }
 
-// Generated from example definition: 2025-03-01/Fleets_ListBySub.json
+// Generated from example definition: 2025-04-01-preview/Fleets_ListBySub.json
 func ExampleFleetsClient_NewListBySubscriptionPager_listsTheFleetResourcesInASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -584,7 +584,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager_listsTheFleetResourcesInASub
 	}
 }
 
-// Generated from example definition: 2025-03-01/Fleets_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListBySubscriptionPager_listsTheFleetResourcesInASubscriptionGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +662,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager_listsTheFleetResourcesInASub
 	}
 }
 
-// Generated from example definition: 2025-03-01/Fleets_ListCredentialsResult.json
+// Generated from example definition: 2025-04-01-preview/Fleets_ListCredentialsResult.json
 func ExampleFleetsClient_ListCredentials_listsTheUserCredentialsOfAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -692,7 +692,7 @@ func ExampleFleetsClient_ListCredentials_listsTheUserCredentialsOfAFleet() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_ListCredentials_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Fleets_ListCredentials_MaximumSet_Gen.json
 func ExampleFleetsClient_ListCredentials_listsTheUserCredentialsOfAFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -722,7 +722,7 @@ func ExampleFleetsClient_ListCredentials_listsTheUserCredentialsOfAFleetGenerate
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_PatchTags.json
+// Generated from example definition: 2025-04-01-preview/Fleets_PatchTags.json
 func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -792,7 +792,7 @@ func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Fleets_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Fleets_Update_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginUpdateAsync_updateAFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_CreateOrUpdate.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_CreateOrUpdate.json
 func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,7 +25,9 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	}
 	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginCreateOrUpdate(ctx, "rg1", "fleet1", "autoupgradeprofile1", armcontainerservicefleet.AutoUpgradeProfile{
 		Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
-			Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
+			TargetKubernetesVersion: to.Ptr(""),
+			LongTermSupport:         to.Ptr(false),
+			Channel:                 to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
 		},
 	}, nil)
 	if err != nil {
@@ -53,6 +55,8 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	// 		},
 	// 		Properties: &armcontainerservicefleet.AutoUpgradeProfileProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.AutoUpgradeProfileProvisioningStateSucceeded),
+	// 			TargetKubernetesVersion: to.Ptr(""),
+	// 			LongTermSupport: to.Ptr(false),
 	// 			Channel: to.Ptr(armcontainerservicefleet.UpgradeChannelStable),
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -60,7 +64,7 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	// }
 }
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradeProfileGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,13 +83,10 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 				Type: to.Ptr(armcontainerservicefleet.AutoUpgradeNodeImageSelectionTypeLatest),
 			},
 			Disabled: to.Ptr(true),
-			AutoUpgradeProfileStatus: &armcontainerservicefleet.AutoUpgradeProfileStatus{
-				LastTriggerError: &armcontainerservicefleet.ErrorDetail{},
-			},
 		},
 	}, &armcontainerservicefleet.AutoUpgradeProfilesClientBeginCreateOrUpdateOptions{
-		IfMatch:     to.Ptr("teikqmg"),
-		IfNoneMatch: to.Ptr("ghfmmyrekxincsxklbldnvhqd")})
+		IfMatch:     to.Ptr("uktvayathbu"),
+		IfNoneMatch: to.Ptr("vdjolwxnefqamimybcvxxva")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,27 +107,6 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	// 				Type: to.Ptr(armcontainerservicefleet.AutoUpgradeNodeImageSelectionTypeLatest),
 	// 			},
 	// 			Disabled: to.Ptr(true),
-	// 			AutoUpgradeProfileStatus: &armcontainerservicefleet.AutoUpgradeProfileStatus{
-	// 				LastTriggeredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-27T02:49:14.736Z"); return t}()),
-	// 				LastTriggerStatus: to.Ptr(armcontainerservicefleet.AutoUpgradeLastTriggerStatusSucceeded),
-	// 				LastTriggerError: &armcontainerservicefleet.ErrorDetail{
-	// 					Code: to.Ptr("mohtaimtrqkhivtsopwiuveg"),
-	// 					Message: to.Ptr("t"),
-	// 					Target: to.Ptr("axgswjixhofej"),
-	// 					Details: []*armcontainerservicefleet.ErrorDetail{
-	// 					},
-	// 					AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 						{
-	// 							Type: to.Ptr("oorrhg"),
-	// 							Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				LastTriggerUpgradeVersions: []*string{
-	// 					to.Ptr("twqzpwqov"),
-	// 				},
-	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
@@ -144,7 +124,7 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	// }
 }
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_Delete.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Delete.json
 func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +145,7 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileReso
 	}
 }
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Delete_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +157,7 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileReso
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewAutoUpgradeProfilesClient().BeginDelete(ctx, "rgfleets", "fleet1", "autoupgradeprofile1", &armcontainerservicefleet.AutoUpgradeProfilesClientBeginDeleteOptions{
-		IfMatch: to.Ptr("qmdsmmawj")})
+		IfMatch: to.Ptr("tmlfhgsu")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -187,7 +167,7 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileReso
 	}
 }
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_Get.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Get.json
 func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +207,7 @@ func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResource() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Get_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,27 +235,6 @@ func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResourceGenera
 	// 				Type: to.Ptr(armcontainerservicefleet.AutoUpgradeNodeImageSelectionTypeLatest),
 	// 			},
 	// 			Disabled: to.Ptr(true),
-	// 			AutoUpgradeProfileStatus: &armcontainerservicefleet.AutoUpgradeProfileStatus{
-	// 				LastTriggeredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-27T02:49:14.736Z"); return t}()),
-	// 				LastTriggerStatus: to.Ptr(armcontainerservicefleet.AutoUpgradeLastTriggerStatusSucceeded),
-	// 				LastTriggerError: &armcontainerservicefleet.ErrorDetail{
-	// 					Code: to.Ptr("mohtaimtrqkhivtsopwiuveg"),
-	// 					Message: to.Ptr("t"),
-	// 					Target: to.Ptr("axgswjixhofej"),
-	// 					Details: []*armcontainerservicefleet.ErrorDetail{
-	// 					},
-	// 					AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-	// 						{
-	// 							Type: to.Ptr("oorrhg"),
-	// 							Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				LastTriggerUpgradeVersions: []*string{
-	// 					to.Ptr("twqzpwqov"),
-	// 				},
-	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/autoUpgradeProfiles/autoupgradeprofile1"),
@@ -293,7 +252,7 @@ func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResourceGenera
 	// }
 }
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_ListByFleet.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_ListByFleet.json
 func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradeProfileResourcesByFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +302,7 @@ func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradePro
 	}
 }
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfiles_ListByFleet_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_ListByFleet_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradeProfileResourcesByFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,27 +347,6 @@ func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradePro
 		// 						Type: to.Ptr(armcontainerservicefleet.AutoUpgradeNodeImageSelectionTypeLatest),
 		// 					},
 		// 					Disabled: to.Ptr(true),
-		// 					AutoUpgradeProfileStatus: &armcontainerservicefleet.AutoUpgradeProfileStatus{
-		// 						LastTriggeredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-27T02:49:14.736Z"); return t}()),
-		// 						LastTriggerStatus: to.Ptr(armcontainerservicefleet.AutoUpgradeLastTriggerStatusSucceeded),
-		// 						LastTriggerError: &armcontainerservicefleet.ErrorDetail{
-		// 							Code: to.Ptr("mohtaimtrqkhivtsopwiuveg"),
-		// 							Message: to.Ptr("t"),
-		// 							Target: to.Ptr("axgswjixhofej"),
-		// 							Details: []*armcontainerservicefleet.ErrorDetail{
-		// 							},
-		// 							AdditionalInfo: []*armcontainerservicefleet.ErrorAdditionalInfo{
-		// 								{
-		// 									Type: to.Ptr("oorrhg"),
-		// 									Info: &armcontainerservicefleet.ErrorAdditionalInfoInfo{
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						LastTriggerUpgradeVersions: []*string{
-		// 							to.Ptr("twqzpwqov"),
-		// 						},
-		// 					},
 		// 				},
 		// 				ETag: to.Ptr("\"EtagValue\""),
 		// 			},

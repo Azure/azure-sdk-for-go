@@ -52,10 +52,9 @@ const (
 )
 
 const (
-	linkKeyword        = "**Link**: "
-	linkKeywordNew     = "**API spec pull request link**: "
-	tagKeyword         = "**Readme Tag**: "
-	releaseDateKeyword = "**Target release date**: "
+	linkKeyword        = `(\*\*API spec pull request link\*\*: )|(\*\*Link\*\*: )`
+	tagKeyword         = `\*\*Readme Tag\*\*: `
+	releaseDateKeyword = `\*\*Target release date\*\*: `
 )
 
 type issueError struct {
@@ -106,7 +105,7 @@ type ReleaseRequestIssue struct {
 func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	body := issue.GetBody()
 	contents := getRawContent(strings.Split(body, "\n"), []string{
-		linkKeyword, linkKeywordNew, tagKeyword, releaseDateKeyword,
+		linkKeyword, tagKeyword, releaseDateKeyword,
 	})
 
 	// get release date
@@ -115,13 +114,9 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	if err != nil {
 		releaseDate = time.Now()
 	}
-	targetLink := parseLink(contents[linkKeyword])
-	if targetLink == "" {
-		targetLink = parseLink(contents[linkKeywordNew])
-	}
 	return &ReleaseRequestIssue{
 		IssueLink:   issue.GetHTMLURL(),
-		TargetLink:  targetLink,
+		TargetLink:  parseLink(contents[linkKeyword]),
 		Tag:         contents[tagKeyword],
 		ReleaseDate: releaseDate,
 		Labels:      issue.Labels,
@@ -141,7 +136,13 @@ func getRawContent(lines []string, keywords []string) map[string]string {
 	return result
 }
 
-func getContentByPrefix(line, prefix string) string {
+func getContentByPrefix(line, regexExp string) string {
+	regex := regexp.MustCompile(regexExp)
+	r := regex.FindStringSubmatch(line)
+	if len(r) < 1 {
+		return ""
+	}
+	prefix := r[0]
 	if strings.HasPrefix(line, prefix) {
 		return strings.TrimSpace(strings.TrimPrefix(line, prefix))
 	}

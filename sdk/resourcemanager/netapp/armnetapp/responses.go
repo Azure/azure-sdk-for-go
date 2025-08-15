@@ -573,6 +573,11 @@ type VolumesClientRevertResponse struct {
 	// placeholder for future response values
 }
 
+// VolumesClientSplitCloneFromParentResponse contains the response from method VolumesClient.BeginSplitCloneFromParent.
+type VolumesClientSplitCloneFromParentResponse struct {
+	// placeholder for future response values
+}
+
 // VolumesClientUpdateResponse contains the response from method VolumesClient.BeginUpdate.
 type VolumesClientUpdateResponse struct {
 	// Volume resource

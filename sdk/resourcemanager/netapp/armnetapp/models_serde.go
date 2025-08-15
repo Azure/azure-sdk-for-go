@@ -2443,6 +2443,7 @@ func (p *PoolChangeRequest) UnmarshalJSON(data []byte) error {
 func (p PoolPatchProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "coolAccess", p.CoolAccess)
+	populate(objectMap, "customThroughputMibps", p.CustomThroughputMibps)
 	populate(objectMap, "qosType", p.QosType)
 	populate(objectMap, "size", p.Size)
 	return json.Marshal(objectMap)
@@ -2459,6 +2460,9 @@ func (p *PoolPatchProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "coolAccess":
 			err = unpopulate(val, "CoolAccess", &p.CoolAccess)
+			delete(rawMsg, key)
+		case "customThroughputMibps":
+			err = unpopulate(val, "CustomThroughputMibps", &p.CustomThroughputMibps)
 			delete(rawMsg, key)
 		case "qosType":
 			err = unpopulate(val, "QosType", &p.QosType)
@@ -2478,6 +2482,7 @@ func (p *PoolPatchProperties) UnmarshalJSON(data []byte) error {
 func (p PoolProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "coolAccess", p.CoolAccess)
+	populate(objectMap, "customThroughputMibps", p.CustomThroughputMibps)
 	populate(objectMap, "encryptionType", p.EncryptionType)
 	populate(objectMap, "poolId", p.PoolID)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
@@ -2500,6 +2505,9 @@ func (p *PoolProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "coolAccess":
 			err = unpopulate(val, "CoolAccess", &p.CoolAccess)
+			delete(rawMsg, key)
+		case "customThroughputMibps":
+			err = unpopulate(val, "CustomThroughputMibps", &p.CustomThroughputMibps)
 			delete(rawMsg, key)
 		case "encryptionType":
 			err = unpopulate(val, "EncryptionType", &p.EncryptionType)
@@ -4703,6 +4711,7 @@ func (v *VolumePatchPropertiesExportPolicy) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VolumeProperties.
 func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "acceptGrowCapacityPoolForShortTermCloneSplit", v.AcceptGrowCapacityPoolForShortTermCloneSplit)
 	populate(objectMap, "actualThroughputMibps", v.ActualThroughputMibps)
 	populate(objectMap, "avsDataStore", v.AvsDataStore)
 	populate(objectMap, "backupId", v.BackupID)
@@ -4726,6 +4735,7 @@ func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "exportPolicy", v.ExportPolicy)
 	populate(objectMap, "fileAccessLogs", v.FileAccessLogs)
 	populate(objectMap, "fileSystemId", v.FileSystemID)
+	populate(objectMap, "inheritedSizeInBytes", v.InheritedSizeInBytes)
 	populate(objectMap, "isDefaultQuotaEnabled", v.IsDefaultQuotaEnabled)
 	populate(objectMap, "isLargeVolume", v.IsLargeVolume)
 	populate(objectMap, "isRestoring", v.IsRestoring)
@@ -4771,6 +4781,9 @@ func (v *VolumeProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "acceptGrowCapacityPoolForShortTermCloneSplit":
+			err = unpopulate(val, "AcceptGrowCapacityPoolForShortTermCloneSplit", &v.AcceptGrowCapacityPoolForShortTermCloneSplit)
+			delete(rawMsg, key)
 		case "actualThroughputMibps":
 			err = unpopulate(val, "ActualThroughputMibps", &v.ActualThroughputMibps)
 			delete(rawMsg, key)
@@ -4839,6 +4852,9 @@ func (v *VolumeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "fileSystemId":
 			err = unpopulate(val, "FileSystemID", &v.FileSystemID)
+			delete(rawMsg, key)
+		case "inheritedSizeInBytes":
+			err = unpopulate(val, "InheritedSizeInBytes", &v.InheritedSizeInBytes)
 			delete(rawMsg, key)
 		case "isDefaultQuotaEnabled":
 			err = unpopulate(val, "IsDefaultQuotaEnabled", &v.IsDefaultQuotaEnabled)

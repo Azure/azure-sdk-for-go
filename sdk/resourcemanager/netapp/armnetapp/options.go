@@ -595,6 +595,13 @@ type VolumesClientBeginRevertRelocationOptions struct {
 	ResumeToken string
 }
 
+// VolumesClientBeginSplitCloneFromParentOptions contains the optional parameters for the VolumesClient.BeginSplitCloneFromParent
+// method.
+type VolumesClientBeginSplitCloneFromParentOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
 type VolumesClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.

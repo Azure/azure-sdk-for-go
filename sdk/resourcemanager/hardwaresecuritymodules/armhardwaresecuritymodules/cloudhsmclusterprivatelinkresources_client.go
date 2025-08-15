@@ -39,35 +39,35 @@ func NewCloudHsmClusterPrivateLinkResourcesClient(subscriptionID string, credent
 	return client, nil
 }
 
-// NewListByCloudHsmClusterPager - Gets the private link resources supported for the Cloud Hsm Cluster.
+// ListByCloudHsmCluster - Gets the private link resources supported for the Cloud Hsm Cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudHsmClusterName - The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster names must
 //     be between 3 and 23 characters in length.
 //   - options - CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions contains the optional parameters for the
-//     CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager method.
-func (client *CloudHsmClusterPrivateLinkResourcesClient) NewListByCloudHsmClusterPager(resourceGroupName string, cloudHsmClusterName string, options *CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions) *runtime.Pager[CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse] {
-	return runtime.NewPager(runtime.PagingHandler[CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse]{
-		More: func(page CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse) (CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCloudHsmClusterCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, options)
-			}, nil)
-			if err != nil {
-				return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
-			}
-			return client.listByCloudHsmClusterHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//     CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster method.
+func (client *CloudHsmClusterPrivateLinkResourcesClient) ListByCloudHsmCluster(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, options *CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions) (CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse, error) {
+	var err error
+	const operationName = "CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listByCloudHsmClusterCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, options)
+	if err != nil {
+		return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse{}, err
+	}
+	resp, err := client.listByCloudHsmClusterHandleResponse(httpResp)
+	return resp, err
 }
 
 // listByCloudHsmClusterCreateRequest creates the ListByCloudHsmCluster request.

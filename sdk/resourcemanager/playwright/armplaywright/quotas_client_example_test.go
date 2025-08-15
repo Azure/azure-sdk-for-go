@@ -32,7 +32,7 @@ func ExampleQuotasClient_Get() {
 	// res = armplaywright.QuotasClientGetResponse{
 	// 	Quota: &armplaywright.Quota{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.LoadTestService/locations/eastus/PlaywrightQuotas/ExecutionMinutes"),
-	// 		Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+	// 		Name: to.Ptr("ExecutionMinutes"),
 	// 		Type: to.Ptr("Microsoft.LoadTestService/Locations/PlaywrightQuotas"),
 	// 		Properties: &armplaywright.QuotaProperties{
 	// 			FreeTrial: &armplaywright.FreeTrialProperties{
@@ -72,7 +72,7 @@ func ExampleQuotasClient_NewListBySubscriptionPager() {
 		// 		Value: []*armplaywright.Quota{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.LoadTestService/locations/eastus/PlaywrightQuotas/ExecutionMinutes"),
-		// 				Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+		// 				Name: to.Ptr("ExecutionMinutes"),
 		// 				Type: to.Ptr("Microsoft.LoadTestService/Locations/PlaywrightQuotas"),
 		// 				Properties: &armplaywright.QuotaProperties{
 		// 					FreeTrial: &armplaywright.FreeTrialProperties{

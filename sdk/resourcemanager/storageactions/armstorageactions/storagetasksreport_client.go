@@ -40,35 +40,34 @@ func NewStorageTasksReportClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// NewListPager - Fetch the storage tasks run report summary for each assignment.
+// List - Fetch the storage tasks run report summary for each assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
 //     3 and 18 characters in length and use numbers and lower-case letters only.
-//   - options - StorageTasksReportClientListOptions contains the optional parameters for the StorageTasksReportClient.NewListPager
-//     method.
-func (client *StorageTasksReportClient) NewListPager(resourceGroupName string, storageTaskName string, options *StorageTasksReportClientListOptions) *runtime.Pager[StorageTasksReportClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[StorageTasksReportClientListResponse]{
-		More: func(page StorageTasksReportClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *StorageTasksReportClientListResponse) (StorageTasksReportClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageTasksReportClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, storageTaskName, options)
-			}, nil)
-			if err != nil {
-				return StorageTasksReportClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//   - options - StorageTasksReportClientListOptions contains the optional parameters for the StorageTasksReportClient.List method.
+func (client *StorageTasksReportClient) List(ctx context.Context, resourceGroupName string, storageTaskName string, options *StorageTasksReportClientListOptions) (StorageTasksReportClientListResponse, error) {
+	var err error
+	const operationName = "StorageTasksReportClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCreateRequest(ctx, resourceGroupName, storageTaskName, options)
+	if err != nil {
+		return StorageTasksReportClientListResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StorageTasksReportClientListResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return StorageTasksReportClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

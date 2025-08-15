@@ -39,9 +39,6 @@ type AutoUpgradeProfile struct {
 	// The resource-specific properties for this resource.
 	Properties *AutoUpgradeProfileProperties
 
-	// READ-ONLY; The name of the AutoUpgradeProfile resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -50,6 +47,9 @@ type AutoUpgradeProfile struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -111,13 +111,10 @@ type AutoUpgradeProfileStatus struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info *ErrorAdditionalInfoInfo
+	Info any
 
 	// READ-ONLY; The additional info type.
 	Type *string
-}
-
-type ErrorAdditionalInfoInfo struct {
 }
 
 // ErrorDetail - The error detail.
@@ -143,9 +140,6 @@ type Fleet struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; The name of the Fleet resource.
-	Name *string
-
 	// Managed identity.
 	Identity *ManagedServiceIdentity
 
@@ -163,6 +157,9 @@ type Fleet struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -221,9 +218,6 @@ type FleetMember struct {
 	// The resource-specific properties for this resource.
 	Properties *FleetMemberProperties
 
-	// READ-ONLY; The name of the Fleet member resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -232,6 +226,9 @@ type FleetMember struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -320,9 +317,6 @@ type FleetUpdateStrategy struct {
 	// The resource-specific properties for this resource.
 	Properties *FleetUpdateStrategyProperties
 
-	// READ-ONLY; The name of the UpdateStrategy resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -331,6 +325,9 @@ type FleetUpdateStrategy struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -439,7 +436,9 @@ type NodeImageVersion struct {
 	Version *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -550,9 +549,6 @@ type UpdateRun struct {
 	// The resource-specific properties for this resource.
 	Properties *UpdateRunProperties
 
-	// READ-ONLY; The name of the UpdateRun resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -561,6 +557,9 @@ type UpdateRun struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

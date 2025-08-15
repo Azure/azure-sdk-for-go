@@ -39,31 +39,31 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
-// NewListPager - A list of SKUs.
+// List - A list of SKUs.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-09-01
-//   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
-func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
-		More: func(page SKUsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SKUsClientListResponse) (SKUsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SKUsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return SKUsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+func (client *SKUsClient) List(ctx context.Context, options *SKUsClientListOptions) (SKUsClientListResponse, error) {
+	var err error
+	const operationName = "SKUsClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCreateRequest(ctx, options)
+	if err != nil {
+		return SKUsClientListResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SKUsClientListResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SKUsClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

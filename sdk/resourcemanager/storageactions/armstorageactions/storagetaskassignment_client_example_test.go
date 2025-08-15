@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2023-01-01/storageTasksList/ListStorageTaskAssignmentIds.json
-func ExampleStorageTaskAssignmentClient_NewListPager() {
+func ExampleStorageTaskAssignmentClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,34 +22,29 @@ func ExampleStorageTaskAssignmentClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewStorageTaskAssignmentClient().NewListPager("rgroup1", "mytask1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armstorageactions.StorageTaskAssignmentClientListResponse{
-		// 	StorageTaskAssignmentsListResult: armstorageactions.StorageTaskAssignmentsListResult{
-		// 		Value: []*armstorageactions.StorageTaskAssignment{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/9d6baee9-681f-44d8-99f7-d06d180af6bb/resourcegroups/rgroup1/providers/microsoft.storage/storageaccounts/acc123/storagetaskassignments/assign123"),
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/9d6baee9-681f-44d8-99f7-d06d180af6bb/resourcegroups/rgroup1/providers/microsoft.storage/storageaccounts/acc123/storagetaskassignments/assign455"),
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/9d6baee9-681f-44d8-99f7-d06d180af6bb/resourcegroups/rgroup3/providers/microsoft.storage/storageaccounts/accxx1/storagetaskassignments/assign123"),
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/28e089f2-9607-4285-a0d0-64dbe3771929/resourcegroups/rgroup4/providers/microsoft.storage/storageaccounts/accxx2/storagetaskassignments/assign123"),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewStorageTaskAssignmentClient().List(ctx, "rgroup1", "mytask1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorageactions.StorageTaskAssignmentClientListResponse{
+	// 	StorageTaskAssignmentsListResult: &armstorageactions.StorageTaskAssignmentsListResult{
+	// 		Value: []*armstorageactions.StorageTaskAssignment{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/9d6baee9-681f-44d8-99f7-d06d180af6bb/resourcegroups/rgroup1/providers/microsoft.storage/storageaccounts/acc123/storagetaskassignments/assign123"),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/9d6baee9-681f-44d8-99f7-d06d180af6bb/resourcegroups/rgroup1/providers/microsoft.storage/storageaccounts/acc123/storagetaskassignments/assign455"),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/9d6baee9-681f-44d8-99f7-d06d180af6bb/resourcegroups/rgroup3/providers/microsoft.storage/storageaccounts/accxx1/storagetaskassignments/assign123"),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/28e089f2-9607-4285-a0d0-64dbe3771929/resourcegroups/rgroup4/providers/microsoft.storage/storageaccounts/accxx2/storagetaskassignments/assign123"),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }

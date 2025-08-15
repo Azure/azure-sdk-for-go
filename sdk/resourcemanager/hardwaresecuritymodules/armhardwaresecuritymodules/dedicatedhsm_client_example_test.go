@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
 	"log"
 )
 
@@ -932,7 +932,7 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 }
 
 // Generated from example definition: 2025-03-31/GetOutboundNetworkDependenciesEndpointsList.json
-func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager() {
+func ExampleDedicatedHsmClient_ListOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -942,24 +942,19 @@ func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDedicatedHsmClient().NewListOutboundNetworkDependenciesEndpointsPager("hsm-group", "hsm1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse{
-		// 	OutboundEnvironmentEndpointCollection: armhardwaresecuritymodules.OutboundEnvironmentEndpointCollection{
-		// 		Value: []*armhardwaresecuritymodules.OutboundEnvironmentEndpoint{
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewDedicatedHsmClient().ListOutboundNetworkDependenciesEndpoints(ctx, "hsm-group", "hsm1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse{
+	// 	OutboundEnvironmentEndpointCollection: &armhardwaresecuritymodules.OutboundEnvironmentEndpointCollection{
+	// 		Value: []*armhardwaresecuritymodules.OutboundEnvironmentEndpoint{
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2025-03-31/DedicatedHsm_Update.json

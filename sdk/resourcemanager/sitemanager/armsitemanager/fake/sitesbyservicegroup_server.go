@@ -11,7 +11,6 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sitemanager/armsitemanager"
 	"net/http"
 	"net/url"
@@ -32,9 +31,9 @@ type SitesByServiceGroupServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, servicegroupName string, siteName string, options *armsitemanager.SitesByServiceGroupClientGetOptions) (resp azfake.Responder[armsitemanager.SitesByServiceGroupClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByServiceGroupPager is the fake for method SitesByServiceGroupClient.NewListByServiceGroupPager
+	// ListByServiceGroup is the fake for method SitesByServiceGroupClient.ListByServiceGroup
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByServiceGroupPager func(servicegroupName string, options *armsitemanager.SitesByServiceGroupClientListByServiceGroupOptions) (resp azfake.PagerResponder[armsitemanager.SitesByServiceGroupClientListByServiceGroupResponse])
+	ListByServiceGroup func(ctx context.Context, servicegroupName string, options *armsitemanager.SitesByServiceGroupClientListByServiceGroupOptions) (resp azfake.Responder[armsitemanager.SitesByServiceGroupClientListByServiceGroupResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method SitesByServiceGroupClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -46,18 +45,16 @@ type SitesByServiceGroupServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSitesByServiceGroupServerTransport(srv *SitesByServiceGroupServer) *SitesByServiceGroupServerTransport {
 	return &SitesByServiceGroupServerTransport{
-		srv:                        srv,
-		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armsitemanager.SitesByServiceGroupClientCreateOrUpdateResponse]](),
-		newListByServiceGroupPager: newTracker[azfake.PagerResponder[armsitemanager.SitesByServiceGroupClientListByServiceGroupResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armsitemanager.SitesByServiceGroupClientCreateOrUpdateResponse]](),
 	}
 }
 
 // SitesByServiceGroupServerTransport connects instances of armsitemanager.SitesByServiceGroupClient to instances of SitesByServiceGroupServer.
 // Don't use this type directly, use NewSitesByServiceGroupServerTransport instead.
 type SitesByServiceGroupServerTransport struct {
-	srv                        *SitesByServiceGroupServer
-	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armsitemanager.SitesByServiceGroupClientCreateOrUpdateResponse]]
-	newListByServiceGroupPager *tracker[azfake.PagerResponder[armsitemanager.SitesByServiceGroupClientListByServiceGroupResponse]]
+	srv                 *SitesByServiceGroupServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armsitemanager.SitesByServiceGroupClientCreateOrUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SitesByServiceGroupServerTransport.
@@ -89,8 +86,8 @@ func (s *SitesByServiceGroupServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = s.dispatchDelete(req)
 			case "SitesByServiceGroupClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "SitesByServiceGroupClient.NewListByServiceGroupPager":
-				res.resp, res.err = s.dispatchNewListByServiceGroupPager(req)
+			case "SitesByServiceGroupClient.ListByServiceGroup":
+				res.resp, res.err = s.dispatchListByServiceGroup(req)
 			case "SitesByServiceGroupClient.Update":
 				res.resp, res.err = s.dispatchUpdate(req)
 			default:
@@ -226,39 +223,31 @@ func (s *SitesByServiceGroupServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (s *SitesByServiceGroupServerTransport) dispatchNewListByServiceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByServiceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByServiceGroupPager not implemented")}
+func (s *SitesByServiceGroupServerTransport) dispatchListByServiceGroup(req *http.Request) (*http.Response, error) {
+	if s.srv.ListByServiceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListByServiceGroup not implemented")}
 	}
-	newListByServiceGroupPager := s.newListByServiceGroupPager.get(req)
-	if newListByServiceGroupPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<servicegroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/sites`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		servicegroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("servicegroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByServiceGroupPager(servicegroupNameParam, nil)
-		newListByServiceGroupPager = &resp
-		s.newListByServiceGroupPager.add(req, newListByServiceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByServiceGroupPager, req, func(page *armsitemanager.SitesByServiceGroupClientListByServiceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<servicegroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/sites`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListByServiceGroupPager, req)
+	servicegroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("servicegroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByServiceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	respr, errRespr := s.srv.ListByServiceGroup(req.Context(), servicegroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
 	}
-	if !server.PagerResponderMore(newListByServiceGroupPager) {
-		s.newListByServiceGroupPager.remove(req)
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SiteListResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

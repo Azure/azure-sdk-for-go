@@ -179,21 +179,24 @@ func parseAndValidateCustomTokenEndpoint(endpoint string) (*url.URL, error) {
 
 // configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present
 func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
-	// check for custom token endpoint environment variables
 	kubernetesTokenEndpointStr := os.Getenv(azureKubernetesTokenEndpoint)
+	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
+	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
+	kubernetesCAData := os.Getenv(azureKubernetesCAData)
+
 	if kubernetesTokenEndpointStr == "" {
-		// custom token endpoint is not set, skip configuration
+		// custom token endpoint is not set, while other Kubernetes-related environment variables are present,
+		// this is likely a configuration issue so erroring out to avoid misconfiguration
+		if kubernetesSNIName != "" || kubernetesCAFile != "" || kubernetesCAData != "" {
+			return fmt.Errorf("AZURE_KUBERNETES_TOKEN_ENDPOINT is not set but other custom endpoint-related environment variables are present")
+		}
+
 		return nil
 	}
 	tokenEndpoint, err := parseAndValidateCustomTokenEndpoint(kubernetesTokenEndpointStr)
 	if err != nil {
 		return err
 	}
-
-	// capture values of kubernetesSNIName, kubernetesCAFile, and kubernetesCAData
-	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
-	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
-	kubernetesCAData := os.Getenv(azureKubernetesCAData)
 
 	// CAFile and CAData are mutually exclusive, at most one can be set.
 	// If none of CAFile or CAData are set, the default system CA pool will be used.

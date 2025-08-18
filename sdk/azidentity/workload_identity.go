@@ -226,16 +226,14 @@ func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 			TLSHandshakeTimeout: 10 * time.Second,
 		}
 	}()
-	baseClientOptions := *clientOptions // shallow copy the origina client options without the transport overrides
 
 	clientOptions.Transport = &customTokenEndpointTransport{
-		caFile:            kubernetesCAFile,
-		caData:            kubernetesCAData,
-		sniName:           kubernetesSNIName,
-		tokenEndpoint:     tokenEndpoint,
-		fallbackClient:    fallbackClient,
-		baseTransport:     baseTransport,
-		baseClientOptions: &baseClientOptions,
+		caFile:         kubernetesCAFile,
+		caData:         kubernetesCAData,
+		sniName:        kubernetesSNIName,
+		tokenEndpoint:  tokenEndpoint,
+		fallbackClient: fallbackClient,
+		baseTransport:  baseTransport,
 	}
 	return nil
 }
@@ -245,13 +243,12 @@ func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 //
 // All non-token requests are forwarded to the fallback client.
 type customTokenEndpointTransport struct {
-	caFile            string
-	caData            string
-	sniName           string
-	tokenEndpoint     *url.URL
-	fallbackClient    *azcore.Client
-	baseTransport     *http.Transport
-	baseClientOptions *policy.ClientOptions
+	caFile         string
+	caData         string
+	sniName        string
+	tokenEndpoint  *url.URL
+	fallbackClient *azcore.Client
+	baseTransport  *http.Transport
 }
 
 func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, error) {
@@ -260,7 +257,7 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 		return doForClient(i.fallbackClient, req)
 	}
 
-	tokenClient, err := i.getTokenClient()
+	tr, err := i.getTokenTransporter()
 	if err != nil {
 		return nil, err
 	}
@@ -271,7 +268,7 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 	newReq.URL.Path = i.tokenEndpoint.Path
 	newReq.Host = i.tokenEndpoint.Host
 
-	return doForClient(tokenClient, newReq)
+	return tr.RoundTrip(newReq)
 }
 
 // loadCAPool loads the CA certificate pool to use.
@@ -317,9 +314,9 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 	return caPool, nil
 }
 
-// getTokenClient creates an azcore.Client instance for the token request.
-// A new transport is created per call to allow custom CA usage.
-func (i *customTokenEndpointTransport) getTokenClient() (*azcore.Client, error) {
+// getTokenTransporter rebuilds the HTTP transport every time it's called.
+// This approach is acceptable because token requests are infrequent due to token caching at higher levels.
+func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
 	transport := i.baseTransport.Clone()
 
 	caPool, err := i.loadCAPool()
@@ -332,27 +329,12 @@ func (i *customTokenEndpointTransport) getTokenClient() (*azcore.Client, error) 
 	}
 	transport.TLSClientConfig.RootCAs = caPool
 
-	// configure SNI if specified
+	// Configure SNI if specified
 	if i.sniName != "" {
 		transport.TLSClientConfig.ServerName = i.sniName
 	}
 
-	var clientOptions policy.ClientOptions
-	if i.baseClientOptions != nil {
-		clientOptions = *i.baseClientOptions
-	}
-	clientOptions.Transport = &http.Client{Transport: transport}
-
-	client, err := azcore.NewClient(module, version, runtime.PipelineOptions{
-		Tracing: runtime.TracingOptions{
-			Namespace: traceNamespace,
-		},
-	}, &clientOptions)
-	if err != nil {
-		return nil, err
-	}
-
-	return client, nil
+	return transport, nil
 }
 
 const (

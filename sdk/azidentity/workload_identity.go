@@ -177,7 +177,16 @@ func parseAndValidateCustomTokenEndpoint(endpoint string) (*url.URL, error) {
 	return tokenEndpoint, nil
 }
 
-// configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present
+var (
+	errCustomEndpointEnvSetWithoutTokenEndpoint = fmt.Errorf(
+		"AZURE_KUBERNETES_TOKEN_ENDPOINT is not set but other custom endpoint-related environment variables are present",
+	)
+	errCustomEndpointMultipleCASourcesSet = fmt.Errorf(
+		"only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified",
+	)
+)
+
+// configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present.
 func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 	kubernetesTokenEndpointStr := os.Getenv(azureKubernetesTokenEndpoint)
 	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
@@ -188,7 +197,7 @@ func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 		// custom token endpoint is not set, while other Kubernetes-related environment variables are present,
 		// this is likely a configuration issue so erroring out to avoid misconfiguration
 		if kubernetesSNIName != "" || kubernetesCAFile != "" || kubernetesCAData != "" {
-			return fmt.Errorf("AZURE_KUBERNETES_TOKEN_ENDPOINT is not set but other custom endpoint-related environment variables are present")
+			return errCustomEndpointEnvSetWithoutTokenEndpoint
 		}
 
 		return nil
@@ -201,7 +210,7 @@ func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 	// CAFile and CAData are mutually exclusive, at most one can be set.
 	// If none of CAFile or CAData are set, the default system CA pool will be used.
 	if kubernetesCAFile != "" && kubernetesCAData != "" {
-		return fmt.Errorf("only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified")
+		return errCustomEndpointMultipleCASourcesSet
 	}
 
 	// creating a new azcore client to maintain the same behavior as confidential client's usage.
@@ -296,19 +305,11 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 		if err != nil {
 			return nil, fmt.Errorf("read CA file %q: %w", i.caFile, err)
 		}
-	} else if i.caData != "" {
-		caDataBytes = []byte(i.caData)
-	} else {
-		return nil, fmt.Errorf("missing CA: neither CA file nor CA data provided")
-	}
-
-	// Error out if CA data is empty
-	if len(caDataBytes) == 0 {
-		if i.caFile != "" {
+		if len(caDataBytes) == 0 {
 			return nil, fmt.Errorf("CA file %q is empty", i.caFile)
-		} else {
-			return nil, fmt.Errorf("CA data is empty")
 		}
+	} else {
+		caDataBytes = []byte(i.caData)
 	}
 
 	caPool := x509.NewCertPool()

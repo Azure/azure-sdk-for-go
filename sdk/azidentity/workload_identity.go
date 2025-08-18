@@ -180,12 +180,10 @@ func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
 	kubernetesCAData := os.Getenv(azureKubernetesCAData)
 
-	// only one of CAFile and CAData can be specified, and at least one must be set
+	// CAFile and CAData are mutually exclusive, at most one can be set.
+	// If none of CAFile or CAData are set, the default system CA pool will be used.
 	if kubernetesCAFile != "" && kubernetesCAData != "" {
 		return fmt.Errorf("only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified")
-	}
-	if kubernetesCAFile == "" && kubernetesCAData == "" {
-		return fmt.Errorf("at least one of AZURE_KUBERNETES_CA_FILE or AZURE_KUBERNETES_CA_DATA must be specified")
 	}
 
 	// creating a new azcore client to maintain the same behavior as confidential client's usage.
@@ -258,8 +256,14 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 	return tr.RoundTrip(newReq)
 }
 
-// loadCAPool loads the CA certificate pool from either file or data
+// loadCAPool loads the CA certificate pool to use.
+// If neither CA file nor CA data is provided, the default system CA pool will be used.
 func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
+	if i.caFile == "" && i.caData == "" {
+		// nil CertPool indicates that the default system CA pool should be used
+		return nil, nil
+	}
+
 	var caDataBytes []byte
 	var err error
 

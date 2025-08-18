@@ -7,23 +7,25 @@
 package azidentity
 
 import (
-	"bytes"
 	"context"
 	"crypto"
+	"crypto/rand"
+	"crypto/rsa"
 	"crypto/sha1"
 	"crypto/x509"
+	"crypto/x509/pkix"
 	"encoding/base64"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
-	"io"
+	"math/big"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
-	"sync"
-	"sync/atomic"
 	"testing"
 	"time"
 
@@ -295,484 +297,319 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 	}
 }
 
-// testCACertificate returns a valid test CA certificate in PEM format
-func testCACertificate() string {
-	return `-----BEGIN CERTIFICATE-----
-MIIDazCCAlOgAwIBAgIUF2VIP4+AnEtb52KTCHbo4+fESfswDQYJKoZIhvcNAQEL
-BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
-GEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0xOTEwMzAyMjQ2MjBaFw0yMjA4
-MTkyMjQ2MjBaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw
-HwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEB
-AQUAA4IBDwAwggEKAoIBAQDL1hG+JYCfIPp3tlZ05J4pYIJ3Ckfs432bE3rYuWlR
-2w9KqdjWkKxuAxpjJ+T+uoqVaT3BFMfi4ZRYOCI69s4+lP3DwR8uBCp9xyVkF8th
-XfS3iui0liGDviVBoBJJWvjDFU8a/Hseg+QfoxAb6tx0kEc7V3ozBLWoIDJjfwJ3
-NdsLZGVtAC34qCWeEIvS97CDA4g3Kc6hYJIrAa7pxHzo/Nd0U3e7z+DlBcJV7dY6
-TZUyjBVTpzppWe+XQEOfKsjkDNykHEC1C1bClG0u7unS7QOBMd6bOGkeL+Bc+n22
-slTzs5amsbDLNuobSaUsFt9vgD5jRD6FwhpXwj/Ek0F7AgMBAAGjUzBRMB0GA1Ud
-DgQWBBT6Mf9uXFB67bY2PeW3GCTKfkO7vDAfBgNVHSMEGDAWgBT6Mf9uXFB67bY2
-PeW3GCTKfkO7vDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCZ
-1+kTISX85v9/ag7glavaPFUYsOSOOofl8gSzov7L01YL+srq7tXdvZmWrjQ/dnOY
-h18rp9rb24vwIYxNioNG/M2cW1jBJwEGsDPOwdPV1VPcRmmUJW9kY130gRHBCd/N
-qB7dIkcQnpNsxPIIWI+sRQp73U0ijhOByDnCNHLHon6vbfFTwkO1XggmV5BdZ3uQ
-JNJyckILyNzlhmf6zhonMp4lVzkgxWsAm2vgdawd6dmBa+7Avb2QK9s+IdUSutFh
------END CERTIFICATE-----`
-}
-
-// TestWorkloadIdentityCredential_CustomTokenEndpoint_BasicConfiguration tests the basic configuration
-// of custom token endpoint mode when environment variables are set correctly
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_BasicConfiguration(t *testing.T) {
-	tempDir := t.TempDir()
-	tempFile := filepath.Join(tempDir, "test-workload-token-file")
-	caFile := filepath.Join(tempDir, "ca.crt")
-	
-	// Create a simple CA file (content doesn't matter for logic test)
-	testCACert := "# Simple CA file for testing transport logic\n"
-	
-	require.NoError(t, os.WriteFile(tempFile, []byte(tokenValue), 0600))
-	require.NoError(t, os.WriteFile(caFile, []byte("# Simple CA file for testing transport logic\n"), 0600))
-
-	// Set up environment variables for custom token endpoint mode
-	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc/oauth2/token")
-	t.Setenv(azureKubernetesCAFile, caFile)
-	t.Setenv(azureKubernetesSNIName, "kubernetes.default.svc.cluster.local")
-	t.Setenv(azureClientID, fakeClientID)
-	t.Setenv(azureTenantID, fakeTenantID)
-	t.Setenv(azureFederatedTokenFile, tempFile)
-
-	// Create a mock server that handles both token and non-token requests
-	mockTransport := &mockCustomTokenEndpointTransport{
-		tokenEndpointHandler: func(req *http.Request) (*http.Response, error) {
-			// Verify request was redirected to custom endpoint
-			require.Equal(t, "https", req.URL.Scheme)
-			require.Equal(t, "kubernetes.default.svc", req.URL.Host)
-			require.Equal(t, "/oauth2/token", req.URL.Path)
-			
-			// Verify it's a token request
-			require.NoError(t, req.ParseForm())
-			require.Contains(t, req.PostForm, "client_assertion")
-			require.Contains(t, req.PostForm, "client_assertion_type")
-			require.Equal(t, tokenValue, req.PostForm.Get("client_assertion"))
-			require.Equal(t, fakeClientID, req.PostForm.Get("client_id"))
-			
-			// Return successful token response
-			body := fmt.Sprintf(`{"access_token": "%s","expires_in": 3600,"token_type":"Bearer"}`, tokenValue)
-			return &http.Response{
-				StatusCode: http.StatusOK,
-				Body:       io.NopCloser(strings.NewReader(body)),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-			}, nil
-		},
-		fallbackHandler: func(req *http.Request) (*http.Response, error) {
-			// Handle metadata requests
-			if strings.Contains(req.URL.Path, "instance") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(instanceMetadata(fakeTenantID))),
-				}, nil
-			}
-			if strings.Contains(req.URL.Path, "openid-configuration") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(tenantMetadata(fakeTenantID))),
-				}, nil
-			}
-			
-			return &http.Response{StatusCode: http.StatusNotFound}, nil
-		},
-	}
-
-	// Expect creation to fail due to invalid CA certificate
-	// since we're not providing a valid cert, but we should get to the CA loading part
-	_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: mockTransport},
-	})
-	require.NoError(t, err) // Should create successfully
-	
-	// Note: Since CA file is invalid, token requests will fail at CA loading time
-	// This test primarily verifies that the custom transport configuration is set up correctly
-}
-
-// TestWorkloadIdentityCredential_CustomTokenEndpoint_CADataSupport tests CA data support
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_CADataSupport(t *testing.T) {
-	tempDir := t.TempDir()
-	tempFile := filepath.Join(tempDir, "test-workload-token-file")
-	
-	require.NoError(t, os.WriteFile(tempFile, []byte(tokenValue), 0600))
-
-	// Set up environment variables for custom token endpoint mode with CA data
-	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc/oauth2/token")
-	t.Setenv(azureKubernetesCAData, "# Simple CA data for testing transport logic\n")
-	t.Setenv(azureClientID, fakeClientID)
-	t.Setenv(azureTenantID, fakeTenantID)
-	t.Setenv(azureFederatedTokenFile, tempFile)
-
-	mockTransport := &mockCustomTokenEndpointTransport{
-		tokenEndpointHandler: func(req *http.Request) (*http.Response, error) {
-			// Return successful token response
-			body := fmt.Sprintf(`{"access_token": "%s","expires_in": 3600,"token_type":"Bearer"}`, tokenValue)
-			return &http.Response{
-				StatusCode: http.StatusOK,
-				Body:       io.NopCloser(strings.NewReader(body)),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-			}, nil
-		},
-		fallbackHandler: func(req *http.Request) (*http.Response, error) {
-			// Handle metadata requests
-			if strings.Contains(req.URL.Path, "instance") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(instanceMetadata(fakeTenantID))),
-				}, nil
-			}
-			if strings.Contains(req.URL.Path, "openid-configuration") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(tenantMetadata(fakeTenantID))),
-				}, nil
-			}
-			
-			return &http.Response{StatusCode: http.StatusNotFound}, nil
-		},
-	}
-
-	_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: mockTransport},
-	})
-	require.NoError(t, err)
-	
-	// Note: Token acquisition would fail due to invalid CA data, but credential creation should succeed
-	// This test verifies that the CA data path is properly configured
-}
-
-// TestWorkloadIdentityCredential_CustomTokenEndpoint_ValidationErrors tests validation error scenarios
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_ValidationErrors(t *testing.T) {
-	tempDir := t.TempDir()
-	tempFile := filepath.Join(tempDir, "test-workload-token-file")
-	caFile := filepath.Join(tempDir, "ca.crt")
-	emptyCaFile := filepath.Join(tempDir, "empty-ca.crt")
-	
-	require.NoError(t, os.WriteFile(tempFile, []byte(tokenValue), 0600))
-	require.NoError(t, os.WriteFile(caFile, []byte("# Test CA file\n"), 0600))
-	require.NoError(t, os.WriteFile(emptyCaFile, []byte(""), 0600))
-
-	testCases := []struct {
-		name     string
-		envVars  map[string]string
-		wantErr  string
+func TestParseAndValidateCustomTokenEndpoint(t *testing.T) {
+	cases := []struct {
+		name      string
+		endpoint  string
+		expectErr bool
+		check     func(t testing.TB, u *url.URL, err error)
 	}{
 		{
-			name: "non-https token endpoint",
-			envVars: map[string]string{
-				azureKubernetesTokenEndpoint: "http://kubernetes.default.svc/oauth2/token",
-				azureKubernetesCAFile:        caFile,
-				azureClientID:                fakeClientID,
-				azureTenantID:                fakeTenantID,
-				azureFederatedTokenFile:      tempFile,
+			name:     "valid https endpoint without path",
+			endpoint: "https://example.com",
+			check: func(t testing.TB, u *url.URL, err error) {
+				require.NoError(t, err)
+				require.Equal(t, "https", u.Scheme)
+				require.Equal(t, "example.com", u.Host)
+				require.Equal(t, "", u.RawQuery)
+				require.Equal(t, "", u.Fragment)
 			},
-			wantErr: "token endpoint must use https scheme",
 		},
 		{
-			name: "invalid token endpoint URL",
-			envVars: map[string]string{
-				azureKubernetesTokenEndpoint: "://invalid-url",
-				azureKubernetesCAFile:        caFile,
-				azureClientID:                fakeClientID,
-				azureTenantID:                fakeTenantID,
-				azureFederatedTokenFile:      tempFile,
+			name:     "valid https endpoint with path",
+			endpoint: "https://example.com/token/path",
+			check: func(t testing.TB, u *url.URL, err error) {
+				require.NoError(t, err)
+				require.Equal(t, "/token/path", u.Path)
 			},
-			wantErr: "failed to parse token endpoint URL",
 		},
 		{
-			name: "both CA file and data specified",
-			envVars: map[string]string{
-				azureKubernetesTokenEndpoint: "https://kubernetes.default.svc/oauth2/token",
-				azureKubernetesCAFile:        caFile,
-				azureKubernetesCAData:        "# test ca data",
-				azureClientID:                fakeClientID,
-				azureTenantID:                fakeTenantID,
-				azureFederatedTokenFile:      tempFile,
+			name:      "reject non-https scheme",
+			endpoint:  "http://example.com",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "https scheme")
 			},
-			wantErr: "only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified",
 		},
 		{
-			name: "no CA file or data specified",
-			envVars: map[string]string{
-				azureKubernetesTokenEndpoint: "https://kubernetes.default.svc/oauth2/token",
-				azureClientID:                fakeClientID,
-				azureTenantID:                fakeTenantID,
-				azureFederatedTokenFile:      tempFile,
+			name:      "reject user info",
+			endpoint:  "https://user:pass@example.com/token",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "must not contain user info")
 			},
-			wantErr: "at least one of AZURE_KUBERNETES_CA_FILE or AZURE_KUBERNETES_CA_DATA must be specified",
+		},
+		{
+			name:      "reject query params",
+			endpoint:  "https://example.com/token?foo=bar",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "must not contain a query")
+			},
+		},
+		{
+			name:      "reject fragment",
+			endpoint:  "https://example.com/token#frag",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "must not contain a fragment")
+			},
+		},
+		{
+			name:      "reject unparseable URL",
+			endpoint:  "https://example.com/%zz",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "failed to parse custom token endpoint URL")
+			},
 		},
 	}
 
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			// Clear environment and set test vars
-			for k := range tc.envVars {
-				t.Setenv(k, tc.envVars[k])
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			u, err := parseAndValidateCustomTokenEndpoint(c.endpoint)
+			if c.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				require.NotNil(t, u)
 			}
-
-			_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-				ClientOptions: policy.ClientOptions{Transport: &mockSTS{}},
-			})
-			require.Error(t, err)
-			require.Contains(t, err.Error(), tc.wantErr)
+			if c.check != nil {
+				c.check(t, u, err)
+			}
 		})
 	}
 }
 
-// TestWorkloadIdentityCredential_CustomTokenEndpoint_RequestRouting tests request routing logic
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_RequestRouting(t *testing.T) {
+func TestConfigureCustomTokenEndpoint(t *testing.T) {
+	cases := []struct {
+		name          string
+		envs          map[string]string
+		clientOptions policy.ClientOptions
+
+		expectErr                bool
+		checkErr                 func(t testing.TB, err error) // optional check on error
+		expectOverridesTransport bool
+	}{
+		{
+			name:                     "no custom endpoint",
+			expectErr:                false,
+			expectOverridesTransport: false,
+		},
+		{
+			name:      "custom endpoint enabled with minimal settings",
+			expectErr: false,
+			envs: map[string]string{
+				azureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+			},
+			expectOverridesTransport: true,
+		},
+		{
+			name:      "custom endpoint enabled with CA file + SNI",
+			expectErr: false,
+			envs: map[string]string{
+				azureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				azureKubernetesCAFile:        "/path/to/custom-ca-file",
+				azureKubernetesSNIName:       "custom-sni.example.com",
+			},
+			expectOverridesTransport: true,
+		},
+		{
+			name:      "custom endpoint enabled with CA data + SNI",
+			expectErr: false,
+			envs: map[string]string{
+				azureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				azureKubernetesCAData:        "custom-ca-data",
+				azureKubernetesSNIName:       "custom-sni.example.com",
+			},
+			expectOverridesTransport: true,
+		},
+		{
+			name:      "custom endpoint enabled with SNI",
+			expectErr: false,
+			envs: map[string]string{
+				azureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				azureKubernetesSNIName:       "custom-sni.example.com",
+			},
+			expectOverridesTransport: true,
+		},
+		{
+			name:      "custom endpoint disabled with extra environment variables",
+			expectErr: true,
+			envs: map[string]string{
+				azureKubernetesSNIName: "custom-sni.example.com",
+			},
+			checkErr: func(t testing.TB, err error) {
+				require.ErrorIs(t, err, errCustomEndpointEnvSetWithoutTokenEndpoint)
+			},
+		},
+		{
+			name:      "custom endpoint enabled with both CAData and CAFile",
+			expectErr: true,
+			envs: map[string]string{
+				azureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				azureKubernetesCAData:        "custom-ca-data",
+				azureKubernetesCAFile:        "/path/to/custom-ca-file",
+			},
+			checkErr: func(t testing.TB, err error) {
+				require.ErrorIs(t, err, errCustomEndpointMultipleCASourcesSet)
+			},
+		},
+		{
+			name:      "custom endpoint enabled with invalid endpoint",
+			expectErr: true,
+			envs: map[string]string{
+				// http endpoint is not allowed
+				azureKubernetesTokenEndpoint: "http://custom-endpoint.com",
+			},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if len(c.envs) > 0 {
+				for k, v := range c.envs {
+					t.Setenv(k, v)
+				}
+			}
+			err := configureCustomTokenEndpoint(&c.clientOptions)
+
+			if c.expectErr {
+				require.Error(t, err)
+				if c.checkErr != nil {
+					c.checkErr(t, err)
+				}
+				return
+			}
+
+			require.NoError(t, err)
+			if c.expectOverridesTransport {
+				require.NotNil(t, c.clientOptions.Transport)
+				require.IsType(t, &customTokenEndpointTransport{}, c.clientOptions.Transport)
+			}
+		})
+	}
+}
+
+// createTestCA creates a valid CA as bytes
+func createTestCA(t testing.TB) []byte {
+	t.Helper()
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	require.NoError(t, err)
+
+	tmpl := &x509.Certificate{
+		SerialNumber:          big.NewInt(1),
+		Subject:               pkix.Name{CommonName: "test-ca"},
+		NotBefore:             time.Now().Add(-time.Hour),
+		NotAfter:              time.Now().Add(24 * time.Hour),
+		IsCA:                  true,
+		KeyUsage:              x509.KeyUsageCertSign | x509.KeyUsageCRLSign,
+		BasicConstraintsValid: true,
+	}
+
+	der, err := x509.CreateCertificate(rand.Reader, tmpl, tmpl, &key.PublicKey, key)
+	require.NoError(t, err)
+
+	return pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der})
+}
+
+// createTestCAFile creates a valid CA file in a temporary directory.
+// It returns the path to the CA file.
+func createTestCAFile(t testing.TB) string {
+	t.Helper()
+	caData := createTestCA(t)
 	tempDir := t.TempDir()
-	tempFile := filepath.Join(tempDir, "test-workload-token-file")
-	caFile := filepath.Join(tempDir, "ca.crt")
-	
-	require.NoError(t, os.WriteFile(tempFile, []byte(tokenValue), 0600))
-	require.NoError(t, os.WriteFile(caFile, []byte(testCACertificate()), 0600))
-
-	tokenEndpointCalled := false
-	fallbackClientCalled := false
-	var capturedTokenRequest *http.Request
-	var capturedFallbackRequest *http.Request
-	
-	// Set up environment variables
-	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc/oauth2/v2.0/token")
-	t.Setenv(azureKubernetesCAFile, caFile)
-	t.Setenv(azureKubernetesSNIName, "kubernetes.default.svc.cluster.local")
-	t.Setenv(azureClientID, fakeClientID)
-	t.Setenv(azureTenantID, fakeTenantID)
-	t.Setenv(azureFederatedTokenFile, tempFile)
-
-	mockTransport := &mockCustomTokenEndpointTransport{
-		tokenEndpointHandler: func(req *http.Request) (*http.Response, error) {
-			tokenEndpointCalled = true
-			capturedTokenRequest = req.Clone(req.Context())
-			
-			// Return successful token response
-			body := fmt.Sprintf(`{"access_token": "%s","expires_in": 3600,"token_type":"Bearer"}`, tokenValue)
-			return &http.Response{
-				StatusCode: http.StatusOK,
-				Body:       io.NopCloser(strings.NewReader(body)),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-			}, nil
-		},
-		fallbackHandler: func(req *http.Request) (*http.Response, error) {
-			fallbackClientCalled = true
-			capturedFallbackRequest = req.Clone(req.Context())
-			
-			// Handle metadata requests
-			if strings.Contains(req.URL.Path, "instance") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(instanceMetadata(fakeTenantID))),
-				}, nil
-			}
-			if strings.Contains(req.URL.Path, "openid-configuration") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(tenantMetadata(fakeTenantID))),
-				}, nil
-			}
-			
-			return &http.Response{StatusCode: http.StatusNotFound}, nil
-		},
+	caFile := filepath.Join(tempDir, "test-ca.pem")
+	if err := os.WriteFile(caFile, caData, 0600); err != nil {
+		t.Fatalf("failed to write CA file: %v", err)
 	}
-
-	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: mockTransport},
-	})
-	require.NoError(t, err)
-
-	// Test token acquisition
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{
-		Scopes: []string{"https://vault.azure.net/.default"},
-	})
-	require.NoError(t, err)
-	require.Equal(t, tokenValue, tk.Token)
-	
-	// Verify request routing
-	require.True(t, tokenEndpointCalled, "Token endpoint should have been called")
-	require.True(t, fallbackClientCalled, "Fallback client should have been called for metadata")
-	
-	// Verify token request was properly redirected and modified
-	require.NotNil(t, capturedTokenRequest)
-	require.Equal(t, "https", capturedTokenRequest.URL.Scheme)
-	require.Equal(t, "kubernetes.default.svc", capturedTokenRequest.URL.Host)
-	require.Equal(t, "/oauth2/v2.0/token", capturedTokenRequest.URL.Path)  // Should copy path from endpoint
-	require.Equal(t, "kubernetes.default.svc", capturedTokenRequest.Host)
-	
-	// Verify fallback request was not modified
-	require.NotNil(t, capturedFallbackRequest)
-	require.Contains(t, capturedFallbackRequest.URL.String(), "login.microsoftonline.com")
+	return caFile
 }
 
-// TestWorkloadIdentityCredential_CustomTokenEndpoint_ConcurrentAccess tests concurrent access to the custom transport
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_ConcurrentAccess(t *testing.T) {
-	tempDir := t.TempDir()
-	tempFile := filepath.Join(tempDir, "test-workload-token-file")
-	caFile := filepath.Join(tempDir, "ca.crt")
-	
-	require.NoError(t, os.WriteFile(tempFile, []byte(tokenValue), 0600))
-	require.NoError(t, os.WriteFile(caFile, []byte(testCACertificate()), 0600))
+func TestCustomTokenEndpointTransport_loadCAPool(t *testing.T) {
+	cases := []struct {
+		name string
+		tr   *customTokenEndpointTransport
 
-	var tokenCallCount int32
-	var fallbackCallCount int32
-	
-	// Set up environment variables
-	t.Setenv(azureKubernetesTokenEndpoint, "https://kubernetes.default.svc/oauth2/token")
-	t.Setenv(azureKubernetesCAFile, caFile)
-	t.Setenv(azureClientID, fakeClientID)
-	t.Setenv(azureTenantID, fakeTenantID)
-	t.Setenv(azureFederatedTokenFile, tempFile)
-
-	mockTransport := &mockCustomTokenEndpointTransport{
-		tokenEndpointHandler: func(req *http.Request) (*http.Response, error) {
-			// Increment counter atomically
-			count := atomic.AddInt32(&tokenCallCount, 1)
-			
-			// Add small delay to increase chance of race conditions
-			time.Sleep(time.Millisecond * 10)
-			
-			// Return successful token response with unique content per call
-			body := fmt.Sprintf(`{"access_token": "%s-%d","expires_in": 3600,"token_type":"Bearer"}`, tokenValue, count)
-			return &http.Response{
-				StatusCode: http.StatusOK,
-				Body:       io.NopCloser(strings.NewReader(body)),
-				Header:     http.Header{"Content-Type": []string{"application/json"}},
-			}, nil
+		expectErr            bool
+		expectCustomCertPool bool
+	}{
+		{
+			name:                 "fallback to system pool",
+			tr:                   &customTokenEndpointTransport{},
+			expectErr:            false,
+			expectCustomCertPool: false,
 		},
-		fallbackHandler: func(req *http.Request) (*http.Response, error) {
-			atomic.AddInt32(&fallbackCallCount, 1)
-			
-			// Handle metadata requests
-			if strings.Contains(req.URL.Path, "instance") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(instanceMetadata(fakeTenantID))),
-				}, nil
-			}
-			if strings.Contains(req.URL.Path, "openid-configuration") {
-				return &http.Response{
-					StatusCode: http.StatusOK,
-					Body:       io.NopCloser(bytes.NewReader(tenantMetadata(fakeTenantID))),
-				}, nil
-			}
-			
-			return &http.Response{StatusCode: http.StatusNotFound}, nil
+		{
+			name:      "load CA from CA file - invalid CA file",
+			tr:        &customTokenEndpointTransport{caFile: "/path/to/invalid/ca/file"},
+			expectErr: true,
 		},
-	}
+		{
+			name: "load CA from CA file - invalid CA file content",
+			tr: &customTokenEndpointTransport{
+				caFile: func() string {
+					d := t.TempDir()
+					caFile := filepath.Join(d, "test-ca.pem")
+					err := os.WriteFile(caFile, []byte("invalid-ca-content"), 0600)
+					require.NoError(t, err)
 
-	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: mockTransport},
-	})
-	require.NoError(t, err)
+					return caFile
+				}(),
+			},
+			expectErr: true,
+		},
+		{
+			name: "load CA from CA file - empty CA file content",
+			tr: &customTokenEndpointTransport{
+				caFile: func() string {
+					d := t.TempDir()
+					caFile := filepath.Join(d, "test-ca.pem")
+					err := os.WriteFile(caFile, []byte(""), 0600)
+					require.NoError(t, err)
 
-	const numGoroutines = 10
-	var wg sync.WaitGroup
-	var mu sync.Mutex
-	results := make([]string, 0, numGoroutines)
-	errors := make([]error, 0, numGoroutines)
-
-	// Run concurrent token acquisitions
-	for i := 0; i < numGoroutines; i++ {
-		wg.Add(1)
-		go func(id int) {
-			defer wg.Done()
-			
-			tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{
-				Scopes: []string{fmt.Sprintf("https://vault.azure.net/.default?id=%d", id)},
-			})
-			
-			mu.Lock()
-			defer mu.Unlock()
-			if err != nil {
-				errors = append(errors, err)
-			} else {
-				results = append(results, tk.Token)
-			}
-		}(i)
-	}
-
-	wg.Wait()
-
-	// Verify no errors occurred
-	require.Empty(t, errors, "No errors should occur during concurrent access")
-	require.Equal(t, numGoroutines, len(results), "All requests should succeed")
-
-	// Verify both endpoints were called
-	require.Greater(t, atomic.LoadInt32(&tokenCallCount), int32(0), "Token endpoint should have been called")
-	require.Greater(t, atomic.LoadInt32(&fallbackCallCount), int32(0), "Fallback client should have been called")
-}
-
-// TestWorkloadIdentityCredential_CustomTokenEndpoint_WithoutEnvironment tests standard behavior when custom environment is not set
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithoutEnvironment(t *testing.T) {
-	tempDir := t.TempDir()
-	tempFile := filepath.Join(tempDir, "test-workload-token-file")
-	require.NoError(t, os.WriteFile(tempFile, []byte(tokenValue), 0600))
-
-	// Set up standard environment variables (no custom token endpoint)
-	t.Setenv(azureClientID, fakeClientID)
-	t.Setenv(azureTenantID, fakeTenantID)
-	t.Setenv(azureFederatedTokenFile, tempFile)
-
-	// Ensure custom token endpoint variables are NOT set
-	require.Empty(t, os.Getenv(azureKubernetesTokenEndpoint))
-
-	standardSTSCalled := false
-
-	sts := mockSTS{
-		tenant: fakeTenantID,
-		tokenRequestCallback: func(req *http.Request) *http.Response {
-			standardSTSCalled = true
-			
-			// Verify this is a standard Azure token request
-			require.Contains(t, req.URL.Host, "login.microsoftonline.com")
-			
-			require.NoError(t, req.ParseForm())
-			require.Contains(t, req.PostForm, "client_assertion")
-			require.Equal(t, tokenValue, req.PostForm.Get("client_assertion"))
-			
-			return nil // Use default response
+					return caFile
+				}(),
+			},
+			expectErr: true,
+		},
+		{
+			name:                 "load CA from CA file - valid CA",
+			tr:                   &customTokenEndpointTransport{caFile: createTestCAFile(t)},
+			expectErr:            false,
+			expectCustomCertPool: true,
+		},
+		{
+			name:      "load CA from CA data - invalid CA data",
+			tr:        &customTokenEndpointTransport{caData: "invalid-ca"},
+			expectErr: true,
+		},
+		{
+			name:                 "load CA from CA data - valid CA",
+			tr:                   &customTokenEndpointTransport{caData: string(createTestCA(t))},
+			expectErr:            false,
+			expectCustomCertPool: true,
 		},
 	}
 
-	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: &sts},
-	})
-	require.NoError(t, err)
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			caPool, err := c.tr.loadCAPool()
+			if c.expectErr {
+				require.Error(t, err)
+				require.Nil(t, caPool)
+				return
+			}
 
-	// Test token acquisition - should use standard flow
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{
-		Scopes: []string{"https://vault.azure.net/.default"},
-	})
-	require.NoError(t, err)
-	require.Equal(t, tokenValue, tk.Token)
-	
-	// Verify standard STS was called
-	require.True(t, standardSTSCalled, "Standard STS should be called")
-}
-
-// mockCustomTokenEndpointTransport is a test helper that allows separate handling of token and non-token requests
-type mockCustomTokenEndpointTransport struct {
-	tokenEndpointHandler func(req *http.Request) (*http.Response, error)
-	fallbackHandler      func(req *http.Request) (*http.Response, error)
-}
-
-func (m *mockCustomTokenEndpointTransport) Do(req *http.Request) (*http.Response, error) {
-	// Simple heuristic: if request body contains client_assertion, it's a token request
-	if req.Body != nil && req.Body != http.NoBody {
-		bodyBytes, err := io.ReadAll(req.Body)
-		if err != nil {
-			return nil, err
-		}
-		req.Body.Close()
-		req.Body = io.NopCloser(bytes.NewReader(bodyBytes))
-		
-		if strings.Contains(string(bodyBytes), "client_assertion") {
-			return m.tokenEndpointHandler(req)
-		}
+			require.NoError(t, err)
+			if c.expectCustomCertPool {
+				require.NotNil(t, caPool)
+			}
+		})
 	}
-	
-	return m.fallbackHandler(req)
 }

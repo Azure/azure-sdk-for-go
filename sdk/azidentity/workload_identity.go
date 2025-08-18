@@ -361,6 +361,10 @@ func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) (bool, 
 		// expecting token request to use application/x-www-form-urlencoded
 		return false, nil
 	}
+	if req.ContentLength <= 0 {
+		// expecting non-empty request body
+		return false, nil
+	}
 
 	if req.Body == nil || req.Body == http.NoBody {
 		return false, nil
@@ -371,8 +375,11 @@ func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) (bool, 
 		// unable to read the form body at all, fail the whole token request in caller
 		return false, err
 	}
-	req.Body.Close()                                   // close the original body to avoid resource leaks
+	_ = req.Body.Close()                               // close the original body to avoid resource leaks
 	req.Body = streaming.NopCloser(bytes.NewReader(b)) // reset the body for future reads
+	req.GetBody = func() (io.ReadCloser, error) {      // reset GetBody for future reads (needed for 3xx redirects)
+		return streaming.NopCloser(bytes.NewReader(b)), nil
+	}
 
 	qs, err := url.ParseQuery(string(b))
 	if err != nil {

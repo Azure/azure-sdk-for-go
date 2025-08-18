@@ -252,7 +252,13 @@ type customTokenEndpointTransport struct {
 }
 
 func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, error) {
-	if !i.isTokenRequest(req) {
+	isTokenRequest, err := i.isTokenRequest(req)
+	switch {
+	case err != nil:
+		// unable to determine if this is a token request, fail the request
+		// We don't pass the request to the fallback client as the request body might be in half broken state.
+		return nil, err
+	case !isTokenRequest:
 		// not a token request, fallback to the original transporter
 		return doForClient(i.fallbackClient, req)
 	}
@@ -340,32 +346,39 @@ func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, e
 const (
 	tokenRequestClientAssertionField     = "client_assertion"
 	tokenRequestClientAssertionTypeField = "client_assertion_type"
+	tokenRequestContentTypePrefix        = "application/x-www-form-urlencoded"
 )
 
-func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) bool {
+func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) (bool, error) {
 	if !strings.EqualFold(req.Method, http.MethodPost) {
-		return false
+		return false, nil
+	}
+	contentType := req.Header.Get("Content-Type")
+	if !strings.HasPrefix(contentType, tokenRequestContentTypePrefix) {
+		// expecting token request to use application/x-www-form-urlencoded
+		return false, nil
 	}
 
 	if req.Body == nil || req.Body == http.NoBody {
-		return false
+		return false, nil
 	}
 
 	b, err := io.ReadAll(req.Body)
 	if err != nil {
-		return false
+		// unable to read the form body at all, fail the whole token request in caller
+		return false, err
 	}
 	req.Body.Close()                                   // close the original body to avoid resource leaks
 	req.Body = streaming.NopCloser(bytes.NewReader(b)) // reset the body for future reads
 
 	qs, err := url.ParseQuery(string(b))
 	if err != nil {
-		return false // unable to process
+		return false, nil // unable to process the form body, treat as non token request
 	}
 	if qs.Has(tokenRequestClientAssertionField) && qs.Has(tokenRequestClientAssertionTypeField) {
 		// this is a token request with client assertion set
-		return true
+		return true, nil
 	}
 
-	return false
+	return false, nil
 }

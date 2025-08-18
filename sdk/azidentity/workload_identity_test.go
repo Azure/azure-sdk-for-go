@@ -940,7 +940,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 			require.Contains(t, req.PostForm, "client_id")
 			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
 
-			w.Write(accessTokenRespSuccess)
+			_, _ = w.Write(accessTokenRespSuccess)
 		}),
 	)
 
@@ -986,7 +986,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 			require.Contains(t, req.PostForm, "client_id")
 			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
 
-			w.Write(accessTokenRespSuccess)
+			_, _ = w.Write(accessTokenRespSuccess)
 		}),
 	)
 
@@ -1039,7 +1039,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 			require.Contains(t, req.PostForm, "client_id")
 			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
 
-			w.Write(accessTokenRespSuccess)
+			_, _ = w.Write(accessTokenRespSuccess)
 		}),
 	)
 
@@ -1100,7 +1100,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_ExtraPolicy(t *testing.T
 			require.Contains(t, req.PostForm, "client_id")
 			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
 
-			w.Write(accessTokenRespSuccess)
+			_, _ = w.Write(accessTokenRespSuccess)
 		}),
 	)
 

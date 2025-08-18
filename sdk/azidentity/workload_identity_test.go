@@ -22,12 +22,14 @@ import (
 	"io"
 	"math/big"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -865,4 +867,173 @@ func TestCustomTokenEndpointTransport_isTokenRequest(t *testing.T) {
 			}
 		})
 	}
+}
+
+func startTestTLSServerWithCAData(t testing.TB, handler http.Handler) (*httptest.Server, string) {
+	t.Helper()
+
+	testServer := httptest.NewTLSServer(handler)
+
+	serverCert := testServer.Certificate()
+	require.NotNil(t, serverCert)
+
+	ca := pem.EncodeToMemory(&pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: serverCert.Raw,
+	})
+	require.NotEmpty(t, ca)
+
+	return testServer, string(ca)
+}
+
+func createRandomClientAssertion(t testing.TB) string {
+	t.Helper()
+	b := make([]byte, 32)
+	_, err := rand.Read(b)
+	require.NoError(t, err)
+	return base64.RawURLEncoding.EncodeToString(b)
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T) {
+	testClientAssertion := createRandomClientAssertion(t)
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	sts := mockSTS{tenant: fakeTenantID}
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTLSServerWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, tokenRequestClientAssertionField)
+			require.Equal(t, req.PostForm.Get(tokenRequestClientAssertionField), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	t.Setenv(azureKubernetesTokenEndpoint, customTokenEndointServer.URL)
+	t.Setenv(azureKubernetesCAData, caData)
+
+	clientOptions := policy.ClientOptions{Transport: &sts}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
+		ClientOptions: clientOptions,
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
+	require.NoError(t, err)
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T) {
+	testClientAssertion := createRandomClientAssertion(t)
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	sts := mockSTS{tenant: fakeTenantID}
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTLSServerWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, tokenRequestClientAssertionField)
+			require.Equal(t, req.PostForm.Get(tokenRequestClientAssertionField), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	t.Setenv(azureKubernetesTokenEndpoint, customTokenEndointServer.URL)
+	d := t.TempDir()
+	caFile := filepath.Join(d, "test-ca-file")
+	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
+	t.Setenv(azureKubernetesCAFile, caFile)
+
+	clientOptions := policy.ClientOptions{Transport: &sts}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
+		ClientOptions: clientOptions,
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
+	require.NoError(t, err)
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
+	testClientAssertion := createRandomClientAssertion(t)
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	sts := mockSTS{tenant: fakeTenantID}
+	sniName := "test-sni.example.com"
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTLSServerWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			require.NotNil(t, req.TLS)
+			require.Equal(t, req.TLS.ServerName, sniName, "when SNI is set, request should set SNI")
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, tokenRequestClientAssertionField)
+			require.Equal(t, req.PostForm.Get(tokenRequestClientAssertionField), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	t.Setenv(azureKubernetesTokenEndpoint, customTokenEndointServer.URL)
+	t.Setenv(azureKubernetesSNIName, sniName)
+
+	d := t.TempDir()
+	caFile := filepath.Join(d, "test-ca-file")
+	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
+	t.Setenv(azureKubernetesCAFile, caFile)
+
+	clientOptions := policy.ClientOptions{Transport: &sts}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
+		ClientOptions: clientOptions,
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
+	require.NoError(t, err)
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
 }

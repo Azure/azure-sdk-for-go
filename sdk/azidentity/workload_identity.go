@@ -157,6 +157,26 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 	return w.assertion, nil
 }
 
+func parseAndValidateCustomTokenEndpoint(endpoint string) (*url.URL, error) {
+	tokenEndpoint, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse custom token endpoint URL %q: %w", endpoint, err)
+	}
+	if tokenEndpoint.Scheme != "https" {
+		return nil, fmt.Errorf("custom token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
+	}
+	if tokenEndpoint.User != nil {
+		return nil, fmt.Errorf("custom token endpoint URL %q must not contain user info", tokenEndpoint)
+	}
+	if tokenEndpoint.RawQuery != "" {
+		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a query", tokenEndpoint)
+	}
+	if tokenEndpoint.EscapedFragment() != "" {
+		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a fragment", tokenEndpoint)
+	}
+	return tokenEndpoint, nil
+}
+
 // configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present
 func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 	// check for custom token endpoint environment variables
@@ -165,14 +185,9 @@ func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
 		// custom token endpoint is not set, skip configuration
 		return nil
 	}
-
-	tokenEndpoint, err := url.Parse(kubernetesTokenEndpointStr)
+	tokenEndpoint, err := parseAndValidateCustomTokenEndpoint(kubernetesTokenEndpointStr)
 	if err != nil {
-		return fmt.Errorf("failed to parse token endpoint URL %q: %w", kubernetesTokenEndpointStr, err)
-	}
-	// Require the tokenEndpoint to use https scheme
-	if tokenEndpoint.Scheme != "https" {
-		return fmt.Errorf("token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
+		return err
 	}
 
 	// capture values of kubernetesSNIName, kubernetesCAFile, and kubernetesCAData

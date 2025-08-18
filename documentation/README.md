@@ -9,4 +9,4 @@ Note: this documentation is for developers of SDKs, if you need documentation fo
 <!-- LINKS -->
 [new_service_docs]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/developer_setup.md
 [release]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/release.md
-[deprecation]: https://github.com/Azure/azure-sdk-for-go/blob/main/doc/deprecation.md
+[deprecation]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/deprecation_guide.md

@@ -325,7 +325,6 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 }
 
 // getTokenTransporter rebuilds the HTTP transport every time it's called.
-// This approach is acceptable because token requests are infrequent due to token caching at higher levels.
 func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
 	transport := i.baseTransport.Clone()
 

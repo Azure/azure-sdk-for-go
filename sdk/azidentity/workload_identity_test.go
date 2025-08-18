@@ -613,3 +613,86 @@ func TestCustomTokenEndpointTransport_loadCAPool(t *testing.T) {
 		})
 	}
 }
+
+func TestCustomTokenEndpointTransport_getTokenTransporter(t *testing.T) {
+	cases := []struct {
+		name string
+		tr   *customTokenEndpointTransport
+
+		expectErr         bool
+		validateTransport func(t testing.TB, httpTr *http.Transport)
+	}{
+		{
+			name: "no overrides",
+			tr: &customTokenEndpointTransport{
+				baseTransport: &http.Transport{},
+			},
+			expectErr: false,
+		},
+		{
+			name: "with custom CA",
+			tr: &customTokenEndpointTransport{
+				baseTransport: &http.Transport{},
+				caFile:        createTestCAFile(t),
+			},
+			expectErr: false,
+			validateTransport: func(t testing.TB, httpTr *http.Transport) {
+				require.NotNil(t, httpTr.TLSClientConfig)
+				require.NotNil(t, httpTr.TLSClientConfig.RootCAs)
+			},
+		},
+		{
+			name: "invalid CA",
+			tr: &customTokenEndpointTransport{
+				baseTransport: &http.Transport{},
+				caData:        "invalid-ca-data",
+			},
+			expectErr: true,
+		},
+		{
+			name: "with SNI",
+			tr: &customTokenEndpointTransport{
+				baseTransport: &http.Transport{},
+				sniName:       "example.com",
+			},
+			expectErr: false,
+			validateTransport: func(t testing.TB, httpTr *http.Transport) {
+				require.NotNil(t, httpTr.TLSClientConfig)
+				require.NotEmpty(t, httpTr.TLSClientConfig.ServerName)
+				require.Equal(t, "example.com", httpTr.TLSClientConfig.ServerName)
+			},
+		},
+		{
+			name: "with CA + SNI",
+			tr: &customTokenEndpointTransport{
+				baseTransport: &http.Transport{},
+				sniName:       "example.com",
+				caFile:        createTestCAFile(t),
+			},
+			expectErr: false,
+			validateTransport: func(t testing.TB, httpTr *http.Transport) {
+				require.NotNil(t, httpTr.TLSClientConfig)
+				require.NotNil(t, httpTr.TLSClientConfig.RootCAs)
+				require.NotEmpty(t, httpTr.TLSClientConfig.ServerName)
+				require.Equal(t, "example.com", httpTr.TLSClientConfig.ServerName)
+			},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			transport, err := c.tr.getTokenTransporter()
+			if c.expectErr {
+				require.Error(t, err)
+				require.Nil(t, transport)
+				return
+			}
+
+			require.NoError(t, err)
+			require.NotNil(t, transport)
+			if c.validateTransport != nil {
+				c.validateTransport(t, transport)
+			}
+		})
+	}
+}

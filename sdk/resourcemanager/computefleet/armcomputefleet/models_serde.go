@@ -643,6 +643,7 @@ func (f FleetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "spotPriorityProfile", f.SpotPriorityProfile)
 	populateDateTimeRFC3339(objectMap, "timeCreated", f.TimeCreated)
 	populate(objectMap, "uniqueId", f.UniqueID)
+	populate(objectMap, "updatedBy", f.UpdatedBy)
 	populate(objectMap, "vmAttributes", f.VMAttributes)
 	populate(objectMap, "vmSizesProfile", f.VMSizesProfile)
 	populate(objectMap, "zoneAllocationPolicy", f.ZoneAllocationPolicy)
@@ -687,6 +688,9 @@ func (f *FleetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "uniqueId":
 			err = unpopulate(val, "UniqueID", &f.UniqueID)
+			delete(rawMsg, key)
+		case "updatedBy":
+			err = unpopulate(val, "UpdatedBy", &f.UpdatedBy)
 			delete(rawMsg, key)
 		case "vmAttributes":
 			err = unpopulate(val, "VMAttributes", &f.VMAttributes)

@@ -309,7 +309,7 @@ type FleetProperties struct {
 	// Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
 	CapacityType *CapacityType
 
-	// Specifies the display name a Compute Fleet.
+	// Specifies the display name a Compute Fleet test v2.
 	DisplayName *string
 
 	// Mode of the Fleet.
@@ -320,6 +320,9 @@ type FleetProperties struct {
 
 	// Configuration Options for Spot instances in Compute Fleet.
 	SpotPriorityProfile *SpotPriorityProfile
+
+	// Specifies the updated by a Compute Fleet test.
+	UpdatedBy *string
 
 	// Attribute based Fleet.
 	VMAttributes *VMAttributes

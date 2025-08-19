@@ -160,7 +160,7 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 func parseAndValidateCustomTokenEndpoint(endpoint string) (*url.URL, error) {
 	tokenEndpoint, err := url.Parse(endpoint)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse custom token endpoint URL %q: %w", endpoint, err)
+		return nil, fmt.Errorf("failed to parse custom token endpoint URL %q: %s", endpoint, err)
 	}
 	if tokenEndpoint.Scheme != "https" {
 		return nil, fmt.Errorf("custom token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
@@ -303,7 +303,7 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 	if i.caFile != "" {
 		caDataBytes, err = os.ReadFile(i.caFile)
 		if err != nil {
-			return nil, fmt.Errorf("read CA file %q: %w", i.caFile, err)
+			return nil, fmt.Errorf("read CA file %q: %s", i.caFile, err)
 		}
 		if len(caDataBytes) == 0 {
 			return nil, fmt.Errorf("CA file %q is empty", i.caFile)

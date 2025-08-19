@@ -321,7 +321,7 @@ type FleetProperties struct {
 	// Configuration Options for Spot instances in Compute Fleet.
 	SpotPriorityProfile *SpotPriorityProfile
 
-	// Specifies the updated by a Compute Fleet test.
+	// Specifies the updated by a Compute Fleet test v2.
 	UpdatedBy *string
 
 	// Attribute based Fleet.

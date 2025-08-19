@@ -7,24 +7,17 @@
 package azidentity
 
 import (
-	"bytes"
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"errors"
-	"fmt"
-	"io"
 	"net/http"
-	"net/url"
 	"os"
-	"strings"
 	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenendpoint"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -157,238 +150,37 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 	return w.assertion, nil
 }
 
-func parseAndValidateCustomTokenEndpoint(endpoint string) (*url.URL, error) {
-	tokenEndpoint, err := url.Parse(endpoint)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse custom token endpoint URL %q: %s", endpoint, err)
-	}
-	if tokenEndpoint.Scheme != "https" {
-		return nil, fmt.Errorf("custom token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
-	}
-	if tokenEndpoint.User != nil {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain user info", tokenEndpoint)
-	}
-	if tokenEndpoint.RawQuery != "" {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a query", tokenEndpoint)
-	}
-	if tokenEndpoint.EscapedFragment() != "" {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a fragment", tokenEndpoint)
-	}
-	return tokenEndpoint, nil
+// customEndpointFallbackClient wraps the azcore.Client with unexposed settings from azidentity package.
+// This client is expected to use by custom token endpoint flow only.
+type customEndpointFallbackClient struct {
+	azClient *azcore.Client
 }
 
-var (
-	errCustomEndpointEnvSetWithoutTokenEndpoint = fmt.Errorf(
-		"AZURE_KUBERNETES_TOKEN_ENDPOINT is not set but other custom endpoint-related environment variables are present",
-	)
-	errCustomEndpointMultipleCASourcesSet = fmt.Errorf(
-		"only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified",
-	)
-)
-
-// configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present.
-func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
-	kubernetesTokenEndpointStr := os.Getenv(azureKubernetesTokenEndpoint)
-	kubernetesSNIName := os.Getenv(azureKubernetesSNIName)
-	kubernetesCAFile := os.Getenv(azureKubernetesCAFile)
-	kubernetesCAData := os.Getenv(azureKubernetesCAData)
-
-	if kubernetesTokenEndpointStr == "" {
-		// custom token endpoint is not set, while other Kubernetes-related environment variables are present,
-		// this is likely a configuration issue so erroring out to avoid misconfiguration
-		if kubernetesSNIName != "" || kubernetesCAFile != "" || kubernetesCAData != "" {
-			return errCustomEndpointEnvSetWithoutTokenEndpoint
-		}
-
-		return nil
-	}
-	tokenEndpoint, err := parseAndValidateCustomTokenEndpoint(kubernetesTokenEndpointStr)
-	if err != nil {
-		return err
-	}
-
-	// CAFile and CAData are mutually exclusive, at most one can be set.
-	// If none of CAFile or CAData are set, the default system CA pool will be used.
-	if kubernetesCAFile != "" && kubernetesCAData != "" {
-		return errCustomEndpointMultipleCASourcesSet
-	}
-
+func newCustomEndpointFallbackClient(clientOptions *policy.ClientOptions) (*customEndpointFallbackClient, error) {
 	// creating a new azcore client to maintain the same behavior as confidential client's usage.
 	// This fallback client is expected to be used for requesting the tenant discovery settings (non skippable).
-	fallbackClient, err := azcore.NewClient(module, version, runtime.PipelineOptions{
+	azClient, err := azcore.NewClient(module, version, runtime.PipelineOptions{
 		Tracing: runtime.TracingOptions{
 			Namespace: traceNamespace,
 		},
 	}, clientOptions)
 	if err != nil {
+		return nil, err
+	}
+
+	return &customEndpointFallbackClient{azClient: azClient}, nil
+}
+
+func (c *customEndpointFallbackClient) Do(req *http.Request) (*http.Response, error) {
+	return doForClient(c.azClient, req)
+}
+
+// configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present.
+func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
+	fallbackClient, err := newCustomEndpointFallbackClient(clientOptions)
+	if err != nil {
 		return err
 	}
 
-	baseTransport := func() *http.Transport {
-		if transport, ok := http.DefaultTransport.(*http.Transport); ok {
-			return transport.Clone()
-		}
-
-		// this should not happen, but if the user mutates the net/http.DefaultTransport
-		// to something else, we fall back to a sane default
-		return &http.Transport{
-			ForceAttemptHTTP2:   true,
-			MaxIdleConns:        100,
-			IdleConnTimeout:     90 * time.Second,
-			TLSHandshakeTimeout: 10 * time.Second,
-		}
-	}()
-
-	clientOptions.Transport = &customTokenEndpointTransport{
-		caFile:         kubernetesCAFile,
-		caData:         kubernetesCAData,
-		sniName:        kubernetesSNIName,
-		tokenEndpoint:  tokenEndpoint,
-		fallbackClient: fallbackClient,
-		baseTransport:  baseTransport,
-	}
-	return nil
-}
-
-// customTokenEndpointTransport is a custom HTTP transport that redirects token requests
-// to the custom token endpoint when in custom token endpoint mode.
-//
-// All non-token requests are forwarded to the fallback client.
-type customTokenEndpointTransport struct {
-	caFile         string
-	caData         string
-	sniName        string
-	tokenEndpoint  *url.URL
-	fallbackClient *azcore.Client
-	baseTransport  *http.Transport
-}
-
-func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, error) {
-	isTokenRequest, err := i.isTokenRequest(req)
-	switch {
-	case err != nil:
-		// unable to determine if this is a token request, fail the request
-		// We don't pass the request to the fallback client as the request body might be in half broken state.
-		return nil, err
-	case !isTokenRequest:
-		// not a token request, fallback to the original transporter
-		return doForClient(i.fallbackClient, req)
-	}
-
-	tr, err := i.getTokenTransporter()
-	if err != nil {
-		return nil, err
-	}
-
-	newReq := req.Clone(req.Context())
-	newReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
-	newReq.URL.Host = i.tokenEndpoint.Host
-	newReq.URL.Path = i.tokenEndpoint.Path
-	newReq.Host = i.tokenEndpoint.Host
-
-	return tr.RoundTrip(newReq)
-}
-
-// loadCAPool loads the CA certificate pool to use.
-// If neither CA file nor CA data is provided, the default system CA pool will be used.
-func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
-	if i.caFile == "" && i.caData == "" {
-		// nil CertPool indicates that the default system CA pool should be used
-		return nil, nil
-	}
-
-	var caDataBytes []byte
-	var err error
-
-	if i.caFile != "" {
-		caDataBytes, err = os.ReadFile(i.caFile)
-		if err != nil {
-			return nil, fmt.Errorf("read CA file %q: %s", i.caFile, err)
-		}
-		if len(caDataBytes) == 0 {
-			return nil, fmt.Errorf("CA file %q is empty", i.caFile)
-		}
-	} else {
-		caDataBytes = []byte(i.caData)
-	}
-
-	caPool := x509.NewCertPool()
-	if !caPool.AppendCertsFromPEM(caDataBytes) {
-		if i.caFile != "" {
-			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
-		} else {
-			return nil, fmt.Errorf("parse CA data: no valid certificates found")
-		}
-	}
-
-	return caPool, nil
-}
-
-// getTokenTransporter rebuilds the HTTP transport every time it's called.
-func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
-	transport := i.baseTransport.Clone()
-
-	caPool, err := i.loadCAPool()
-	if err != nil {
-		return nil, err
-	}
-
-	if transport.TLSClientConfig == nil {
-		transport.TLSClientConfig = &tls.Config{}
-	}
-	transport.TLSClientConfig.RootCAs = caPool
-
-	// Configure SNI if specified
-	if i.sniName != "" {
-		transport.TLSClientConfig.ServerName = i.sniName
-	}
-
-	return transport, nil
-}
-
-const (
-	tokenRequestClientAssertionField     = "client_assertion"
-	tokenRequestClientAssertionTypeField = "client_assertion_type"
-	tokenRequestContentTypePrefix        = "application/x-www-form-urlencoded"
-)
-
-func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) (bool, error) {
-	if !strings.EqualFold(req.Method, http.MethodPost) {
-		return false, nil
-	}
-	contentType := req.Header.Get("Content-Type")
-	if !strings.HasPrefix(contentType, tokenRequestContentTypePrefix) {
-		// expecting token request to use application/x-www-form-urlencoded
-		return false, nil
-	}
-	if req.ContentLength <= 0 {
-		// expecting non-empty request body
-		return false, nil
-	}
-
-	if req.Body == nil || req.Body == http.NoBody {
-		return false, nil
-	}
-
-	b, err := io.ReadAll(req.Body)
-	if err != nil {
-		// unable to read the form body at all, fail the whole token request in caller
-		return false, err
-	}
-	_ = req.Body.Close()                               // close the original body to avoid resource leaks
-	req.Body = streaming.NopCloser(bytes.NewReader(b)) // reset the body for future reads
-	req.GetBody = func() (io.ReadCloser, error) {      // reset GetBody for future reads (needed for 3xx redirects)
-		return streaming.NopCloser(bytes.NewReader(b)), nil
-	}
-
-	qs, err := url.ParseQuery(string(b))
-	if err != nil {
-		return false, nil // unable to process the form body, treat as non token request
-	}
-	if qs.Has(tokenRequestClientAssertionField) && qs.Has(tokenRequestClientAssertionTypeField) {
-		// this is a token request with client assertion set
-		return true, nil
-	}
-
-	return false, nil
+	return customtokenendpoint.Configure(clientOptions, fallbackClient)
 }

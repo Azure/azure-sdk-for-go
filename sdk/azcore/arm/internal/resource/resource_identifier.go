@@ -123,7 +123,7 @@ func newResourceIDWithProvider(parent *ResourceID, providerNamespace, resourceTy
 }
 
 func chooseResourceType(resourceTypeName string, parent *ResourceID) ResourceType {
-	if strings.EqualFold(resourceTypeName, resourceGroupsLowerKey) {
+	if strings.EqualFold(resourceTypeName, resourceGroupsLowerKey) && parent != nil && parent.ResourceType.String() == SubscriptionResourceType.String() {
 		return ResourceGroupResourceType
 	} else if strings.EqualFold(resourceTypeName, subscriptionsKey) && parent != nil && parent.ResourceType.String() == TenantResourceType.String() {
 		return SubscriptionResourceType

@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- `AzureDeveloperCliCredential` disables interactive prompts when calling `azd auth token`
 
 ## 1.11.0 (2025-08-05)
 

@@ -9,7 +9,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"strings"
 	"testing"
 	"time"
 )
@@ -124,41 +123,5 @@ func TestAzureDeveloperCLICredential_TenantID(t *testing.T) {
 	}
 	if !called {
 		t.Fatal("token provider wasn't called")
-	}
-}
-
-func TestAzureDeveloperCLICredential_CommandLineIncludesNoPrompt(t *testing.T) {
-	commandLine := ""
-	options := AzureDeveloperCLICredentialOptions{
-		tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
-			// Simulate command construction to verify --no-prompt is included
-			commandLine = "azd auth token -o json --no-prompt"
-			if tenant != "" {
-				commandLine += " --tenant-id " + tenant
-			}
-			for _, scope := range scopes {
-				commandLine += " --scope " + scope
-			}
-
-			// Verify the command line includes --no-prompt
-			if !strings.Contains(commandLine, "--no-prompt") {
-				t.Errorf("command line should include --no-prompt flag, got: %s", commandLine)
-			}
-
-			return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
-		},
-	}
-	cred, err := NewAzureDeveloperCLICredential(&options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-
-	// Additional verification that --no-prompt is in the constructed command
-	if !strings.Contains(commandLine, "--no-prompt") {
-		t.Errorf("Expected command line to contain --no-prompt, got: %s", commandLine)
 	}
 }

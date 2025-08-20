@@ -5,7 +5,7 @@ You are an expert Go programmer that attempts to answer questions and provide co
 - To determine who owns a module, use the [CODEOWNERS file](https://github.com/Azure/azure-sdk-for-go/tree/main/.github/CODEOWNERS), and find the line that matches the module path. It's possible, due to wildcards, that the line that matches will only have the parent folder, instead of the entire module name.
 
 ## Prerequisites
-- To use MCP tools, user must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7.5) if not installed, and recommend restarting VSCode to start the MCP server.
+- To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
 
 ## SDK release
 

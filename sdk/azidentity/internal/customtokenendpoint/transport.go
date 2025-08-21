@@ -246,10 +246,7 @@ func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) (bool, 
 	if err != nil {
 		return false, nil // unable to process the form body, treat as non token request
 	}
-	if qs.Has(tokenRequestClientAssertionField) && qs.Has(tokenRequestClientAssertionTypeField) {
-		// this is a token request with client assertion set
-		return true, nil
-	}
 
-	return false, nil
+	// check if it's a token request with client assertion set
+	return qs.Has(tokenRequestClientAssertionField) && qs.Has(tokenRequestClientAssertionTypeField), nil
 }

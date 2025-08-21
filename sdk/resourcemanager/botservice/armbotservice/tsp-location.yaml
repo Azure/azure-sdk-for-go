@@ -1,0 +1,4 @@
+directory: specification/botservice/BotService.Management
+commit: 711fdf36c9b9cbb4017c5c0ad7f95503668fe1e3
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

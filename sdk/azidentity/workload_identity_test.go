@@ -348,7 +348,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{tenant: fakeTenantID}
+	sts := mockSTS{}
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
 	customTokenEndointServer, caData := startTestTLSServerWithCAData(
@@ -394,7 +394,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{tenant: fakeTenantID}
+	sts := mockSTS{}
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
 	customTokenEndointServer, caData := startTestTLSServerWithCAData(
@@ -443,7 +443,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{tenant: fakeTenantID}
+	sts := mockSTS{}
 	sniName := "test-sni.example.com"
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
@@ -499,7 +499,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_ExtraPolicy(t *testing.T
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{tenant: fakeTenantID}
+	sts := mockSTS{}
 	sniName := "test-sni.example.com"
 
 	extraHeader := "X-Extra-Header"

@@ -4,9 +4,9 @@
 package customtokenendpoint
 
 import (
-	"bytes"
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 const (
@@ -55,11 +54,23 @@ var (
 	)
 )
 
+func createBaseTransport() *http.Transport {
+	if transport, ok := http.DefaultTransport.(*http.Transport); ok {
+		return transport.Clone()
+	}
+
+	// this should not happen, but if the user mutates the net/http.DefaultTransport
+	// to something else, we fall back to a sane default
+	return &http.Transport{
+		ForceAttemptHTTP2:   true,
+		MaxIdleConns:        100,
+		IdleConnTimeout:     90 * time.Second,
+		TLSHandshakeTimeout: 10 * time.Second,
+	}
+}
+
 // Configure configures custom token endpoint mode if the required environment variables are present.
-func Configure(
-	clientOptions *policy.ClientOptions,
-	fallbackClient policy.Transporter,
-) error {
+func Configure(clientOptions *policy.ClientOptions) error {
 	kubernetesTokenEndpointStr := os.Getenv(AzureKubernetesTokenEndpoint)
 	kubernetesSNIName := os.Getenv(AzureKubernetesSNIName)
 	kubernetesCAFile := os.Getenv(AzureKubernetesCAFile)
@@ -85,46 +96,32 @@ func Configure(
 		return errCustomEndpointMultipleCASourcesSet
 	}
 
-	baseTransport := func() *http.Transport {
-		if transport, ok := http.DefaultTransport.(*http.Transport); ok {
-			return transport.Clone()
-		}
-
-		// this should not happen, but if the user mutates the net/http.DefaultTransport
-		// to something else, we fall back to a sane default
-		return &http.Transport{
-			ForceAttemptHTTP2:   true,
-			MaxIdleConns:        100,
-			IdleConnTimeout:     90 * time.Second,
-			TLSHandshakeTimeout: 10 * time.Second,
-		}
-	}()
-
-	clientOptions.Transport = &customTokenEndpointTransport{
-		caFile:         kubernetesCAFile,
-		caData:         kubernetesCAData,
-		sniName:        kubernetesSNIName,
-		tokenEndpoint:  tokenEndpoint,
-		fallbackClient: fallbackClient,
-		baseTransport:  baseTransport,
-	}
+	clientOptions.PerRetryPolicies = append(
+		clientOptions.PerRetryPolicies,
+		&customTokenEndpointPolicy{
+			caFile:        kubernetesCAFile,
+			caData:        kubernetesCAData,
+			sniName:       kubernetesSNIName,
+			tokenEndpoint: tokenEndpoint,
+			baseTransport: createBaseTransport(),
+		},
+	)
 	return nil
 }
 
-// customTokenEndpointTransport is a custom HTTP transport that redirects token requests
+// customTokenEndpointPolicy is a custom HTTP transport that redirects token requests
 // to the custom token endpoint when in custom token endpoint mode.
 //
-// All non-token requests are forwarded to the fallback client.
-type customTokenEndpointTransport struct {
-	caFile         string
-	caData         string
-	sniName        string
-	tokenEndpoint  *url.URL
-	fallbackClient policy.Transporter
-	baseTransport  *http.Transport
+// Only token request will be handled by this transport.
+type customTokenEndpointPolicy struct {
+	caFile        string
+	caData        string
+	sniName       string
+	tokenEndpoint *url.URL
+	baseTransport *http.Transport
 }
 
-func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, error) {
+func (i *customTokenEndpointPolicy) Do(req *policy.Request) (*http.Response, error) {
 	isTokenRequest, err := i.isTokenRequest(req)
 	switch {
 	case err != nil:
@@ -133,7 +130,7 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 		return nil, err
 	case !isTokenRequest:
 		// not a token request, fallback to the original transporter
-		return i.fallbackClient.Do(req)
+		return req.Next()
 	}
 
 	tr, err := i.getTokenTransporter()
@@ -141,18 +138,25 @@ func (i *customTokenEndpointTransport) Do(req *http.Request) (*http.Response, er
 		return nil, err
 	}
 
-	newReq := req.Clone(req.Context())
-	newReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
-	newReq.URL.Host = i.tokenEndpoint.Host
-	newReq.URL.Path = i.tokenEndpoint.Path
-	newReq.Host = i.tokenEndpoint.Host
+	rawReq := req.Raw()
+	rawReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
+	rawReq.URL.Host = i.tokenEndpoint.Host
+	rawReq.URL.Path = i.tokenEndpoint.Path
+	rawReq.Host = i.tokenEndpoint.Host
 
-	return tr.RoundTrip(newReq)
+	resp, err := tr.RoundTrip(rawReq)
+	if err == nil && resp == nil {
+		// this policy is effectively a transport, so it must handle
+		// this rare case. Returning an error makes the retry policy
+		// try the request again
+		err = errors.New("received nil response")
+	}
+	return resp, err
 }
 
 // loadCAPool loads the CA certificate pool to use.
 // If neither CA file nor CA data is provided, the default system CA pool will be used.
-func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
+func (i *customTokenEndpointPolicy) loadCAPool() (*x509.CertPool, error) {
 	if i.caFile == "" && i.caData == "" {
 		// nil CertPool indicates that the default system CA pool should be used
 		return nil, nil
@@ -186,7 +190,7 @@ func (i *customTokenEndpointTransport) loadCAPool() (*x509.CertPool, error) {
 }
 
 // getTokenTransporter rebuilds the HTTP transport every time it's called.
-func (i *customTokenEndpointTransport) getTokenTransporter() (*http.Transport, error) {
+func (i *customTokenEndpointPolicy) getTokenTransporter() (*http.Transport, error) {
 	transport := i.baseTransport.Clone()
 
 	caPool, err := i.loadCAPool()
@@ -213,33 +217,30 @@ const (
 	tokenRequestContentTypePrefix        = "application/x-www-form-urlencoded"
 )
 
-func (i *customTokenEndpointTransport) isTokenRequest(req *http.Request) (bool, error) {
-	if !strings.EqualFold(req.Method, http.MethodPost) {
+func (i *customTokenEndpointPolicy) isTokenRequest(req *policy.Request) (bool, error) {
+	if !strings.EqualFold(req.Raw().Method, http.MethodPost) {
 		return false, nil
 	}
-	contentType := req.Header.Get("Content-Type")
+	contentType := req.Raw().Header.Get("Content-Type")
 	if !strings.HasPrefix(contentType, tokenRequestContentTypePrefix) {
 		// expecting token request to use application/x-www-form-urlencoded
 		return false, nil
 	}
-	if req.ContentLength <= 0 {
+	if req.Raw().ContentLength <= 0 {
 		// expecting non-empty request body
 		return false, nil
 	}
 
-	if req.Body == nil || req.Body == http.NoBody {
-		return false, nil
-	}
-
-	b, err := io.ReadAll(req.Body)
+	// peak the request body to confirm it's asking for token
+	reqBody := req.Body()
+	b, err := io.ReadAll(reqBody)
 	if err != nil {
 		// unable to read the form body at all, fail the whole token request in caller
 		return false, err
 	}
-	_ = req.Body.Close()                               // close the original body to avoid resource leaks
-	req.Body = streaming.NopCloser(bytes.NewReader(b)) // reset the body for future reads
-	req.GetBody = func() (io.ReadCloser, error) {      // reset GetBody for future reads (needed for 3xx redirects)
-		return streaming.NopCloser(bytes.NewReader(b)), nil
+	_ = reqBody.Close()
+	if err := req.RewindBody(); err != nil {
+		return false, err
 	}
 
 	qs, err := url.ParseQuery(string(b))

@@ -9,7 +9,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"net/http"
 	"os"
 	"sync"
 	"time"
@@ -100,7 +99,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 
 	// configure custom token endpoint if environment variables are present.
 	// In custom token endpoint mode, a dedicated transport will be used for proxying token requests to a dedicated endpoint.
-	if err := configureCustomTokenEndpoint(&caco.ClientOptions); err != nil {
+	if err := customtokenendpoint.Configure(&caco.ClientOptions); err != nil {
 		return nil, err
 	}
 
@@ -148,39 +147,4 @@ func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, erro
 		defer w.mtx.RUnlock()
 	}
 	return w.assertion, nil
-}
-
-// customEndpointFallbackClient wraps the azcore.Client with unexposed settings from azidentity package.
-// This client is expected to use by custom token endpoint flow only.
-type customEndpointFallbackClient struct {
-	azClient *azcore.Client
-}
-
-func newCustomEndpointFallbackClient(clientOptions *policy.ClientOptions) (*customEndpointFallbackClient, error) {
-	// creating a new azcore client to maintain the same behavior as confidential client's usage.
-	// This fallback client is expected to be used for requesting the tenant discovery settings (non skippable).
-	azClient, err := azcore.NewClient(module, version, runtime.PipelineOptions{
-		Tracing: runtime.TracingOptions{
-			Namespace: traceNamespace,
-		},
-	}, clientOptions)
-	if err != nil {
-		return nil, err
-	}
-
-	return &customEndpointFallbackClient{azClient: azClient}, nil
-}
-
-func (c *customEndpointFallbackClient) Do(req *http.Request) (*http.Response, error) {
-	return doForClient(c.azClient, req)
-}
-
-// configureCustomTokenEndpoint configures custom token endpoint mode if the required environment variables are present.
-func configureCustomTokenEndpoint(clientOptions *policy.ClientOptions) error {
-	fallbackClient, err := newCustomEndpointFallbackClient(clientOptions)
-	if err != nil {
-		return err
-	}
-
-	return customtokenendpoint.Configure(clientOptions, fallbackClient)
 }

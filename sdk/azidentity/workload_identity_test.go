@@ -404,6 +404,22 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
 }
 
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testing.T) {
+	testClientAssertion := createRandomClientAssertion(t)
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+
+	t.Setenv(customtokenendpoint.AzureKubernetesTokenEndpoint, "invalid-token-endpoint")
+	_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:      fakeClientID,
+		TenantID:      fakeTenantID,
+		TokenFilePath: tempFile,
+	})
+	require.Error(t, err)
+}
+
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T) {
 	testClientAssertion := createRandomClientAssertion(t)
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")

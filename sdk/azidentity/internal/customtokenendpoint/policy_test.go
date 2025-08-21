@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
 )
 
@@ -126,14 +127,14 @@ func TestConfigure(t *testing.T) {
 		envs          map[string]string
 		clientOptions policy.ClientOptions
 
-		expectErr                bool
-		checkErr                 func(t testing.TB, err error) // optional check on error
-		expectOverridesTransport bool
+		expectErr       bool
+		checkErr        func(t testing.TB, err error) // optional check on error
+		expectAddPolicy bool
 	}{
 		{
-			name:                     "no custom endpoint",
-			expectErr:                false,
-			expectOverridesTransport: false,
+			name:            "no custom endpoint",
+			expectErr:       false,
+			expectAddPolicy: false,
 		},
 		{
 			name:      "custom endpoint enabled with minimal settings",
@@ -141,7 +142,7 @@ func TestConfigure(t *testing.T) {
 			envs: map[string]string{
 				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
 			},
-			expectOverridesTransport: true,
+			expectAddPolicy: true,
 		},
 		{
 			name:      "custom endpoint enabled with CA file + SNI",
@@ -151,7 +152,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesCAFile:        "/path/to/custom-ca-file",
 				AzureKubernetesSNIName:       "custom-sni.example.com",
 			},
-			expectOverridesTransport: true,
+			expectAddPolicy: true,
 		},
 		{
 			name:      "custom endpoint enabled with CA data + SNI",
@@ -161,7 +162,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesCAData:        "custom-ca-data",
 				AzureKubernetesSNIName:       "custom-sni.example.com",
 			},
-			expectOverridesTransport: true,
+			expectAddPolicy: true,
 		},
 		{
 			name:      "custom endpoint enabled with SNI",
@@ -170,7 +171,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
 				AzureKubernetesSNIName:       "custom-sni.example.com",
 			},
-			expectOverridesTransport: true,
+			expectAddPolicy: true,
 		},
 		{
 			name:      "custom endpoint disabled with extra environment variables",
@@ -211,7 +212,7 @@ func TestConfigure(t *testing.T) {
 					t.Setenv(k, v)
 				}
 			}
-			err := Configure(&c.clientOptions, http.DefaultClient)
+			err := Configure(&c.clientOptions)
 
 			if c.expectErr {
 				require.Error(t, err)
@@ -222,9 +223,10 @@ func TestConfigure(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			if c.expectOverridesTransport {
-				require.NotNil(t, c.clientOptions.Transport)
-				require.IsType(t, &customTokenEndpointTransport{}, c.clientOptions.Transport)
+			if c.expectAddPolicy {
+				require.NotEmpty(t, c.clientOptions.PerRetryPolicies)
+				lastPolicy := c.clientOptions.PerRetryPolicies[len(c.clientOptions.PerRetryPolicies)-1]
+				require.IsType(t, &customTokenEndpointPolicy{}, lastPolicy)
 			}
 		})
 	}
@@ -265,28 +267,28 @@ func createTestCAFile(t testing.TB) string {
 	return caFile
 }
 
-func TestCustomTokenEndpointTransport_loadCAPool(t *testing.T) {
+func TestCustomTokenEndpointPolicy_loadCAPool(t *testing.T) {
 	cases := []struct {
 		name string
-		tr   *customTokenEndpointTransport
+		tr   *customTokenEndpointPolicy
 
 		expectErr            bool
 		expectCustomCertPool bool
 	}{
 		{
 			name:                 "fallback to system pool",
-			tr:                   &customTokenEndpointTransport{},
+			tr:                   &customTokenEndpointPolicy{},
 			expectErr:            false,
 			expectCustomCertPool: false,
 		},
 		{
 			name:      "load CA from CA file - invalid CA file",
-			tr:        &customTokenEndpointTransport{caFile: "/path/to/invalid/ca/file"},
+			tr:        &customTokenEndpointPolicy{caFile: "/path/to/invalid/ca/file"},
 			expectErr: true,
 		},
 		{
 			name: "load CA from CA file - invalid CA file content",
-			tr: &customTokenEndpointTransport{
+			tr: &customTokenEndpointPolicy{
 				caFile: func() string {
 					d := t.TempDir()
 					caFile := filepath.Join(d, "test-ca.pem")
@@ -300,7 +302,7 @@ func TestCustomTokenEndpointTransport_loadCAPool(t *testing.T) {
 		},
 		{
 			name: "load CA from CA file - empty CA file content",
-			tr: &customTokenEndpointTransport{
+			tr: &customTokenEndpointPolicy{
 				caFile: func() string {
 					d := t.TempDir()
 					caFile := filepath.Join(d, "test-ca.pem")
@@ -314,18 +316,18 @@ func TestCustomTokenEndpointTransport_loadCAPool(t *testing.T) {
 		},
 		{
 			name:                 "load CA from CA file - valid CA",
-			tr:                   &customTokenEndpointTransport{caFile: createTestCAFile(t)},
+			tr:                   &customTokenEndpointPolicy{caFile: createTestCAFile(t)},
 			expectErr:            false,
 			expectCustomCertPool: true,
 		},
 		{
 			name:      "load CA from CA data - invalid CA data",
-			tr:        &customTokenEndpointTransport{caData: "invalid-ca"},
+			tr:        &customTokenEndpointPolicy{caData: "invalid-ca"},
 			expectErr: true,
 		},
 		{
 			name:                 "load CA from CA data - valid CA",
-			tr:                   &customTokenEndpointTransport{caData: string(createTestCA(t))},
+			tr:                   &customTokenEndpointPolicy{caData: string(createTestCA(t))},
 			expectErr:            false,
 			expectCustomCertPool: true,
 		},
@@ -348,24 +350,24 @@ func TestCustomTokenEndpointTransport_loadCAPool(t *testing.T) {
 	}
 }
 
-func TestCustomTokenEndpointTransport_getTokenTransporter(t *testing.T) {
+func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 	cases := []struct {
 		name string
-		tr   *customTokenEndpointTransport
+		tr   *customTokenEndpointPolicy
 
 		expectErr         bool
 		validateTransport func(t testing.TB, httpTr *http.Transport)
 	}{
 		{
 			name: "no overrides",
-			tr: &customTokenEndpointTransport{
+			tr: &customTokenEndpointPolicy{
 				baseTransport: &http.Transport{},
 			},
 			expectErr: false,
 		},
 		{
 			name: "with custom CA",
-			tr: &customTokenEndpointTransport{
+			tr: &customTokenEndpointPolicy{
 				baseTransport: &http.Transport{},
 				caFile:        createTestCAFile(t),
 			},
@@ -377,7 +379,7 @@ func TestCustomTokenEndpointTransport_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "invalid CA",
-			tr: &customTokenEndpointTransport{
+			tr: &customTokenEndpointPolicy{
 				baseTransport: &http.Transport{},
 				caData:        "invalid-ca-data",
 			},
@@ -385,7 +387,7 @@ func TestCustomTokenEndpointTransport_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "with SNI",
-			tr: &customTokenEndpointTransport{
+			tr: &customTokenEndpointPolicy{
 				baseTransport: &http.Transport{},
 				sniName:       "example.com",
 			},
@@ -398,7 +400,7 @@ func TestCustomTokenEndpointTransport_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "with CA + SNI",
-			tr: &customTokenEndpointTransport{
+			tr: &customTokenEndpointPolicy{
 				baseTransport: &http.Transport{},
 				sniName:       "example.com",
 				caFile:        createTestCAFile(t),
@@ -431,7 +433,7 @@ func TestCustomTokenEndpointTransport_getTokenTransporter(t *testing.T) {
 	}
 }
 
-func TestCustomTokenEndpointTransport_isTokenRequest(t *testing.T) {
+func TestCustomTokenEndpointPolicy_isTokenRequest(t *testing.T) {
 	// helper to build a request with given parameters
 	newReq := func(method, contentType string, body io.Reader) *http.Request {
 		t.Helper()
@@ -513,16 +515,6 @@ func TestCustomTokenEndpointTransport_isTokenRequest(t *testing.T) {
 			expected: false,
 		},
 		{
-			name: "unreadable body returns error",
-			req: func() *http.Request {
-				r := newPostFormReq("a=b")
-				r.Body = errReadCloser{}
-				r.ContentLength = 10
-				return r
-			}(),
-			expectErr: true,
-		},
-		{
 			name:     "invalid form body (unparseable)",
 			req:      newPostFormReq("%zz"),
 			expected: false,
@@ -576,8 +568,10 @@ func TestCustomTokenEndpointTransport_isTokenRequest(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			tr := &customTokenEndpointTransport{}
-			v, err := tr.isTokenRequest(c.req)
+			tr := &customTokenEndpointPolicy{}
+			policyReq, err := runtime.NewRequestFromRequest(c.req)
+			require.NoError(t, err)
+			v, err := tr.isTokenRequest(policyReq)
 
 			if c.expectErr {
 				require.Error(t, err)

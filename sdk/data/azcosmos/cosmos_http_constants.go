@@ -42,6 +42,7 @@ const (
 	cosmosHeaderIsQueryPlanRequest                 string = "x-ms-cosmos-is-query-plan-request"
 	cosmosHeaderSupportedQueryFeatures             string = "x-ms-cosmos-supported-query-features"
 	cosmosHeaderPartitionKeyRangeId                string = "x-ms-documentdb-partitionkeyrangeid"
+	cosmosHeaderAllowTentativeWrites               string = "x-ms-cosmos-allow-tentative-writes"
 	headerXmsDate                                  string = "x-ms-date"
 	headerAuthorization                            string = "Authorization"
 	headerContentType                              string = "Content-Type"

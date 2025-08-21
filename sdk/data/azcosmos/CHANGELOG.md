@@ -13,6 +13,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed bug where the correct header was not being sent for writes on multiple write region accounts. See 
 
 ### Other Changes
 

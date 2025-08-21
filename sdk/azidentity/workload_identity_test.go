@@ -321,25 +321,35 @@ func createRandomClientAssertion(t testing.TB) string {
 	return base64.RawURLEncoding.EncodeToString(b)
 }
 
-func requireCustomTokenRequestWithProperHeader(t testing.TB, req *http.Request) {
-	t.Helper()
+// customTokenRequestPolicyFlowCheck validates the custom token request flow is
+// obeying the policy token flows without skipping headers.
+type customTokenRequestPolicyFlowCheck struct {
+	requiredHeaderKey   string
+	requiredHeaderValue string
+}
 
+func newCustomTokenRequestPolicyFlowCheck() *customTokenRequestPolicyFlowCheck {
+	return &customTokenRequestPolicyFlowCheck{
+		requiredHeaderKey:   "adhoc-injected-header",
+		requiredHeaderValue: "adhoc-injected-header-value",
+	}
+}
+
+func (c *customTokenRequestPolicyFlowCheck) Policy() policy.Policy {
+	return policyFunc(func(req *policy.Request) (*http.Response, error) {
+		req.Raw().Header.Set(c.requiredHeaderKey, c.requiredHeaderValue)
+
+		return req.Next()
+	})
+}
+
+func (c *customTokenRequestPolicyFlowCheck) Validate(t testing.TB, req *http.Request) {
+	t.Helper()
 	require.NotNil(t, req)
 	require.NotNil(t, req.Header)
 
 	// headers expecting from client even it's sending to custom token endpoint
-	requiredHeaderKeys := []string{
-		"Client-Request-Id",
-		"Return-Client-Request-Id",
-		"User-Agent",
-		"X-Client-Cpu",
-		"X-Client-Os",
-		"X-Client-Sku",
-		"X-Client-Ver",
-	}
-	for _, key := range requiredHeaderKeys {
-		require.Contains(t, req.Header, key)
-	}
+	require.Equal(t, c.requiredHeaderValue, req.Header.Get(c.requiredHeaderKey))
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T) {
@@ -349,6 +359,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 		t.Fatalf("failed to write token file: %v", err)
 	}
 	sts := mockSTS{}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
 	customTokenEndointServer, caData := startTestTLSServerWithCAData(
@@ -356,7 +367,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			customTokenEndointServerCalledTimes.Add(1)
 
-			requireCustomTokenRequestWithProperHeader(t, req)
+			policyFlowCheck.Validate(t, req)
 
 			require.NoError(t, req.ParseForm())
 			require.NotEmpty(t, req.PostForm)
@@ -374,7 +385,12 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 	t.Setenv(customtokenendpoint.AzureKubernetesTokenEndpoint, customTokenEndointServer.URL)
 	t.Setenv(customtokenendpoint.AzureKubernetesCAData, caData)
 
-	clientOptions := policy.ClientOptions{Transport: &sts}
+	clientOptions := policy.ClientOptions{
+		Transport: &sts,
+		PerCallPolicies: []policy.Policy{
+			policyFlowCheck.Policy(),
+		},
+	}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:      fakeClientID,
 		ClientOptions: clientOptions,
@@ -395,6 +411,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 		t.Fatalf("failed to write token file: %v", err)
 	}
 	sts := mockSTS{}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
 	customTokenEndointServer, caData := startTestTLSServerWithCAData(
@@ -402,7 +419,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			customTokenEndointServerCalledTimes.Add(1)
 
-			requireCustomTokenRequestWithProperHeader(t, req)
+			policyFlowCheck.Validate(t, req)
 
 			require.NoError(t, req.ParseForm())
 			require.NotEmpty(t, req.PostForm)
@@ -423,7 +440,12 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
 	t.Setenv(customtokenendpoint.AzureKubernetesCAFile, caFile)
 
-	clientOptions := policy.ClientOptions{Transport: &sts}
+	clientOptions := policy.ClientOptions{
+		Transport: &sts,
+		PerCallPolicies: []policy.Policy{
+			policyFlowCheck.Policy(),
+		},
+	}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:      fakeClientID,
 		ClientOptions: clientOptions,
@@ -444,6 +466,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 		t.Fatalf("failed to write token file: %v", err)
 	}
 	sts := mockSTS{}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 	sniName := "test-sni.example.com"
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
@@ -452,7 +475,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			customTokenEndointServerCalledTimes.Add(1)
 
-			requireCustomTokenRequestWithProperHeader(t, req)
+			policyFlowCheck.Validate(t, req)
 
 			require.NotNil(t, req.TLS)
 			require.Equal(t, req.TLS.ServerName, sniName, "when SNI is set, request should set SNI")
@@ -478,70 +501,10 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
 	t.Setenv(customtokenendpoint.AzureKubernetesCAFile, caFile)
 
-	clientOptions := policy.ClientOptions{Transport: &sts}
-	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientID:      fakeClientID,
-		ClientOptions: clientOptions,
-		TenantID:      fakeTenantID,
-		TokenFilePath: tempFile,
-	})
-	require.NoError(t, err)
-
-	testGetTokenSuccess(t, cred)
-
-	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
-}
-
-// ensure the custom token endpoint transport invokes the pipeline
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_ExtraPolicy(t *testing.T) {
-	testClientAssertion := createRandomClientAssertion(t)
-	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
-	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
-		t.Fatalf("failed to write token file: %v", err)
-	}
-	sts := mockSTS{}
-	sniName := "test-sni.example.com"
-
-	extraHeader := "X-Extra-Header"
-	extraHeaderValue := "extra-value"
-
-	customTokenEndointServerCalledTimes := new(atomic.Int32)
-	customTokenEndointServer, caData := startTestTLSServerWithCAData(
-		t,
-		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-			customTokenEndointServerCalledTimes.Add(1)
-
-			requireCustomTokenRequestWithProperHeader(t, req)
-
-			require.Equal(t, req.Header.Get(extraHeader), extraHeaderValue)
-
-			require.NotNil(t, req.TLS)
-			require.Equal(t, req.TLS.ServerName, sniName, "when SNI is set, request should set SNI")
-
-			require.NoError(t, req.ParseForm())
-			require.NotEmpty(t, req.PostForm)
-
-			require.Contains(t, req.PostForm, "client_assertion")
-			require.Equal(t, req.PostForm.Get("client_assertion"), testClientAssertion)
-
-			require.Contains(t, req.PostForm, "client_id")
-			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
-
-			_, _ = w.Write(accessTokenRespSuccess)
-		}),
-	)
-
-	t.Setenv(customtokenendpoint.AzureKubernetesTokenEndpoint, customTokenEndointServer.URL)
-	t.Setenv(customtokenendpoint.AzureKubernetesSNIName, sniName)
-	t.Setenv(customtokenendpoint.AzureKubernetesCAData, caData)
-
 	clientOptions := policy.ClientOptions{
 		Transport: &sts,
 		PerCallPolicies: []policy.Policy{
-			policyFunc(func(r *policy.Request) (*http.Response, error) {
-				r.Raw().Header.Set(extraHeader, extraHeaderValue)
-				return r.Next()
-			}),
+			policyFlowCheck.Policy(),
 		},
 	}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{

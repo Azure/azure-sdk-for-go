@@ -490,7 +490,6 @@ func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
 	if resp.Request.Header.Get(cosmosHeaderAllowTentativeWrites) == "" {
 		t.Fatalf("expected %s header to be set", cosmosHeaderAllowTentativeWrites)
 	}
-	fmt.Println(resp)
 }
 
 func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {

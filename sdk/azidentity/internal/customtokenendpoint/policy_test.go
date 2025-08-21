@@ -10,7 +10,6 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"fmt"
 	"io"
 	"math/big"
 	"net/http"
@@ -25,12 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
 )
-
-// errReadCloser is a helper that forces an error when reading the request body
-type errReadCloser struct{}
-
-func (e errReadCloser) Read(p []byte) (int, error) { return 0, fmt.Errorf("forced read error") }
-func (e errReadCloser) Close() error               { return nil }
 
 func TestParseAndValidateCustomTokenEndpoint(t *testing.T) {
 	cases := []struct {

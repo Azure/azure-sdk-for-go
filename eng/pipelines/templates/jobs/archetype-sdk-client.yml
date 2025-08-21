@@ -246,7 +246,7 @@ extends:
       # 1. Internal trigger, not Pull Request trigger
       # 2. Not weekly build
       # 3. Manual trigger or force IncludeRelease
-      - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
+      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
           - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
               - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
                   - template: archetype-go-release.yml

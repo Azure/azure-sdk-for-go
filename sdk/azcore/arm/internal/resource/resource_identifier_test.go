@@ -266,6 +266,23 @@ func TestParseResourceIdentifier(t *testing.T) {
 			isChild:        true,
 			stringValue:    "/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d/providers/Microsoft.CognitiveServices/locations/eastus/resourceGroups/avm-res-cognitiveservices-account-rg-p26m/deletedAccounts/OpenAI-cog-p26m",
 		},
+		"/providers/Microsoft.Billing/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d": {
+			Parent:       RootResourceID,
+			ResourceType: NewResourceType("Microsoft.Billing", "subscriptions"),
+			Name:         "17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+			stringValue:  "/providers/Microsoft.Billing/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+		},
+		"/providers/Microsoft.Billing/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d/resourceGroups/test": {
+			Parent: &ResourceID{
+				Parent:       RootResourceID,
+				ResourceType: NewResourceType("Microsoft.Billing", "subscriptions"),
+				Name:         "17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+				stringValue:  "/providers/Microsoft.Billing/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d",
+			},
+			ResourceType: NewResourceType("Microsoft.Billing/subscriptions", "resourceGroups"),
+			Name:         "test",
+			stringValue:  "/providers/Microsoft.Billing/subscriptions/17fecd63-33d8-4e43-ac6f-0aafa111b38d/resourceGroups/test",
+		},
 		// invalid resource identifiers
 		"/providers/MicrosoftSomething/billingAccounts/":             nil,
 		"/MicrosoftSomething/billingAccounts/":                       nil,

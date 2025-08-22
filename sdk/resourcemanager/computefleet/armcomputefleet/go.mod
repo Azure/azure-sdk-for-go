@@ -2,7 +2,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcom
 
 go 1.23.0
 
-require github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.2
+require github.com/Azure/azure-sdk-for-go/sdk/azcore v1.19.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2 // indirect

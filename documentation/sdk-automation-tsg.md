@@ -34,6 +34,8 @@ The Azure Go SDK automation tool:
 
 **Log Keywords**: `The emitter encountered an internal error during preprocessing.`
 
+**Context**: This indicates a failure in the TypeSpec emitter, which should be a bug in the `@azure-tools/typespec-go` package.
+
 **Analysis Actions**:
 
 - Extract package information
@@ -52,9 +54,12 @@ The Azure Go SDK automation tool:
 
 **Log Keywords**: `Invalid arguments were passed to the emitter.`
 
+**Context**: This happens when config is not set correctly.
+
 **Analysis Actions**:
 
-- Review `tspconfig.yaml` configuration
+- Check the error log to see which config is wrong.
+- Refer the [doc](https://azure.github.io/typespec-azure/docs/emitters/clients/typespec-go/reference/emitter/#emitter-options) for the usage of emitter config
 - Compare against standard templates:
   - [Management Plane Template](https://github.com/Azure/azure-rest-api-specs/blob/a8f97793186c7680c62519da238c6d07a20f2023/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml#L35)
   - [Data Plane Template](https://github.com/Azure/azure-rest-api-specs/blob/a8f97793186c7680c62519da238c6d07a20f2023/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml#L41)
@@ -65,11 +70,14 @@ The Azure Go SDK automation tool:
 
 **Log Keywords**: `module not found, package path:`
 
+**Context**: This happens when emitter could not resolve the package you want to generate through configs.
+
 **Analysis Actions**:
 
 - Validate module path configuration
 - Check service directory structure
 - Verify package directory alignment
+- Refer the [doc](https://azure.github.io/typespec-azure/docs/emitters/clients/typespec-go/reference/emitter/#emitter-options) for the usage of emitter config
 
 **Resolution**: Correct these `tspconfig.yaml` properties:
 
@@ -106,4 +114,4 @@ The Azure Go SDK automation tool:
 - Identify specific unsupported feature
 - Review error message for feature details
 
-**Resolution**: Modify TypeSpec authoring to use supported patterns
+**Resolution**: Modify TypeSpec authoring to use supported patterns if possible, or wait for emitter support.

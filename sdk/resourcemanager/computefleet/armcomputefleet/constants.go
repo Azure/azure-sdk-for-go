@@ -4,11 +4,6 @@
 
 package armcomputefleet
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet"
-	moduleVersion = "v1.0.0"
-)
-
 // AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
 type AcceleratorManufacturer string
 
@@ -126,6 +121,27 @@ func PossibleCachingTypesValues() []CachingTypes {
 	}
 }
 
+// CapacityType - Capacity types for Compute Fleet.
+type CapacityType string
+
+const (
+	// CapacityTypeVCPU - VCpu is the capacity type for Compute Fleet where Fleet capacity is provisioned in terms of VCpus.
+	// If VCpu capacity is not exactly divisible by VCpu count in VMSizes, Fleet capacity in VCpus will be overprovisioned by
+	// default.
+	CapacityTypeVCPU CapacityType = "VCpu"
+	// CapacityTypeVM - Default. VM is the default capacity type for Compute Fleet where Fleet capacity is provisioned in terms
+	// of VMs.
+	CapacityTypeVM CapacityType = "VM"
+)
+
+// PossibleCapacityTypeValues returns the possible values for the CapacityType const type.
+func PossibleCapacityTypeValues() []CapacityType {
+	return []CapacityType{
+		CapacityTypeVCPU,
+		CapacityTypeVM,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -188,9 +204,9 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 // resource disk space for Ephemeral OS disk provisioning. For more information on
 // Ephemeral OS disk size requirements, please refer Ephemeral OS disk size
 // requirements for Windows VM at
-// https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
+// https://learn.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
 // and Linux VM at
-// https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements
+// https://learn.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements
 // Minimum api-version for NvmeDisk: 2024-03-01.
 type DiffDiskPlacement string
 
@@ -215,10 +231,10 @@ func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 // DiskControllerTypes - Specifies the disk controller type configured for the VM and
 // VirtualMachineScaleSet. This property is only supported for virtual machines
 // whose operating system disk and VM sku supports Generation 2
-// (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2), please
+// (https://learn.microsoft.com/en-us/azure/virtual-machines/generation-2), please
 // check the HyperVGenerations capability returned as part of VM sku capabilities
 // in the response of Microsoft.Compute SKUs api for the region contains V2
-// (https://docs.microsoft.com/rest/api/compute/resourceskus/list). For more
+// (https://learn.microsoft.com/rest/api/compute/resourceskus/list). For more
 // information about Disk Controller Types supported please refer to
 // https://aka.ms/azure-diskcontrollertypes.
 type DiskControllerTypes string
@@ -336,6 +352,24 @@ func PossibleEvictionPolicyValues() []EvictionPolicy {
 	}
 }
 
+// FleetMode - Modes for Compute Fleet.
+type FleetMode string
+
+const (
+	// FleetModeInstance - Instance mode for Compute Fleet will directly provision VM instances.
+	FleetModeInstance FleetMode = "Instance"
+	// FleetModeManaged - Default. Managed is the default mode for Compute Fleet where VMs are provisioned via VMSS.
+	FleetModeManaged FleetMode = "Managed"
+)
+
+// PossibleFleetModeValues returns the possible values for the FleetMode const type.
+func PossibleFleetModeValues() []FleetMode {
+	return []FleetMode{
+		FleetModeInstance,
+		FleetModeManaged,
+	}
+}
+
 // IPVersion - Available from Api-Version 2017-03-30 onwards, it represents whether the
 // specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible
 // values are: 'IPv4' and 'IPv6'.
@@ -449,10 +483,10 @@ type ManagedServiceIdentityType string
 const (
 	// ManagedServiceIdentityTypeNone - No managed identity.
 	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
-	// ManagedServiceIdentityTypeSystemAndUserAssigned - System and user assigned managed identity.
-	ManagedServiceIdentityTypeSystemAndUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
 	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
 	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
 	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
 	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
@@ -461,8 +495,8 @@ const (
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	return []ManagedServiceIdentityType{
 		ManagedServiceIdentityTypeNone,
-		ManagedServiceIdentityTypeSystemAndUserAssigned,
 		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
@@ -799,9 +833,9 @@ func PossibleSpotAllocationStrategyValues() []SpotAllocationStrategy {
 // zone redundant storage. StandardSSD_ZRS uses Standard SSD zone redundant
 // storage. For more information regarding disks supported for Windows Virtual
 // Machines, refer to
-// https://docs.microsoft.com/azure/virtual-machines/windows/disks-types and, for
+// https://learn.microsoft.com/azure/virtual-machines/windows/disks-types and, for
 // Linux Virtual Machines, refer to
-// https://docs.microsoft.com/azure/virtual-machines/linux/disks-types
+// https://learn.microsoft.com/azure/virtual-machines/linux/disks-types
 type StorageAccountTypes string
 
 const (
@@ -903,6 +937,36 @@ func PossibleVMCategoryValues() []VMCategory {
 	}
 }
 
+// VMOperationStatus - Virtual Machine operation status values.
+type VMOperationStatus string
+
+const (
+	// VMOperationStatusCancelFailedStatusUnknown - Indicates that the cancellation request could not be applied because the virtual
+	// machine had already been created.
+	VMOperationStatusCancelFailedStatusUnknown VMOperationStatus = "CancelFailedStatusUnknown"
+	// VMOperationStatusCanceled - Indicates that the cancellation request was successful because the virtual machine had not
+	// been created yet.
+	VMOperationStatusCanceled VMOperationStatus = "Canceled"
+	// VMOperationStatusCreating - Indicates that the virtual machine is either in the process of being created or is scheduled
+	// to be created.
+	VMOperationStatusCreating VMOperationStatus = "Creating"
+	// VMOperationStatusFailed - Indicates that the virtual machine operation failed.
+	VMOperationStatusFailed VMOperationStatus = "Failed"
+	// VMOperationStatusSucceeded - Indicates that the virtual machine operation completed successfully.
+	VMOperationStatusSucceeded VMOperationStatus = "Succeeded"
+)
+
+// PossibleVMOperationStatusValues returns the possible values for the VMOperationStatus const type.
+func PossibleVMOperationStatusValues() []VMOperationStatus {
+	return []VMOperationStatus{
+		VMOperationStatusCancelFailedStatusUnknown,
+		VMOperationStatusCanceled,
+		VMOperationStatusCreating,
+		VMOperationStatusFailed,
+		VMOperationStatusSucceeded,
+	}
+}
+
 // WindowsPatchAssessmentMode - Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.
 type WindowsPatchAssessmentMode string
 
@@ -972,5 +1036,26 @@ func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
 		WindowsVMGuestPatchModeAutomaticByOS,
 		WindowsVMGuestPatchModeAutomaticByPlatform,
 		WindowsVMGuestPatchModeManual,
+	}
+}
+
+// ZoneDistributionStrategy - Distribution strategies for Compute Fleet zone allocation policy.
+type ZoneDistributionStrategy string
+
+const (
+	// ZoneDistributionStrategyBestEffortSingleZone - Default. Compute Fleet allocates all Fleet capacity within a single zone
+	// based on best effort.
+	// If capacity is not available, Compute Fleet can allocate capacity in different zones.
+	ZoneDistributionStrategyBestEffortSingleZone ZoneDistributionStrategy = "BestEffortSingleZone"
+	// ZoneDistributionStrategyPrioritized - Compute Fleet allocates capacity based on zone preferences.
+	// Higher priority zones are filled first before allocating to lower priority zones.
+	ZoneDistributionStrategyPrioritized ZoneDistributionStrategy = "Prioritized"
+)
+
+// PossibleZoneDistributionStrategyValues returns the possible values for the ZoneDistributionStrategy const type.
+func PossibleZoneDistributionStrategyValues() []ZoneDistributionStrategy {
+	return []ZoneDistributionStrategy{
+		ZoneDistributionStrategyBestEffortSingleZone,
+		ZoneDistributionStrategyPrioritized,
 	}
 }

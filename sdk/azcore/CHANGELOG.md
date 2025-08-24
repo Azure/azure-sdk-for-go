@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed resource identifier parsing for provider-specific resource hierarchies containing "resourceGroups" segments.
+
 ### Other Changes
 
 ## 1.19.0 (2025-08-21)

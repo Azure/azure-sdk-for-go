@@ -28,4 +28,9 @@ const (
 	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
 	// by another link with a higher epoch/owner level.
 	ErrorCodeOwnershipLost ErrorCode = exported.ErrorCodeOwnershipLost
+
+	// ErrorCodeClientClosed means the client has been closed by the user and can no longer
+	// be used for operations. This error can be safely ignored when shutting down clients
+	// and processors, as it is expected behavior.
+	ErrorCodeClientClosed ErrorCode = exported.ErrorCodeClientClosed
 )

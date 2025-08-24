@@ -486,8 +486,35 @@ func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
 		t.Fatalf("failed to create request: %v", err)
 	}
 	resp, _ := testPipeline.Do(req)
+	// tentative write header should be sent for multi write account
 	if resp.Request.Header.Get(cosmosHeaderAllowTentativeWrites) == "" {
 		t.Fatalf("expected %s header to be set", cosmosHeaderAllowTentativeWrites)
+	}
+
+	// tentative write header should not be sent if the account is not multi-write
+	mocked_response = "{\"_self\":\"\",\"id\":\"my_account\",\"_rid\":\"my_account-westus.sql.cosmos.azure.com\",\"media\":\"//media/\",\"addresses\":\"//addresses/\",\"_dbs\":\"//dbs/\",\"writableLocations\":[{\"name\":\"West US\",\"databaseAccountEndpoint\":\"https://my_account-westus.documents.azure.com:443/\"},{\"name\":\"West US 3\",\"databaseAccountEndpoint\":\"https://my_account-westus3.documents.azure.com:443/\"}],\"readableLocations\":[{\"name\":\"West US\",\"databaseAccountEndpoint\":\"https://my_account-westus.documents.azure.com:443/\"},{\"name\":\"West US 3\",\"databaseAccountEndpoint\":\"https://my_account-westus3.documents.azure.com:443/\"}], \"enableMultipleWriteLocations\":false}"
+	gemServer.SetResponse(mock.WithBody([]byte(mocked_response)))
+	// change time to trigger another get account properties call
+	mockGem.lastUpdateTime = time.Now().Add(-10 * time.Minute)
+
+	// Issue another test request
+	req, err = azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+
+	// Used to trigger another get account properties call in the background
+	testPipeline.Do(req)
+
+	// Issue another test request that will use the updated account properties
+	req, err = azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+
+	resp, _ = testPipeline.Do(req)
+	if resp.Request.Header.Get(cosmosHeaderAllowTentativeWrites) != "" {
+		t.Fatalf("expected %s header not to be set", cosmosHeaderAllowTentativeWrites)
 	}
 }
 

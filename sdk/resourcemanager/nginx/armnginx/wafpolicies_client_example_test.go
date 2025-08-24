@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleAPIKeysClient_CreateOrUpdate() {
+// Generated from example definition: 2025-03-01-preview/WafPolicies_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleWafPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,27 +23,52 @@ func ExampleAPIKeysClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAPIKeysClient().CreateOrUpdate(ctx, "rgopenapi", "myDeployment", "myApiKey", armnginx.APIKeyRequest{
-		Properties: &armnginx.APIKeyRequestProperties{
-			SecretText:  to.Ptr("cokmqbnvejbxmngbqmxty"),
-			EndDateTime: to.Ptr("2025-05-28T20:01:03.647Z"),
+	poller, err := clientFactory.NewWafPoliciesClient().BeginCreateOrUpdate(ctx, "rgopenapi", "myDeployment", "myPolicy", armnginx.WafPolicy{
+		Properties: &armnginx.DeploymentWafPolicyProperties{
+			Content:  []byte("Y29udGVudDE="),
+			Filepath: to.Ptr("tdxxoccqbfgzuw"),
+			CompilingState: &armnginx.DeploymentWafPolicyCompilingStatus{
+				Code:          to.Ptr("xhpsbvrdymctydgqelbdikv"),
+				DisplayStatus: to.Ptr("yqllcsd"),
+				Time:          to.Ptr("2025-07-08T10:11:08.856Z"),
+			},
+			ApplyingState: &armnginx.DeploymentWafPolicyApplyingStatus{
+				Code:          to.Ptr("pvmrdpdwrubbgk"),
+				DisplayStatus: to.Ptr("ytsdzwvejdxx"),
+				Time:          to.Ptr("2025-07-08T10:11:08.856Z"),
+			},
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnginx.APIKeysClientCreateOrUpdateResponse{
-	// 	APIKey: &armnginx.APIKey{
-	// 		Properties: &armnginx.APIKeyResponseProperties{
-	// 			Hint: to.Ptr("my secret API key hint"),
-	// 			EndDateTime: to.Ptr("2025-05-28T20:01:03.647Z"),
+	// res = armnginx.WafPoliciesClientCreateOrUpdateResponse{
+	// 	WafPolicy: &armnginx.WafPolicy{
+	// 		Properties: &armnginx.DeploymentWafPolicyProperties{
+	// 			Content: []byte("Y29udGVudDE="),
+	// 			Filepath: to.Ptr("tdxxoccqbfgzuw"),
+	// 			ProvisioningState: to.Ptr(armnginx.ProvisioningStateAccepted),
+	// 			CompilingState: &armnginx.DeploymentWafPolicyCompilingStatus{
+	// 				Code: to.Ptr("Succeeeded"),
+	// 				DisplayStatus: to.Ptr("Succeeeded"),
+	// 				Time: to.Ptr("2025-07-08T10:11:08.856Z"),
+	// 			},
+	// 			ApplyingState: &armnginx.DeploymentWafPolicyApplyingStatus{
+	// 				Code: to.Ptr("Succeeeded"),
+	// 				DisplayStatus: to.Ptr("Succeeeded"),
+	// 				Time: to.Ptr("2025-07-08T10:11:08.856Z"),
+	// 			},
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/333F7B80-063D-40E5-975B-6E3C3CAC8296/resourceGroups/rgopenapi/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/apiKeys/otvmugiwezqyit"),
-	// 		Name: to.Ptr("otvmugiwezqyit"),
-	// 		Type: to.Ptr("ugslayxowhvlfgkfldbnbulh"),
+	// 		ID: to.Ptr("/subscriptions/333F7B80-063D-40E5-975B-6E3C3CAC8296/resourceGroups/rgopenapi/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/wafPolicies/mnoduokxduh"),
+	// 		Name: to.Ptr("mnoduokxduh"),
+	// 		Type: to.Ptr("whzfegwwpdsezgtwhzce"),
 	// 		SystemData: &armnginx.SystemData{
 	// 			CreatedBy: to.Ptr("qokpyvbgqgcdpafqbhyfiftwgu"),
 	// 			CreatedByType: to.Ptr(armnginx.CreatedByTypeUser),
@@ -56,8 +81,8 @@ func ExampleAPIKeysClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_Delete_MaximumSet_Gen.json
-func ExampleAPIKeysClient_BeginDelete() {
+// Generated from example definition: 2025-03-01-preview/WafPolicies_Delete_MaximumSet_Gen.json
+func ExampleWafPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -67,7 +92,7 @@ func ExampleAPIKeysClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAPIKeysClient().BeginDelete(ctx, "rgopenapi", "myDeployment", "myApiKey", nil)
+	poller, err := clientFactory.NewWafPoliciesClient().BeginDelete(ctx, "rgopenapi", "myDeployment", "myWafPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,8 +102,8 @@ func ExampleAPIKeysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_Get_MaximumSet_Gen.json
-func ExampleAPIKeysClient_Get() {
+// Generated from example definition: 2025-03-01-preview/WafPolicies_Get_MaximumSet_Gen.json
+func ExampleWafPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,22 +113,33 @@ func ExampleAPIKeysClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAPIKeysClient().Get(ctx, "rgopenapi", "myDeployment", "myApiKey", nil)
+	res, err := clientFactory.NewWafPoliciesClient().Get(ctx, "rgopenapi", "myDeployment", "myWafPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnginx.APIKeysClientGetResponse{
-	// 	APIKey: &armnginx.APIKey{
-	// 		Properties: &armnginx.APIKeyResponseProperties{
-	// 			Hint: to.Ptr("my secret API key hint"),
-	// 			EndDateTime: to.Ptr("2025-05-28T20:01:03.647Z"),
+	// res = armnginx.WafPoliciesClientGetResponse{
+	// 	WafPolicy: &armnginx.WafPolicy{
+	// 		Properties: &armnginx.DeploymentWafPolicyProperties{
+	// 			Content: []byte("Y29udGVudDE="),
+	// 			Filepath: to.Ptr("/etc/nginx/waf/policy.conf"),
+	// 			ProvisioningState: to.Ptr(armnginx.ProvisioningStateAccepted),
+	// 			CompilingState: &armnginx.DeploymentWafPolicyCompilingStatus{
+	// 				Code: to.Ptr("Succeeeded"),
+	// 				DisplayStatus: to.Ptr("Succeeeded"),
+	// 				Time: to.Ptr("2025-07-08T10:11:08.856Z"),
+	// 			},
+	// 			ApplyingState: &armnginx.DeploymentWafPolicyApplyingStatus{
+	// 				Code: to.Ptr("Succeeeded"),
+	// 				DisplayStatus: to.Ptr("Succeeeded"),
+	// 				Time: to.Ptr("2025-07-08T10:11:08.856Z"),
+	// 			},
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/333F7B80-063D-40E5-975B-6E3C3CAC8296/resourceGroups/rgopenapi/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/apiKeys/otvmugiwezqyit"),
-	// 		Name: to.Ptr("otvmugiwezqyit"),
-	// 		Type: to.Ptr("ugslayxowhvlfgkfldbnbulh"),
+	// 		ID: to.Ptr("/subscriptions/333F7B80-063D-40E5-975B-6E3C3CAC8296/resourceGroups/rgopenapi/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/wafPolicies/mnoduokxduh"),
+	// 		Name: to.Ptr("mnoduokxduh"),
+	// 		Type: to.Ptr("whzfegwwpdsezgtwhzce"),
 	// 		SystemData: &armnginx.SystemData{
 	// 			CreatedBy: to.Ptr("qokpyvbgqgcdpafqbhyfiftwgu"),
 	// 			CreatedByType: to.Ptr(armnginx.CreatedByTypeUser),
@@ -116,8 +152,8 @@ func ExampleAPIKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/ApiKeys_ListByDeployment_MaximumSet_Gen.json
-func ExampleAPIKeysClient_NewListByDeploymentPager() {
+// Generated from example definition: 2025-03-01-preview/WafPolicies_ListByDeployment_MaximumSet_Gen.json
+func ExampleWafPoliciesClient_NewListByDeploymentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,7 +163,7 @@ func ExampleAPIKeysClient_NewListByDeploymentPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAPIKeysClient().NewListByDeploymentPager("rgopenapi", "myDeployment", nil)
+	pager := clientFactory.NewWafPoliciesClient().NewListByDeploymentPager("rgopenapi", "myDeployment", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -138,17 +174,27 @@ func ExampleAPIKeysClient_NewListByDeploymentPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnginx.APIKeysClientListByDeploymentResponse{
-		// 	APIKeyListResult: armnginx.APIKeyListResult{
-		// 		Value: []*armnginx.APIKey{
+		// page = armnginx.WafPoliciesClientListByDeploymentResponse{
+		// 	DeploymentWafPolicyMetadataListResult: armnginx.DeploymentWafPolicyMetadataListResult{
+		// 		Value: []*armnginx.DeploymentWafPolicyMetadata{
 		// 			{
-		// 				Properties: &armnginx.APIKeyResponseProperties{
-		// 					Hint: to.Ptr("my secret API key hint"),
-		// 					EndDateTime: to.Ptr("2025-05-28T20:01:03.647Z"),
+		// 				Properties: &armnginx.DeploymentWafPolicyMetadataProperties{
+		// 					Filepath: to.Ptr("/etc/nginx/waf/policy.conf"),
+		// 					ProvisioningState: to.Ptr(armnginx.ProvisioningStateAccepted),
+		// 					CompilingState: &armnginx.DeploymentWafPolicyCompilingStatus{
+		// 						Code: to.Ptr("Succeeeded"),
+		// 						DisplayStatus: to.Ptr("Succeeeded"),
+		// 						Time: to.Ptr("2025-07-08T10:11:08.856Z"),
+		// 					},
+		// 					ApplyingState: &armnginx.DeploymentWafPolicyApplyingStatus{
+		// 						Code: to.Ptr("Succeeeded"),
+		// 						DisplayStatus: to.Ptr("Succeeeded"),
+		// 						Time: to.Ptr("2025-07-08T10:11:08.856Z"),
+		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/333F7B80-063D-40E5-975B-6E3C3CAC8296/resourceGroups/rgopenapi/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/apiKeys/otvmugiwezqyit"),
-		// 				Name: to.Ptr("otvmugiwezqyit"),
-		// 				Type: to.Ptr("ugslayxowhvlfgkfldbnbulh"),
+		// 				ID: to.Ptr("/subscriptions/333F7B80-063D-40E5-975B-6E3C3CAC8296/resourceGroups/rgopenapi/providers/NGINX.NGINXPLUS/nginxDeployments/myDeployment/wafPolicies/edgmihyonhwbgtk"),
+		// 				Name: to.Ptr("edgmihyonhwbgtk"),
+		// 				Type: to.Ptr("omdgdqbbpucftlfmxm"),
 		// 				SystemData: &armnginx.SystemData{
 		// 					CreatedBy: to.Ptr("qokpyvbgqgcdpafqbhyfiftwgu"),
 		// 					CreatedByType: to.Ptr(armnginx.CreatedByTypeUser),
@@ -159,7 +205,7 @@ func ExampleAPIKeysClient_NewListByDeploymentPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://microsoft.com/ajw"),
 		// 	},
 		// }
 	}

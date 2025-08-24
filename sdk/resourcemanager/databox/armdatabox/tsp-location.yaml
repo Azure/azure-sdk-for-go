@@ -1,0 +1,4 @@
+directory: specification/databox/DataBox.Management
+commit: ba0bf07cdc0e3ea30836412c6ed7b414881a55b7
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

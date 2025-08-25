@@ -636,14 +636,12 @@ func (f FleetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "additionalLocationsProfile", f.AdditionalLocationsProfile)
 	populate(objectMap, "capacityType", f.CapacityType)
 	populate(objectMap, "computeProfile", f.ComputeProfile)
-	populate(objectMap, "displayName", f.DisplayName)
 	populate(objectMap, "mode", f.Mode)
 	populate(objectMap, "provisioningState", f.ProvisioningState)
 	populate(objectMap, "regularPriorityProfile", f.RegularPriorityProfile)
 	populate(objectMap, "spotPriorityProfile", f.SpotPriorityProfile)
 	populateDateTimeRFC3339(objectMap, "timeCreated", f.TimeCreated)
 	populate(objectMap, "uniqueId", f.UniqueID)
-	populate(objectMap, "updatedBy", f.UpdatedBy)
 	populate(objectMap, "vmAttributes", f.VMAttributes)
 	populate(objectMap, "vmSizesProfile", f.VMSizesProfile)
 	populate(objectMap, "zoneAllocationPolicy", f.ZoneAllocationPolicy)
@@ -668,9 +666,6 @@ func (f *FleetProperties) UnmarshalJSON(data []byte) error {
 		case "computeProfile":
 			err = unpopulate(val, "ComputeProfile", &f.ComputeProfile)
 			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, "DisplayName", &f.DisplayName)
-			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, "Mode", &f.Mode)
 			delete(rawMsg, key)
@@ -688,9 +683,6 @@ func (f *FleetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "uniqueId":
 			err = unpopulate(val, "UniqueID", &f.UniqueID)
-			delete(rawMsg, key)
-		case "updatedBy":
-			err = unpopulate(val, "UpdatedBy", &f.UpdatedBy)
 			delete(rawMsg, key)
 		case "vmAttributes":
 			err = unpopulate(val, "VMAttributes", &f.VMAttributes)
@@ -2252,6 +2244,7 @@ func (v VirtualMachine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", v.Error)
 	populate(objectMap, "id", v.ID)
+	populate(objectMap, "name", v.Name)
 	populate(objectMap, "operationStatus", v.OperationStatus)
 	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
@@ -2271,6 +2264,9 @@ func (v *VirtualMachine) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &v.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &v.Name)
 			delete(rawMsg, key)
 		case "operationStatus":
 			err = unpopulate(val, "OperationStatus", &v.OperationStatus)
@@ -2322,6 +2318,7 @@ func (v VirtualMachineScaleSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", v.Error)
 	populate(objectMap, "id", v.ID)
+	populate(objectMap, "name", v.Name)
 	populate(objectMap, "operationStatus", v.OperationStatus)
 	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
@@ -2341,6 +2338,9 @@ func (v *VirtualMachineScaleSet) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &v.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &v.Name)
 			delete(rawMsg, key)
 		case "operationStatus":
 			err = unpopulate(val, "OperationStatus", &v.OperationStatus)

@@ -6,5 +6,5 @@ package armcomputefleet
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v2.0.0-beta.1"
 )

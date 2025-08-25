@@ -309,9 +309,6 @@ type FleetProperties struct {
 	// Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
 	CapacityType *CapacityType
 
-	// Specifies the display name a Compute Fleet test v2.
-	DisplayName *string
-
 	// Mode of the Fleet.
 	Mode *FleetMode
 
@@ -320,9 +317,6 @@ type FleetProperties struct {
 
 	// Configuration Options for Spot instances in Compute Fleet.
 	SpotPriorityProfile *SpotPriorityProfile
-
-	// Specifies the updated by a Compute Fleet test v3.
-	UpdatedBy *string
 
 	// Attribute based Fleet.
 	VMAttributes *VMAttributes
@@ -1072,6 +1066,9 @@ type VirtualMachine struct {
 	// READ-ONLY; The compute RP resource id of the virtual machine. subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}
 	ID *string
 
+	// READ-ONLY; The name of the virtual machine.
+	Name *string
+
 	// READ-ONLY; This represents the operationStatus of the virtual machine in response to the last operation that was performed
 	// on it by Azure Fleet resource.
 	OperationStatus *VMOperationStatus
@@ -1097,6 +1094,9 @@ type VirtualMachineScaleSet struct {
 	// READ-ONLY; The compute RP resource id of the virtualMachineScaleSet
 	// "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}"
 	ID *string
+
+	// READ-ONLY; The name of the virtualMachineScaleSet
+	Name *string
 
 	// READ-ONLY; This represents the operationStatus of the VMSS in response to the last operation that was performed on it by
 	// Azure Fleet resource.

@@ -9,8 +9,7 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageTaskAssignmentClientListOptions contains the optional parameters for the StorageTaskAssignmentClient.NewListPager
-// method.
+// StorageTaskAssignmentClientListOptions contains the optional parameters for the StorageTaskAssignmentClient.List method.
 type StorageTaskAssignmentClientListOptions struct {
 	// Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included in the list response.
 	Maxpagesize *int32
@@ -56,7 +55,7 @@ type StorageTasksClientPreviewActionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StorageTasksReportClientListOptions contains the optional parameters for the StorageTasksReportClient.NewListPager method.
+// StorageTasksReportClientListOptions contains the optional parameters for the StorageTasksReportClient.List method.
 type StorageTasksReportClientListOptions struct {
 	// Optional. When specified, it can be used to query using reporting properties.
 	Filter *string

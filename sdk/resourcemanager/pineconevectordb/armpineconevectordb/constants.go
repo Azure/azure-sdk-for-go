@@ -4,11 +4,6 @@
 
 package armpineconevectordb
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/pineconevectordb/armpineconevectordb"
-	moduleVersion = "v0.1.1"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

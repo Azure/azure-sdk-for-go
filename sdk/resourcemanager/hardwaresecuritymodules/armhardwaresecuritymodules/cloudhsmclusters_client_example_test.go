@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
 	"log"
 )
 
@@ -67,7 +67,7 @@ func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
 			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": {},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": &armhardwaresecuritymodules.UserAssignedIdentity{},
 			},
 		},
 		Location: to.Ptr("eastus2"),
@@ -482,7 +482,7 @@ func ExampleCloudHsmClustersClient_BeginUpdate() {
 		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
 			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": {},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": &armhardwaresecuritymodules.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{

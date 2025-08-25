@@ -32,7 +32,7 @@ func ExampleWorkspaceQuotasClient_Get() {
 	// res = armplaywright.WorkspaceQuotasClientGetResponse{
 	// 	WorkspaceQuota: &armplaywright.WorkspaceQuota{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace/quotas/ExecutionMinutes"),
-	// 		Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+	// 		Name: to.Ptr("ExecutionMinutes"),
 	// 		Type: to.Ptr("Microsoft.LoadTestService/PlaywrightWorkspaces/Quotas"),
 	// 		Properties: &armplaywright.WorkspaceQuotaProperties{
 	// 			FreeTrial: &armplaywright.WorkspaceFreeTrialProperties{
@@ -75,7 +75,7 @@ func ExampleWorkspaceQuotasClient_NewListByPlaywrightWorkspacePager() {
 		// 		Value: []*armplaywright.WorkspaceQuota{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace/quotas/ExecutionMinutes"),
-		// 				Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+		// 				Name: to.Ptr("ExecutionMinutes"),
 		// 				Type: to.Ptr("Microsoft.LoadTestService/PlaywrightWorkspaces/Quotas"),
 		// 				Properties: &armplaywright.WorkspaceQuotaProperties{
 		// 					FreeTrial: &armplaywright.WorkspaceFreeTrialProperties{

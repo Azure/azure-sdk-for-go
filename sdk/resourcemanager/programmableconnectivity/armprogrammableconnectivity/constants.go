@@ -4,11 +4,6 @@
 
 package armprogrammableconnectivity
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/programmableconnectivity/armprogrammableconnectivity"
-	moduleVersion = "v0.1.0"
-)
-
 // AccountType - The Account Type of the Operator API Connections.
 type AccountType string
 

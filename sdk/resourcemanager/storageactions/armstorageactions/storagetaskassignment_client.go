@@ -40,35 +40,35 @@ func NewStorageTaskAssignmentClient(subscriptionID string, credential azcore.Tok
 	return client, nil
 }
 
-// NewListPager - Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
+// List - Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
 //     3 and 18 characters in length and use numbers and lower-case letters only.
-//   - options - StorageTaskAssignmentClientListOptions contains the optional parameters for the StorageTaskAssignmentClient.NewListPager
+//   - options - StorageTaskAssignmentClientListOptions contains the optional parameters for the StorageTaskAssignmentClient.List
 //     method.
-func (client *StorageTaskAssignmentClient) NewListPager(resourceGroupName string, storageTaskName string, options *StorageTaskAssignmentClientListOptions) *runtime.Pager[StorageTaskAssignmentClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[StorageTaskAssignmentClientListResponse]{
-		More: func(page StorageTaskAssignmentClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *StorageTaskAssignmentClientListResponse) (StorageTaskAssignmentClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageTaskAssignmentClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, storageTaskName, options)
-			}, nil)
-			if err != nil {
-				return StorageTaskAssignmentClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *StorageTaskAssignmentClient) List(ctx context.Context, resourceGroupName string, storageTaskName string, options *StorageTaskAssignmentClientListOptions) (StorageTaskAssignmentClientListResponse, error) {
+	var err error
+	const operationName = "StorageTaskAssignmentClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCreateRequest(ctx, resourceGroupName, storageTaskName, options)
+	if err != nil {
+		return StorageTaskAssignmentClientListResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StorageTaskAssignmentClientListResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return StorageTaskAssignmentClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

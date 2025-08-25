@@ -4,6 +4,11 @@
 
 package armcomputefleet
 
+// FleetsClientCancelResponse contains the response from method FleetsClient.BeginCancel.
+type FleetsClientCancelResponse struct {
+	// placeholder for future response values
+}
+
 // FleetsClientCreateOrUpdateResponse contains the response from method FleetsClient.BeginCreateOrUpdate.
 type FleetsClientCreateOrUpdateResponse struct {
 	// An Compute Fleet resource
@@ -37,6 +42,12 @@ type FleetsClientListBySubscriptionResponse struct {
 type FleetsClientListVirtualMachineScaleSetsResponse struct {
 	// The response of a VirtualMachineScaleSet list operation.
 	VirtualMachineScaleSetListResult
+}
+
+// FleetsClientListVirtualMachinesResponse contains the response from method FleetsClient.NewListVirtualMachinesPager.
+type FleetsClientListVirtualMachinesResponse struct {
+	// The response of a virtual machine list operation.
+	VirtualMachineListResult
 }
 
 // FleetsClientUpdateResponse contains the response from method FleetsClient.BeginUpdate.

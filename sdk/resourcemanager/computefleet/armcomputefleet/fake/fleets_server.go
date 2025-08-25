@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -20,12 +20,16 @@ import (
 
 // FleetsServer is a fake server for instances of the armcomputefleet.FleetsClient type.
 type FleetsServer struct {
+	// BeginCancel is the fake for method FleetsClient.BeginCancel
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginCancel func(ctx context.Context, resourceGroupName string, fleetName string, options *armcomputefleet.FleetsClientBeginCancelOptions) (resp azfake.PollerResponder[armcomputefleet.FleetsClientCancelResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method FleetsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, fleetName string, resource armcomputefleet.Fleet, options *armcomputefleet.FleetsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcomputefleet.FleetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method FleetsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, fleetName string, options *armcomputefleet.FleetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcomputefleet.FleetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FleetsClient.Get
@@ -44,6 +48,10 @@ type FleetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListVirtualMachineScaleSetsPager func(resourceGroupName string, name string, options *armcomputefleet.FleetsClientListVirtualMachineScaleSetsOptions) (resp azfake.PagerResponder[armcomputefleet.FleetsClientListVirtualMachineScaleSetsResponse])
 
+	// NewListVirtualMachinesPager is the fake for method FleetsClient.NewListVirtualMachinesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListVirtualMachinesPager func(resourceGroupName string, name string, options *armcomputefleet.FleetsClientListVirtualMachinesOptions) (resp azfake.PagerResponder[armcomputefleet.FleetsClientListVirtualMachinesResponse])
+
 	// BeginUpdate is the fake for method FleetsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, fleetName string, properties armcomputefleet.FleetUpdate, options *armcomputefleet.FleetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcomputefleet.FleetsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -55,11 +63,13 @@ type FleetsServer struct {
 func NewFleetsServerTransport(srv *FleetsServer) *FleetsServerTransport {
 	return &FleetsServerTransport{
 		srv:                                 srv,
+		beginCancel:                         newTracker[azfake.PollerResponder[armcomputefleet.FleetsClientCancelResponse]](),
 		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armcomputefleet.FleetsClientCreateOrUpdateResponse]](),
 		beginDelete:                         newTracker[azfake.PollerResponder[armcomputefleet.FleetsClientDeleteResponse]](),
 		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armcomputefleet.FleetsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:          newTracker[azfake.PagerResponder[armcomputefleet.FleetsClientListBySubscriptionResponse]](),
 		newListVirtualMachineScaleSetsPager: newTracker[azfake.PagerResponder[armcomputefleet.FleetsClientListVirtualMachineScaleSetsResponse]](),
+		newListVirtualMachinesPager:         newTracker[azfake.PagerResponder[armcomputefleet.FleetsClientListVirtualMachinesResponse]](),
 		beginUpdate:                         newTracker[azfake.PollerResponder[armcomputefleet.FleetsClientUpdateResponse]](),
 	}
 }
@@ -68,11 +78,13 @@ func NewFleetsServerTransport(srv *FleetsServer) *FleetsServerTransport {
 // Don't use this type directly, use NewFleetsServerTransport instead.
 type FleetsServerTransport struct {
 	srv                                 *FleetsServer
+	beginCancel                         *tracker[azfake.PollerResponder[armcomputefleet.FleetsClientCancelResponse]]
 	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armcomputefleet.FleetsClientCreateOrUpdateResponse]]
 	beginDelete                         *tracker[azfake.PollerResponder[armcomputefleet.FleetsClientDeleteResponse]]
 	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armcomputefleet.FleetsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager          *tracker[azfake.PagerResponder[armcomputefleet.FleetsClientListBySubscriptionResponse]]
 	newListVirtualMachineScaleSetsPager *tracker[azfake.PagerResponder[armcomputefleet.FleetsClientListVirtualMachineScaleSetsResponse]]
+	newListVirtualMachinesPager         *tracker[azfake.PagerResponder[armcomputefleet.FleetsClientListVirtualMachinesResponse]]
 	beginUpdate                         *tracker[azfake.PollerResponder[armcomputefleet.FleetsClientUpdateResponse]]
 }
 
@@ -88,29 +100,96 @@ func (f *FleetsServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (f *FleetsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "FleetsClient.BeginCreateOrUpdate":
-		resp, err = f.dispatchBeginCreateOrUpdate(req)
-	case "FleetsClient.BeginDelete":
-		resp, err = f.dispatchBeginDelete(req)
-	case "FleetsClient.Get":
-		resp, err = f.dispatchGet(req)
-	case "FleetsClient.NewListByResourceGroupPager":
-		resp, err = f.dispatchNewListByResourceGroupPager(req)
-	case "FleetsClient.NewListBySubscriptionPager":
-		resp, err = f.dispatchNewListBySubscriptionPager(req)
-	case "FleetsClient.NewListVirtualMachineScaleSetsPager":
-		resp, err = f.dispatchNewListVirtualMachineScaleSetsPager(req)
-	case "FleetsClient.BeginUpdate":
-		resp, err = f.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if fleetsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = fleetsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "FleetsClient.BeginCancel":
+				res.resp, res.err = f.dispatchBeginCancel(req)
+			case "FleetsClient.BeginCreateOrUpdate":
+				res.resp, res.err = f.dispatchBeginCreateOrUpdate(req)
+			case "FleetsClient.BeginDelete":
+				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FleetsClient.Get":
+				res.resp, res.err = f.dispatchGet(req)
+			case "FleetsClient.NewListByResourceGroupPager":
+				res.resp, res.err = f.dispatchNewListByResourceGroupPager(req)
+			case "FleetsClient.NewListBySubscriptionPager":
+				res.resp, res.err = f.dispatchNewListBySubscriptionPager(req)
+			case "FleetsClient.NewListVirtualMachineScaleSetsPager":
+				res.resp, res.err = f.dispatchNewListVirtualMachineScaleSetsPager(req)
+			case "FleetsClient.NewListVirtualMachinesPager":
+				res.resp, res.err = f.dispatchNewListVirtualMachinesPager(req)
+			case "FleetsClient.BeginUpdate":
+				res.resp, res.err = f.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
+	}
+}
+
+func (f *FleetsServerTransport) dispatchBeginCancel(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginCancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCancel not implemented")}
+	}
+	beginCancel := f.beginCancel.get(req)
+	if beginCancel == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginCancel(req.Context(), resourceGroupNameParam, fleetNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCancel = &respr
+		f.beginCancel.add(req, beginCancel)
 	}
 
-	return resp, err
+	resp, err := server.PollerResponderNext(beginCancel, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		f.beginCancel.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCancel) {
+		f.beginCancel.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (f *FleetsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -122,7 +201,7 @@ func (f *FleetsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcomputefleet.Fleet](req)
@@ -170,7 +249,7 @@ func (f *FleetsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -194,9 +273,9 @@ func (f *FleetsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		f.beginDelete.remove(req)
@@ -212,7 +291,7 @@ func (f *FleetsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -247,7 +326,7 @@ func (f *FleetsServerTransport) dispatchNewListByResourceGroupPager(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -284,7 +363,7 @@ func (f *FleetsServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := f.srv.NewListBySubscriptionPager(nil)
@@ -317,7 +396,7 @@ func (f *FleetsServerTransport) dispatchNewListVirtualMachineScaleSetsPager(req 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachineScaleSets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -349,6 +428,65 @@ func (f *FleetsServerTransport) dispatchNewListVirtualMachineScaleSetsPager(req 
 	return resp, nil
 }
 
+func (f *FleetsServerTransport) dispatchNewListVirtualMachinesPager(req *http.Request) (*http.Response, error) {
+	if f.srv.NewListVirtualMachinesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListVirtualMachinesPager not implemented")}
+	}
+	newListVirtualMachinesPager := f.newListVirtualMachinesPager.get(req)
+	if newListVirtualMachinesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skiptokenParam := getOptional(skiptokenUnescaped)
+		var options *armcomputefleet.FleetsClientListVirtualMachinesOptions
+		if filterParam != nil || skiptokenParam != nil {
+			options = &armcomputefleet.FleetsClientListVirtualMachinesOptions{
+				Filter:    filterParam,
+				Skiptoken: skiptokenParam,
+			}
+		}
+		resp := f.srv.NewListVirtualMachinesPager(resourceGroupNameParam, nameParam, options)
+		newListVirtualMachinesPager = &resp
+		f.newListVirtualMachinesPager.add(req, newListVirtualMachinesPager)
+		server.PagerResponderInjectNextLinks(newListVirtualMachinesPager, req, func(page *armcomputefleet.FleetsClientListVirtualMachinesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListVirtualMachinesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		f.newListVirtualMachinesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListVirtualMachinesPager) {
+		f.newListVirtualMachinesPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (f *FleetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if f.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -358,7 +496,7 @@ func (f *FleetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureFleet/fleets/(?P<fleetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcomputefleet.FleetUpdate](req)
@@ -395,4 +533,10 @@ func (f *FleetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to FleetsServerTransport
+var fleetsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

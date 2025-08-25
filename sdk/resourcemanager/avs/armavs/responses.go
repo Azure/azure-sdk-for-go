@@ -345,7 +345,7 @@ type PureStoragePoliciesClientListResponse struct {
 	PureStoragePolicyListResult
 }
 
-// SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
+// SKUsClientListResponse contains the response from method SKUsClient.List.
 type SKUsClientListResponse struct {
 	// Paged collection of ResourceSku items
 	PagedResourceSKU

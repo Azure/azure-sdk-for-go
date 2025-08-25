@@ -34,7 +34,7 @@ type OccurrencesClientListByScheduledActionResponse struct {
 	OccurrenceListResult
 }
 
-// OccurrencesClientListResourcesResponse contains the response from method OccurrencesClient.NewListResourcesPager.
+// OccurrencesClientListResourcesResponse contains the response from method OccurrencesClient.ListResources.
 type OccurrencesClientListResourcesResponse struct {
 	// Paged collection of OccurrenceResource items
 	OccurrenceResourceListResponse
@@ -109,7 +109,7 @@ type ScheduledActionsClientListBySubscriptionResponse struct {
 	ScheduledActionListResult
 }
 
-// ScheduledActionsClientListResourcesResponse contains the response from method ScheduledActionsClient.NewListResourcesPager.
+// ScheduledActionsClientListResourcesResponse contains the response from method ScheduledActionsClient.ListResources.
 type ScheduledActionsClientListResourcesResponse struct {
 	// Paged collection of ScheduledActionResource items
 	ResourceListResponse

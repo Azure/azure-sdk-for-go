@@ -160,7 +160,6 @@ func (client *SitesByServiceGroupClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -224,33 +223,33 @@ func (client *SitesByServiceGroupClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListByServiceGroupPager - list Site at SG scope
+// ListByServiceGroup - list Site at SG scope
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
 //   - servicegroupName - The name of the service group
-//   - options - SitesByServiceGroupClientListByServiceGroupOptions contains the optional parameters for the SitesByServiceGroupClient.NewListByServiceGroupPager
+//   - options - SitesByServiceGroupClientListByServiceGroupOptions contains the optional parameters for the SitesByServiceGroupClient.ListByServiceGroup
 //     method.
-func (client *SitesByServiceGroupClient) NewListByServiceGroupPager(servicegroupName string, options *SitesByServiceGroupClientListByServiceGroupOptions) *runtime.Pager[SitesByServiceGroupClientListByServiceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SitesByServiceGroupClientListByServiceGroupResponse]{
-		More: func(page SitesByServiceGroupClientListByServiceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SitesByServiceGroupClientListByServiceGroupResponse) (SitesByServiceGroupClientListByServiceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SitesByServiceGroupClient.NewListByServiceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServiceGroupCreateRequest(ctx, servicegroupName, options)
-			}, nil)
-			if err != nil {
-				return SitesByServiceGroupClientListByServiceGroupResponse{}, err
-			}
-			return client.listByServiceGroupHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *SitesByServiceGroupClient) ListByServiceGroup(ctx context.Context, servicegroupName string, options *SitesByServiceGroupClientListByServiceGroupOptions) (SitesByServiceGroupClientListByServiceGroupResponse, error) {
+	var err error
+	const operationName = "SitesByServiceGroupClient.ListByServiceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listByServiceGroupCreateRequest(ctx, servicegroupName, options)
+	if err != nil {
+		return SitesByServiceGroupClientListByServiceGroupResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SitesByServiceGroupClientListByServiceGroupResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SitesByServiceGroupClientListByServiceGroupResponse{}, err
+	}
+	resp, err := client.listByServiceGroupHandleResponse(httpResp)
+	return resp, err
 }
 
 // listByServiceGroupCreateRequest creates the ListByServiceGroup request.

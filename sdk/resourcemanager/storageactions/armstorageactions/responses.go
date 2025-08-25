@@ -10,7 +10,7 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// StorageTaskAssignmentClientListResponse contains the response from method StorageTaskAssignmentClient.NewListPager.
+// StorageTaskAssignmentClientListResponse contains the response from method StorageTaskAssignmentClient.List.
 type StorageTaskAssignmentClientListResponse struct {
 	// The response from the List Storage Tasks operation.
 	StorageTaskAssignmentsListResult
@@ -57,7 +57,7 @@ type StorageTasksClientUpdateResponse struct {
 	StorageTask
 }
 
-// StorageTasksReportClientListResponse contains the response from method StorageTasksReportClient.NewListPager.
+// StorageTasksReportClientListResponse contains the response from method StorageTasksReportClient.List.
 type StorageTasksReportClientListResponse struct {
 	// Fetch Storage Tasks Run Summary.
 	StorageTaskReportSummary

@@ -5,12 +5,12 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageactions/armstorageactions"
 	"net/http"
 	"net/url"
@@ -20,26 +20,22 @@ import (
 
 // StorageTasksReportServer is a fake server for instances of the armstorageactions.StorageTasksReportClient type.
 type StorageTasksReportServer struct {
-	// NewListPager is the fake for method StorageTasksReportClient.NewListPager
+	// List is the fake for method StorageTasksReportClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, storageTaskName string, options *armstorageactions.StorageTasksReportClientListOptions) (resp azfake.PagerResponder[armstorageactions.StorageTasksReportClientListResponse])
+	List func(ctx context.Context, resourceGroupName string, storageTaskName string, options *armstorageactions.StorageTasksReportClientListOptions) (resp azfake.Responder[armstorageactions.StorageTasksReportClientListResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStorageTasksReportServerTransport creates a new instance of StorageTasksReportServerTransport with the provided implementation.
 // The returned StorageTasksReportServerTransport instance is connected to an instance of armstorageactions.StorageTasksReportClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewStorageTasksReportServerTransport(srv *StorageTasksReportServer) *StorageTasksReportServerTransport {
-	return &StorageTasksReportServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armstorageactions.StorageTasksReportClientListResponse]](),
-	}
+	return &StorageTasksReportServerTransport{srv: srv}
 }
 
 // StorageTasksReportServerTransport connects instances of armstorageactions.StorageTasksReportClient to instances of StorageTasksReportServer.
 // Don't use this type directly, use NewStorageTasksReportServerTransport instead.
 type StorageTasksReportServerTransport struct {
-	srv          *StorageTasksReportServer
-	newListPager *tracker[azfake.PagerResponder[armstorageactions.StorageTasksReportClientListResponse]]
+	srv *StorageTasksReportServer
 }
 
 // Do implements the policy.Transporter interface for StorageTasksReportServerTransport.
@@ -65,8 +61,8 @@ func (s *StorageTasksReportServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
-			case "StorageTasksReportClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
+			case "StorageTasksReportClient.List":
+				res.resp, res.err = s.dispatchList(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -86,70 +82,62 @@ func (s *StorageTasksReportServerTransport) dispatchToMethodFake(req *http.Reque
 	}
 }
 
-func (s *StorageTasksReportServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (s *StorageTasksReportServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if s.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageActions/storageTasks/(?P<storageTaskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storageTaskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTaskName")])
-		if err != nil {
-			return nil, err
-		}
-		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
-		if err != nil {
-			return nil, err
-		}
-		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armstorageactions.StorageTasksReportClientListOptions
-		if maxpagesizeParam != nil || filterParam != nil {
-			options = &armstorageactions.StorageTasksReportClientListOptions{
-				Maxpagesize: maxpagesizeParam,
-				Filter:      filterParam,
-			}
-		}
-		resp := s.srv.NewListPager(resourceGroupNameParam, storageTaskNameParam, options)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorageactions.StorageTasksReportClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageActions/storageTasks/(?P<storageTaskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reports`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	storageTaskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTaskName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
+	maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+	if err != nil {
+		return nil, err
+	}
+	maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armstorageactions.StorageTasksReportClientListOptions
+	if maxpagesizeParam != nil || filterParam != nil {
+		options = &armstorageactions.StorageTasksReportClientListOptions{
+			Maxpagesize: maxpagesizeParam,
+			Filter:      filterParam,
+		}
+	}
+	respr, errRespr := s.srv.List(req.Context(), resourceGroupNameParam, storageTaskNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StorageTaskReportSummary, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

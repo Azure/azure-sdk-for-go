@@ -5,13 +5,13 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -19,26 +19,22 @@ import (
 
 // CloudHsmClusterPrivateLinkResourcesServer is a fake server for instances of the armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClient type.
 type CloudHsmClusterPrivateLinkResourcesServer struct {
-	// NewListByCloudHsmClusterPager is the fake for method CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager
+	// ListByCloudHsmCluster is the fake for method CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByCloudHsmClusterPager func(resourceGroupName string, cloudHsmClusterName string, options *armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions) (resp azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse])
+	ListByCloudHsmCluster func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, options *armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions) (resp azfake.Responder[armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudHsmClusterPrivateLinkResourcesServerTransport creates a new instance of CloudHsmClusterPrivateLinkResourcesServerTransport with the provided implementation.
 // The returned CloudHsmClusterPrivateLinkResourcesServerTransport instance is connected to an instance of armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudHsmClusterPrivateLinkResourcesServerTransport(srv *CloudHsmClusterPrivateLinkResourcesServer) *CloudHsmClusterPrivateLinkResourcesServerTransport {
-	return &CloudHsmClusterPrivateLinkResourcesServerTransport{
-		srv:                           srv,
-		newListByCloudHsmClusterPager: newTracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse]](),
-	}
+	return &CloudHsmClusterPrivateLinkResourcesServerTransport{srv: srv}
 }
 
 // CloudHsmClusterPrivateLinkResourcesServerTransport connects instances of armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClient to instances of CloudHsmClusterPrivateLinkResourcesServer.
 // Don't use this type directly, use NewCloudHsmClusterPrivateLinkResourcesServerTransport instead.
 type CloudHsmClusterPrivateLinkResourcesServerTransport struct {
-	srv                           *CloudHsmClusterPrivateLinkResourcesServer
-	newListByCloudHsmClusterPager *tracker[azfake.PagerResponder[armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse]]
+	srv *CloudHsmClusterPrivateLinkResourcesServer
 }
 
 // Do implements the policy.Transporter interface for CloudHsmClusterPrivateLinkResourcesServerTransport.
@@ -64,8 +60,8 @@ func (c *CloudHsmClusterPrivateLinkResourcesServerTransport) dispatchToMethodFak
 		}
 		if !intercepted {
 			switch method {
-			case "CloudHsmClusterPrivateLinkResourcesClient.NewListByCloudHsmClusterPager":
-				res.resp, res.err = c.dispatchNewListByCloudHsmClusterPager(req)
+			case "CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster":
+				res.resp, res.err = c.dispatchListByCloudHsmCluster(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -85,43 +81,35 @@ func (c *CloudHsmClusterPrivateLinkResourcesServerTransport) dispatchToMethodFak
 	}
 }
 
-func (c *CloudHsmClusterPrivateLinkResourcesServerTransport) dispatchNewListByCloudHsmClusterPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByCloudHsmClusterPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByCloudHsmClusterPager not implemented")}
+func (c *CloudHsmClusterPrivateLinkResourcesServerTransport) dispatchListByCloudHsmCluster(req *http.Request) (*http.Response, error) {
+	if c.srv.ListByCloudHsmCluster == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListByCloudHsmCluster not implemented")}
 	}
-	newListByCloudHsmClusterPager := c.newListByCloudHsmClusterPager.get(req)
-	if newListByCloudHsmClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByCloudHsmClusterPager(resourceGroupNameParam, cloudHsmClusterNameParam, nil)
-		newListByCloudHsmClusterPager = &resp
-		c.newListByCloudHsmClusterPager.add(req, newListByCloudHsmClusterPager)
-		server.PagerResponderInjectNextLinks(newListByCloudHsmClusterPager, req, func(page *armhardwaresecuritymodules.CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListByCloudHsmClusterPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByCloudHsmClusterPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListByCloudHsmClusterPager) {
-		c.newListByCloudHsmClusterPager.remove(req)
+	respr, errRespr := c.srv.ListByCloudHsmCluster(req.Context(), resourceGroupNameParam, cloudHsmClusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResourceListResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

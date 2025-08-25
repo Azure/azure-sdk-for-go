@@ -162,8 +162,8 @@ func (client *JobClient) listCreateRequest(ctx context.Context, resourceGroupNam
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	if options != nil && options.OdataOptions != nil {
-		reqQP.Set("odataOptions", *options.OdataOptions)
+	if options != nil && options.ODataOptions != nil {
+		reqQP.Set("odataOptions", *options.ODataOptions)
 	}
 	if options != nil && options.PageSize != nil {
 		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))

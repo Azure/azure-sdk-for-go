@@ -346,7 +346,7 @@ type PureStoragePoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
 type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }

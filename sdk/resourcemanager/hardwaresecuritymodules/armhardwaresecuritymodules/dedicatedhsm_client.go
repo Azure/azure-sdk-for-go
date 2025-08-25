@@ -193,7 +193,6 @@ func (client *DedicatedHsmClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-03-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -383,35 +382,35 @@ func (client *DedicatedHsmClient) listBySubscriptionHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListOutboundNetworkDependenciesEndpointsPager - Gets a list of egress endpoints (network endpoints of all outbound dependencies)
+// ListOutboundNetworkDependenciesEndpoints - Gets a list of egress endpoints (network endpoints of all outbound dependencies)
 // in the specified dedicated hsm resource. The operation returns properties of each egress endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the dedicated Hsm
-//   - options - DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DedicatedHsmClient.NewListOutboundNetworkDependenciesEndpointsPager
+//   - options - DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints
 //     method.
-func (client *DedicatedHsmClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse]{
-		More: func(page DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse) (DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHsmClient.NewListOutboundNetworkDependenciesEndpointsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
-			if err != nil {
-				return DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse{}, err
-			}
-			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *DedicatedHsmClient) ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, name string, options *DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions) (DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+	var err error
+	const operationName = "DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, options)
+	if err != nil {
+		return DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	resp, err := client.listOutboundNetworkDependenciesEndpointsHandleResponse(httpResp)
+	return resp, err
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.

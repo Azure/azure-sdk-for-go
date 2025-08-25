@@ -21,7 +21,7 @@ type SitesByServiceGroupClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SitesByServiceGroupClientListByServiceGroupOptions contains the optional parameters for the SitesByServiceGroupClient.NewListByServiceGroupPager
+// SitesByServiceGroupClientListByServiceGroupOptions contains the optional parameters for the SitesByServiceGroupClient.ListByServiceGroup
 // method.
 type SitesByServiceGroupClientListByServiceGroupOptions struct {
 	// placeholder for future optional parameters

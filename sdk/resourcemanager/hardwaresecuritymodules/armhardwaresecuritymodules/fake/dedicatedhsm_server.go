@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -41,9 +41,9 @@ type DedicatedHsmServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionResponse])
 
-	// NewListOutboundNetworkDependenciesEndpointsPager is the fake for method DedicatedHsmClient.NewListOutboundNetworkDependenciesEndpointsPager
+	// ListOutboundNetworkDependenciesEndpoints is the fake for method DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, name string, options *armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse])
+	ListOutboundNetworkDependenciesEndpoints func(ctx context.Context, resourceGroupName string, name string, options *armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.Responder[armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method DedicatedHsmClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -60,21 +60,19 @@ func NewDedicatedHsmServerTransport(srv *DedicatedHsmServer) *DedicatedHsmServer
 		beginDelete:                 newTracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionResponse]](),
-		newListOutboundNetworkDependenciesEndpointsPager: newTracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientUpdateResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientUpdateResponse]](),
 	}
 }
 
 // DedicatedHsmServerTransport connects instances of armhardwaresecuritymodules.DedicatedHsmClient to instances of DedicatedHsmServer.
 // Don't use this type directly, use NewDedicatedHsmServerTransport instead.
 type DedicatedHsmServerTransport struct {
-	srv                                              *DedicatedHsmServer
-	beginCreateOrUpdate                              *tracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientCreateOrUpdateResponse]]
-	beginDelete                                      *tracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientDeleteResponse]]
-	newListByResourceGroupPager                      *tracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListByResourceGroupResponse]]
-	newListBySubscriptionPager                       *tracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionResponse]]
-	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse]]
-	beginUpdate                                      *tracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientUpdateResponse]]
+	srv                         *DedicatedHsmServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientDeleteResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhardwaresecuritymodules.DedicatedHsmClientListBySubscriptionResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armhardwaresecuritymodules.DedicatedHsmClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DedicatedHsmServerTransport.
@@ -110,8 +108,8 @@ func (d *DedicatedHsmServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DedicatedHsmClient.NewListBySubscriptionPager":
 				res.resp, res.err = d.dispatchNewListBySubscriptionPager(req)
-			case "DedicatedHsmClient.NewListOutboundNetworkDependenciesEndpointsPager":
-				res.resp, res.err = d.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
+			case "DedicatedHsmClient.ListOutboundNetworkDependenciesEndpoints":
+				res.resp, res.err = d.dispatchListOutboundNetworkDependenciesEndpoints(req)
 			case "DedicatedHsmClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
@@ -370,43 +368,35 @@ func (d *DedicatedHsmServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	return resp, nil
 }
 
-func (d *DedicatedHsmServerTransport) dispatchNewListOutboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListOutboundNetworkDependenciesEndpointsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesEndpointsPager not implemented")}
+func (d *DedicatedHsmServerTransport) dispatchListOutboundNetworkDependenciesEndpoints(req *http.Request) (*http.Response, error) {
+	if d.srv.ListOutboundNetworkDependenciesEndpoints == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListOutboundNetworkDependenciesEndpoints not implemented")}
 	}
-	newListOutboundNetworkDependenciesEndpointsPager := d.newListOutboundNetworkDependenciesEndpointsPager.get(req)
-	if newListOutboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HardwareSecurityModules/dedicatedHSMs/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, nameParam, nil)
-		newListOutboundNetworkDependenciesEndpointsPager = &resp
-		d.newListOutboundNetworkDependenciesEndpointsPager.add(req, newListOutboundNetworkDependenciesEndpointsPager)
-		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesEndpointsPager, req, func(page *armhardwaresecuritymodules.DedicatedHsmClientListOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HardwareSecurityModules/dedicatedHSMs/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesEndpointsPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
-		d.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
+	respr, errRespr := d.srv.ListOutboundNetworkDependenciesEndpoints(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OutboundEnvironmentEndpointCollection, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

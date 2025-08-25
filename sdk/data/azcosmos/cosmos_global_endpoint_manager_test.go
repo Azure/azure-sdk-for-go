@@ -504,7 +504,10 @@ func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
 	}
 
 	// Used to trigger another get account properties call in the background
-	testPipeline.Do(req)
+	_, err = testPipeline.Do(req)
+	if err != nil {
+		t.Fatalf("testPipeline.Do failed: %v", err)
+	}
 
 	// Issue another test request that will use the updated account properties
 	req, err = azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())

@@ -13,6 +13,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed bug where the correct header was not being sent for writes on multiple write region accounts. See [PR 25127](https://github.com/Azure/azure-sdk-for-go/pull/25127)
 
 ### Other Changes
 

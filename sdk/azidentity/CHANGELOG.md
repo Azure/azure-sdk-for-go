@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- `AzureDeveloperCliCredential` no longer hangs when AZD_DEBUG is set
 
 ## 1.11.0 (2025-08-05)
 

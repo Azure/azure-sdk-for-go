@@ -108,7 +108,7 @@ var defaultAzdTokenProvider azdTokenProvider = func(ctx context.Context, scopes 
 		ctx, cancel = context.WithTimeout(ctx, cliTimeout)
 		defer cancel()
 	}
-	commandLine := "azd auth token -o json"
+	commandLine := "azd auth token -o json --no-prompt"
 	if tenant != "" {
 		commandLine += " --tenant-id " + tenant
 	}

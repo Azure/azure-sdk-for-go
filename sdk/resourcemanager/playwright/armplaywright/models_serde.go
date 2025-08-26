@@ -505,6 +505,7 @@ func (w WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "localAuth", w.LocalAuth)
 	populate(objectMap, "provisioningState", w.ProvisioningState)
 	populate(objectMap, "regionalAffinity", w.RegionalAffinity)
+	populate(objectMap, "workspaceId", w.WorkspaceID)
 	return json.Marshal(objectMap)
 }
 
@@ -528,6 +529,9 @@ func (w *WorkspaceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "regionalAffinity":
 			err = unpopulate(val, "RegionalAffinity", &w.RegionalAffinity)
+			delete(rawMsg, key)
+		case "workspaceId":
+			err = unpopulate(val, "WorkspaceID", &w.WorkspaceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {

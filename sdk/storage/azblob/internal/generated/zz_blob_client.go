@@ -1655,13 +1655,13 @@ func (client *BlobClient) getTagsCreateRequest(ctx context.Context, options *Blo
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["x-ms-blob-if-match"] = []string{*blobModifiedAccessConditions.IfMatch}
+		req.Raw().Header["x-ms-blob-if-match"] = []string{string(*blobModifiedAccessConditions.IfMatch)}
 	}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["x-ms-blob-if-modified-since"] = []string{blobModifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["x-ms-blob-if-none-match"] = []string{*blobModifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["x-ms-blob-if-none-match"] = []string{string(*blobModifiedAccessConditions.IfNoneMatch)}
 	}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Raw().Header["x-ms-blob-if-unmodified-since"] = []string{blobModifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
@@ -2682,13 +2682,13 @@ func (client *BlobClient) setTagsCreateRequest(ctx context.Context, tags BlobTag
 		req.Raw().Header["Content-MD5"] = []string{base64.StdEncoding.EncodeToString(options.TransactionalContentMD5)}
 	}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["x-ms-blob-if-match"] = []string{*blobModifiedAccessConditions.IfMatch}
+		req.Raw().Header["x-ms-blob-if-match"] = []string{string(*blobModifiedAccessConditions.IfMatch)}
 	}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfModifiedSince != nil {
 		req.Raw().Header["x-ms-blob-if-modified-since"] = []string{blobModifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
 	}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["x-ms-blob-if-none-match"] = []string{*blobModifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["x-ms-blob-if-none-match"] = []string{string(*blobModifiedAccessConditions.IfNoneMatch)}
 	}
 	if blobModifiedAccessConditions != nil && blobModifiedAccessConditions.IfUnmodifiedSince != nil {
 		req.Raw().Header["x-ms-blob-if-unmodified-since"] = []string{blobModifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}

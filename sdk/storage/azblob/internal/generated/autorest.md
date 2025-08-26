@@ -371,6 +371,8 @@ directive:
       replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`).
       replace(/\*modifiedAccessConditions.IfMatch/g, `string(*modifiedAccessConditions.IfMatch)`).
       replace(/\*modifiedAccessConditions.IfNoneMatch/g, `string(*modifiedAccessConditions.IfNoneMatch)`).
+      replace(/\*blobModifiedAccessConditions.IfMatch/g, `string(*blobModifiedAccessConditions.IfMatch)`).
+      replace(/\*blobModifiedAccessConditions.IfNoneMatch/g, `string(*blobModifiedAccessConditions.IfNoneMatch)`).
       replace(/\*sourceModifiedAccessConditions.SourceIfMatch/g, `string(*sourceModifiedAccessConditions.SourceIfMatch)`).
       replace(/\*sourceModifiedAccessConditions.SourceIfNoneMatch/g, `string(*sourceModifiedAccessConditions.SourceIfNoneMatch)`);
 ```

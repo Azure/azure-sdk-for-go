@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2025-08-26)
+### Breaking Changes
+
+- Type of `Quota.Name` has been changed from `*QuotaName` to `*string`
+- Type of `WorkspaceQuota.Name` has been changed from `*QuotaName` to `*string`
+
+### Features Added
+
+- New field `WorkspaceID` in struct `WorkspaceProperties`
+
+
 ## 0.1.0 (2025-07-15)
 ### Other Changes
 

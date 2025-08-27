@@ -38,7 +38,7 @@ type SolutionsServer struct {
 
 	// BeginUpdate is the fake for method SolutionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties armworkloadorchestration.Solution, options *armworkloadorchestration.SolutionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties armworkloadorchestration.SolutionUpdate, options *armworkloadorchestration.SolutionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSolutionsServerTransport creates a new instance of SolutionsServerTransport with the provided implementation.
@@ -306,7 +306,7 @@ func (s *SolutionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Solution](req)
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SolutionUpdate](req)
 		if err != nil {
 			return nil, err
 		}

@@ -720,8 +720,8 @@ func ExampleTargetsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewTargetsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.Target{
-		Properties: &armworkloadorchestration.TargetProperties{
+	poller, err := clientFactory.NewTargetsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.TargetUpdate{
+		Properties: &armworkloadorchestration.TargetUpdateProperties{
 			Description:         to.Ptr("yhnhdpznncdvncmnvoeohqjx"),
 			DisplayName:         to.Ptr("pguujtzjjvixgjitugybrefp"),
 			TargetSpecification: map[string]any{},

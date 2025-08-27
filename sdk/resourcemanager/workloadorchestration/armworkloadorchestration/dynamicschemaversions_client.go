@@ -46,13 +46,13 @@ func NewDynamicSchemaVersionsClient(subscriptionID string, credential azcore.Tok
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
-//   - schemaVersionName - The name of the SchemaVersion
+//   - dynamicSchemaVersionName - The name of the DynamicSchemaVersion
 //   - resource - Resource create parameters.
 //   - options - DynamicSchemaVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DynamicSchemaVersionsClient.BeginCreateOrUpdate
 //     method.
-func (client *DynamicSchemaVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, resource DynamicSchemaVersion, options *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DynamicSchemaVersionsClientCreateOrUpdateResponse], error) {
+func (client *DynamicSchemaVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource DynamicSchemaVersion, options *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DynamicSchemaVersionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, schemaName, dynamicSchemaName, schemaVersionName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, resource, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,13 +71,13 @@ func (client *DynamicSchemaVersionsClient) BeginCreateOrUpdate(ctx context.Conte
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, resource DynamicSchemaVersion, options *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource DynamicSchemaVersion, options *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DynamicSchemaVersionsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, schemaVersionName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -93,8 +93,8 @@ func (client *DynamicSchemaVersionsClient) createOrUpdate(ctx context.Context, r
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, resource DynamicSchemaVersion, _ *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{schemaVersionName}"
+func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource DynamicSchemaVersion, _ *DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -111,10 +111,10 @@ func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter dynamicSchemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaName}", url.PathEscape(dynamicSchemaName))
-	if schemaVersionName == "" {
-		return nil, errors.New("parameter schemaVersionName cannot be empty")
+	if dynamicSchemaVersionName == "" {
+		return nil, errors.New("parameter dynamicSchemaVersionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaVersionName}", url.PathEscape(schemaVersionName))
+	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaVersionName}", url.PathEscape(dynamicSchemaVersionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -137,12 +137,12 @@ func (client *DynamicSchemaVersionsClient) createOrUpdateCreateRequest(ctx conte
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
-//   - schemaVersionName - The name of the SchemaVersion
+//   - dynamicSchemaVersionName - The name of the DynamicSchemaVersion
 //   - options - DynamicSchemaVersionsClientBeginDeleteOptions contains the optional parameters for the DynamicSchemaVersionsClient.BeginDelete
 //     method.
-func (client *DynamicSchemaVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, options *DynamicSchemaVersionsClientBeginDeleteOptions) (*runtime.Poller[DynamicSchemaVersionsClientDeleteResponse], error) {
+func (client *DynamicSchemaVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, options *DynamicSchemaVersionsClientBeginDeleteOptions) (*runtime.Poller[DynamicSchemaVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, schemaName, dynamicSchemaName, schemaVersionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -161,13 +161,13 @@ func (client *DynamicSchemaVersionsClient) BeginDelete(ctx context.Context, reso
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, options *DynamicSchemaVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, options *DynamicSchemaVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DynamicSchemaVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, schemaVersionName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -183,8 +183,8 @@ func (client *DynamicSchemaVersionsClient) deleteOperation(ctx context.Context, 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DynamicSchemaVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, _ *DynamicSchemaVersionsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{schemaVersionName}"
+func (client *DynamicSchemaVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, _ *DynamicSchemaVersionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -201,10 +201,10 @@ func (client *DynamicSchemaVersionsClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter dynamicSchemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaName}", url.PathEscape(dynamicSchemaName))
-	if schemaVersionName == "" {
-		return nil, errors.New("parameter schemaVersionName cannot be empty")
+	if dynamicSchemaVersionName == "" {
+		return nil, errors.New("parameter dynamicSchemaVersionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaVersionName}", url.PathEscape(schemaVersionName))
+	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaVersionName}", url.PathEscape(dynamicSchemaVersionName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -222,16 +222,16 @@ func (client *DynamicSchemaVersionsClient) deleteCreateRequest(ctx context.Conte
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
-//   - schemaVersionName - The name of the SchemaVersion
+//   - dynamicSchemaVersionName - The name of the DynamicSchemaVersion
 //   - options - DynamicSchemaVersionsClientGetOptions contains the optional parameters for the DynamicSchemaVersionsClient.Get
 //     method.
-func (client *DynamicSchemaVersionsClient) Get(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, options *DynamicSchemaVersionsClientGetOptions) (DynamicSchemaVersionsClientGetResponse, error) {
+func (client *DynamicSchemaVersionsClient) Get(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, options *DynamicSchemaVersionsClientGetOptions) (DynamicSchemaVersionsClientGetResponse, error) {
 	var err error
 	const operationName = "DynamicSchemaVersionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, schemaVersionName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, options)
 	if err != nil {
 		return DynamicSchemaVersionsClientGetResponse{}, err
 	}
@@ -248,8 +248,8 @@ func (client *DynamicSchemaVersionsClient) Get(ctx context.Context, resourceGrou
 }
 
 // getCreateRequest creates the Get request.
-func (client *DynamicSchemaVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, _ *DynamicSchemaVersionsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{schemaVersionName}"
+func (client *DynamicSchemaVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, _ *DynamicSchemaVersionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -266,10 +266,10 @@ func (client *DynamicSchemaVersionsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter dynamicSchemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaName}", url.PathEscape(dynamicSchemaName))
-	if schemaVersionName == "" {
-		return nil, errors.New("parameter schemaVersionName cannot be empty")
+	if dynamicSchemaVersionName == "" {
+		return nil, errors.New("parameter dynamicSchemaVersionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaVersionName}", url.PathEscape(schemaVersionName))
+	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaVersionName}", url.PathEscape(dynamicSchemaVersionName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -367,17 +367,17 @@ func (client *DynamicSchemaVersionsClient) listByDynamicSchemaHandleResponse(res
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
-//   - schemaVersionName - The name of the SchemaVersion
+//   - dynamicSchemaVersionName - The name of the DynamicSchemaVersion
 //   - properties - The resource properties to be updated.
 //   - options - DynamicSchemaVersionsClientUpdateOptions contains the optional parameters for the DynamicSchemaVersionsClient.Update
 //     method.
-func (client *DynamicSchemaVersionsClient) Update(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, properties DynamicSchemaVersion, options *DynamicSchemaVersionsClientUpdateOptions) (DynamicSchemaVersionsClientUpdateResponse, error) {
+func (client *DynamicSchemaVersionsClient) Update(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, properties DynamicSchemaVersion, options *DynamicSchemaVersionsClientUpdateOptions) (DynamicSchemaVersionsClientUpdateResponse, error) {
 	var err error
 	const operationName = "DynamicSchemaVersionsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, schemaVersionName, properties, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, properties, options)
 	if err != nil {
 		return DynamicSchemaVersionsClientUpdateResponse{}, err
 	}
@@ -394,8 +394,8 @@ func (client *DynamicSchemaVersionsClient) Update(ctx context.Context, resourceG
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DynamicSchemaVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, properties DynamicSchemaVersion, _ *DynamicSchemaVersionsClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{schemaVersionName}"
+func (client *DynamicSchemaVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, properties DynamicSchemaVersion, _ *DynamicSchemaVersionsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/dynamicSchemas/{dynamicSchemaName}/versions/{dynamicSchemaVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -412,10 +412,10 @@ func (client *DynamicSchemaVersionsClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter dynamicSchemaName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaName}", url.PathEscape(dynamicSchemaName))
-	if schemaVersionName == "" {
-		return nil, errors.New("parameter schemaVersionName cannot be empty")
+	if dynamicSchemaVersionName == "" {
+		return nil, errors.New("parameter dynamicSchemaVersionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaVersionName}", url.PathEscape(schemaVersionName))
+	urlPath = strings.ReplaceAll(urlPath, "{dynamicSchemaVersionName}", url.PathEscape(dynamicSchemaVersionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

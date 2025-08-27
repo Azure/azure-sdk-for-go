@@ -67,7 +67,7 @@ type TargetsServer struct {
 
 	// BeginUpdate is the fake for method TargetsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, properties armworkloadorchestration.Target, options *armworkloadorchestration.TargetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, properties armworkloadorchestration.TargetUpdate, options *armworkloadorchestration.TargetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdateExternalValidationStatus is the fake for method TargetsClient.BeginUpdateExternalValidationStatus
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -691,7 +691,7 @@ func (t *TargetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Target](req)
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.TargetUpdate](req)
 		if err != nil {
 			return nil, err
 		}

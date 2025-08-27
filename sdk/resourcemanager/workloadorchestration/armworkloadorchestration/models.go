@@ -123,6 +123,21 @@ type ConfigTemplateProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// ConfigTemplateUpdate - The type used for update operations of the ConfigTemplate.
+type ConfigTemplateUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ConfigTemplateUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ConfigTemplateUpdateProperties - The updatable properties of the ConfigTemplate.
+type ConfigTemplateUpdateProperties struct {
+	// Description of config template
+	Description *string
+}
+
 // ConfigTemplateVersion - Config Template Version Resource
 type ConfigTemplateVersion struct {
 	// The resource-specific properties for this resource.
@@ -220,6 +235,24 @@ type ContextProperties struct {
 
 	// READ-ONLY; Provisioning state of resource
 	ProvisioningState *ProvisioningState
+}
+
+// ContextUpdate - The type used for update operations of the Context.
+type ContextUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ContextUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ContextUpdateProperties - The updatable properties of the Context.
+type ContextUpdateProperties struct {
+	// List of Capabilities
+	Capabilities []*Capability
+
+	// List of Hierarchies
+	Hierarchies []*Hierarchy
 }
 
 // DeployJobParameter - Parameters for a deployment job.
@@ -329,6 +362,19 @@ type DiagnosticListResult struct {
 type DiagnosticProperties struct {
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
+}
+
+// DiagnosticUpdate - The type used for update operations of the Diagnostic.
+type DiagnosticUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *DiagnosticUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// DiagnosticUpdateProperties - The updatable properties of the Diagnostic.
+type DiagnosticUpdateProperties struct {
 }
 
 // DynamicSchema Resource
@@ -886,6 +932,19 @@ type SchemaReferenceProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// SchemaUpdate - The type used for update operations of the Schema.
+type SchemaUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *SchemaUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// SchemaUpdateProperties - The updatable properties of the Schema.
+type SchemaUpdateProperties struct {
+}
+
 // SchemaVersion - Schema Version Resource
 type SchemaVersion struct {
 	// The resource-specific properties for this resource.
@@ -1195,6 +1254,16 @@ type SolutionTemplateVersionWithUpdateType struct {
 	Version *string
 }
 
+// SolutionUpdate - The type used for update operations of the Solution.
+type SolutionUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *SolutionUpdateProperties
+}
+
+// SolutionUpdateProperties - The updatable properties of the Solution.
+type SolutionUpdateProperties struct {
+}
+
 // SolutionVersion - Solution Version Resource. It has the resolved configuration along with edge specification.
 type SolutionVersion struct {
 	ExtendedLocation *ExtendedLocation
@@ -1451,6 +1520,42 @@ type TargetStatus struct {
 
 	// Target status
 	Status *string
+}
+
+// TargetUpdate - The type used for update operations of the Target.
+type TargetUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *TargetUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// TargetUpdateProperties - The updatable properties of the Target.
+type TargetUpdateProperties struct {
+	// List of capabilities
+	Capabilities []*string
+
+	// ArmId of Context
+	ContextID *string
+
+	// Description of target
+	Description *string
+
+	// Display name of target
+	DisplayName *string
+
+	// Hierarchy Level
+	HierarchyLevel *string
+
+	// Scope of the target resource
+	SolutionScope *string
+
+	// State of resource
+	State *ResourceState
+
+	// target spec
+	TargetSpecification map[string]any
 }
 
 // TaskOption - Task Option Properties

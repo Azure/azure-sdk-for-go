@@ -42,7 +42,7 @@ type ContextsServer struct {
 
 	// BeginUpdate is the fake for method ContextsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, properties armworkloadorchestration.Context, options *armworkloadorchestration.ContextsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, properties armworkloadorchestration.ContextUpdate, options *armworkloadorchestration.ContextsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.ContextsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewContextsServerTransport creates a new instance of ContextsServerTransport with the provided implementation.
@@ -331,7 +331,7 @@ func (c *ContextsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Context](req)
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ContextUpdate](req)
 		if err != nil {
 			return nil, err
 		}

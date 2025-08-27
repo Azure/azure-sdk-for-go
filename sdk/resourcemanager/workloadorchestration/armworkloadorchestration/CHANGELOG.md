@@ -1,5 +1,31 @@
 # Release History
 
+## 1.0.0 (2025-08-27)
+### Breaking Changes
+
+- Function `*ConfigTemplatesClient.Update` parameter(s) have been changed from `(context.Context, string, string, ConfigTemplate, *ConfigTemplatesClientUpdateOptions)` to `(context.Context, string, string, ConfigTemplateUpdate, *ConfigTemplatesClientUpdateOptions)`
+- Function `*ContextsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, Context, *ContextsClientBeginUpdateOptions)` to `(context.Context, string, string, ContextUpdate, *ContextsClientBeginUpdateOptions)`
+- Function `*DiagnosticsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, Diagnostic, *DiagnosticsClientBeginUpdateOptions)` to `(context.Context, string, string, DiagnosticUpdate, *DiagnosticsClientBeginUpdateOptions)`
+- Function `*SchemasClient.Update` parameter(s) have been changed from `(context.Context, string, string, Schema, *SchemasClientUpdateOptions)` to `(context.Context, string, string, SchemaUpdate, *SchemasClientUpdateOptions)`
+- Function `*SolutionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, Solution, *SolutionsClientBeginUpdateOptions)` to `(context.Context, string, string, string, SolutionUpdate, *SolutionsClientBeginUpdateOptions)`
+- Function `*TargetsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, Target, *TargetsClientBeginUpdateOptions)` to `(context.Context, string, string, TargetUpdate, *TargetsClientBeginUpdateOptions)`
+
+### Features Added
+
+- New struct `ConfigTemplateUpdate`
+- New struct `ConfigTemplateUpdateProperties`
+- New struct `ContextUpdate`
+- New struct `ContextUpdateProperties`
+- New struct `DiagnosticUpdate`
+- New struct `DiagnosticUpdateProperties`
+- New struct `SchemaUpdate`
+- New struct `SchemaUpdateProperties`
+- New struct `SolutionUpdate`
+- New struct `SolutionUpdateProperties`
+- New struct `TargetUpdate`
+- New struct `TargetUpdateProperties`
+
+
 ## 0.1.0 (2025-08-13)
 ### Other Changes
 

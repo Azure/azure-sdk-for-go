@@ -381,7 +381,7 @@ func (client *DiagnosticsClient) listBySubscriptionHandleResponse(resp *http.Res
 //   - diagnosticName - Name of Diagnostic.
 //   - properties - The resource properties to be updated.
 //   - options - DiagnosticsClientBeginUpdateOptions contains the optional parameters for the DiagnosticsClient.BeginUpdate method.
-func (client *DiagnosticsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diagnosticName string, properties Diagnostic, options *DiagnosticsClientBeginUpdateOptions) (*runtime.Poller[DiagnosticsClientUpdateResponse], error) {
+func (client *DiagnosticsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, options *DiagnosticsClientBeginUpdateOptions) (*runtime.Poller[DiagnosticsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, diagnosticName, properties, options)
 		if err != nil {
@@ -402,7 +402,7 @@ func (client *DiagnosticsClient) BeginUpdate(ctx context.Context, resourceGroupN
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-func (client *DiagnosticsClient) update(ctx context.Context, resourceGroupName string, diagnosticName string, properties Diagnostic, options *DiagnosticsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *DiagnosticsClient) update(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, options *DiagnosticsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -424,7 +424,7 @@ func (client *DiagnosticsClient) update(ctx context.Context, resourceGroupName s
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DiagnosticsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diagnosticName string, properties Diagnostic, _ *DiagnosticsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, _ *DiagnosticsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/diagnostics/{diagnosticName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

@@ -329,8 +329,8 @@ func ExampleSchemasClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSchemasClient().Update(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.Schema{
-		Properties: &armworkloadorchestration.SchemaProperties{},
+	res, err := clientFactory.NewSchemasClient().Update(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.SchemaUpdate{
+		Properties: &armworkloadorchestration.SchemaUpdateProperties{},
 		Tags: map[string]*string{
 			"key6760": to.Ptr("lknwkzihsmzbzkezkartwgsv"),
 		},

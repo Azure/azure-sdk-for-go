@@ -22,15 +22,15 @@ import (
 type DynamicSchemaVersionsServer struct {
 	// BeginCreateOrUpdate is the fake for method DynamicSchemaVersionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, resource armworkloadorchestration.DynamicSchemaVersion, options *armworkloadorchestration.DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.DynamicSchemaVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, resource armworkloadorchestration.DynamicSchemaVersion, options *armworkloadorchestration.DynamicSchemaVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.DynamicSchemaVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DynamicSchemaVersionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, options *armworkloadorchestration.DynamicSchemaVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.DynamicSchemaVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, options *armworkloadorchestration.DynamicSchemaVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.DynamicSchemaVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DynamicSchemaVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, options *armworkloadorchestration.DynamicSchemaVersionsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.DynamicSchemaVersionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, options *armworkloadorchestration.DynamicSchemaVersionsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.DynamicSchemaVersionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByDynamicSchemaPager is the fake for method DynamicSchemaVersionsClient.NewListByDynamicSchemaPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -38,7 +38,7 @@ type DynamicSchemaVersionsServer struct {
 
 	// Update is the fake for method DynamicSchemaVersionsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, schemaVersionName string, properties armworkloadorchestration.DynamicSchemaVersion, options *armworkloadorchestration.DynamicSchemaVersionsClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.DynamicSchemaVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, dynamicSchemaVersionName string, properties armworkloadorchestration.DynamicSchemaVersion, options *armworkloadorchestration.DynamicSchemaVersionsClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.DynamicSchemaVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDynamicSchemaVersionsServerTransport creates a new instance of DynamicSchemaVersionsServerTransport with the provided implementation.
@@ -120,7 +120,7 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchBeginCreateOrUpdate(req *
 	}
 	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<schemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<dynamicSchemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -142,11 +142,11 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchBeginCreateOrUpdate(req *
 		if err != nil {
 			return nil, err
 		}
-		schemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaVersionName")])
+		dynamicSchemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dynamicSchemaVersionName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, schemaVersionNameParam, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, dynamicSchemaVersionNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -176,7 +176,7 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchBeginDelete(req *http.Req
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<schemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<dynamicSchemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -194,11 +194,11 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchBeginDelete(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		schemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaVersionName")])
+		dynamicSchemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dynamicSchemaVersionName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, schemaVersionNameParam, nil)
+		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, dynamicSchemaVersionNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -226,7 +226,7 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchGet(req *http.Request) (*
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<schemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<dynamicSchemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -244,11 +244,11 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchGet(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	schemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaVersionName")])
+	dynamicSchemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dynamicSchemaVersionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, schemaVersionNameParam, nil)
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, dynamicSchemaVersionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -312,7 +312,7 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchUpdate(req *http.Request)
 	if d.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<schemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemas/(?P<schemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dynamicSchemas/(?P<dynamicSchemaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<dynamicSchemaVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -334,11 +334,11 @@ func (d *DynamicSchemaVersionsServerTransport) dispatchUpdate(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	schemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaVersionName")])
+	dynamicSchemaVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dynamicSchemaVersionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.Update(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, schemaVersionNameParam, body, nil)
+	respr, errRespr := d.srv.Update(req.Context(), resourceGroupNameParam, schemaNameParam, dynamicSchemaNameParam, dynamicSchemaVersionNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

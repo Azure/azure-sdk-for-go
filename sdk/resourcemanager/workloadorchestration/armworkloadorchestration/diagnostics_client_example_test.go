@@ -266,8 +266,8 @@ func ExampleDiagnosticsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDiagnosticsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.Diagnostic{
-		Properties: &armworkloadorchestration.DiagnosticProperties{},
+	poller, err := clientFactory.NewDiagnosticsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.DiagnosticUpdate{
+		Properties: &armworkloadorchestration.DiagnosticUpdateProperties{},
 		Tags: map[string]*string{
 			"key1922": to.Ptr("efraipifhmdfekwgunngrgvsc"),
 		},

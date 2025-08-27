@@ -335,8 +335,8 @@ func ExampleConfigTemplatesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewConfigTemplatesClient().Update(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.ConfigTemplate{
-		Properties: &armworkloadorchestration.ConfigTemplateProperties{
+	res, err := clientFactory.NewConfigTemplatesClient().Update(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.ConfigTemplateUpdate{
+		Properties: &armworkloadorchestration.ConfigTemplateUpdateProperties{
 			Description: to.Ptr("cavjiqnrbzsvedicrixhwnfj"),
 		},
 		Tags: map[string]*string{

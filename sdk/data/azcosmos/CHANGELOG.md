@@ -1,5 +1,11 @@
 # Release History
 
+## 1.4.1 (2025-08-27)
+
+### Bugs Fixed
+
+* Fixed bug where the correct header was not being sent for writes on multiple write region accounts. See [PR 25127](https://github.com/Azure/azure-sdk-for-go/pull/25127)
+
 ## 1.4.0 (2025-04-29)
 
 ### Other Changes

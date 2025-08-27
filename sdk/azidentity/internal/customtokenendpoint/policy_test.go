@@ -115,6 +115,11 @@ func TestParseAndValidateCustomTokenEndpoint(t *testing.T) {
 }
 
 func TestConfigure(t *testing.T) {
+	var (
+		testCAData = string(createTestCA(t))
+		testCAFile = createTestCAFile(t)
+	)
+
 	cases := []struct {
 		name          string
 		envs          map[string]string
@@ -142,20 +147,54 @@ func TestConfigure(t *testing.T) {
 			expectErr: false,
 			envs: map[string]string{
 				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAFile:        "/path/to/custom-ca-file",
+				AzureKubernetesCAFile:        testCAFile,
 				AzureKubernetesSNIName:       "custom-sni.example.com",
 			},
 			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint enabled with invalid CA file",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				AzureKubernetesCAFile:        "/non/existent/path/to/custom-ca-file.pem",
+			},
+			expectAddPolicy: false,
+		},
+		{
+			name:      "custom endpoint enabled with CA file contains invalid CA data",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				AzureKubernetesCAFile: func() string {
+					t.Helper()
+
+					tempDir := t.TempDir()
+					caFile := filepath.Join(tempDir, "invalid-ca-file.pem")
+					require.NoError(t, os.WriteFile(caFile, []byte("invalid-ca-cert"), 0600))
+					return caFile
+				}(),
+			},
+			expectAddPolicy: false,
 		},
 		{
 			name:      "custom endpoint enabled with CA data + SNI",
 			expectErr: false,
 			envs: map[string]string{
 				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAData:        "custom-ca-data",
+				AzureKubernetesCAData:        testCAData,
 				AzureKubernetesSNIName:       "custom-sni.example.com",
 			},
 			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint enabled with invalid CA data",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				AzureKubernetesCAData:        string("invalid-ca-cert"),
+			},
+			expectAddPolicy: false,
 		},
 		{
 			name:      "custom endpoint enabled with SNI",
@@ -181,8 +220,8 @@ func TestConfigure(t *testing.T) {
 			expectErr: true,
 			envs: map[string]string{
 				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAData:        "custom-ca-data",
-				AzureKubernetesCAFile:        "/path/to/custom-ca-file",
+				AzureKubernetesCAData:        testCAData,
+				AzureKubernetesCAFile:        testCAFile,
 			},
 			checkErr: func(t testing.TB, err error) {
 				require.ErrorIs(t, err, errCustomEndpointMultipleCASourcesSet)
@@ -260,89 +299,6 @@ func createTestCAFile(t testing.TB) string {
 	return caFile
 }
 
-func TestCustomTokenEndpointPolicy_loadCAPool(t *testing.T) {
-	cases := []struct {
-		name string
-		tr   *customTokenEndpointPolicy
-
-		expectErr            bool
-		expectCustomCertPool bool
-	}{
-		{
-			name:                 "fallback to system pool",
-			tr:                   &customTokenEndpointPolicy{},
-			expectErr:            false,
-			expectCustomCertPool: false,
-		},
-		{
-			name:      "load CA from CA file - invalid CA file",
-			tr:        &customTokenEndpointPolicy{caFile: "/path/to/invalid/ca/file"},
-			expectErr: true,
-		},
-		{
-			name: "load CA from CA file - invalid CA file content",
-			tr: &customTokenEndpointPolicy{
-				caFile: func() string {
-					d := t.TempDir()
-					caFile := filepath.Join(d, "test-ca.pem")
-					err := os.WriteFile(caFile, []byte("invalid-ca-content"), 0600)
-					require.NoError(t, err)
-
-					return caFile
-				}(),
-			},
-			expectErr: true,
-		},
-		{
-			name: "load CA from CA file - empty CA file content",
-			tr: &customTokenEndpointPolicy{
-				caFile: func() string {
-					d := t.TempDir()
-					caFile := filepath.Join(d, "test-ca.pem")
-					err := os.WriteFile(caFile, []byte(""), 0600)
-					require.NoError(t, err)
-
-					return caFile
-				}(),
-			},
-			expectErr: true,
-		},
-		{
-			name:                 "load CA from CA file - valid CA",
-			tr:                   &customTokenEndpointPolicy{caFile: createTestCAFile(t)},
-			expectErr:            false,
-			expectCustomCertPool: true,
-		},
-		{
-			name:      "load CA from CA data - invalid CA data",
-			tr:        &customTokenEndpointPolicy{caData: "invalid-ca"},
-			expectErr: true,
-		},
-		{
-			name:                 "load CA from CA data - valid CA",
-			tr:                   &customTokenEndpointPolicy{caData: string(createTestCA(t))},
-			expectErr:            false,
-			expectCustomCertPool: true,
-		},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			caPool, err := c.tr.loadCAPool()
-			if c.expectErr {
-				require.Error(t, err)
-				require.Nil(t, caPool)
-				return
-			}
-
-			require.NoError(t, err)
-			if c.expectCustomCertPool {
-				require.NotNil(t, caPool)
-			}
-		})
-	}
-}
-
 func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 	cases := []struct {
 		name string
@@ -352,17 +308,14 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 		validateTransport func(t testing.TB, httpTr *http.Transport)
 	}{
 		{
-			name: "no overrides",
-			tr: &customTokenEndpointPolicy{
-				baseTransport: &http.Transport{},
-			},
+			name:      "no overrides",
+			tr:        &customTokenEndpointPolicy{},
 			expectErr: false,
 		},
 		{
 			name: "with custom CA",
 			tr: &customTokenEndpointPolicy{
-				baseTransport: &http.Transport{},
-				caFile:        createTestCAFile(t),
+				caFile: createTestCAFile(t),
 			},
 			expectErr: false,
 			validateTransport: func(t testing.TB, httpTr *http.Transport) {
@@ -373,16 +326,14 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 		{
 			name: "invalid CA",
 			tr: &customTokenEndpointPolicy{
-				baseTransport: &http.Transport{},
-				caData:        "invalid-ca-data",
+				caData: []byte("invalid-ca-data"),
 			},
 			expectErr: true,
 		},
 		{
 			name: "with SNI",
 			tr: &customTokenEndpointPolicy{
-				baseTransport: &http.Transport{},
-				sniName:       "example.com",
+				sniName: "example.com",
 			},
 			expectErr: false,
 			validateTransport: func(t testing.TB, httpTr *http.Transport) {
@@ -394,9 +345,8 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 		{
 			name: "with CA + SNI",
 			tr: &customTokenEndpointPolicy{
-				baseTransport: &http.Transport{},
-				sniName:       "example.com",
-				caFile:        createTestCAFile(t),
+				sniName: "example.com",
+				caFile:  createTestCAFile(t),
 			},
 			expectErr: false,
 			validateTransport: func(t testing.TB, httpTr *http.Transport) {
@@ -419,11 +369,70 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 
 			require.NoError(t, err)
 			require.NotNil(t, transport)
+			require.NotNil(t, c.tr.transport)
+			require.Equal(t, c.tr.transport, transport, "should set the same transport to policy")
 			if c.validateTransport != nil {
 				c.validateTransport(t, transport)
 			}
 		})
 	}
+}
+
+func TestCustomTokenEndpointPolicy_getTokenTransporter_reentry(t *testing.T) {
+	t.Run("no CA overrides", func(t *testing.T) {
+		tr := &customTokenEndpointPolicy{}
+		transport, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport)
+
+		transport2, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport2)
+		require.Equal(t, transport, transport2, "should return the same transport on re-entry")
+	})
+
+	t.Run("with CAData overrides", func(t *testing.T) {
+		tr := customTokenEndpointPolicy{
+			caData: createTestCA(t),
+		}
+		transport, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport)
+
+		transport2, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport2)
+		require.Equal(t, transport, transport2, "should return the same transport on re-entry")
+	})
+
+	t.Run("with CAFile overrides", func(t *testing.T) {
+		caFile := createTestCAFile(t)
+		tr := customTokenEndpointPolicy{
+			caFile: caFile,
+		}
+		transport, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport)
+
+		transport2, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport2)
+		require.Equal(t, transport, transport2, "should return the same transport on re-entry if ca file doesn't change")
+
+		require.NoError(t, os.Truncate(caFile, 0))
+		transport3, err := tr.getTokenTransporter()
+		require.Error(t, err, "empty CA file should return error")
+		require.Nil(t, transport3)
+		require.NotEmpty(t, tr.caData, "previous loaded CA data should be retained")
+		require.NotNil(t, tr.transport, "previous transport should be retained")
+
+		newCAData := createTestCA(t)
+		require.NoError(t, os.WriteFile(caFile, newCAData, 0600))
+		transport4, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport4)
+		require.NotEqual(t, transport, transport4, "should return new transport on re-entry if ca file content is updated")
+	})
 }
 
 func TestCustomTokenEndpointPolicy_isTokenRequest(t *testing.T) {

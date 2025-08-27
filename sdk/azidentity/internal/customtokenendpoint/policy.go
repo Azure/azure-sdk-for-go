@@ -4,6 +4,7 @@
 package customtokenendpoint
 
 import (
+	"bytes"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
@@ -54,19 +55,28 @@ var (
 	)
 )
 
-func createBaseTransport() *http.Transport {
-	if transport, ok := http.DefaultTransport.(*http.Transport); ok {
-		return transport.Clone()
+func createTransport(sniName string, caPool *x509.CertPool) *http.Transport {
+	var transport *http.Transport
+	if tr, ok := http.DefaultTransport.(*http.Transport); ok {
+		transport = tr.Clone()
+	} else {
+		// this should not happen, but if the user mutates the net/http.DefaultTransport
+		// to something else, we fall back to a sane default
+		transport = &http.Transport{
+			ForceAttemptHTTP2:   true,
+			MaxIdleConns:        100,
+			IdleConnTimeout:     90 * time.Second,
+			TLSHandshakeTimeout: 10 * time.Second,
+		}
 	}
 
-	// this should not happen, but if the user mutates the net/http.DefaultTransport
-	// to something else, we fall back to a sane default
-	return &http.Transport{
-		ForceAttemptHTTP2:   true,
-		MaxIdleConns:        100,
-		IdleConnTimeout:     90 * time.Second,
-		TLSHandshakeTimeout: 10 * time.Second,
+	if transport.TLSClientConfig == nil {
+		transport.TLSClientConfig = &tls.Config{}
 	}
+	transport.TLSClientConfig.ServerName = sniName
+	transport.TLSClientConfig.RootCAs = caPool
+
+	return transport
 }
 
 // Configure configures custom token endpoint mode if the required environment variables are present.
@@ -96,16 +106,18 @@ func Configure(clientOptions *policy.ClientOptions) error {
 		return errCustomEndpointMultipleCASourcesSet
 	}
 
-	clientOptions.PerRetryPolicies = append(
-		clientOptions.PerRetryPolicies,
-		&customTokenEndpointPolicy{
-			caFile:        kubernetesCAFile,
-			caData:        kubernetesCAData,
-			sniName:       kubernetesSNIName,
-			tokenEndpoint: tokenEndpoint,
-			baseTransport: createBaseTransport(),
-		},
-	)
+	// preload the transport
+	p := &customTokenEndpointPolicy{
+		caFile:        kubernetesCAFile,
+		caData:        []byte(kubernetesCAData),
+		sniName:       kubernetesSNIName,
+		tokenEndpoint: tokenEndpoint,
+	}
+	if _, err := p.getTokenTransporter(); err != nil {
+		return err
+	}
+
+	clientOptions.PerRetryPolicies = append(clientOptions.PerRetryPolicies, p)
 	return nil
 }
 
@@ -113,12 +125,13 @@ func Configure(clientOptions *policy.ClientOptions) error {
 // to the custom token endpoint when in custom token endpoint mode.
 //
 // Only token request will be handled by this transport.
+// Lock is not needed for internal caData as this policy is called under confidentialClient's lock.
 type customTokenEndpointPolicy struct {
 	caFile        string
-	caData        string
+	caData        []byte
 	sniName       string
 	tokenEndpoint *url.URL
-	baseTransport *http.Transport
+	transport     *http.Transport
 }
 
 func (i *customTokenEndpointPolicy) Do(req *policy.Request) (*http.Response, error) {
@@ -154,61 +167,62 @@ func (i *customTokenEndpointPolicy) Do(req *policy.Request) (*http.Response, err
 	return resp, err
 }
 
-// loadCAPool loads the CA certificate pool to use.
-// If neither CA file nor CA data is provided, the default system CA pool will be used.
-func (i *customTokenEndpointPolicy) loadCAPool() (*x509.CertPool, error) {
-	if i.caFile == "" && i.caData == "" {
-		// nil CertPool indicates that the default system CA pool should be used
-		return nil, nil
+// getTokenTransporter provides the token transport to use for the request.
+//
+// There are a few scenarios need to be handled:
+//  1. no CA overrides, use default transport
+//  2. CA data override provided, use a transport with custom CA pool.
+//     This transport is fixed after set.
+//  3. CA file override is provided, use a transport with custom CA pool.
+//     This transport needs to be recreated if the CA file content changes.
+func (i *customTokenEndpointPolicy) getTokenTransporter() (*http.Transport, error) {
+	if len(i.caData) == 0 && i.caFile == "" {
+		// no custom CA overrides
+		if i.transport == nil {
+			i.transport = createTransport(i.sniName, nil)
+		}
+		return i.transport, nil
 	}
 
-	var caDataBytes []byte
-	var err error
-
-	if i.caFile != "" {
-		caDataBytes, err = os.ReadFile(i.caFile)
-		if err != nil {
-			return nil, fmt.Errorf("read CA file %q: %s", i.caFile, err)
+	if i.caFile == "" {
+		// host provided CA bytes in AZURE_KUBERNETES_CA_DATA and can't change
+		// them now, so we need to create a client only if we haven't done so yet
+		if i.transport != nil {
+			return i.transport, nil
 		}
-		if len(caDataBytes) == 0 {
-			return nil, fmt.Errorf("CA file %q is empty", i.caFile)
-		}
-	} else {
-		caDataBytes = []byte(i.caData)
-	}
 
-	caPool := x509.NewCertPool()
-	if !caPool.AppendCertsFromPEM(caDataBytes) {
-		if i.caFile != "" {
-			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
-		} else {
+		caPool := x509.NewCertPool()
+		if !caPool.AppendCertsFromPEM([]byte(i.caData)) {
 			return nil, fmt.Errorf("parse CA data: no valid certificates found")
 		}
+
+		i.transport = createTransport(i.sniName, caPool)
+		return i.transport, nil
 	}
 
-	return caPool, nil
-}
-
-// getTokenTransporter rebuilds the HTTP transport every time it's called.
-func (i *customTokenEndpointPolicy) getTokenTransporter() (*http.Transport, error) {
-	transport := i.baseTransport.Clone()
-
-	caPool, err := i.loadCAPool()
+	// host provided the CA bytes in a file whose contents it can change,
+	// so we must read that file and maybe create a new client
+	b, err := os.ReadFile(i.caFile)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("read CA file %q: %s", i.caFile, err)
+	}
+	if len(b) == 0 {
+		// this can happen during the middle of CA rotation on the host.
+		// Erroring out here to force the client to retry the token call.
+		return nil, fmt.Errorf("CA file %q is empty", i.caFile)
+	}
+	if !bytes.Equal(b, i.caData) {
+		// CA has changed, rebuild the transport with new CA pool
+		// invariant: i.transport is nil when i.caData is nil (initial call)
+		caPool := x509.NewCertPool()
+		if !caPool.AppendCertsFromPEM([]byte(b)) {
+			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
+		}
+		i.transport = createTransport(i.sniName, caPool)
+		i.caData = b
 	}
 
-	if transport.TLSClientConfig == nil {
-		transport.TLSClientConfig = &tls.Config{}
-	}
-	transport.TLSClientConfig.RootCAs = caPool
-
-	// Configure SNI if specified
-	if i.sniName != "" {
-		transport.TLSClientConfig.ServerName = i.sniName
-	}
-
-	return transport, nil
+	return i.transport, nil
 }
 
 const (

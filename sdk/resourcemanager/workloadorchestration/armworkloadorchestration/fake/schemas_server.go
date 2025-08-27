@@ -50,7 +50,7 @@ type SchemasServer struct {
 
 	// Update is the fake for method SchemasClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, schemaName string, properties armworkloadorchestration.Schema, options *armworkloadorchestration.SchemasClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.SchemasClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, schemaName string, properties armworkloadorchestration.SchemaUpdate, options *armworkloadorchestration.SchemasClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.SchemasClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSchemasServerTransport creates a new instance of SchemasServerTransport with the provided implementation.
@@ -426,7 +426,7 @@ func (s *SchemasServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Schema](req)
+	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SchemaUpdate](req)
 	if err != nil {
 		return nil, err
 	}

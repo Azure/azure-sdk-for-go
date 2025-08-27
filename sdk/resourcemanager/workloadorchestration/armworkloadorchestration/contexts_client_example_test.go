@@ -308,8 +308,8 @@ func ExampleContextsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContextsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.Context{
-		Properties: &armworkloadorchestration.ContextProperties{
+	poller, err := clientFactory.NewContextsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.ContextUpdate{
+		Properties: &armworkloadorchestration.ContextUpdateProperties{
 			Capabilities: []*armworkloadorchestration.Capability{
 				{
 					Name:        to.Ptr("tpylinjcmlnycfpofpxjtqmt"),

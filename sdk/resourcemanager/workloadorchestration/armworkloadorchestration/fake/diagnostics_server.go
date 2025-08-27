@@ -42,7 +42,7 @@ type DiagnosticsServer struct {
 
 	// BeginUpdate is the fake for method DiagnosticsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, diagnosticName string, properties armworkloadorchestration.Diagnostic, options *armworkloadorchestration.DiagnosticsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.DiagnosticsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, diagnosticName string, properties armworkloadorchestration.DiagnosticUpdate, options *armworkloadorchestration.DiagnosticsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.DiagnosticsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiagnosticsServerTransport creates a new instance of DiagnosticsServerTransport with the provided implementation.
@@ -331,7 +331,7 @@ func (d *DiagnosticsServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.Diagnostic](req)
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.DiagnosticUpdate](req)
 		if err != nil {
 			return nil, err
 		}

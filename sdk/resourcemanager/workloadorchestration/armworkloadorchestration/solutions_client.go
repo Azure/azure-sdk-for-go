@@ -347,7 +347,7 @@ func (client *SolutionsClient) listByTargetHandleResponse(resp *http.Response) (
 //   - solutionName - Name of the solution
 //   - properties - The resource properties to be updated.
 //   - options - SolutionsClientBeginUpdateOptions contains the optional parameters for the SolutionsClient.BeginUpdate method.
-func (client *SolutionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties Solution, options *SolutionsClientBeginUpdateOptions) (*runtime.Poller[SolutionsClientUpdateResponse], error) {
+func (client *SolutionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties SolutionUpdate, options *SolutionsClientBeginUpdateOptions) (*runtime.Poller[SolutionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, targetName, solutionName, properties, options)
 		if err != nil {
@@ -368,7 +368,7 @@ func (client *SolutionsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-func (client *SolutionsClient) update(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties Solution, options *SolutionsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *SolutionsClient) update(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties SolutionUpdate, options *SolutionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -390,7 +390,7 @@ func (client *SolutionsClient) update(ctx context.Context, resourceGroupName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SolutionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties Solution, _ *SolutionsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *SolutionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, targetName string, solutionName string, properties SolutionUpdate, _ *SolutionsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

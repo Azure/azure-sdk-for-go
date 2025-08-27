@@ -381,7 +381,7 @@ func (client *ContextsClient) listBySubscriptionHandleResponse(resp *http.Respon
 //   - contextName - The name of the Context.
 //   - properties - The resource properties to be updated.
 //   - options - ContextsClientBeginUpdateOptions contains the optional parameters for the ContextsClient.BeginUpdate method.
-func (client *ContextsClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextName string, properties Context, options *ContextsClientBeginUpdateOptions) (*runtime.Poller[ContextsClientUpdateResponse], error) {
+func (client *ContextsClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextName string, properties ContextUpdate, options *ContextsClientBeginUpdateOptions) (*runtime.Poller[ContextsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, contextName, properties, options)
 		if err != nil {
@@ -402,7 +402,7 @@ func (client *ContextsClient) BeginUpdate(ctx context.Context, resourceGroupName
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-func (client *ContextsClient) update(ctx context.Context, resourceGroupName string, contextName string, properties Context, options *ContextsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ContextsClient) update(ctx context.Context, resourceGroupName string, contextName string, properties ContextUpdate, options *ContextsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContextsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -424,7 +424,7 @@ func (client *ContextsClient) update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ContextsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, properties Context, _ *ContextsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ContextsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextName string, properties ContextUpdate, _ *ContextsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

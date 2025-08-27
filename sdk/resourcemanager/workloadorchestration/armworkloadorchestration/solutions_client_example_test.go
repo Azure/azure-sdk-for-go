@@ -217,8 +217,8 @@ func ExampleSolutionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSolutionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.Solution{
-		Properties: &armworkloadorchestration.SolutionProperties{},
+	poller, err := clientFactory.NewSolutionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.SolutionUpdate{
+		Properties: &armworkloadorchestration.SolutionUpdateProperties{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

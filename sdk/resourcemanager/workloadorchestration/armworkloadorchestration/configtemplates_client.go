@@ -533,7 +533,7 @@ func (client *ConfigTemplatesClient) removeVersionHandleResponse(resp *http.Resp
 //   - configTemplateName - The name of the ConfigTemplate
 //   - properties - The resource properties to be updated.
 //   - options - ConfigTemplatesClientUpdateOptions contains the optional parameters for the ConfigTemplatesClient.Update method.
-func (client *ConfigTemplatesClient) Update(ctx context.Context, resourceGroupName string, configTemplateName string, properties ConfigTemplate, options *ConfigTemplatesClientUpdateOptions) (ConfigTemplatesClientUpdateResponse, error) {
+func (client *ConfigTemplatesClient) Update(ctx context.Context, resourceGroupName string, configTemplateName string, properties ConfigTemplateUpdate, options *ConfigTemplatesClientUpdateOptions) (ConfigTemplatesClientUpdateResponse, error) {
 	var err error
 	const operationName = "ConfigTemplatesClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -556,7 +556,7 @@ func (client *ConfigTemplatesClient) Update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ConfigTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, properties ConfigTemplate, _ *ConfigTemplatesClientUpdateOptions) (*policy.Request, error) {
+func (client *ConfigTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, properties ConfigTemplateUpdate, _ *ConfigTemplatesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

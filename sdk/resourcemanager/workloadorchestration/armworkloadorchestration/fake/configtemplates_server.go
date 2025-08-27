@@ -50,7 +50,7 @@ type ConfigTemplatesServer struct {
 
 	// Update is the fake for method ConfigTemplatesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, configTemplateName string, properties armworkloadorchestration.ConfigTemplate, options *armworkloadorchestration.ConfigTemplatesClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.ConfigTemplatesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, configTemplateName string, properties armworkloadorchestration.ConfigTemplateUpdate, options *armworkloadorchestration.ConfigTemplatesClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.ConfigTemplatesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigTemplatesServerTransport creates a new instance of ConfigTemplatesServerTransport with the provided implementation.
@@ -426,7 +426,7 @@ func (c *ConfigTemplatesServerTransport) dispatchUpdate(req *http.Request) (*htt
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ConfigTemplate](req)
+	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ConfigTemplateUpdate](req)
 	if err != nil {
 		return nil, err
 	}

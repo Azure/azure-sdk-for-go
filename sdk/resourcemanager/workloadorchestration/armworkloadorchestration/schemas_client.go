@@ -531,7 +531,7 @@ func (client *SchemasClient) removeVersionHandleResponse(resp *http.Response) (S
 //   - schemaName - The name of the Schema
 //   - properties - The resource properties to be updated.
 //   - options - SchemasClientUpdateOptions contains the optional parameters for the SchemasClient.Update method.
-func (client *SchemasClient) Update(ctx context.Context, resourceGroupName string, schemaName string, properties Schema, options *SchemasClientUpdateOptions) (SchemasClientUpdateResponse, error) {
+func (client *SchemasClient) Update(ctx context.Context, resourceGroupName string, schemaName string, properties SchemaUpdate, options *SchemasClientUpdateOptions) (SchemasClientUpdateResponse, error) {
 	var err error
 	const operationName = "SchemasClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -554,7 +554,7 @@ func (client *SchemasClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SchemasClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, properties Schema, _ *SchemasClientUpdateOptions) (*policy.Request, error) {
+func (client *SchemasClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, properties SchemaUpdate, _ *SchemasClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

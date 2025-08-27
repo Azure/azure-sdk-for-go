@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-08-27)
+## 0.2.0 (2025-08-27)
 ### Breaking Changes
 
 - Function `*ConfigTemplatesClient.Update` parameter(s) have been changed from `(context.Context, string, string, ConfigTemplate, *ConfigTemplatesClientUpdateOptions)` to `(context.Context, string, string, ConfigTemplateUpdate, *ConfigTemplatesClientUpdateOptions)`

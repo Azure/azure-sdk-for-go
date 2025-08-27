@@ -307,7 +307,14 @@ func startTestTokenEndpointWithCAData(t testing.TB, tokenHandler http.Handler) (
 	testServer := httptest.NewTLSServer(mux)
 
 	openidDiscoveryDocumentHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		doc := tenantMetadata(r.PathValue("tenantid"))
+		parts := strings.Split(r.URL.Path, "/")
+		if len(parts) < 3 {
+			http.Error(w, "invalid request", http.StatusBadRequest)
+			return
+		}
+		tenantID := parts[1]
+
+		doc := tenantMetadata(tenantID)
 		var m map[string]any
 		if err := json.Unmarshal(doc, &m); err != nil {
 			t.Fatalf("failed to unmarshal tenant metadata: %v", err)

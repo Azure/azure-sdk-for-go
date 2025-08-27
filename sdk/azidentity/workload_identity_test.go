@@ -296,14 +296,39 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 	}
 }
 
-func startTestTLSServerWithCAData(t testing.TB, handler http.Handler) (*httptest.Server, string) {
+// startTestTokenEndpointWithCAData starts a TLS server with custom token handler.
+//
+// This token server serves instance discovery, OIDC discovery document and token endpoints.
+func startTestTokenEndpointWithCAData(t testing.TB, tokenHandler http.Handler) (*httptest.Server, string) {
 	t.Helper()
 
-	testServer := httptest.NewTLSServer(handler)
+	mux := http.NewServeMux()
+
+	testServer := httptest.NewTLSServer(mux)
+
+	openidDiscoveryDocumentHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		doc := tenantMetadata(r.PathValue("tenantid"))
+		var m map[string]any
+		if err := json.Unmarshal(doc, &m); err != nil {
+			t.Fatalf("failed to unmarshal tenant metadata: %v", err)
+		}
+		m["token_endpoint"] = testServer.URL + "/token" // overriding the token endpoint to the proxied token endpoint
+
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(m); err != nil {
+			t.Fatalf("failed to encode tenant metadata: %v", err)
+		}
+	})
+	mux.Handle("/{tenantid}/v2.0/.well-known/openid-configuration", openidDiscoveryDocumentHandler)
+	mux.Handle("/{tenantid}/.well-known/openid-configuration", openidDiscoveryDocumentHandler)
+	mux.HandleFunc("/common/discovery/instance", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write(instanceMetadata("fake-tenant"))
+	})
+	mux.Handle("/token", tokenHandler)
 
 	serverCert := testServer.Certificate()
 	require.NotNil(t, serverCert)
-
 	ca := pem.EncodeToMemory(&pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: serverCert.Raw,
@@ -358,11 +383,10 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{}
 	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
-	customTokenEndointServer, caData := startTestTLSServerWithCAData(
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
 		t,
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			customTokenEndointServerCalledTimes.Add(1)
@@ -386,7 +410,6 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 	t.Setenv(customtokenendpoint.AzureKubernetesCAData, caData)
 
 	clientOptions := policy.ClientOptions{
-		Transport: &sts,
 		PerCallPolicies: []policy.Policy{
 			policyFlowCheck.Policy(),
 		},
@@ -426,11 +449,10 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{}
 	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
-	customTokenEndointServer, caData := startTestTLSServerWithCAData(
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
 		t,
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			customTokenEndointServerCalledTimes.Add(1)
@@ -457,7 +479,6 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 	t.Setenv(customtokenendpoint.AzureKubernetesCAFile, caFile)
 
 	clientOptions := policy.ClientOptions{
-		Transport: &sts,
 		PerCallPolicies: []policy.Policy{
 			policyFlowCheck.Policy(),
 		},
@@ -481,12 +502,11 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
 	}
-	sts := mockSTS{}
 	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 	sniName := "test-sni.example.com"
 
 	customTokenEndointServerCalledTimes := new(atomic.Int32)
-	customTokenEndointServer, caData := startTestTLSServerWithCAData(
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
 		t,
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			customTokenEndointServerCalledTimes.Add(1)
@@ -518,7 +538,6 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 	t.Setenv(customtokenendpoint.AzureKubernetesCAFile, caFile)
 
 	clientOptions := policy.ClientOptions{
-		Transport: &sts,
 		PerCallPolicies: []policy.Policy{
 			policyFlowCheck.Policy(),
 		},

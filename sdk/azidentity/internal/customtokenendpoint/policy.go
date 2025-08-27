@@ -9,11 +9,10 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
+	"path"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -135,17 +134,6 @@ type customTokenEndpointPolicy struct {
 }
 
 func (i *customTokenEndpointPolicy) Do(req *policy.Request) (*http.Response, error) {
-	isTokenRequest, err := i.isTokenRequest(req)
-	switch {
-	case err != nil:
-		// unable to determine if this is a token request, fail the request
-		// We don't pass the request to the fallback client as the request body might be in half broken state.
-		return nil, err
-	case !isTokenRequest:
-		// not a token request, fallback to the original transporter
-		return req.Next()
-	}
-
 	tr, err := i.getTokenTransporter()
 	if err != nil {
 		return nil, err
@@ -154,7 +142,7 @@ func (i *customTokenEndpointPolicy) Do(req *policy.Request) (*http.Response, err
 	rawReq := req.Raw()
 	rawReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
 	rawReq.URL.Host = i.tokenEndpoint.Host
-	rawReq.URL.Path = i.tokenEndpoint.Path
+	rawReq.URL.Path = path.Join(i.tokenEndpoint.Path, req.Raw().URL.Path) // append the request path after the token endpoint
 	rawReq.Host = i.tokenEndpoint.Host
 
 	resp, err := tr.RoundTrip(rawReq)
@@ -223,45 +211,4 @@ func (i *customTokenEndpointPolicy) getTokenTransporter() (*http.Transport, erro
 	}
 
 	return i.transport, nil
-}
-
-const (
-	tokenRequestClientAssertionField     = "client_assertion"
-	tokenRequestClientAssertionTypeField = "client_assertion_type"
-	tokenRequestContentTypePrefix        = "application/x-www-form-urlencoded"
-)
-
-func (i *customTokenEndpointPolicy) isTokenRequest(req *policy.Request) (bool, error) {
-	if !strings.EqualFold(req.Raw().Method, http.MethodPost) {
-		return false, nil
-	}
-	contentType := req.Raw().Header.Get("Content-Type")
-	if !strings.HasPrefix(contentType, tokenRequestContentTypePrefix) {
-		// expecting token request to use application/x-www-form-urlencoded
-		return false, nil
-	}
-	if req.Raw().ContentLength <= 0 {
-		// expecting non-empty request body
-		return false, nil
-	}
-
-	// peak the request body to confirm it's asking for token
-	reqBody := req.Body()
-	b, err := io.ReadAll(reqBody)
-	if err != nil {
-		// unable to read the form body at all, fail the whole token request in caller
-		return false, err
-	}
-	_ = reqBody.Close()
-	if err := req.RewindBody(); err != nil {
-		return false, err
-	}
-
-	qs, err := url.ParseQuery(string(b))
-	if err != nil {
-		return false, nil // unable to process the form body, treat as non token request
-	}
-
-	// check if it's a token request with client assertion set
-	return qs.Has(tokenRequestClientAssertionField) && qs.Has(tokenRequestClientAssertionTypeField), nil
 }

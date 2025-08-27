@@ -4,24 +4,20 @@
 package customtokenendpoint
 
 import (
-	"bytes"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"io"
 	"math/big"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
 )
 
@@ -433,158 +429,4 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter_reentry(t *testing.T) {
 		require.NotNil(t, transport4)
 		require.NotEqual(t, transport, transport4, "should return new transport on re-entry if ca file content is updated")
 	})
-}
-
-func TestCustomTokenEndpointPolicy_isTokenRequest(t *testing.T) {
-	// helper to build a request with given parameters
-	newReq := func(method, contentType string, body io.Reader) *http.Request {
-		t.Helper()
-
-		if method == "" {
-			method = http.MethodPost
-		}
-		if body == nil {
-			// http.NewRequest with nil body sets ContentLength to 0
-			req, err := http.NewRequest(method, "https://example.com/token", nil)
-			require.NoError(t, err)
-			if contentType != "" {
-				req.Header.Set("Content-Type", contentType)
-			}
-			return req
-		}
-
-		req, err := http.NewRequest(method, "https://example.com/token", body)
-		require.NoError(t, err)
-		if contentType != "" {
-			req.Header.Set("Content-Type", contentType)
-		}
-		// ensure ContentLength is positive when we know the body size
-		switch r := body.(type) {
-		case *bytes.Reader:
-			req.ContentLength = int64(r.Len())
-		case *strings.Reader:
-			req.ContentLength = int64(r.Len())
-		case *bytes.Buffer:
-			req.ContentLength = int64(r.Len())
-		}
-		return req
-	}
-
-	newPostFormReq := func(body string) *http.Request {
-		return newReq(
-			http.MethodPost,
-			"application/x-www-form-urlencoded",
-			strings.NewReader(body),
-		)
-	}
-
-	cases := []struct {
-		name string
-		req  *http.Request
-
-		expectErr         bool
-		expected          bool
-		checkInspectedReq func(t testing.TB, req *http.Request)
-	}{
-		{
-			name:     "non-POST method",
-			req:      newReq(http.MethodGet, "application/x-www-form-urlencoded", strings.NewReader("a=b")),
-			expected: false,
-		},
-		{
-			name:     "missing Content-Type",
-			req:      newReq(http.MethodPost, "", strings.NewReader("a=b")),
-			expected: false,
-		},
-		{
-			name:     "non form Content-Type",
-			req:      newReq(http.MethodPost, "application/json", strings.NewReader("{}")),
-			expected: false,
-		},
-		{
-			name:     "nil body",
-			req:      newReq(http.MethodPost, "application/x-www-form-urlencoded", nil),
-			expected: false,
-		},
-		{
-			name: "http.NoBody with non-empty content length",
-			req: func() *http.Request {
-				r := newPostFormReq("a=b")
-				r.Body = http.NoBody
-				r.ContentLength = 10
-				return r
-			}(),
-			expected: false,
-		},
-		{
-			name:     "invalid form body (unparseable)",
-			req:      newPostFormReq("%zz"),
-			expected: false,
-		},
-		{
-			name:     "missing client_assertion_type",
-			req:      newPostFormReq("client_assertion=abc"),
-			expected: false,
-		},
-		{
-			name:     "missing client_assertion",
-			req:      newPostFormReq("client_assertion_type=type"),
-			expected: false,
-		},
-		{
-			name:     "valid token request",
-			req:      newPostFormReq("client_assertion=abc&client_assertion_type=type"),
-			expected: true,
-			checkInspectedReq: func(t testing.TB, req *http.Request) {
-				// Body should be reset and readable
-				b1, err := io.ReadAll(req.Body)
-				require.NoError(t, err)
-				require.Equal(t, "client_assertion=abc&client_assertion_type=type", string(b1))
-				// GetBody should be set and return the same bytes
-				rc, err := req.GetBody()
-				require.NoError(t, err)
-				b2, err := io.ReadAll(rc)
-				require.NoError(t, err)
-				require.Equal(t, string(b1), string(b2))
-			},
-		},
-		{
-			name: "valid token request with charset",
-			req: newReq(
-				http.MethodPost,
-				"application/x-www-form-urlencoded; charset=utf-8",
-				strings.NewReader("client_assertion=abc&client_assertion_type=type"),
-			),
-			expected: true,
-		},
-		{
-			name: "lowercase method post",
-			req: newReq(
-				"post",
-				"application/x-www-form-urlencoded",
-				strings.NewReader("client_assertion=abc&client_assertion_type=type"),
-			),
-			expected: true,
-		},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(t *testing.T) {
-			tr := &customTokenEndpointPolicy{}
-			policyReq, err := runtime.NewRequestFromRequest(c.req)
-			require.NoError(t, err)
-			v, err := tr.isTokenRequest(policyReq)
-
-			if c.expectErr {
-				require.Error(t, err)
-				return
-			}
-
-			require.NoError(t, err)
-			require.Equal(t, c.expected, v)
-			if c.checkInspectedReq != nil {
-				c.checkInspectedReq(t, c.req)
-			}
-		})
-	}
 }

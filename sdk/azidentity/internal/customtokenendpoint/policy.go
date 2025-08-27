@@ -46,10 +46,10 @@ func parseAndValidateCustomTokenEndpoint(endpoint string) (*url.URL, error) {
 }
 
 var (
-	errCustomEndpointEnvSetWithoutTokenEndpoint = fmt.Errorf(
+	errCustomEndpointEnvSetWithoutTokenEndpoint = errors.New(
 		"AZURE_KUBERNETES_TOKEN_ENDPOINT is not set but other custom endpoint-related environment variables are present",
 	)
-	errCustomEndpointMultipleCASourcesSet = fmt.Errorf(
+	errCustomEndpointMultipleCASourcesSet = errors.New(
 		"only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified",
 	)
 )

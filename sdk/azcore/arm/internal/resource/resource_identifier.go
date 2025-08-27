@@ -226,14 +226,17 @@ func splitStringAndOmitEmpty(v, sep string) []string {
 	return r
 }
 
+// isTenantResource returns true if the resourceID represents a tenant resource. The condition is resource ID matched with TenantResourceType and has no parent.
 func isTenantResource(resourceID *ResourceID) bool {
 	return resourceID != nil && strings.EqualFold(resourceID.ResourceType.String(), TenantResourceType.String()) && resourceID.Parent == nil
 }
 
+// isSubscriptionResource returns true if the resourceID represents a subscription resource. The condition is resource ID matched with SubscriptionResourceType and its parent is a tenant resource.
 func isSubscriptionResource(resourceID *ResourceID) bool {
 	return resourceID != nil && strings.EqualFold(resourceID.ResourceType.String(), SubscriptionResourceType.String()) && isTenantResource(resourceID.Parent)
 }
 
+// isResourceGroupResource returns true if the resourceID represents a resource group resource. The condition is resource ID matched with ResourceGroupResourceType and its parent is a subscription resource.
 func isResourceGroupResource(resourceID *ResourceID) bool {
 	return resourceID != nil && strings.EqualFold(resourceID.ResourceType.String(), ResourceGroupResourceType.String()) && isSubscriptionResource(resourceID.Parent)
 }

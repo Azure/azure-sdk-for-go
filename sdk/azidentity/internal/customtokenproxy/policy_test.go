@@ -4,6 +4,7 @@
 package customtokenproxy
 
 import (
+	"context"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
@@ -11,6 +12,7 @@ import (
 	"encoding/pem"
 	"math/big"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -18,6 +20,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
 )
 
@@ -454,4 +457,43 @@ func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 		require.NotNil(t, transport4)
 		require.NotEqual(t, transport, transport4, "should return new transport on re-entry if ca file content is updated")
 	})
+}
+
+// this provides a minimal behavior test on the policy.
+// The full coverage can be found in workload identity credential tests.
+func TestCustomTokenProxyPolicy_Do(t *testing.T) {
+	mux := http.NewServeMux()
+	testServer := httptest.NewTLSServer(mux)
+
+	ca := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: testServer.Certificate().Raw})
+	require.NotEmpty(t, ca)
+
+	const testSNIName = "test-sni-name.example.com"
+
+	tokenProxyURL, err := url.Parse(testServer.URL + "/extra/root/path")
+	require.NoError(t, err)
+
+	policy := customTokenProxyPolicy{
+		caData:     ca,
+		sniName:    testSNIName,
+		tokenProxy: tokenProxyURL,
+	}
+
+	req, err := runtime.NewRequest(
+		context.Background(),
+		http.MethodGet,
+		"https://original-request.com/client-path?query=1",
+	)
+	require.NoError(t, err)
+
+	mux.HandleFunc("/extra/root/path/client-path", func(w http.ResponseWriter, r *http.Request) {
+		require.Equal(t, testSNIName, r.TLS.ServerName)
+		require.Equal(t, "1", r.URL.Query().Get("query"))
+
+		w.WriteHeader(http.StatusOK)
+	})
+
+	resp, err := policy.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
 }

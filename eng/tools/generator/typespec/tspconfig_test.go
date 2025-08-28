@@ -58,6 +58,39 @@ func TestTypeSpecConfig_GetPackageRelativePath(t *testing.T) {
     emitter-output-dir: "{output-dir}/{service-dir}/azsystemevents"`,
 			expected: "sdk/messaging/eventgrid/azsystemevents",
 		},
+		{
+			name: "Package path from containing module when no package-dir specified",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"`,
+			expected: "sdk/resourcemanager/compute/armcompute",
+		},
+		{
+			name: "Package path from service-dir and package-dir with containing module",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin"
+    service-dir: "sdk/security/keyvault"
+    package-dir: "azadmin/backup"`,
+			expected: "sdk/security/keyvault/azadmin/backup",
+		},
+		{
+			name: "Package path from emitter output dir with containing module",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+    emitter-output-dir: "{output-dir}/sdk/resourcemanager/compute/armcompute"`,
+			expected: "sdk/resourcemanager/compute/armcompute",
+		},
+		{
+			name: "Package path from emitter output dir with placeholder and containing module",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/{service-dir}/armnetwork"
+    service-dir: "sdk/resourcemanager/network"
+    emitter-output-dir: "{output-dir}/{service-dir}/armnetwork"`,
+			expected: "sdk/resourcemanager/network/armnetwork",
+		},
 	}
 
 	for _, tt := range tests {
@@ -130,6 +163,43 @@ func TestTypeSpecConfig_GetModuleRelativePath(t *testing.T) {
 			yaml: `options:
   "@azure-tools/typespec-go":
     module: "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/v12"`,
+			expected: "sdk/storage/azblob",
+		},
+		{
+			name: "Containing module takes precedence over module",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"`,
+			expected: "sdk/resourcemanager/compute/armcompute",
+		},
+		{
+			name: "Containing module with placeholder",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/{service-dir}/{package-dir}"
+    service-dir: "sdk/resourcemanager/storage"
+    package-dir: "armstorage"`,
+			expected: "sdk/resourcemanager/storage/armstorage",
+		},
+		{
+			name: "Containing module with major version suffix removed",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"`,
+			expected: "sdk/resourcemanager/compute/armcompute",
+		},
+		{
+			name: "Containing module with v2 major version suffix removed",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/v2"`,
+			expected: "sdk/messaging/eventgrid/azsystemevents",
+		},
+		{
+			name: "Containing module with double-digit major version suffix removed",
+			yaml: `options:
+  "@azure-tools/typespec-go":
+    containing-module: "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/v12"`,
 			expected: "sdk/storage/azblob",
 		},
 	}

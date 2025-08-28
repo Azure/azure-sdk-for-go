@@ -6,5 +6,5 @@ package armworkloadorchestration
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloadorchestration/armworkloadorchestration"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.3.0"
 )

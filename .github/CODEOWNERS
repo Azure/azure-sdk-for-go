@@ -304,11 +304,10 @@
 # ServiceOwners:                                                   @shankarsama @rajeshka
 
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/                                        @richardpark-msft @chlowell @jhendrixMSFT
+/sdk/messaging/azeventhubs/                                        @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Event Hubs
-# AzureSdkOwners:                                                  @richardpark-msft
-# ServiceOwners:                                                   @richardpark-msft @chlowell @jhendrixMSFT
+# ServiceOwners:                                                   @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                                   @ahmedelnably @fabiocav
@@ -526,7 +525,7 @@
 # ServiceOwners:                                                   @derek1ee
 
 # ServiceLabel: %Schema Registry
-# ServiceOwners:                                                   @arerlend @alzimmermsft
+# ServiceOwners:                                                   @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Search
 # ServiceOwners:                                                   @bleroy @tjacobhi @markheff @miwelsh
@@ -538,21 +537,13 @@
 # ServiceOwners:                                                   @amirkeren
 
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/                                       @richardpark-msft @chlowell @jhendrixMSFT
+/sdk/messaging/azservicebus/                                       @skarri-microsoft @EldertGrootenboer
 
 # ServiceLabel: %Service Bus
-# AzureSdkOwners:                                                  @richardpark-msft
-# ServiceOwners:                                                   @richardpark-msft @chlowell @jhendrixMSFT
+# ServiceOwners:                                                   @skarri-microsoft @EldertGrootenboer
 
 # PRLabel: %Service Bus
-/sdk/messaging/stress/                                             @richardpark-msft @chlowell @jhendrixMSFT
-
-# ServiceLabel: %Service Bus
-# AzureSdkOwners:                                                  @richardpark-msft
-# ServiceOwners:                                                   @richardpark-msft @chlowell @jhendrixMSFT
-
-# ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer
+/sdk/messaging/stress/                                             @skarri-microsoft @EldertGrootenboer
 
 # ServiceLabel: %Service Fabric
 # ServiceOwners:                                                   @QingChenmsft @vaishnavk @juhacket

@@ -64,8 +64,16 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 		return nil, err
 	}
 
-	if tspConfig.Options.GoConfig.ServiceDir == "" && tspConfig.Parameters != nil && (*tspConfig.Parameters)["service-dir"] != nil {
-		tspConfig.Options.GoConfig.ServiceDir = (*tspConfig.Parameters)["service-dir"].(map[string]any)["default"].(string)
+	if tspConfig.Options.GoConfig.ServiceDir == "" && tspConfig.Parameters != nil {
+		if serviceDirRaw, ok := (*tspConfig.Parameters)["service-dir"]; ok {
+			if serviceDirMap, ok := serviceDirRaw.(map[string]any); ok {
+				if defaultVal, ok := serviceDirMap["default"]; ok {
+					if defaultStr, ok := defaultVal.(string); ok {
+						tspConfig.Options.GoConfig.ServiceDir = defaultStr
+					}
+				}
+			}
+		}
 	}
 
 	tspConfig.Options.GoConfig.EmitterOutputDir = replacePlaceholder(tspConfig, tspConfig.Options.GoConfig.EmitterOutputDir)

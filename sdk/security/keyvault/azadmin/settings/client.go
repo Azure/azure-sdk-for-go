@@ -7,13 +7,12 @@ package settings
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
@@ -55,14 +54,12 @@ func (client *Client) GetSetting(ctx context.Context, settingName string, option
 
 // getSettingCreateRequest creates the GetSetting request.
 func (client *Client) getSettingCreateRequest(ctx context.Context, settingName string, _ *GetSettingOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/settings/{setting-name}"
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{setting-name}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -113,10 +110,8 @@ func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptio
 
 // getSettingsCreateRequest creates the GetSettings request.
 func (client *Client) getSettingsCreateRequest(ctx context.Context, _ *GetSettingsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/settings"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -169,14 +164,12 @@ func (client *Client) UpdateSetting(ctx context.Context, settingName string, par
 
 // updateSettingCreateRequest creates the UpdateSetting request.
 func (client *Client) updateSettingCreateRequest(ctx context.Context, settingName string, parameters UpdateSettingRequest, _ *UpdateSettingOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/settings/{setting-name}"
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{setting-name}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}

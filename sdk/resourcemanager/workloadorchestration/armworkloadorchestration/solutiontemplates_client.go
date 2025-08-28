@@ -544,7 +544,7 @@ func (client *SolutionTemplatesClient) removeVersionCreateRequest(ctx context.Co
 //   - properties - The resource properties to be updated.
 //   - options - SolutionTemplatesClientUpdateOptions contains the optional parameters for the SolutionTemplatesClient.Update
 //     method.
-func (client *SolutionTemplatesClient) Update(ctx context.Context, resourceGroupName string, solutionTemplateName string, properties SolutionTemplate, options *SolutionTemplatesClientUpdateOptions) (SolutionTemplatesClientUpdateResponse, error) {
+func (client *SolutionTemplatesClient) Update(ctx context.Context, resourceGroupName string, solutionTemplateName string, properties SolutionTemplateUpdate, options *SolutionTemplatesClientUpdateOptions) (SolutionTemplatesClientUpdateResponse, error) {
 	var err error
 	const operationName = "SolutionTemplatesClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -567,7 +567,7 @@ func (client *SolutionTemplatesClient) Update(ctx context.Context, resourceGroup
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SolutionTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, properties SolutionTemplate, _ *SolutionTemplatesClientUpdateOptions) (*policy.Request, error) {
+func (client *SolutionTemplatesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, properties SolutionTemplateUpdate, _ *SolutionTemplatesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

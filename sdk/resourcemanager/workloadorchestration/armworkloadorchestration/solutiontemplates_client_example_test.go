@@ -361,8 +361,8 @@ func ExampleSolutionTemplatesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSolutionTemplatesClient().Update(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.SolutionTemplate{
-		Properties: &armworkloadorchestration.SolutionTemplateProperties{
+	res, err := clientFactory.NewSolutionTemplatesClient().Update(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.SolutionTemplateUpdate{
+		Properties: &armworkloadorchestration.SolutionTemplateUpdateProperties{
 			Description: to.Ptr("onqlteg"),
 			Capabilities: []*string{
 				to.Ptr("relsv"),

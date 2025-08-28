@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -148,10 +147,7 @@ func (i *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error)
 	}
 
 	rawReq := req.Raw()
-	rawReq.URL.Scheme = i.tokenProxy.Scheme // this will always be https
-	rawReq.URL.Host = i.tokenProxy.Host
-	rawReq.URL.Path = path.Join(i.tokenProxy.Path, req.Raw().URL.Path) // append the request path after the token endpoint
-	rawReq.Host = i.tokenProxy.Host
+	rewriteRequestURL(rawReq, i.tokenProxy)
 
 	resp, err := tr.RoundTrip(rawReq)
 	if err == nil && resp == nil {

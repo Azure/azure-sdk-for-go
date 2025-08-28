@@ -28,6 +28,10 @@ type SolutionTemplateVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginBulkPublishSolution func(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body armworkloadorchestration.BulkPublishSolutionParameter, options *armworkloadorchestration.SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkPublishSolutionResponse], errResp azfake.ErrorResponder)
 
+	// BeginBulkReviewSolution is the fake for method SolutionTemplateVersionsClient.BeginBulkReviewSolution
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginBulkReviewSolution func(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body armworkloadorchestration.BulkReviewSolutionParameter, options *armworkloadorchestration.SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (resp azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkReviewSolutionResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SolutionTemplateVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, options *armworkloadorchestration.SolutionTemplateVersionsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.SolutionTemplateVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,6 +49,7 @@ func NewSolutionTemplateVersionsServerTransport(srv *SolutionTemplateVersionsSer
 		srv:                            srv,
 		beginBulkDeploySolution:        newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkDeploySolutionResponse]](),
 		beginBulkPublishSolution:       newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkPublishSolutionResponse]](),
+		beginBulkReviewSolution:        newTracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkReviewSolutionResponse]](),
 		newListBySolutionTemplatePager: newTracker[azfake.PagerResponder[armworkloadorchestration.SolutionTemplateVersionsClientListBySolutionTemplateResponse]](),
 	}
 }
@@ -55,6 +60,7 @@ type SolutionTemplateVersionsServerTransport struct {
 	srv                            *SolutionTemplateVersionsServer
 	beginBulkDeploySolution        *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkDeploySolutionResponse]]
 	beginBulkPublishSolution       *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkPublishSolutionResponse]]
+	beginBulkReviewSolution        *tracker[azfake.PollerResponder[armworkloadorchestration.SolutionTemplateVersionsClientBulkReviewSolutionResponse]]
 	newListBySolutionTemplatePager *tracker[azfake.PagerResponder[armworkloadorchestration.SolutionTemplateVersionsClientListBySolutionTemplateResponse]]
 }
 
@@ -85,6 +91,8 @@ func (s *SolutionTemplateVersionsServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = s.dispatchBeginBulkDeploySolution(req)
 			case "SolutionTemplateVersionsClient.BeginBulkPublishSolution":
 				res.resp, res.err = s.dispatchBeginBulkPublishSolution(req)
+			case "SolutionTemplateVersionsClient.BeginBulkReviewSolution":
+				res.resp, res.err = s.dispatchBeginBulkReviewSolution(req)
 			case "SolutionTemplateVersionsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SolutionTemplateVersionsClient.NewListBySolutionTemplatePager":
@@ -207,6 +215,58 @@ func (s *SolutionTemplateVersionsServerTransport) dispatchBeginBulkPublishSoluti
 	}
 	if !server.PollerResponderMore(beginBulkPublishSolution) {
 		s.beginBulkPublishSolution.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SolutionTemplateVersionsServerTransport) dispatchBeginBulkReviewSolution(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginBulkReviewSolution == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginBulkReviewSolution not implemented")}
+	}
+	beginBulkReviewSolution := s.beginBulkReviewSolution.get(req)
+	if beginBulkReviewSolution == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/solutionTemplates/(?P<solutionTemplateName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<solutionTemplateVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkReviewSolution`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.BulkReviewSolutionParameter](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		solutionTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		solutionTemplateVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("solutionTemplateVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginBulkReviewSolution(req.Context(), resourceGroupNameParam, solutionTemplateNameParam, solutionTemplateVersionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginBulkReviewSolution = &respr
+		s.beginBulkReviewSolution.add(req, beginBulkReviewSolution)
+	}
+
+	resp, err := server.PollerResponderNext(beginBulkReviewSolution, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginBulkReviewSolution.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginBulkReviewSolution) {
+		s.beginBulkReviewSolution.remove(req)
 	}
 
 	return resp, nil

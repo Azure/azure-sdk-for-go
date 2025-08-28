@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/DynamicSchemaVersions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemaVersions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDynamicSchemaVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleDynamicSchemaVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemaVersions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemaVersions_Delete_MaximumSet_Gen.json
 func ExampleDynamicSchemaVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleDynamicSchemaVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemaVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemaVersions_Get_MaximumSet_Gen.json
 func ExampleDynamicSchemaVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleDynamicSchemaVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemaVersions_ListByDynamicSchema_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemaVersions_ListByDynamicSchema_MaximumSet_Gen.json
 func ExampleDynamicSchemaVersionsClient_NewListByDynamicSchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleDynamicSchemaVersionsClient_NewListByDynamicSchemaPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemaVersions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemaVersions_Update_MaximumSet_Gen.json
 func ExampleDynamicSchemaVersionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

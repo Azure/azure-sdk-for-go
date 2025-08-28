@@ -20,11 +20,11 @@ type CopilotSettingsResource struct {
 	// The resource-specific properties for this resource.
 	Properties *CopilotSettingsProperties
 
-	// READ-ONLY; The default copilot settings, applying to entire tenant.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -45,7 +45,9 @@ type CopilotSettingsResourceUpdateProperties struct {
 	AccessControlEnabled *bool
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay

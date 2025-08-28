@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SchemaReferences_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SchemaReferences_Get_MaximumSet_Gen.json
 func ExampleSchemaReferencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleSchemaReferencesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SchemaReferences_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SchemaReferences_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleSchemaReferencesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

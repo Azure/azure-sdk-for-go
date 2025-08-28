@@ -244,11 +244,11 @@ type Occurrence struct {
 	// The resource-specific properties for this resource.
 	Properties *OccurrenceProperties
 
-	// READ-ONLY; The name of the Occurrence
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -284,11 +284,11 @@ type OccurrenceExtensionResource struct {
 	// The resource-specific properties for this resource.
 	Properties *OccurrenceExtensionProperties
 
-	// READ-ONLY; The name of the OccurrenceProperties
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -655,11 +655,11 @@ type ScheduledAction struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the ScheduledAction
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -726,13 +726,13 @@ type ScheduledActionResource struct {
 // ScheduledActionResources - The scheduled action extension
 type ScheduledActionResources struct {
 	// The resource-specific properties for this resource.
-	Properties *ScheduledActionProperties
-
-	// READ-ONLY; The name of the ScheduledActionResources
-	Name *string
+	Properties *ScheduledActionsExtensionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -781,6 +781,37 @@ type ScheduledActionUpdateProperties struct {
 
 	// The time which the scheduled action is supposed to start running
 	StartTime *time.Time
+}
+
+// ScheduledActionsExtensionProperties - Scheduled action extension properties
+type ScheduledActionsExtensionProperties struct {
+	// REQUIRED; The action the scheduled action should perform in the resources
+	ActionType *ScheduledActionType
+
+	// REQUIRED; The notification settings for the scheduled action
+	NotificationSettings []*NotificationProperties
+
+	// REQUIRED; The type of resource the scheduled action is targeting
+	ResourceType *ResourceType
+
+	// REQUIRED; The schedule the scheduled action is supposed to follow
+	Schedule *ScheduledActionsSchedule
+
+	// REQUIRED; The time which the scheduled action is supposed to start running
+	StartTime *time.Time
+
+	// Tell if the scheduled action is disabled or not
+	Disabled *bool
+
+	// The time when the scheduled action is supposed to stop scheduling
+	EndTime *time.Time
+
+	// READ-ONLY; The status of the last provisioning operation performed on the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The notification settings for the scheduled action at a resource level. Resource level notification settings
+	// are scope to specific resources only and submitted through attach requests.
+	ResourceNotificationSettings []*NotificationProperties
 }
 
 // ScheduledActionsSchedule - Specify the schedule in which the scheduled action is supposed to follow

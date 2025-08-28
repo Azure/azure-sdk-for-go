@@ -6,12 +6,11 @@ package armcarbonoptimization_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
+	"log"
+	"time"
 )
 
 // Generated from example definition: 2025-04-01/carbonEmissionsDataAvailableDateRange.json
@@ -51,7 +50,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionLo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -186,7 +185,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.MonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.MonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -258,7 +257,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionMo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.MonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.MonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -341,7 +340,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.OverallSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.OverallSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumOverallSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -393,7 +392,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.OverallSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.OverallSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumOverallSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -456,7 +455,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -601,7 +600,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -762,7 +761,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -923,7 +922,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1058,7 +1057,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionSu
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.ItemDetailsQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.ItemDetailsQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumItemDetailsReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1193,7 +1192,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1341,7 +1340,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1474,7 +1473,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1634,7 +1633,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1777,7 +1776,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1943,7 +1942,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2091,7 +2090,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2239,7 +2238,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2372,7 +2371,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsMonthlySummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2520,7 +2519,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, &armcarbonoptimization.TopItemsSummaryReportQueryFilter{
+	res, err := clientFactory.NewCarbonServiceClient().QueryCarbonEmissionReports(ctx, armcarbonoptimization.TopItemsSummaryReportQueryFilter{
 		ReportType: to.Ptr(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport),
 		SubscriptionList: []*string{
 			to.Ptr("00000000-0000-0000-0000-000000000000"),

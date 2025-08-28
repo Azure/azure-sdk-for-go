@@ -22,6 +22,39 @@ func PossibleActiveStateValues() []ActiveState {
 	}
 }
 
+// CMStages - Stages for Solution Version
+type CMStages string
+
+const (
+	// CMStagesConfiguration - Configuration stage
+	CMStagesConfiguration CMStages = "Configuration"
+	// CMStagesDeployment - Deployment stage
+	CMStagesDeployment CMStages = "Deployment"
+	// CMStagesExternalValidation - External Validation stage
+	CMStagesExternalValidation CMStages = "ExternalValidation"
+	// CMStagesPublish - Publish stage
+	CMStagesPublish CMStages = "Publish"
+	// CMStagesStaging - Staging stage
+	CMStagesStaging CMStages = "Staging"
+	// CMStagesUninstallation - Uninstallation stage
+	CMStagesUninstallation CMStages = "Uninstallation"
+	// CMStagesUnstaging - Unstaging stage
+	CMStagesUnstaging CMStages = "Unstaging"
+)
+
+// PossibleCMStagesValues returns the possible values for the CMStages const type.
+func PossibleCMStagesValues() []CMStages {
+	return []CMStages{
+		CMStagesConfiguration,
+		CMStagesDeployment,
+		CMStagesExternalValidation,
+		CMStagesPublish,
+		CMStagesStaging,
+		CMStagesUninstallation,
+		CMStagesUnstaging,
+	}
+}
+
 // ConfigurationModel - Available configuration models
 type ConfigurationModel string
 
@@ -261,6 +294,8 @@ const (
 	StateFailed State = "Failed"
 	// StateInReview - Solution Instance is in review
 	StateInReview State = "InReview"
+	// StateNotApplicable - State is not applicable
+	StateNotApplicable State = "NotApplicable"
 	// StatePendingExternalValidation - Solution Instance is pending external validation
 	StatePendingExternalValidation State = "PendingExternalValidation"
 	// StateReadyToDeploy - Solution Instance is ready to deploy
@@ -283,12 +318,40 @@ func PossibleStateValues() []State {
 		StateExternalValidationFailed,
 		StateFailed,
 		StateInReview,
+		StateNotApplicable,
 		StatePendingExternalValidation,
 		StateReadyToDeploy,
 		StateReadyToUpgrade,
 		StateStaging,
 		StateUndeployed,
 		StateUpgradeInReview,
+	}
+}
+
+// StateCategory - State Category for Solution Version
+type StateCategory string
+
+const (
+	// StateCategoryCompleted - Completed state [Terminal]
+	StateCategoryCompleted StateCategory = "Completed"
+	// StateCategoryFailed - Failed state [Terminal]
+	StateCategoryFailed StateCategory = "Failed"
+	// StateCategoryInProgress - InProgress state [Non-Terminal]
+	StateCategoryInProgress StateCategory = "InProgress"
+	// StateCategoryNone - None state [Terminal]
+	StateCategoryNone StateCategory = "None"
+	// StateCategoryPending - Pending state [Non-Terminal]
+	StateCategoryPending StateCategory = "Pending"
+)
+
+// PossibleStateCategoryValues returns the possible values for the StateCategory const type.
+func PossibleStateCategoryValues() []StateCategory {
+	return []StateCategory{
+		StateCategoryCompleted,
+		StateCategoryFailed,
+		StateCategoryInProgress,
+		StateCategoryNone,
+		StateCategoryPending,
 	}
 }
 

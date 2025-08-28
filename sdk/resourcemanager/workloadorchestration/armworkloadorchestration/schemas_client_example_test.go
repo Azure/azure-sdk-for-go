@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Schemas_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSchemasClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleSchemasClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_CreateVersion_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_CreateVersion_MaximumSet_Gen.json
 func ExampleSchemasClient_BeginCreateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleSchemasClient_BeginCreateVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_Delete_MaximumSet_Gen.json
 func ExampleSchemasClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleSchemasClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Schemas_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_Get_MaximumSet_Gen.json
 func ExampleSchemasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleSchemasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleSchemasClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleSchemasClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Schemas_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_ListBySubscription_MaximumSet_Gen.json
 func ExampleSchemasClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleSchemasClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Schemas_RemoveVersion_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_RemoveVersion_MaximumSet_Gen.json
 func ExampleSchemasClient_RemoveVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleSchemasClient_RemoveVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Schemas_Update_MaximumSet_Gen.json
 func ExampleSchemasClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

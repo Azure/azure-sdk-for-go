@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SolutionVersions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionVersions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSolutionVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,6 +57,26 @@ func ExampleSolutionVersionsClient_BeginCreateOrUpdate() {
 	// 			ReviewID: to.Ptr("bcnlj"),
 	// 			ExternalValidationID: to.Ptr("yxabw"),
 	// 			State: to.Ptr(armworkloadorchestration.StateInReview),
+	// 			CurrentStage: &armworkloadorchestration.StageMap{
+	// 				DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+	// 				Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 				Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 				ChildStages: []*armworkloadorchestration.StageMap{
+	// 				},
+	// 			},
+	// 			Stages: []*armworkloadorchestration.StageMap{
+	// 				{
+	// 					DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+	// 					Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 					Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 					ChildStages: []*armworkloadorchestration.StageMap{
+	// 					},
+	// 				},
+	// 			},
 	// 			SolutionInstanceName: to.Ptr("testname"),
 	// 			SolutionDependencies: []*armworkloadorchestration.SolutionDependency{
 	// 				{
@@ -104,7 +124,7 @@ func ExampleSolutionVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SolutionVersions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionVersions_Delete_MaximumSet_Gen.json
 func ExampleSolutionVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +145,7 @@ func ExampleSolutionVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionVersions_Get_MaximumSet_Gen.json
 func ExampleSolutionVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,6 +176,26 @@ func ExampleSolutionVersionsClient_Get() {
 	// 			ReviewID: to.Ptr("bcnlj"),
 	// 			ExternalValidationID: to.Ptr("yxabw"),
 	// 			State: to.Ptr(armworkloadorchestration.StateInReview),
+	// 			CurrentStage: &armworkloadorchestration.StageMap{
+	// 				DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+	// 				Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 				Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 				ChildStages: []*armworkloadorchestration.StageMap{
+	// 				},
+	// 			},
+	// 			Stages: []*armworkloadorchestration.StageMap{
+	// 				{
+	// 					DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+	// 					Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 					Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 					ChildStages: []*armworkloadorchestration.StageMap{
+	// 					},
+	// 				},
+	// 			},
 	// 			SolutionInstanceName: to.Ptr("testname"),
 	// 			SolutionDependencies: []*armworkloadorchestration.SolutionDependency{
 	// 				{
@@ -203,7 +243,7 @@ func ExampleSolutionVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SolutionVersions_ListBySolution_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionVersions_ListBySolution_MaximumSet_Gen.json
 func ExampleSolutionVersionsClient_NewListBySolutionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,6 +280,26 @@ func ExampleSolutionVersionsClient_NewListBySolutionPager() {
 		// 					ReviewID: to.Ptr("bcnlj"),
 		// 					ExternalValidationID: to.Ptr("yxabw"),
 		// 					State: to.Ptr(armworkloadorchestration.StateInReview),
+		// 					CurrentStage: &armworkloadorchestration.StageMap{
+		// 						DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+		// 						Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+		// 						Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+		// 						ChildStages: []*armworkloadorchestration.StageMap{
+		// 						},
+		// 					},
+		// 					Stages: []*armworkloadorchestration.StageMap{
+		// 						{
+		// 							DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+		// 							Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+		// 							Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+		// 							ChildStages: []*armworkloadorchestration.StageMap{
+		// 							},
+		// 						},
+		// 					},
 		// 					SolutionInstanceName: to.Ptr("testname"),
 		// 					SolutionDependencies: []*armworkloadorchestration.SolutionDependency{
 		// 						{
@@ -291,7 +351,7 @@ func ExampleSolutionVersionsClient_NewListBySolutionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionVersions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionVersions_Update_MaximumSet_Gen.json
 func ExampleSolutionVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,6 +390,26 @@ func ExampleSolutionVersionsClient_BeginUpdate() {
 	// 			ReviewID: to.Ptr("bcnlj"),
 	// 			ExternalValidationID: to.Ptr("yxabw"),
 	// 			State: to.Ptr(armworkloadorchestration.StateInReview),
+	// 			CurrentStage: &armworkloadorchestration.StageMap{
+	// 				DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+	// 				Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 				Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 				ChildStages: []*armworkloadorchestration.StageMap{
+	// 				},
+	// 			},
+	// 			Stages: []*armworkloadorchestration.StageMap{
+	// 				{
+	// 					DisplayState: to.Ptr("udsstdsbyojspjuefsvlponjpli"),
+	// 					Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 					Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-07T09:57:18.329Z"); return t}()),
+	// 					ChildStages: []*armworkloadorchestration.StageMap{
+	// 					},
+	// 				},
+	// 			},
 	// 			SolutionInstanceName: to.Ptr("testname"),
 	// 			SolutionDependencies: []*armworkloadorchestration.SolutionDependency{
 	// 				{

@@ -1,4 +1,4 @@
 directory: specification/containerservice/DeploymentSafeguards.Management
-commit: 4bf18e88cdfcd8b3d7698cf999ab4570ea6b997f
+commit: be560465f43f2ec9b431f7a79da7a82ff64dd299
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

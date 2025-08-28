@@ -28,7 +28,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenendpoint"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -413,8 +413,8 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 		}),
 	)
 
-	t.Setenv(customtokenendpoint.AzureKubernetesTokenEndpoint, customTokenEndointServer.URL)
-	t.Setenv(customtokenendpoint.AzureKubernetesCAData, caData)
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.AzureKubernetesCAData, caData)
 
 	clientOptions := policy.ClientOptions{
 		PerCallPolicies: []policy.Policy{
@@ -441,7 +441,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testi
 		t.Fatalf("failed to write token file: %v", err)
 	}
 
-	t.Setenv(customtokenendpoint.AzureKubernetesTokenEndpoint, "invalid-token-endpoint")
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, "invalid-token-endpoint")
 	_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:      fakeClientID,
 		TenantID:      fakeTenantID,
@@ -479,11 +479,11 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 		}),
 	)
 
-	t.Setenv(customtokenendpoint.AzureKubernetesTokenEndpoint, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
 	d := t.TempDir()
 	caFile := filepath.Join(d, "test-ca-file")
 	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
-	t.Setenv(customtokenendpoint.AzureKubernetesCAFile, caFile)
+	t.Setenv(customtokenproxy.AzureKubernetesCAFile, caFile)
 
 	clientOptions := policy.ClientOptions{
 		PerCallPolicies: []policy.Policy{
@@ -536,13 +536,13 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 		}),
 	)
 
-	t.Setenv(customtokenendpoint.AzureKubernetesTokenEndpoint, customTokenEndointServer.URL)
-	t.Setenv(customtokenendpoint.AzureKubernetesSNIName, sniName)
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.AzureKubernetesSNIName, sniName)
 
 	d := t.TempDir()
 	caFile := filepath.Join(d, "test-ca-file")
 	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
-	t.Setenv(customtokenendpoint.AzureKubernetesCAFile, caFile)
+	t.Setenv(customtokenproxy.AzureKubernetesCAFile, caFile)
 
 	clientOptions := policy.ClientOptions{
 		PerCallPolicies: []policy.Policy{

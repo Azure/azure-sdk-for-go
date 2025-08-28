@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package customtokenendpoint
+package customtokenproxy
 
 import (
 	"bytes"
@@ -19,35 +19,37 @@ import (
 )
 
 const (
-	AzureKubernetesCAData        = "AZURE_KUBERNETES_CA_DATA"
-	AzureKubernetesCAFile        = "AZURE_KUBERNETES_CA_FILE"
-	AzureKubernetesSNIName       = "AZURE_KUBERNETES_SNI_NAME"
-	AzureKubernetesTokenEndpoint = "AZURE_KUBERNETES_TOKEN_ENDPOINT"
+	AzureKubernetesCAData  = "AZURE_KUBERNETES_CA_DATA"
+	AzureKubernetesCAFile  = "AZURE_KUBERNETES_CA_FILE"
+	AzureKubernetesSNIName = "AZURE_KUBERNETES_SNI_NAME"
+
+	AzureKubernetesTokenProxy                  = "AZURE_KUBERNETES_TOKEN_PROXY"
+	azureKubernetesTokenEndpointToBeDeprecated = "AZURE_KUBERNETES_TOKEN_ENDPOINT" // deprecate when new WI image is released in AKS side
 )
 
-func parseAndValidateCustomTokenEndpoint(endpoint string) (*url.URL, error) {
-	tokenEndpoint, err := url.Parse(endpoint)
+func parseAndValidateCustomTokenProxy(endpoint string) (*url.URL, error) {
+	tokenProxy, err := url.Parse(endpoint)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse custom token endpoint URL %q: %s", endpoint, err)
+		return nil, fmt.Errorf("failed to parse custom token proxy URL %q: %s", endpoint, err)
 	}
-	if tokenEndpoint.Scheme != "https" {
-		return nil, fmt.Errorf("custom token endpoint must use https scheme, got %q", tokenEndpoint.Scheme)
+	if tokenProxy.Scheme != "https" {
+		return nil, fmt.Errorf("custom token endpoint must use https scheme, got %q", tokenProxy.Scheme)
 	}
-	if tokenEndpoint.User != nil {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain user info", tokenEndpoint)
+	if tokenProxy.User != nil {
+		return nil, fmt.Errorf("custom token endpoint URL %q must not contain user info", tokenProxy)
 	}
-	if tokenEndpoint.RawQuery != "" {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a query", tokenEndpoint)
+	if tokenProxy.RawQuery != "" {
+		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a query", tokenProxy)
 	}
-	if tokenEndpoint.EscapedFragment() != "" {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a fragment", tokenEndpoint)
+	if tokenProxy.EscapedFragment() != "" {
+		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a fragment", tokenProxy)
 	}
-	return tokenEndpoint, nil
+	return tokenProxy, nil
 }
 
 var (
-	errCustomEndpointEnvSetWithoutTokenEndpoint = errors.New(
-		"AZURE_KUBERNETES_TOKEN_ENDPOINT is not set but other custom endpoint-related environment variables are present",
+	errCustomEndpointEnvSetWithoutTokenProxy = errors.New(
+		"AZURE_KUBERNETES_TOKEN_PROXY is not set but other custom endpoint-related environment variables are present",
 	)
 	errCustomEndpointMultipleCASourcesSet = errors.New(
 		"only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified",
@@ -80,21 +82,27 @@ func createTransport(sniName string, caPool *x509.CertPool) *http.Transport {
 
 // Configure configures custom token endpoint mode if the required environment variables are present.
 func Configure(clientOptions *policy.ClientOptions) error {
-	kubernetesTokenEndpointStr := os.Getenv(AzureKubernetesTokenEndpoint)
+	kubernetesTokenProxyStr := os.Getenv(AzureKubernetesTokenProxy)
+	if kubernetesTokenProxyStr == "" {
+		// for backward compatibility, check the deprecated variable if the new one is not set
+		// This should be removed when the new WI image is released in AKS side
+		kubernetesTokenProxyStr = os.Getenv(azureKubernetesTokenEndpointToBeDeprecated)
+	}
+
 	kubernetesSNIName := os.Getenv(AzureKubernetesSNIName)
 	kubernetesCAFile := os.Getenv(AzureKubernetesCAFile)
 	kubernetesCAData := os.Getenv(AzureKubernetesCAData)
 
-	if kubernetesTokenEndpointStr == "" {
-		// custom token endpoint is not set, while other Kubernetes-related environment variables are present,
+	if kubernetesTokenProxyStr == "" {
+		// custom token proxy is not set, while other Kubernetes-related environment variables are present,
 		// this is likely a configuration issue so erroring out to avoid misconfiguration
 		if kubernetesSNIName != "" || kubernetesCAFile != "" || kubernetesCAData != "" {
-			return errCustomEndpointEnvSetWithoutTokenEndpoint
+			return errCustomEndpointEnvSetWithoutTokenProxy
 		}
 
 		return nil
 	}
-	tokenEndpoint, err := parseAndValidateCustomTokenEndpoint(kubernetesTokenEndpointStr)
+	tokenProxy, err := parseAndValidateCustomTokenProxy(kubernetesTokenProxyStr)
 	if err != nil {
 		return err
 	}
@@ -106,11 +114,11 @@ func Configure(clientOptions *policy.ClientOptions) error {
 	}
 
 	// preload the transport
-	p := &customTokenEndpointPolicy{
-		caFile:        kubernetesCAFile,
-		caData:        []byte(kubernetesCAData),
-		sniName:       kubernetesSNIName,
-		tokenEndpoint: tokenEndpoint,
+	p := &customTokenProxyPolicy{
+		caFile:     kubernetesCAFile,
+		caData:     []byte(kubernetesCAData),
+		sniName:    kubernetesSNIName,
+		tokenProxy: tokenProxy,
 	}
 	if _, err := p.getTokenTransporter(); err != nil {
 		return err
@@ -120,30 +128,30 @@ func Configure(clientOptions *policy.ClientOptions) error {
 	return nil
 }
 
-// customTokenEndpointPolicy is a custom HTTP transport that redirects token requests
+// customTokenProxyPolicy is a custom HTTP transport that redirects token requests
 // to the custom token endpoint when in custom token endpoint mode.
 //
 // Only token request will be handled by this transport.
 // Lock is not needed for internal caData as this policy is called under confidentialClient's lock.
-type customTokenEndpointPolicy struct {
-	caFile        string
-	caData        []byte
-	sniName       string
-	tokenEndpoint *url.URL
-	transport     *http.Transport
+type customTokenProxyPolicy struct {
+	caFile     string
+	caData     []byte
+	sniName    string
+	tokenProxy *url.URL
+	transport  *http.Transport
 }
 
-func (i *customTokenEndpointPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (i *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error) {
 	tr, err := i.getTokenTransporter()
 	if err != nil {
 		return nil, err
 	}
 
 	rawReq := req.Raw()
-	rawReq.URL.Scheme = i.tokenEndpoint.Scheme // this will always be https
-	rawReq.URL.Host = i.tokenEndpoint.Host
-	rawReq.URL.Path = path.Join(i.tokenEndpoint.Path, req.Raw().URL.Path) // append the request path after the token endpoint
-	rawReq.Host = i.tokenEndpoint.Host
+	rawReq.URL.Scheme = i.tokenProxy.Scheme // this will always be https
+	rawReq.URL.Host = i.tokenProxy.Host
+	rawReq.URL.Path = path.Join(i.tokenProxy.Path, req.Raw().URL.Path) // append the request path after the token endpoint
+	rawReq.Host = i.tokenProxy.Host
 
 	resp, err := tr.RoundTrip(rawReq)
 	if err == nil && resp == nil {
@@ -163,7 +171,7 @@ func (i *customTokenEndpointPolicy) Do(req *policy.Request) (*http.Response, err
 //     This transport is fixed after set.
 //  3. CA file override is provided, use a transport with custom CA pool.
 //     This transport needs to be recreated if the CA file content changes.
-func (i *customTokenEndpointPolicy) getTokenTransporter() (*http.Transport, error) {
+func (i *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) {
 	if len(i.caData) == 0 && i.caFile == "" {
 		// no custom CA overrides
 		if i.transport == nil {

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package customtokenendpoint
+package customtokenproxy
 
 import (
 	"crypto/rand"
@@ -21,7 +21,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestParseAndValidateCustomTokenEndpoint(t *testing.T) {
+func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 	cases := []struct {
 		name      string
 		endpoint  string
@@ -89,14 +89,14 @@ func TestParseAndValidateCustomTokenEndpoint(t *testing.T) {
 			expectErr: true,
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
-				require.Contains(t, err.Error(), "failed to parse custom token endpoint URL")
+				require.Contains(t, err.Error(), "failed to parse custom token proxy URL")
 			},
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			u, err := parseAndValidateCustomTokenEndpoint(c.endpoint)
+			u, err := parseAndValidateCustomTokenProxy(c.endpoint)
 			if c.expectErr {
 				require.Error(t, err)
 			} else {
@@ -134,7 +134,15 @@ func TestConfigure(t *testing.T) {
 			name:      "custom endpoint enabled with minimal settings",
 			expectErr: false,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+			},
+			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint enabled with legacy environment variable",
+			expectErr: false,
+			envs: map[string]string{
+				azureKubernetesTokenEndpointToBeDeprecated: "https://custom-endpoint.com",
 			},
 			expectAddPolicy: true,
 		},
@@ -142,9 +150,9 @@ func TestConfigure(t *testing.T) {
 			name:      "custom endpoint enabled with CA file + SNI",
 			expectErr: false,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAFile:        testCAFile,
-				AzureKubernetesSNIName:       "custom-sni.example.com",
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAFile:     testCAFile,
+				AzureKubernetesSNIName:    "custom-sni.example.com",
 			},
 			expectAddPolicy: true,
 		},
@@ -152,8 +160,8 @@ func TestConfigure(t *testing.T) {
 			name:      "custom endpoint enabled with invalid CA file",
 			expectErr: true,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAFile:        "/non/existent/path/to/custom-ca-file.pem",
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAFile:     "/non/existent/path/to/custom-ca-file.pem",
 			},
 			expectAddPolicy: false,
 		},
@@ -161,7 +169,7 @@ func TestConfigure(t *testing.T) {
 			name:      "custom endpoint enabled with CA file contains invalid CA data",
 			expectErr: true,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
 				AzureKubernetesCAFile: func() string {
 					t.Helper()
 
@@ -177,9 +185,9 @@ func TestConfigure(t *testing.T) {
 			name:      "custom endpoint enabled with CA data + SNI",
 			expectErr: false,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAData:        testCAData,
-				AzureKubernetesSNIName:       "custom-sni.example.com",
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAData:     testCAData,
+				AzureKubernetesSNIName:    "custom-sni.example.com",
 			},
 			expectAddPolicy: true,
 		},
@@ -187,8 +195,8 @@ func TestConfigure(t *testing.T) {
 			name:      "custom endpoint enabled with invalid CA data",
 			expectErr: true,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAData:        string("invalid-ca-cert"),
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAData:     string("invalid-ca-cert"),
 			},
 			expectAddPolicy: false,
 		},
@@ -196,8 +204,8 @@ func TestConfigure(t *testing.T) {
 			name:      "custom endpoint enabled with SNI",
 			expectErr: false,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesSNIName:       "custom-sni.example.com",
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesSNIName:    "custom-sni.example.com",
 			},
 			expectAddPolicy: true,
 		},
@@ -208,16 +216,16 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesSNIName: "custom-sni.example.com",
 			},
 			checkErr: func(t testing.TB, err error) {
-				require.ErrorIs(t, err, errCustomEndpointEnvSetWithoutTokenEndpoint)
+				require.ErrorIs(t, err, errCustomEndpointEnvSetWithoutTokenProxy)
 			},
 		},
 		{
 			name:      "custom endpoint enabled with both CAData and CAFile",
 			expectErr: true,
 			envs: map[string]string{
-				AzureKubernetesTokenEndpoint: "https://custom-endpoint.com",
-				AzureKubernetesCAData:        testCAData,
-				AzureKubernetesCAFile:        testCAFile,
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAData:     testCAData,
+				AzureKubernetesCAFile:     testCAFile,
 			},
 			checkErr: func(t testing.TB, err error) {
 				require.ErrorIs(t, err, errCustomEndpointMultipleCASourcesSet)
@@ -228,7 +236,7 @@ func TestConfigure(t *testing.T) {
 			expectErr: true,
 			envs: map[string]string{
 				// http endpoint is not allowed
-				AzureKubernetesTokenEndpoint: "http://custom-endpoint.com",
+				AzureKubernetesTokenProxy: "http://custom-endpoint.com",
 			},
 		},
 	}
@@ -254,10 +262,27 @@ func TestConfigure(t *testing.T) {
 			if c.expectAddPolicy {
 				require.NotEmpty(t, c.clientOptions.PerRetryPolicies)
 				lastPolicy := c.clientOptions.PerRetryPolicies[len(c.clientOptions.PerRetryPolicies)-1]
-				require.IsType(t, &customTokenEndpointPolicy{}, lastPolicy)
+				require.IsType(t, &customTokenProxyPolicy{}, lastPolicy)
 			}
 		})
 	}
+}
+
+func TestConfigure_legacyEnvPrecedence(t *testing.T) {
+	const legacyValue = "https://custom-endpoint-from-legacy-env.com"
+	const newValue = "https://custom-endpoint-from-new-env.com"
+
+	t.Setenv(azureKubernetesTokenEndpointToBeDeprecated, legacyValue)
+	t.Setenv(AzureKubernetesTokenProxy, newValue)
+
+	clientOptions := policy.ClientOptions{}
+	err := Configure(&clientOptions)
+	require.NoError(t, err)
+	require.NotEmpty(t, clientOptions.PerRetryPolicies)
+	lastPolicy := clientOptions.PerRetryPolicies[len(clientOptions.PerRetryPolicies)-1]
+	require.IsType(t, &customTokenProxyPolicy{}, lastPolicy)
+	p := lastPolicy.(*customTokenProxyPolicy)
+	require.Equal(t, newValue, p.tokenProxy.String(), "when both new and legacy env vars are set, new one should take precedence")
 }
 
 // createTestCA creates a valid CA as bytes
@@ -295,22 +320,22 @@ func createTestCAFile(t testing.TB) string {
 	return caFile
 }
 
-func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
+func TestCustomTokenProxyPolicy_getTokenTransporter(t *testing.T) {
 	cases := []struct {
 		name string
-		tr   *customTokenEndpointPolicy
+		tr   *customTokenProxyPolicy
 
 		expectErr         bool
 		validateTransport func(t testing.TB, httpTr *http.Transport)
 	}{
 		{
 			name:      "no overrides",
-			tr:        &customTokenEndpointPolicy{},
+			tr:        &customTokenProxyPolicy{},
 			expectErr: false,
 		},
 		{
 			name: "with custom CA",
-			tr: &customTokenEndpointPolicy{
+			tr: &customTokenProxyPolicy{
 				caFile: createTestCAFile(t),
 			},
 			expectErr: false,
@@ -321,14 +346,14 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "invalid CA",
-			tr: &customTokenEndpointPolicy{
+			tr: &customTokenProxyPolicy{
 				caData: []byte("invalid-ca-data"),
 			},
 			expectErr: true,
 		},
 		{
 			name: "with SNI",
-			tr: &customTokenEndpointPolicy{
+			tr: &customTokenProxyPolicy{
 				sniName: "example.com",
 			},
 			expectErr: false,
@@ -340,7 +365,7 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "with CA + SNI",
-			tr: &customTokenEndpointPolicy{
+			tr: &customTokenProxyPolicy{
 				sniName: "example.com",
 				caFile:  createTestCAFile(t),
 			},
@@ -374,9 +399,9 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter(t *testing.T) {
 	}
 }
 
-func TestCustomTokenEndpointPolicy_getTokenTransporter_reentry(t *testing.T) {
+func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 	t.Run("no CA overrides", func(t *testing.T) {
-		tr := &customTokenEndpointPolicy{}
+		tr := &customTokenProxyPolicy{}
 		transport, err := tr.getTokenTransporter()
 		require.NoError(t, err)
 		require.NotNil(t, transport)
@@ -388,7 +413,7 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter_reentry(t *testing.T) {
 	})
 
 	t.Run("with CAData overrides", func(t *testing.T) {
-		tr := customTokenEndpointPolicy{
+		tr := customTokenProxyPolicy{
 			caData: createTestCA(t),
 		}
 		transport, err := tr.getTokenTransporter()
@@ -403,7 +428,7 @@ func TestCustomTokenEndpointPolicy_getTokenTransporter_reentry(t *testing.T) {
 
 	t.Run("with CAFile overrides", func(t *testing.T) {
 		caFile := createTestCAFile(t)
-		tr := customTokenEndpointPolicy{
+		tr := customTokenProxyPolicy{
 			caFile: caFile,
 		}
 		transport, err := tr.getTokenTransporter()

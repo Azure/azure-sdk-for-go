@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenendpoint"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -97,9 +97,9 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	// configure custom token endpoint if environment variables are present.
-	// In custom token endpoint mode, a dedicated transport will be used for proxying token requests to a dedicated endpoint.
-	if err := customtokenendpoint.Configure(&caco.ClientOptions); err != nil {
+	// configure custom token proxy if environment variables are present.
+	// In custom token proxy mode, a dedicated transport will be used for proxying token requests to a dedicated proxy endpoint.
+	if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
 		return nil, err
 	}
 

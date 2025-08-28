@@ -54,4 +54,16 @@ func TestGoEmitterOptionsValidate(t *testing.T) {
 	}
 	err = goEmitOptions.Validate()
 	assert.EqualError(t, err, typespec.ErrModuleEmpty.Error())
+
+	// containing-module is empty
+	goEmitOptions = typespec.GoEmitterOptions{
+		ContainingModule: "",
+	}
+	err = goEmitOptions.Validate()
+	assert.EqualError(t, err, typespec.ErrModuleEmpty.Error())
+
+	// empty config
+	goEmitOptions = typespec.GoEmitterOptions{}
+	err = goEmitOptions.Validate()
+	assert.EqualError(t, err, typespec.ErrModuleEmpty.Error())
 }

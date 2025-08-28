@@ -1,5 +1,8 @@
 // Copyright 2011 The Go Authors. All rights reserved.
-// Licensed under the BSD-style license.
+// Licensed under the BSD-style license that be found at https://golang.org/LICENSE .
+//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Portions of this file are modifications licensed under the MIT License.
 
 package customtokenproxy
 

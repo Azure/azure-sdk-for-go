@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2025-08-28)
+### Breaking Changes
+
+- Function `*SolutionTemplatesClient.Update` parameter(s) have been changed from `(context.Context, string, string, SolutionTemplate, *SolutionTemplatesClientUpdateOptions)` to `(context.Context, string, string, SolutionTemplateUpdate, *SolutionTemplatesClientUpdateOptions)`
+
+### Features Added
+
+- New struct `SolutionTemplateUpdate`
+- New struct `SolutionTemplateUpdateProperties`
+
+
 ## 0.2.0 (2025-08-27)
 ### Breaking Changes
 

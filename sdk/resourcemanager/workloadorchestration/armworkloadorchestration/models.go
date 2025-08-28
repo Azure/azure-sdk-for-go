@@ -1193,6 +1193,30 @@ type SolutionTemplateProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// SolutionTemplateUpdate - The type used for update operations of the SolutionTemplate.
+type SolutionTemplateUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *SolutionTemplateUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// SolutionTemplateUpdateProperties - The updatable properties of the SolutionTemplate.
+type SolutionTemplateUpdateProperties struct {
+	// List of capabilities
+	Capabilities []*string
+
+	// Description of Solution template
+	Description *string
+
+	// Flag to enable external validation
+	EnableExternalValidation *bool
+
+	// State of resource
+	State *ResourceState
+}
+
 // SolutionTemplateVersion - Solution Template Version Resource. Contains configurations that use expressions which can be
 // resolved hierarchically along with edge specifications.
 type SolutionTemplateVersion struct {

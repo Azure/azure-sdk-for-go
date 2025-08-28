@@ -50,7 +50,7 @@ type SolutionTemplatesServer struct {
 
 	// Update is the fake for method SolutionTemplatesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, solutionTemplateName string, properties armworkloadorchestration.SolutionTemplate, options *armworkloadorchestration.SolutionTemplatesClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.SolutionTemplatesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, solutionTemplateName string, properties armworkloadorchestration.SolutionTemplateUpdate, options *armworkloadorchestration.SolutionTemplatesClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.SolutionTemplatesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSolutionTemplatesServerTransport creates a new instance of SolutionTemplatesServerTransport with the provided implementation.
@@ -439,7 +439,7 @@ func (s *SolutionTemplatesServerTransport) dispatchUpdate(req *http.Request) (*h
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SolutionTemplate](req)
+	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SolutionTemplateUpdate](req)
 	if err != nil {
 		return nil, err
 	}

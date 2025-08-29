@@ -147,7 +147,7 @@ func (i *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error)
 	}
 
 	rawReq := req.Raw()
-	rewriteRequestURL(rawReq, i.tokenProxy)
+	rewriteProxyRequestURL(rawReq, i.tokenProxy)
 
 	resp, err := tr.RoundTrip(rawReq)
 	if err == nil && resp == nil {

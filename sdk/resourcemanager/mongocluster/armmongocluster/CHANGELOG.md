@@ -1,5 +1,25 @@
 # Release History
 
+## 1.1.0-beta.2 (2025-08-20)
+### Breaking Changes
+
+- `UserRoleRoot` from enum `UserRole` has been removed
+- Enum `KeyEncryptionKeyIdentityType` has been removed
+- Enum `ManagedServiceIdentityType` has been removed
+- Struct `CustomerManagedKeyEncryptionProperties` has been removed
+- Struct `EncryptionProperties` has been removed
+- Struct `KeyEncryptionKeyIdentity` has been removed
+- Struct `ManagedServiceIdentity` has been removed
+- Struct `UserAssignedIdentity` has been removed
+- Field `Identity` of struct `MongoCluster` has been removed
+- Field `Encryption` of struct `Properties` has been removed
+- Field `Identity` of struct `Update` has been removed
+
+### Features Added
+
+- New value `UserRoleDatabaseOwner` added to enum type `UserRole`
+
+
 ## 1.1.0-beta.1 (2025-07-23)
 ### Features Added
 

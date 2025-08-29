@@ -1,8 +1,10 @@
 # Release History
 
-## 1.11.1-beta.1 (Unreleased)
+## 1.12.0 (Unreleased)
 
 ### Features Added
+- Added `DefaultAzureCredentialOptions.RequireAzureTokenCredentials`. `NewDefaultAzureCredential` returns an
+  error when this option is true and the environment variable `AZURE_TOKEN_CREDENTIALS` has no value.
 
 ### Breaking Changes
 

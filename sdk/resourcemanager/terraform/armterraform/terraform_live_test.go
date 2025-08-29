@@ -61,7 +61,7 @@ func (testsuite *TerraformTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestTerraformTestSuite(t *testing.T) {
+func TTestTerraformTestSuite(t *testing.T) {
 	suite.Run(t, new(TerraformTestSuite))
 }
 

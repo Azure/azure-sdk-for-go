@@ -100,3 +100,27 @@ func (pk *PartitionKey) toJsonString() (string, error) {
 	completeJson.WriteString("]")
 	return completeJson.String(), nil
 }
+
+// MarshalJSON implements the json.Marshaler interface for PartitionKey.
+func (pk PartitionKey) MarshalJSON() ([]byte, error) {
+	if len(pk.values) == 0 {
+		return []byte("[]"), nil
+	}
+
+	jsonString, err := pk.toJsonString()
+	if err != nil {
+		return nil, err
+	}
+
+	return []byte(jsonString), nil
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for PartitionKey.
+func (pk *PartitionKey) UnmarshalJSON(data []byte) error {
+	var values []interface{}
+	if err := json.Unmarshal(data, &values); err != nil {
+		return err
+	}
+	pk.values = values
+	return nil
+}

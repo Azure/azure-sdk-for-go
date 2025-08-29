@@ -1,0 +1,499 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package customtokenproxy
+
+import (
+	"context"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/pem"
+	"math/big"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"os"
+	"path/filepath"
+	"testing"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/stretchr/testify/require"
+)
+
+func TestParseAndValidateCustomTokenProxy(t *testing.T) {
+	cases := []struct {
+		name      string
+		endpoint  string
+		expectErr bool
+		check     func(t testing.TB, u *url.URL, err error)
+	}{
+		{
+			name:     "valid https endpoint without path",
+			endpoint: "https://example.com",
+			check: func(t testing.TB, u *url.URL, err error) {
+				require.NoError(t, err)
+				require.Equal(t, "https", u.Scheme)
+				require.Equal(t, "example.com", u.Host)
+				require.Equal(t, "", u.RawQuery)
+				require.Equal(t, "", u.Fragment)
+			},
+		},
+		{
+			name:     "valid https endpoint with path",
+			endpoint: "https://example.com/token/path",
+			check: func(t testing.TB, u *url.URL, err error) {
+				require.NoError(t, err)
+				require.Equal(t, "/token/path", u.Path)
+			},
+		},
+		{
+			name:      "reject non-https scheme",
+			endpoint:  "http://example.com",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "https scheme")
+			},
+		},
+		{
+			name:      "reject user info",
+			endpoint:  "https://user:pass@example.com/token",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "must not contain user info")
+			},
+		},
+		{
+			name:      "reject query params",
+			endpoint:  "https://example.com/token?foo=bar",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "must not contain a query")
+			},
+		},
+		{
+			name:      "reject fragment",
+			endpoint:  "https://example.com/token#frag",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "must not contain a fragment")
+			},
+		},
+		{
+			name:      "reject unparseable URL",
+			endpoint:  "https://example.com/%zz",
+			expectErr: true,
+			check: func(t testing.TB, _ *url.URL, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "failed to parse custom token proxy URL")
+			},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			u, err := parseAndValidateCustomTokenProxy(c.endpoint)
+			if c.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				require.NotNil(t, u)
+			}
+			if c.check != nil {
+				c.check(t, u, err)
+			}
+		})
+	}
+}
+
+func TestConfigure(t *testing.T) {
+	var (
+		testCAData = string(createTestCA(t))
+		testCAFile = createTestCAFile(t)
+	)
+
+	cases := []struct {
+		name          string
+		envs          map[string]string
+		clientOptions policy.ClientOptions
+
+		expectErr       bool
+		checkErr        func(t testing.TB, err error) // optional check on error
+		expectAddPolicy bool
+	}{
+		{
+			name:            "no custom endpoint",
+			expectErr:       false,
+			expectAddPolicy: false,
+		},
+		{
+			name:      "custom endpoint enabled with minimal settings",
+			expectErr: false,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+			},
+			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint enabled with legacy environment variable",
+			expectErr: false,
+			envs: map[string]string{
+				azureKubernetesTokenEndpointToBeDeprecated: "https://custom-endpoint.com",
+			},
+			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint enabled with CA file + SNI",
+			expectErr: false,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAFile:     testCAFile,
+				AzureKubernetesSNIName:    "custom-sni.example.com",
+			},
+			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint enabled with invalid CA file",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAFile:     "/non/existent/path/to/custom-ca-file.pem",
+			},
+			expectAddPolicy: false,
+		},
+		{
+			name:      "custom endpoint enabled with CA file contains invalid CA data",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAFile: func() string {
+					t.Helper()
+
+					tempDir := t.TempDir()
+					caFile := filepath.Join(tempDir, "invalid-ca-file.pem")
+					require.NoError(t, os.WriteFile(caFile, []byte("invalid-ca-cert"), 0600))
+					return caFile
+				}(),
+			},
+			expectAddPolicy: false,
+		},
+		{
+			name:      "custom endpoint enabled with CA data + SNI",
+			expectErr: false,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAData:     testCAData,
+				AzureKubernetesSNIName:    "custom-sni.example.com",
+			},
+			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint enabled with invalid CA data",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAData:     string("invalid-ca-cert"),
+			},
+			expectAddPolicy: false,
+		},
+		{
+			name:      "custom endpoint enabled with SNI",
+			expectErr: false,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesSNIName:    "custom-sni.example.com",
+			},
+			expectAddPolicy: true,
+		},
+		{
+			name:      "custom endpoint disabled with extra environment variables",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesSNIName: "custom-sni.example.com",
+			},
+			checkErr: func(t testing.TB, err error) {
+				require.ErrorIs(t, err, errCustomEndpointEnvSetWithoutTokenProxy)
+			},
+		},
+		{
+			name:      "custom endpoint enabled with both CAData and CAFile",
+			expectErr: true,
+			envs: map[string]string{
+				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				AzureKubernetesCAData:     testCAData,
+				AzureKubernetesCAFile:     testCAFile,
+			},
+			checkErr: func(t testing.TB, err error) {
+				require.ErrorIs(t, err, errCustomEndpointMultipleCASourcesSet)
+			},
+		},
+		{
+			name:      "custom endpoint enabled with invalid endpoint",
+			expectErr: true,
+			envs: map[string]string{
+				// http endpoint is not allowed
+				AzureKubernetesTokenProxy: "http://custom-endpoint.com",
+			},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if len(c.envs) > 0 {
+				for k, v := range c.envs {
+					t.Setenv(k, v)
+				}
+			}
+			err := Configure(&c.clientOptions)
+
+			if c.expectErr {
+				require.Error(t, err)
+				if c.checkErr != nil {
+					c.checkErr(t, err)
+				}
+				return
+			}
+
+			require.NoError(t, err)
+			if c.expectAddPolicy {
+				require.NotEmpty(t, c.clientOptions.PerRetryPolicies)
+				lastPolicy := c.clientOptions.PerRetryPolicies[len(c.clientOptions.PerRetryPolicies)-1]
+				require.IsType(t, &customTokenProxyPolicy{}, lastPolicy)
+			}
+		})
+	}
+}
+
+func TestConfigure_legacyEnvPrecedence(t *testing.T) {
+	const legacyValue = "https://custom-endpoint-from-legacy-env.com"
+	const newValue = "https://custom-endpoint-from-new-env.com"
+
+	t.Setenv(azureKubernetesTokenEndpointToBeDeprecated, legacyValue)
+	t.Setenv(AzureKubernetesTokenProxy, newValue)
+
+	clientOptions := policy.ClientOptions{}
+	err := Configure(&clientOptions)
+	require.NoError(t, err)
+	require.NotEmpty(t, clientOptions.PerRetryPolicies)
+	lastPolicy := clientOptions.PerRetryPolicies[len(clientOptions.PerRetryPolicies)-1]
+	require.IsType(t, &customTokenProxyPolicy{}, lastPolicy)
+	p := lastPolicy.(*customTokenProxyPolicy)
+	require.Equal(t, newValue, p.tokenProxy.String(), "when both new and legacy env vars are set, new one should take precedence")
+}
+
+// createTestCA creates a valid CA as bytes
+func createTestCA(t testing.TB) []byte {
+	t.Helper()
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	require.NoError(t, err)
+
+	tmpl := &x509.Certificate{
+		SerialNumber:          big.NewInt(1),
+		Subject:               pkix.Name{CommonName: "test-ca"},
+		NotBefore:             time.Now().Add(-time.Hour),
+		NotAfter:              time.Now().Add(24 * time.Hour),
+		IsCA:                  true,
+		KeyUsage:              x509.KeyUsageCertSign | x509.KeyUsageCRLSign,
+		BasicConstraintsValid: true,
+	}
+
+	der, err := x509.CreateCertificate(rand.Reader, tmpl, tmpl, &key.PublicKey, key)
+	require.NoError(t, err)
+
+	return pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der})
+}
+
+// createTestCAFile creates a valid CA file in a temporary directory.
+// It returns the path to the CA file.
+func createTestCAFile(t testing.TB) string {
+	t.Helper()
+	caData := createTestCA(t)
+	tempDir := t.TempDir()
+	caFile := filepath.Join(tempDir, "test-ca.pem")
+	if err := os.WriteFile(caFile, caData, 0600); err != nil {
+		t.Fatalf("failed to write CA file: %v", err)
+	}
+	return caFile
+}
+
+func TestCustomTokenProxyPolicy_getTokenTransporter(t *testing.T) {
+	cases := []struct {
+		name string
+		tr   *customTokenProxyPolicy
+
+		expectErr         bool
+		validateTransport func(t testing.TB, httpTr *http.Transport)
+	}{
+		{
+			name:      "no overrides",
+			tr:        &customTokenProxyPolicy{},
+			expectErr: false,
+		},
+		{
+			name: "with custom CA",
+			tr: &customTokenProxyPolicy{
+				caFile: createTestCAFile(t),
+			},
+			expectErr: false,
+			validateTransport: func(t testing.TB, httpTr *http.Transport) {
+				require.NotNil(t, httpTr.TLSClientConfig)
+				require.NotNil(t, httpTr.TLSClientConfig.RootCAs)
+			},
+		},
+		{
+			name: "invalid CA",
+			tr: &customTokenProxyPolicy{
+				caData: []byte("invalid-ca-data"),
+			},
+			expectErr: true,
+		},
+		{
+			name: "with SNI",
+			tr: &customTokenProxyPolicy{
+				sniName: "example.com",
+			},
+			expectErr: false,
+			validateTransport: func(t testing.TB, httpTr *http.Transport) {
+				require.NotNil(t, httpTr.TLSClientConfig)
+				require.NotEmpty(t, httpTr.TLSClientConfig.ServerName)
+				require.Equal(t, "example.com", httpTr.TLSClientConfig.ServerName)
+			},
+		},
+		{
+			name: "with CA + SNI",
+			tr: &customTokenProxyPolicy{
+				sniName: "example.com",
+				caFile:  createTestCAFile(t),
+			},
+			expectErr: false,
+			validateTransport: func(t testing.TB, httpTr *http.Transport) {
+				require.NotNil(t, httpTr.TLSClientConfig)
+				require.NotNil(t, httpTr.TLSClientConfig.RootCAs)
+				require.NotEmpty(t, httpTr.TLSClientConfig.ServerName)
+				require.Equal(t, "example.com", httpTr.TLSClientConfig.ServerName)
+			},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			transport, err := c.tr.getTokenTransporter()
+			if c.expectErr {
+				require.Error(t, err)
+				require.Nil(t, transport)
+				return
+			}
+
+			require.NoError(t, err)
+			require.NotNil(t, transport)
+			require.NotNil(t, c.tr.transport)
+			require.Equal(t, c.tr.transport, transport, "should set the same transport to policy")
+			if c.validateTransport != nil {
+				c.validateTransport(t, transport)
+			}
+		})
+	}
+}
+
+func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
+	t.Run("no CA overrides", func(t *testing.T) {
+		tr := &customTokenProxyPolicy{}
+		transport, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport)
+
+		transport2, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport2)
+		require.Equal(t, transport, transport2, "should return the same transport on re-entry")
+	})
+
+	t.Run("with CAData overrides", func(t *testing.T) {
+		tr := customTokenProxyPolicy{
+			caData: createTestCA(t),
+		}
+		transport, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport)
+
+		transport2, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport2)
+		require.Equal(t, transport, transport2, "should return the same transport on re-entry")
+	})
+
+	t.Run("with CAFile overrides", func(t *testing.T) {
+		caFile := createTestCAFile(t)
+		tr := customTokenProxyPolicy{
+			caFile: caFile,
+		}
+		transport, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport)
+
+		transport2, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport2)
+		require.Equal(t, transport, transport2, "should return the same transport on re-entry if ca file doesn't change")
+
+		require.NoError(t, os.Truncate(caFile, 0))
+		transport3, err := tr.getTokenTransporter()
+		require.Error(t, err, "empty CA file should return error")
+		require.Nil(t, transport3)
+		require.NotEmpty(t, tr.caData, "previous loaded CA data should be retained")
+		require.NotNil(t, tr.transport, "previous transport should be retained")
+
+		newCAData := createTestCA(t)
+		require.NoError(t, os.WriteFile(caFile, newCAData, 0600))
+		transport4, err := tr.getTokenTransporter()
+		require.NoError(t, err)
+		require.NotNil(t, transport4)
+		require.NotEqual(t, transport, transport4, "should return new transport on re-entry if ca file content is updated")
+	})
+}
+
+// this provides a minimal behavior test on the policy.
+// The full coverage can be found in workload identity credential tests.
+func TestCustomTokenProxyPolicy_Do(t *testing.T) {
+	mux := http.NewServeMux()
+	testServer := httptest.NewTLSServer(mux)
+
+	ca := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: testServer.Certificate().Raw})
+	require.NotEmpty(t, ca)
+
+	const testSNIName = "test-sni-name.example.com"
+
+	tokenProxyURL, err := url.Parse(testServer.URL + "/extra/root/path")
+	require.NoError(t, err)
+
+	policy := customTokenProxyPolicy{
+		caData:     ca,
+		sniName:    testSNIName,
+		tokenProxy: tokenProxyURL,
+	}
+
+	req, err := runtime.NewRequest(
+		context.Background(),
+		http.MethodGet,
+		"https://original-request.com/client-path?query=1",
+	)
+	require.NoError(t, err)
+
+	mux.HandleFunc("/extra/root/path/client-path", func(w http.ResponseWriter, r *http.Request) {
+		require.Equal(t, testSNIName, r.TLS.ServerName)
+		require.Equal(t, "1", r.URL.Query().Get("query"))
+
+		w.WriteHeader(http.StatusOK)
+	})
+
+	resp, err := policy.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+}

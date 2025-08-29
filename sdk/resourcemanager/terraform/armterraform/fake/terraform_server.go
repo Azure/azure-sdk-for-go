@@ -8,19 +8,20 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"regexp"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/terraform/armterraform"
-	"net/http"
-	"regexp"
 )
 
 // TerraformServer is a fake server for instances of the armterraform.TerraformClient type.
 type TerraformServer struct {
 	// BeginExportTerraform is the fake for method TerraformClient.BeginExportTerraform
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginExportTerraform func(ctx context.Context, body armterraform.BaseExportModelClassification, options *armterraform.TerraformClientBeginExportTerraformOptions) (resp azfake.PollerResponder[armterraform.TerraformClientExportTerraformResponse], errResp azfake.ErrorResponder)
+	BeginExportTerraform func(ctx context.Context, body armterraform.BaseExportModelClassification, options *armterraform.ClientBeginExportTerraformOptions) (resp azfake.PollerResponder[armterraform.ClientExportTerraformResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTerraformServerTransport creates a new instance of TerraformServerTransport with the provided implementation.
@@ -29,7 +30,7 @@ type TerraformServer struct {
 func NewTerraformServerTransport(srv *TerraformServer) *TerraformServerTransport {
 	return &TerraformServerTransport{
 		srv:                  srv,
-		beginExportTerraform: newTracker[azfake.PollerResponder[armterraform.TerraformClientExportTerraformResponse]](),
+		beginExportTerraform: newTracker[azfake.PollerResponder[armterraform.ClientExportTerraformResponse]](),
 	}
 }
 
@@ -37,7 +38,7 @@ func NewTerraformServerTransport(srv *TerraformServer) *TerraformServerTransport
 // Don't use this type directly, use NewTerraformServerTransport instead.
 type TerraformServerTransport struct {
 	srv                  *TerraformServer
-	beginExportTerraform *tracker[azfake.PollerResponder[armterraform.TerraformClientExportTerraformResponse]]
+	beginExportTerraform *tracker[azfake.PollerResponder[armterraform.ClientExportTerraformResponse]]
 }
 
 // Do implements the policy.Transporter interface for TerraformServerTransport.

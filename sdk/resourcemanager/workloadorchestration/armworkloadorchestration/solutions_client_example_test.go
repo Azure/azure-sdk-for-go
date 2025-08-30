@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Solutions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Solutions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSolutionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleSolutionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Solutions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Solutions_Delete_MaximumSet_Gen.json
 func ExampleSolutionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleSolutionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Solutions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Solutions_Get_MaximumSet_Gen.json
 func ExampleSolutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleSolutionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Solutions_ListByTarget_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Solutions_ListByTarget_MaximumSet_Gen.json
 func ExampleSolutionsClient_NewListByTargetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleSolutionsClient_NewListByTargetPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Solutions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Solutions_Update_MaximumSet_Gen.json
 func ExampleSolutionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

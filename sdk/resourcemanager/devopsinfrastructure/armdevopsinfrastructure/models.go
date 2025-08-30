@@ -70,6 +70,30 @@ type AzureDevOpsPermissionProfile struct {
 	Users []*string
 }
 
+// CheckNameAvailability - The parameters used to check the availability of a resource.
+type CheckNameAvailability struct {
+	// REQUIRED; The name of the resource.
+	Name *string
+
+	// REQUIRED; The type of resource that is used as the scope of the availability check.
+	Type *ResourceType
+}
+
+// CheckNameAvailabilityResult - The CheckNameAvailability operation response.
+type CheckNameAvailabilityResult struct {
+	// REQUIRED; Availability status of the name.
+	Available *AvailabilityStatus
+
+	// REQUIRED; A message explaining why the name is unavailable. Will be null if the name is available.
+	Message *string
+
+	// REQUIRED; The name whose availability was checked.
+	Name *string
+
+	// REQUIRED; The reason code explaining why the name is unavailable. Will be null if the name is available.
+	Reason *CheckNameAvailabilityReason
+}
+
 // DataDisk - The data disk of the VMSS.
 type DataDisk struct {
 	// The type of caching to be enabled for the data disks. The default value for caching is readwrite. For information about
@@ -132,11 +156,11 @@ type ImageVersion struct {
 	// The resource-specific properties for this resource.
 	Properties *ImageVersionProperties
 
-	// READ-ONLY; The name of the image version.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -196,13 +220,15 @@ type NetworkProfile struct {
 	SubnetID *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -250,6 +276,9 @@ type Organization struct {
 	// REQUIRED; The Azure DevOps organization URL in which the pool should be created.
 	URL *string
 
+	// Determines if the pool should have open access to all projects in this organization.
+	OpenAccess *bool
+
 	// How many machines can be created at maximum in this organization out of the maximumConcurrency of the pool.
 	Parallelism *int32
 
@@ -289,9 +318,6 @@ type Pool struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the pool. It needs to be globally unique.
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -303,6 +329,9 @@ type Pool struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -318,6 +347,9 @@ type PoolImage struct {
 
 	// The percentage of the buffer to be allocated to this image.
 	Buffer *string
+
+	// The ephemeral type of the image.
+	EphemeralType *EphemeralType
 
 	// The resource id of the image.
 	ResourceID *string
@@ -421,11 +453,11 @@ type ResourceDetailsObject struct {
 	// The resource-specific properties for this resource.
 	Properties *ResourceDetailsObjectProperties
 
-	// READ-ONLY; The name of the resource.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -475,11 +507,11 @@ type ResourceSKU struct {
 	// The resource-specific properties for this resource.
 	Properties *ResourceSKUProperties
 
-	// READ-ONLY; The name of the SKU.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -589,6 +621,9 @@ type SecretsManagementSettings struct {
 
 	// Where to store certificates on the machine.
 	CertificateStoreLocation *string
+
+	// Name of the certificate store to use on the machine, currently 'My' and 'Root' are supported.
+	CertificateStoreName *CertificateStoreNameOption
 }
 
 // Stateful profile meaning that the machines will be returned to the pool after running a job.

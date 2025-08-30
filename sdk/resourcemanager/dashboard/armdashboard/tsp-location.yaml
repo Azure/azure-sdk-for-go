@@ -1,4 +1,4 @@
 directory: specification/dashboard/Dashboard.Management
-commit: 63aa8b98c6674faa29b5d84dcdc1893830101a0a
+commit: be560465f43f2ec9b431f7a79da7a82ff64dd299
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

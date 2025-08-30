@@ -39,7 +39,7 @@ func NewSchemaReferencesClient(credential azcore.TokenCredential, options *arm.C
 // Get - Get a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - schemaReferenceName - The name of the SchemaReference
 //   - options - SchemaReferencesClientGetOptions contains the optional parameters for the SchemaReferencesClient.Get method.
@@ -78,7 +78,7 @@ func (client *SchemaReferencesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -95,7 +95,7 @@ func (client *SchemaReferencesClient) getHandleResponse(resp *http.Response) (Sc
 
 // NewListByResourceGroupPager - List by specified resource group
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - SchemaReferencesClientListByResourceGroupOptions contains the optional parameters for the SchemaReferencesClient.NewListByResourceGroupPager
 //     method.
@@ -131,7 +131,7 @@ func (client *SchemaReferencesClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

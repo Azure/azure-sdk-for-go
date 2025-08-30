@@ -41,7 +41,7 @@ func NewResourceDetailsClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListByPoolPager - List ResourceDetailsObject resources by Pool
 //
-// Generated from API version 2024-10-19
+// Generated from API version 2025-01-21
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - options - ResourceDetailsClientListByPoolOptions contains the optional parameters for the ResourceDetailsClient.NewListByPoolPager
@@ -89,7 +89,7 @@ func (client *ResourceDetailsClient) listByPoolCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
+	reqQP.Set("api-version", "2025-01-21")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

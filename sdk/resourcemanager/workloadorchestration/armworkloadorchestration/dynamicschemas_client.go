@@ -42,7 +42,7 @@ func NewDynamicSchemasClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Create or update a DynamicSchema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -69,7 +69,7 @@ func (client *DynamicSchemasClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create or update a DynamicSchema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 func (client *DynamicSchemasClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, resource DynamicSchema, options *DynamicSchemasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DynamicSchemasClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *DynamicSchemasClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *DynamicSchemasClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Delete a DynamicSchema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -154,7 +154,7 @@ func (client *DynamicSchemasClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Delete a DynamicSchema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 func (client *DynamicSchemasClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, dynamicSchemaName string, options *DynamicSchemasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DynamicSchemasClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *DynamicSchemasClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *DynamicSchemasClient) deleteCreateRequest(ctx context.Context, res
 // Get - Get a DynamicSchema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -259,7 +259,7 @@ func (client *DynamicSchemasClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *DynamicSchemasClient) getHandleResponse(resp *http.Response) (Dyna
 
 // NewListBySchemaPager - List by Schema
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - options - DynamicSchemasClientListBySchemaOptions contains the optional parameters for the DynamicSchemasClient.NewListBySchemaPager
@@ -324,7 +324,7 @@ func (client *DynamicSchemasClient) listBySchemaCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *DynamicSchemasClient) listBySchemaHandleResponse(resp *http.Respon
 // Update - update a DynamicSchema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - dynamicSchemaName - The name of the DynamicSchema
@@ -394,7 +394,7 @@ func (client *DynamicSchemasClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -1,4 +1,4 @@
 directory: specification/storageactions/StorageAction.Management
-commit: 86c6306649b02e542117adb46c61e8019dbd78e9
+commit: be560465f43f2ec9b431f7a79da7a82ff64dd299
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

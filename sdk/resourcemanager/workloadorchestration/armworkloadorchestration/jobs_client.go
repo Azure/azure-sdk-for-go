@@ -39,7 +39,7 @@ func NewJobsClient(credential azcore.TokenCredential, options *arm.ClientOptions
 // Get - Get a Job resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - jobName - The name of the Job
 //   - options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
@@ -78,7 +78,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceURI stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -95,7 +95,7 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListByTargetPager - List Jobs by parent resource
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - JobsClientListByTargetOptions contains the optional parameters for the JobsClient.NewListByTargetPager method.
 func (client *JobsClient) NewListByTargetPager(resourceURI string, options *JobsClientListByTargetOptions) *runtime.Pager[JobsClientListByTargetResponse] {
@@ -130,7 +130,7 @@ func (client *JobsClient) listByTargetCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

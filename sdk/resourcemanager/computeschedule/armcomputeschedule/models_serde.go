@@ -2106,6 +2106,65 @@ func (s *ScheduledActionUpdateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ScheduledActionsExtensionProperties.
+func (s ScheduledActionsExtensionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "actionType", s.ActionType)
+	populate(objectMap, "disabled", s.Disabled)
+	populateDateTimeRFC3339(objectMap, "endTime", s.EndTime)
+	populate(objectMap, "notificationSettings", s.NotificationSettings)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "resourceNotificationSettings", s.ResourceNotificationSettings)
+	populate(objectMap, "resourceType", s.ResourceType)
+	populate(objectMap, "schedule", s.Schedule)
+	populateDateTimeRFC3339(objectMap, "startTime", s.StartTime)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledActionsExtensionProperties.
+func (s *ScheduledActionsExtensionProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actionType":
+			err = unpopulate(val, "ActionType", &s.ActionType)
+			delete(rawMsg, key)
+		case "disabled":
+			err = unpopulate(val, "Disabled", &s.Disabled)
+			delete(rawMsg, key)
+		case "endTime":
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &s.EndTime)
+			delete(rawMsg, key)
+		case "notificationSettings":
+			err = unpopulate(val, "NotificationSettings", &s.NotificationSettings)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "resourceNotificationSettings":
+			err = unpopulate(val, "ResourceNotificationSettings", &s.ResourceNotificationSettings)
+			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, "ResourceType", &s.ResourceType)
+			delete(rawMsg, key)
+		case "schedule":
+			err = unpopulate(val, "Schedule", &s.Schedule)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &s.StartTime)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ScheduledActionsSchedule.
 func (s ScheduledActionsSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

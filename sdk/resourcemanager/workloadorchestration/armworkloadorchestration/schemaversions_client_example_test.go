@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SchemaVersions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SchemaVersions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSchemaVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SchemaVersions_Delete_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleSchemaVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SchemaVersions_Get_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleSchemaVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_ListBySchema_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SchemaVersions_ListBySchema_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SchemaVersions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SchemaVersions_Update_MaximumSet_Gen.json
 func ExampleSchemaVersionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

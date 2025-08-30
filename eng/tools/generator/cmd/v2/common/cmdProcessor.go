@@ -301,6 +301,7 @@ func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClient
 
 	args := []string{
 		"init",
+		"--update-if-exists",
 		"--tsp-config", tspConfigAbs,
 		"--commit", ctx.SpecCommitHash,
 		"--repo", ctx.SpecRepoURL[len("https://github.com/"):],

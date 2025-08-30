@@ -114,7 +114,7 @@ func (ctx *GenerateContext) GenerateFromTypeSpec(tspconfigPath string, commonGen
 		return nil, fmt.Errorf("failed to parse %s: %+v\nInvalid tspconfig.yaml provided and refer to the sample file to fix the content. management-plane: https://aka.ms/azsdk/tspconfig-sample-mpg, data-plane: https://aka.ms/azsdk/tspconfig-sample-dpg", tspconfigPath, err)
 	}
 
-	if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); !ok {
+	if ok, _ := tsc.ExistEmitOption(); !ok {
 		log.Printf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to the sample file to configure it. management-plane: https://aka.ms/azsdk/tspconfig-sample-mpg, data-plane: https://aka.ms/azsdk/tspconfig-sample-dpg", tspconfigPath)
 		return nil, nil
 	}

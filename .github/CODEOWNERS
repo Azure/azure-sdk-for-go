@@ -205,7 +205,7 @@
 # ServiceOwners:                                                   @qike-ms @jwilder @thomas1206 @seanmck
 
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/                                                @kirankumarkolli @simorenoh @kushagraThapar @Pilchie @analogrelay @tvaron3
+/sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
 
 # ServiceLabel: %Cosmos
 # AzureSdkOwners:                                                  @jhendrixMSFT

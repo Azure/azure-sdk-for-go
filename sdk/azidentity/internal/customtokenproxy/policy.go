@@ -22,8 +22,7 @@ const (
 	AzureKubernetesCAFile  = "AZURE_KUBERNETES_CA_FILE"
 	AzureKubernetesSNIName = "AZURE_KUBERNETES_SNI_NAME"
 
-	AzureKubernetesTokenProxy                  = "AZURE_KUBERNETES_TOKEN_PROXY"
-	azureKubernetesTokenEndpointToBeDeprecated = "AZURE_KUBERNETES_TOKEN_ENDPOINT" // deprecate when new WI image is released in AKS side
+	AzureKubernetesTokenProxy = "AZURE_KUBERNETES_TOKEN_PROXY"
 )
 
 func parseAndValidateCustomTokenProxy(endpoint string) (*url.URL, error) {
@@ -82,11 +81,6 @@ func createTransport(sniName string, caPool *x509.CertPool) *http.Transport {
 // Configure configures custom token endpoint mode if the required environment variables are present.
 func Configure(clientOptions *policy.ClientOptions) error {
 	kubernetesTokenProxyStr := os.Getenv(AzureKubernetesTokenProxy)
-	if kubernetesTokenProxyStr == "" {
-		// for backward compatibility, check the deprecated variable if the new one is not set
-		// This should be removed when the new WI image is released in AKS side
-		kubernetesTokenProxyStr = os.Getenv(azureKubernetesTokenEndpointToBeDeprecated)
-	}
 
 	kubernetesSNIName := os.Getenv(AzureKubernetesSNIName)
 	kubernetesCAFile := os.Getenv(AzureKubernetesCAFile)

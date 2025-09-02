@@ -142,14 +142,6 @@ func TestConfigure(t *testing.T) {
 			expectAddPolicy: true,
 		},
 		{
-			name:      "custom endpoint enabled with legacy environment variable",
-			expectErr: false,
-			envs: map[string]string{
-				azureKubernetesTokenEndpointToBeDeprecated: "https://custom-endpoint.com",
-			},
-			expectAddPolicy: true,
-		},
-		{
 			name:      "custom endpoint enabled with CA file + SNI",
 			expectErr: false,
 			envs: map[string]string{
@@ -269,23 +261,6 @@ func TestConfigure(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestConfigure_legacyEnvPrecedence(t *testing.T) {
-	const legacyValue = "https://custom-endpoint-from-legacy-env.com"
-	const newValue = "https://custom-endpoint-from-new-env.com"
-
-	t.Setenv(azureKubernetesTokenEndpointToBeDeprecated, legacyValue)
-	t.Setenv(AzureKubernetesTokenProxy, newValue)
-
-	clientOptions := policy.ClientOptions{}
-	err := Configure(&clientOptions)
-	require.NoError(t, err)
-	require.NotEmpty(t, clientOptions.PerRetryPolicies)
-	lastPolicy := clientOptions.PerRetryPolicies[len(clientOptions.PerRetryPolicies)-1]
-	require.IsType(t, &customTokenProxyPolicy{}, lastPolicy)
-	p := lastPolicy.(*customTokenProxyPolicy)
-	require.Equal(t, newValue, p.tokenProxy.String(), "when both new and legacy env vars are set, new one should take precedence")
 }
 
 // createTestCA creates a valid CA as bytes

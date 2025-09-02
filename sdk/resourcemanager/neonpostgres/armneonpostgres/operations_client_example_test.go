@@ -7,11 +7,11 @@ package armneonpostgres_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,25 +37,25 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 	OperationListResult: armneonpostgres.OperationListResult{
 		// 		Value: []*armneonpostgres.Operation{
 		// 			{
-		// 				Name: to.Ptr("zgpfeuj"),
+		// 				Name: to.Ptr("kl"),
 		// 				IsDataAction: to.Ptr(true),
 		// 				Display: &armneonpostgres.OperationDisplay{
-		// 					Provider: to.Ptr("lottcde"),
-		// 					Resource: to.Ptr("lchjffakidtthnuaa"),
-		// 					Operation: to.Ptr("ipqvheuesyujwjqhnmg"),
-		// 					Description: to.Ptr("gicugbypsgqayjlfyrxvnietwzx"),
+		// 					Provider: to.Ptr("riwbhndcifovpna"),
+		// 					Resource: to.Ptr("nyruijnkdejgqzcsiiz"),
+		// 					Operation: to.Ptr("trfccizublbapul"),
+		// 					Description: to.Ptr("pmbjtecpgne"),
 		// 				},
 		// 				Origin: to.Ptr(armneonpostgres.OriginUser),
 		// 				ActionType: to.Ptr(armneonpostgres.ActionTypeInternal),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/aveozf"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-03-01/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2025-06-23-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

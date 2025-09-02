@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Neon Postgres module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres/v2
 ```
 
 ## Authorization

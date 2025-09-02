@@ -42,7 +42,7 @@ func NewBranchesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create a Branch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-06-23-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Name of the Neon Organizations resource
 //   - projectName - The name of the Project
@@ -70,7 +70,7 @@ func (client *BranchesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create a Branch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-06-23-preview
 func (client *BranchesClient) createOrUpdate(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, resource Branch, options *BranchesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BranchesClient.BeginCreateOrUpdate"
@@ -120,7 +120,7 @@ func (client *BranchesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-06-23-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -133,7 +133,7 @@ func (client *BranchesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // Delete - Delete a Branch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-06-23-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Name of the Neon Organizations resource
 //   - projectName - The name of the Project
@@ -188,16 +188,15 @@ func (client *BranchesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-06-23-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Branch
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-06-23-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Name of the Neon Organizations resource
 //   - projectName - The name of the Project
@@ -253,7 +252,7 @@ func (client *BranchesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-06-23-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,7 +269,7 @@ func (client *BranchesClient) getHandleResponse(resp *http.Response) (BranchesCl
 
 // NewListPager - List Branch resources by Project
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-06-23-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Name of the Neon Organizations resource
 //   - projectName - The name of the Project
@@ -322,7 +321,7 @@ func (client *BranchesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-06-23-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,61 +336,41 @@ func (client *BranchesClient) listHandleResponse(resp *http.Response) (BranchesC
 	return result, nil
 }
 
-// BeginUpdate - Update a Branch
+// Preflight - Action to validate preflight checks.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-06-23-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Name of the Neon Organizations resource
 //   - projectName - The name of the Project
 //   - branchName - The name of the Branch
-//   - properties - The resource properties to be updated.
-//   - options - BranchesClientBeginUpdateOptions contains the optional parameters for the BranchesClient.BeginUpdate method.
-func (client *BranchesClient) BeginUpdate(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, properties Branch, options *BranchesClientBeginUpdateOptions) (*runtime.Poller[BranchesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, organizationName, projectName, branchName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BranchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BranchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Branch
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
-func (client *BranchesClient) update(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, properties Branch, options *BranchesClientBeginUpdateOptions) (*http.Response, error) {
+//   - parameters - Parameters for preflight checks.
+//   - options - BranchesClientPreflightOptions contains the optional parameters for the BranchesClient.Preflight method.
+func (client *BranchesClient) Preflight(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, parameters PreflightCheckParameters, options *BranchesClientPreflightOptions) (BranchesClientPreflightResponse, error) {
 	var err error
-	const operationName = "BranchesClient.BeginUpdate"
+	const operationName = "BranchesClient.Preflight"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, organizationName, projectName, branchName, properties, options)
+	req, err := client.preflightCreateRequest(ctx, resourceGroupName, organizationName, projectName, branchName, parameters, options)
 	if err != nil {
-		return nil, err
+		return BranchesClientPreflightResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return BranchesClientPreflightResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return BranchesClientPreflightResponse{}, err
 	}
-	return httpResp, nil
+	resp, err := client.preflightHandleResponse(httpResp)
+	return resp, err
 }
 
-// updateCreateRequest creates the Update request.
-func (client *BranchesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, properties Branch, _ *BranchesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}"
+// preflightCreateRequest creates the Preflight request.
+func (client *BranchesClient) preflightCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, projectName string, branchName string, parameters PreflightCheckParameters, _ *BranchesClientPreflightOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/preflight"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -412,17 +391,26 @@ func (client *BranchesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter branchName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{branchName}", url.PathEscape(branchName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-06-23-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// preflightHandleResponse handles the Preflight response.
+func (client *BranchesClient) preflightHandleResponse(resp *http.Response) (BranchesClientPreflightResponse, error) {
+	result := BranchesClientPreflightResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PreflightCheckResult); err != nil {
+		return BranchesClientPreflightResponse{}, err
+	}
+	return result, nil
 }

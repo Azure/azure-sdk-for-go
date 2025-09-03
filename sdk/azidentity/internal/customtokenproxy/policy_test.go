@@ -484,6 +484,46 @@ func TestRewriteProxyRequestURL(t *testing.T) {
 		wantRawQuery    string
 	}{
 		{
+			name: "proxy url has no path; request path has no leading slash",
+			proxyURL: &url.URL{
+				Scheme: "https",
+				Host:   "proxy.example.com",
+				Path:   "",
+			},
+			reqURL: &url.URL{
+				Scheme:   "https",
+				Host:     "orig.example.com",
+				Path:     "login", // no leading slash
+				RawPath:  "",
+				RawQuery: "a=1&b=2",
+			},
+			wantScheme:      "https",
+			wantHost:        "proxy.example.com",
+			wantPath:        "/login",
+			wantEscapedPath: "/login",
+			wantRawQuery:    "a=1&b=2",
+		},
+		{
+			name: "proxy url has no path; request path has no path",
+			proxyURL: &url.URL{
+				Scheme: "https",
+				Host:   "proxy.example.com",
+				Path:   "",
+			},
+			reqURL: &url.URL{
+				Scheme:   "https",
+				Host:     "orig.example.com",
+				Path:     "",
+				RawPath:  "",
+				RawQuery: "a=1&b=2",
+			},
+			wantScheme:      "https",
+			wantHost:        "proxy.example.com",
+			wantPath:        "/",
+			wantEscapedPath: "/",
+			wantRawQuery:    "a=1&b=2",
+		},
+		{
 			name: "no RawPath on either; add slash between",
 			proxyURL: &url.URL{
 				Scheme:  "https",

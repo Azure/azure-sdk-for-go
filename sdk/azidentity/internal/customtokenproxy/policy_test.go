@@ -26,10 +26,9 @@ import (
 
 func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 	cases := []struct {
-		name      string
-		endpoint  string
-		expectErr bool
-		check     func(t testing.TB, u *url.URL, err error)
+		name     string
+		endpoint string
+		check    func(t testing.TB, u *url.URL, err error)
 	}{
 		{
 			name:     "valid https endpoint without path",
@@ -51,45 +50,40 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 			},
 		},
 		{
-			name:      "reject non-https scheme",
-			endpoint:  "http://example.com",
-			expectErr: true,
+			name:     "reject non-https scheme",
+			endpoint: "http://example.com",
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
 				require.ErrorContains(t, err, "https scheme")
 			},
 		},
 		{
-			name:      "reject user info",
-			endpoint:  "https://user:pass@example.com/token",
-			expectErr: true,
+			name:     "reject user info",
+			endpoint: "https://user:pass@example.com/token",
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
 				require.ErrorContains(t, err, "must not contain user info")
 			},
 		},
 		{
-			name:      "reject query params",
-			endpoint:  "https://example.com/token?foo=bar",
-			expectErr: true,
+			name:     "reject query params",
+			endpoint: "https://example.com/token?foo=bar",
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
 				require.ErrorContains(t, err, "must not contain a query")
 			},
 		},
 		{
-			name:      "reject fragment",
-			endpoint:  "https://example.com/token#frag",
-			expectErr: true,
+			name:     "reject fragment",
+			endpoint: "https://example.com/token#frag",
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
 				require.ErrorContains(t, err, "must not contain a fragment")
 			},
 		},
 		{
-			name:      "reject unparseable URL",
-			endpoint:  "https://example.com/%zz",
-			expectErr: true,
+			name:     "reject unparseable URL",
+			endpoint: "https://example.com/%zz",
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
 				require.ErrorContains(t, err, "failed to parse custom token proxy URL")
@@ -100,15 +94,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			u, err := parseAndValidateCustomTokenProxy(c.endpoint)
-			if c.expectErr {
-				require.Error(t, err)
-			} else {
-				require.NoError(t, err)
-				require.NotNil(t, u)
-			}
-			if c.check != nil {
-				c.check(t, u, err)
-			}
+			c.check(t, u, err)
 		})
 	}
 }

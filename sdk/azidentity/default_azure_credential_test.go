@@ -74,6 +74,10 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 		for i, c := range fullChain {
 			require.IsType(t, c, actual.chain.sources[i])
 		}
+		t.Run("required", func(t *testing.T) {
+			_, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{RequireAzureTokenCredentials: true})
+			require.ErrorContains(t, err, azureTokenCredentials)
+		})
 	})
 
 	t.Run("dev", func(t *testing.T) {

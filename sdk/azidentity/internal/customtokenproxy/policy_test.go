@@ -420,10 +420,11 @@ func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 
 		require.NoError(t, os.Truncate(caFile, 0))
 		transport3, err := tr.getTokenTransporter()
-		require.Error(t, err, "empty CA file should return error")
-		require.Nil(t, transport3)
+		require.NoError(t, err, "empty CA file with existing transporter should not return error")
+		require.NotNil(t, transport3)
 		require.NotEmpty(t, tr.caData, "previous loaded CA data should be retained")
 		require.NotNil(t, tr.transport, "previous transport should be retained")
+		require.Equal(t, transport, transport3, "should return the same transport on re-entry if ca file is empty")
 
 		newCAData := createTestCA(t)
 		require.NoError(t, os.WriteFile(caFile, newCAData, 0600))
@@ -431,6 +432,18 @@ func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, transport4)
 		require.NotEqual(t, transport, transport4, "should return new transport on re-entry if ca file content is updated")
+	})
+
+	t.Run("with CAFile overrides and empty CA file on first call", func(t *testing.T) {
+		caFile := filepath.Join(t.TempDir(), "empty-ca-file.pem")
+		require.NoError(t, os.WriteFile(caFile, []byte{}, 0600))
+
+		tr := customTokenProxyPolicy{
+			caFile: caFile,
+		}
+		transport, err := tr.getTokenTransporter()
+		require.Error(t, err, "empty CA file on first call should return error")
+		require.Nil(t, transport)
 	})
 }
 

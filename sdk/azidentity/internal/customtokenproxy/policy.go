@@ -194,8 +194,12 @@ func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) 
 	}
 	if len(b) == 0 {
 		// this can happen during the middle of CA rotation on the host.
-		// Erroring out here to force the client to retry the token call.
-		return nil, fmt.Errorf("CA file %q is empty", p.caFile)
+		if p.transport == nil {
+			// if the transport was never created, error out here to force retrying the call later
+			return nil, fmt.Errorf("CA file %q is empty", p.caFile)
+		}
+		// if the transport was already created, just keep using it
+		return p.transport, nil
 	}
 	if !bytes.Equal(b, p.caData) {
 		// CA has changed, rebuild the transport with new CA pool

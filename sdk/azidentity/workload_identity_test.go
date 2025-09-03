@@ -326,7 +326,6 @@ func startTestTokenEndpointWithCAData(t testing.TB, tokenHandler http.Handler) (
 		}
 	})
 	mux.Handle("/{tenantid}/v2.0/.well-known/openid-configuration", openidDiscoveryDocumentHandler)
-	mux.Handle("/{tenantid}/.well-known/openid-configuration", openidDiscoveryDocumentHandler)
 	mux.HandleFunc("/common/discovery/instance", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write(instanceMetadata("fake-tenant"))

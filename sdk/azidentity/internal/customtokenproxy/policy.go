@@ -212,3 +212,13 @@ func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) 
 
 	return p.transport, nil
 }
+
+// rewriteProxyRequestURL updates the request URL to target the specified URL.
+// Target is the token proxy URL in custom token endpoint mode.
+func rewriteProxyRequestURL(req *http.Request, proxyURL *url.URL) {
+	reqRawQuery := req.URL.RawQuery
+	req.URL = proxyURL.JoinPath(req.URL.EscapedPath())
+	// NOTE: proxyURL doesn't include query, req might include query
+	// we just retain the raw query from req.URL
+	req.URL.RawQuery = reqRawQuery
+}

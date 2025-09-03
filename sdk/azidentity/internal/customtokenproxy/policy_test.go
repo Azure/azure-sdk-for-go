@@ -56,7 +56,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 			expectErr: true,
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
-				require.Contains(t, err.Error(), "https scheme")
+				require.ErrorContains(t, err, "https scheme")
 			},
 		},
 		{
@@ -65,7 +65,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 			expectErr: true,
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
-				require.Contains(t, err.Error(), "must not contain user info")
+				require.ErrorContains(t, err, "must not contain user info")
 			},
 		},
 		{
@@ -74,7 +74,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 			expectErr: true,
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
-				require.Contains(t, err.Error(), "must not contain a query")
+				require.ErrorContains(t, err, "must not contain a query")
 			},
 		},
 		{
@@ -83,7 +83,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 			expectErr: true,
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
-				require.Contains(t, err.Error(), "must not contain a fragment")
+				require.ErrorContains(t, err, "must not contain a fragment")
 			},
 		},
 		{
@@ -92,7 +92,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 			expectErr: true,
 			check: func(t testing.TB, _ *url.URL, err error) {
 				require.Error(t, err)
-				require.Contains(t, err.Error(), "failed to parse custom token proxy URL")
+				require.ErrorContains(t, err, "failed to parse custom token proxy URL")
 			},
 		},
 	}

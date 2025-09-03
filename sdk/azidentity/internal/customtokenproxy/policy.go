@@ -134,14 +134,14 @@ type customTokenProxyPolicy struct {
 	transport  *http.Transport
 }
 
-func (i *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error) {
-	tr, err := i.getTokenTransporter()
+func (p *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error) {
+	tr, err := p.getTokenTransporter()
 	if err != nil {
 		return nil, err
 	}
 
 	rawReq := req.Raw()
-	rewriteProxyRequestURL(rawReq, i.tokenProxy)
+	rewriteProxyRequestURL(rawReq, p.tokenProxy)
 
 	resp, err := tr.RoundTrip(rawReq)
 	if err == nil && resp == nil {
@@ -161,52 +161,52 @@ func (i *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error)
 //     This transport is fixed after set.
 //  3. CA file override is provided, use a transport with custom CA pool.
 //     This transport needs to be recreated if the CA file content changes.
-func (i *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) {
-	if len(i.caData) == 0 && i.caFile == "" {
+func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) {
+	if len(p.caData) == 0 && p.caFile == "" {
 		// no custom CA overrides
-		if i.transport == nil {
-			i.transport = createTransport(i.sniName, nil)
+		if p.transport == nil {
+			p.transport = createTransport(p.sniName, nil)
 		}
-		return i.transport, nil
+		return p.transport, nil
 	}
 
-	if i.caFile == "" {
+	if p.caFile == "" {
 		// host provided CA bytes in AZURE_KUBERNETES_CA_DATA and can't change
 		// them now, so we need to create a client only if we haven't done so yet
-		if i.transport != nil {
-			return i.transport, nil
+		if p.transport != nil {
+			return p.transport, nil
 		}
 
 		caPool := x509.NewCertPool()
-		if !caPool.AppendCertsFromPEM([]byte(i.caData)) {
+		if !caPool.AppendCertsFromPEM([]byte(p.caData)) {
 			return nil, fmt.Errorf("parse CA data: no valid certificates found")
 		}
 
-		i.transport = createTransport(i.sniName, caPool)
-		return i.transport, nil
+		p.transport = createTransport(p.sniName, caPool)
+		return p.transport, nil
 	}
 
 	// host provided the CA bytes in a file whose contents it can change,
 	// so we must read that file and maybe create a new client
-	b, err := os.ReadFile(i.caFile)
+	b, err := os.ReadFile(p.caFile)
 	if err != nil {
-		return nil, fmt.Errorf("read CA file %q: %s", i.caFile, err)
+		return nil, fmt.Errorf("read CA file %q: %s", p.caFile, err)
 	}
 	if len(b) == 0 {
 		// this can happen during the middle of CA rotation on the host.
 		// Erroring out here to force the client to retry the token call.
-		return nil, fmt.Errorf("CA file %q is empty", i.caFile)
+		return nil, fmt.Errorf("CA file %q is empty", p.caFile)
 	}
-	if !bytes.Equal(b, i.caData) {
+	if !bytes.Equal(b, p.caData) {
 		// CA has changed, rebuild the transport with new CA pool
-		// invariant: i.transport is nil when i.caData is nil (initial call)
+		// invariant: p.transport is nil when p.caData is nil (initial call)
 		caPool := x509.NewCertPool()
 		if !caPool.AppendCertsFromPEM([]byte(b)) {
-			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", i.caFile)
+			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", p.caFile)
 		}
-		i.transport = createTransport(i.sniName, caPool)
-		i.caData = b
+		p.transport = createTransport(p.sniName, caPool)
+		p.caData = b
 	}
 
-	return i.transport, nil
+	return p.transport, nil
 }

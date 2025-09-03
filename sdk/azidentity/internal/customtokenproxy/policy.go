@@ -121,10 +121,8 @@ func Configure(clientOptions *policy.ClientOptions) error {
 	return nil
 }
 
-// customTokenProxyPolicy is a custom HTTP transport that redirects token requests
-// to the custom token endpoint when in custom token endpoint mode.
+// customTokenProxyPolicy redirects requests to the configured proxy.
 //
-// Only token request will be handled by this transport.
 // Lock is not needed for internal caData as this policy is called under confidentialClient's lock.
 type customTokenProxyPolicy struct {
 	caFile     string

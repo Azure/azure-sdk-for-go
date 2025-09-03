@@ -9,7 +9,6 @@ package azidentity
 import (
 	"context"
 	"crypto"
-	"crypto/rand"
 	"crypto/sha1"
 	"crypto/x509"
 	"encoding/base64"
@@ -345,13 +344,7 @@ func startTestTokenEndpointWithCAData(t testing.TB, tokenHandler http.Handler) (
 	return testServer, string(ca)
 }
 
-func createRandomClientAssertion(t testing.TB) string {
-	t.Helper()
-	b := make([]byte, 32)
-	_, err := rand.Read(b)
-	require.NoError(t, err)
-	return base64.RawURLEncoding.EncodeToString(b)
-}
+const testClientAssertion = "test-client-assertion-abc9412787413"
 
 // customTokenRequestPolicyFlowCheck validates the custom token request flow is
 // obeying the policy token flows without skipping headers.
@@ -385,7 +378,6 @@ func (c *customTokenRequestPolicyFlowCheck) Validate(t testing.TB, req *http.Req
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T) {
-	testClientAssertion := createRandomClientAssertion(t)
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
@@ -435,7 +427,6 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testing.T) {
-	testClientAssertion := createRandomClientAssertion(t)
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
@@ -451,7 +442,6 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testi
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T) {
-	testClientAssertion := createRandomClientAssertion(t)
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
@@ -504,7 +494,6 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
-	testClientAssertion := createRandomClientAssertion(t)
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)

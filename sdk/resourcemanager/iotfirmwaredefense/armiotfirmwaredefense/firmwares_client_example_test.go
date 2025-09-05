@@ -12,32 +12,32 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Create_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Create_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Create_firmwaresCreateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewFirmwaresClient().Create(ctx, "rgiotfirmwaredefense", "exampleWorkspaceName", "00000000-0000-0000-0000-000000000000", armiotfirmwaredefense.Firmware{
 		Properties: &armiotfirmwaredefense.FirmwareProperties{
-			FileName: to.Ptr("dmnqhyxssutvnewntlb"),
-			Vendor:   to.Ptr("hymojocxpxqhtblioaavylnzyg"),
-			Model:    to.Ptr("wmyfbyjsggbvxcuin"),
-			Version:  to.Ptr("nhtxzslgcbtptu"),
+			FileName: to.Ptr("NameOfFirmwareFile.bin"),
+			Vendor:   to.Ptr("ExampleVendorName"),
+			Model:    to.Ptr("ExampleModelOfDevice"),
+			Version:  to.Ptr("1.0.0"),
 			FileSize: to.Ptr[int64](30),
 			Status:   to.Ptr(armiotfirmwaredefense.StatusPending),
 			StatusMessages: []*armiotfirmwaredefense.StatusMessage{
 				{
-					ErrorCode: to.Ptr[int64](20),
-					Message:   to.Ptr("edtylkjvj"),
+					ErrorCode: to.Ptr[int64](200),
+					Message:   to.Ptr("What would this message say?"),
 				},
 			},
-			Description: to.Ptr("sqt"),
+			Description: to.Ptr("User provided description of the firmware."),
 		},
 	}, nil)
 	if err != nil {
@@ -49,29 +49,29 @@ func ExampleFirmwaresClient_Create_firmwaresCreateMaximumSetGenGeneratedByMaximu
 	// res = armiotfirmwaredefense.FirmwaresClientCreateResponse{
 	// 	Firmware: &armiotfirmwaredefense.Firmware{
 	// 		Properties: &armiotfirmwaredefense.FirmwareProperties{
-	// 			FileName: to.Ptr("dmnqhyxssutvnewntlb"),
-	// 			Vendor: to.Ptr("hymojocxpxqhtblioaavylnzyg"),
-	// 			Model: to.Ptr("wmyfbyjsggbvxcuin"),
-	// 			Version: to.Ptr("nhtxzslgcbtptu"),
+	// 			FileName: to.Ptr("FileNameThatWasUploaded.bin"),
+	// 			Vendor: to.Ptr("ExampleVendorName"),
+	// 			Model: to.Ptr("ExampleModelOfDevice"),
+	// 			Version: to.Ptr("1.0.0"),
 	// 			FileSize: to.Ptr[int64](30),
 	// 			Status: to.Ptr(armiotfirmwaredefense.StatusPending),
 	// 			StatusMessages: []*armiotfirmwaredefense.StatusMessage{
 	// 				{
-	// 					ErrorCode: to.Ptr[int64](20),
-	// 					Message: to.Ptr("edtylkjvj"),
+	// 					ErrorCode: to.Ptr[int64](200),
+	// 					Message: to.Ptr("Still dont know what this message would say."),
 	// 				},
 	// 			},
-	// 			Description: to.Ptr("sqt"),
+	// 			Description: to.Ptr("User provided description of the firmware."),
 	// 			ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-	// 		Name: to.Ptr("qobb"),
-	// 		Type: to.Ptr("xf"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000"),
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares"),
 	// 		SystemData: &armiotfirmwaredefense.SystemData{
-	// 			CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+	// 			CreatedBy: to.Ptr("UserName"),
 	// 			CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("of"),
+	// 			LastModifiedBy: to.Ptr("UserName"),
 	// 			LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 	// 		},
@@ -79,14 +79,14 @@ func ExampleFirmwaresClient_Create_firmwaresCreateMaximumSetGenGeneratedByMaximu
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Create_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Create_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Create_firmwaresCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("685C0C6F-9867-4B1C-A534-AA3A05B54BCE", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -105,14 +105,14 @@ func ExampleFirmwaresClient_Create_firmwaresCreateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Delete_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Delete_firmwaresDeleteMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -127,14 +127,14 @@ func ExampleFirmwaresClient_Delete_firmwaresDeleteMaximumSetGenGeneratedByMaximu
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Delete_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Delete_firmwaresDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("685C0C6F-9867-4B1C-A534-AA3A05B54BCE", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -149,14 +149,14 @@ func ExampleFirmwaresClient_Delete_firmwaresDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Get_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Get_firmwaresGetMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -170,29 +170,29 @@ func ExampleFirmwaresClient_Get_firmwaresGetMaximumSetGenGeneratedByMaximumSetRu
 	// res = armiotfirmwaredefense.FirmwaresClientGetResponse{
 	// 	Firmware: &armiotfirmwaredefense.Firmware{
 	// 		Properties: &armiotfirmwaredefense.FirmwareProperties{
-	// 			FileName: to.Ptr("dmnqhyxssutvnewntlb"),
-	// 			Vendor: to.Ptr("hymojocxpxqhtblioaavylnzyg"),
-	// 			Model: to.Ptr("wmyfbyjsggbvxcuin"),
-	// 			Version: to.Ptr("nhtxzslgcbtptu"),
+	// 			FileName: to.Ptr("FileNameThatWasUploaded.bin"),
+	// 			Vendor: to.Ptr("ExampleVendorName"),
+	// 			Model: to.Ptr("ExampleModelOfDevice"),
+	// 			Version: to.Ptr("1.0.0"),
 	// 			FileSize: to.Ptr[int64](30),
 	// 			Status: to.Ptr(armiotfirmwaredefense.StatusPending),
 	// 			StatusMessages: []*armiotfirmwaredefense.StatusMessage{
 	// 				{
-	// 					ErrorCode: to.Ptr[int64](20),
-	// 					Message: to.Ptr("edtylkjvj"),
+	// 					ErrorCode: to.Ptr[int64](5),
+	// 					Message: to.Ptr("Firmware image contained some file systems that are not supported for extraction so results may be incomplete."),
 	// 				},
 	// 			},
-	// 			Description: to.Ptr("sqt"),
+	// 			Description: to.Ptr("User provided description of the firmware."),
 	// 			ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-	// 		Name: to.Ptr("qobb"),
-	// 		Type: to.Ptr("xf"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000"),
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares"),
 	// 		SystemData: &armiotfirmwaredefense.SystemData{
-	// 			CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+	// 			CreatedBy: to.Ptr("UserName"),
 	// 			CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("of"),
+	// 			LastModifiedBy: to.Ptr("UserName"),
 	// 			LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 	// 		},
@@ -200,14 +200,14 @@ func ExampleFirmwaresClient_Get_firmwaresGetMaximumSetGenGeneratedByMaximumSetRu
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Get_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Get_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Get_firmwaresGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("685C0C6F-9867-4B1C-A534-AA3A05B54BCE", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -224,14 +224,14 @@ func ExampleFirmwaresClient_Get_firmwaresGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_ListByWorkspace_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_ListByWorkspace_MaximumSet_Gen.json
 func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -251,29 +251,29 @@ func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMaxi
 		// 		Value: []*armiotfirmwaredefense.Firmware{
 		// 			{
 		// 				Properties: &armiotfirmwaredefense.FirmwareProperties{
-		// 					FileName: to.Ptr("dmnqhyxssutvnewntlb"),
-		// 					Vendor: to.Ptr("hymojocxpxqhtblioaavylnzyg"),
-		// 					Model: to.Ptr("wmyfbyjsggbvxcuin"),
-		// 					Version: to.Ptr("nhtxzslgcbtptu"),
+		// 					FileName: to.Ptr("FileNameThatWasUploaded.bin"),
+		// 					Vendor: to.Ptr("ExampleVendorName"),
+		// 					Model: to.Ptr("ExampleModelOfDevice"),
+		// 					Version: to.Ptr("1.0.0"),
 		// 					FileSize: to.Ptr[int64](30),
 		// 					Status: to.Ptr(armiotfirmwaredefense.StatusPending),
 		// 					StatusMessages: []*armiotfirmwaredefense.StatusMessage{
 		// 						{
-		// 							ErrorCode: to.Ptr[int64](20),
-		// 							Message: to.Ptr("edtylkjvj"),
+		// 							ErrorCode: to.Ptr[int64](5),
+		// 							Message: to.Ptr("Firmware image contained some file systems that are not supported for extraction so results may be incomplete."),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
-		// 					Description: to.Ptr("zgzvtldpivwm"),
+		// 					Description: to.Ptr("User provided description of the firmware."),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-		// 				Name: to.Ptr("qobb"),
-		// 				Type: to.Ptr("xf"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/00000000-0000-0000-0000-000000000000"),
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares"),
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
-		// 					CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("of"),
+		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 		// 				},
@@ -285,14 +285,14 @@ func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMaxi
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_ListByWorkspace_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_ListByWorkspace_MinimumSet_Gen.json
 func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("685C0C6F-9867-4B1C-A534-AA3A05B54BCE", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -316,32 +316,32 @@ func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMini
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Update_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Update_firmwaresUpdateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewFirmwaresClient().Update(ctx, "rgiotfirmwaredefense", "exampleWorkspaceName", "00000000-0000-0000-0000-000000000000", armiotfirmwaredefense.FirmwareUpdateDefinition{
 		Properties: &armiotfirmwaredefense.FirmwareProperties{
-			FileName: to.Ptr("dmnqhyxssutvnewntlb"),
-			Vendor:   to.Ptr("hymojocxpxqhtblioaavylnzyg"),
-			Model:    to.Ptr("wmyfbyjsggbvxcuin"),
-			Version:  to.Ptr("nhtxzslgcbtptu"),
+			FileName: to.Ptr("FileNameThatWasUploaded.bin"),
+			Vendor:   to.Ptr("ExampleVendorName"),
+			Model:    to.Ptr("ExampleModelOfDevice"),
+			Version:  to.Ptr("1.0.0"),
 			FileSize: to.Ptr[int64](30),
 			Status:   to.Ptr(armiotfirmwaredefense.StatusPending),
 			StatusMessages: []*armiotfirmwaredefense.StatusMessage{
 				{
-					ErrorCode: to.Ptr[int64](20),
-					Message:   to.Ptr("edtylkjvj"),
+					ErrorCode: to.Ptr[int64](5),
+					Message:   to.Ptr("Firmware image contained some file systems that are not supported for extraction so results may be incomplete."),
 				},
 			},
-			Description: to.Ptr("nknvqnkgumzbupxe"),
+			Description: to.Ptr("User provided description of the firmware."),
 		},
 	}, nil)
 	if err != nil {
@@ -353,29 +353,29 @@ func ExampleFirmwaresClient_Update_firmwaresUpdateMaximumSetGenGeneratedByMaximu
 	// res = armiotfirmwaredefense.FirmwaresClientUpdateResponse{
 	// 	Firmware: &armiotfirmwaredefense.Firmware{
 	// 		Properties: &armiotfirmwaredefense.FirmwareProperties{
-	// 			FileName: to.Ptr("dmnqhyxssutvnewntlb"),
-	// 			Vendor: to.Ptr("hymojocxpxqhtblioaavylnzyg"),
-	// 			Model: to.Ptr("wmyfbyjsggbvxcuin"),
-	// 			Version: to.Ptr("nhtxzslgcbtptu"),
+	// 			FileName: to.Ptr("FileNameThatWasUploaded.bin"),
+	// 			Vendor: to.Ptr("ExampleVendorName"),
+	// 			Model: to.Ptr("ExampleModelOfDevice"),
+	// 			Version: to.Ptr("1.0.0"),
 	// 			FileSize: to.Ptr[int64](30),
 	// 			Status: to.Ptr(armiotfirmwaredefense.StatusPending),
 	// 			StatusMessages: []*armiotfirmwaredefense.StatusMessage{
 	// 				{
-	// 					ErrorCode: to.Ptr[int64](20),
-	// 					Message: to.Ptr("edtylkjvj"),
+	// 					ErrorCode: to.Ptr[int64](5),
+	// 					Message: to.Ptr("Firmware image contained some file systems that are not supported for extraction so results may be incomplete."),
 	// 				},
 	// 			},
-	// 			Description: to.Ptr("sqt"),
+	// 			Description: to.Ptr("User provided description of the firmware."),
 	// 			ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-	// 		Name: to.Ptr("qobb"),
-	// 		Type: to.Ptr("xf"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000"),
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares"),
 	// 		SystemData: &armiotfirmwaredefense.SystemData{
-	// 			CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+	// 			CreatedBy: to.Ptr("UserName"),
 	// 			CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("of"),
+	// 			LastModifiedBy: to.Ptr("UserName"),
 	// 			LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 	// 		},
@@ -383,14 +383,14 @@ func ExampleFirmwaresClient_Update_firmwaresUpdateMaximumSetGenGeneratedByMaximu
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Firmwares_Update_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Firmwares_Update_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Update_firmwaresUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("685C0C6F-9867-4B1C-A534-AA3A05B54BCE", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

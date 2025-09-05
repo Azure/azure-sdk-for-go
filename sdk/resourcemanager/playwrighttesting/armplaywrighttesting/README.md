@@ -1,5 +1,9 @@
 # Azure Playwrighttesting Module for Go
 
+**Deprecation message**
+ 
+This package has been deprecated and will no longer be maintained after **February 9, 2026**. Upgrade to the replacement package, **sdk/resourcemanager/playwright/armplaywright**, to continue receiving updates. Refer to the [migration guide](https://aka.ms/mpt/migration-guidance) for guidance on upgrading. Refer to our [deprecation policy](https://azure.github.io/azure-sdk/policies_support.html) for more details.
+
 The `armplaywrighttesting` module provides operations for working with Azure Playwrighttesting.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/playwrighttesting/armplaywrighttesting)

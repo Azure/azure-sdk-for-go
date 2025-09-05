@@ -747,6 +747,110 @@ func (s *RecordedTestSuite) TestCreateDirWithOwnerGroupACLUmask() {
 
 }
 
+func (s *RecordedTestSuite) TestCreateDirWithEncryptionContext() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createDirOpts := &directory.CreateOptions{
+		EncryptionContext: &testcommon.TestEncryptionContext,
+	}
+
+	resp, err := dirClient.Create(context.Background(), createDirOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Verify encryption context is set correctly
+	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response.EncryptionContext)
+	_require.Equal(testcommon.TestEncryptionContext, *response.EncryptionContext)
+}
+
+func (s *RecordedTestSuite) TestCreateDirWithProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	testProperties := map[string]*string{
+		"key1": to.Ptr("value1"),
+		"key2": to.Ptr("value2"),
+	}
+
+	createDirOpts := &directory.CreateOptions{
+		Properties: testProperties,
+	}
+
+	resp, err := dirClient.Create(context.Background(), createDirOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Note: Properties are stored as metadata headers, so we verify via GetProperties
+	// This test mainly verifies that the creation doesn't fail with properties set
+	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+}
+
+func (s *RecordedTestSuite) TestCreateDirWithEncryptionContextAndProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	testProperties := map[string]*string{
+		"key1": to.Ptr("value1"),
+		"key2": to.Ptr("value2"),
+	}
+
+	createDirOpts := &directory.CreateOptions{
+		EncryptionContext: &testcommon.TestEncryptionContext,
+		Properties:        testProperties,
+	}
+
+	resp, err := dirClient.Create(context.Background(), createDirOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Verify encryption context is set correctly
+	response, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response.EncryptionContext)
+	_require.Equal(testcommon.TestEncryptionContext, *response.EncryptionContext)
+}
+
 func (s *RecordedTestSuite) TestDeleteDirWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

@@ -39,6 +39,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 				require.Equal(t, "example.com", u.Host)
 				require.Equal(t, "", u.RawQuery)
 				require.Equal(t, "", u.Fragment)
+				require.Equal(t, "/", u.Path, "should set path to '/' if not present")
 			},
 		},
 		{
@@ -484,11 +485,11 @@ func TestRewriteProxyRequestURL(t *testing.T) {
 		wantRawQuery    string
 	}{
 		{
-			name: "proxy url has no path; request path has no leading slash",
+			name: "proxy url with / path; request path has no leading slash",
 			proxyURL: &url.URL{
 				Scheme: "https",
 				Host:   "proxy.example.com",
-				Path:   "",
+				Path:   "/",
 			},
 			reqURL: &url.URL{
 				Scheme:   "https",
@@ -504,11 +505,11 @@ func TestRewriteProxyRequestURL(t *testing.T) {
 			wantRawQuery:    "a=1&b=2",
 		},
 		{
-			name: "proxy url has no path; request path has no path",
+			name: "proxy url with / path; request path has no path",
 			proxyURL: &url.URL{
 				Scheme: "https",
 				Host:   "proxy.example.com",
-				Path:   "",
+				Path:   "/",
 			},
 			reqURL: &url.URL{
 				Scheme:   "https",

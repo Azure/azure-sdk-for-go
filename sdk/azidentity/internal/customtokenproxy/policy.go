@@ -42,6 +42,10 @@ func parseAndValidateCustomTokenProxy(endpoint string) (*url.URL, error) {
 	if tokenProxy.EscapedFragment() != "" {
 		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a fragment", tokenProxy)
 	}
+	if tokenProxy.EscapedPath() == "" {
+		// if the path is empty, set it to "/" to avoid stripping the path from req.URL
+		tokenProxy.Path = "/"
+	}
 	return tokenProxy, nil
 }
 
@@ -215,15 +219,12 @@ func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) 
 
 // rewriteProxyRequestURL updates the request URL to target the specified URL.
 // Target is the token proxy URL in custom token endpoint mode.
+//
+// proxyURL should be parsed and validated by parseAndValidateCustomTokenProxy before.
 func rewriteProxyRequestURL(req *http.Request, proxyURL *url.URL) {
-	source := proxyURL
-	if source.EscapedPath() == "" {
-		// if the proxy URL has no path, set it to "/" to avoid stripping the path from req.URL
-		*source = *proxyURL
-		source.Path = "/"
-	}
-
 	reqRawQuery := req.URL.RawQuery
+	// preserve the original path and append it to the proxy URL's path.
+	// proxyURL path is guaranteed to be non-empty.
 	req.URL = proxyURL.JoinPath(req.URL.EscapedPath())
 	// NOTE: proxyURL doesn't include query, req might include query
 	// we just retain the raw query from req.URL

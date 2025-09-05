@@ -22,19 +22,19 @@ import (
 type DeploymentSafeguardsServer struct {
 	// BeginCreate is the fake for method DeploymentSafeguardsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate func(ctx context.Context, resourceURI string, resource armdeploymentsafeguards.DeploymentSafeguard, options *armdeploymentsafeguards.DeploymentSafeguardsClientBeginCreateOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceURI string, resource armdeploymentsafeguards.DeploymentSafeguard, options *armdeploymentsafeguards.ClientBeginCreateOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.ClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DeploymentSafeguardsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.DeploymentSafeguardsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.ClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.ClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DeploymentSafeguardsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.DeploymentSafeguardsClientGetOptions) (resp azfake.Responder[armdeploymentsafeguards.DeploymentSafeguardsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.ClientGetOptions) (resp azfake.Responder[armdeploymentsafeguards.ClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DeploymentSafeguardsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceURI string, options *armdeploymentsafeguards.DeploymentSafeguardsClientListOptions) (resp azfake.PagerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientListResponse])
+	NewListPager func(resourceURI string, options *armdeploymentsafeguards.ClientListOptions) (resp azfake.PagerResponder[armdeploymentsafeguards.ClientListResponse])
 }
 
 // NewDeploymentSafeguardsServerTransport creates a new instance of DeploymentSafeguardsServerTransport with the provided implementation.
@@ -43,9 +43,9 @@ type DeploymentSafeguardsServer struct {
 func NewDeploymentSafeguardsServerTransport(srv *DeploymentSafeguardsServer) *DeploymentSafeguardsServerTransport {
 	return &DeploymentSafeguardsServerTransport{
 		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientListResponse]](),
+		beginCreate:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.ClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.ClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdeploymentsafeguards.ClientListResponse]](),
 	}
 }
 
@@ -53,9 +53,9 @@ func NewDeploymentSafeguardsServerTransport(srv *DeploymentSafeguardsServer) *De
 // Don't use this type directly, use NewDeploymentSafeguardsServerTransport instead.
 type DeploymentSafeguardsServerTransport struct {
 	srv          *DeploymentSafeguardsServer
-	beginCreate  *tracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientListResponse]]
+	beginCreate  *tracker[azfake.PollerResponder[armdeploymentsafeguards.ClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armdeploymentsafeguards.ClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armdeploymentsafeguards.ClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeploymentSafeguardsServerTransport.
@@ -240,7 +240,7 @@ func (d *DeploymentSafeguardsServerTransport) dispatchNewListPager(req *http.Req
 		resp := d.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdeploymentsafeguards.DeploymentSafeguardsClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdeploymentsafeguards.ClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJobs_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d18f451b13796bded0808d508c6297f2227271d5/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJobs_Delete.json
 func ExampleImportJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleImportJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJobs_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d18f451b13796bded0808d508c6297f2227271d5/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJobs_Get.json
 func ExampleImportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,9 +60,10 @@ func ExampleImportJobsClient_Get() {
 	// res.ImportJob = armstoragecache.ImportJob{
 	// 	Name: to.Ptr("job1"),
 	// 	Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/storagetargets/job1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armstoragecache.ImportJobProperties{
+	// 		AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
 	// 		ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeOverwriteAlways),
 	// 		ImportPrefixes: []*string{
 	// 			to.Ptr("/")},
@@ -71,8 +72,14 @@ func ExampleImportJobsClient_Get() {
 	// 			Status: &armstoragecache.ImportJobPropertiesStatus{
 	// 				BlobsImportedPerSecond: to.Ptr[int64](4000),
 	// 				BlobsWalkedPerSecond: to.Ptr[int64](10000),
+	// 				ImportedDirectories: to.Ptr[int64](500),
+	// 				ImportedFiles: to.Ptr[int64](1000),
+	// 				ImportedSymlinks: to.Ptr[int64](1000),
 	// 				LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 	// 				LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 				PreexistingDirectories: to.Ptr[int64](100),
+	// 				PreexistingFiles: to.Ptr[int64](500),
+	// 				PreexistingSymlinks: to.Ptr[int64](200),
 	// 				State: to.Ptr(armstoragecache.ImportStatusTypeCompleted),
 	// 				StatusMessage: to.Ptr("Import job completed successfully"),
 	// 				TotalBlobsImported: to.Ptr[int64](1000000),
@@ -84,7 +91,7 @@ func ExampleImportJobsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJobs_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d18f451b13796bded0808d508c6297f2227271d5/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJobs_CreateOrUpdate.json
 func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,12 +127,13 @@ func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	// res.ImportJob = armstoragecache.ImportJob{
 	// 	Name: to.Ptr("job1"),
 	// 	Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/storagetargets/job1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("ContosoAds"),
 	// 	},
 	// 	Properties: &armstoragecache.ImportJobProperties{
+	// 		AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
 	// 		ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeOverwriteAlways),
 	// 		ImportPrefixes: []*string{
 	// 			to.Ptr("/")},
@@ -147,7 +155,7 @@ func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJob_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d18f451b13796bded0808d508c6297f2227271d5/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJob_Update.json
 func ExampleImportJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,12 +184,13 @@ func ExampleImportJobsClient_BeginUpdate() {
 	// res.ImportJob = armstoragecache.ImportJob{
 	// 	Name: to.Ptr("job1"),
 	// 	Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/storagetargets/job1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"Dept": to.Ptr("ContosoAds"),
 	// 	},
 	// 	Properties: &armstoragecache.ImportJobProperties{
+	// 		AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
 	// 		ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeOverwriteAlways),
 	// 		ImportPrefixes: []*string{
 	// 			to.Ptr("/")},
@@ -190,8 +199,14 @@ func ExampleImportJobsClient_BeginUpdate() {
 	// 			Status: &armstoragecache.ImportJobPropertiesStatus{
 	// 				BlobsImportedPerSecond: to.Ptr[int64](4000),
 	// 				BlobsWalkedPerSecond: to.Ptr[int64](10000),
+	// 				ImportedDirectories: to.Ptr[int64](500),
+	// 				ImportedFiles: to.Ptr[int64](1000),
+	// 				ImportedSymlinks: to.Ptr[int64](1000),
 	// 				LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 	// 				LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 				PreexistingDirectories: to.Ptr[int64](100),
+	// 				PreexistingFiles: to.Ptr[int64](500),
+	// 				PreexistingSymlinks: to.Ptr[int64](200),
 	// 				State: to.Ptr(armstoragecache.ImportStatusTypeCompleted),
 	// 				StatusMessage: to.Ptr("Import job completed successfully"),
 	// 				TotalBlobsImported: to.Ptr[int64](1000000),
@@ -203,7 +218,7 @@ func ExampleImportJobsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33c4457b1d13f83965f4fe3367dca4a6df898100/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJobs_ListByAmlFilesystem.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d18f451b13796bded0808d508c6297f2227271d5/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJobs_ListByAmlFilesystem.json
 func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,9 +245,10 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 		// 		{
 		// 			Name: to.Ptr("job1"),
 		// 			Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/storagetargets/job1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armstoragecache.ImportJobProperties{
+		// 				AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
 		// 				ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeOverwriteAlways),
 		// 				ImportPrefixes: []*string{
 		// 					to.Ptr("/")},
@@ -241,8 +257,14 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 		// 					Status: &armstoragecache.ImportJobPropertiesStatus{
 		// 						BlobsImportedPerSecond: to.Ptr[int64](4000),
 		// 						BlobsWalkedPerSecond: to.Ptr[int64](10000),
+		// 						ImportedDirectories: to.Ptr[int64](500),
+		// 						ImportedFiles: to.Ptr[int64](1000),
+		// 						ImportedSymlinks: to.Ptr[int64](1000),
 		// 						LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 		// 						LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 						PreexistingDirectories: to.Ptr[int64](100),
+		// 						PreexistingFiles: to.Ptr[int64](500),
+		// 						PreexistingSymlinks: to.Ptr[int64](200),
 		// 						State: to.Ptr(armstoragecache.ImportStatusTypeCompleted),
 		// 						StatusMessage: to.Ptr("Import job completed successfully"),
 		// 						TotalBlobsImported: to.Ptr[int64](1000000),
@@ -255,9 +277,10 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 		// 			{
 		// 				Name: to.Ptr("job2"),
 		// 				Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/storagetargets/job2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job2"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armstoragecache.ImportJobProperties{
+		// 					AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
 		// 					ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeSkip),
 		// 					ImportPrefixes: []*string{
 		// 						to.Ptr("/dir1")},
@@ -266,8 +289,14 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 		// 						Status: &armstoragecache.ImportJobPropertiesStatus{
 		// 							BlobsImportedPerSecond: to.Ptr[int64](4000),
 		// 							BlobsWalkedPerSecond: to.Ptr[int64](10000),
+		// 							ImportedDirectories: to.Ptr[int64](500),
+		// 							ImportedFiles: to.Ptr[int64](1000),
+		// 							ImportedSymlinks: to.Ptr[int64](1000),
 		// 							LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
 		// 							LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 							PreexistingDirectories: to.Ptr[int64](100),
+		// 							PreexistingFiles: to.Ptr[int64](500),
+		// 							PreexistingSymlinks: to.Ptr[int64](200),
 		// 							State: to.Ptr(armstoragecache.ImportStatusTypeCompleted),
 		// 							StatusMessage: to.Ptr("Import job completed successfully"),
 		// 							TotalBlobsImported: to.Ptr[int64](1000000),

@@ -155,6 +155,7 @@ func ExampleHealthValidationsClient_BeginStartValidation() {
 	// 			Status: to.Ptr(armdatabasewatcher.ValidationStatusRunning),
 	// 			Issues: []*armdatabasewatcher.ValidationIssue{
 	// 			},
+	// 			ProvisioningState: to.Ptr(armdatabasewatcher.ResourceProvisioningState("Accepted")),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/469DD77C-C8DB-47B7-B9E1-72D29F8C878Be/resourceGroups/rgWatcher/providers/microsoft.databasewatcher/watchers/testWatcher/healthValidations/testHealthValidation"),
 	// 		Name: to.Ptr("testHealthValidation"),

@@ -42,7 +42,7 @@ func NewInstanceHistoriesClient(subscriptionID string, credential azcore.TokenCr
 // Get - Get InstanceHistory Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - targetName - Name of the target
 //   - solutionName - Name of the solution
@@ -103,7 +103,7 @@ func (client *InstanceHistoriesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,7 +120,7 @@ func (client *InstanceHistoriesClient) getHandleResponse(resp *http.Response) (I
 
 // NewListByInstancePager - List InstanceHistory Resources
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - targetName - Name of the target
 //   - solutionName - Name of the solution
@@ -178,7 +178,7 @@ func (client *InstanceHistoriesClient) listByInstanceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/ConfigTemplateVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplateVersions_Get_MaximumSet_Gen.json
 func ExampleConfigTemplateVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleConfigTemplateVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplateVersions_ListByConfigTemplate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplateVersions_ListByConfigTemplate_MaximumSet_Gen.json
 func ExampleConfigTemplateVersionsClient_NewListByConfigTemplatePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

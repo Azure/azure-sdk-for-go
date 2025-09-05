@@ -42,7 +42,7 @@ func NewSolutionTemplateVersionsClient(subscriptionID string, credential azcore.
 // BeginBulkDeploySolution - Post request for bulk deploy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionTemplateName - The name of the SolutionTemplate
 //   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
@@ -69,7 +69,7 @@ func (client *SolutionTemplateVersionsClient) BeginBulkDeploySolution(ctx contex
 // BulkDeploySolution - Post request for bulk deploy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 func (client *SolutionTemplateVersionsClient) bulkDeploySolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkDeploySolutionParameter, options *SolutionTemplateVersionsClientBeginBulkDeploySolutionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionTemplateVersionsClient.BeginBulkDeploySolution"
@@ -115,7 +115,7 @@ func (client *SolutionTemplateVersionsClient) bulkDeploySolutionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,7 +127,7 @@ func (client *SolutionTemplateVersionsClient) bulkDeploySolutionCreateRequest(ct
 // BeginBulkPublishSolution - Post request for bulk publish
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionTemplateName - The name of the SolutionTemplate
 //   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
@@ -154,7 +154,7 @@ func (client *SolutionTemplateVersionsClient) BeginBulkPublishSolution(ctx conte
 // BulkPublishSolution - Post request for bulk publish
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 func (client *SolutionTemplateVersionsClient) bulkPublishSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkPublishSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SolutionTemplateVersionsClient.BeginBulkPublishSolution"
@@ -200,7 +200,92 @@ func (client *SolutionTemplateVersionsClient) bulkPublishSolutionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginBulkReviewSolution - Post request for bulk review
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - solutionTemplateName - The name of the SolutionTemplate
+//   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
+//   - body - The content of the action request
+//   - options - SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginBulkReviewSolution
+//     method.
+func (client *SolutionTemplateVersionsClient) BeginBulkReviewSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*runtime.Poller[SolutionTemplateVersionsClientBulkReviewSolutionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.bulkReviewSolution(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionTemplateVersionsClientBulkReviewSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionTemplateVersionsClientBulkReviewSolutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// BulkReviewSolution - Post request for bulk review
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+func (client *SolutionTemplateVersionsClient) bulkReviewSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SolutionTemplateVersionsClient.BeginBulkReviewSolution"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.bulkReviewSolutionCreateRequest(ctx, resourceGroupName, solutionTemplateName, solutionTemplateVersionName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// bulkReviewSolutionCreateRequest creates the BulkReviewSolution request.
+func (client *SolutionTemplateVersionsClient) bulkReviewSolutionCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, _ *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}/bulkReviewSolution"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if solutionTemplateName == "" {
+		return nil, errors.New("parameter solutionTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateName}", url.PathEscape(solutionTemplateName))
+	if solutionTemplateVersionName == "" {
+		return nil, errors.New("parameter solutionTemplateVersionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{solutionTemplateVersionName}", url.PathEscape(solutionTemplateVersionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -212,7 +297,7 @@ func (client *SolutionTemplateVersionsClient) bulkPublishSolutionCreateRequest(c
 // Get - Get a Solution Template Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionTemplateName - The name of the SolutionTemplate
 //   - solutionTemplateVersionName - The name of the SolutionTemplateVersion
@@ -264,7 +349,7 @@ func (client *SolutionTemplateVersionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +366,7 @@ func (client *SolutionTemplateVersionsClient) getHandleResponse(resp *http.Respo
 
 // NewListBySolutionTemplatePager - List Solution Template Version Resources
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionTemplateName - The name of the SolutionTemplate
 //   - options - SolutionTemplateVersionsClientListBySolutionTemplateOptions contains the optional parameters for the SolutionTemplateVersionsClient.NewListBySolutionTemplatePager
@@ -329,7 +414,7 @@ func (client *SolutionTemplateVersionsClient) listBySolutionTemplateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

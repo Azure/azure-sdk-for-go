@@ -203,7 +203,6 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-01-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -60,7 +60,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 		Identity: &armpineconevectordb.ManagedServiceIdentity{
 			Type: to.Ptr(armpineconevectordb.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpineconevectordb.UserAssignedIdentity{
-				"ident904655400": {},
+				"ident904655400": &armpineconevectordb.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{
@@ -455,7 +455,7 @@ func ExampleOrganizationsClient_Update() {
 		Identity: &armpineconevectordb.ManagedServiceIdentity{
 			Type: to.Ptr(armpineconevectordb.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpineconevectordb.UserAssignedIdentity{
-				"ident573739201": {},
+				"ident573739201": &armpineconevectordb.UserAssignedIdentity{},
 			},
 		},
 	}, nil)

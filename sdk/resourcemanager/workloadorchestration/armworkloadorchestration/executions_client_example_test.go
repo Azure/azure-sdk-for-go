@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-06-01/Executions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Executions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleExecutionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleExecutionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Executions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Executions_Delete_MaximumSet_Gen.json
 func ExampleExecutionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleExecutionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Executions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Executions_Get_MaximumSet_Gen.json
 func ExampleExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleExecutionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Executions_ListByWorkflowVersion_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Executions_ListByWorkflowVersion_MaximumSet_Gen.json
 func ExampleExecutionsClient_NewListByWorkflowVersionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleExecutionsClient_NewListByWorkflowVersionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Executions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Executions_Update_MaximumSet_Gen.json
 func ExampleExecutionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

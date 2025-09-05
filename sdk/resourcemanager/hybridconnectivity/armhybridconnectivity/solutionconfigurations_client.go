@@ -143,7 +143,6 @@ func (client *SolutionConfigurationsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -336,7 +335,7 @@ func (client *SolutionConfigurationsClient) syncNowCreateRequest(ctx context.Con
 //   - properties - The resource properties to be updated.
 //   - options - SolutionConfigurationsClientUpdateOptions contains the optional parameters for the SolutionConfigurationsClient.Update
 //     method.
-func (client *SolutionConfigurationsClient) Update(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfiguration, options *SolutionConfigurationsClientUpdateOptions) (SolutionConfigurationsClientUpdateResponse, error) {
+func (client *SolutionConfigurationsClient) Update(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfigurationUpdate, options *SolutionConfigurationsClientUpdateOptions) (SolutionConfigurationsClientUpdateResponse, error) {
 	var err error
 	const operationName = "SolutionConfigurationsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -359,7 +358,7 @@ func (client *SolutionConfigurationsClient) Update(ctx context.Context, resource
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SolutionConfigurationsClient) updateCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfiguration, _ *SolutionConfigurationsClientUpdateOptions) (*policy.Request, error) {
+func (client *SolutionConfigurationsClient) updateCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfigurationUpdate, _ *SolutionConfigurationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Jobs_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Jobs_Get_MaximumSet_Gen.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Jobs_ListByTarget_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Jobs_ListByTarget_MaximumSet_Gen.json
 func ExampleJobsClient_NewListByTargetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

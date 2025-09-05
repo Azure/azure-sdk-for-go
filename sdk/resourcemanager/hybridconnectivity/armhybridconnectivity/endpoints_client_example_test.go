@@ -23,7 +23,12 @@ func ExampleEndpointsClient_CreateOrUpdate_hybridConnectivityEndpointsPutCustom(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "custom", armhybridconnectivity.EndpointResource{}, nil)
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "custom", armhybridconnectivity.EndpointResource{
+		Properties: &armhybridconnectivity.EndpointProperties{
+			Type:       to.Ptr(armhybridconnectivity.TypeCustom),
+			ResourceID: to.Ptr("/subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.Relay/namespaces/custom-relay-namespace"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,7 +60,11 @@ func ExampleEndpointsClient_CreateOrUpdate_hybridConnectivityEndpointsPutDefault
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default", armhybridconnectivity.EndpointResource{}, nil)
+	res, err := clientFactory.NewEndpointsClient().CreateOrUpdate(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default", armhybridconnectivity.EndpointResource{
+		Properties: &armhybridconnectivity.EndpointProperties{
+			Type: to.Ptr(armhybridconnectivity.TypeDefault),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -293,7 +302,11 @@ func ExampleEndpointsClient_ListManagedProxyDetails() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().ListManagedProxyDetails(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/arcGroup/providers/Microsoft.Compute/virtualMachines/vm00006", "default", armhybridconnectivity.ManagedProxyRequest{}, nil)
+	res, err := clientFactory.NewEndpointsClient().ListManagedProxyDetails(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/arcGroup/providers/Microsoft.Compute/virtualMachines/vm00006", "default", armhybridconnectivity.ManagedProxyRequest{
+		Hostname:    to.Ptr("r.proxy.arc.com"),
+		Service:     to.Ptr("127.0.0.1:65035"),
+		ServiceName: to.Ptr(armhybridconnectivity.ServiceNameWAC),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -319,7 +332,11 @@ func ExampleEndpointsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default", armhybridconnectivity.EndpointResource{}, nil)
+	res, err := clientFactory.NewEndpointsClient().Update(ctx, "subscriptions/f5bcc1d9-23af-4ae9-aca1-041d0f593a63/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine", "default", armhybridconnectivity.EndpointResource{
+		Properties: &armhybridconnectivity.EndpointProperties{
+			Type: to.Ptr(armhybridconnectivity.TypeDefault),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

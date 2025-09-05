@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/DynamicSchemas_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemas_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDynamicSchemasClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleDynamicSchemasClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemas_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemas_Delete_MaximumSet_Gen.json
 func ExampleDynamicSchemasClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleDynamicSchemasClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemas_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemas_Get_MaximumSet_Gen.json
 func ExampleDynamicSchemasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleDynamicSchemasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemas_ListBySchema_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemas_ListBySchema_MaximumSet_Gen.json
 func ExampleDynamicSchemasClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleDynamicSchemasClient_NewListBySchemaPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/DynamicSchemas_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/DynamicSchemas_Update_MaximumSet_Gen.json
 func ExampleDynamicSchemasClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

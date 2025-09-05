@@ -400,6 +400,107 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PagedQuota.
+func (p PagedQuota) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PagedQuota.
+func (p *PagedQuota) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &p.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &p.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Quota.
+func (q Quota) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "currentValue", q.CurrentValue)
+	populate(objectMap, "limit", q.Limit)
+	populate(objectMap, "name", q.Name)
+	populate(objectMap, "unit", q.Unit)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Quota.
+func (q *Quota) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", q, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "currentValue":
+			err = unpopulate(val, "CurrentValue", &q.CurrentValue)
+			delete(rawMsg, key)
+		case "limit":
+			err = unpopulate(val, "Limit", &q.Limit)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &q.Name)
+			delete(rawMsg, key)
+		case "unit":
+			err = unpopulate(val, "Unit", &q.Unit)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", q, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type QuotaName.
+func (q QuotaName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "localizedValue", q.LocalizedValue)
+	populate(objectMap, "value", q.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type QuotaName.
+func (q *QuotaName) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", q, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "localizedValue":
+			err = unpopulate(val, "LocalizedValue", &q.LocalizedValue)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &q.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", q, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type RpSKU.
 func (r RpSKU) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

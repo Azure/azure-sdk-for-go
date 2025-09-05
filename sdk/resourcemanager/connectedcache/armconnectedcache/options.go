@@ -4,77 +4,6 @@
 
 package armconnectedcache
 
-// CacheNodesOperationsClientBeginCreateorUpdateOptions contains the optional parameters for the CacheNodesOperationsClient.BeginCreateorUpdate
-// method.
-type CacheNodesOperationsClientBeginCreateorUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// CacheNodesOperationsClientDeleteOptions contains the optional parameters for the CacheNodesOperationsClient.Delete method.
-type CacheNodesOperationsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheNodesOperationsClientGetOptions contains the optional parameters for the CacheNodesOperationsClient.Get method.
-type CacheNodesOperationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheNodesOperationsClientListByResourceGroupOptions contains the optional parameters for the CacheNodesOperationsClient.NewListByResourceGroupPager
-// method.
-type CacheNodesOperationsClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheNodesOperationsClientListBySubscriptionOptions contains the optional parameters for the CacheNodesOperationsClient.NewListBySubscriptionPager
-// method.
-type CacheNodesOperationsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CacheNodesOperationsClientUpdateOptions contains the optional parameters for the CacheNodesOperationsClient.Update method.
-type CacheNodesOperationsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EnterpriseCustomerOperationsClientBeginCreateOrUpdateOptions contains the optional parameters for the EnterpriseCustomerOperationsClient.BeginCreateOrUpdate
-// method.
-type EnterpriseCustomerOperationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EnterpriseCustomerOperationsClientDeleteOptions contains the optional parameters for the EnterpriseCustomerOperationsClient.Delete
-// method.
-type EnterpriseCustomerOperationsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EnterpriseCustomerOperationsClientGetOptions contains the optional parameters for the EnterpriseCustomerOperationsClient.Get
-// method.
-type EnterpriseCustomerOperationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EnterpriseCustomerOperationsClientListByResourceGroupOptions contains the optional parameters for the EnterpriseCustomerOperationsClient.NewListByResourceGroupPager
-// method.
-type EnterpriseCustomerOperationsClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EnterpriseCustomerOperationsClientListBySubscriptionOptions contains the optional parameters for the EnterpriseCustomerOperationsClient.NewListBySubscriptionPager
-// method.
-type EnterpriseCustomerOperationsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EnterpriseCustomerOperationsClientUpdateOptions contains the optional parameters for the EnterpriseCustomerOperationsClient.Update
-// method.
-type EnterpriseCustomerOperationsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // EnterpriseMccCacheNodesOperationsClientBeginCreateOrUpdateOptions contains the optional parameters for the EnterpriseMccCacheNodesOperationsClient.BeginCreateOrUpdate
 // method.
 type EnterpriseMccCacheNodesOperationsClientBeginCreateOrUpdateOptions struct {
@@ -89,9 +18,27 @@ type EnterpriseMccCacheNodesOperationsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions contains the optional parameters for the EnterpriseMccCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory
+// method.
+type EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsOptions contains the optional parameters for the EnterpriseMccCacheNodesOperationsClient.GetCacheNodeInstallDetails
 // method.
 type EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions contains the optional parameters for the
+// EnterpriseMccCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory method.
+type EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryOptions contains the optional parameters for the
+// EnterpriseMccCacheNodesOperationsClient.GetCacheNodeTLSCertificateHistory method.
+type EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -170,9 +117,21 @@ type IspCacheNodesOperationsClientGetBgpCidrsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions contains the optional parameters for the IspCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory
+// method.
+type IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
 // IspCacheNodesOperationsClientGetCacheNodeInstallDetailsOptions contains the optional parameters for the IspCacheNodesOperationsClient.GetCacheNodeInstallDetails
 // method.
 type IspCacheNodesOperationsClientGetCacheNodeInstallDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions contains the optional parameters for the IspCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory
+// method.
+type IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions struct {
 	// placeholder for future optional parameters
 }
 

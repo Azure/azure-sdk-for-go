@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/WorkflowVersions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/WorkflowVersions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleWorkflowVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleWorkflowVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/WorkflowVersions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/WorkflowVersions_Delete_MaximumSet_Gen.json
 func ExampleWorkflowVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleWorkflowVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/WorkflowVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/WorkflowVersions_Get_MaximumSet_Gen.json
 func ExampleWorkflowVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleWorkflowVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/WorkflowVersions_ListByWorkflow_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/WorkflowVersions_ListByWorkflow_MaximumSet_Gen.json
 func ExampleWorkflowVersionsClient_NewListByWorkflowPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleWorkflowVersionsClient_NewListByWorkflowPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/WorkflowVersions_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/WorkflowVersions_Update_MaximumSet_Gen.json
 func ExampleWorkflowVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

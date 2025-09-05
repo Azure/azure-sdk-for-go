@@ -42,7 +42,7 @@ type SolutionConfigurationsServer struct {
 
 	// Update is the fake for method SolutionConfigurationsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceURI string, solutionConfiguration string, properties armhybridconnectivity.SolutionConfiguration, options *armhybridconnectivity.SolutionConfigurationsClientUpdateOptions) (resp azfake.Responder[armhybridconnectivity.SolutionConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceURI string, solutionConfiguration string, properties armhybridconnectivity.SolutionConfigurationUpdate, options *armhybridconnectivity.SolutionConfigurationsClientUpdateOptions) (resp azfake.Responder[armhybridconnectivity.SolutionConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSolutionConfigurationsServerTransport creates a new instance of SolutionConfigurationsServerTransport with the provided implementation.
@@ -125,7 +125,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchCreateOrUpdate(req *http
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.SolutionConfiguration](req)
@@ -162,7 +162,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchDelete(req *http.Request
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -195,7 +195,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchGet(req *http.Request) (
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -230,7 +230,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchNewListPager(req *http.R
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -267,7 +267,7 @@ func (s *SolutionConfigurationsServerTransport) dispatchBeginSyncNow(req *http.R
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncNow`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -309,10 +309,10 @@ func (s *SolutionConfigurationsServerTransport) dispatchUpdate(req *http.Request
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/solutionConfigurations/(?P<solutionConfiguration>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.SolutionConfiguration](req)
+	body, err := server.UnmarshalRequestAsJSON[armhybridconnectivity.SolutionConfigurationUpdate](req)
 	if err != nil {
 		return nil, err
 	}

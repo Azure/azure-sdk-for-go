@@ -6,8 +6,6 @@
 
 - This module is now DEPRECATED. The latest supported version of this module is at [github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwright/armplaywright](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/playwright/armplaywright)
 
-## 0.1.1 (2023-10-11)
-
 ## 1.0.0 (2024-12-26)
 ### Breaking Changes
 

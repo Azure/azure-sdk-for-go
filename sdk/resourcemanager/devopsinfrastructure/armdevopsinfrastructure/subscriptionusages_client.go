@@ -41,7 +41,7 @@ func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenC
 
 // NewUsagesPager - List Quota resources by subscription ID
 //
-// Generated from API version 2024-10-19
+// Generated from API version 2025-01-21
 //   - location - The name of the Azure region.
 //   - options - SubscriptionUsagesClientUsagesOptions contains the optional parameters for the SubscriptionUsagesClient.NewUsagesPager
 //     method.
@@ -84,7 +84,7 @@ func (client *SubscriptionUsagesClient) usagesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
+	reqQP.Set("api-version", "2025-01-21")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

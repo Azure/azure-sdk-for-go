@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleConfigTemplatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_CreateVersion_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_CreateVersion_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_BeginCreateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleConfigTemplatesClient_BeginCreateVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_Delete_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleConfigTemplatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_Get_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleConfigTemplatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleConfigTemplatesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_ListBySubscription_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleConfigTemplatesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_RemoveVersion_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_RemoveVersion_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_RemoveVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -324,7 +324,7 @@ func ExampleConfigTemplatesClient_RemoveVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ConfigTemplates_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/ConfigTemplates_Update_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

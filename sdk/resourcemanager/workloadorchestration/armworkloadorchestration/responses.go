@@ -400,6 +400,11 @@ type SolutionTemplateVersionsClientBulkPublishSolutionResponse struct {
 	// placeholder for future response values
 }
 
+// SolutionTemplateVersionsClientBulkReviewSolutionResponse contains the response from method SolutionTemplateVersionsClient.BeginBulkReviewSolution.
+type SolutionTemplateVersionsClientBulkReviewSolutionResponse struct {
+	// placeholder for future response values
+}
+
 // SolutionTemplateVersionsClientGetResponse contains the response from method SolutionTemplateVersionsClient.Get.
 type SolutionTemplateVersionsClientGetResponse struct {
 	// Solution Template Version Resource. Contains configurations that use expressions which can be resolved hierarchically along
@@ -578,6 +583,12 @@ type TargetsClientReviewSolutionVersionResponse struct {
 // TargetsClientUninstallSolutionResponse contains the response from method TargetsClient.BeginUninstallSolution.
 type TargetsClientUninstallSolutionResponse struct {
 	// placeholder for future response values
+}
+
+// TargetsClientUnstageSolutionVersionResponse contains the response from method TargetsClient.BeginUnstageSolutionVersion.
+type TargetsClientUnstageSolutionVersionResponse struct {
+	// Solution Version Resource. It has the resolved configuration along with edge specification.
+	SolutionVersion
 }
 
 // TargetsClientUpdateExternalValidationStatusResponse contains the response from method TargetsClient.BeginUpdateExternalValidationStatus.

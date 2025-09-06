@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01/Broker_CreateOrUpdate_Complex.json
+// Generated from example definition: 2025-07-01-preview/Broker_CreateOrUpdate_Complex.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateComplex() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateComplex() {
 			MemoryProfile: to.Ptr(armiotoperations.BrokerMemoryProfileMedium),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 	}, nil)
@@ -83,17 +83,17 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateComplex() {
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/brokers/resource-name123"),
 	// 		Name: to.Ptr("llptmlifnqqwairx"),
-	// 		Type: to.Ptr("qwrfzxjfxvismlqvigot"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/brokers"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -101,7 +101,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateComplex() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-07-01-preview/Broker_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdate() {
 			MemoryProfile: to.Ptr(armiotoperations.BrokerMemoryProfileTiny),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 	}, nil)
@@ -424,17 +424,17 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/brokers/resource-name123"),
 	// 		Name: to.Ptr("dowrkel"),
-	// 		Type: to.Ptr("xshjnsdgadygb"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/brokers"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -442,7 +442,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Broker_CreateOrUpdate_Minimal.json
+// Generated from example definition: 2025-07-01-preview/Broker_CreateOrUpdate_Minimal.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateMinimal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,7 +458,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateMinimal() {
 			MemoryProfile: to.Ptr(armiotoperations.BrokerMemoryProfileTiny),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 	}, nil)
@@ -622,17 +622,17 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateMinimal() {
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/brokers/resource-name123"),
 	// 		Name: to.Ptr("dowrkel"),
-	// 		Type: to.Ptr("xshjnsdgadygb"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/brokers"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -640,7 +640,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateMinimal() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Broker_CreateOrUpdate_Simple.json
+// Generated from example definition: 2025-07-01-preview/Broker_CreateOrUpdate_Simple.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateSimple() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -670,7 +670,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateSimple() {
 			MemoryProfile: to.Ptr(armiotoperations.BrokerMemoryProfileLow),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 	}, nil)
@@ -834,17 +834,17 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateSimple() {
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/brokers/resource-name123"),
 	// 		Name: to.Ptr("dowrkel"),
-	// 		Type: to.Ptr("xshjnsdgadygb"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/brokers"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -852,7 +852,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateSimple() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Broker_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-07-01-preview/Broker_Delete_MaximumSet_Gen.json
 func ExampleBrokerClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -873,7 +873,7 @@ func ExampleBrokerClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Broker_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-07-01-preview/Broker_Get_MaximumSet_Gen.json
 func ExampleBrokerClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1041,17 +1041,17 @@ func ExampleBrokerClient_Get() {
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/brokers/resource-name123"),
 	// 		Name: to.Ptr("dowrkel"),
-	// 		Type: to.Ptr("xshjnsdgadygb"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/brokers"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -1059,7 +1059,7 @@ func ExampleBrokerClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-07-01-preview/Broker_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBrokerClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1233,17 +1233,17 @@ func ExampleBrokerClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 		// 				},
 		// 				ExtendedLocation: &armiotoperations.ExtendedLocation{
-		// 					Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+		// 					Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 		// 					Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/brokers/resource-name123"),
 		// 				Name: to.Ptr("dowrkel"),
-		// 				Type: to.Ptr("xshjnsdgadygb"),
+		// 				Type: to.Ptr("Microsoft.IoTOperations/instances/brokers"),
 		// 				SystemData: &armiotoperations.SystemData{
-		// 					CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+		// 					CreatedBy: to.Ptr("contosouser"),
 		// 					CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("gnicpuszwd"),
+		// 					LastModifiedBy: to.Ptr("contosouser"),
 		// 					LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 		// 				},

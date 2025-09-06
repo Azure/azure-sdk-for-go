@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleSolutionTemplatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_CreateVersion_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_CreateVersion_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_BeginCreateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleSolutionTemplatesClient_BeginCreateVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_Delete_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleSolutionTemplatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_Get_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleSolutionTemplatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleSolutionTemplatesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_ListBySubscription_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +327,7 @@ func ExampleSolutionTemplatesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_RemoveVersion_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_RemoveVersion_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_BeginRemoveVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +350,7 @@ func ExampleSolutionTemplatesClient_BeginRemoveVersion() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SolutionTemplates_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/SolutionTemplates_Update_MaximumSet_Gen.json
 func ExampleSolutionTemplatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

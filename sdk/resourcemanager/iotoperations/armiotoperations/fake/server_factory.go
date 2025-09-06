@@ -15,6 +15,12 @@ import (
 
 // ServerFactory is a fake server for instances of the armiotoperations.ClientFactory type.
 type ServerFactory struct {
+	// AkriConnectorServer contains the fakes for client AkriConnectorClient
+	AkriConnectorServer AkriConnectorServer
+
+	// AkriConnectorTemplateServer contains the fakes for client AkriConnectorTemplateClient
+	AkriConnectorTemplateServer AkriConnectorTemplateServer
+
 	// BrokerAuthenticationServer contains the fakes for client BrokerAuthenticationClient
 	BrokerAuthenticationServer BrokerAuthenticationServer
 
@@ -33,6 +39,9 @@ type ServerFactory struct {
 	// DataflowEndpointServer contains the fakes for client DataflowEndpointClient
 	DataflowEndpointServer DataflowEndpointServer
 
+	// DataflowGraphServer contains the fakes for client DataflowGraphClient
+	DataflowGraphServer DataflowGraphServer
+
 	// DataflowProfileServer contains the fakes for client DataflowProfileClient
 	DataflowProfileServer DataflowProfileServer
 
@@ -41,6 +50,9 @@ type ServerFactory struct {
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// RegistryEndpointServer contains the fakes for client RegistryEndpointClient
+	RegistryEndpointServer RegistryEndpointServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -55,17 +67,21 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armiotoperations.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                          *ServerFactory
-	trMu                         sync.Mutex
-	trBrokerAuthenticationServer *BrokerAuthenticationServerTransport
-	trBrokerAuthorizationServer  *BrokerAuthorizationServerTransport
-	trBrokerServer               *BrokerServerTransport
-	trBrokerListenerServer       *BrokerListenerServerTransport
-	trDataflowServer             *DataflowServerTransport
-	trDataflowEndpointServer     *DataflowEndpointServerTransport
-	trDataflowProfileServer      *DataflowProfileServerTransport
-	trInstanceServer             *InstanceServerTransport
-	trOperationsServer           *OperationsServerTransport
+	srv                           *ServerFactory
+	trMu                          sync.Mutex
+	trAkriConnectorServer         *AkriConnectorServerTransport
+	trAkriConnectorTemplateServer *AkriConnectorTemplateServerTransport
+	trBrokerAuthenticationServer  *BrokerAuthenticationServerTransport
+	trBrokerAuthorizationServer   *BrokerAuthorizationServerTransport
+	trBrokerServer                *BrokerServerTransport
+	trBrokerListenerServer        *BrokerListenerServerTransport
+	trDataflowServer              *DataflowServerTransport
+	trDataflowEndpointServer      *DataflowEndpointServerTransport
+	trDataflowGraphServer         *DataflowGraphServerTransport
+	trDataflowProfileServer       *DataflowProfileServerTransport
+	trInstanceServer              *InstanceServerTransport
+	trOperationsServer            *OperationsServerTransport
+	trRegistryEndpointServer      *RegistryEndpointServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -81,6 +97,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AkriConnectorClient":
+		initServer(s, &s.trAkriConnectorServer, func() *AkriConnectorServerTransport {
+			return NewAkriConnectorServerTransport(&s.srv.AkriConnectorServer)
+		})
+		resp, err = s.trAkriConnectorServer.Do(req)
+	case "AkriConnectorTemplateClient":
+		initServer(s, &s.trAkriConnectorTemplateServer, func() *AkriConnectorTemplateServerTransport {
+			return NewAkriConnectorTemplateServerTransport(&s.srv.AkriConnectorTemplateServer)
+		})
+		resp, err = s.trAkriConnectorTemplateServer.Do(req)
 	case "BrokerAuthenticationClient":
 		initServer(s, &s.trBrokerAuthenticationServer, func() *BrokerAuthenticationServerTransport {
 			return NewBrokerAuthenticationServerTransport(&s.srv.BrokerAuthenticationServer)
@@ -107,6 +133,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDataflowEndpointServerTransport(&s.srv.DataflowEndpointServer)
 		})
 		resp, err = s.trDataflowEndpointServer.Do(req)
+	case "DataflowGraphClient":
+		initServer(s, &s.trDataflowGraphServer, func() *DataflowGraphServerTransport {
+			return NewDataflowGraphServerTransport(&s.srv.DataflowGraphServer)
+		})
+		resp, err = s.trDataflowGraphServer.Do(req)
 	case "DataflowProfileClient":
 		initServer(s, &s.trDataflowProfileServer, func() *DataflowProfileServerTransport {
 			return NewDataflowProfileServerTransport(&s.srv.DataflowProfileServer)
@@ -118,6 +149,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "RegistryEndpointClient":
+		initServer(s, &s.trRegistryEndpointServer, func() *RegistryEndpointServerTransport {
+			return NewRegistryEndpointServerTransport(&s.srv.RegistryEndpointServer)
+		})
+		resp, err = s.trRegistryEndpointServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

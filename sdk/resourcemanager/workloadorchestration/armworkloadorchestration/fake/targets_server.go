@@ -65,6 +65,10 @@ type TargetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUninstallSolution func(ctx context.Context, resourceGroupName string, targetName string, body armworkloadorchestration.UninstallSolutionParameter, options *armworkloadorchestration.TargetsClientBeginUninstallSolutionOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientUninstallSolutionResponse], errResp azfake.ErrorResponder)
 
+	// BeginUnstageSolutionVersion is the fake for method TargetsClient.BeginUnstageSolutionVersion
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUnstageSolutionVersion func(ctx context.Context, resourceGroupName string, targetName string, body armworkloadorchestration.SolutionVersionParameter, options *armworkloadorchestration.TargetsClientBeginUnstageSolutionVersionOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientUnstageSolutionVersionResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method TargetsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, targetName string, properties armworkloadorchestration.TargetUpdate, options *armworkloadorchestration.TargetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -90,6 +94,7 @@ func NewTargetsServerTransport(srv *TargetsServer) *TargetsServerTransport {
 		beginResolveConfiguration:           newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientResolveConfigurationResponse]](),
 		beginReviewSolutionVersion:          newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientReviewSolutionVersionResponse]](),
 		beginUninstallSolution:              newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUninstallSolutionResponse]](),
+		beginUnstageSolutionVersion:         newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUnstageSolutionVersionResponse]](),
 		beginUpdate:                         newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateResponse]](),
 		beginUpdateExternalValidationStatus: newTracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateExternalValidationStatusResponse]](),
 	}
@@ -109,6 +114,7 @@ type TargetsServerTransport struct {
 	beginResolveConfiguration           *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientResolveConfigurationResponse]]
 	beginReviewSolutionVersion          *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientReviewSolutionVersionResponse]]
 	beginUninstallSolution              *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUninstallSolutionResponse]]
+	beginUnstageSolutionVersion         *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUnstageSolutionVersionResponse]]
 	beginUpdate                         *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateResponse]]
 	beginUpdateExternalValidationStatus *tracker[azfake.PollerResponder[armworkloadorchestration.TargetsClientUpdateExternalValidationStatusResponse]]
 }
@@ -158,6 +164,8 @@ func (t *TargetsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = t.dispatchBeginReviewSolutionVersion(req)
 			case "TargetsClient.BeginUninstallSolution":
 				res.resp, res.err = t.dispatchBeginUninstallSolution(req)
+			case "TargetsClient.BeginUnstageSolutionVersion":
+				res.resp, res.err = t.dispatchBeginUnstageSolutionVersion(req)
 			case "TargetsClient.BeginUpdate":
 				res.resp, res.err = t.dispatchBeginUpdate(req)
 			case "TargetsClient.BeginUpdateExternalValidationStatus":
@@ -674,6 +682,54 @@ func (t *TargetsServerTransport) dispatchBeginUninstallSolution(req *http.Reques
 	}
 	if !server.PollerResponderMore(beginUninstallSolution) {
 		t.beginUninstallSolution.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TargetsServerTransport) dispatchBeginUnstageSolutionVersion(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUnstageSolutionVersion == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUnstageSolutionVersion not implemented")}
+	}
+	beginUnstageSolutionVersion := t.beginUnstageSolutionVersion.get(req)
+	if beginUnstageSolutionVersion == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/unstageSolutionVersion`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SolutionVersionParameter](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		targetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUnstageSolutionVersion(req.Context(), resourceGroupNameParam, targetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUnstageSolutionVersion = &respr
+		t.beginUnstageSolutionVersion.add(req, beginUnstageSolutionVersion)
+	}
+
+	resp, err := server.PollerResponderNext(beginUnstageSolutionVersion, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginUnstageSolutionVersion.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUnstageSolutionVersion) {
+		t.beginUnstageSolutionVersion.remove(req)
 	}
 
 	return resp, nil

@@ -11,7 +11,10 @@
 ### Bugs Fixed
 
 ### Other Changes
-- `AzureDeveloperCliCredential` no longer hangs when AZD_DEBUG is set
+- `AzureDeveloperCLICredential` no longer hangs when AZD_DEBUG is set
+- `GetToken` methods of `AzureCLICredential` and `AzureDeveloperCLICredential` return an error when
+  `TokenRequestOptions.Claims` has a value because these credentials can't acquire a token in that
+  case. The error messages describe the action required to get a token.
 
 ## 1.11.0 (2025-08-05)
 

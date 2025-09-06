@@ -8,11 +8,14 @@ package azidentity
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,18 +39,55 @@ func azTokenOutput(expiresOn string, expires_on int64) []byte {
 }`, tokenValue, expiresOn, e_o, fakeTenantID))
 }
 
-func mockAzTokenProviderFailure(context.Context, []string, string, string) ([]byte, error) {
-	return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil)
+func mockAzFailure(_ context.Context, credName string, _ string) ([]byte, error) {
+	if credName != credNameAzureCLI {
+		return nil, errors.New("unexpected credential name: " + credName)
+	}
+	return nil, newAuthenticationFailedError(credNameAzureCLI, "az error", nil)
 }
 
-func mockAzTokenProviderSuccess(context.Context, []string, string, string) ([]byte, error) {
+func mockAzSuccess(_ context.Context, credName string, _ string) ([]byte, error) {
+	if credName != credNameAzureCLI {
+		return nil, errors.New("unexpected credential name: " + credName)
+	}
 	return azTokenOutput("2001-02-03 04:05:06.000007", 0), nil
+}
+
+func TestAzureCLICredential_Claims(t *testing.T) {
+	tro := policy.TokenRequestOptions{
+		Scopes: []string{liveTestScope},
+		Claims: `{"access_token":{"xms_cc":{"values":["cp1"]}}}`,
+	}
+	encoded := base64.StdEncoding.EncodeToString([]byte(tro.Claims))
+	exec := func(context.Context, string, string) ([]byte, error) {
+		t.Fatal("GetToken shouldn't run the CLI when claims are specified")
+		return nil, nil
+	}
+
+	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{exec: exec})
+	require.NoError(t, err)
+	_, err = cred.GetToken(ctx, tro)
+	require.ErrorContains(t, err, "az login --claims-challenge "+encoded)
+
+	t.Run("with tenant", func(t *testing.T) {
+		expected := fmt.Sprintf("az login --tenant %s --claims-challenge %s", fakeTenantID, encoded)
+
+		cp := tro
+		cp.TenantID = fakeTenantID
+		_, err = cred.GetToken(ctx, cp)
+		require.ErrorContains(t, err, expected)
+
+		cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: fakeTenantID, exec: exec})
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, tro)
+		require.ErrorContains(t, err, expected)
+	})
 }
 
 func TestAzureCLICredential_DefaultChainError(t *testing.T) {
 	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{
 		inDefaultChain: true,
-		tokenProvider:  mockAzTokenProviderFailure,
+		exec:           mockAzFailure,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -64,7 +104,7 @@ func TestAzureCLICredential_Error(t *testing.T) {
 	authNs := 0
 	expected := newCredentialUnavailableError(credNameAzureCLI, "it didn't work")
 	o := AzureCLICredentialOptions{
-		tokenProvider: func(context.Context, []string, string, string) ([]byte, error) {
+		exec: func(context.Context, string, string) ([]byte, error) {
 			authNs++
 			return nil, expected
 		},
@@ -101,7 +141,10 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 				expires_on = expectedExpiresOn.Unix()
 			}
 			cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{
-				tokenProvider: func(context.Context, []string, string, string) ([]byte, error) {
+				exec: func(_ context.Context, credName, command string) ([]byte, error) {
+					require.Equal(t, credNameAzureCLI, credName)
+					expected := "az account get-access-token -o json --resource " + strings.TrimSuffix(liveTestScope, "/.default")
+					require.Equal(t, expected, command)
 					output := azTokenOutput(ExpiresOn, expires_on)
 					return output, nil
 				},
@@ -119,7 +162,7 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 
 func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	options := AzureCLICredentialOptions{}
-	options.tokenProvider = mockAzTokenProviderFailure
+	options.exec = mockAzFailure
 	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -136,12 +179,14 @@ func TestAzureCLICredential_Subscription(t *testing.T) {
 		t.Run(fmt.Sprintf("subscription=%q", want), func(t *testing.T) {
 			options := AzureCLICredentialOptions{
 				Subscription: want,
-				tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+				exec: func(ctx context.Context, credName, command string) ([]byte, error) {
 					called = true
-					if subscription != want {
-						t.Fatalf("wanted subscription %q, got %q", want, subscription)
+					if want == "" {
+						require.NotContains(t, command, "--subscription")
+					} else {
+						require.Contains(t, command, fmt.Sprintf(" --subscription %q", want))
 					}
-					return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
+					return mockAzSuccess(ctx, credName, command)
 				},
 			}
 			cred, err := NewAzureCLICredential(&options)
@@ -164,12 +209,10 @@ func TestAzureCLICredential_TenantID(t *testing.T) {
 	called := false
 	options := AzureCLICredentialOptions{
 		TenantID: expected,
-		tokenProvider: func(ctx context.Context, scopes []string, tenantID, subscription string) ([]byte, error) {
+		exec: func(ctx context.Context, credName, command string) ([]byte, error) {
 			called = true
-			if tenantID != expected {
-				t.Fatal("Unexpected tenant ID: " + tenantID)
-			}
-			return mockAzTokenProviderSuccess(ctx, scopes, tenantID, subscription)
+			require.Contains(t, command, " --tenant "+expected)
+			return mockAzSuccess(ctx, credName, command)
 		},
 	}
 	cred, err := NewAzureCLICredential(&options)

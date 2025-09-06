@@ -183,8 +183,8 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_TenantID(t *testing.T) {
-	azBefore := defaultAzTokenProvider
-	t.Cleanup(func() { defaultAzTokenProvider = azBefore })
+	before := shellExec
+	t.Cleanup(func() { shellExec = before })
 	expected := "expected"
 	for _, override := range []bool{false, true} {
 		name := "default tenant"
@@ -194,35 +194,26 @@ func TestDefaultAzureCredential_TenantID(t *testing.T) {
 		for _, credName := range []string{credNameAzureCLI, credNameAzureDeveloperCLI} {
 			t.Run(fmt.Sprintf("%s_%s", credName, name), func(t *testing.T) {
 				called := false
-				verifyTenant := func(tenantID string) {
+				shellExec = func(ctx context.Context, actualName string, command string) ([]byte, error) {
+					require.Equal(t, credName, actualName)
 					called = true
-					if (override && tenantID != expected) || (!override && tenantID != "") {
-						t.Fatalf("unexpected tenantID %q", tenantID)
+					tenantArg := "--tenant"
+					success, err := mockAzSuccess(ctx, actualName, command)
+					if credName == credNameAzureDeveloperCLI {
+						tenantArg = "--tenant-id"
+						success, err = mockAzdSuccess(ctx, actualName, command)
 					}
+					sm := regexp.MustCompile(tenantArg + ` (\w+)`).FindStringSubmatch(command)
+					if override {
+						require.Equal(t, 2, len(sm), "tenant not found in command line")
+						require.Equal(t, expected, sm[1], "unexpected tenant in command line")
+					} else {
+						require.Empty(t, sm)
+					}
+					return success, err
 				}
-				switch credName {
-				case credNameAzureCLI:
-					defaultAzTokenProvider = func(ctx context.Context, scopes []string, tenantID, subscription string) ([]byte, error) {
-						verifyTenant(tenantID)
-						return mockAzTokenProviderSuccess(ctx, scopes, tenantID, subscription)
-					}
-				case credNameAzureDeveloperCLI:
-					// ensure az returns an error so DefaultAzureCredential tries azd
-					defaultAzTokenProvider = func(context.Context, []string, string, string) ([]byte, error) {
-						return nil, newCredentialUnavailableError(credNameAzureCLI, "it didn't work")
-					}
-					azdBefore := defaultAzdTokenProvider
-					t.Cleanup(func() { defaultAzdTokenProvider = azdBefore })
-					defaultAzdTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
-						verifyTenant(tenant)
-						return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
-					}
-				}
-				// mock IMDS failure because managed identity precedes dev tools in the chain
-				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
-				defer close()
-				srv.SetResponse(mock.WithStatusCode(400))
-				o := DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}}
+				t.Setenv(azureTokenCredentials, credName)
+				o := DefaultAzureCredentialOptions{}
 				if override {
 					o.TenantID = expected
 				}
@@ -391,17 +382,7 @@ func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 }
 
 func TestDefaultAzureCredential_IMDS(t *testing.T) {
-	// unsetting environment variables to skip EnvironmentCredential and other managed identity sources
-	for _, k := range []string{azureTenantID, identityEndpoint, msiEndpoint} {
-		if v, set := os.LookupEnv(k); set {
-			require.NoError(t, os.Unsetenv(k))
-			defer os.Setenv(k, v)
-		}
-	}
-	// AzureCLICredential returning an error ensures we see fatal errors from ManagedIdentityCredential
-	before := defaultAzTokenProvider
-	defer func() { defaultAzTokenProvider = before }()
-	defaultAzTokenProvider = mockAzTokenProviderFailure
+	t.Setenv(azureTokenCredentials, credNameManagedIdentity)
 
 	t.Run("probe", func(t *testing.T) {
 		probed := false
@@ -436,11 +417,6 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 		require.Equal(t, tokenValue, tk.Token)
 
 		t.Run("Azure Container Instances", func(t *testing.T) {
-			// ensure GetToken returns an error if DefaultAzureCredential skips managed identity
-			before := defaultAzTokenProvider
-			defer func() { defaultAzTokenProvider = before }()
-			defaultAzTokenProvider = mockAzTokenProviderFailure
-
 			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
 			defer close()
 			srv.AppendResponse(mock.WithBody([]byte("Required metadata header not specified or not correct")), mock.WithStatusCode(http.StatusBadRequest))
@@ -497,9 +473,9 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_UnexpectedIMDSResponse(t *testing.T) {
-	before := defaultAzTokenProvider
-	defer func() { defaultAzTokenProvider = before }()
-	defaultAzTokenProvider = mockAzTokenProviderSuccess
+	before := shellExec
+	defer func() { shellExec = before }()
+	shellExec = mockAzSuccess
 
 	const dockerDesktopPrefix = "connecting to 169.254.169.254:80: connecting to 169.254.169.254:80: dial tcp 169.254.169.254:80: connectex: A socket operation was attempted to an unreachable "
 	for _, test := range []struct {
@@ -576,13 +552,13 @@ func TestDefaultAzureCredential_UnexpectedIMDSResponse(t *testing.T) {
 
 func TestDefaultAzureCredential_UnsupportedMIClientID(t *testing.T) {
 	fail := true
-	before := defaultAzTokenProvider
-	defer func() { defaultAzTokenProvider = before }()
-	defaultAzTokenProvider = func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+	before := shellExec
+	defer func() { shellExec = before }()
+	shellExec = func(ctx context.Context, credName string, commandLine string) ([]byte, error) {
 		if fail {
 			return nil, errors.New("fail")
 		}
-		return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
+		return mockAzSuccess(ctx, credName, commandLine)
 	}
 	t.Setenv(azureClientID, fakeClientID)
 	t.Setenv(msiEndpoint, fakeMIEndpoint)

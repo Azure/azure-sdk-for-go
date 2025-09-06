@@ -8,28 +8,72 @@ package azidentity
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/stretchr/testify/require"
 )
 
 var (
-	mockAzdTokenProviderSuccess = func(context.Context, []string, string) ([]byte, error) {
+	mockAzdSuccess = func(_ context.Context, credName string, _ string) ([]byte, error) {
+		if credName != credNameAzureDeveloperCLI {
+			return nil, errors.New("unexpected credential name: " + credName)
+		}
 		return []byte(`{
   "token": "mocktoken",
   "expiresOn": "2001-02-03T04:05:06Z"
 }
 `), nil
 	}
-	mockAzdTokenProviderFailure = func(context.Context, []string, string) ([]byte, error) {
-		return nil, newAuthenticationFailedError(credNameAzureCLI, "mock provider error", nil)
+	mockAzdFailure = func(_ context.Context, credName string, _ string) ([]byte, error) {
+		if credName != credNameAzureDeveloperCLI {
+			return nil, errors.New("unexpected credential name: " + credName)
+		}
+		return nil, newAuthenticationFailedError(credNameAzureDeveloperCLI, "azd error", nil)
 	}
 )
+
+func TestAzureDeveloperCLICredential_Claims(t *testing.T) {
+	tro := policy.TokenRequestOptions{
+		Scopes: []string{liveTestScope},
+		Claims: `{"access_token":{"xms_cc":{"values":["cp1"]}}}`,
+	}
+	encoded := base64.StdEncoding.EncodeToString([]byte(tro.Claims))
+	t.Run("old azd", func(t *testing.T) {
+		cred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
+			exec: func(_ context.Context, _, command string) ([]byte, error) {
+				require.Contains(t, command, "--claims "+encoded)
+				return nil, newAuthenticationFailedError(credNameAzureDeveloperCLI, "unknown flag: --claims", nil)
+			},
+		})
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, tro)
+		require.ErrorContains(t, err, mfaRequired)
+		require.ErrorContains(t, err, "Upgrade")
+	})
+
+	t.Run("recent azd", func(t *testing.T) {
+		cred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
+			exec: func(_ context.Context, _, command string) ([]byte, error) {
+				require.Contains(t, command, "--claims "+encoded)
+				return nil, newAuthenticationFailedError(credNameAzureDeveloperCLI, `{"type":"consoleMessage","timestamp":"...","data":{"message":"\nERROR: fetching token: AADSTS50079: Due to a configuration change made by your administrator, or because you moved to a new location, you must enroll in multi-factor authentication'. Trace ID: ... Correlation ID: ... Timestamp: ...\n"}}
+{"type":"consoleMessage","timestamp":"...","data":{"message":"Suggestion: reauthentication required, run azd auth login --scope ... to acquire a new token.\n"}}`, nil)
+			},
+		})
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, tro)
+		require.ErrorContains(t, err, mfaRequired)
+		require.ErrorAs(t, err, new(*AuthenticationFailedError))
+	})
+}
 
 func TestAzureDeveloperCLICredential_DefaultChainError(t *testing.T) {
 	cred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
 		inDefaultChain: true,
-		tokenProvider:  mockAzdTokenProviderFailure,
+		exec:           mockAzdFailure,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -46,7 +90,7 @@ func TestAzureDeveloperCLICredential_Error(t *testing.T) {
 	authNs := 0
 	expected := newCredentialUnavailableError(credNameAzureDeveloperCLI, "it didn't work")
 	o := AzureDeveloperCLICredentialOptions{
-		tokenProvider: func(context.Context, []string, string) ([]byte, error) {
+		exec: func(context.Context, string, string) ([]byte, error) {
 			authNs++
 			return nil, expected
 		},
@@ -69,7 +113,10 @@ func TestAzureDeveloperCLICredential_Error(t *testing.T) {
 
 func TestAzureDeveloperCLICredential_GetTokenSuccess(t *testing.T) {
 	cred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
-		tokenProvider: mockAzdTokenProviderSuccess,
+		exec: func(ctx context.Context, credName, command string) ([]byte, error) {
+			require.Equal(t, command, "azd auth token -o json --no-prompt --scope "+liveTestScope)
+			return mockAzdSuccess(ctx, credName, command)
+		},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -89,7 +136,7 @@ func TestAzureDeveloperCLICredential_GetTokenSuccess(t *testing.T) {
 
 func TestAzureDeveloperCLICredential_GetTokenInvalidToken(t *testing.T) {
 	options := AzureDeveloperCLICredentialOptions{}
-	options.tokenProvider = mockAzdTokenProviderFailure
+	options.exec = mockAzdFailure
 	cred, err := NewAzureDeveloperCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -105,12 +152,10 @@ func TestAzureDeveloperCLICredential_TenantID(t *testing.T) {
 	called := false
 	options := AzureDeveloperCLICredentialOptions{
 		TenantID: expected,
-		tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+		exec: func(ctx context.Context, credName, command string) ([]byte, error) {
 			called = true
-			if tenant != expected {
-				t.Fatalf("unexpected tenant %q", tenant)
-			}
-			return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+			require.Contains(t, command, " --tenant-id "+expected)
+			return mockAzdSuccess(ctx, credName, command)
 		},
 	}
 	cred, err := NewAzureDeveloperCLICredential(&options)

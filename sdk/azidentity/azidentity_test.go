@@ -199,6 +199,15 @@ func TestTenantID(t *testing.T) {
 			tenantOptional: true,
 		},
 		{
+			name: credNameAzurePowerShell,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
 			name: credNameAzureDeveloperCLI,
 			ctor: func(tenant string) (azcore.TokenCredential, error) {
 				return NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
@@ -555,6 +564,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 func TestGetTokenRequiresScopes(t *testing.T) {
 	for _, ctor := range []func() (azcore.TokenCredential, error){
 		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewAzurePowerShellCredential(nil) },
 		func() (azcore.TokenCredential, error) { return NewAzureDeveloperCLICredential(nil) },
 		func() (azcore.TokenCredential, error) {
 			return NewClientAssertionCredential(
@@ -677,6 +687,21 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 					},
 				}
 				return NewAzureCLICredential(&o)
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameAzurePowerShell,
+			ctor: func(_ azcore.ClientOptions, tc testCase, t *testing.T) (azcore.TokenCredential, error) {
+				o := AzurePowerShellCredentialOptions{
+					AdditionallyAllowedTenants: tc.allowed,
+					TenantID:                   tc.ctorTenant,
+					tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+						require.Equal(t, tc.expected, tenant)
+						return mockazurePowerShellTokenProviderSuccess(ctx, scopes, tenant, subscription)
+					},
+				}
+				return NewAzurePowerShellCredential(&o)
 			},
 			tenantOptional: true,
 		},
@@ -1157,6 +1182,12 @@ func TestCLIArgumentValidation(t *testing.T) {
 		},
 		{
 			ctor: func() (azcore.TokenCredential, error) {
+				return NewAzurePowerShellCredential(nil)
+			},
+			name: credNameAzurePowerShell,
+		},
+		{
+			ctor: func() (azcore.TokenCredential, error) {
 				return NewAzureDeveloperCLICredential(nil)
 			},
 			name: credNameAzureDeveloperCLI,
@@ -1194,6 +1225,13 @@ func TestCLIArgumentValidation(t *testing.T) {
 	t.Run(credNameAzureCLI+"/subscription", func(t *testing.T) {
 		for _, r := range invalidRunes {
 			if _, err := NewAzureCLICredential(&AzureCLICredentialOptions{Subscription: string(r)}); err == nil {
+				t.Errorf("expected an error for a subscription containing %q", r)
+			}
+		}
+	})
+	t.Run(credNameAzurePowerShell+"/subscription", func(t *testing.T) {
+		for _, r := range invalidRunes {
+			if _, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{Subscription: string(r)}); err == nil {
 				t.Errorf("expected an error for a subscription containing %q", r)
 			}
 		}

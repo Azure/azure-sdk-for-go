@@ -106,7 +106,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	var (
 		creds         []azcore.TokenCredential
 		errorMessages []string
-		selected      = env | workloadIdentity | managedIdentity | az | azd
+		selected      = env | workloadIdentity | managedIdentity | az | azd | azurePowerShell
 	)
 
 	if atc, ok := os.LookupEnv(azureTokenCredentials); ok {

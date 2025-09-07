@@ -161,6 +161,18 @@ func validTenantID(tenantID string) bool {
 	return true
 }
 
+func validSubscription(subId string) bool {
+	if len(subId) < 1 {
+		return false
+	}
+	for _, r := range subId {
+		if !(alphanumeric(r) || r == '-' || r == '_' || r == ' ' || r == '.') {
+			return false
+		}
+	}
+	return true
+}
+
 func doForClient(client *azcore.Client, r *http.Request) (*http.Response, error) {
 	req, err := runtime.NewRequest(r.Context(), r.Method, r.URL.String())
 	if err != nil {

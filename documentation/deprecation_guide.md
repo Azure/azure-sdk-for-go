@@ -13,7 +13,7 @@ Deprecation is different from [retraction](https://go.dev/ref/mod#go-mod-file-re
 ## When to Deprecate
 
 Consider deprecating a module when:
-- A newer, improved version of the module is available
+- The module's functionality is being replaced by a new module
 - The module's underlying Azure service has been deprecated
 - The module architecture needs significant changes that break compatibility
 - The module is being consolidated with other modules

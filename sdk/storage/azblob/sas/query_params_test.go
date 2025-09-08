@@ -184,6 +184,7 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.ContentType(), sasCompMap["rsct"])
 	require.Equal(t, parameters.SignedOID(), sasCompMap["skoid"])
 	require.Equal(t, parameters.SignedTID(), sasCompMap["sktid"])
+	require.Equal(t, parameters.SignedDelegatedUserObjectId(), sasCompMap["sduoid"])
 
 	if _, ok := sasCompMap["skt"]; ok {
 		signedStart, _, err := parseTime(sasCompMap["skt"])

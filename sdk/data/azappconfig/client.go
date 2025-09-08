@@ -98,7 +98,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 		options = &AddSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
 
 	etagAny := azcore.ETagAny
 	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
@@ -209,7 +209,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 		options = &SetSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
 
 	kv, opts := setting.toGeneratedPutOptions(options.OnlyIfUnchanged, nil)
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)

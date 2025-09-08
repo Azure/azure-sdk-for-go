@@ -6,7 +6,7 @@ These settings apply only when `--go` is specified on the command line.
 go: true
 version: "^3.0.0"
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/1d5799e57a1bbe66a86afc246d363d8163625b45/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json
+- https://github.com/Azure/azure-rest-api-specs/blob/c1af3ab8e803da2f40fc90217a6d023bc13b677f/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-11-01/appconfiguration.json
 - appconfiguration_ext.json
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: false

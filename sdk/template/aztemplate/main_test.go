@@ -7,10 +7,12 @@
 package aztemplate
 
 import (
+	"log"
 	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/joho/godotenv"
 )
 
 // recordingDirectory should point to the testdata directory for your package.
@@ -47,6 +49,14 @@ func run(m *testing.M) int {
 				panic(err)
 			}
 		}()
+	}
+
+	// Load environment variables from .env file for testing.
+	// This is useful for local development where you can store connection strings,
+	// endpoints, and other test configuration in a .env file.
+	// When copying this template, create a .env file in your package root with your test variables.
+	if err := godotenv.Load(".env"); err != nil {
+		log.Printf("Failed to load .env file, no integration tests will run: %s", err)
 	}
 
 	return m.Run()

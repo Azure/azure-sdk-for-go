@@ -94,7 +94,7 @@ To do this, file a request to the pkgsite team by filing an issue at https://git
 
 ### Step 5: Delete Deprecated Module Code
 
-After an appropriate deprecation period (typically 6-12 months), remove the old module and all references to it from the `azure-sdk-for-go` repository. 
+After an appropriate deprecation period (minimum 12 months as per [Azure SDK support policies](https://azure.github.io/azure-sdk/policies_support.html#package-lifecycle)), remove the old module and all references to it from the `azure-sdk-for-go` repository. 
 
 Before deletion:
 - Ensure customers have had sufficient time to migrate

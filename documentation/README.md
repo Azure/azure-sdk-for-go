@@ -12,11 +12,11 @@ Note: this documentation is for developers of SDKs, if you need documentation fo
 
 ## Available Documents
 
-- [deprecation_guide.md](./deprecation_guide.md) - Instructions for deprecating Go modules in the Azure SDK for Go
-- [developer_setup.md](./developer_setup.md) - Guide for setting up your development environment
-- [release.md](./release.md) - Documentation for releasing packages
-- [code-generation.md](./code-generation.md) - Information about code generation processes
-- [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) - Migration guide for major version updates
+- [deprecation_guide.md](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/deprecation_guide.md) - Instructions for deprecating Go modules in the Azure SDK for Go
+- [developer_setup.md](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/developer_setup.md) - Guide for setting up your development environment
+- [release.md](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/release.md) - Documentation for releasing packages
+- [code-generation.md](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/code-generation.md) - Information about code generation processes
+- [MIGRATION_GUIDE.md](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/MIGRATION_GUIDE.md) - Migration guide for major version updates
 
 <!-- LINKS -->
 [new_service_docs]: https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/developer_setup.md

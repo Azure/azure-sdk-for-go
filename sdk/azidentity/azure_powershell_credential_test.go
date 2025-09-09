@@ -13,16 +13,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// azurePowerShellTokenOutput returns JSON output similar to Get-AzAccessToken | ConvertTo-Json.
-// All versions of Get-AzAccessToken return ExpiresOn in RFC3339 UTC format.
-func azurePowerShellTokenOutput(expiresOn string) []byte {
+func azurePowerShellTokenOutput(expiresOn int64) []byte {
 	return []byte(fmt.Sprintf(`{
   "Token": %q,
-  "ExpiresOn": %q,
-  "TenantId": %q,
-  "Type": "Bearer",
-  "UserId": "testuser@example.com"
-}`, tokenValue, expiresOn, fakeTenantID))
+  "ExpiresOn": %d
+}`, tokenValue, expiresOn))
 }
 
 func mockazurePowerShellTokenProviderFailure(context.Context, []string, string, string) ([]byte, error) {
@@ -30,7 +25,7 @@ func mockazurePowerShellTokenProviderFailure(context.Context, []string, string, 
 }
 
 func mockazurePowerShellTokenProviderSuccess(context.Context, []string, string, string) ([]byte, error) {
-	return azurePowerShellTokenOutput("2025-09-07T12:26:34+00:00"), nil
+	return azurePowerShellTokenOutput(638930167310000000), nil
 }
 
 func TestAzurePowerShellCredential_DefaultChainError(t *testing.T) {
@@ -77,7 +72,7 @@ func TestAzurePowerShellCredential_Error(t *testing.T) {
 func TestAzurePowerShellCredential_GetTokenSuccess(t *testing.T) {
 	expectedExpiresOn := time.Now().Add(time.Hour).UTC().Truncate(time.Second)
 	t.Run("fetches token with correct expiration", func(t *testing.T) {
-		ExpiresOn := expectedExpiresOn.Format(time.RFC3339)
+		ExpiresOn := epochTicks + expectedExpiresOn.UTC().UnixNano()/100
 		cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
 			tokenProvider: func(context.Context, []string, string, string) ([]byte, error) {
 				output := azurePowerShellTokenOutput(ExpiresOn)

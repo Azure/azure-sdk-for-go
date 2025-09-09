@@ -9,12 +9,15 @@ package azidentity
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
+	"time"
+	"unicode/utf16"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -48,6 +51,14 @@ const (
 	traceNamespace      = "Microsoft.Entra"
 	traceOpGetToken     = "GetToken"
 	traceOpAuthenticate = "Authenticate"
+
+	azurePowerShellNoAzAccountModule = "NoAzAccountModule"
+
+	// 1970-01-01, represented in "ticks" (100ns per millisecond) (ie: .NET's time unit for DateTimeOffset)
+	epochTicks = int64(621355968000000000)
+
+	powershellCmdTimeout   = 10 * time.Second
+	powershellCmdWaitDelay = 100 * time.Millisecond
 )
 
 var (
@@ -171,6 +182,25 @@ func validSubscription(subId string) bool {
 		}
 	}
 	return true
+}
+
+func ticksToUnixTime(ticks int64) time.Time {
+	// normalize our time so it starts from the Unix epoch, then convert from ticks
+	// to milliseconds.
+	millisFromTicks := (ticks - epochTicks) / 10000
+
+	return time.UnixMilli(millisFromTicks).UTC()
+}
+
+// Base64EncodeUTF16LE encodes a string to Base64 using UTF-16LE encoding
+func Base64EncodeUTF16LE(text string) string {
+	u16 := utf16.Encode([]rune(text))
+	buf := make([]byte, len(u16)*2)
+	for i, v := range u16 {
+		buf[i*2] = byte(v)
+		buf[i*2+1] = byte(v >> 8)
+	}
+	return base64.StdEncoding.EncodeToString(buf)
 }
 
 func doForClient(client *azcore.Client, r *http.Request) (*http.Response, error) {

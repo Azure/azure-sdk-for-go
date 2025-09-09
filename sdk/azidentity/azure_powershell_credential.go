@@ -14,7 +14,6 @@ import (
 	"runtime"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -95,26 +94,61 @@ var defaultAzurePowerShellTokenProvider azurePowerShellTokenProvider = func(ctx 
 	// set a default timeout for this authentication if the application hasn't done so already
 	var cancel context.CancelFunc
 	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
-		ctx, cancel = context.WithTimeout(ctx, cliTimeout)
+		ctx, cancel = context.WithTimeout(ctx, powershellCmdTimeout)
 		defer cancel()
 	}
 
-	commandLine := "Get-AzAccessToken -Resource " + resource
+	// Inline script to handle Get-AzAccessToken differences between Az.Accounts versions with SecureString handling and minimum version requirement
+	command := fmt.Sprintf(`
+$ErrorActionPreference = 'Stop'
+[version]$minimumVersion = '2.2.0'
 
-	if tenantID != "" {
-		commandLine += " -TenantId " + tenantID
-	}
+$mod = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue
 
-	if subscription != "" {
-		// subscription needs quotes because it may contain spaces
-		commandLine += ` -Subscription '` + subscription + `'`
-	}
+if (!$mod) {
+    Write-Error '%s'
+	exit 1
+}
 
-	// convert PSAccessToken to JSON so it can be unmarshaled later
-	commandLine += " | ConvertTo-Json"
+$tenantId = '%s'
+$params = @{
+    ResourceUrl = '%s'
+    WarningAction = 'Ignore'
+}
 
-	// Wrap the command in double quotes for PowerShell -Command
-	powershellCommandArg := "\"" + commandLine + "\""
+if ($tenantId.Length -gt 0) {
+    $params['TenantId'] = '%s'
+}
+
+# For Az.Accounts 2.17.0+ but below 5.0.0, explicitly request secure string
+if ($mod.Version -ge [version]'2.17.0' -and $mod.Version -lt [version]'5.0.0') {
+    $params['AsSecureString'] = $true
+}
+
+$token = Get-AzAccessToken @params
+
+$customToken = New-Object -TypeName psobject
+
+# If the token is a SecureString, convert to plain text using recommended pattern
+if ($token.Token -is [System.Security.SecureString]) {
+    $ssPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($token.Token)
+    try {
+        $plainToken = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($ssPtr)
+    } finally {
+        [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ssPtr)
+    }
+    $customToken | Add-Member -MemberType NoteProperty -Name Token -Value $plainToken
+} else {
+    $customToken | Add-Member -MemberType NoteProperty -Name Token -Value $token.Token
+}
+$customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token.ExpiresOn.UtcDateTime.Ticks
+
+$jsonToken = $customToken | ConvertTo-Json
+return $jsonToken
+`, azurePowerShellNoAzAccountModule, tenantID, resource, tenantID)
+
+	// Encode the command in UTF-16LE and then base64, per PowerShell's requirements for -EncodedCommand.
+	encodedCommand := Base64EncodeUTF16LE(command)
 
 	var powershellCmd *exec.Cmd
 	if runtime.GOOS == "windows" {
@@ -126,13 +160,13 @@ var defaultAzurePowerShellTokenProvider azurePowerShellTokenProvider = func(ctx 
 		// Prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 		pwshPath, err := exec.LookPath("pwsh.exe")
 		if err == nil {
-			powershellCmd = exec.CommandContext(ctx, pwshPath, "-Command", powershellCommandArg)
+			powershellCmd = exec.CommandContext(ctx, pwshPath, "-NoProfile", "-NonInteractive", "-EncodedCommand", encodedCommand)
 		} else {
 			powershellPath, err := exec.LookPath("powershell.exe")
 			if err != nil {
 				return nil, newCredentialUnavailableError(credNameAzurePowerShell, "Neither pwsh.exe nor powershell.exe found in PATH")
 			}
-			powershellCmd = exec.CommandContext(ctx, powershellPath, "-Command", powershellCommandArg)
+			powershellCmd = exec.CommandContext(ctx, powershellPath, "-NoProfile", "-NonInteractive", "-EncodedCommand", encodedCommand)
 		}
 		powershellCmd.Dir = dir
 	} else {
@@ -141,14 +175,14 @@ var defaultAzurePowerShellTokenProvider azurePowerShellTokenProvider = func(ctx 
 		if err != nil {
 			return nil, newCredentialUnavailableError(credNameAzurePowerShell, "pwsh not found in PATH; PowerShell Core is required on Unix platforms")
 		}
-		powershellCmd = exec.CommandContext(ctx, pwshPath, "-Command", powershellCommandArg)
+		powershellCmd = exec.CommandContext(ctx, pwshPath, "-NoProfile", "-NonInteractive", "-EncodedCommand", encodedCommand)
 		powershellCmd.Dir = "/bin"
 	}
 
 	powershellCmd.Env = os.Environ()
 	var stderr bytes.Buffer
 	powershellCmd.Stderr = &stderr
-	powershellCmd.WaitDelay = 100 * time.Millisecond
+	powershellCmd.WaitDelay = powershellCmdWaitDelay
 
 	stdout, err := powershellCmd.Output()
 
@@ -160,10 +194,9 @@ var defaultAzurePowerShellTokenProvider azurePowerShellTokenProvider = func(ctx 
 
 	if err != nil {
 		msg := stderr.String()
-		var exErr *exec.ExitError
 
-		if errors.As(err, &exErr) && exErr.ExitCode() == 127 || strings.HasPrefix(msg, "'Get-AzAccessToken' is not recognized") {
-			msg = "Get-AzAccessToken command not found"
+		if strings.Contains(stderr.String(), azurePowerShellNoAzAccountModule) {
+			msg = "Az.Accounts PowerShell module not found"
 		}
 
 		if msg == "" {
@@ -208,17 +241,14 @@ func (c *AzurePowerShellCredential) GetToken(ctx context.Context, opts policy.To
 func (c *AzurePowerShellCredential) createAccessToken(tk []byte) (azcore.AccessToken, error) {
 	t := struct {
 		Token     string `json:"Token"`
-		ExpiresOn string `json:"ExpiresOn"`
+		ExpiresOn int64  `json:"ExpiresOn"`
 	}{}
 	err := json.Unmarshal(tk, &t)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
 
-	exp, err := time.Parse(time.RFC3339, t.ExpiresOn)
-	if err != nil {
-		return azcore.AccessToken{}, fmt.Errorf("%s: error parsing token expiration time %q: %v", credNameAzurePowerShell, t.ExpiresOn, err)
-	}
+	exp := ticksToUnixTime(t.ExpiresOn)
 
 	converted := azcore.AccessToken{
 		Token:     t.Token,

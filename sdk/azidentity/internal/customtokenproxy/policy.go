@@ -158,7 +158,7 @@ func (p *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error)
 // getTokenTransporter provides the token transport to use for the request.
 //
 // There are a few scenarios need to be handled:
-//  1. no CA overrides, use default transport
+//  1. no CA overrides, use default transport. The transport is fixed after set.
 //  2. CA data override provided, use a transport with custom CA pool.
 //     This transport is fixed after set.
 //  3. CA file override is provided, use a transport with custom CA pool.
@@ -210,8 +210,13 @@ func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) 
 		if !caPool.AppendCertsFromPEM([]byte(b)) {
 			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", p.caFile)
 		}
+		originalTransport := p.transport
 		p.transport = createTransport(p.sniName, caPool)
 		p.caData = b
+
+		if originalTransport != nil {
+			originalTransport.CloseIdleConnections()
+		}
 	}
 
 	return p.transport, nil

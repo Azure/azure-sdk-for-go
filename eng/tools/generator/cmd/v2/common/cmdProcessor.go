@@ -200,7 +200,8 @@ func ExecuteGoFmt(dir string, args ...string) error {
 
 // execute tsp-client command
 func ExecuteTspClient(path string, args ...string) error {
-	cmd := exec.Command("tsp-client", args...)
+	args = append([]string{"tsp-client"}, args...)
+	cmd := exec.Command("npx", args...)
 	cmd.Dir = path
 
 	stdoutPipe, err := cmd.StdoutPipe()

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/PlaywrightWorkspaceQuotas_Get.json
+// Generated from example definition: 2025-09-01/PlaywrightWorkspaceQuotas_Get.json
 func ExampleWorkspaceQuotasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleWorkspaceQuotasClient_Get() {
 	// res = armplaywright.WorkspaceQuotasClientGetResponse{
 	// 	WorkspaceQuota: &armplaywright.WorkspaceQuota{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace/quotas/ExecutionMinutes"),
-	// 		Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+	// 		Name: to.Ptr("ExecutionMinutes"),
 	// 		Type: to.Ptr("Microsoft.LoadTestService/PlaywrightWorkspaces/Quotas"),
 	// 		Properties: &armplaywright.WorkspaceQuotaProperties{
 	// 			FreeTrial: &armplaywright.WorkspaceFreeTrialProperties{
@@ -48,7 +48,7 @@ func ExampleWorkspaceQuotasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
+// Generated from example definition: 2025-09-01/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
 func ExampleWorkspaceQuotasClient_NewListByPlaywrightWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleWorkspaceQuotasClient_NewListByPlaywrightWorkspacePager() {
 		// 		Value: []*armplaywright.WorkspaceQuota{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace/quotas/ExecutionMinutes"),
-		// 				Name: to.Ptr(armplaywright.QuotaNameExecutionMinutes),
+		// 				Name: to.Ptr("ExecutionMinutes"),
 		// 				Type: to.Ptr("Microsoft.LoadTestService/PlaywrightWorkspaces/Quotas"),
 		// 				Properties: &armplaywright.WorkspaceQuotaProperties{
 		// 					FreeTrial: &armplaywright.WorkspaceFreeTrialProperties{

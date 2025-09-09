@@ -475,9 +475,7 @@ func (c *Client) createRequest(
 		}
 	}
 
-	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Raw().Header.Set(headerXmsVersion, apiVersion)
-	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+	addDefaultHeaders(req)
 
 	req.SetOperationValue(operationContext)
 
@@ -541,6 +539,12 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+}
+
+func addDefaultHeaders(req *policy.Request) {
+	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
+	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
 }
 
 func getAllowedHeaders() []string {

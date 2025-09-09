@@ -5,10 +5,26 @@
 
 package armnetapp
 
+// AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
+// not have enough space to accommodate the volume after split, it will be automatically resized, which will lead to increased
+// billing. To accept capacity pool size auto grow and create a short term clone volume, set the property as accepted.
+type AcceptGrowCapacityPoolForShortTermCloneSplit string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
-	moduleVersion = "v7.6.0"
+	// AcceptGrowCapacityPoolForShortTermCloneSplitAccepted - Auto grow capacity pool for short term clone split is accepted.
+	AcceptGrowCapacityPoolForShortTermCloneSplitAccepted AcceptGrowCapacityPoolForShortTermCloneSplit = "Accepted"
+	// AcceptGrowCapacityPoolForShortTermCloneSplitDeclined - Auto grow capacity pool for short term clone split is declined.
+	// Short term clone volume creation will not be allowed, to create short term clone volume accept auto grow capacity pool.
+	AcceptGrowCapacityPoolForShortTermCloneSplitDeclined AcceptGrowCapacityPoolForShortTermCloneSplit = "Declined"
 )
+
+// PossibleAcceptGrowCapacityPoolForShortTermCloneSplitValues returns the possible values for the AcceptGrowCapacityPoolForShortTermCloneSplit const type.
+func PossibleAcceptGrowCapacityPoolForShortTermCloneSplitValues() []AcceptGrowCapacityPoolForShortTermCloneSplit {
+	return []AcceptGrowCapacityPoolForShortTermCloneSplit{
+		AcceptGrowCapacityPoolForShortTermCloneSplitAccepted,
+		AcceptGrowCapacityPoolForShortTermCloneSplitDeclined,
+	}
+}
 
 // ActiveDirectoryStatus - Status of the Active Directory
 type ActiveDirectoryStatus string
@@ -631,6 +647,8 @@ func PossibleSecurityStyleValues() []SecurityStyle {
 type ServiceLevel string
 
 const (
+	// ServiceLevelFlexible - Flexible service level
+	ServiceLevelFlexible ServiceLevel = "Flexible"
 	// ServiceLevelPremium - Premium service level
 	ServiceLevelPremium ServiceLevel = "Premium"
 	// ServiceLevelStandard - Standard service level
@@ -644,6 +662,7 @@ const (
 // PossibleServiceLevelValues returns the possible values for the ServiceLevel const type.
 func PossibleServiceLevelValues() []ServiceLevel {
 	return []ServiceLevel{
+		ServiceLevelFlexible,
 		ServiceLevelPremium,
 		ServiceLevelStandard,
 		ServiceLevelStandardZRS,

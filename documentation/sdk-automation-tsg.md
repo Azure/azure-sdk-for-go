@@ -34,11 +34,8 @@ The Azure Go SDK automation tool:
 
 **Log Keywords**: `The emitter encountered an internal error during preprocessing.`
 
-<<<<<<< HEAD
-=======
 **Context**: This indicates a failure in the TypeSpec emitter, which should be a bug in the `@azure-tools/typespec-go` package.
 
->>>>>>> origin/main
 **Analysis Actions**:
 
 - Extract package information
@@ -57,18 +54,12 @@ The Azure Go SDK automation tool:
 
 **Log Keywords**: `Invalid arguments were passed to the emitter.`
 
-<<<<<<< HEAD
-**Analysis Actions**:
-
-- Review `tspconfig.yaml` configuration
-=======
 **Context**: This happens when config is not set correctly.
 
 **Analysis Actions**:
 
 - Check the error log to see which config is wrong.
 - Refer the [doc](https://azure.github.io/typespec-azure/docs/emitters/clients/typespec-go/reference/emitter/#emitter-options) for the usage of emitter config
->>>>>>> origin/main
 - Compare against standard templates:
   - [Management Plane Template](https://github.com/Azure/azure-rest-api-specs/blob/a8f97793186c7680c62519da238c6d07a20f2023/specification/contosowidgetmanager/Contoso.Management/tspconfig.yaml#L35)
   - [Data Plane Template](https://github.com/Azure/azure-rest-api-specs/blob/a8f97793186c7680c62519da238c6d07a20f2023/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml#L41)
@@ -79,20 +70,14 @@ The Azure Go SDK automation tool:
 
 **Log Keywords**: `module not found, package path:`
 
-<<<<<<< HEAD
-=======
 **Context**: This happens when emitter could not resolve the package you want to generate through configs.
 
->>>>>>> origin/main
 **Analysis Actions**:
 
 - Validate module path configuration
 - Check service directory structure
 - Verify package directory alignment
-<<<<<<< HEAD
-=======
 - Refer the [doc](https://azure.github.io/typespec-azure/docs/emitters/clients/typespec-go/reference/emitter/#emitter-options) for the usage of emitter config
->>>>>>> origin/main
 
 **Resolution**: Correct these `tspconfig.yaml` properties:
 
@@ -129,8 +114,4 @@ The Azure Go SDK automation tool:
 - Identify specific unsupported feature
 - Review error message for feature details
 
-<<<<<<< HEAD
-**Resolution**: Modify TypeSpec authoring to use supported patterns
-=======
 **Resolution**: Modify TypeSpec authoring to use supported patterns if possible, or wait for emitter support.
->>>>>>> origin/main

@@ -105,7 +105,7 @@ type WorkspacesClientCreateResponse struct {
 	Workspace
 }
 
-// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.Delete.
+// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.BeginDelete.
 type WorkspacesClientDeleteResponse struct {
 	// placeholder for future response values
 }

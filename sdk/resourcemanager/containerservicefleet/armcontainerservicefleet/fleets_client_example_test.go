@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
 	"log"
 )
 
@@ -121,7 +121,7 @@ func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperat
 		Identity: &armcontainerservicefleet.ManagedServiceIdentity{
 			Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
-				"key126": {},
+				"key126": &armcontainerservicefleet.UserAssignedIdentity{},
 			},
 		},
 	}, &armcontainerservicefleet.FleetsClientBeginCreateOptions{
@@ -808,7 +808,7 @@ func ExampleFleetsClient_BeginUpdateAsync_updateAFleetGeneratedByMaximumSetRule(
 		Identity: &armcontainerservicefleet.ManagedServiceIdentity{
 			Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
-				"key126": {},
+				"key126": &armcontainerservicefleet.UserAssignedIdentity{},
 			},
 		},
 	}, &armcontainerservicefleet.FleetsClientBeginUpdateAsyncOptions{

@@ -7,7 +7,7 @@ package armdashboard_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard"
 	"log"
 )
 
@@ -22,7 +22,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginApprove() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", armdashboard.PrivateEndpointConnection{}, nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

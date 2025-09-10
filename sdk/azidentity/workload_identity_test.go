@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -313,7 +314,7 @@ func startTestTokenEndpointWithCAData(t testing.TB, tokenHandler http.Handler) (
 		}
 		tenantID := parts[1]
 
-		doc := tenantMetadata(tenantID)
+		doc := tenantMetadata(r.Host, tenantID) // request.Host should be used in server side
 		var m map[string]any
 		if err := json.Unmarshal(doc, &m); err != nil {
 			t.Fatalf("failed to unmarshal tenant metadata: %v", err)
@@ -328,7 +329,16 @@ func startTestTokenEndpointWithCAData(t testing.TB, tokenHandler http.Handler) (
 	mux.Handle("/{tenantid}/v2.0/.well-known/openid-configuration", openidDiscoveryDocumentHandler)
 	mux.HandleFunc("/common/discovery/instance", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write(instanceMetadata("fake-tenant"))
+
+		host := r.Host // request.Host should be used in server side
+		if ae := r.URL.Query().Get("authorization_endpoint"); ae != "" {
+			u, err := url.Parse(ae)
+			if err != nil {
+				t.Fatalf("mockSTS failed to parse an authorization_endpoint query parameter: %v", err)
+			}
+			host = u.Host
+		}
+		_, _ = w.Write(instanceMetadata(host, "fake-tenant"))
 	})
 	mux.Handle("/token", tokenHandler)
 

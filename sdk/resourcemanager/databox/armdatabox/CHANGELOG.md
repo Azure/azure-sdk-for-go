@@ -1,5 +1,45 @@
 # Release History
 
+## 3.0.0 (2025-07-29)
+### Breaking Changes
+
+- Type of `AdditionalErrorInfo.Info` has been changed from `any` to `map[string]any`
+- Type of `CreateJobValidations.ValidationCategory` has been changed from `*string` to `*ValidationCategory`
+- Type of `JobStages.JobStageDetails` has been changed from `any` to `map[string]any`
+- Type of `Operation.Origin` has been changed from `*string` to `*Origin`
+- Type of `Preferences.StorageAccountAccessTierPreferences` has been changed from `[]*string` to `[]*StorageAccountAccessTier`
+- Type of `SystemData.CreatedByType` has been changed from `*string` to `*CreatedByType`
+- Type of `SystemData.LastModifiedByType` has been changed from `*string` to `*CreatedByType`
+- Type of `ValidationRequest.ValidationCategory` has been changed from `*string` to `*ValidationCategory`
+- Function `*ClientFactory.NewManagementClient` has been removed
+- Function `NewManagementClient` has been removed
+- Function `*ManagementClient.Mitigate` has been removed
+- Struct `APIError` has been removed
+- Struct `ArmBaseObject` has been removed
+- Struct `Details` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `GranularCopyProgress` has been removed
+- Struct `Resource` has been removed
+- Field `Identity`, `SKU` of struct `JobResource` has been removed
+- Field `JobResource` of struct `JobsClientCreateResponse` has been removed
+- Field `Properties` of struct `Operation` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `StorageAccountAccessTier` with values `StorageAccountAccessTierArchive`
+- New enum type `ValidationCategory` with values `ValidationCategoryJobCreationValidation`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) (*Client, error)`
+- New function `*Client.Mitigate(context.Context, string, string, MitigateJobRequest, *ClientMitigateOptions) (ClientMitigateResponse, error)`
+- New function `*Client.NewJobsClient() *JobsClient`
+- New function `*Client.NewOperationsClient() *OperationsClient`
+- New function `*Client.NewServiceClient() *ServiceClient`
+- New function `*ClientFactory.NewClient() *Client`
+- New field `ActionType` in struct `Operation`
+
+
 ## 2.2.0 (2025-03-27)
 ### Features Added
 

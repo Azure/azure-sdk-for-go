@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.2 (2025-09-10)
+### Breaking Changes
+
+- Type of `SummaryResource.Name` has been changed from `*SummaryType` to `*string`
+
+
 ## 2.0.0-beta.1 (2025-06-02)
 ### Breaking Changes
 

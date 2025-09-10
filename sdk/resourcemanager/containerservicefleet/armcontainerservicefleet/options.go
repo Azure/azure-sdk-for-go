@@ -14,24 +14,24 @@ type AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions struct {
 // AutoUpgradeProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the AutoUpgradeProfilesClient.BeginCreateOrUpdate
 // method.
 type AutoUpgradeProfilesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
 
 	// The request should only proceed if no entity matches this string.
 	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // AutoUpgradeProfilesClientBeginDeleteOptions contains the optional parameters for the AutoUpgradeProfilesClient.BeginDelete
 // method.
 type AutoUpgradeProfilesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // AutoUpgradeProfilesClientGetOptions contains the optional parameters for the AutoUpgradeProfilesClient.Get method.
@@ -47,33 +47,33 @@ type AutoUpgradeProfilesClientListByFleetOptions struct {
 
 // FleetMembersClientBeginCreateOptions contains the optional parameters for the FleetMembersClient.BeginCreate method.
 type FleetMembersClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
 
 	// The request should only proceed if no entity matches this string.
 	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetMembersClientBeginDeleteOptions contains the optional parameters for the FleetMembersClient.BeginDelete method.
 type FleetMembersClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetMembersClientBeginUpdateAsyncOptions contains the optional parameters for the FleetMembersClient.BeginUpdateAsync
 // method.
 type FleetMembersClientBeginUpdateAsyncOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetMembersClientGetOptions contains the optional parameters for the FleetMembersClient.Get method.
@@ -89,24 +89,24 @@ type FleetMembersClientListByFleetOptions struct {
 // FleetUpdateStrategiesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetUpdateStrategiesClient.BeginCreateOrUpdate
 // method.
 type FleetUpdateStrategiesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
 
 	// The request should only proceed if no entity matches this string.
 	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetUpdateStrategiesClientBeginDeleteOptions contains the optional parameters for the FleetUpdateStrategiesClient.BeginDelete
 // method.
 type FleetUpdateStrategiesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetUpdateStrategiesClientGetOptions contains the optional parameters for the FleetUpdateStrategiesClient.Get method.
@@ -122,32 +122,32 @@ type FleetUpdateStrategiesClientListByFleetOptions struct {
 
 // FleetsClientBeginCreateOptions contains the optional parameters for the FleetsClient.BeginCreate method.
 type FleetsClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
 
 	// The request should only proceed if no entity matches this string.
 	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetsClientBeginDeleteOptions contains the optional parameters for the FleetsClient.BeginDelete method.
 type FleetsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetsClientBeginUpdateAsyncOptions contains the optional parameters for the FleetsClient.BeginUpdateAsync method.
 type FleetsClientBeginUpdateAsyncOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // FleetsClientGetOptions contains the optional parameters for the FleetsClient.Get method.
@@ -172,6 +172,28 @@ type FleetsClientListCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GatesClientBeginUpdateOptions contains the optional parameters for the GatesClient.BeginUpdate method.
+type GatesClientBeginUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GatesClientGetOptions contains the optional parameters for the GatesClient.Get method.
+type GatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatesClientListByFleetOptions contains the optional parameters for the GatesClient.NewListByFleetPager method.
+type GatesClientListByFleetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -180,50 +202,50 @@ type OperationsClientListOptions struct {
 // UpdateRunsClientBeginCreateOrUpdateOptions contains the optional parameters for the UpdateRunsClient.BeginCreateOrUpdate
 // method.
 type UpdateRunsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
 
 	// The request should only proceed if no entity matches this string.
 	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // UpdateRunsClientBeginDeleteOptions contains the optional parameters for the UpdateRunsClient.BeginDelete method.
 type UpdateRunsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // UpdateRunsClientBeginSkipOptions contains the optional parameters for the UpdateRunsClient.BeginSkip method.
 type UpdateRunsClientBeginSkipOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // UpdateRunsClientBeginStartOptions contains the optional parameters for the UpdateRunsClient.BeginStart method.
 type UpdateRunsClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // UpdateRunsClientBeginStopOptions contains the optional parameters for the UpdateRunsClient.BeginStop method.
 type UpdateRunsClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// The request should only proceed if an entity matches this string.
 	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // UpdateRunsClientGetOptions contains the optional parameters for the UpdateRunsClient.Get method.

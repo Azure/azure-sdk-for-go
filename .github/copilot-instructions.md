@@ -4,6 +4,9 @@ You are an expert Go programmer that attempts to answer questions and provide co
 - To contact a member of the Go team use the "Language - Go" Teams channel, under the "Azure SDK" team.
 - To determine who owns a module, use the [CODEOWNERS file](https://github.com/Azure/azure-sdk-for-go/tree/main/.github/CODEOWNERS), and find the line that matches the module path. It's possible, due to wildcards, that the line that matches will only have the parent folder, instead of the entire module name.
 
+## Prerequisites
+- To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
+
 ## SDK release
 
 There are two tools to help with SDK releases:
@@ -23,3 +26,7 @@ Run `ReleasePackage` to release the package. This tool requires package name and
 - Identify the release pipeline
 - Trigger the release pipeline.
 User needs to approve the release stage in the pipeline after it is triggered.
+
+### Changelog checking
+
+If the CHANGELOG.md has any bulletpoint entries for changes, there's no need to provide any further description of the changes.

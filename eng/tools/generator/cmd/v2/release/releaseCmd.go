@@ -63,7 +63,6 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 }
 
 type Flags struct {
-	VersionNumber       string
 	SwaggerRepo         string
 	PackageTitle        string
 	SDKRepo             string
@@ -79,7 +78,6 @@ type Flags struct {
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
-	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("package-title", "", "Specifies the title of this package")
 	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
@@ -96,7 +94,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber:       flags.GetString(flagSet, "version-number"),
 		PackageTitle:        flags.GetString(flagSet, "package-title"),
 		SDKRepo:             flags.GetString(flagSet, "sdk-repo"),
 		SwaggerRepo:         flags.GetString(flagSet, "spec-repo"),
@@ -166,7 +163,6 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			SpecificPackageTitle: c.flags.PackageTitle,
-			SpecificVersion:      c.flags.VersionNumber,
 			SpecRPName:           c.flags.SpecRPName,
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,
@@ -186,7 +182,6 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			NamespaceName:        c.namespaceName,
 			NamespaceConfig:      c.flags.PackageConfig,
 			SpecificPackageTitle: c.flags.PackageTitle,
-			SpecificVersion:      c.flags.VersionNumber,
 			SpecRPName:           c.flags.SpecRPName,
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,

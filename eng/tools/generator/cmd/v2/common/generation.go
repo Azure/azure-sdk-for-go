@@ -48,7 +48,6 @@ type GenerateParam struct {
 	RPName               string
 	NamespaceName        string
 	NamespaceConfig      string
-	SpecificVersion      string
 	SpecificPackageTitle string
 	SpecRPName           string
 	ReleaseDate          string
@@ -115,7 +114,7 @@ func (ctx *GenerateContext) GenerateFromTypeSpec(tspconfigPath string, commonGen
 		return nil, fmt.Errorf("failed to parse %s: %+v\nInvalid tspconfig.yaml provided and refer to the sample file to fix the content. management-plane: https://aka.ms/azsdk/tspconfig-sample-mpg, data-plane: https://aka.ms/azsdk/tspconfig-sample-dpg", tspconfigPath, err)
 	}
 
-	if ok := tsc.ExistEmitOption(string(typespec.TypeSpec_GO)); !ok {
+	if ok, _ := tsc.ExistEmitOption(); !ok {
 		log.Printf("`@azure-tools/typespec-go` option not found in %s, it is required, please refer to the sample file to configure it. management-plane: https://aka.ms/azsdk/tspconfig-sample-mpg, data-plane: https://aka.ms/azsdk/tspconfig-sample-dpg", tspconfigPath)
 		return nil, nil
 	}
@@ -144,7 +143,6 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				ReleaseDate:          commonGenerateParam.ReleaseDate,
 				RemoveTagSet:         commonGenerateParam.RemoveTagSet,
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
-				SpecificVersion:      commonGenerateParam.SpecificVersion,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
 			})
 			if err != nil {
@@ -165,13 +163,6 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
 		return nil, err
-	}
-	if generateParam.SpecificVersion != "" {
-		log.Printf("Use specific version: %s", generateParam.SpecificVersion)
-		version, err = semver.NewVersion(generateParam.SpecificVersion)
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	// check if the package is onboard or update, to init different generator
@@ -433,11 +424,9 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 	packagePath := t.PackagePath
 
 	log.Printf("Calculate new version...")
-	if generateParam.SpecificVersion == "" {
-		version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
-		if err != nil {
-			return nil, err
-		}
+	version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+	if err != nil {
+		return nil, err
 	}
 
 	log.Printf("Add changelog to file...")
@@ -452,29 +441,16 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam, cha
 		return nil, err
 	}
 
-	oldModuleVersion, err := getModuleVersion(filepath.Join(packagePath, "autorest.md"))
-	if err != nil {
-		return nil, err
-	}
-
 	log.Printf("Replace version in autorest.md and version.go...")
 	if err = ReplaceVersion(packagePath, version.String()); err != nil {
 		return nil, err
 	}
 
-	if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
-		log.Printf("Replace fake module v2+...")
-		if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
-			"fake", ".go"); err != nil {
-			return nil, err
-		}
-	}
-
-	// When sdk has major version bump, the live test needs to update the module referenced in the code.
-	if oldModuleVersion.Major() != version.Major() && existSuffixFile(packagePath, "_live_test.go") {
-		log.Printf("Replace live test module v2+...")
-		if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
-			"", "_live_test.go"); err != nil {
+	// Replace import for module v2+
+	baseModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName)
+	if version.Major() > 1 {
+		log.Printf("Replace import for module v2+...")
+		if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
 			return nil, err
 		}
 	}
@@ -555,13 +531,6 @@ func (ctx *GenerateContext) GenerateForSingleTypeSpec(generateParam *GeneratePar
 	version, err := semver.NewVersion("0.1.0")
 	if err != nil {
 		return nil, err
-	}
-	if generateParam.SpecificVersion != "" {
-		log.Printf("Use specific version: %s", generateParam.SpecificVersion)
-		version, err = semver.NewVersion(generateParam.SpecificVersion)
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	// check if the package is onboard or update, to init different generator
@@ -775,7 +744,6 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 
 func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*exports.Content, error) {
 	var err error
-	version := t.Version
 	packagePath := t.PackagePath
 
 	previousVersion := ""
@@ -785,11 +753,6 @@ func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 		isCurrentPreview = true
 	} else if generateParam.SdkReleaseType == SDKReleaseTypeStable {
 		isCurrentPreview = false
-	} else if generateParam.SpecificVersion != "" {
-		isCurrentPreview, err = IsBetaVersion(version.String())
-		if err != nil {
-			return nil, err
-		}
 	} else {
 		isCurrentPreview, err = changelog.ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
@@ -823,8 +786,7 @@ func (t *TypeSpecUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*e
 func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, changelog *changelog.Changelog, newExports exports.Content) (*GenerateResult, error) {
 	var prl PullRequestLabel
 	var err error
-	version := t.Version
-	defaultModuleVersion := version.String()
+	var version *semver.Version
 	packagePath := t.PackagePath
 	modulePath := t.ModulePath
 	packageRelativePath := t.PackageRelativePath
@@ -833,11 +795,9 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	isCurrentPreview := t.IsCurrentPreview
 
 	log.Printf("Calculate new version...")
-	if generateParam.SpecificVersion == "" {
-		version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
-		if err != nil {
-			return nil, err
-		}
+	version, prl, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
+	if err != nil {
+		return nil, err
 	}
 
 	log.Printf("Add changelog to file...")
@@ -857,23 +817,11 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		return nil, err
 	}
 
-	oldModuleVersion, err := semver.NewVersion(defaultModuleVersion)
-	if err != nil {
-		return nil, err
-	}
-
+	// Replace import for module v2+
 	baseModule := fmt.Sprintf("%s/%s", "github.com/Azure/azure-sdk-for-go", moduleRelativePath)
-	if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
-		log.Printf("Replace fake module v2+...")
+	if version.Major() > 1 {
+		log.Printf("Replace import for module v2+...")
 		if err = ReplaceModule(version, packagePath, baseModule, ".go"); err != nil {
-			return nil, err
-		}
-	}
-
-	// When sdk has major version bump, the live test needs to update the module referenced in the code.
-	if existSuffixFile(packagePath, "_live_test.go") {
-		log.Printf("Replace live test module v2+...")
-		if err = ReplaceModule(version, packagePath, baseModule, "_live_test.go"); err != nil {
 			return nil, err
 		}
 	}

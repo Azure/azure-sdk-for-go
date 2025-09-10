@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/Sites_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Sites_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSitesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleSitesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Sites_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Sites_Delete_MaximumSet_Gen.json
 func ExampleSitesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleSitesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Sites_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Sites_Get_MaximumSet_Gen.json
 func ExampleSitesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleSitesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Sites_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Sites_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleSitesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleSitesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Sites_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-06-01/Sites_Update_MaximumSet_Gen.json
 func ExampleSitesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

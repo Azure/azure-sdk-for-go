@@ -4,11 +4,6 @@
 
 package armterraform
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/terraform/armterraform"
-	moduleVersion = "v0.1.0"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -21,6 +16,32 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AuthorizationScopeFilter - The Azure Resource Graph Authorization Scope Filter parameter
+type AuthorizationScopeFilter string
+
+const (
+	// AuthorizationScopeFilterAtScopeAboveAndBelow - Returns assignments for the given scope, all parent scopes, and all child
+	// scopes.
+	AuthorizationScopeFilterAtScopeAboveAndBelow AuthorizationScopeFilter = "AtScopeAboveAndBelow"
+	// AuthorizationScopeFilterAtScopeAndAbove - Returns assignments for the given scope and all parent scopes, but not child
+	// scopes.
+	AuthorizationScopeFilterAtScopeAndAbove AuthorizationScopeFilter = "AtScopeAndAbove"
+	// AuthorizationScopeFilterAtScopeAndBelow - Returns assignments for the given scope and all child scopes.
+	AuthorizationScopeFilterAtScopeAndBelow AuthorizationScopeFilter = "AtScopeAndBelow"
+	// AuthorizationScopeFilterAtScopeExact - Returns assignments only for the given scope; no parent or child scopes are included.
+	AuthorizationScopeFilterAtScopeExact AuthorizationScopeFilter = "AtScopeExact"
+)
+
+// PossibleAuthorizationScopeFilterValues returns the possible values for the AuthorizationScopeFilter const type.
+func PossibleAuthorizationScopeFilterValues() []AuthorizationScopeFilter {
+	return []AuthorizationScopeFilter{
+		AuthorizationScopeFilterAtScopeAboveAndBelow,
+		AuthorizationScopeFilterAtScopeAndAbove,
+		AuthorizationScopeFilterAtScopeAndBelow,
+		AuthorizationScopeFilterAtScopeExact,
 	}
 }
 

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/InstanceHistories_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/InstanceHistories_Get_MaximumSet_Gen.json
 func ExampleInstanceHistoriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleInstanceHistoriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/InstanceHistories_ListByInstance_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/InstanceHistories_ListByInstance_MaximumSet_Gen.json
 func ExampleInstanceHistoriesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

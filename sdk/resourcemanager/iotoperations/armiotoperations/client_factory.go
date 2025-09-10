@@ -32,6 +32,22 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAkriConnectorClient creates a new instance of AkriConnectorClient.
+func (c *ClientFactory) NewAkriConnectorClient() *AkriConnectorClient {
+	return &AkriConnectorClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewAkriConnectorTemplateClient creates a new instance of AkriConnectorTemplateClient.
+func (c *ClientFactory) NewAkriConnectorTemplateClient() *AkriConnectorTemplateClient {
+	return &AkriConnectorTemplateClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewBrokerAuthenticationClient creates a new instance of BrokerAuthenticationClient.
 func (c *ClientFactory) NewBrokerAuthenticationClient() *BrokerAuthenticationClient {
 	return &BrokerAuthenticationClient{
@@ -80,6 +96,14 @@ func (c *ClientFactory) NewDataflowEndpointClient() *DataflowEndpointClient {
 	}
 }
 
+// NewDataflowGraphClient creates a new instance of DataflowGraphClient.
+func (c *ClientFactory) NewDataflowGraphClient() *DataflowGraphClient {
+	return &DataflowGraphClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDataflowProfileClient creates a new instance of DataflowProfileClient.
 func (c *ClientFactory) NewDataflowProfileClient() *DataflowProfileClient {
 	return &DataflowProfileClient{
@@ -100,5 +124,13 @@ func (c *ClientFactory) NewInstanceClient() *InstanceClient {
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewRegistryEndpointClient creates a new instance of RegistryEndpointClient.
+func (c *ClientFactory) NewRegistryEndpointClient() *RegistryEndpointClient {
+	return &RegistryEndpointClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }

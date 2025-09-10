@@ -23,11 +23,11 @@ type AuthenticationSetting struct {
 	// The resource-specific properties for this resource.
 	Properties AuthenticationSettingPropertiesClassification
 
-	// READ-ONLY; Name of the authentication setting. Must be unique within a health model.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -110,11 +110,11 @@ type DiscoveryRule struct {
 	// The resource-specific properties for this resource.
 	Properties *DiscoveryRuleProperties
 
-	// READ-ONLY; Name of the discovery rule. Must be unique within a health model.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -189,11 +189,11 @@ type Entity struct {
 	// The resource-specific properties for this resource.
 	Properties *EntityProperties
 
-	// READ-ONLY; Name of the entity. Must be unique within a health model.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -288,9 +288,6 @@ type HealthModel struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of health model resource
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -302,6 +299,9 @@ type HealthModel struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -582,12 +582,11 @@ type Relationship struct {
 	// The resource-specific properties for this resource.
 	Properties *RelationshipProperties
 
-	// READ-ONLY; Name of the relationship. Must be unique within a health model. For example, a concatenation of parentEntityName
-	// and childEntityName can be used as the name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -700,11 +699,11 @@ type SignalDefinition struct {
 	// The resource-specific properties for this resource.
 	Properties SignalDefinitionPropertiesClassification
 
-	// READ-ONLY; Name of the signal definition. Must be unique within a health model.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

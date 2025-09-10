@@ -402,6 +402,13 @@ type SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions struct {
 	ResumeToken string
 }
 
+// SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginBulkReviewSolution
+// method.
+type SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // SolutionTemplateVersionsClientGetOptions contains the optional parameters for the SolutionTemplateVersionsClient.Get method.
 type SolutionTemplateVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -573,6 +580,13 @@ type TargetsClientBeginReviewSolutionVersionOptions struct {
 // TargetsClientBeginUninstallSolutionOptions contains the optional parameters for the TargetsClient.BeginUninstallSolution
 // method.
 type TargetsClientBeginUninstallSolutionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TargetsClientBeginUnstageSolutionVersionOptions contains the optional parameters for the TargetsClient.BeginUnstageSolutionVersion
+// method.
+type TargetsClientBeginUnstageSolutionVersionOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

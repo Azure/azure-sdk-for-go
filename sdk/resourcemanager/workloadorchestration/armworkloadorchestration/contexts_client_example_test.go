@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Contexts_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Contexts_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleContextsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleContextsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Contexts_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Contexts_Delete_MaximumSet_Gen.json
 func ExampleContextsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleContextsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Contexts_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Contexts_Get_MaximumSet_Gen.json
 func ExampleContextsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleContextsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Contexts_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Contexts_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleContextsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleContextsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Contexts_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Contexts_ListBySubscription_MaximumSet_Gen.json
 func ExampleContextsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +297,7 @@ func ExampleContextsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Contexts_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01/Contexts_Update_MaximumSet_Gen.json
 func ExampleContextsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

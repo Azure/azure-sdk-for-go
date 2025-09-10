@@ -34,7 +34,9 @@ type ContainerGroupProperties struct {
 	SubnetIDs []*Subnet
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -150,11 +152,11 @@ type StandbyContainerGroupPoolResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the standby container group pool
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -214,12 +216,11 @@ type StandbyContainerGroupPoolRuntimeViewResource struct {
 	// The resource-specific properties for this resource.
 	Properties *StandbyContainerGroupPoolRuntimeViewResourceProperties
 
-	// READ-ONLY; The unique identifier for the runtime view. The input string should be the word 'latest', which will get the
-	// latest runtime view of the pool, otherwise the request will fail with NotFound exception.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -294,11 +295,11 @@ type StandbyVirtualMachinePoolResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the standby virtual machine pool
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -358,12 +359,11 @@ type StandbyVirtualMachinePoolRuntimeViewResource struct {
 	// The resource-specific properties for this resource.
 	Properties *StandbyVirtualMachinePoolRuntimeViewResourceProperties
 
-	// READ-ONLY; The unique identifier for the runtime view. The input string should be the word 'latest', which will get the
-	// latest runtime view of the pool, otherwise the request will fail with NotFound exception.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -406,11 +406,11 @@ type StandbyVirtualMachineResource struct {
 	// The resource-specific properties for this resource.
 	Properties *StandbyVirtualMachineResourceProperties
 
-	// READ-ONLY; Name of the standby virtual machine
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

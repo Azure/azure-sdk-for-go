@@ -210,13 +210,11 @@ func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) 
 		if !caPool.AppendCertsFromPEM([]byte(b)) {
 			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", p.caFile)
 		}
-		originalTransport := p.transport
+		if p.transport != nil {
+			p.transport.CloseIdleConnections()
+		}
 		p.transport = createTransport(p.sniName, caPool)
 		p.caData = b
-
-		if originalTransport != nil {
-			originalTransport.CloseIdleConnections()
-		}
 	}
 
 	return p.transport, nil

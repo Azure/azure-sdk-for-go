@@ -288,14 +288,32 @@ type PathClientGetPropertiesResponse struct {
 	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string
 
+	// CreationTime contains the information returned from the x-ms-creation-time header response.
+	CreationTime *time.Time
+
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
+	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
+	EncryptionContext *string
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// ExpiresOn contains the information returned from the x-ms-expiry-time header response.
+	ExpiresOn *time.Time
+
 	// Group contains the information returned from the x-ms-group header response.
 	Group *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-server-encrypted header response.
+	IsServerEncrypted *bool
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time

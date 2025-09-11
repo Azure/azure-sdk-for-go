@@ -260,6 +260,39 @@ func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type UserDelegationKey.
+func (u UserDelegationKey) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias UserDelegationKey
+	aux := &struct {
+		*alias
+		SignedExpiry *timeRFC3339 `xml:"SignedExpiry"`
+		SignedStart  *timeRFC3339 `xml:"SignedStart"`
+	}{
+		alias:        (*alias)(&u),
+		SignedExpiry: (*timeRFC3339)(u.SignedExpiry),
+		SignedStart:  (*timeRFC3339)(u.SignedStart),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type UserDelegationKey.
+func (u *UserDelegationKey) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias UserDelegationKey
+	aux := &struct {
+		*alias
+		SignedExpiry *timeRFC3339 `xml:"SignedExpiry"`
+		SignedStart  *timeRFC3339 `xml:"SignedStart"`
+	}{
+		alias: (*alias)(u),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	u.SignedExpiry = (*time.Time)(aux.SignedExpiry)
+	u.SignedStart = (*time.Time)(aux.SignedStart)
+	return nil
+}
+
 func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return

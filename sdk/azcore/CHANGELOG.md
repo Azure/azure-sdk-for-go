@@ -1,10 +1,6 @@
 # Release History
 
-## 1.19.1-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.19.1 (2025-09-11)
 
 ### Bugs Fixed
 
@@ -13,6 +9,7 @@
 ### Other Changes
 
 * Improved error fall-back for improperly authored long-running operations.
+* Upgraded dependencies to highest version that doesn't require Go 1.24.0 as a minimum version.
 
 ## 1.19.0 (2025-08-21)
 

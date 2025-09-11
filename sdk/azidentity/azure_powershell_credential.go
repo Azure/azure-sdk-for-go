@@ -123,7 +123,7 @@ if (!$mod) {
 }
 
 # Only force AsSecureString for older Az.Accounts versions that support it and return plain text token by default.
-# Newer Az.Accounts versions default to SecureString and removed the AsSecureString parameter
+# Newer Az.Accounts versions return SecureString token by default and no longer use AsSecureString parameter.
 if ($mod.Version -ge [version]'%s' -and $mod.Version -lt [version]'%s') {
     $params['AsSecureString'] = $true
 }

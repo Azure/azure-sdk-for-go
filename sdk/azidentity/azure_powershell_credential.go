@@ -19,9 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const (
-	credNameAzurePowerShell = "AzurePowerShellCredential"
-)
+const credNameAzurePowerShell = "AzurePowerShellCredential"
 
 // AzurePowerShellCredentialOptions contains optional parameters for AzurePowerShellCredential.
 type AzurePowerShellCredentialOptions struct {

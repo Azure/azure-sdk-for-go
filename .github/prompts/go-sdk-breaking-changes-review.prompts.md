@@ -15,13 +15,11 @@ Follow these steps to help users review the Go SDK breaking changes. Show the hi
 
 ## Step 3: Review Breaking Changes
 
-Follow the [Azure Go SDK Breaking Changes Review and Resolution Guide](../../documentation/sdk-breaking-changes-guide.md) to review the breaking changes:
-
 ### 3.1 Determine Review Approach
 
 - Check the generation type from the generator output
-- If generation type is `MigrateToTypeSpec`, focus on "Migration from Swagger to TypeSpec" section
-- If generation type is anything else, focus on "TypeSpec Specification Updates" section
+- If generation type is `MigrateToTypeSpec`, follow the [Azure Go SDK Breaking Changes Review and Resolution Guide for TypeSpec Migration](../../documentation/sdk-breaking-changes-guide-migration.md) to review the breaking changes.
+- If generation type is anything else, follow the [Azure Go SDK Breaking Changes Review and Resolution Guide](../../documentation/sdk-breaking-changes-guide.md) to review the breaking changes.
 
 ### 3.2 Analyze Breaking Changes Systematically
 

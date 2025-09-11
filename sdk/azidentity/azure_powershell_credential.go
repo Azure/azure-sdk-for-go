@@ -131,7 +131,7 @@ $token = Get-AzAccessToken -ResourceUrl '%s'%s
 
 $customToken = New-Object -TypeName psobject
 
-# If the token is a SecureString, convert to plain text using recommended pattern
+# The following .NET interop pattern is supported in all PowerShell versions and safely converts SecureString to plain text.
 if ($token.Token -is [System.Security.SecureString]) {
     $ssPtr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($token.Token)
     try {

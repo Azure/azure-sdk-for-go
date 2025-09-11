@@ -153,7 +153,7 @@ func TestAzurePowerShellCredential_TenantID(t *testing.T) {
 			encodedScript := splitCommand[len(splitCommand)-1]
 			decodedScript, err := base64DecodeUTF16LE(encodedScript)
 			require.NoError(t, err)
-			require.Contains(t, decodedScript, fmt.Sprintf(" -TenantId '%s'", expected))
+			require.Contains(t, decodedScript, fmt.Sprintf("$params['TenantId'] = '%s'", expected))
 			return mockAzurePowerShellSuccess(ctx, credName, command)
 		},
 	}

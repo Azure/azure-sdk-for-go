@@ -715,7 +715,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 						encodedScript := splitCommand[len(splitCommand)-1]
 						decodedScript, err := base64DecodeUTF16LE(encodedScript)
 						require.NoError(t, err)
-						require.Contains(t, decodedScript, fmt.Sprintf(" -TenantId '%s'", tc.expected))
+						require.Contains(t, decodedScript, fmt.Sprintf("$params['TenantId'] = '%s'", tc.expected))
 						return mockAzurePowerShellSuccess(ctx, credName, commandLine)
 					},
 				}

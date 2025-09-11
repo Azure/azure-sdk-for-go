@@ -122,13 +122,23 @@ if (!$mod) {
     Write-Error '%s'
 }
 
+$params = @{
+    ResourceUrl   = '%s'
+	WarningAction = 'Ignore'
+}
+
 # Only force AsSecureString for older Az.Accounts versions that support it and return plain text token by default.
 # Newer Az.Accounts versions return SecureString token by default and no longer use AsSecureString parameter.
 if ($mod.Version -ge [version]'%s' -and $mod.Version -lt [version]'%s') {
     $params['AsSecureString'] = $true
 }
 
-$token = Get-AzAccessToken -ResourceUrl '%s'%s
+$tenantId = '%s'
+if ($tenantId.Length -gt 0) {
+    $params['TenantId'] = '%s'
+}
+
+$token = Get-AzAccessToken @params
 
 $customToken = New-Object -TypeName psobject
 
@@ -148,7 +158,7 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, azAccountsMinVersion, azAccountsModuleNotFound, azAccountsSecureStringMinVersion, azAccountsSecureStringMaxVersion, resource, tenantArg)
+`, azAccountsMinVersion, azAccountsModuleNotFound, resource, azAccountsSecureStringMinVersion, azAccountsSecureStringMaxVersion, tenantArg, tenantArg)
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)

@@ -4,14 +4,13 @@
 
 package armterraform
 
+// ClientBeginExportTerraformOptions contains the optional parameters for the Client.BeginExportTerraform method.
+type ClientBeginExportTerraformOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// TerraformClientBeginExportTerraformOptions contains the optional parameters for the TerraformClient.BeginExportTerraform
-// method.
-type TerraformClientBeginExportTerraformOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
 }

@@ -16,23 +16,23 @@ import (
 	"strings"
 )
 
-// TerraformClient contains the methods for the Terraform group.
-// Don't use this type directly, use NewTerraformClient() instead.
-type TerraformClient struct {
+// Client contains the methods for the service.
+// Don't use this type directly, use NewClient() instead.
+type Client struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewTerraformClient creates a new instance of TerraformClient with the specified values.
+// NewClient creates a new instance of Client with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewTerraformClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TerraformClient, error) {
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &TerraformClient{
+	client := &Client{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -44,21 +44,20 @@ func NewTerraformClient(subscriptionID string, credential azcore.TokenCredential
 //
 // Generated from API version 2023-07-01-preview
 //   - body - The request body
-//   - options - TerraformClientBeginExportTerraformOptions contains the optional parameters for the TerraformClient.BeginExportTerraform
-//     method.
-func (client *TerraformClient) BeginExportTerraform(ctx context.Context, body BaseExportModelClassification, options *TerraformClientBeginExportTerraformOptions) (*runtime.Poller[TerraformClientExportTerraformResponse], error) {
+//   - options - ClientBeginExportTerraformOptions contains the optional parameters for the Client.BeginExportTerraform method.
+func (client *Client) BeginExportTerraform(ctx context.Context, body BaseExportModelClassification, options *ClientBeginExportTerraformOptions) (*runtime.Poller[ClientExportTerraformResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.exportTerraform(ctx, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TerraformClientExportTerraformResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientExportTerraformResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TerraformClientExportTerraformResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientExportTerraformResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -68,9 +67,9 @@ func (client *TerraformClient) BeginExportTerraform(ctx context.Context, body Ba
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-07-01-preview
-func (client *TerraformClient) exportTerraform(ctx context.Context, body BaseExportModelClassification, options *TerraformClientBeginExportTerraformOptions) (*http.Response, error) {
+func (client *Client) exportTerraform(ctx context.Context, body BaseExportModelClassification, options *ClientBeginExportTerraformOptions) (*http.Response, error) {
 	var err error
-	const operationName = "TerraformClient.BeginExportTerraform"
+	const operationName = "Client.BeginExportTerraform"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -90,7 +89,7 @@ func (client *TerraformClient) exportTerraform(ctx context.Context, body BaseExp
 }
 
 // exportTerraformCreateRequest creates the ExportTerraform request.
-func (client *TerraformClient) exportTerraformCreateRequest(ctx context.Context, body BaseExportModelClassification, _ *TerraformClientBeginExportTerraformOptions) (*policy.Request, error) {
+func (client *Client) exportTerraformCreateRequest(ctx context.Context, body BaseExportModelClassification, _ *ClientBeginExportTerraformOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureTerraform/exportTerraform"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -103,7 +102,6 @@ func (client *TerraformClient) exportTerraformCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err

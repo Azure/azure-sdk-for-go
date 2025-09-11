@@ -15,11 +15,11 @@ import (
 
 // ServerFactory is a fake server for instances of the armterraform.ClientFactory type.
 type ServerFactory struct {
+	// Server contains the fakes for client Client
+	Server Server
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
-
-	// TerraformServer contains the fakes for client TerraformClient
-	TerraformServer TerraformServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,8 +36,8 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                *ServerFactory
 	trMu               sync.Mutex
+	trServer           *ServerTransport
 	trOperationsServer *OperationsServerTransport
-	trTerraformServer  *TerraformServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -53,12 +53,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "Client":
+		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		resp, err = s.trServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "TerraformClient":
-		initServer(s, &s.trTerraformServer, func() *TerraformServerTransport { return NewTerraformServerTransport(&s.srv.TerraformServer) })
-		resp, err = s.trTerraformServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

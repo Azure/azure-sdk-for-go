@@ -16,55 +16,55 @@ import (
 	"regexp"
 )
 
-// TerraformServer is a fake server for instances of the armterraform.TerraformClient type.
-type TerraformServer struct {
-	// BeginExportTerraform is the fake for method TerraformClient.BeginExportTerraform
+// Server is a fake server for instances of the armterraform.Client type.
+type Server struct {
+	// BeginExportTerraform is the fake for method Client.BeginExportTerraform
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginExportTerraform func(ctx context.Context, body armterraform.BaseExportModelClassification, options *armterraform.TerraformClientBeginExportTerraformOptions) (resp azfake.PollerResponder[armterraform.TerraformClientExportTerraformResponse], errResp azfake.ErrorResponder)
+	BeginExportTerraform func(ctx context.Context, body armterraform.BaseExportModelClassification, options *armterraform.ClientBeginExportTerraformOptions) (resp azfake.PollerResponder[armterraform.ClientExportTerraformResponse], errResp azfake.ErrorResponder)
 }
 
-// NewTerraformServerTransport creates a new instance of TerraformServerTransport with the provided implementation.
-// The returned TerraformServerTransport instance is connected to an instance of armterraform.TerraformClient via the
+// NewServerTransport creates a new instance of ServerTransport with the provided implementation.
+// The returned ServerTransport instance is connected to an instance of armterraform.Client via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewTerraformServerTransport(srv *TerraformServer) *TerraformServerTransport {
-	return &TerraformServerTransport{
+func NewServerTransport(srv *Server) *ServerTransport {
+	return &ServerTransport{
 		srv:                  srv,
-		beginExportTerraform: newTracker[azfake.PollerResponder[armterraform.TerraformClientExportTerraformResponse]](),
+		beginExportTerraform: newTracker[azfake.PollerResponder[armterraform.ClientExportTerraformResponse]](),
 	}
 }
 
-// TerraformServerTransport connects instances of armterraform.TerraformClient to instances of TerraformServer.
-// Don't use this type directly, use NewTerraformServerTransport instead.
-type TerraformServerTransport struct {
-	srv                  *TerraformServer
-	beginExportTerraform *tracker[azfake.PollerResponder[armterraform.TerraformClientExportTerraformResponse]]
+// ServerTransport connects instances of armterraform.Client to instances of Server.
+// Don't use this type directly, use NewServerTransport instead.
+type ServerTransport struct {
+	srv                  *Server
+	beginExportTerraform *tracker[azfake.PollerResponder[armterraform.ClientExportTerraformResponse]]
 }
 
-// Do implements the policy.Transporter interface for TerraformServerTransport.
-func (t *TerraformServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ServerTransport.
+func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return t.dispatchToMethodFake(req, method)
+	return s.dispatchToMethodFake(req, method)
 }
 
-func (t *TerraformServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if terraformServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = terraformServerTransportInterceptor.Do(req)
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "TerraformClient.BeginExportTerraform":
-				res.resp, res.err = t.dispatchBeginExportTerraform(req)
+			case "Client.BeginExportTerraform":
+				res.resp, res.err = s.dispatchBeginExportTerraform(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -84,16 +84,16 @@ func (t *TerraformServerTransport) dispatchToMethodFake(req *http.Request, metho
 	}
 }
 
-func (t *TerraformServerTransport) dispatchBeginExportTerraform(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginExportTerraform == nil {
+func (s *ServerTransport) dispatchBeginExportTerraform(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginExportTerraform == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginExportTerraform not implemented")}
 	}
-	beginExportTerraform := t.beginExportTerraform.get(req)
+	beginExportTerraform := s.beginExportTerraform.get(req)
 	if beginExportTerraform == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureTerraform/exportTerraform`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		raw, err := readRequestBody(req)
@@ -104,12 +104,12 @@ func (t *TerraformServerTransport) dispatchBeginExportTerraform(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginExportTerraform(req.Context(), body, nil)
+		respr, errRespr := s.srv.BeginExportTerraform(req.Context(), body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginExportTerraform = &respr
-		t.beginExportTerraform.add(req, beginExportTerraform)
+		s.beginExportTerraform.add(req, beginExportTerraform)
 	}
 
 	resp, err := server.PollerResponderNext(beginExportTerraform, req)
@@ -118,18 +118,18 @@ func (t *TerraformServerTransport) dispatchBeginExportTerraform(req *http.Reques
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginExportTerraform.remove(req)
+		s.beginExportTerraform.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginExportTerraform) {
-		t.beginExportTerraform.remove(req)
+		s.beginExportTerraform.remove(req)
 	}
 
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to TerraformServerTransport
-var terraformServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

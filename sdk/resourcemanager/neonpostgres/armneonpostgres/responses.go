@@ -27,56 +27,10 @@ type BranchesClientListResponse struct {
 	BranchListResult
 }
 
-// BranchesClientUpdateResponse contains the response from method BranchesClient.BeginUpdate.
-type BranchesClientUpdateResponse struct {
-	// The Branch resource type.
-	Branch
-}
-
-// ComputesClientCreateOrUpdateResponse contains the response from method ComputesClient.BeginCreateOrUpdate.
-type ComputesClientCreateOrUpdateResponse struct {
-	// The Compute resource type.
-	Compute
-}
-
-// ComputesClientDeleteResponse contains the response from method ComputesClient.Delete.
-type ComputesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ComputesClientGetResponse contains the response from method ComputesClient.Get.
-type ComputesClientGetResponse struct {
-	// The Compute resource type.
-	Compute
-}
-
 // ComputesClientListResponse contains the response from method ComputesClient.NewListPager.
 type ComputesClientListResponse struct {
 	// The response of a Compute list operation.
 	ComputeListResult
-}
-
-// ComputesClientUpdateResponse contains the response from method ComputesClient.BeginUpdate.
-type ComputesClientUpdateResponse struct {
-	// The Compute resource type.
-	Compute
-}
-
-// EndpointsClientCreateOrUpdateResponse contains the response from method EndpointsClient.BeginCreateOrUpdate.
-type EndpointsClientCreateOrUpdateResponse struct {
-	// The Neon compute endpoint resource type.
-	Endpoint
-}
-
-// EndpointsClientDeleteResponse contains the response from method EndpointsClient.Delete.
-type EndpointsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// EndpointsClientGetResponse contains the response from method EndpointsClient.Get.
-type EndpointsClientGetResponse struct {
-	// The Neon compute endpoint resource type.
-	Endpoint
 }
 
 // EndpointsClientListResponse contains the response from method EndpointsClient.NewListPager.
@@ -85,68 +39,16 @@ type EndpointsClientListResponse struct {
 	EndpointListResult
 }
 
-// EndpointsClientUpdateResponse contains the response from method EndpointsClient.BeginUpdate.
-type EndpointsClientUpdateResponse struct {
-	// The Neon compute endpoint resource type.
-	Endpoint
-}
-
-// NeonDatabasesClientCreateOrUpdateResponse contains the response from method NeonDatabasesClient.BeginCreateOrUpdate.
-type NeonDatabasesClientCreateOrUpdateResponse struct {
-	// The Neon Database resource type.
-	NeonDatabase
-}
-
-// NeonDatabasesClientDeleteResponse contains the response from method NeonDatabasesClient.Delete.
-type NeonDatabasesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// NeonDatabasesClientGetResponse contains the response from method NeonDatabasesClient.Get.
-type NeonDatabasesClientGetResponse struct {
-	// The Neon Database resource type.
-	NeonDatabase
-}
-
 // NeonDatabasesClientListResponse contains the response from method NeonDatabasesClient.NewListPager.
 type NeonDatabasesClientListResponse struct {
 	// The response of a NeonDatabase list operation.
 	NeonDatabaseListResult
 }
 
-// NeonDatabasesClientUpdateResponse contains the response from method NeonDatabasesClient.BeginUpdate.
-type NeonDatabasesClientUpdateResponse struct {
-	// The Neon Database resource type.
-	NeonDatabase
-}
-
-// NeonRolesClientCreateOrUpdateResponse contains the response from method NeonRolesClient.BeginCreateOrUpdate.
-type NeonRolesClientCreateOrUpdateResponse struct {
-	// The Neon Role resource type.
-	NeonRole
-}
-
-// NeonRolesClientDeleteResponse contains the response from method NeonRolesClient.Delete.
-type NeonRolesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// NeonRolesClientGetResponse contains the response from method NeonRolesClient.Get.
-type NeonRolesClientGetResponse struct {
-	// The Neon Role resource type.
-	NeonRole
-}
-
 // NeonRolesClientListResponse contains the response from method NeonRolesClient.NewListPager.
 type NeonRolesClientListResponse struct {
 	// The response of a NeonRole list operation.
 	NeonRoleListResult
-}
-
-// NeonRolesClientUpdateResponse contains the response from method NeonRolesClient.BeginUpdate.
-type NeonRolesClientUpdateResponse struct {
-	// The Neon Role resource type.
-	NeonRole
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -223,10 +125,4 @@ type ProjectsClientGetResponse struct {
 type ProjectsClientListResponse struct {
 	// The response of a Project list operation.
 	ProjectListResult
-}
-
-// ProjectsClientUpdateResponse contains the response from method ProjectsClient.BeginUpdate.
-type ProjectsClientUpdateResponse struct {
-	// The Project resource type.
-	Project
 }

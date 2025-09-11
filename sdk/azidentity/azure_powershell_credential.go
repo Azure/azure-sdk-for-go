@@ -21,13 +21,6 @@ import (
 
 const (
 	credNameAzurePowerShell = "AzurePowerShellCredential"
-
-	azAccountsModuleNotFound = "Az.Accounts PowerShell module not found"
-
-	// Azure PowerShell module version requirements
-	azAccountsMinVersion             = "2.2.0"
-	azAccountsSecureStringMinVersion = "2.17.0"
-	azAccountsSecureStringMaxVersion = "5.0.0"
 )
 
 // AzurePowerShellCredentialOptions contains optional parameters for AzurePowerShellCredential.
@@ -114,12 +107,12 @@ func (c *AzurePowerShellCredential) GetToken(ctx context.Context, opts policy.To
 	// Inline script to handle Get-AzAccessToken differences between Az.Accounts versions with SecureString handling and minimum version requirement
 	script := fmt.Sprintf(`
 $ErrorActionPreference = 'Stop'
-[version]$minimumVersion = '%s'
+[version]$minimumVersion = '2.2.0'
 
 $mod = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue
 
 if (!$mod) {
-    Write-Error '%s'
+    Write-Error 'Az.Accounts PowerShell module not found'
 }
 
 $params = @{
@@ -127,9 +120,9 @@ $params = @{
 	WarningAction = 'Ignore'
 }
 
-# Only force AsSecureString for older Az.Accounts versions that support it and return plain text token by default.
+# Only force AsSecureString for Az.Accounts versions > 2.17.0 and < 5.0.0 which return plain text token by default.
 # Newer Az.Accounts versions return SecureString token by default and no longer use AsSecureString parameter.
-if ($mod.Version -ge [version]'%s' -and $mod.Version -lt [version]'%s') {
+if ($mod.Version -ge [version]'2.17.0' -and $mod.Version -lt [version]'5.0.0') {
     $params['AsSecureString'] = $true
 }
 
@@ -158,7 +151,7 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, azAccountsMinVersion, azAccountsModuleNotFound, resource, azAccountsSecureStringMinVersion, azAccountsSecureStringMaxVersion, tenantArg, tenantArg)
+`, resource, tenantArg, tenantArg)
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)

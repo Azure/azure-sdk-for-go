@@ -151,7 +151,7 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, resource, tenantArg, tenantArg)
+`, resource, tenant, tenant)
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)

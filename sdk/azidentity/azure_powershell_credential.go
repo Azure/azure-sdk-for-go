@@ -19,7 +19,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const credNameAzurePowerShell = "AzurePowerShellCredential"
+const (
+	credNameAzurePowerShell = "AzurePowerShellCredential"
+
+	azurePowerShellNoAzAccountModule = "NoAzAccountModule"
+
+	// Azure PowerShell module version requirements
+	azAccountsMinVersion             = "2.2.0"
+	azAccountsSecureStringMinVersion = "2.17.0"
+	azAccountsSecureStringMaxVersion = "5.0.0"
+)
 
 // AzurePowerShellCredentialOptions contains optional parameters for AzurePowerShellCredential.
 type AzurePowerShellCredentialOptions struct {
@@ -105,7 +114,7 @@ func (c *AzurePowerShellCredential) GetToken(ctx context.Context, opts policy.To
 	// Inline script to handle Get-AzAccessToken differences between Az.Accounts versions with SecureString handling and minimum version requirement
 	script := fmt.Sprintf(`
 $ErrorActionPreference = 'Stop'
-[version]$minimumVersion = '2.2.0'
+[version]$minimumVersion = '%s'
 
 $mod = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue
 
@@ -114,8 +123,7 @@ if (!$mod) {
 	exit 1
 }
 
-# For Az.Accounts 2.17.0+ but below 5.0.0, explicitly request secure string
-if ($mod.Version -ge [version]'2.17.0' -and $mod.Version -lt [version]'5.0.0') {
+if ($mod.Version -ge [version]'%s' -and $mod.Version -lt [version]'%s') {
     $params['AsSecureString'] = $true
 }
 
@@ -139,7 +147,7 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, azurePowerShellNoAzAccountModule, resource, tenantArg)
+`, azAccountsMinVersion, azurePowerShellNoAzAccountModule, azAccountsSecureStringMinVersion, azAccountsSecureStringMaxVersion, resource, tenantArg)
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)

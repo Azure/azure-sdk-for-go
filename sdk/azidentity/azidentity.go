@@ -56,9 +56,6 @@ const (
 
 	// 1970-01-01, represented in "ticks" (100ns per millisecond) (ie: .NET's time unit for DateTimeOffset)
 	epochTicks = int64(621355968000000000)
-
-	powershellCmdTimeout   = 10 * time.Second
-	powershellCmdWaitDelay = 100 * time.Millisecond
 )
 
 var (
@@ -172,18 +169,6 @@ func validTenantID(tenantID string) bool {
 	return true
 }
 
-func validSubscription(subId string) bool {
-	if len(subId) < 1 {
-		return false
-	}
-	for _, r := range subId {
-		if !(alphanumeric(r) || r == '-' || r == '_' || r == ' ' || r == '.') {
-			return false
-		}
-	}
-	return true
-}
-
 func ticksToUnixTime(ticks int64) time.Time {
 	// normalize our time so it starts from the Unix epoch, then convert from ticks
 	// to milliseconds.
@@ -192,8 +177,8 @@ func ticksToUnixTime(ticks int64) time.Time {
 	return time.UnixMilli(millisFromTicks).UTC()
 }
 
-// Base64EncodeUTF16LE encodes a string to Base64 using UTF-16LE encoding
-func Base64EncodeUTF16LE(text string) string {
+// Encodes a string to Base64 using UTF-16LE encoding
+func base64EncodeUTF16LE(text string) string {
 	u16 := utf16.Encode([]rune(text))
 	buf := make([]byte, len(u16)*2)
 	for i, v := range u16 {
@@ -201,6 +186,19 @@ func Base64EncodeUTF16LE(text string) string {
 		buf[i*2+1] = byte(v >> 8)
 	}
 	return base64.StdEncoding.EncodeToString(buf)
+}
+
+// Decodes a Base64 UTF-16LE string back to string
+func base64DecodeUTF16LE(encoded string) (string, error) {
+	data, err := base64.StdEncoding.DecodeString(encoded)
+	if err != nil {
+		return "", err
+	}
+	u16 := make([]uint16, len(data)/2)
+	for i := range u16 {
+		u16[i] = uint16(data[2*i]) | uint16(data[2*i+1])<<8
+	}
+	return string(utf16.Decode(u16)), nil
 }
 
 func doForClient(client *azcore.Client, r *http.Request) (*http.Response, error) {

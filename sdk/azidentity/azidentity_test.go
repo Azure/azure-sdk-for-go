@@ -710,9 +710,13 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				o := AzurePowerShellCredentialOptions{
 					AdditionallyAllowedTenants: tc.allowed,
 					TenantID:                   tc.ctorTenant,
-					tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
-						require.Equal(t, tc.expected, tenant)
-						return mockazurePowerShellTokenProviderSuccess(ctx, scopes, tenant, subscription)
+					exec: func(ctx context.Context, credName string, commandLine string) ([]byte, error) {
+						splitCommand := strings.Split(commandLine, " ")
+						encodedScript := splitCommand[len(splitCommand)-1]
+						decodedScript, err := base64DecodeUTF16LE(encodedScript)
+						require.NoError(t, err)
+						require.Contains(t, decodedScript, fmt.Sprintf(" -TenantId '%s'", tc.expected))
+						return mockAzurePowerShellSuccess(ctx, credName, commandLine)
 					},
 				}
 				return NewAzurePowerShellCredential(&o)
@@ -1237,13 +1241,6 @@ func TestCLIArgumentValidation(t *testing.T) {
 	t.Run(credNameAzureCLI+"/subscription", func(t *testing.T) {
 		for _, r := range invalidRunes {
 			if _, err := NewAzureCLICredential(&AzureCLICredentialOptions{Subscription: string(r)}); err == nil {
-				t.Errorf("expected an error for a subscription containing %q", r)
-			}
-		}
-	})
-	t.Run(credNameAzurePowerShell+"/subscription", func(t *testing.T) {
-		for _, r := range invalidRunes {
-			if _, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{Subscription: string(r)}); err == nil {
 				t.Errorf("expected an error for a subscription containing %q", r)
 			}
 		}

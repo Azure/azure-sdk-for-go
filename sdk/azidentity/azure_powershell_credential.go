@@ -4,12 +4,11 @@
 package azidentity
 
 import (
-	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -22,8 +21,6 @@ import (
 
 const credNameAzurePowerShell = "AzurePowerShellCredential"
 
-type azurePowerShellTokenProvider func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error)
-
 // AzurePowerShellCredentialOptions contains optional parameters for AzurePowerShellCredential.
 type AzurePowerShellCredentialOptions struct {
 	// AdditionallyAllowedTenants specifies tenants to which the credential may authenticate, in addition to
@@ -31,25 +28,15 @@ type AzurePowerShellCredentialOptions struct {
 	// any requested tenant. Add the wildcard value "*" to allow the credential to authenticate to any tenant.
 	AdditionallyAllowedTenants []string
 
-	// Subscription is the name or ID of a subscription. Set this to acquire tokens for an account other
-	// than the Azure PowerShell's current account.
-	Subscription string
-
 	// TenantID identifies the tenant the credential should authenticate in.
 	// Defaults to the Azure PowerShell's default tenant, which is typically the home tenant of the logged in user.
 	TenantID string
 
 	// inDefaultChain is true when the credential is part of DefaultAzureCredential
 	inDefaultChain bool
-	// tokenProvider is used by tests to fake invoking az
-	tokenProvider azurePowerShellTokenProvider
-}
 
-// init returns an instance of AzurePowerShellCredentialOptions initialized with default values.
-func (o *AzurePowerShellCredentialOptions) init() {
-	if o.tokenProvider == nil {
-		o.tokenProvider = defaultAzurePowerShellTokenProvider
-	}
+	// exec is used by tests to fake invoking Azure PowerShell
+	exec executor
 }
 
 // AzurePowerShellCredential authenticates as the identity logged in to Azure PowerShell.
@@ -66,40 +53,57 @@ func NewAzurePowerShellCredential(options *AzurePowerShellCredentialOptions) (*A
 		cp = *options
 	}
 
-	if cp.Subscription != "" && !validSubscription(cp.Subscription) {
-		return nil, fmt.Errorf(
-			"%s: Subscription %q contains invalid characters. If this is the name of a subscription, use its ID instead",
-			credNameAzurePowerShell,
-			cp.Subscription,
-		)
-	}
-
 	if cp.TenantID != "" && !validTenantID(cp.TenantID) {
 		return nil, errInvalidTenantID
 	}
 
-	cp.init()
+	if cp.exec == nil {
+		cp.exec = shellExec
+	}
+
 	cp.AdditionallyAllowedTenants = resolveAdditionalTenants(cp.AdditionallyAllowedTenants)
 
 	return &AzurePowerShellCredential{mu: &sync.Mutex{}, opts: cp}, nil
 }
 
-// defaultAzurePowerShellTokenProvider invokes Azure PowerShell to acquire a token. It assumes
-// callers have verified that all string arguments are safe to pass to Azure PowerShell.
-var defaultAzurePowerShellTokenProvider azurePowerShellTokenProvider = func(ctx context.Context, scopes []string, tenantID, subscription string) ([]byte, error) {
+// GetToken requests a token from Azure PowerShell. This credential doesn't cache tokens, so every call invokes Azure PowerShell.
+// This method is called automatically by Azure SDK clients.
+func (c *AzurePowerShellCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	at := azcore.AccessToken{}
 
-	// pass Azure PowerShell a Microsoft Entra ID v1 resource because we don't know which Azure PowerShell version is installed and older ones don't support v2 scopes
-	resource := strings.TrimSuffix(scopes[0], defaultSuffix)
+	if len(opts.Scopes) != 1 {
+		return at, errors.New(credNameAzurePowerShell + ": GetToken() requires exactly one scope")
+	}
 
-	// set a default timeout for this authentication if the application hasn't done so already
-	var cancel context.CancelFunc
-	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
-		ctx, cancel = context.WithTimeout(ctx, powershellCmdTimeout)
-		defer cancel()
+	if !validScope(opts.Scopes[0]) {
+		return at, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzurePowerShell, opts.Scopes[0])
+	}
+
+	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzurePowerShell, c.opts.AdditionallyAllowedTenants)
+	if err != nil {
+		return at, err
+	}
+
+	// pass the CLI a Microsoft Entra ID v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
+	resource := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
+
+	tenantArg := ""
+	if tenant != "" {
+		tenantArg = fmt.Sprintf(" -TenantId '%s'", tenant)
+	}
+
+	if opts.Claims != "" {
+		encoded := base64.StdEncoding.EncodeToString([]byte(opts.Claims))
+		return at, fmt.Errorf(
+			"%s.GetToken(): Azure PowerShell requires multifactor authentication or additional claims. Run this command then retry the operation: Connect-AzAccount%s -ClaimsChallenge '%s'",
+			credNameAzurePowerShell,
+			tenantArg,
+			encoded,
+		)
 	}
 
 	// Inline script to handle Get-AzAccessToken differences between Az.Accounts versions with SecureString handling and minimum version requirement
-	command := fmt.Sprintf(`
+	script := fmt.Sprintf(`
 $ErrorActionPreference = 'Stop'
 [version]$minimumVersion = '2.2.0'
 
@@ -110,22 +114,12 @@ if (!$mod) {
 	exit 1
 }
 
-$tenantId = '%s'
-$params = @{
-    ResourceUrl = '%s'
-    WarningAction = 'Ignore'
-}
-
-if ($tenantId.Length -gt 0) {
-    $params['TenantId'] = '%s'
-}
-
 # For Az.Accounts 2.17.0+ but below 5.0.0, explicitly request secure string
 if ($mod.Version -ge [version]'2.17.0' -and $mod.Version -lt [version]'5.0.0') {
     $params['AsSecureString'] = $true
 }
 
-$token = Get-AzAccessToken @params
+$token = Get-AzAccessToken -ResourceUrl '%s'%s
 
 $customToken = New-Object -TypeName psobject
 
@@ -145,94 +139,37 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, azurePowerShellNoAzAccountModule, tenantID, resource, tenantID)
+`, azurePowerShellNoAzAccountModule, resource, tenantArg)
 
-	// Encode the command in UTF-16LE and then base64, per PowerShell's requirements for -EncodedCommand.
-	encodedCommand := Base64EncodeUTF16LE(command)
-
-	var powershellCmd *exec.Cmd
+	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
+	// Unix: only support pwsh (PowerShell Core)
+	var powershellExecutable string
 	if runtime.GOOS == "windows" {
-		dir := os.Getenv("SYSTEMROOT")
-		if dir == "" {
-			return nil, newCredentialUnavailableError(credNameAzurePowerShell, "environment variable 'SYSTEMROOT' has no value")
-		}
-
-		// Prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
-		pwshPath, err := exec.LookPath("pwsh.exe")
+		_, err := exec.LookPath("pwsh.exe")
 		if err == nil {
-			powershellCmd = exec.CommandContext(ctx, pwshPath, "-NoProfile", "-NonInteractive", "-EncodedCommand", encodedCommand)
+			powershellExecutable = "pwsh.exe"
 		} else {
-			powershellPath, err := exec.LookPath("powershell.exe")
-			if err != nil {
-				return nil, newCredentialUnavailableError(credNameAzurePowerShell, "Neither pwsh.exe nor powershell.exe found in PATH")
-			}
-			powershellCmd = exec.CommandContext(ctx, powershellPath, "-NoProfile", "-NonInteractive", "-EncodedCommand", encodedCommand)
+			powershellExecutable = "powershell.exe"
 		}
-		powershellCmd.Dir = dir
 	} else {
-		// On Unix, only support PowerShell Core (pwsh)
-		pwshPath, err := exec.LookPath("pwsh")
-		if err != nil {
-			return nil, newCredentialUnavailableError(credNameAzurePowerShell, "pwsh not found in PATH; PowerShell Core is required on Unix platforms")
-		}
-		powershellCmd = exec.CommandContext(ctx, pwshPath, "-NoProfile", "-NonInteractive", "-EncodedCommand", encodedCommand)
-		powershellCmd.Dir = "/bin"
+		powershellExecutable = "pwsh"
 	}
 
-	powershellCmd.Env = os.Environ()
-	var stderr bytes.Buffer
-	powershellCmd.Stderr = &stderr
-	powershellCmd.WaitDelay = powershellCmdWaitDelay
+	command := fmt.Sprintf("%s -NoProfile -NonInteractive -EncodedCommand %s", powershellExecutable, base64EncodeUTF16LE(script))
 
-	stdout, err := powershellCmd.Output()
-
-	if errors.Is(err, exec.ErrWaitDelay) && len(stdout) > 0 {
-		// The child process wrote to stdout and exited without closing it.
-		// Swallow this error and return stdout because it may contain a token.
-		return stdout, nil
-	}
-
-	if err != nil {
-		msg := stderr.String()
-
-		if strings.Contains(stderr.String(), azurePowerShellNoAzAccountModule) {
-			msg = "Az.Accounts PowerShell module not found"
-		}
-
-		if msg == "" {
-			msg = err.Error()
-		}
-
-		return nil, newCredentialUnavailableError(credNameAzurePowerShell, msg)
-	}
-
-	return stdout, nil
-}
-
-// GetToken requests a token from Azure PowerShell. This credential doesn't cache tokens, so every call invokes Azure PowerShell.
-// This method is called automatically by Azure SDK clients.
-func (c *AzurePowerShellCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	at := azcore.AccessToken{}
-	if len(opts.Scopes) != 1 {
-		return at, errors.New(credNameAzurePowerShell + ": GetToken() requires exactly one scope")
-	}
-	if !validScope(opts.Scopes[0]) {
-		return at, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzurePowerShell, opts.Scopes[0])
-	}
-	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzurePowerShell, c.opts.AdditionallyAllowedTenants)
-	if err != nil {
-		return at, err
-	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	b, err := c.opts.tokenProvider(ctx, opts.Scopes, tenant, c.opts.Subscription)
+
+	b, err := c.opts.exec(ctx, credNameAzurePowerShell, command)
 	if err == nil {
 		at, err = c.createAccessToken(b)
 	}
+
 	if err != nil {
-		err = unavailableIfInChain(err, c.opts.inDefaultChain)
+		err = unavailableIfInDAC(err, c.opts.inDefaultChain)
 		return at, err
 	}
+
 	msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", credNameAzurePowerShell, strings.Join(opts.Scopes, ", "))
 	log.Write(EventAuthentication, msg)
 	return at, nil

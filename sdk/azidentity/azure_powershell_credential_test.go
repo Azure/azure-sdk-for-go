@@ -5,11 +5,14 @@ package azidentity
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/stretchr/testify/require"
 )
 
@@ -20,18 +23,55 @@ func azurePowerShellTokenOutput(expiresOn int64) []byte {
 }`, tokenValue, expiresOn))
 }
 
-func mockazurePowerShellTokenProviderFailure(context.Context, []string, string, string) ([]byte, error) {
-	return nil, newAuthenticationFailedError(credNameAzurePowerShell, "mock provider error", nil)
+func mockAzurePowerShellFailure(_ context.Context, credName string, _ string) ([]byte, error) {
+	if credName != credNameAzurePowerShell {
+		return nil, errors.New("unexpected credential name: " + credName)
+	}
+	return nil, newAuthenticationFailedError(credNameAzurePowerShell, "Azure PowerShell error", nil)
 }
 
-func mockazurePowerShellTokenProviderSuccess(context.Context, []string, string, string) ([]byte, error) {
+func mockAzurePowerShellSuccess(_ context.Context, credName string, _ string) ([]byte, error) {
+	if credName != credNameAzurePowerShell {
+		return nil, errors.New("unexpected credential name: " + credName)
+	}
 	return azurePowerShellTokenOutput(638930167310000000), nil
+}
+
+func TestAzurePowerShellCredential_Claims(t *testing.T) {
+	tro := policy.TokenRequestOptions{
+		Scopes: []string{liveTestScope},
+		Claims: `{"access_token":{"xms_cc":{"values":["cp1"]}}}`,
+	}
+	encoded := base64.StdEncoding.EncodeToString([]byte(tro.Claims))
+	exec := func(context.Context, string, string) ([]byte, error) {
+		t.Fatal("GetToken shouldn't run Azure PowerShell when claims are specified")
+		return nil, nil
+	}
+
+	cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{exec: exec})
+	require.NoError(t, err)
+	_, err = cred.GetToken(ctx, tro)
+	require.ErrorContains(t, err, fmt.Sprintf("Connect-AzAccount -ClaimsChallenge '%s'", encoded))
+
+	t.Run("with tenant", func(t *testing.T) {
+		expected := fmt.Sprintf("Connect-AzAccount -TenantId '%s' -ClaimsChallenge '%s'", fakeTenantID, encoded)
+
+		cp := tro
+		cp.TenantID = fakeTenantID
+		_, err = cred.GetToken(ctx, cp)
+		require.ErrorContains(t, err, expected)
+
+		cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{TenantID: fakeTenantID, exec: exec})
+		require.NoError(t, err)
+		_, err = cred.GetToken(ctx, tro)
+		require.ErrorContains(t, err, expected)
+	})
 }
 
 func TestAzurePowerShellCredential_DefaultChainError(t *testing.T) {
 	cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
 		inDefaultChain: true,
-		tokenProvider:  mockazurePowerShellTokenProviderFailure,
+		exec:           mockAzurePowerShellFailure,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -48,7 +88,7 @@ func TestAzurePowerShellCredential_Error(t *testing.T) {
 	authNs := 0
 	expected := newCredentialUnavailableError(credNameAzurePowerShell, "it didn't work")
 	o := AzurePowerShellCredentialOptions{
-		tokenProvider: func(context.Context, []string, string, string) ([]byte, error) {
+		exec: func(context.Context, string, string) ([]byte, error) {
 			authNs++
 			return nil, expected
 		},
@@ -74,7 +114,7 @@ func TestAzurePowerShellCredential_GetTokenSuccess(t *testing.T) {
 	t.Run("fetches token with correct expiration", func(t *testing.T) {
 		ExpiresOn := epochTicks + expectedExpiresOn.UTC().UnixNano()/100
 		cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
-			tokenProvider: func(context.Context, []string, string, string) ([]byte, error) {
+			exec: func(context.Context, string, string) ([]byte, error) {
 				output := azurePowerShellTokenOutput(ExpiresOn)
 				return output, nil
 			},
@@ -91,7 +131,7 @@ func TestAzurePowerShellCredential_GetTokenSuccess(t *testing.T) {
 
 func TestAzurePowerShellCredential_GetTokenInvalidToken(t *testing.T) {
 	options := AzurePowerShellCredentialOptions{}
-	options.tokenProvider = mockazurePowerShellTokenProviderFailure
+	options.exec = mockAzurePowerShellFailure
 	cred, err := NewAzurePowerShellCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -102,46 +142,19 @@ func TestAzurePowerShellCredential_GetTokenInvalidToken(t *testing.T) {
 	}
 }
 
-func TestAzurePowerShellCredential_Subscription(t *testing.T) {
-	called := false
-	for _, want := range []string{"", "expected-subscription"} {
-		t.Run(fmt.Sprintf("subscription=%q", want), func(t *testing.T) {
-			options := AzurePowerShellCredentialOptions{
-				Subscription: want,
-				tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
-					called = true
-					if subscription != want {
-						t.Fatalf("wanted subscription %q, got %q", want, subscription)
-					}
-					return mockazurePowerShellTokenProviderSuccess(ctx, scopes, tenant, subscription)
-				},
-			}
-			cred, err := NewAzurePowerShellCredential(&options)
-			if err != nil {
-				t.Fatal(err)
-			}
-			_, err = cred.GetToken(context.Background(), testTRO)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !called {
-				t.Fatal("token provider wasn't called")
-			}
-		})
-	}
-}
-
 func TestAzurePowerShellCredential_TenantID(t *testing.T) {
 	expected := "expected-tenant-id"
 	called := false
 	options := AzurePowerShellCredentialOptions{
 		TenantID: expected,
-		tokenProvider: func(ctx context.Context, scopes []string, tenantID, subscription string) ([]byte, error) {
+		exec: func(ctx context.Context, credName, command string) ([]byte, error) {
 			called = true
-			if tenantID != expected {
-				t.Fatal("Unexpected tenant ID: " + tenantID)
-			}
-			return mockazurePowerShellTokenProviderSuccess(ctx, scopes, tenantID, subscription)
+			splitCommand := strings.Split(command, " ")
+			encodedScript := splitCommand[len(splitCommand)-1]
+			decodedScript, err := base64DecodeUTF16LE(encodedScript)
+			require.NoError(t, err)
+			require.Contains(t, decodedScript, fmt.Sprintf(" -TenantId '%s'", expected))
+			return mockAzurePowerShellSuccess(ctx, credName, command)
 		},
 	}
 	cred, err := NewAzurePowerShellCredential(&options)

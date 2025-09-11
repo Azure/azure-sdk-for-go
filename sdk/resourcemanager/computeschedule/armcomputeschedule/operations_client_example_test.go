@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-15-preview/Operations_List_MaximumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
+// Generated from example definition: 2025-05-01/Operations_List_MaximumSet_Gen.json
+func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -37,13 +37,13 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 	OperationListResult: armcomputeschedule.OperationListResult{
 		// 		Value: []*armcomputeschedule.Operation{
 		// 			{
-		// 				Name: to.Ptr("tew"),
+		// 				Name: to.Ptr("ldqzcrujeitsnm"),
 		// 				IsDataAction: to.Ptr(true),
 		// 				Display: &armcomputeschedule.OperationDisplay{
-		// 					Provider: to.Ptr("kphlo"),
-		// 					Resource: to.Ptr("vjhxmakxdtbnqhyjhclbargzt"),
-		// 					Operation: to.Ptr("mmfsfkofhhfvgeryxbpdu"),
-		// 					Description: to.Ptr("trdrldwroctmfwumqodfdxiuts"),
+		// 					Provider: to.Ptr("oxdxyfefyvtxexszpvt"),
+		// 					Resource: to.Ptr("icchvmkobgsviwonpruioyd"),
+		// 					Operation: to.Ptr("ibqrspiv"),
+		// 					Description: to.Ptr("iavvwrkurztnb"),
 		// 				},
 		// 				Origin: to.Ptr(armcomputeschedule.OriginUser),
 		// 				ActionType: to.Ptr(armcomputeschedule.ActionTypeInternal),
@@ -55,8 +55,8 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/Operations_List_MinimumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
+// Generated from example definition: 2025-05-01/Operations_List_MinimumSet_Gen.json
+func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

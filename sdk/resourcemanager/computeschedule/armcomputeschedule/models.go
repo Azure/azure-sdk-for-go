@@ -6,13 +6,6 @@ package armcomputeschedule
 
 import "time"
 
-// CancelOccurrenceRequest - The request to cancel an occurrence.
-type CancelOccurrenceRequest struct {
-	// REQUIRED; The resources the cancellation should act on. If no resource is passed in the list, Scheduled Action will cancel
-	// the occurrence for all resources.
-	ResourceIDs []*string
-}
-
 // CancelOperationsRequest - This is the request to cancel running operations in scheduled actions using the operation ids
 type CancelOperationsRequest struct {
 	// REQUIRED; CorrelationId item
@@ -58,16 +51,6 @@ type DeallocateResourceOperationResponse struct {
 	Results []*ResourceOperation
 }
 
-// DelayRequest - Request to ask for a delay in an occurrence, delay should be set to client local time eg (ACST) 2025-05-30T22:03:00+09:30,
-// (PST) 2025-05-30T06:35:00-07:00
-type DelayRequest struct {
-	// REQUIRED; The exact time to delay the operations to
-	Delay *time.Time
-
-	// REQUIRED; The resources that should be delayed. If empty, the delay will apply to the all resources in the occurrence.
-	ResourceIDs []*string
-}
-
 // DeleteResourceOperationResponse - The response from a delete request
 type DeleteResourceOperationResponse struct {
 	// REQUIRED; The description of the operation response
@@ -81,24 +64,6 @@ type DeleteResourceOperationResponse struct {
 
 	// The results from the start request if no errors exist
 	Results []*ResourceOperation
-}
-
-// Error - The error object.
-type Error struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// REQUIRED; A human-readable representation of the error.
-	Message *string
-
-	// An array of details about specific errors that led to this reported error.
-	Details []*Error
-
-	// An object containing more specific information than the current object about the error.
-	Innererror *InnerError
-
-	// The target of the error.
-	Target *string
 }
 
 // ExecuteCreateRequest - The ExecuteCreateRequest request for create operations
@@ -215,164 +180,6 @@ type HibernateResourceOperationResponse struct {
 	Results []*ResourceOperation
 }
 
-// InnerError - An object containing more specific information about the error. As per Azure REST API guidelines - https://aka.ms/AzureRestApiGuidelines#handling-errors.
-type InnerError struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	Innererror *InnerError
-}
-
-// NotificationProperties - The information about notifications to be send to about upcoming operations.
-type NotificationProperties struct {
-	// REQUIRED; Where the notification should be sent. For email, it should follow email format.
-	Destination *string
-
-	// REQUIRED; The language the notification should be sent on.
-	Language *Language
-
-	// REQUIRED; Type of notification to be sent.
-	Type *NotificationType
-
-	// Tells if the notification is enabled or not.
-	Disabled *bool
-}
-
-// Occurrence - Concrete proxy resource types can be created by aliasing this type using a specific property type.
-type Occurrence struct {
-	// The resource-specific properties for this resource.
-	Properties *OccurrenceProperties
-
-	// READ-ONLY; The name of the Occurrence
-	Name *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// OccurrenceExtensionProperties - The properties of the occurrence extension
-type OccurrenceExtensionProperties struct {
-	// REQUIRED; The ARM Id of the resource.
-	// "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
-	ResourceID *string
-
-	// REQUIRED; The arm identifier of the scheduled action the occurrence belongs to
-	ScheduledActionID *string
-
-	// READ-ONLY; The time the occurrence is scheduled for the resource. Specified in UTC.
-	ScheduledTime *time.Time
-
-	// The desired notification settings for the specified resource.
-	NotificationSettings []*NotificationProperties
-
-	// READ-ONLY; Error details for the resource. Only populated if resource is in failed state.
-	ErrorDetails *Error
-
-	// READ-ONLY; The current state of the resource
-	ProvisioningState *ResourceProvisioningState
-}
-
-// OccurrenceExtensionResource - The scheduled action extension
-type OccurrenceExtensionResource struct {
-	// The resource-specific properties for this resource.
-	Properties *OccurrenceExtensionProperties
-
-	// READ-ONLY; The name of the OccurrenceProperties
-	Name *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// OccurrenceExtensionResourceListResult - The response of a OccurrenceExtensionResource list operation.
-type OccurrenceExtensionResourceListResult struct {
-	// REQUIRED; The OccurrenceExtensionResource items on this page
-	Value []*OccurrenceExtensionResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OccurrenceListResult - The response of a Occurrence list operation.
-type OccurrenceListResult struct {
-	// REQUIRED; The Occurrence items on this page
-	Value []*Occurrence
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OccurrenceProperties - Properties for an occurrence
-type OccurrenceProperties struct {
-	// READ-ONLY; The result for occurrences that achieved a terminal state
-	ResultSummary *OccurrenceResultSummary
-
-	// READ-ONLY; The time the occurrence is scheduled for. This value can be changed by calling the delay API
-	ScheduledTime *time.Time
-
-	// READ-ONLY; The aggregated provisioning state of the occurrence
-	ProvisioningState *OccurrenceState
-}
-
-// OccurrenceResource - Represents an scheduled action resource metadata.
-type OccurrenceResource struct {
-	// REQUIRED; The ARM Id of the resource.
-	// "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
-	ResourceID *string
-
-	// The desired notification settings for the specified resource.
-	NotificationSettings []*NotificationProperties
-
-	// READ-ONLY; The compute RP resource id of the resource in the scheduled actions scope.
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The time the occurrence is scheduled for the resource.
-	ScheduledTime *time.Time
-
-	// READ-ONLY; Error details for the resource. Only populated if resource is in failed state.
-	ErrorDetails *Error
-
-	// READ-ONLY; The current state of the resource
-	ProvisioningState *ResourceProvisioningState
-
-	// READ-ONLY; The type of resource
-	Type *string
-}
-
-// OccurrenceResourceListResponse - Paged collection of OccurrenceResource items
-type OccurrenceResourceListResponse struct {
-	// REQUIRED; The OccurrenceResource items on this page
-	Value []*OccurrenceResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OccurrenceResultSummary - The summarized provisioning result of an occurrence
-type OccurrenceResultSummary struct {
-	// REQUIRED; The summarized status of the resources.
-	Statuses []*ResourceResultSummary
-
-	// REQUIRED; The total number of resources that the occurrence was supposed to act on.
-	Total *int32
-}
-
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -469,37 +276,6 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// RecurringActionsResourceOperationResult - The response from scheduled action resource requests, which contains the status
-// of each resource
-type RecurringActionsResourceOperationResult struct {
-	// REQUIRED; The resource status of for each resource
-	ResourcesStatuses []*ResourceStatus
-
-	// REQUIRED; The total number of resources operated on
-	TotalResources *int32
-}
-
-// ResourceAttachRequest - Request model to attach a list of scheduled action resources.
-type ResourceAttachRequest struct {
-	// REQUIRED; List of resources to be attached/patched
-	Resources []*ScheduledActionResource
-}
-
-// ResourceDetachRequest - Request model to detach a list of scheduled action resources.
-type ResourceDetachRequest struct {
-	// REQUIRED; List of resources to be detached
-	Resources []*string
-}
-
-// ResourceListResponse - Paged collection of ScheduledActionResource items
-type ResourceListResponse struct {
-	// REQUIRED; The ScheduledActionResource items on this page
-	Value []*ScheduledActionResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // ResourceOperation - High level response from an operation on a resource
 type ResourceOperation struct {
 	// Resource level error code if it exists
@@ -563,12 +339,6 @@ type ResourceOperationError struct {
 	ErrorDetails *string
 }
 
-// ResourcePatchRequest - Request model perform a resource operation in a list of resources
-type ResourcePatchRequest struct {
-	// REQUIRED; The list of resources we watch to patch
-	Resources []*ScheduledActionResource
-}
-
 // ResourceProvisionPayload - Resource creation data model
 type ResourceProvisionPayload struct {
 	// REQUIRED; Number of VMs to be created
@@ -585,30 +355,6 @@ type ResourceProvisionPayload struct {
 
 	// if resourceOverrides doesn't contain "name", service will create name based of prefix and ResourceCount e.g. resourceprefix-0,resourceprefix-1..
 	ResourcePrefix *string
-}
-
-// ResourceResultSummary - The status of the resources
-type ResourceResultSummary struct {
-	// REQUIRED; The error code for those resources. In case of success, code is populated with Success.
-	Code *string
-
-	// REQUIRED; The number of resources that the code applies to.
-	Count *int32
-
-	// The error details for the resources. Not populated on success cases.
-	ErrorDetails *Error
-}
-
-// ResourceStatus - The status of a resource after a resource level operation was performed
-type ResourceStatus struct {
-	// REQUIRED; The arm identifier of the resource
-	ResourceID *string
-
-	// REQUIRED; The state the resource is currently on
-	Status *ResourceOperationStatus
-
-	// Errors encountered while trying to perform
-	Error *Error
 }
 
 // Resources - The resources needed for the user request
@@ -642,171 +388,6 @@ type Schedule struct {
 
 	// The timezone for the operation
 	Timezone *string
-}
-
-// ScheduledAction - The scheduled action resource
-type ScheduledAction struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The resource-specific properties for this resource.
-	Properties *ScheduledActionProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; The name of the ScheduledAction
-	Name *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ScheduledActionListResult - The response of a ScheduledAction list operation.
-type ScheduledActionListResult struct {
-	// REQUIRED; The ScheduledAction items on this page
-	Value []*ScheduledAction
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ScheduledActionProperties - Scheduled action properties
-type ScheduledActionProperties struct {
-	// REQUIRED; The action the scheduled action should perform in the resources
-	ActionType *ScheduledActionType
-
-	// REQUIRED; The notification settings for the scheduled action
-	NotificationSettings []*NotificationProperties
-
-	// REQUIRED; The type of resource the scheduled action is targeting
-	ResourceType *ResourceType
-
-	// REQUIRED; The schedule the scheduled action is supposed to follow
-	Schedule *ScheduledActionsSchedule
-
-	// REQUIRED; The time which the scheduled action is supposed to start running
-	StartTime *time.Time
-
-	// Tell if the scheduled action is disabled or not
-	Disabled *bool
-
-	// The time when the scheduled action is supposed to stop scheduling
-	EndTime *time.Time
-
-	// READ-ONLY; The status of the last provisioning operation performed on the resource.
-	ProvisioningState *ProvisioningState
-}
-
-// ScheduledActionResource - Represents an scheduled action resource metadata.
-type ScheduledActionResource struct {
-	// REQUIRED; The ARM Id of the resource.
-	// "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
-	ResourceID *string
-
-	// The desired notification settings for the specified resource.
-	NotificationSettings []*NotificationProperties
-
-	// READ-ONLY; The compute RP resource id of the resource in the scheduled actions scope.
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of resource
-	Type *string
-}
-
-// ScheduledActionResources - The scheduled action extension
-type ScheduledActionResources struct {
-	// The resource-specific properties for this resource.
-	Properties *ScheduledActionProperties
-
-	// READ-ONLY; The name of the ScheduledActionResources
-	Name *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ScheduledActionResourcesListResult - The response of a ScheduledActionResources list operation.
-type ScheduledActionResourcesListResult struct {
-	// REQUIRED; The ScheduledActionResources items on this page
-	Value []*ScheduledActionResources
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ScheduledActionUpdate - The type used for update operations of the ScheduledAction.
-type ScheduledActionUpdate struct {
-	// The resource-specific properties for this resource.
-	Properties *ScheduledActionUpdateProperties
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// ScheduledActionUpdateProperties - The updatable properties of the ScheduledAction.
-type ScheduledActionUpdateProperties struct {
-	// The action the scheduled action should perform in the resources
-	ActionType *ScheduledActionType
-
-	// Tell if the scheduled action is disabled or not
-	Disabled *bool
-
-	// The time when the scheduled action is supposed to stop scheduling
-	EndTime *time.Time
-
-	// The notification settings for the scheduled action
-	NotificationSettings []*NotificationProperties
-
-	// The type of resource the scheduled action is targeting
-	ResourceType *ResourceType
-
-	// The schedule the scheduled action is supposed to follow
-	Schedule *ScheduledActionsSchedule
-
-	// The time which the scheduled action is supposed to start running
-	StartTime *time.Time
-}
-
-// ScheduledActionsSchedule - Specify the schedule in which the scheduled action is supposed to follow
-type ScheduledActionsSchedule struct {
-	// REQUIRED; The days of the month the scheduled action is supposed to run on. If empty, it means it will run on every day
-	// of the month.
-	RequestedDaysOfTheMonth []*int32
-
-	// REQUIRED; The months the scheduled action is supposed to run on
-	RequestedMonths []*Month
-
-	// REQUIRED; The week days the scheduled action is supposed to run on
-	RequestedWeekDays []*WeekDay
-
-	// REQUIRED; The time the scheduled action is supposed to run on
-	ScheduledTime *time.Time
-
-	// REQUIRED; The timezone the scheduled time is specified on
-	TimeZone *string
-
-	// The type of deadline the scheduled action is supposed to follow for the schedule. If no value is passed, it will default
-	// to InitiateAt.
-	DeadlineType *DeadlineType
-
-	// The execution parameters the scheduled action is supposed to follow
-	ExecutionParameters *ExecutionParameters
 }
 
 // StartResourceOperationResponse - The response from a start request
@@ -867,25 +448,4 @@ type SubmitStartRequest struct {
 
 	// REQUIRED; The schedule for the request
 	Schedule *Schedule
-}
-
-// SystemData - Metadata pertaining to creation and last modification of the resource.
-type SystemData struct {
-	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time
-
-	// The identity that created the resource.
-	CreatedBy *string
-
-	// The type of identity that created the resource.
-	CreatedByType *CreatedByType
-
-	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time
-
-	// The identity that last modified the resource.
-	LastModifiedBy *string
-
-	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType
 }

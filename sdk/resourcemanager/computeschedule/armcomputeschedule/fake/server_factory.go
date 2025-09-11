@@ -15,17 +15,8 @@ import (
 
 // ServerFactory is a fake server for instances of the armcomputeschedule.ClientFactory type.
 type ServerFactory struct {
-	// OccurrenceExtensionServer contains the fakes for client OccurrenceExtensionClient
-	OccurrenceExtensionServer OccurrenceExtensionServer
-
-	// OccurrencesServer contains the fakes for client OccurrencesClient
-	OccurrencesServer OccurrencesServer
-
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
-
-	// ScheduledActionExtensionServer contains the fakes for client ScheduledActionExtensionClient
-	ScheduledActionExtensionServer ScheduledActionExtensionServer
 
 	// ScheduledActionsServer contains the fakes for client ScheduledActionsClient
 	ScheduledActionsServer ScheduledActionsServer
@@ -43,13 +34,10 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcomputeschedule.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                              *ServerFactory
-	trMu                             sync.Mutex
-	trOccurrenceExtensionServer      *OccurrenceExtensionServerTransport
-	trOccurrencesServer              *OccurrencesServerTransport
-	trOperationsServer               *OperationsServerTransport
-	trScheduledActionExtensionServer *ScheduledActionExtensionServerTransport
-	trScheduledActionsServer         *ScheduledActionsServerTransport
+	srv                      *ServerFactory
+	trMu                     sync.Mutex
+	trOperationsServer       *OperationsServerTransport
+	trScheduledActionsServer *ScheduledActionsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -65,22 +53,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "OccurrenceExtensionClient":
-		initServer(s, &s.trOccurrenceExtensionServer, func() *OccurrenceExtensionServerTransport {
-			return NewOccurrenceExtensionServerTransport(&s.srv.OccurrenceExtensionServer)
-		})
-		resp, err = s.trOccurrenceExtensionServer.Do(req)
-	case "OccurrencesClient":
-		initServer(s, &s.trOccurrencesServer, func() *OccurrencesServerTransport { return NewOccurrencesServerTransport(&s.srv.OccurrencesServer) })
-		resp, err = s.trOccurrencesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "ScheduledActionExtensionClient":
-		initServer(s, &s.trScheduledActionExtensionServer, func() *ScheduledActionExtensionServerTransport {
-			return NewScheduledActionExtensionServerTransport(&s.srv.ScheduledActionExtensionServer)
-		})
-		resp, err = s.trScheduledActionExtensionServer.Do(req)
 	case "ScheduledActionsClient":
 		initServer(s, &s.trScheduledActionsServer, func() *ScheduledActionsServerTransport {
 			return NewScheduledActionsServerTransport(&s.srv.ScheduledActionsServer)

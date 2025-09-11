@@ -184,6 +184,7 @@ return $jsonToken
 
 	msg := fmt.Sprintf("%s.GetToken() acquired a token for scope %q", credNameAzurePowerShell, strings.Join(opts.Scopes, ", "))
 	log.Write(EventAuthentication, msg)
+
 	return at, nil
 }
 
@@ -192,17 +193,17 @@ func (c *AzurePowerShellCredential) createAccessToken(tk []byte) (azcore.AccessT
 		Token     string `json:"Token"`
 		ExpiresOn int64  `json:"ExpiresOn"`
 	}{}
+
 	err := json.Unmarshal(tk, &t)
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
 
-	exp := ticksToUnixTime(t.ExpiresOn)
-
 	converted := azcore.AccessToken{
 		Token:     t.Token,
-		ExpiresOn: exp.UTC(),
+		ExpiresOn: ticksToUnixTime(t.ExpiresOn),
 	}
+
 	return converted, nil
 }
 

@@ -18,77 +18,77 @@ import (
 	"regexp"
 )
 
-// DeploymentSafeguardsServer is a fake server for instances of the armdeploymentsafeguards.DeploymentSafeguardsClient type.
-type DeploymentSafeguardsServer struct {
-	// BeginCreate is the fake for method DeploymentSafeguardsClient.BeginCreate
+// Server is a fake server for instances of the armdeploymentsafeguards.Client type.
+type Server struct {
+	// BeginCreate is the fake for method Client.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate func(ctx context.Context, resourceURI string, resource armdeploymentsafeguards.DeploymentSafeguard, options *armdeploymentsafeguards.DeploymentSafeguardsClientBeginCreateOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceURI string, resource armdeploymentsafeguards.DeploymentSafeguard, options *armdeploymentsafeguards.ClientBeginCreateOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.ClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method DeploymentSafeguardsClient.BeginDelete
+	// BeginDelete is the fake for method Client.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.DeploymentSafeguardsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.ClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeploymentsafeguards.ClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DeploymentSafeguardsClient.Get
+	// Get is the fake for method Client.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.DeploymentSafeguardsClientGetOptions) (resp azfake.Responder[armdeploymentsafeguards.DeploymentSafeguardsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceURI string, options *armdeploymentsafeguards.ClientGetOptions) (resp azfake.Responder[armdeploymentsafeguards.ClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DeploymentSafeguardsClient.NewListPager
+	// NewListPager is the fake for method Client.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceURI string, options *armdeploymentsafeguards.DeploymentSafeguardsClientListOptions) (resp azfake.PagerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientListResponse])
+	NewListPager func(resourceURI string, options *armdeploymentsafeguards.ClientListOptions) (resp azfake.PagerResponder[armdeploymentsafeguards.ClientListResponse])
 }
 
-// NewDeploymentSafeguardsServerTransport creates a new instance of DeploymentSafeguardsServerTransport with the provided implementation.
-// The returned DeploymentSafeguardsServerTransport instance is connected to an instance of armdeploymentsafeguards.DeploymentSafeguardsClient via the
+// NewServerTransport creates a new instance of ServerTransport with the provided implementation.
+// The returned ServerTransport instance is connected to an instance of armdeploymentsafeguards.Client via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewDeploymentSafeguardsServerTransport(srv *DeploymentSafeguardsServer) *DeploymentSafeguardsServerTransport {
-	return &DeploymentSafeguardsServerTransport{
+func NewServerTransport(srv *Server) *ServerTransport {
+	return &ServerTransport{
 		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientListResponse]](),
+		beginCreate:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.ClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armdeploymentsafeguards.ClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdeploymentsafeguards.ClientListResponse]](),
 	}
 }
 
-// DeploymentSafeguardsServerTransport connects instances of armdeploymentsafeguards.DeploymentSafeguardsClient to instances of DeploymentSafeguardsServer.
-// Don't use this type directly, use NewDeploymentSafeguardsServerTransport instead.
-type DeploymentSafeguardsServerTransport struct {
-	srv          *DeploymentSafeguardsServer
-	beginCreate  *tracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armdeploymentsafeguards.DeploymentSafeguardsClientListResponse]]
+// ServerTransport connects instances of armdeploymentsafeguards.Client to instances of Server.
+// Don't use this type directly, use NewServerTransport instead.
+type ServerTransport struct {
+	srv          *Server
+	beginCreate  *tracker[azfake.PollerResponder[armdeploymentsafeguards.ClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armdeploymentsafeguards.ClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armdeploymentsafeguards.ClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for DeploymentSafeguardsServerTransport.
-func (d *DeploymentSafeguardsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ServerTransport.
+func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return d.dispatchToMethodFake(req, method)
+	return s.dispatchToMethodFake(req, method)
 }
 
-func (d *DeploymentSafeguardsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if deploymentSafeguardsServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = deploymentSafeguardsServerTransportInterceptor.Do(req)
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "DeploymentSafeguardsClient.BeginCreate":
-				res.resp, res.err = d.dispatchBeginCreate(req)
-			case "DeploymentSafeguardsClient.BeginDelete":
-				res.resp, res.err = d.dispatchBeginDelete(req)
-			case "DeploymentSafeguardsClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
-			case "DeploymentSafeguardsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
+			case "Client.BeginCreate":
+				res.resp, res.err = s.dispatchBeginCreate(req)
+			case "Client.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "Client.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "Client.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -108,11 +108,11 @@ func (d *DeploymentSafeguardsServerTransport) dispatchToMethodFake(req *http.Req
 	}
 }
 
-func (d *DeploymentSafeguardsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginCreate == nil {
+func (s *ServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	beginCreate := d.beginCreate.get(req)
+	beginCreate := s.beginCreate.get(req)
 	if beginCreate == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/deploymentSafeguards/default`
 		regex := regexp.MustCompile(regexStr)
@@ -128,12 +128,12 @@ func (d *DeploymentSafeguardsServerTransport) dispatchBeginCreate(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginCreate(req.Context(), resourceURIParam, body, nil)
+		respr, errRespr := s.srv.BeginCreate(req.Context(), resourceURIParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginCreate = &respr
-		d.beginCreate.add(req, beginCreate)
+		s.beginCreate.add(req, beginCreate)
 	}
 
 	resp, err := server.PollerResponderNext(beginCreate, req)
@@ -142,21 +142,21 @@ func (d *DeploymentSafeguardsServerTransport) dispatchBeginCreate(req *http.Requ
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		d.beginCreate.remove(req)
+		s.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreate) {
-		d.beginCreate.remove(req)
+		s.beginCreate.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (d *DeploymentSafeguardsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginDelete == nil {
+func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	beginDelete := d.beginDelete.get(req)
+	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/deploymentSafeguards/default`
 		regex := regexp.MustCompile(regexStr)
@@ -168,12 +168,12 @@ func (d *DeploymentSafeguardsServerTransport) dispatchBeginDelete(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceURIParam, nil)
+		respr, errRespr := s.srv.BeginDelete(req.Context(), resourceURIParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginDelete = &respr
-		d.beginDelete.add(req, beginDelete)
+		s.beginDelete.add(req, beginDelete)
 	}
 
 	resp, err := server.PollerResponderNext(beginDelete, req)
@@ -182,18 +182,18 @@ func (d *DeploymentSafeguardsServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		d.beginDelete.remove(req)
+		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
-		d.beginDelete.remove(req)
+		s.beginDelete.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (d *DeploymentSafeguardsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
+func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/deploymentSafeguards/default`
@@ -206,7 +206,7 @@ func (d *DeploymentSafeguardsServerTransport) dispatchGet(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceURIParam, nil)
+	respr, errRespr := s.srv.Get(req.Context(), resourceURIParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -221,11 +221,11 @@ func (d *DeploymentSafeguardsServerTransport) dispatchGet(req *http.Request) (*h
 	return resp, nil
 }
 
-func (d *DeploymentSafeguardsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
+func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListPager := d.newListPager.get(req)
+	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/deploymentSafeguards`
 		regex := regexp.MustCompile(regexStr)
@@ -237,10 +237,10 @@ func (d *DeploymentSafeguardsServerTransport) dispatchNewListPager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		resp := d.srv.NewListPager(resourceURIParam, nil)
+		resp := s.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdeploymentsafeguards.DeploymentSafeguardsClientListResponse, createLink func() string) {
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdeploymentsafeguards.ClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -249,17 +249,17 @@ func (d *DeploymentSafeguardsServerTransport) dispatchNewListPager(req *http.Req
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
+		s.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to DeploymentSafeguardsServerTransport
-var deploymentSafeguardsServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

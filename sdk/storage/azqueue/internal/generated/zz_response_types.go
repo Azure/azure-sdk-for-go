@@ -202,6 +202,22 @@ type ServiceClientGetStatisticsResponse struct {
 	Version *string `xml:"Version"`
 }
 
+// ServiceClientGetUserDelegationKeyResponse contains the response from method ServiceClient.GetUserDelegationKey.
+type ServiceClientGetUserDelegationKeyResponse struct {
+	UserDelegationKey
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string `xml:"ClientRequestID"`
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time `xml:"Date"`
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string `xml:"RequestID"`
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string `xml:"Version"`
+}
+
 // ServiceClientListQueuesSegmentResponse contains the response from method ServiceClient.NewListQueuesSegmentPager.
 type ServiceClientListQueuesSegmentResponse struct {
 	ListQueuesSegmentResponse

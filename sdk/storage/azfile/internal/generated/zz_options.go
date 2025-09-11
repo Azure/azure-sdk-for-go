@@ -83,6 +83,11 @@ type DirectoryClientCreateOptions struct {
 	// should be specified.
 	FilePermissionKey *string
 
+	// SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag and alter the permissions specified
+	// in x-ms-file-permission to inherit missing permissions from the parent. Restore
+	// will apply changes without further modification.
+	FilePropertySemantics *FilePropertySemantics
+
 	// Optional, NFS only. The owning group of the file or directory.
 	Group *string
 
@@ -344,6 +349,16 @@ type FileClientCreateHardLinkOptions struct {
 
 // FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 type FileClientCreateOptions struct {
+	// Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set to clear, the value
+	// of this header must be set to zero.
+	ContentLength *int64
+
+	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
+	// header is specified, the File service compares the hash of the content that has
+	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400
+	// (Bad Request).
+	ContentMD5 []byte
+
 	// If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory.
 	// ‘None’ can also be specified as default.
 	FileAttributes *string
@@ -376,6 +391,11 @@ type FileClientCreateOptions struct {
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key
 	// should be specified.
 	FilePermissionKey *string
+
+	// SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag and alter the permissions specified
+	// in x-ms-file-permission to inherit missing permissions from the parent. Restore
+	// will apply changes without further modification.
+	FilePropertySemantics *FilePropertySemantics
 
 	// Optional, NFS only. The owning group of the file or directory.
 	Group *string
@@ -740,6 +760,17 @@ type ServiceClientGetPropertiesOptions struct {
 	Timeout *int32
 }
 
+// ServiceClientGetUserDelegationKeyOptions contains the optional parameters for the ServiceClient.GetUserDelegationKey method.
+type ServiceClientGetUserDelegationKeyOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
+	Timeout *int32
+}
+
 // ServiceClientListSharesSegmentOptions contains the optional parameters for the ServiceClient.NewListSharesSegmentPager
 // method.
 type ServiceClientListSharesSegmentOptions struct {
@@ -834,7 +865,12 @@ type ShareClientChangeLeaseOptions struct {
 // ShareClientCreateOptions contains the optional parameters for the ShareClient.Create method.
 type ShareClientCreateOptions struct {
 	// Specifies the access tier of the share.
-	AccessTier                           *ShareAccessTier
+	AccessTier *ShareAccessTier
+
+	// SMB only, default is true. Specifies whether granting of new directory leases for directories present in a share are to
+	// be enabled or disabled. An input of true specifies that granting of new
+	// directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be blocked.
+	EnableSmbDirectoryLease              *bool
 	EnableSnapshotVirtualDirectoryAccess *bool
 
 	// Protocols to enable on the share.
@@ -1008,7 +1044,12 @@ type ShareClientSetMetadataOptions struct {
 // ShareClientSetPropertiesOptions contains the optional parameters for the ShareClient.SetProperties method.
 type ShareClientSetPropertiesOptions struct {
 	// Specifies the access tier of the share.
-	AccessTier                           *ShareAccessTier
+	AccessTier *ShareAccessTier
+
+	// SMB only, default is true. Specifies whether granting of new directory leases for directories present in a share are to
+	// be enabled or disabled. An input of true specifies that granting of new
+	// directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be blocked.
+	EnableSmbDirectoryLease              *bool
 	EnableSnapshotVirtualDirectoryAccess *bool
 
 	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.

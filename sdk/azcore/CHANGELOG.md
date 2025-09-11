@@ -9,7 +9,7 @@
 ### Other Changes
 
 * Improved error fall-back for improperly authored long-running operations.
-* Upgraded dependencies to highest version that doesn't require Go 1.24.0 as a minimum version.
+* Upgraded dependencies.
 
 ## 1.19.0 (2025-08-21)
 

@@ -1,5 +1,51 @@
 # Release History
 
+## 2.0.0-beta.7 (2025-09-11)
+### Breaking Changes
+
+- Type of `DistributedAvailabilityGroupProperties.ReplicationMode` has been changed from `*ReplicationMode` to `*ReplicationModeType`
+- Enum `ReplicationMode` has been removed
+- Field `LastHardenedLsn`, `LinkState`, `PrimaryAvailabilityGroupName`, `SecondaryAvailabilityGroupName`, `SourceEndpoint`, `SourceReplicaID`, `TargetDatabase`, `TargetReplicaID` of struct `DistributedAvailabilityGroupProperties` has been removed
+- Field `BackupStorageAccessTier`, `MakeBackupsImmutable` of struct `LongTermRetentionPolicyProperties` has been removed
+
+### Features Added
+
+- New value `PhaseBuildingHyperscaleComponents`, `PhaseLogTransitionInProgress` added to enum type `Phase`
+- New value `StorageKeyTypeManagedIdentity` added to enum type `StorageKeyType`
+- New enum type `FailoverModeType` with values `FailoverModeTypeManual`, `FailoverModeTypeNone`
+- New enum type `FailoverType` with values `FailoverTypeForcedAllowDataLoss`, `FailoverTypePlanned`
+- New enum type `InstanceRole` with values `InstanceRolePrimary`, `InstanceRoleSecondary`
+- New enum type `LinkRole` with values `LinkRolePrimary`, `LinkRoleSecondary`
+- New enum type `ReplicaConnectedState` with values `ReplicaConnectedStateCONNECTED`, `ReplicaConnectedStateDISCONNECTED`
+- New enum type `ReplicaSynchronizationHealth` with values `ReplicaSynchronizationHealthHEALTHY`, `ReplicaSynchronizationHealthNOTHEALTHY`, `ReplicaSynchronizationHealthPARTIALLYHEALTHY`
+- New enum type `ReplicationModeType` with values `ReplicationModeTypeAsync`, `ReplicationModeTypeSync`
+- New enum type `RoleChangeType` with values `RoleChangeTypeForced`, `RoleChangeTypePlanned`
+- New enum type `SeedingModeType` with values `SeedingModeTypeAutomatic`, `SeedingModeTypeManual`
+- New enum type `ServerCreateMode` with values `ServerCreateModeNormal`, `ServerCreateModeRestore`
+- New enum type `SetLegalHoldImmutability` with values `SetLegalHoldImmutabilityDisabled`, `SetLegalHoldImmutabilityEnabled`
+- New enum type `TimeBasedImmutability` with values `TimeBasedImmutabilityDisabled`, `TimeBasedImmutabilityEnabled`
+- New enum type `TimeBasedImmutabilityMode` with values `TimeBasedImmutabilityModeLocked`, `TimeBasedImmutabilityModeUnlocked`
+- New function `*DistributedAvailabilityGroupsClient.BeginFailover(context.Context, string, string, string, DistributedAvailabilityGroupsFailoverRequest, *DistributedAvailabilityGroupsClientBeginFailoverOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientFailoverResponse], error)`
+- New function `*DistributedAvailabilityGroupsClient.BeginSetRole(context.Context, string, string, string, DistributedAvailabilityGroupSetRole, *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*runtime.Poller[DistributedAvailabilityGroupsClientSetRoleResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginLockTimeBasedImmutability(context.Context, string, string, string, string, *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup(context.Context, string, string, string, string, string, *LongTermRetentionBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutability(context.Context, string, string, string, string, *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup(context.Context, string, string, string, string, string, *LongTermRetentionBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutability(context.Context, string, string, string, string, *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup(context.Context, string, string, string, string, string, *LongTermRetentionBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginSetLegalHoldImmutability(context.Context, string, string, string, string, *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityOptions) (*runtime.Poller[LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup(context.Context, string, string, string, string, string, *LongTermRetentionBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse], error)`
+- New function `PossibleTimeBasedImmutabilityValues() []TimeBasedImmutability`
+- New struct `CertificateInfo`
+- New struct `DistributedAvailabilityGroupDatabase`
+- New struct `DistributedAvailabilityGroupSetRole`
+- New struct `DistributedAvailabilityGroupsFailoverRequest`
+- New field `Databases`, `DistributedAvailabilityGroupName`, `FailoverMode`, `InstanceAvailabilityGroupName`, `InstanceLinkRole`, `PartnerAvailabilityGroupName`, `PartnerEndpoint`, `PartnerLinkRole`, `SeedingMode` in struct `DistributedAvailabilityGroupProperties`
+- New field `LegalHoldImmutability`, `TimeBasedImmutability`, `TimeBasedImmutabilityMode` in struct `LongTermRetentionBackupProperties`
+- New field `TimeBasedImmutability`, `TimeBasedImmutabilityMode` in struct `LongTermRetentionPolicyProperties`
+- New field `CreateMode`, `RetentionDays` in struct `ServerProperties`
+
+
 ## 2.0.0-beta.6 (2024-08-30)
 ### Breaking Changes
 

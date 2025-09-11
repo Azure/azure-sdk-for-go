@@ -24,9 +24,9 @@ type WorkspacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, resourceGroupName string, workspaceName string, resource armiotfirmwaredefense.Workspace, options *armiotfirmwaredefense.WorkspacesClientCreateOptions) (resp azfake.Responder[armiotfirmwaredefense.WorkspacesClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method WorkspacesClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, workspaceName string, options *armiotfirmwaredefense.WorkspacesClientDeleteOptions) (resp azfake.Responder[armiotfirmwaredefense.WorkspacesClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method WorkspacesClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, options *armiotfirmwaredefense.WorkspacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armiotfirmwaredefense.WorkspacesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// GenerateUploadURL is the fake for method WorkspacesClient.GenerateUploadURL
 	// HTTP status codes to indicate success: http.StatusOK
@@ -55,6 +55,7 @@ type WorkspacesServer struct {
 func NewWorkspacesServerTransport(srv *WorkspacesServer) *WorkspacesServerTransport {
 	return &WorkspacesServerTransport{
 		srv:                         srv,
+		beginDelete:                 newTracker[azfake.PollerResponder[armiotfirmwaredefense.WorkspacesClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armiotfirmwaredefense.WorkspacesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armiotfirmwaredefense.WorkspacesClientListBySubscriptionResponse]](),
 	}
@@ -64,6 +65,7 @@ func NewWorkspacesServerTransport(srv *WorkspacesServer) *WorkspacesServerTransp
 // Don't use this type directly, use NewWorkspacesServerTransport instead.
 type WorkspacesServerTransport struct {
 	srv                         *WorkspacesServer
+	beginDelete                 *tracker[azfake.PollerResponder[armiotfirmwaredefense.WorkspacesClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armiotfirmwaredefense.WorkspacesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armiotfirmwaredefense.WorkspacesClientListBySubscriptionResponse]]
 }
@@ -93,8 +95,8 @@ func (w *WorkspacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 			switch method {
 			case "WorkspacesClient.Create":
 				res.resp, res.err = w.dispatchCreate(req)
-			case "WorkspacesClient.Delete":
-				res.resp, res.err = w.dispatchDelete(req)
+			case "WorkspacesClient.BeginDelete":
+				res.resp, res.err = w.dispatchBeginDelete(req)
 			case "WorkspacesClient.GenerateUploadURL":
 				res.resp, res.err = w.dispatchGenerateUploadURL(req)
 			case "WorkspacesClient.Get":
@@ -131,7 +133,7 @@ func (w *WorkspacesServerTransport) dispatchCreate(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armiotfirmwaredefense.Workspace](req)
@@ -161,36 +163,47 @@ func (w *WorkspacesServerTransport) dispatchCreate(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (w *WorkspacesServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if w.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (w *WorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := w.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginDelete(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		w.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	respr, errRespr := w.srv.Delete(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
+	if !server.PollerResponderMore(beginDelete) {
+		w.beginDelete.remove(req)
 	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
@@ -201,7 +214,7 @@ func (w *WorkspacesServerTransport) dispatchGenerateUploadURL(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateUploadUrl`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armiotfirmwaredefense.GenerateUploadURLRequest](req)
@@ -238,7 +251,7 @@ func (w *WorkspacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -273,7 +286,7 @@ func (w *WorkspacesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -310,7 +323,7 @@ func (w *WorkspacesServerTransport) dispatchNewListBySubscriptionPager(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := w.srv.NewListBySubscriptionPager(nil)
@@ -341,7 +354,7 @@ func (w *WorkspacesServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armiotfirmwaredefense.WorkspaceUpdate](req)

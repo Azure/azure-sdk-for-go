@@ -22,7 +22,7 @@ import (
 const (
 	credNameAzurePowerShell = "AzurePowerShellCredential"
 
-	azurePowerShellNoAzAccountModule = "NoAzAccountModule"
+	azAccountsModuleNotFound = "Az.Accounts PowerShell module not found"
 
 	// Azure PowerShell module version requirements
 	azAccountsMinVersion             = "2.2.0"
@@ -120,9 +120,10 @@ $mod = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -Erro
 
 if (!$mod) {
     Write-Error '%s'
-	exit 1
 }
 
+# Only force AsSecureString for older Az.Accounts versions that support it and return plain text token by default.
+# Newer Az.Accounts versions default to SecureString and removed the AsSecureString parameter
 if ($mod.Version -ge [version]'%s' -and $mod.Version -lt [version]'%s') {
     $params['AsSecureString'] = $true
 }
@@ -147,7 +148,7 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, azAccountsMinVersion, azurePowerShellNoAzAccountModule, azAccountsSecureStringMinVersion, azAccountsSecureStringMaxVersion, resource, tenantArg)
+`, azAccountsMinVersion, azAccountsModuleNotFound, azAccountsSecureStringMinVersion, azAccountsSecureStringMaxVersion, resource, tenantArg)
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)

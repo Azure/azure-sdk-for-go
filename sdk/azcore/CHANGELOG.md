@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Improved error fall-back for improperly authored long-running operations.
+
 ## 1.19.0 (2025-08-21)
 
 ### Features Added

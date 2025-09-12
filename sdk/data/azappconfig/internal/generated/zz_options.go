@@ -49,10 +49,10 @@ type AzureAppConfigurationClientCheckKeyValuesOptions struct {
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
 	IfNoneMatch *string
 
-	// A filter used to match keys.
+	// A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering
 	Key *string
 
-	// A filter used to match labels
+	// A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering
 	Label *string
 
 	// Used to select what fields are present in the returned resource(s).
@@ -60,6 +60,9 @@ type AzureAppConfigurationClientCheckKeyValuesOptions struct {
 
 	// A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
 	Snapshot *string
+
+	// A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering
+	Tags []string
 }
 
 // AzureAppConfigurationClientCheckKeysOptions contains the optional parameters for the AzureAppConfigurationClient.CheckKeys
@@ -100,14 +103,17 @@ type AzureAppConfigurationClientCheckRevisionsOptions struct {
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string
 
-	// A filter used to match keys.
+	// A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions
 	Key *string
 
-	// A filter used to match labels
+	// A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions
 	Label *string
 
 	// Used to select what fields are present in the returned resource(s).
 	Select []SettingFields
+
+	// A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions
+	Tags []string
 }
 
 // AzureAppConfigurationClientCheckSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.CheckSnapshot
@@ -184,10 +190,10 @@ type AzureAppConfigurationClientGetKeyValuesOptions struct {
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
 	IfNoneMatch *string
 
-	// A filter used to match keys.
+	// A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering
 	Key *string
 
-	// A filter used to match labels
+	// A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering
 	Label *string
 
 	// Used to select what fields are present in the returned resource(s).
@@ -196,6 +202,9 @@ type AzureAppConfigurationClientGetKeyValuesOptions struct {
 	// A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not valid when used with 'key'
 	// and 'label' filters.
 	Snapshot *string
+
+	// A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering
+	Tags []string
 }
 
 // AzureAppConfigurationClientGetKeysOptions contains the optional parameters for the AzureAppConfigurationClient.NewGetKeysPager
@@ -242,14 +251,17 @@ type AzureAppConfigurationClientGetRevisionsOptions struct {
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string
 
-	// A filter used to match keys.
+	// A filter used to match keys. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions
 	Key *string
 
-	// A filter used to match labels
+	// A filter used to match labels. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions
 	Label *string
 
 	// Used to select what fields are present in the returned resource(s).
 	Select []SettingFields
+
+	// A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/restapirevisions
+	Tags []string
 }
 
 // AzureAppConfigurationClientGetSnapshotOptions contains the optional parameters for the AzureAppConfigurationClient.GetSnapshot

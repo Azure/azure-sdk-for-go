@@ -78,7 +78,8 @@ func toGeneratedETagString(etag *azcore.ETag) *string {
 func (cs Setting) toGenerated() generated.KeyValue {
 	tags := make(map[string]*string)
 	for k, v := range cs.Tags {
-		tags[k] = &v
+		d := v
+		tags[k] = &d
 	}
 
 	return generated.KeyValue{

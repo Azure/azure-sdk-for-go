@@ -30,6 +30,11 @@ type SettingSelector struct {
 	// Label filter that will be used to select a set of configuration setting entities.
 	LabelFilter *string
 
+	// Tags filter that will be used to select a set of configuration setting entities.
+	// This is a list of comma-separated tags. For more information about filtering by tags, see:
+	// https://learn.microsoft.com/azure/azure-app-configuration/rest-api-key-value?pivots=v23-11#filtering
+	TagsFilter []string
+
 	// Indicates the point in time in the revision history of the selected configuration setting entities to retrieve.
 	// If set, all properties of the configuration setting entities in the returned group will be exactly what they were at this time.
 	AcceptDateTime *time.Time
@@ -69,6 +74,7 @@ func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigura
 		Key:    sc.KeyFilter,
 		Label:  sc.LabelFilter,
 		Select: sf,
+		Tags:   sc.TagsFilter,
 	}
 }
 
@@ -89,5 +95,6 @@ func (sc SettingSelector) toGeneratedGetKeyValues() *generated.AzureAppConfigura
 		Key:    sc.KeyFilter,
 		Label:  sc.LabelFilter,
 		Select: sf,
+		Tags:   sc.TagsFilter,
 	}
 }

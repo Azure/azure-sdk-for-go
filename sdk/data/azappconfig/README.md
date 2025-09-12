@@ -35,6 +35,8 @@ The [Label][label_concept] property of a Setting provides a way to separate Sett
 
 For example, MaxRequests may be 100 in "NorthAmerica" and 200 in "WestEurope". By creating a Setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, with a "WestEurope" label, an application can seamlessly retrieve Settings as it runs in these two dimensions.
 
+**Tags** provide additional metadata for configuration settings and enable powerful filtering capabilities. Tags are key-value pairs that can be used to categorize and query settings. For example, you can tag settings with `environment=production` or `version=1.2.3` and then use the `TagsFilter` in `SettingSelector` to retrieve only settings that match specific tag criteria.
+
 ## Examples
 
 Examples for various scenarios can be found on [pkg.go.dev][azappconfig_examples] or in the `example*_test.go` files in our GitHub repo for [azappconfig][azappconfig_src].

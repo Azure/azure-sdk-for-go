@@ -246,6 +246,7 @@ func (k KeyValueFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "key", k.Key)
 	populate(objectMap, "label", k.Label)
+	populate(objectMap, "tags", k.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -263,6 +264,9 @@ func (k *KeyValueFilter) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "label":
 			err = unpopulate(val, "Label", &k.Label)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &k.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -92,13 +92,16 @@ type KeyValue struct {
 	Value *string
 }
 
-// KeyValueFilter - Enables filtering of key-values.
+// KeyValueFilter - Enables filtering of key-values. Syntax reference: https://aka.ms/azconfig/docs/restapisnapshots
 type KeyValueFilter struct {
 	// REQUIRED; Filters key-values by their key field.
 	Key *string
 
 	// Filters key-values by their label field.
 	Label *string
+
+	// Filters key-values by their tags field.
+	Tags []string
 }
 
 // KeyValueListResult - The result of a list request.

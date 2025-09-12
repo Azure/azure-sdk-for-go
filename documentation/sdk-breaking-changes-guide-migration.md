@@ -13,6 +13,7 @@ import "./main.tsp";
 import "@azure-tools/typespec-client-generator-core";
 
 using Azure.ClientGenerator.Core;
+using MainNamespaceInMainTsp; // Replace with the actual main namespace in main.tsp
 
 // Add your customizations here
 ```

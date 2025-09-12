@@ -28,13 +28,15 @@ Iterate through all items in the guide:
 - For each item, check if the changelog entries could match the `Changelog Pattern`.
   - If match, get the `Reason`, `Spec Pattern`, `Impact`, and `Resolution` from the guide.
   - If the breaking changes can be resolved, follow the resolution guide to apply the necessary changes.
-  - For client customization, import `main.tsp` in `client.tsp`, not vice versa.
-  - `client.tsp` could be consumed by emitter automatically, **DO NOT** change the entry point in `tspconfig.yaml`.
 - If there is any changes made in the spec folder:
-  - Revert the code changes under the package path.
+  - Run `git restore` and `git clean -fd` to discard previous SDK generation.
   - Regenerate the SDK locally to see if the changelogs are updated.
-- For breaking changes that don't match any patterns, document them for manual review
+- For breaking changes that don't match any patterns, document them for manual review.
 
 ## Step 4: Gather Review Result
 
 Provide comprehensive breaking changes analysis report in a new markdown file including: the breaking changes detected, their reason and impact, and any resolutions applied. Use structured format to make it easy to read and understand.
+
+## Warnings
+- For client customization, **import `main.tsp` in `client.tsp`**, not vice versa.
+- `client.tsp` could be consumed by emitter automatically, **DO NOT change the entry point in `tspconfig.yaml`**.

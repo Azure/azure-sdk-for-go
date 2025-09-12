@@ -63,7 +63,7 @@ func TestChangeFeedOptionsToHeaders(t *testing.T) {
 		t.Fatal("toHeaders should return non-nil")
 	}
 	h = *headers
-	pkJSON, _ := pk.toJsonString()
+	pkJSON, _ := json.Marshal(pk)
 	if h[cosmosHeaderPartitionKey] != string(pkJSON) {
 		t.Errorf("Expected PartitionKey to be %v, got %v", string(pkJSON), h[cosmosHeaderPartitionKey])
 	}
@@ -168,7 +168,7 @@ func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
 		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])
 	}
 
-	pkJSON, _ := pk.toJsonString()
+	pkJSON, _ := json.Marshal(pk)
 	if h[cosmosHeaderPartitionKey] != string(pkJSON) {
 		t.Errorf("Expected PartitionKey to be %v, got %v", string(pkJSON), h[cosmosHeaderPartitionKey])
 	}
@@ -264,5 +264,96 @@ func TestChangeFeedOptionsCompositeContinuationTokenWithExistingFeedRange(t *tes
 	}
 	if options.FeedRange.MaxExclusive != "BB" {
 		t.Errorf("Expected FeedRange.MaxExclusive to remain BB, got %v", options.FeedRange.MaxExclusive)
+	}
+}
+
+func TestChangeFeedOptionsContinuationTokenForPartitionKey(t *testing.T) {
+	// Test continuation token for partition key
+	resourceID := "test-resource-id"
+	partitionKey := NewPartitionKeyString("testPK")
+	etag := azcore.ETag("test-etag")
+
+	continuationToken := newContinuationTokenForPartitionKey(resourceID, &partitionKey, &etag)
+
+	tokenBytes, err := json.Marshal(continuationToken)
+	if err != nil {
+		t.Fatalf("Failed to marshal continuation token: %v", err)
+	}
+	tokenString := string(tokenBytes)
+
+	options := &ChangeFeedOptions{
+		Continuation: &tokenString,
+	}
+
+	headers := options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
+
+	h := *headers
+
+	// Should extract ETag from continuation token
+	if h[headerIfNoneMatch] != string(etag) {
+		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
+	}
+
+	// Should set PartitionKey from continuation token
+	if options.PartitionKey == nil {
+		t.Fatal("Expected PartitionKey to be set from continuation token")
+	}
+
+	pkJSON, _ := json.Marshal(*options.PartitionKey)
+	if h[cosmosHeaderPartitionKey] != string(pkJSON) {
+		t.Errorf("Expected PartitionKey to be %v, got %v", string(pkJSON), h[cosmosHeaderPartitionKey])
+	}
+
+	// FeedRange should be nil since this is for partition key
+	if options.FeedRange != nil {
+		t.Errorf("Expected FeedRange to be nil for partition key continuation token, got %v", options.FeedRange)
+	}
+}
+
+func TestChangeFeedOptionsCompositeContinuationTokenWithExistingPartitionKey(t *testing.T) {
+	// Test continuation token for partition key with existing PartitionKey
+	resourceID := "test-resource-id"
+	partitionKey := NewPartitionKeyString("testPK")
+	etag := azcore.ETag("test-etag")
+
+	continuationToken := newContinuationTokenForPartitionKey(resourceID, &partitionKey, &etag)
+
+	tokenBytes, err := json.Marshal(continuationToken)
+	if err != nil {
+		t.Fatalf("Failed to marshal continuation token: %v", err)
+	}
+	tokenString := string(tokenBytes)
+
+	explicitPartitionKey := NewPartitionKeyString("explicitPK")
+
+	options := &ChangeFeedOptions{
+		Continuation: &tokenString,
+		PartitionKey: &explicitPartitionKey,
+	}
+
+	headers := options.toHeaders(nil)
+	if headers == nil {
+		t.Fatal("toHeaders should return non-nil")
+	}
+
+	h := *headers
+
+	if h[headerIfNoneMatch] != string(etag) {
+		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
+	}
+	if options.PartitionKey == nil {
+		t.Fatal("Expected PartitionKey to be set from continuation token")
+	}
+	pkJSON, _ := json.Marshal(*options.PartitionKey)
+	if h[cosmosHeaderPartitionKey] != string(pkJSON) {
+		t.Errorf("Expected PartitionKey to be %v, got %v", string(pkJSON), h[cosmosHeaderPartitionKey])
+	}
+
+	// FeedRange should be nil since this is for partition key
+	if options.FeedRange != nil {
+		t.Errorf("Expected FeedRange to be nil for partition key continuation token, got %v", options.FeedRange)
 	}
 }

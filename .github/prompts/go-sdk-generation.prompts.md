@@ -9,7 +9,7 @@ Follow these steps to help users generate the Go SDK from specific API specifica
 
 ## Step 2: Generate Go SDK
 
-- If user provide a local spec path, then run `go run . generate <sdk-repo-path> <spec-repo-path> --tsp-config=<tsp-config-path>` under `../../eng/tools/generator` to generate the Go SDK.
+- If user provide a local spec path, then run `go run . generate <sdk-repo-path> <spec-repo-path> --tsp-config=<tsp-config-relative-path>` under `../../eng/tools/generator` to generate the Go SDK.
 - If user provide a GitHub PR link, then run `go run . generate <sdk-repo-path> <spec-repo-path> --github-pr=<pr-link>` under `../../eng/tools/generator` to generate the Go SDK.
 - Refer the [README](../../eng/tools/generator/README.md) for detailed usage.
 

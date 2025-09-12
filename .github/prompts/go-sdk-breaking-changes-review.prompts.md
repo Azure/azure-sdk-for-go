@@ -28,6 +28,7 @@ Iterate through all items in the guide:
 - For each item, check if the changelog entries could match the `Changelog Pattern`.
   - If match, get the `Reason`, `Spec Pattern`, `Impact`, and `Resolution` from the guide.
   - If the breaking changes can be resolved, follow the resolution guide to apply the necessary changes.
+  - For client customization, import `main.tsp` in `client.tsp`, not vice versa.
 - If there is any changes made in the spec folder:
   - Revert the code changes under the package path.
   - Regenerate the SDK locally to see if the changelogs are updated.

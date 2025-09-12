@@ -41,7 +41,7 @@ func NewPasswordHashesClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListByFirmwarePager - Lists password hash analysis results of a firmware.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
@@ -94,7 +94,7 @@ func (client *PasswordHashesClient) listByFirmwareCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

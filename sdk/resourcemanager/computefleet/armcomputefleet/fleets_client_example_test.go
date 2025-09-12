@@ -8,12 +8,33 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/v2"
 	"log"
 )
 
-// Generated from example definition: 2024-11-01/Fleets_CreateOrUpdate.json
-func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
+// Generated from example definition: 2025-07-01-preview/Fleets_Cancel.json
+func ExampleFleetsClient_BeginCancel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputefleet.NewClientFactory("3453D930-6DDF-4466-B3B3-E1AEE9BD448C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFleetsClient().BeginCancel(ctx, "rgazurefleet", "myFleet", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-07-01-preview/Fleets_CreateOrUpdate.json
+func ExampleFleetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +44,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFleetsClient().BeginCreateOrUpdate(ctx, "rgazurefleet", "testFleet", armcomputefleet.Fleet{
+	poller, err := clientFactory.NewFleetsClient().BeginCreateOrUpdate(ctx, "rgazurefleet", "myFleet", armcomputefleet.Fleet{
 		Properties: &armcomputefleet.FleetProperties{
 			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
 				Capacity:           to.Ptr[int32](20),
@@ -36,12 +57,16 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 			RegularPriorityProfile: &armcomputefleet.RegularPriorityProfile{
 				Capacity:           to.Ptr[int32](20),
 				MinCapacity:        to.Ptr[int32](10),
-				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyLowestPrice),
+				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyPrioritized),
 			},
 			VMSizesProfile: []*armcomputefleet.VMSizeProfile{
 				{
-					Name: to.Ptr("Standard_d1_v2"),
-					Rank: to.Ptr[int32](19225),
+					Name: to.Ptr("Standard_D1_v2"),
+					Rank: to.Ptr[int32](0),
+				},
+				{
+					Name: to.Ptr("Standard_D2_v2"),
+					Rank: to.Ptr[int32](1),
 				},
 			},
 			ComputeProfile: &armcomputefleet.ComputeProfile{
@@ -185,6 +210,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 								DeleteOption:      to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 							},
 						},
+						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 					},
 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -370,21 +396,430 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 				},
 				ComputeAPIVersion:        to.Ptr("2023-07-01"),
 				PlatformFaultDomainCount: to.Ptr[int32](1),
+				AdditionalVirtualMachineCapabilities: &armcomputefleet.AdditionalCapabilities{
+					UltraSSDEnabled:    to.Ptr(true),
+					HibernationEnabled: to.Ptr(true),
+				},
+			},
+			Mode:         to.Ptr(armcomputefleet.FleetModeInstance),
+			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVCPU),
+			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
+				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyPrioritized),
+				ZonePreferences: []*armcomputefleet.ZonePreference{
+					{
+						Zone: to.Ptr("1"),
+						Rank: to.Ptr[int32](0),
+					},
+					{
+						Zone: to.Ptr("2"),
+						Rank: to.Ptr[int32](1),
+					},
+				},
+			},
+			VMAttributes: &armcomputefleet.VMAttributes{
+				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				MemoryInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				MemoryInGiBPerVCpu: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				LocalStorageSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				LocalStorageInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				LocalStorageDiskTypes: []*armcomputefleet.LocalStorageDiskType{
+					to.Ptr(armcomputefleet.LocalStorageDiskTypeHDD),
+				},
+				DataDiskCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				NetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				NetworkBandwidthInMbps: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				RdmaSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				RdmaNetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				AcceleratorSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				AcceleratorManufacturers: []*armcomputefleet.AcceleratorManufacturer{
+					to.Ptr(armcomputefleet.AcceleratorManufacturerAMD),
+				},
+				AcceleratorTypes: []*armcomputefleet.AcceleratorType{
+					to.Ptr(armcomputefleet.AcceleratorTypeGPU),
+				},
+				AcceleratorCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				VMCategories: []*armcomputefleet.VMCategory{
+					to.Ptr(armcomputefleet.VMCategoryGpuAccelerated),
+				},
+				ArchitectureTypes: []*armcomputefleet.ArchitectureType{
+					to.Ptr(armcomputefleet.ArchitectureTypeARM64),
+				},
+				CPUManufacturers: []*armcomputefleet.CPUManufacturer{
+					to.Ptr(armcomputefleet.CPUManufacturerIntel),
+				},
+				BurstableSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				ExcludedVMSizes: []*string{
+					to.Ptr("Standard_A1"),
+				},
+			},
+			AdditionalLocationsProfile: &armcomputefleet.AdditionalLocationsProfile{
+				LocationProfiles: []*armcomputefleet.LocationProfile{
+					{
+						Location: to.Ptr("ekbzgzhs"),
+						VirtualMachineProfileOverride: &armcomputefleet.BaseVirtualMachineProfile{
+							OSProfile: &armcomputefleet.VirtualMachineScaleSetOSProfile{
+								ComputerNamePrefix: to.Ptr("xoxwfnjjuqibzxldgxu"),
+								AdminUsername:      to.Ptr("wwjyuhblwecni"),
+								AdminPassword:      to.Ptr("<a-password-goes-here>"),
+								CustomData:         to.Ptr("gvyvbgcgutteiivwjn"),
+								WindowsConfiguration: &armcomputefleet.WindowsConfiguration{
+									ProvisionVMAgent:       to.Ptr(true),
+									EnableAutomaticUpdates: to.Ptr(true),
+									TimeZone:               to.Ptr("oqpoladmchkkugpxocrynztkok"),
+									AdditionalUnattendContent: []*armcomputefleet.AdditionalUnattendContent{
+										{
+											PassName:      to.Ptr("OobeSystem"),
+											ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+											SettingName:   to.Ptr(armcomputefleet.SettingNamesAutoLogon),
+											Content:       to.Ptr("ynkrgbreqtuxgftjgeuvozzypzx"),
+										},
+									},
+									PatchSettings: &armcomputefleet.PatchSettings{
+										PatchMode:         to.Ptr(armcomputefleet.WindowsVMGuestPatchModeManual),
+										EnableHotpatching: to.Ptr(true),
+										AssessmentMode:    to.Ptr(armcomputefleet.WindowsPatchAssessmentModeImageDefault),
+										AutomaticByPlatformSettings: &armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformSettings{
+											RebootSetting:                            to.Ptr(armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+										},
+									},
+									WinRM: &armcomputefleet.WinRMConfiguration{
+										Listeners: []*armcomputefleet.WinRMListener{
+											{
+												Protocol:       to.Ptr(armcomputefleet.ProtocolTypesHTTP),
+												CertificateURL: to.Ptr("https://microsoft.com/a"),
+											},
+										},
+									},
+									EnableVMAgentPlatformUpdates: to.Ptr(true),
+								},
+								LinuxConfiguration: &armcomputefleet.LinuxConfiguration{
+									DisablePasswordAuthentication: to.Ptr(true),
+									SSH: &armcomputefleet.SSHConfiguration{
+										PublicKeys: []*armcomputefleet.SSHPublicKey{
+											{
+												Path:    to.Ptr("bci"),
+												KeyData: to.Ptr("meokrrrddgnyxyhg"),
+											},
+										},
+									},
+									ProvisionVMAgent: to.Ptr(true),
+									PatchSettings: &armcomputefleet.LinuxPatchSettings{
+										PatchMode:      to.Ptr(armcomputefleet.LinuxVMGuestPatchModeImageDefault),
+										AssessmentMode: to.Ptr(armcomputefleet.LinuxPatchAssessmentModeImageDefault),
+										AutomaticByPlatformSettings: &armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformSettings{
+											RebootSetting:                            to.Ptr(armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+										},
+									},
+									EnableVMAgentPlatformUpdates: to.Ptr(true),
+								},
+								Secrets: []*armcomputefleet.VaultSecretGroup{
+									{
+										SourceVault: &armcomputefleet.SubResource{
+											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+										},
+										VaultCertificates: []*armcomputefleet.VaultCertificate{
+											{
+												CertificateURL:   to.Ptr("https://microsoft.com/a"),
+												CertificateStore: to.Ptr("hdts"),
+											},
+										},
+									},
+								},
+								AllowExtensionOperations:    to.Ptr(true),
+								RequireGuestProvisionSignal: to.Ptr(true),
+							},
+							StorageProfile: &armcomputefleet.VirtualMachineScaleSetStorageProfile{
+								ImageReference: &armcomputefleet.ImageReference{
+									Publisher:               to.Ptr("mqxgwbiyjzmxavhbkd"),
+									Offer:                   to.Ptr("isxgumkarlkomp"),
+									SKU:                     to.Ptr("eojmppqcrnpmxirtp"),
+									Version:                 to.Ptr("wvpcqefgtmqdgltiuz"),
+									SharedGalleryImageID:    to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
+									CommunityGalleryImageID: to.Ptr("vlqe"),
+									ID:                      to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
+								},
+								OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
+									Name:                    to.Ptr("xhwnqpqigoymwwetvhjuuhiu"),
+									Caching:                 to.Ptr(armcomputefleet.CachingTypesNone),
+									WriteAcceleratorEnabled: to.Ptr(true),
+									CreateOption:            to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+									DiffDiskSettings: &armcomputefleet.DiffDiskSettings{
+										Option:    to.Ptr(armcomputefleet.DiffDiskOptionsLocal),
+										Placement: to.Ptr(armcomputefleet.DiffDiskPlacementCacheDisk),
+									},
+									DiskSizeGB: to.Ptr[int32](21),
+									OSType:     to.Ptr(armcomputefleet.OperatingSystemTypesWindows),
+									Image: &armcomputefleet.VirtualHardDisk{
+										URI: to.Ptr("https://microsoft.com/a"),
+									},
+									VhdContainers: []*string{
+										to.Ptr("mgyqnavpb"),
+									},
+									ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+										StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+										DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+										},
+										SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+											SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+											},
+										},
+									},
+									DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+								},
+								DataDisks: []*armcomputefleet.VirtualMachineScaleSetDataDisk{
+									{
+										Name:                    to.Ptr("nqblcowgig"),
+										Lun:                     to.Ptr[int32](14),
+										Caching:                 to.Ptr(armcomputefleet.CachingTypesNone),
+										WriteAcceleratorEnabled: to.Ptr(true),
+										CreateOption:            to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+										DiskSizeGB:              to.Ptr[int32](11),
+										ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+											StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+											},
+											SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+												SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+												DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+												},
+											},
+										},
+										DiskIOPSReadWrite: to.Ptr[int64](5),
+										DiskMBpsReadWrite: to.Ptr[int64](4),
+										DeleteOption:      to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+									},
+								},
+								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypesSCSI),
+							},
+							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
+								HealthProbe: &armcomputefleet.APIEntityReference{
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"),
+								},
+								NetworkInterfaceConfigurations: []*armcomputefleet.VirtualMachineScaleSetNetworkConfiguration{
+									{
+										Name: to.Ptr("uyemquurltujhbjkhm"),
+										Properties: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationProperties{
+											Primary:                     to.Ptr(true),
+											EnableAcceleratedNetworking: to.Ptr(true),
+											DisableTCPStateTracking:     to.Ptr(true),
+											EnableFpga:                  to.Ptr(true),
+											NetworkSecurityGroup: &armcomputefleet.SubResource{
+												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"),
+											},
+											DNSSettings: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+												DNSServers: []*string{
+													to.Ptr("ajcsckebabrus"),
+												},
+											},
+											IPConfigurations: []*armcomputefleet.VirtualMachineScaleSetIPConfiguration{
+												{
+													Name: to.Ptr("xpwuwsvkuml"),
+													Properties: &armcomputefleet.VirtualMachineScaleSetIPConfigurationProperties{
+														Subnet: &armcomputefleet.APIEntityReference{
+															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"),
+														},
+														Primary: to.Ptr(true),
+														PublicIPAddressConfiguration: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfiguration{
+															Name: to.Ptr("wbpdlbxflssopphq"),
+															Properties: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+																IdleTimeoutInMinutes: to.Ptr[int32](9),
+																DNSSettings: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+																	DomainNameLabel:      to.Ptr("uwjtwqgwalsctypszcbnxo"),
+																	DomainNameLabelScope: to.Ptr(armcomputefleet.DomainNameLabelScopeTypesTenantReuse),
+																},
+																IPTags: []*armcomputefleet.VirtualMachineScaleSetIPTag{
+																	{
+																		IPTagType: to.Ptr("hxkbmbisknggtfdqoaqagjhipdkd"),
+																		Tag:       to.Ptr("vzxhyyrzieaocbxyxieivj"),
+																	},
+																},
+																PublicIPPrefix: &armcomputefleet.SubResource{
+																	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"),
+																},
+																PublicIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+																DeleteOption:           to.Ptr(armcomputefleet.DeleteOptionsDelete),
+															},
+															SKU: &armcomputefleet.PublicIPAddressSKU{
+																Name: to.Ptr(armcomputefleet.PublicIPAddressSKUNameBasic),
+																Tier: to.Ptr(armcomputefleet.PublicIPAddressSKUTierRegional),
+															},
+														},
+														PrivateIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+														ApplicationGatewayBackendAddressPools: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}"),
+															},
+														},
+														ApplicationSecurityGroups: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}"),
+															},
+														},
+														LoadBalancerBackendAddressPools: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"),
+															},
+														},
+														LoadBalancerInboundNatPools: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"),
+															},
+														},
+													},
+												},
+											},
+											EnableIPForwarding: to.Ptr(true),
+											DeleteOption:       to.Ptr(armcomputefleet.DeleteOptionsDelete),
+											AuxiliaryMode:      to.Ptr(armcomputefleet.NetworkInterfaceAuxiliaryModeNone),
+											AuxiliarySKU:       to.Ptr(armcomputefleet.NetworkInterfaceAuxiliarySKUNone),
+										},
+									},
+								},
+								NetworkAPIVersion: to.Ptr(armcomputefleet.NetworkAPIVersionV20201101),
+							},
+							SecurityProfile: &armcomputefleet.SecurityProfile{
+								UefiSettings: &armcomputefleet.UefiSettings{
+									SecureBootEnabled: to.Ptr(true),
+									VTpmEnabled:       to.Ptr(true),
+								},
+								EncryptionAtHost: to.Ptr(true),
+								SecurityType:     to.Ptr(armcomputefleet.SecurityTypesTrustedLaunch),
+								EncryptionIdentity: &armcomputefleet.EncryptionIdentity{
+									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"),
+								},
+								ProxyAgentSettings: &armcomputefleet.ProxyAgentSettings{
+									Enabled:          to.Ptr(true),
+									Mode:             to.Ptr(armcomputefleet.ModeAudit),
+									KeyIncarnationID: to.Ptr[int32](22),
+								},
+							},
+							DiagnosticsProfile: &armcomputefleet.DiagnosticsProfile{
+								BootDiagnostics: &armcomputefleet.BootDiagnostics{
+									Enabled:    to.Ptr(true),
+									StorageURI: to.Ptr("https://microsoft.com/a"),
+								},
+							},
+							ExtensionProfile: &armcomputefleet.VirtualMachineScaleSetExtensionProfile{
+								Extensions: []*armcomputefleet.VirtualMachineScaleSetExtension{
+									{
+										Name: to.Ptr("dockglmmvl"),
+										Properties: &armcomputefleet.VirtualMachineScaleSetExtensionProperties{
+											ForceUpdateTag:          to.Ptr("wzyqlpszoiewqbhlnzckfshdtpwkbd"),
+											Publisher:               to.Ptr("iikgjziralgrfsrxrlrdigqyfhuqg"),
+											Type:                    to.Ptr("xzhgosms"),
+											TypeHandlerVersion:      to.Ptr("mfzdzdwucagkogmxoosyjpej"),
+											AutoUpgradeMinorVersion: to.Ptr(true),
+											EnableAutomaticUpgrade:  to.Ptr(true),
+											Settings:                map[string]any{},
+											ProtectedSettings:       map[string]any{},
+											ProvisionAfterExtensions: []*string{
+												to.Ptr("rqrycujrpdodllirebkfg"),
+											},
+											SuppressFailures: to.Ptr(true),
+											ProtectedSettingsFromKeyVault: &armcomputefleet.KeyVaultSecretReference{
+												SecretURL: to.Ptr("https://microsoft.com/ahygahgb"),
+												SourceVault: &armcomputefleet.SubResource{
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+												},
+											},
+										},
+									},
+								},
+								ExtensionsTimeBudget: to.Ptr("srxtwxrc"),
+							},
+							LicenseType: to.Ptr("hilutelnuqxtpdznq"),
+							ScheduledEventsProfile: &armcomputefleet.ScheduledEventsProfile{
+								TerminateNotificationProfile: &armcomputefleet.TerminateNotificationProfile{
+									NotBeforeTimeout: to.Ptr("jgycfvgxpzvgsdylbcspkrxwhgxkyd"),
+									Enable:           to.Ptr(true),
+								},
+								OSImageNotificationProfile: &armcomputefleet.OSImageNotificationProfile{
+									NotBeforeTimeout: to.Ptr("nbgfbvisxveyywfyjgcfb"),
+									Enable:           to.Ptr(true),
+								},
+							},
+							UserData: to.Ptr("ezhyl"),
+							CapacityReservation: &armcomputefleet.CapacityReservationProfile{
+								CapacityReservationGroup: &armcomputefleet.SubResource{
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"),
+								},
+							},
+							ApplicationProfile: &armcomputefleet.ApplicationProfile{
+								GalleryApplications: []*armcomputefleet.VMGalleryApplication{
+									{
+										Tags:                            to.Ptr("fronuehbtzhxaoijmdmjzwaswgevh"),
+										Order:                           to.Ptr[int32](19),
+										PackageReferenceID:              to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+										ConfigurationReference:          to.Ptr("gqxsvizquzglpsgqaundtyh"),
+										TreatFailureAsDeploymentFailure: to.Ptr(true),
+										EnableAutomaticUpgrade:          to.Ptr(true),
+									},
+								},
+							},
+							HardwareProfile: &armcomputefleet.VirtualMachineScaleSetHardwareProfile{
+								VMSizeProperties: &armcomputefleet.VMSizeProperties{
+									VCPUsAvailable: to.Ptr[int32](1),
+									VCPUsPerCore:   to.Ptr[int32](4),
+								},
+							},
+							ServiceArtifactReference: &armcomputefleet.ServiceArtifactReference{
+								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"),
+							},
+							SecurityPostureReference: &armcomputefleet.SecurityPostureReference{
+								ID: to.Ptr("/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest"),
+								ExcludeExtensions: []*string{
+									to.Ptr("zagiokiwvg"),
+								},
+								IsOverridable: to.Ptr(true),
+							},
+						},
+					},
+				},
 			},
 		},
 		Zones: []*string{
-			to.Ptr("zone1"),
-			to.Ptr("zone2"),
+			to.Ptr("1"),
+			to.Ptr("2"),
 		},
 		Identity: &armcomputefleet.ManagedServiceIdentity{
-			Type: to.Ptr(armcomputefleet.ManagedServiceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armcomputefleet.UserAssignedIdentity{
-				"key9851": {},
-			},
+			Type:                   to.Ptr(armcomputefleet.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcomputefleet.UserAssignedIdentity{},
 		},
-		Tags: map[string]*string{
-			"key3518": to.Ptr("luvrnuvsgdpbuofdskkcoqhfh"),
-		},
+		Tags:     map[string]*string{},
 		Location: to.Ptr("westus"),
 		Plan: &armcomputefleet.Plan{
 			Name:          to.Ptr("jwgrcrnrtfoxn"),
@@ -407,24 +842,27 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// res = armcomputefleet.FleetsClientCreateOrUpdateResponse{
 	// 	Fleet: &armcomputefleet.Fleet{
 	// 		Properties: &armcomputefleet.FleetProperties{
-	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateSucceeded),
 	// 			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
-	// 				Capacity: to.Ptr[int32](10),
-	// 				MinCapacity: to.Ptr[int32](20),
+	// 				Capacity: to.Ptr[int32](20),
+	// 				MinCapacity: to.Ptr[int32](10),
 	// 				MaxPricePerVM: to.Ptr[float32](0.00865),
 	// 				EvictionPolicy: to.Ptr(armcomputefleet.EvictionPolicyDelete),
 	// 				AllocationStrategy: to.Ptr(armcomputefleet.SpotAllocationStrategyPriceCapacityOptimized),
 	// 				Maintain: to.Ptr(true),
 	// 			},
 	// 			RegularPriorityProfile: &armcomputefleet.RegularPriorityProfile{
-	// 				Capacity: to.Ptr[int32](10),
+	// 				Capacity: to.Ptr[int32](20),
 	// 				MinCapacity: to.Ptr[int32](10),
-	// 				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyLowestPrice),
+	// 				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyPrioritized),
 	// 			},
 	// 			VMSizesProfile: []*armcomputefleet.VMSizeProfile{
 	// 				{
-	// 					Name: to.Ptr("Standard_d1_v2"),
-	// 					Rank: to.Ptr[int32](19225),
+	// 					Name: to.Ptr("Standard_D1_v2"),
+	// 					Rank: to.Ptr[int32](0),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Standard_D2_v2"),
+	// 					Rank: to.Ptr[int32](1),
 	// 				},
 	// 			},
 	// 			ComputeProfile: &armcomputefleet.ComputeProfile{
@@ -505,7 +943,6 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 							Offer: to.Ptr("isxgumkarlkomp"),
 	// 							SKU: to.Ptr("eojmppqcrnpmxirtp"),
 	// 							Version: to.Ptr("wvpcqefgtmqdgltiuz"),
-	// 							ExactVersion: to.Ptr("zjbntmiskjexlr"),
 	// 							SharedGalleryImageID: to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
 	// 							CommunityGalleryImageID: to.Ptr("vlqe"),
 	// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
@@ -566,6 +1003,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 								DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 	// 							},
 	// 						},
+	// 						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 	// 					},
 	// 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 	// 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -679,7 +1117,6 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 						Extensions: []*armcomputefleet.VirtualMachineScaleSetExtension{
 	// 							{
 	// 								Name: to.Ptr("bndxuxx"),
-	// 								Type: to.Ptr("cmeam"),
 	// 								Properties: &armcomputefleet.VirtualMachineScaleSetExtensionProperties{
 	// 									ForceUpdateTag: to.Ptr("yhgxw"),
 	// 									Publisher: to.Ptr("kpxtirxjfprhs"),
@@ -689,19 +1126,20 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 									EnableAutomaticUpgrade: to.Ptr(true),
 	// 									Settings: map[string]any{
 	// 									},
-	// 									ProvisioningState: to.Ptr("Succeeded"),
 	// 									ProvisionAfterExtensions: []*string{
 	// 										to.Ptr("nftzosroolbcwmpupujzqwqe"),
 	// 									},
 	// 									SuppressFailures: to.Ptr(true),
 	// 									ProtectedSettingsFromKeyVault: &armcomputefleet.KeyVaultSecretReference{
-	// 										SecretURL: to.Ptr("https://myVaultName.vault.azure.net/secrets/secret/mySecretName"),
+	// 										SecretURL: to.Ptr("https://myvaultName.vault.azure.net/secrets/secret/mySecretName"),
 	// 										SourceVault: &armcomputefleet.SubResource{
 	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
 	// 										},
 	// 									},
+	// 									ProvisioningState: to.Ptr("Succeeded"),
 	// 								},
 	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{extensionName}"),
+	// 								Type: to.Ptr("cmeam"),
 	// 							},
 	// 						},
 	// 						ExtensionsTimeBudget: to.Ptr("mbhjahtdygwgyszdwjtvlvtgchdwil"),
@@ -729,6 +1167,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 								Tags: to.Ptr("eyrqjbib"),
 	// 								Order: to.Ptr[int32](5),
 	// 								PackageReferenceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+	// 								ConfigurationReference: to.Ptr("ulztmiavpojpbpbddgnuuiimxcpau"),
 	// 								TreatFailureAsDeploymentFailure: to.Ptr(true),
 	// 								EnableAutomaticUpgrade: to.Ptr(true),
 	// 							},
@@ -754,25 +1193,439 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2023-07-01"),
 	// 				PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 				AdditionalVirtualMachineCapabilities: &armcomputefleet.AdditionalCapabilities{
+	// 					UltraSSDEnabled: to.Ptr(true),
+	// 					HibernationEnabled: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			Mode: to.Ptr(armcomputefleet.FleetModeInstance),
+	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVCPU),
+	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
+	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyPrioritized),
+	// 				ZonePreferences: []*armcomputefleet.ZonePreference{
+	// 					{
+	// 						Zone: to.Ptr("1"),
+	// 						Rank: to.Ptr[int32](0),
+	// 					},
+	// 					{
+	// 						Zone: to.Ptr("2"),
+	// 						Rank: to.Ptr[int32](1),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateCreating),
+	// 			VMAttributes: &armcomputefleet.VMAttributes{
+	// 				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				MemoryInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				MemoryInGiBPerVCpu: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				LocalStorageSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				LocalStorageInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				LocalStorageDiskTypes: []*armcomputefleet.LocalStorageDiskType{
+	// 					to.Ptr(armcomputefleet.LocalStorageDiskTypeHDD),
+	// 				},
+	// 				DataDiskCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				NetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				NetworkBandwidthInMbps: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				RdmaSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				RdmaNetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				AcceleratorSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				AcceleratorManufacturers: []*armcomputefleet.AcceleratorManufacturer{
+	// 					to.Ptr(armcomputefleet.AcceleratorManufacturerAMD),
+	// 				},
+	// 				AcceleratorTypes: []*armcomputefleet.AcceleratorType{
+	// 					to.Ptr(armcomputefleet.AcceleratorTypeGPU),
+	// 				},
+	// 				AcceleratorCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				VMCategories: []*armcomputefleet.VMCategory{
+	// 					to.Ptr(armcomputefleet.VMCategoryGpuAccelerated),
+	// 				},
+	// 				ArchitectureTypes: []*armcomputefleet.ArchitectureType{
+	// 					to.Ptr(armcomputefleet.ArchitectureTypeARM64),
+	// 				},
+	// 				CPUManufacturers: []*armcomputefleet.CPUManufacturer{
+	// 					to.Ptr(armcomputefleet.CPUManufacturerIntel),
+	// 				},
+	// 				BurstableSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				ExcludedVMSizes: []*string{
+	// 					to.Ptr("Standard_A1"),
+	// 				},
+	// 			},
+	// 			AdditionalLocationsProfile: &armcomputefleet.AdditionalLocationsProfile{
+	// 				LocationProfiles: []*armcomputefleet.LocationProfile{
+	// 					{
+	// 						Location: to.Ptr("ekbzgzhs"),
+	// 						VirtualMachineProfileOverride: &armcomputefleet.BaseVirtualMachineProfile{
+	// 							OSProfile: &armcomputefleet.VirtualMachineScaleSetOSProfile{
+	// 								ComputerNamePrefix: to.Ptr("xoxwfnjjuqibzxldgxu"),
+	// 								AdminUsername: to.Ptr("wwjyuhblwecni"),
+	// 								WindowsConfiguration: &armcomputefleet.WindowsConfiguration{
+	// 									ProvisionVMAgent: to.Ptr(true),
+	// 									EnableAutomaticUpdates: to.Ptr(true),
+	// 									TimeZone: to.Ptr("oqpoladmchkkugpxocrynztkok"),
+	// 									AdditionalUnattendContent: []*armcomputefleet.AdditionalUnattendContent{
+	// 										{
+	// 											PassName: to.Ptr("OobeSystem"),
+	// 											ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+	// 											SettingName: to.Ptr(armcomputefleet.SettingNamesAutoLogon),
+	// 										},
+	// 									},
+	// 									PatchSettings: &armcomputefleet.PatchSettings{
+	// 										PatchMode: to.Ptr(armcomputefleet.WindowsVMGuestPatchModeManual),
+	// 										EnableHotpatching: to.Ptr(true),
+	// 										AssessmentMode: to.Ptr(armcomputefleet.WindowsPatchAssessmentModeImageDefault),
+	// 										AutomaticByPlatformSettings: &armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformSettings{
+	// 											RebootSetting: to.Ptr(armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+	// 											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									WinRM: &armcomputefleet.WinRMConfiguration{
+	// 										Listeners: []*armcomputefleet.WinRMListener{
+	// 											{
+	// 												Protocol: to.Ptr(armcomputefleet.ProtocolTypesHTTP),
+	// 												CertificateURL: to.Ptr("https://microsoft.com/a"),
+	// 											},
+	// 										},
+	// 									},
+	// 									EnableVMAgentPlatformUpdates: to.Ptr(true),
+	// 								},
+	// 								LinuxConfiguration: &armcomputefleet.LinuxConfiguration{
+	// 									DisablePasswordAuthentication: to.Ptr(true),
+	// 									SSH: &armcomputefleet.SSHConfiguration{
+	// 										PublicKeys: []*armcomputefleet.SSHPublicKey{
+	// 											{
+	// 												Path: to.Ptr("bci"),
+	// 												KeyData: to.Ptr("meokrrrddgnyxyhg"),
+	// 											},
+	// 										},
+	// 									},
+	// 									ProvisionVMAgent: to.Ptr(true),
+	// 									PatchSettings: &armcomputefleet.LinuxPatchSettings{
+	// 										PatchMode: to.Ptr(armcomputefleet.LinuxVMGuestPatchModeImageDefault),
+	// 										AssessmentMode: to.Ptr(armcomputefleet.LinuxPatchAssessmentModeImageDefault),
+	// 										AutomaticByPlatformSettings: &armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformSettings{
+	// 											RebootSetting: to.Ptr(armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+	// 											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									EnableVMAgentPlatformUpdates: to.Ptr(true),
+	// 								},
+	// 								Secrets: []*armcomputefleet.VaultSecretGroup{
+	// 									{
+	// 										SourceVault: &armcomputefleet.SubResource{
+	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+	// 										},
+	// 										VaultCertificates: []*armcomputefleet.VaultCertificate{
+	// 											{
+	// 												CertificateURL: to.Ptr("https://microsoft.com/a"),
+	// 												CertificateStore: to.Ptr("hdts"),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								AllowExtensionOperations: to.Ptr(true),
+	// 								RequireGuestProvisionSignal: to.Ptr(true),
+	// 							},
+	// 							StorageProfile: &armcomputefleet.VirtualMachineScaleSetStorageProfile{
+	// 								ImageReference: &armcomputefleet.ImageReference{
+	// 									Publisher: to.Ptr("mqxgwbiyjzmxavhbkd"),
+	// 									Offer: to.Ptr("isxgumkarlkomp"),
+	// 									SKU: to.Ptr("eojmppqcrnpmxirtp"),
+	// 									Version: to.Ptr("wvpcqefgtmqdgltiuz"),
+	// 									SharedGalleryImageID: to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
+	// 									CommunityGalleryImageID: to.Ptr("vlqe"),
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
+	// 								},
+	// 								OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
+	// 									Name: to.Ptr("xhwnqpqigoymwwetvhjuuhiu"),
+	// 									Caching: to.Ptr(armcomputefleet.CachingTypesNone),
+	// 									WriteAcceleratorEnabled: to.Ptr(true),
+	// 									CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+	// 									DiffDiskSettings: &armcomputefleet.DiffDiskSettings{
+	// 										Option: to.Ptr(armcomputefleet.DiffDiskOptionsLocal),
+	// 										Placement: to.Ptr(armcomputefleet.DiffDiskPlacementCacheDisk),
+	// 									},
+	// 									DiskSizeGB: to.Ptr[int32](21),
+	// 									OSType: to.Ptr(armcomputefleet.OperatingSystemTypesWindows),
+	// 									Image: &armcomputefleet.VirtualHardDisk{
+	// 										URI: to.Ptr("https://microsoft.com/a"),
+	// 									},
+	// 									VhdContainers: []*string{
+	// 										to.Ptr("mgyqnavpb"),
+	// 									},
+	// 									ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+	// 										StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+	// 										DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 										},
+	// 										SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+	// 											SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+	// 											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 											},
+	// 										},
+	// 									},
+	// 									DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+	// 								},
+	// 								DataDisks: []*armcomputefleet.VirtualMachineScaleSetDataDisk{
+	// 									{
+	// 										Name: to.Ptr("nqblcowgig"),
+	// 										Lun: to.Ptr[int32](14),
+	// 										Caching: to.Ptr(armcomputefleet.CachingTypesNone),
+	// 										WriteAcceleratorEnabled: to.Ptr(true),
+	// 										CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+	// 										DiskSizeGB: to.Ptr[int32](11),
+	// 										ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+	// 											StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+	// 											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 											},
+	// 											SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+	// 												SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+	// 												DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 												},
+	// 											},
+	// 										},
+	// 										DiskIOPSReadWrite: to.Ptr[int64](5),
+	// 										DiskMBpsReadWrite: to.Ptr[int64](4),
+	// 										DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+	// 									},
+	// 								},
+	// 								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypesSCSI),
+	// 							},
+	// 							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
+	// 								HealthProbe: &armcomputefleet.APIEntityReference{
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"),
+	// 								},
+	// 								NetworkInterfaceConfigurations: []*armcomputefleet.VirtualMachineScaleSetNetworkConfiguration{
+	// 									{
+	// 										Name: to.Ptr("uyemquurltujhbjkhm"),
+	// 										Properties: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 											EnableAcceleratedNetworking: to.Ptr(true),
+	// 											DisableTCPStateTracking: to.Ptr(true),
+	// 											EnableFpga: to.Ptr(true),
+	// 											NetworkSecurityGroup: &armcomputefleet.SubResource{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"),
+	// 											},
+	// 											DNSSettings: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+	// 												DNSServers: []*string{
+	// 													to.Ptr("ajcsckebabrus"),
+	// 												},
+	// 											},
+	// 											IPConfigurations: []*armcomputefleet.VirtualMachineScaleSetIPConfiguration{
+	// 												{
+	// 													Name: to.Ptr("xpwuwsvkuml"),
+	// 													Properties: &armcomputefleet.VirtualMachineScaleSetIPConfigurationProperties{
+	// 														Subnet: &armcomputefleet.APIEntityReference{
+	// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"),
+	// 														},
+	// 														Primary: to.Ptr(true),
+	// 														PublicIPAddressConfiguration: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfiguration{
+	// 															Name: to.Ptr("wbpdlbxflssopphq"),
+	// 															Properties: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+	// 																IdleTimeoutInMinutes: to.Ptr[int32](9),
+	// 																DNSSettings: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+	// 																	DomainNameLabel: to.Ptr("uwjtwqgwalsctypszcbnxo"),
+	// 																	DomainNameLabelScope: to.Ptr(armcomputefleet.DomainNameLabelScopeTypesTenantReuse),
+	// 																},
+	// 																IPTags: []*armcomputefleet.VirtualMachineScaleSetIPTag{
+	// 																	{
+	// 																		IPTagType: to.Ptr("hxkbmbisknggtfdqoaqagjhipdkd"),
+	// 																		Tag: to.Ptr("vzxhyyrzieaocbxyxieivj"),
+	// 																	},
+	// 																},
+	// 																PublicIPPrefix: &armcomputefleet.SubResource{
+	// 																	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"),
+	// 																},
+	// 																PublicIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+	// 																DeleteOption: to.Ptr(armcomputefleet.DeleteOptionsDelete),
+	// 															},
+	// 															SKU: &armcomputefleet.PublicIPAddressSKU{
+	// 																Name: to.Ptr(armcomputefleet.PublicIPAddressSKUNameBasic),
+	// 																Tier: to.Ptr(armcomputefleet.PublicIPAddressSKUTierRegional),
+	// 															},
+	// 														},
+	// 														PrivateIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+	// 														ApplicationGatewayBackendAddressPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}"),
+	// 															},
+	// 														},
+	// 														ApplicationSecurityGroups: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}"),
+	// 															},
+	// 														},
+	// 														LoadBalancerBackendAddressPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"),
+	// 															},
+	// 														},
+	// 														LoadBalancerInboundNatPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"),
+	// 															},
+	// 														},
+	// 													},
+	// 												},
+	// 											},
+	// 											EnableIPForwarding: to.Ptr(true),
+	// 											DeleteOption: to.Ptr(armcomputefleet.DeleteOptionsDelete),
+	// 											AuxiliaryMode: to.Ptr(armcomputefleet.NetworkInterfaceAuxiliaryModeNone),
+	// 											AuxiliarySKU: to.Ptr(armcomputefleet.NetworkInterfaceAuxiliarySKUNone),
+	// 										},
+	// 									},
+	// 								},
+	// 								NetworkAPIVersion: to.Ptr(armcomputefleet.NetworkAPIVersionV20201101),
+	// 							},
+	// 							SecurityProfile: &armcomputefleet.SecurityProfile{
+	// 								UefiSettings: &armcomputefleet.UefiSettings{
+	// 									SecureBootEnabled: to.Ptr(true),
+	// 									VTpmEnabled: to.Ptr(true),
+	// 								},
+	// 								EncryptionAtHost: to.Ptr(true),
+	// 								SecurityType: to.Ptr(armcomputefleet.SecurityTypesTrustedLaunch),
+	// 								EncryptionIdentity: &armcomputefleet.EncryptionIdentity{
+	// 									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"),
+	// 								},
+	// 								ProxyAgentSettings: &armcomputefleet.ProxyAgentSettings{
+	// 									Enabled: to.Ptr(true),
+	// 									Mode: to.Ptr(armcomputefleet.ModeAudit),
+	// 									KeyIncarnationID: to.Ptr[int32](22),
+	// 								},
+	// 							},
+	// 							DiagnosticsProfile: &armcomputefleet.DiagnosticsProfile{
+	// 								BootDiagnostics: &armcomputefleet.BootDiagnostics{
+	// 									Enabled: to.Ptr(true),
+	// 									StorageURI: to.Ptr("https://microsoft.com/a"),
+	// 								},
+	// 							},
+	// 							ExtensionProfile: &armcomputefleet.VirtualMachineScaleSetExtensionProfile{
+	// 								Extensions: []*armcomputefleet.VirtualMachineScaleSetExtension{
+	// 									{
+	// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{extensionName}"),
+	// 										Name: to.Ptr("dockglmmvl"),
+	// 										Type: to.Ptr("zg"),
+	// 										Properties: &armcomputefleet.VirtualMachineScaleSetExtensionProperties{
+	// 											ForceUpdateTag: to.Ptr("wzyqlpszoiewqbhlnzckfshdtpwkbd"),
+	// 											Publisher: to.Ptr("iikgjziralgrfsrxrlrdigqyfhuqg"),
+	// 											Type: to.Ptr("xzhgosms"),
+	// 											TypeHandlerVersion: to.Ptr("mfzdzdwucagkogmxoosyjpej"),
+	// 											AutoUpgradeMinorVersion: to.Ptr(true),
+	// 											EnableAutomaticUpgrade: to.Ptr(true),
+	// 											Settings: map[string]any{
+	// 											},
+	// 											ProvisioningState: to.Ptr("ossydc"),
+	// 											ProvisionAfterExtensions: []*string{
+	// 												to.Ptr("rqrycujrpdodllirebkfg"),
+	// 											},
+	// 											SuppressFailures: to.Ptr(true),
+	// 											ProtectedSettingsFromKeyVault: &armcomputefleet.KeyVaultSecretReference{
+	// 												SecretURL: to.Ptr("https://microsoft.com/ahygahgb"),
+	// 												SourceVault: &armcomputefleet.SubResource{
+	// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+	// 												},
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								ExtensionsTimeBudget: to.Ptr("srxtwxrc"),
+	// 							},
+	// 							LicenseType: to.Ptr("hilutelnuqxtpdznq"),
+	// 							ScheduledEventsProfile: &armcomputefleet.ScheduledEventsProfile{
+	// 								TerminateNotificationProfile: &armcomputefleet.TerminateNotificationProfile{
+	// 									NotBeforeTimeout: to.Ptr("jgycfvgxpzvgsdylbcspkrxwhgxkyd"),
+	// 									Enable: to.Ptr(true),
+	// 								},
+	// 								OSImageNotificationProfile: &armcomputefleet.OSImageNotificationProfile{
+	// 									NotBeforeTimeout: to.Ptr("nbgfbvisxveyywfyjgcfb"),
+	// 									Enable: to.Ptr(true),
+	// 								},
+	// 							},
+	// 							UserData: to.Ptr("ezhyl"),
+	// 							CapacityReservation: &armcomputefleet.CapacityReservationProfile{
+	// 								CapacityReservationGroup: &armcomputefleet.SubResource{
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"),
+	// 								},
+	// 							},
+	// 							ApplicationProfile: &armcomputefleet.ApplicationProfile{
+	// 								GalleryApplications: []*armcomputefleet.VMGalleryApplication{
+	// 									{
+	// 										Tags: to.Ptr("fronuehbtzhxaoijmdmjzwaswgevh"),
+	// 										Order: to.Ptr[int32](19),
+	// 										PackageReferenceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+	// 										ConfigurationReference: to.Ptr("gqxsvizquzglpsgqaundtyh"),
+	// 										TreatFailureAsDeploymentFailure: to.Ptr(true),
+	// 										EnableAutomaticUpgrade: to.Ptr(true),
+	// 									},
+	// 								},
+	// 							},
+	// 							HardwareProfile: &armcomputefleet.VirtualMachineScaleSetHardwareProfile{
+	// 								VMSizeProperties: &armcomputefleet.VMSizeProperties{
+	// 									VCPUsAvailable: to.Ptr[int32](1),
+	// 									VCPUsPerCore: to.Ptr[int32](4),
+	// 								},
+	// 							},
+	// 							ServiceArtifactReference: &armcomputefleet.ServiceArtifactReference{
+	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"),
+	// 							},
+	// 							SecurityPostureReference: &armcomputefleet.SecurityPostureReference{
+	// 								ID: to.Ptr("/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest"),
+	// 								ExcludeExtensions: []*string{
+	// 									to.Ptr("zagiokiwvg"),
+	// 								},
+	// 								IsOverridable: to.Ptr(true),
+	// 							},
+	// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-29T19:41:35.908Z"); return t}()),
+	// 						},
+	// 					},
+	// 				},
 	// 			},
 	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
 	// 			UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 	// 		},
 	// 		Zones: []*string{
-	// 			to.Ptr("zone1"),
-	// 			to.Ptr("zone2"),
+	// 			to.Ptr("1"),
+	// 			to.Ptr("2"),
 	// 		},
 	// 		Identity: &armcomputefleet.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("4d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
-	// 			TenantID: to.Ptr("5d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
 	// 			Type: to.Ptr(armcomputefleet.ManagedServiceIdentityTypeUserAssigned),
 	// 			UserAssignedIdentities: map[string]*armcomputefleet.UserAssignedIdentity{
-	// 				"key9851": &armcomputefleet.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("6d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
-	// 					ClientID: to.Ptr("7d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
-	// 				},
 	// 			},
+	// 			PrincipalID: to.Ptr("4d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
+	// 			TenantID: to.Ptr("5d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("westus"),
 	// 		Plan: &armcomputefleet.Plan{
 	// 			Name: to.Ptr("jwgrcrnrtfoxn"),
 	// 			Publisher: to.Ptr("iozjbiqqckqm"),
@@ -780,10 +1633,6 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// 			PromotionCode: to.Ptr("naglezezplcaruqogtxnuizslqnnbr"),
 	// 			Version: to.Ptr("wa"),
 	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key3518": to.Ptr("luvrnuvsgdpbuofdskkcoqhfh"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/7B0CD4DB-3381-4013-9B31-FB6E6FD0FF1C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/testFleet"),
 	// 		Name: to.Ptr("testFleet"),
 	// 		Type: to.Ptr("Microsoft.AzureFleet/fleets"),
@@ -799,215 +1648,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Fleets_CreateOrUpdate_MinimumSet.json
-func ExampleFleetsClient_BeginCreateOrUpdate_fleetsCreateOrUpdateMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputefleet.NewClientFactory("1DC2F28C-A625-4B0E-9748-9885A3C9E9EB", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewFleetsClient().BeginCreateOrUpdate(ctx, "rgazurefleet", "testFleet", armcomputefleet.Fleet{
-		Properties: &armcomputefleet.FleetProperties{
-			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
-				Capacity:           to.Ptr[int32](2),
-				MinCapacity:        to.Ptr[int32](1),
-				EvictionPolicy:     to.Ptr(armcomputefleet.EvictionPolicyDelete),
-				AllocationStrategy: to.Ptr(armcomputefleet.SpotAllocationStrategyPriceCapacityOptimized),
-				Maintain:           to.Ptr(true),
-			},
-			RegularPriorityProfile: &armcomputefleet.RegularPriorityProfile{
-				Capacity:           to.Ptr[int32](2),
-				MinCapacity:        to.Ptr[int32](1),
-				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyLowestPrice),
-			},
-			VMSizesProfile: []*armcomputefleet.VMSizeProfile{
-				{
-					Name: to.Ptr("Standard_D2s_v3"),
-				},
-				{
-					Name: to.Ptr("Standard_D4s_v3"),
-				},
-				{
-					Name: to.Ptr("Standard_E2s_v3"),
-				},
-			},
-			ComputeProfile: &armcomputefleet.ComputeProfile{
-				BaseVirtualMachineProfile: &armcomputefleet.BaseVirtualMachineProfile{
-					StorageProfile: &armcomputefleet.VirtualMachineScaleSetStorageProfile{
-						ImageReference: &armcomputefleet.ImageReference{
-							Publisher: to.Ptr("canonical"),
-							Offer:     to.Ptr("0001-com-ubuntu-server-focal"),
-							SKU:       to.Ptr("20_04-lts-gen2"),
-							Version:   to.Ptr("latest"),
-						},
-						OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
-							Caching:      to.Ptr(armcomputefleet.CachingTypesReadWrite),
-							CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
-							OSType:       to.Ptr(armcomputefleet.OperatingSystemTypesLinux),
-							ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
-								StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
-							},
-						},
-					},
-					OSProfile: &armcomputefleet.VirtualMachineScaleSetOSProfile{
-						ComputerNamePrefix: to.Ptr("prefix"),
-						AdminUsername:      to.Ptr("azureuser"),
-						AdminPassword:      to.Ptr("TestPassword$0"),
-						LinuxConfiguration: &armcomputefleet.LinuxConfiguration{
-							DisablePasswordAuthentication: to.Ptr(false),
-						},
-					},
-					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
-						NetworkInterfaceConfigurations: []*armcomputefleet.VirtualMachineScaleSetNetworkConfiguration{
-							{
-								Name: to.Ptr("vmNameTest"),
-								Properties: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationProperties{
-									Primary:                     to.Ptr(true),
-									EnableAcceleratedNetworking: to.Ptr(false),
-									IPConfigurations: []*armcomputefleet.VirtualMachineScaleSetIPConfiguration{
-										{
-											Name: to.Ptr("vmNameTest"),
-											Properties: &armcomputefleet.VirtualMachineScaleSetIPConfigurationProperties{
-												Subnet: &armcomputefleet.APIEntityReference{
-													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"),
-												},
-												Primary: to.Ptr(true),
-												LoadBalancerBackendAddressPools: []*armcomputefleet.SubResource{
-													{
-														ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"),
-													},
-												},
-											},
-										},
-									},
-									EnableIPForwarding: to.Ptr(true),
-								},
-							},
-						},
-					},
-				},
-				ComputeAPIVersion:        to.Ptr("2023-09-01"),
-				PlatformFaultDomainCount: to.Ptr[int32](1),
-			},
-		},
-		Tags: map[string]*string{
-			"key": to.Ptr("fleets-test"),
-		},
-		Location: to.Ptr("eastus2euap"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputefleet.FleetsClientCreateOrUpdateResponse{
-	// 	Fleet: &armcomputefleet.Fleet{
-	// 		Properties: &armcomputefleet.FleetProperties{
-	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateSucceeded),
-	// 			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
-	// 				Capacity: to.Ptr[int32](2),
-	// 				MinCapacity: to.Ptr[int32](1),
-	// 				EvictionPolicy: to.Ptr(armcomputefleet.EvictionPolicyDelete),
-	// 				AllocationStrategy: to.Ptr(armcomputefleet.SpotAllocationStrategyPriceCapacityOptimized),
-	// 				Maintain: to.Ptr(true),
-	// 			},
-	// 			RegularPriorityProfile: &armcomputefleet.RegularPriorityProfile{
-	// 				Capacity: to.Ptr[int32](2),
-	// 				MinCapacity: to.Ptr[int32](1),
-	// 				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyLowestPrice),
-	// 			},
-	// 			VMSizesProfile: []*armcomputefleet.VMSizeProfile{
-	// 				{
-	// 					Name: to.Ptr("Standard_D2s_v3"),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Standard_D4s_v3"),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Standard_E2s_v3"),
-	// 				},
-	// 			},
-	// 			ComputeProfile: &armcomputefleet.ComputeProfile{
-	// 				BaseVirtualMachineProfile: &armcomputefleet.BaseVirtualMachineProfile{
-	// 					StorageProfile: &armcomputefleet.VirtualMachineScaleSetStorageProfile{
-	// 						ImageReference: &armcomputefleet.ImageReference{
-	// 							Publisher: to.Ptr("canonical"),
-	// 							Offer: to.Ptr("0001-com-ubuntu-server-focal"),
-	// 							SKU: to.Ptr("20_04-lts-gen2"),
-	// 							Version: to.Ptr("latest"),
-	// 						},
-	// 						OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
-	// 							Caching: to.Ptr(armcomputefleet.CachingTypesReadWrite),
-	// 							CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
-	// 							OSType: to.Ptr(armcomputefleet.OperatingSystemTypesLinux),
-	// 							ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
-	// 								StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
-	// 							},
-	// 						},
-	// 					},
-	// 					OSProfile: &armcomputefleet.VirtualMachineScaleSetOSProfile{
-	// 						ComputerNamePrefix: to.Ptr("prefix"),
-	// 						AdminUsername: to.Ptr("azureuser"),
-	// 						LinuxConfiguration: &armcomputefleet.LinuxConfiguration{
-	// 							DisablePasswordAuthentication: to.Ptr(false),
-	// 						},
-	// 					},
-	// 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
-	// 						NetworkInterfaceConfigurations: []*armcomputefleet.VirtualMachineScaleSetNetworkConfiguration{
-	// 							{
-	// 								Name: to.Ptr("vmNameTest"),
-	// 								Properties: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 									Primary: to.Ptr(true),
-	// 									EnableAcceleratedNetworking: to.Ptr(false),
-	// 									IPConfigurations: []*armcomputefleet.VirtualMachineScaleSetIPConfiguration{
-	// 										{
-	// 											Name: to.Ptr("vmNameTest"),
-	// 											Properties: &armcomputefleet.VirtualMachineScaleSetIPConfigurationProperties{
-	// 												Subnet: &armcomputefleet.APIEntityReference{
-	// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"),
-	// 												},
-	// 												Primary: to.Ptr(true),
-	// 												LoadBalancerBackendAddressPools: []*armcomputefleet.SubResource{
-	// 													{
-	// 														ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"),
-	// 													},
-	// 												},
-	// 											},
-	// 										},
-	// 									},
-	// 									EnableIPForwarding: to.Ptr(true),
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				ComputeAPIVersion: to.Ptr("2023-09-01"),
-	// 				PlatformFaultDomainCount: to.Ptr[int32](1),
-	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
-	// 			UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key": to.Ptr("fleets-test"),
-	// 		},
-	// 		Location: to.Ptr("eastus2euap"),
-	// 		ID: to.Ptr("/subscriptions/7B0CD4DB-3381-4013-9B31-FB6E6FD0FF1C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/testFleet"),
-	// 		Name: to.Ptr("testFleet"),
-	// 		Type: to.Ptr("Microsoft.AzureFleet/fleets"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-11-01/Fleets_Delete.json
+// Generated from example definition: 2025-07-01-preview/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1028,7 +1669,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Fleets_Get.json
+// Generated from example definition: 2025-07-01-preview/Fleets_Get.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1039,7 +1680,7 @@ func ExampleFleetsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFleetsClient().Get(ctx, "rgazurefleet", "testFleet", nil)
+	res, err := clientFactory.NewFleetsClient().Get(ctx, "rgazurefleet", "myFleet", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1049,7 +1690,6 @@ func ExampleFleetsClient_Get() {
 	// res = armcomputefleet.FleetsClientGetResponse{
 	// 	Fleet: &armcomputefleet.Fleet{
 	// 		Properties: &armcomputefleet.FleetProperties{
-	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateCreating),
 	// 			SpotPriorityProfile: &armcomputefleet.SpotPriorityProfile{
 	// 				Capacity: to.Ptr[int32](20),
 	// 				MinCapacity: to.Ptr[int32](10),
@@ -1065,8 +1705,10 @@ func ExampleFleetsClient_Get() {
 	// 			},
 	// 			VMSizesProfile: []*armcomputefleet.VMSizeProfile{
 	// 				{
-	// 					Name: to.Ptr("Standard_d1_v2"),
-	// 					Rank: to.Ptr[int32](19225),
+	// 					Name: to.Ptr("Standard_D1_v2"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Standard_D2_v2"),
 	// 				},
 	// 			},
 	// 			ComputeProfile: &armcomputefleet.ComputeProfile{
@@ -1097,7 +1739,7 @@ func ExampleFleetsClient_Get() {
 	// 							WinRM: &armcomputefleet.WinRMConfiguration{
 	// 								Listeners: []*armcomputefleet.WinRMListener{
 	// 									{
-	// 										Protocol: to.Ptr(armcomputefleet.ProtocolTypesHTTP),
+	// 										Protocol: to.Ptr(armcomputefleet.ProtocolTypesHTTPS),
 	// 										CertificateURL: to.Ptr("https://myVaultName.vault.azure.net/secrets/myCertName"),
 	// 									},
 	// 								},
@@ -1147,10 +1789,10 @@ func ExampleFleetsClient_Get() {
 	// 							Offer: to.Ptr("isxgumkarlkomp"),
 	// 							SKU: to.Ptr("eojmppqcrnpmxirtp"),
 	// 							Version: to.Ptr("wvpcqefgtmqdgltiuz"),
-	// 							ExactVersion: to.Ptr("zjbntmiskjexlr"),
 	// 							SharedGalleryImageID: to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
 	// 							CommunityGalleryImageID: to.Ptr("vlqe"),
 	// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
+	// 							ExactVersion: to.Ptr("zjbntmiskjexlr"),
 	// 						},
 	// 						OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
 	// 							Name: to.Ptr("wfttw"),
@@ -1208,6 +1850,7 @@ func ExampleFleetsClient_Get() {
 	// 								DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 	// 							},
 	// 						},
+	// 						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 	// 					},
 	// 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 	// 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -1321,7 +1964,6 @@ func ExampleFleetsClient_Get() {
 	// 						Extensions: []*armcomputefleet.VirtualMachineScaleSetExtension{
 	// 							{
 	// 								Name: to.Ptr("bndxuxx"),
-	// 								Type: to.Ptr("cmeam"),
 	// 								Properties: &armcomputefleet.VirtualMachineScaleSetExtensionProperties{
 	// 									ForceUpdateTag: to.Ptr("yhgxw"),
 	// 									Publisher: to.Ptr("kpxtirxjfprhs"),
@@ -1331,19 +1973,20 @@ func ExampleFleetsClient_Get() {
 	// 									EnableAutomaticUpgrade: to.Ptr(true),
 	// 									Settings: map[string]any{
 	// 									},
-	// 									ProvisioningState: to.Ptr("Succeeded"),
 	// 									ProvisionAfterExtensions: []*string{
 	// 										to.Ptr("nftzosroolbcwmpupujzqwqe"),
 	// 									},
 	// 									SuppressFailures: to.Ptr(true),
 	// 									ProtectedSettingsFromKeyVault: &armcomputefleet.KeyVaultSecretReference{
-	// 										SecretURL: to.Ptr("https://myVaultName.vault.azure.net/secrets/secret/mySecretName"),
+	// 										SecretURL: to.Ptr("https://myvaultName.vault.azure.net/secrets/secret/mySecretName"),
 	// 										SourceVault: &armcomputefleet.SubResource{
 	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
 	// 										},
 	// 									},
+	// 									ProvisioningState: to.Ptr("Succeeded"),
 	// 								},
 	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{extensionName}"),
+	// 								Type: to.Ptr("cmeam"),
 	// 							},
 	// 						},
 	// 						ExtensionsTimeBudget: to.Ptr("mbhjahtdygwgyszdwjtvlvtgchdwil"),
@@ -1371,6 +2014,7 @@ func ExampleFleetsClient_Get() {
 	// 								Tags: to.Ptr("eyrqjbib"),
 	// 								Order: to.Ptr[int32](5),
 	// 								PackageReferenceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+	// 								ConfigurationReference: to.Ptr("ulztmiavpojpbpbddgnuuiimxcpau"),
 	// 								TreatFailureAsDeploymentFailure: to.Ptr(true),
 	// 								EnableAutomaticUpgrade: to.Ptr(true),
 	// 							},
@@ -1386,7 +2030,7 @@ func ExampleFleetsClient_Get() {
 	// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"),
 	// 					},
 	// 					SecurityPostureReference: &armcomputefleet.SecurityPostureReference{
-	// 						ID: to.Ptr("mubredelfbshboaxrsxiajihahaa"),
+	// 						ID: to.Ptr("/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest"),
 	// 						ExcludeExtensions: []*string{
 	// 							to.Ptr("{securityPostureVMExtensionName}"),
 	// 						},
@@ -1396,28 +2040,430 @@ func ExampleFleetsClient_Get() {
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2023-07-01"),
 	// 				PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 				AdditionalVirtualMachineCapabilities: &armcomputefleet.AdditionalCapabilities{
+	// 					UltraSSDEnabled: to.Ptr(true),
+	// 					HibernationEnabled: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			Mode: to.Ptr(armcomputefleet.FleetModeInstance),
+	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVCPU),
+	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
+	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyBestEffortSingleZone),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateCreating),
+	// 			VMAttributes: &armcomputefleet.VMAttributes{
+	// 				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				MemoryInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				MemoryInGiBPerVCpu: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				LocalStorageSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				LocalStorageInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				LocalStorageDiskTypes: []*armcomputefleet.LocalStorageDiskType{
+	// 					to.Ptr(armcomputefleet.LocalStorageDiskTypeHDD),
+	// 				},
+	// 				DataDiskCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				NetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				NetworkBandwidthInMbps: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				RdmaSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				RdmaNetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				AcceleratorSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				AcceleratorManufacturers: []*armcomputefleet.AcceleratorManufacturer{
+	// 					to.Ptr(armcomputefleet.AcceleratorManufacturerAMD),
+	// 				},
+	// 				AcceleratorTypes: []*armcomputefleet.AcceleratorType{
+	// 					to.Ptr(armcomputefleet.AcceleratorTypeGPU),
+	// 				},
+	// 				AcceleratorCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				VMCategories: []*armcomputefleet.VMCategory{
+	// 					to.Ptr(armcomputefleet.VMCategoryGeneralPurpose),
+	// 				},
+	// 				ArchitectureTypes: []*armcomputefleet.ArchitectureType{
+	// 					to.Ptr(armcomputefleet.ArchitectureTypeARM64),
+	// 				},
+	// 				CPUManufacturers: []*armcomputefleet.CPUManufacturer{
+	// 					to.Ptr(armcomputefleet.CPUManufacturerIntel),
+	// 				},
+	// 				BurstableSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				ExcludedVMSizes: []*string{
+	// 					to.Ptr("Standard_A1"),
+	// 				},
+	// 			},
+	// 			AdditionalLocationsProfile: &armcomputefleet.AdditionalLocationsProfile{
+	// 				LocationProfiles: []*armcomputefleet.LocationProfile{
+	// 					{
+	// 						Location: to.Ptr("v"),
+	// 						VirtualMachineProfileOverride: &armcomputefleet.BaseVirtualMachineProfile{
+	// 							OSProfile: &armcomputefleet.VirtualMachineScaleSetOSProfile{
+	// 								ComputerNamePrefix: to.Ptr("tec"),
+	// 								AdminUsername: to.Ptr("xdgnnqymtamdyqxy"),
+	// 								WindowsConfiguration: &armcomputefleet.WindowsConfiguration{
+	// 									ProvisionVMAgent: to.Ptr(true),
+	// 									EnableAutomaticUpdates: to.Ptr(true),
+	// 									TimeZone: to.Ptr("ktf"),
+	// 									AdditionalUnattendContent: []*armcomputefleet.AdditionalUnattendContent{
+	// 										{
+	// 											PassName: to.Ptr("OobeSystem"),
+	// 											ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+	// 											SettingName: to.Ptr(armcomputefleet.SettingNamesAutoLogon),
+	// 										},
+	// 									},
+	// 									PatchSettings: &armcomputefleet.PatchSettings{
+	// 										PatchMode: to.Ptr(armcomputefleet.WindowsVMGuestPatchModeManual),
+	// 										EnableHotpatching: to.Ptr(true),
+	// 										AssessmentMode: to.Ptr(armcomputefleet.WindowsPatchAssessmentModeImageDefault),
+	// 										AutomaticByPlatformSettings: &armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformSettings{
+	// 											RebootSetting: to.Ptr(armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+	// 											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									WinRM: &armcomputefleet.WinRMConfiguration{
+	// 										Listeners: []*armcomputefleet.WinRMListener{
+	// 											{
+	// 												Protocol: to.Ptr(armcomputefleet.ProtocolTypesHTTP),
+	// 												CertificateURL: to.Ptr("https://microsoft.com/apzd"),
+	// 											},
+	// 										},
+	// 									},
+	// 									EnableVMAgentPlatformUpdates: to.Ptr(true),
+	// 								},
+	// 								LinuxConfiguration: &armcomputefleet.LinuxConfiguration{
+	// 									DisablePasswordAuthentication: to.Ptr(true),
+	// 									SSH: &armcomputefleet.SSHConfiguration{
+	// 										PublicKeys: []*armcomputefleet.SSHPublicKey{
+	// 											{
+	// 												Path: to.Ptr("ebeglujkldnntlpmazrg"),
+	// 												KeyData: to.Ptr("vmgnwtwjcodavmu"),
+	// 											},
+	// 										},
+	// 									},
+	// 									ProvisionVMAgent: to.Ptr(true),
+	// 									PatchSettings: &armcomputefleet.LinuxPatchSettings{
+	// 										PatchMode: to.Ptr(armcomputefleet.LinuxVMGuestPatchModeImageDefault),
+	// 										AssessmentMode: to.Ptr(armcomputefleet.LinuxPatchAssessmentModeImageDefault),
+	// 										AutomaticByPlatformSettings: &armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformSettings{
+	// 											RebootSetting: to.Ptr(armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+	// 											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									EnableVMAgentPlatformUpdates: to.Ptr(true),
+	// 								},
+	// 								Secrets: []*armcomputefleet.VaultSecretGroup{
+	// 									{
+	// 										SourceVault: &armcomputefleet.SubResource{
+	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+	// 										},
+	// 										VaultCertificates: []*armcomputefleet.VaultCertificate{
+	// 											{
+	// 												CertificateURL: to.Ptr("https://microsoft.com/a"),
+	// 												CertificateStore: to.Ptr("yycyfwpymjtwzza"),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								AllowExtensionOperations: to.Ptr(true),
+	// 								RequireGuestProvisionSignal: to.Ptr(true),
+	// 							},
+	// 							StorageProfile: &armcomputefleet.VirtualMachineScaleSetStorageProfile{
+	// 								ImageReference: &armcomputefleet.ImageReference{
+	// 									Publisher: to.Ptr("mqxgwbiyjzmxavhbkd"),
+	// 									Offer: to.Ptr("isxgumkarlkomp"),
+	// 									SKU: to.Ptr("eojmppqcrnpmxirtp"),
+	// 									Version: to.Ptr("wvpcqefgtmqdgltiuz"),
+	// 									ExactVersion: to.Ptr("zjbntmiskjexlr"),
+	// 									SharedGalleryImageID: to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
+	// 									CommunityGalleryImageID: to.Ptr("vlqe"),
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
+	// 								},
+	// 								OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
+	// 									Name: to.Ptr("dt"),
+	// 									Caching: to.Ptr(armcomputefleet.CachingTypesNone),
+	// 									WriteAcceleratorEnabled: to.Ptr(true),
+	// 									CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+	// 									DiffDiskSettings: &armcomputefleet.DiffDiskSettings{
+	// 										Option: to.Ptr(armcomputefleet.DiffDiskOptionsLocal),
+	// 										Placement: to.Ptr(armcomputefleet.DiffDiskPlacementCacheDisk),
+	// 									},
+	// 									DiskSizeGB: to.Ptr[int32](9),
+	// 									OSType: to.Ptr(armcomputefleet.OperatingSystemTypesWindows),
+	// 									Image: &armcomputefleet.VirtualHardDisk{
+	// 										URI: to.Ptr("https://myStorageAccountName.blob.core.windows.net/myContainerName/myVhdName.vhd"),
+	// 									},
+	// 									VhdContainers: []*string{
+	// 										to.Ptr("kdagj"),
+	// 									},
+	// 									ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+	// 										StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+	// 										DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 										},
+	// 										SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+	// 											SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+	// 											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 											},
+	// 										},
+	// 									},
+	// 									DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+	// 								},
+	// 								DataDisks: []*armcomputefleet.VirtualMachineScaleSetDataDisk{
+	// 									{
+	// 										Name: to.Ptr("mhljivkyryuomrapmmxx"),
+	// 										Lun: to.Ptr[int32](6),
+	// 										Caching: to.Ptr(armcomputefleet.CachingTypesNone),
+	// 										WriteAcceleratorEnabled: to.Ptr(true),
+	// 										CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+	// 										DiskSizeGB: to.Ptr[int32](9),
+	// 										ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+	// 											StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+	// 											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 											},
+	// 											SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+	// 												SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+	// 												DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 												},
+	// 											},
+	// 										},
+	// 										DiskIOPSReadWrite: to.Ptr[int64](24),
+	// 										DiskMBpsReadWrite: to.Ptr[int64](4),
+	// 										DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+	// 									},
+	// 								},
+	// 								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypesSCSI),
+	// 							},
+	// 							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
+	// 								HealthProbe: &armcomputefleet.APIEntityReference{
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"),
+	// 								},
+	// 								NetworkInterfaceConfigurations: []*armcomputefleet.VirtualMachineScaleSetNetworkConfiguration{
+	// 									{
+	// 										Name: to.Ptr("gpunpcdsdphgspvgwwbnk"),
+	// 										Properties: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 											EnableAcceleratedNetworking: to.Ptr(true),
+	// 											DisableTCPStateTracking: to.Ptr(true),
+	// 											EnableFpga: to.Ptr(true),
+	// 											NetworkSecurityGroup: &armcomputefleet.SubResource{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"),
+	// 											},
+	// 											DNSSettings: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+	// 												DNSServers: []*string{
+	// 													to.Ptr("sjpmlu"),
+	// 												},
+	// 											},
+	// 											IPConfigurations: []*armcomputefleet.VirtualMachineScaleSetIPConfiguration{
+	// 												{
+	// 													Name: to.Ptr("fweiphgkyhbcsbfjmxzczkpg"),
+	// 													Properties: &armcomputefleet.VirtualMachineScaleSetIPConfigurationProperties{
+	// 														Subnet: &armcomputefleet.APIEntityReference{
+	// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"),
+	// 														},
+	// 														Primary: to.Ptr(true),
+	// 														PublicIPAddressConfiguration: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfiguration{
+	// 															Name: to.Ptr("dvnoamqjyshquvtmf"),
+	// 															Properties: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+	// 																IdleTimeoutInMinutes: to.Ptr[int32](1),
+	// 																DNSSettings: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+	// 																	DomainNameLabel: to.Ptr("ayofnb"),
+	// 																	DomainNameLabelScope: to.Ptr(armcomputefleet.DomainNameLabelScopeTypesTenantReuse),
+	// 																},
+	// 																IPTags: []*armcomputefleet.VirtualMachineScaleSetIPTag{
+	// 																	{
+	// 																		IPTagType: to.Ptr("zqpznczmc"),
+	// 																		Tag: to.Ptr("ugnfzikniqjisffrbvryavenhmtd"),
+	// 																	},
+	// 																},
+	// 																PublicIPPrefix: &armcomputefleet.SubResource{
+	// 																	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"),
+	// 																},
+	// 																PublicIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+	// 																DeleteOption: to.Ptr(armcomputefleet.DeleteOptionsDelete),
+	// 															},
+	// 															SKU: &armcomputefleet.PublicIPAddressSKU{
+	// 																Name: to.Ptr(armcomputefleet.PublicIPAddressSKUNameBasic),
+	// 																Tier: to.Ptr(armcomputefleet.PublicIPAddressSKUTierRegional),
+	// 															},
+	// 														},
+	// 														PrivateIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+	// 														ApplicationGatewayBackendAddressPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}"),
+	// 															},
+	// 														},
+	// 														ApplicationSecurityGroups: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}"),
+	// 															},
+	// 														},
+	// 														LoadBalancerBackendAddressPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"),
+	// 															},
+	// 														},
+	// 														LoadBalancerInboundNatPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"),
+	// 															},
+	// 														},
+	// 													},
+	// 												},
+	// 											},
+	// 											EnableIPForwarding: to.Ptr(true),
+	// 											DeleteOption: to.Ptr(armcomputefleet.DeleteOptionsDelete),
+	// 											AuxiliaryMode: to.Ptr(armcomputefleet.NetworkInterfaceAuxiliaryModeNone),
+	// 											AuxiliarySKU: to.Ptr(armcomputefleet.NetworkInterfaceAuxiliarySKUNone),
+	// 										},
+	// 									},
+	// 								},
+	// 								NetworkAPIVersion: to.Ptr(armcomputefleet.NetworkAPIVersionV20201101),
+	// 							},
+	// 							SecurityProfile: &armcomputefleet.SecurityProfile{
+	// 								UefiSettings: &armcomputefleet.UefiSettings{
+	// 									SecureBootEnabled: to.Ptr(true),
+	// 									VTpmEnabled: to.Ptr(true),
+	// 								},
+	// 								EncryptionAtHost: to.Ptr(true),
+	// 								SecurityType: to.Ptr(armcomputefleet.SecurityTypesTrustedLaunch),
+	// 								EncryptionIdentity: &armcomputefleet.EncryptionIdentity{
+	// 									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"),
+	// 								},
+	// 								ProxyAgentSettings: &armcomputefleet.ProxyAgentSettings{
+	// 									Enabled: to.Ptr(true),
+	// 									Mode: to.Ptr(armcomputefleet.ModeAudit),
+	// 									KeyIncarnationID: to.Ptr[int32](6),
+	// 								},
+	// 							},
+	// 							DiagnosticsProfile: &armcomputefleet.DiagnosticsProfile{
+	// 								BootDiagnostics: &armcomputefleet.BootDiagnostics{
+	// 									Enabled: to.Ptr(true),
+	// 									StorageURI: to.Ptr("https://microsoft.com/a"),
+	// 								},
+	// 							},
+	// 							ExtensionProfile: &armcomputefleet.VirtualMachineScaleSetExtensionProfile{
+	// 								Extensions: []*armcomputefleet.VirtualMachineScaleSetExtension{
+	// 									{
+	// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{extensionName}"),
+	// 										Name: to.Ptr("oredyuufsd"),
+	// 										Type: to.Ptr("qbmhvtcrufkhovrweggioqlcld"),
+	// 										Properties: &armcomputefleet.VirtualMachineScaleSetExtensionProperties{
+	// 											ForceUpdateTag: to.Ptr("muglieujh"),
+	// 											Publisher: to.Ptr("ccbiyfuveemaaopgxbjpm"),
+	// 											Type: to.Ptr("yorumzkbfpxnrdwgczwwaeaxmda"),
+	// 											TypeHandlerVersion: to.Ptr("nlnqbmgzwubbc"),
+	// 											AutoUpgradeMinorVersion: to.Ptr(true),
+	// 											EnableAutomaticUpgrade: to.Ptr(true),
+	// 											Settings: map[string]any{
+	// 											},
+	// 											ProvisioningState: to.Ptr("lcbvhjidublayqhmuzxzdvzgzslsys"),
+	// 											ProvisionAfterExtensions: []*string{
+	// 												to.Ptr("xuefrutmgzsxrpjjayvy"),
+	// 											},
+	// 											SuppressFailures: to.Ptr(true),
+	// 											ProtectedSettingsFromKeyVault: &armcomputefleet.KeyVaultSecretReference{
+	// 												SecretURL: to.Ptr("https://microsoft.com/a"),
+	// 												SourceVault: &armcomputefleet.SubResource{
+	// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+	// 												},
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								ExtensionsTimeBudget: to.Ptr("trluxrynunvdnukztblhbnsubr"),
+	// 							},
+	// 							LicenseType: to.Ptr("ginsqshzwimjteiyfxhnjxfrcaat"),
+	// 							ScheduledEventsProfile: &armcomputefleet.ScheduledEventsProfile{
+	// 								TerminateNotificationProfile: &armcomputefleet.TerminateNotificationProfile{
+	// 									NotBeforeTimeout: to.Ptr("plbazenobaeueixatewbey"),
+	// 									Enable: to.Ptr(true),
+	// 								},
+	// 								OSImageNotificationProfile: &armcomputefleet.OSImageNotificationProfile{
+	// 									NotBeforeTimeout: to.Ptr("ednjvcedpjmczw"),
+	// 									Enable: to.Ptr(true),
+	// 								},
+	// 							},
+	// 							UserData: to.Ptr("zekdr"),
+	// 							CapacityReservation: &armcomputefleet.CapacityReservationProfile{
+	// 								CapacityReservationGroup: &armcomputefleet.SubResource{
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"),
+	// 								},
+	// 							},
+	// 							ApplicationProfile: &armcomputefleet.ApplicationProfile{
+	// 								GalleryApplications: []*armcomputefleet.VMGalleryApplication{
+	// 									{
+	// 										Tags: to.Ptr("eomzidad"),
+	// 										Order: to.Ptr[int32](22),
+	// 										PackageReferenceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+	// 										ConfigurationReference: to.Ptr("zdqfcpvt"),
+	// 										TreatFailureAsDeploymentFailure: to.Ptr(true),
+	// 										EnableAutomaticUpgrade: to.Ptr(true),
+	// 									},
+	// 								},
+	// 							},
+	// 							HardwareProfile: &armcomputefleet.VirtualMachineScaleSetHardwareProfile{
+	// 								VMSizeProperties: &armcomputefleet.VMSizeProperties{
+	// 									VCPUsAvailable: to.Ptr[int32](8),
+	// 									VCPUsPerCore: to.Ptr[int32](17),
+	// 								},
+	// 							},
+	// 							ServiceArtifactReference: &armcomputefleet.ServiceArtifactReference{
+	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"),
+	// 							},
+	// 							SecurityPostureReference: &armcomputefleet.SecurityPostureReference{
+	// 								ID: to.Ptr("/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest"),
+	// 								ExcludeExtensions: []*string{
+	// 									to.Ptr("ragwgzswxzzz"),
+	// 								},
+	// 								IsOverridable: to.Ptr(true),
+	// 							},
+	// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-29T18:51:38.722Z"); return t}()),
+	// 						},
+	// 					},
+	// 				},
 	// 			},
 	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
 	// 			UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 	// 		},
 	// 		Zones: []*string{
-	// 			to.Ptr("zone1"),
-	// 			to.Ptr("zone2"),
+	// 			to.Ptr("1"),
+	// 			to.Ptr("2"),
 	// 		},
 	// 		Identity: &armcomputefleet.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("4d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
-	// 			TenantID: to.Ptr("5d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
 	// 			Type: to.Ptr(armcomputefleet.ManagedServiceIdentityTypeUserAssigned),
 	// 			UserAssignedIdentities: map[string]*armcomputefleet.UserAssignedIdentity{
-	// 				"key9851": &armcomputefleet.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("6d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
-	// 					ClientID: to.Ptr("7d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
-	// 				},
 	// 			},
+	// 			PrincipalID: to.Ptr("4d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
+	// 			TenantID: to.Ptr("5d508e5b-374b-4382-9a1c-01fb8b6cb37c"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key3518": to.Ptr("luvrnuvsgdpbuofdskkcoqhfh"),
 	// 		},
+	// 		Location: to.Ptr("westus"),
 	// 		Plan: &armcomputefleet.Plan{
 	// 			Name: to.Ptr("jwgrcrnrtfoxn"),
 	// 			Publisher: to.Ptr("iozjbiqqckqm"),
@@ -1425,9 +2471,8 @@ func ExampleFleetsClient_Get() {
 	// 			PromotionCode: to.Ptr("naglezezplcaruqogtxnuizslqnnbr"),
 	// 			Version: to.Ptr("wa"),
 	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		ID: to.Ptr("/subscriptions/7B0CD4DB-3381-4013-9B31-FB6E6FD0FF1C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/testFleet"),
-	// 		Name: to.Ptr("testFleet"),
+	// 		ID: to.Ptr("/subscriptions/7B0CD4DB-3381-4013-9B31-FB6E6FD0FF1C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet"),
+	// 		Name: to.Ptr("myFleet"),
 	// 		Type: to.Ptr("Microsoft.AzureFleet/fleets"),
 	// 		SystemData: &armcomputefleet.SystemData{
 	// 			CreatedBy: to.Ptr("rowegentrpoajsv"),
@@ -1441,7 +2486,7 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/Fleets_ListByResourceGroup.json
+// Generated from example definition: 2025-07-01-preview/Fleets_ListByResourceGroup.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1627,6 +2672,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 		// 										DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 		// 									},
 		// 								},
+		// 								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 		// 							},
 		// 							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 		// 								HealthProbe: &armcomputefleet.APIEntityReference{
@@ -1864,7 +2910,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Fleets_ListBySubscription.json
+// Generated from example definition: 2025-07-01-preview/Fleets_ListBySubscription.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2050,6 +3096,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 		// 										DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 		// 									},
 		// 								},
+		// 								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 		// 							},
 		// 							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 		// 								HealthProbe: &armcomputefleet.APIEntityReference{
@@ -2287,7 +3334,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Fleets_ListVirtualMachineScaleSets.json
+// Generated from example definition: 2025-07-01-preview/Fleets_ListVirtualMachineScaleSets.json
 func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2314,7 +3361,7 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 		// 		Value: []*armcomputefleet.VirtualMachineScaleSet{
 		// 			{
 		// 				Name: to.Ptr("myVmss"),
-		// 				ID: to.Ptr("/subscriptions/7B0CD4DB-3381-4013-9B31-FB6E6FD0FF1C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachineScaleSets/myVmss"),
+		// 				ID: to.Ptr("/subscriptions/1DC2F28C-A625-4B0E-9748-9885A3C9E9EB/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachineScaleSets/myVmss"),
 		// 				Type: to.Ptr("Microsoft.AzureFleet/fleets/virtualMachineScaleSets"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.ProvisioningStateCreating),
 		// 				Error: &armcomputefleet.APIError{
@@ -2340,7 +3387,62 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01/Fleets_Update.json
+// Generated from example definition: 2025-07-01-preview/Fleets_ListVirtualMachines.json
+func ExampleFleetsClient_NewListVirtualMachinesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputefleet.NewClientFactory("3453D930-6DDF-4466-B3B3-E1AEE9BD448C", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFleetsClient().NewListVirtualMachinesPager("rgazurefleet", "myFleet", &armcomputefleet.FleetsClientListVirtualMachinesOptions{
+		Filter:    to.Ptr("xzcepyottghqa"),
+		Skiptoken: to.Ptr("hydepbmwuypaprlphcdecsz")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcomputefleet.FleetsClientListVirtualMachinesResponse{
+		// 	VirtualMachineListResult: armcomputefleet.VirtualMachineListResult{
+		// 		Value: []*armcomputefleet.VirtualMachine{
+		// 			{
+		// 				Name: to.Ptr("kfkaqnskgrugdneuebvrwhnflri"),
+		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/myVirtualMachine"),
+		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusCreating),
+		// 				Error: &armcomputefleet.APIError{
+		// 					Code: to.Ptr("obrkfckgffjphilhxacxdmrvbcrg"),
+		// 					Target: to.Ptr("rnjvbpwlqnicuuyk"),
+		// 					Message: to.Ptr("oiqdlxfufmymom"),
+		// 					Details: []*armcomputefleet.APIErrorBase{
+		// 						{
+		// 							Code: to.Ptr("vtuyxkhxumtapurmhkv"),
+		// 							Target: to.Ptr("wfkewwpzippudvjizcnwgzspbeq"),
+		// 							Message: to.Ptr("hjoitvryetqmjv"),
+		// 						},
+		// 					},
+		// 					Innererror: &armcomputefleet.InnerError{
+		// 						ExceptionType: to.Ptr("bybvkxpntnkyrzdluphztenxzjy"),
+		// 						ErrorDetail: to.Ptr("lsrcyfnkecxzioyagpgsbebgvfkwuc"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-07-01-preview/Fleets_Update.json
 func ExampleFleetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2351,7 +3453,7 @@ func ExampleFleetsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFleetsClient().BeginUpdate(ctx, "rgazurefleet", "testFleet", armcomputefleet.FleetUpdate{
+	poller, err := clientFactory.NewFleetsClient().BeginUpdate(ctx, "rgazurefleet", "myFleet", armcomputefleet.FleetUpdate{
 		Identity: &armcomputefleet.ManagedServiceIdentityUpdate{
 			Type:                   to.Ptr(armcomputefleet.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armcomputefleet.UserAssignedIdentity{},
@@ -2369,12 +3471,16 @@ func ExampleFleetsClient_BeginUpdate() {
 			RegularPriorityProfile: &armcomputefleet.RegularPriorityProfile{
 				Capacity:           to.Ptr[int32](20),
 				MinCapacity:        to.Ptr[int32](10),
-				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyLowestPrice),
+				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyPrioritized),
 			},
 			VMSizesProfile: []*armcomputefleet.VMSizeProfile{
 				{
-					Name: to.Ptr("Standard_d1_v2"),
-					Rank: to.Ptr[int32](19225),
+					Name: to.Ptr("Standard_D1_v2"),
+					Rank: to.Ptr[int32](0),
+				},
+				{
+					Name: to.Ptr("Standard_D2_v2"),
+					Rank: to.Ptr[int32](1),
 				},
 			},
 			ComputeProfile: &armcomputefleet.ComputeProfile{
@@ -2518,6 +3624,7 @@ func ExampleFleetsClient_BeginUpdate() {
 								DeleteOption:      to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 							},
 						},
+						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 					},
 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -2703,6 +3810,409 @@ func ExampleFleetsClient_BeginUpdate() {
 				},
 				ComputeAPIVersion:        to.Ptr("2023-07-01"),
 				PlatformFaultDomainCount: to.Ptr[int32](1),
+				AdditionalVirtualMachineCapabilities: &armcomputefleet.AdditionalCapabilities{
+					UltraSSDEnabled:    to.Ptr(true),
+					HibernationEnabled: to.Ptr(true),
+				},
+			},
+			VMAttributes: &armcomputefleet.VMAttributes{
+				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				MemoryInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				MemoryInGiBPerVCpu: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				LocalStorageSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				LocalStorageInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				LocalStorageDiskTypes: []*armcomputefleet.LocalStorageDiskType{
+					to.Ptr(armcomputefleet.LocalStorageDiskTypeHDD),
+				},
+				DataDiskCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				NetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				NetworkBandwidthInMbps: &armcomputefleet.VMAttributeMinMaxDouble{
+					Min: to.Ptr[float64](2),
+					Max: to.Ptr[float64](4),
+				},
+				RdmaSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				RdmaNetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				AcceleratorSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				AcceleratorManufacturers: []*armcomputefleet.AcceleratorManufacturer{
+					to.Ptr(armcomputefleet.AcceleratorManufacturerAMD),
+				},
+				AcceleratorTypes: []*armcomputefleet.AcceleratorType{
+					to.Ptr(armcomputefleet.AcceleratorTypeGPU),
+				},
+				AcceleratorCount: &armcomputefleet.VMAttributeMinMaxInteger{
+					Min: to.Ptr[int32](2),
+					Max: to.Ptr[int32](4),
+				},
+				VMCategories: []*armcomputefleet.VMCategory{
+					to.Ptr(armcomputefleet.VMCategoryGeneralPurpose),
+				},
+				ArchitectureTypes: []*armcomputefleet.ArchitectureType{
+					to.Ptr(armcomputefleet.ArchitectureTypeARM64),
+				},
+				CPUManufacturers: []*armcomputefleet.CPUManufacturer{
+					to.Ptr(armcomputefleet.CPUManufacturerIntel),
+				},
+				BurstableSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+				ExcludedVMSizes: []*string{
+					to.Ptr("Standard_A1"),
+				},
+			},
+			AdditionalLocationsProfile: &armcomputefleet.AdditionalLocationsProfile{
+				LocationProfiles: []*armcomputefleet.LocationProfile{
+					{
+						Location: to.Ptr("v"),
+						VirtualMachineProfileOverride: &armcomputefleet.BaseVirtualMachineProfile{
+							OSProfile: &armcomputefleet.VirtualMachineScaleSetOSProfile{
+								ComputerNamePrefix: to.Ptr("tec"),
+								AdminUsername:      to.Ptr("xdgnnqymtamdyqxy"),
+								AdminPassword:      to.Ptr("<a-password-goes-here>"),
+								CustomData:         to.Ptr("whcielwnerogvbxnbia"),
+								WindowsConfiguration: &armcomputefleet.WindowsConfiguration{
+									ProvisionVMAgent:       to.Ptr(true),
+									EnableAutomaticUpdates: to.Ptr(true),
+									TimeZone:               to.Ptr("ktf"),
+									AdditionalUnattendContent: []*armcomputefleet.AdditionalUnattendContent{
+										{
+											PassName:      to.Ptr("OobeSystem"),
+											ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+											SettingName:   to.Ptr(armcomputefleet.SettingNamesAutoLogon),
+											Content:       to.Ptr("xcigofrcurxdwx"),
+										},
+									},
+									PatchSettings: &armcomputefleet.PatchSettings{
+										PatchMode:         to.Ptr(armcomputefleet.WindowsVMGuestPatchModeManual),
+										EnableHotpatching: to.Ptr(true),
+										AssessmentMode:    to.Ptr(armcomputefleet.WindowsPatchAssessmentModeImageDefault),
+										AutomaticByPlatformSettings: &armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformSettings{
+											RebootSetting:                            to.Ptr(armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+										},
+									},
+									WinRM: &armcomputefleet.WinRMConfiguration{
+										Listeners: []*armcomputefleet.WinRMListener{
+											{
+												Protocol:       to.Ptr(armcomputefleet.ProtocolTypesHTTP),
+												CertificateURL: to.Ptr("https://microsoft.com/apzd"),
+											},
+										},
+									},
+									EnableVMAgentPlatformUpdates: to.Ptr(true),
+								},
+								LinuxConfiguration: &armcomputefleet.LinuxConfiguration{
+									DisablePasswordAuthentication: to.Ptr(true),
+									SSH: &armcomputefleet.SSHConfiguration{
+										PublicKeys: []*armcomputefleet.SSHPublicKey{
+											{
+												Path:    to.Ptr("ebeglujkldnntlpmazrg"),
+												KeyData: to.Ptr("vmgnwtwjcodavmu"),
+											},
+										},
+									},
+									ProvisionVMAgent: to.Ptr(true),
+									PatchSettings: &armcomputefleet.LinuxPatchSettings{
+										PatchMode:      to.Ptr(armcomputefleet.LinuxVMGuestPatchModeImageDefault),
+										AssessmentMode: to.Ptr(armcomputefleet.LinuxPatchAssessmentModeImageDefault),
+										AutomaticByPlatformSettings: &armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformSettings{
+											RebootSetting:                            to.Ptr(armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+										},
+									},
+									EnableVMAgentPlatformUpdates: to.Ptr(true),
+								},
+								Secrets: []*armcomputefleet.VaultSecretGroup{
+									{
+										SourceVault: &armcomputefleet.SubResource{
+											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+										},
+										VaultCertificates: []*armcomputefleet.VaultCertificate{
+											{
+												CertificateURL:   to.Ptr("https://microsoft.com/a"),
+												CertificateStore: to.Ptr("yycyfwpymjtwzza"),
+											},
+										},
+									},
+								},
+								AllowExtensionOperations:    to.Ptr(true),
+								RequireGuestProvisionSignal: to.Ptr(true),
+							},
+							StorageProfile: &armcomputefleet.VirtualMachineScaleSetStorageProfile{
+								ImageReference: &armcomputefleet.ImageReference{
+									Publisher:               to.Ptr("mqxgwbiyjzmxavhbkd"),
+									Offer:                   to.Ptr("isxgumkarlkomp"),
+									SKU:                     to.Ptr("eojmppqcrnpmxirtp"),
+									Version:                 to.Ptr("wvpcqefgtmqdgltiuz"),
+									SharedGalleryImageID:    to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
+									CommunityGalleryImageID: to.Ptr("vlqe"),
+									ID:                      to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
+								},
+								OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
+									Name:                    to.Ptr("dt"),
+									Caching:                 to.Ptr(armcomputefleet.CachingTypesNone),
+									WriteAcceleratorEnabled: to.Ptr(true),
+									CreateOption:            to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+									DiffDiskSettings: &armcomputefleet.DiffDiskSettings{
+										Option:    to.Ptr(armcomputefleet.DiffDiskOptionsLocal),
+										Placement: to.Ptr(armcomputefleet.DiffDiskPlacementCacheDisk),
+									},
+									DiskSizeGB: to.Ptr[int32](9),
+									OSType:     to.Ptr(armcomputefleet.OperatingSystemTypesWindows),
+									Image: &armcomputefleet.VirtualHardDisk{
+										URI: to.Ptr("https://microsoft.com/a"),
+									},
+									VhdContainers: []*string{
+										to.Ptr("kdagj"),
+									},
+									ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+										StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+										DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+										},
+										SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+											SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+											},
+										},
+									},
+									DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+								},
+								DataDisks: []*armcomputefleet.VirtualMachineScaleSetDataDisk{
+									{
+										Name:                    to.Ptr("mhljivkyryuomrapmmxx"),
+										Lun:                     to.Ptr[int32](6),
+										Caching:                 to.Ptr(armcomputefleet.CachingTypesNone),
+										WriteAcceleratorEnabled: to.Ptr(true),
+										CreateOption:            to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+										DiskSizeGB:              to.Ptr[int32](9),
+										ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+											StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+											},
+											SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+												SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+												DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+												},
+											},
+										},
+										DiskIOPSReadWrite: to.Ptr[int64](24),
+										DiskMBpsReadWrite: to.Ptr[int64](4),
+										DeleteOption:      to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+									},
+								},
+								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypesSCSI),
+							},
+							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
+								HealthProbe: &armcomputefleet.APIEntityReference{
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"),
+								},
+								NetworkInterfaceConfigurations: []*armcomputefleet.VirtualMachineScaleSetNetworkConfiguration{
+									{
+										Name: to.Ptr("gpunpcdsdphgspvgwwbnk"),
+										Properties: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationProperties{
+											Primary:                     to.Ptr(true),
+											EnableAcceleratedNetworking: to.Ptr(true),
+											DisableTCPStateTracking:     to.Ptr(true),
+											EnableFpga:                  to.Ptr(true),
+											NetworkSecurityGroup: &armcomputefleet.SubResource{
+												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"),
+											},
+											DNSSettings: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+												DNSServers: []*string{
+													to.Ptr("sjpmlu"),
+												},
+											},
+											IPConfigurations: []*armcomputefleet.VirtualMachineScaleSetIPConfiguration{
+												{
+													Name: to.Ptr("fweiphgkyhbcsbfjmxzczkpg"),
+													Properties: &armcomputefleet.VirtualMachineScaleSetIPConfigurationProperties{
+														Subnet: &armcomputefleet.APIEntityReference{
+															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"),
+														},
+														Primary: to.Ptr(true),
+														PublicIPAddressConfiguration: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfiguration{
+															Name: to.Ptr("dvnoamqjyshquvtmf"),
+															Properties: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+																IdleTimeoutInMinutes: to.Ptr[int32](1),
+																DNSSettings: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+																	DomainNameLabel:      to.Ptr("ayofnb"),
+																	DomainNameLabelScope: to.Ptr(armcomputefleet.DomainNameLabelScopeTypesTenantReuse),
+																},
+																IPTags: []*armcomputefleet.VirtualMachineScaleSetIPTag{
+																	{
+																		IPTagType: to.Ptr("zqpznczmc"),
+																		Tag:       to.Ptr("ugnfzikniqjisffrbvryavenhmtd"),
+																	},
+																},
+																PublicIPPrefix: &armcomputefleet.SubResource{
+																	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"),
+																},
+																PublicIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+																DeleteOption:           to.Ptr(armcomputefleet.DeleteOptionsDelete),
+															},
+															SKU: &armcomputefleet.PublicIPAddressSKU{
+																Name: to.Ptr(armcomputefleet.PublicIPAddressSKUNameBasic),
+																Tier: to.Ptr(armcomputefleet.PublicIPAddressSKUTierRegional),
+															},
+														},
+														PrivateIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+														ApplicationGatewayBackendAddressPools: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}"),
+															},
+														},
+														ApplicationSecurityGroups: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}"),
+															},
+														},
+														LoadBalancerBackendAddressPools: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"),
+															},
+														},
+														LoadBalancerInboundNatPools: []*armcomputefleet.SubResource{
+															{
+																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"),
+															},
+														},
+													},
+												},
+											},
+											EnableIPForwarding: to.Ptr(true),
+											DeleteOption:       to.Ptr(armcomputefleet.DeleteOptionsDelete),
+											AuxiliaryMode:      to.Ptr(armcomputefleet.NetworkInterfaceAuxiliaryModeNone),
+											AuxiliarySKU:       to.Ptr(armcomputefleet.NetworkInterfaceAuxiliarySKUNone),
+										},
+									},
+								},
+								NetworkAPIVersion: to.Ptr(armcomputefleet.NetworkAPIVersionV20201101),
+							},
+							SecurityProfile: &armcomputefleet.SecurityProfile{
+								UefiSettings: &armcomputefleet.UefiSettings{
+									SecureBootEnabled: to.Ptr(true),
+									VTpmEnabled:       to.Ptr(true),
+								},
+								EncryptionAtHost: to.Ptr(true),
+								SecurityType:     to.Ptr(armcomputefleet.SecurityTypesTrustedLaunch),
+								EncryptionIdentity: &armcomputefleet.EncryptionIdentity{
+									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"),
+								},
+								ProxyAgentSettings: &armcomputefleet.ProxyAgentSettings{
+									Enabled:          to.Ptr(true),
+									Mode:             to.Ptr(armcomputefleet.ModeAudit),
+									KeyIncarnationID: to.Ptr[int32](6),
+								},
+							},
+							DiagnosticsProfile: &armcomputefleet.DiagnosticsProfile{
+								BootDiagnostics: &armcomputefleet.BootDiagnostics{
+									Enabled:    to.Ptr(true),
+									StorageURI: to.Ptr("https://microsoft.com/a"),
+								},
+							},
+							ExtensionProfile: &armcomputefleet.VirtualMachineScaleSetExtensionProfile{
+								Extensions: []*armcomputefleet.VirtualMachineScaleSetExtension{
+									{
+										Name: to.Ptr("oredyuufsd"),
+										Properties: &armcomputefleet.VirtualMachineScaleSetExtensionProperties{
+											ForceUpdateTag:          to.Ptr("muglieujh"),
+											Publisher:               to.Ptr("ccbiyfuveemaaopgxbjpm"),
+											Type:                    to.Ptr("yorumzkbfpxnrdwgczwwaeaxmda"),
+											TypeHandlerVersion:      to.Ptr("nlnqbmgzwubbc"),
+											AutoUpgradeMinorVersion: to.Ptr(true),
+											EnableAutomaticUpgrade:  to.Ptr(true),
+											Settings:                map[string]any{},
+											ProtectedSettings:       map[string]any{},
+											ProvisionAfterExtensions: []*string{
+												to.Ptr("xuefrutmgzsxrpjjayvy"),
+											},
+											SuppressFailures: to.Ptr(true),
+											ProtectedSettingsFromKeyVault: &armcomputefleet.KeyVaultSecretReference{
+												SecretURL: to.Ptr("https://microsoft.com/a"),
+												SourceVault: &armcomputefleet.SubResource{
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+												},
+											},
+										},
+									},
+								},
+								ExtensionsTimeBudget: to.Ptr("trluxrynunvdnukztblhbnsubr"),
+							},
+							LicenseType: to.Ptr("ginsqshzwimjteiyfxhnjxfrcaat"),
+							ScheduledEventsProfile: &armcomputefleet.ScheduledEventsProfile{
+								TerminateNotificationProfile: &armcomputefleet.TerminateNotificationProfile{
+									NotBeforeTimeout: to.Ptr("plbazenobaeueixatewbey"),
+									Enable:           to.Ptr(true),
+								},
+								OSImageNotificationProfile: &armcomputefleet.OSImageNotificationProfile{
+									NotBeforeTimeout: to.Ptr("ednjvcedpjmczw"),
+									Enable:           to.Ptr(true),
+								},
+							},
+							UserData: to.Ptr("zekdr"),
+							CapacityReservation: &armcomputefleet.CapacityReservationProfile{
+								CapacityReservationGroup: &armcomputefleet.SubResource{
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"),
+								},
+							},
+							ApplicationProfile: &armcomputefleet.ApplicationProfile{
+								GalleryApplications: []*armcomputefleet.VMGalleryApplication{
+									{
+										Tags:                            to.Ptr("eomzidad"),
+										Order:                           to.Ptr[int32](22),
+										PackageReferenceID:              to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+										ConfigurationReference:          to.Ptr("zdqfcpvt"),
+										TreatFailureAsDeploymentFailure: to.Ptr(true),
+										EnableAutomaticUpgrade:          to.Ptr(true),
+									},
+								},
+							},
+							HardwareProfile: &armcomputefleet.VirtualMachineScaleSetHardwareProfile{
+								VMSizeProperties: &armcomputefleet.VMSizeProperties{
+									VCPUsAvailable: to.Ptr[int32](8),
+									VCPUsPerCore:   to.Ptr[int32](17),
+								},
+							},
+							ServiceArtifactReference: &armcomputefleet.ServiceArtifactReference{
+								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"),
+							},
+							SecurityPostureReference: &armcomputefleet.SecurityPostureReference{
+								ID: to.Ptr("/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest"),
+								ExcludeExtensions: []*string{
+									to.Ptr("ragwgzswxzzz"),
+								},
+								IsOverridable: to.Ptr(true),
+							},
+						},
+					},
+				},
+			},
+			Mode:         to.Ptr(armcomputefleet.FleetModeManaged),
+			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
+			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
+				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyBestEffortSingleZone),
 			},
 		},
 		Plan: &armcomputefleet.ResourcePlanUpdate{
@@ -2737,12 +4247,16 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 			RegularPriorityProfile: &armcomputefleet.RegularPriorityProfile{
 	// 				Capacity: to.Ptr[int32](20),
 	// 				MinCapacity: to.Ptr[int32](10),
-	// 				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyLowestPrice),
+	// 				AllocationStrategy: to.Ptr(armcomputefleet.RegularPriorityAllocationStrategyPrioritized),
 	// 			},
 	// 			VMSizesProfile: []*armcomputefleet.VMSizeProfile{
 	// 				{
-	// 					Name: to.Ptr("Standard_d1_v2"),
-	// 					Rank: to.Ptr[int32](19225),
+	// 					Name: to.Ptr("Standard_D1_v2"),
+	// 					Rank: to.Ptr[int32](0),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Standard_D2_v2"),
+	// 					Rank: to.Ptr[int32](1),
 	// 				},
 	// 			},
 	// 			ComputeProfile: &armcomputefleet.ComputeProfile{
@@ -2826,7 +4340,6 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 							SharedGalleryImageID: to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
 	// 							CommunityGalleryImageID: to.Ptr("vlqe"),
 	// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
-	// 							ExactVersion: to.Ptr("zjbntmiskjexlr"),
 	// 						},
 	// 						OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
 	// 							Name: to.Ptr("wfttw"),
@@ -2884,6 +4397,7 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 								DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
 	// 							},
 	// 						},
+	// 						DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypes("uzb")),
 	// 					},
 	// 					NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
 	// 						HealthProbe: &armcomputefleet.APIEntityReference{
@@ -3004,6 +4518,8 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 									TypeHandlerVersion: to.Ptr("zevivcoilxmbwlrihhhibq"),
 	// 									AutoUpgradeMinorVersion: to.Ptr(true),
 	// 									EnableAutomaticUpgrade: to.Ptr(true),
+	// 									Settings: map[string]any{
+	// 									},
 	// 									ProvisionAfterExtensions: []*string{
 	// 										to.Ptr("nftzosroolbcwmpupujzqwqe"),
 	// 									},
@@ -3014,12 +4530,10 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
 	// 										},
 	// 									},
-	// 									Settings: map[string]any{
-	// 									},
 	// 									ProvisioningState: to.Ptr("Succeeded"),
 	// 								},
-	// 								Type: to.Ptr("cmeam"),
 	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{extensionName}"),
+	// 								Type: to.Ptr("cmeam"),
 	// 							},
 	// 						},
 	// 						ExtensionsTimeBudget: to.Ptr("mbhjahtdygwgyszdwjtvlvtgchdwil"),
@@ -3047,6 +4561,7 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 								Tags: to.Ptr("eyrqjbib"),
 	// 								Order: to.Ptr[int32](5),
 	// 								PackageReferenceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+	// 								ConfigurationReference: to.Ptr("ulztmiavpojpbpbddgnuuiimxcpau"),
 	// 								TreatFailureAsDeploymentFailure: to.Ptr(true),
 	// 								EnableAutomaticUpgrade: to.Ptr(true),
 	// 							},
@@ -3072,14 +4587,418 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2023-07-01"),
 	// 				PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 				AdditionalVirtualMachineCapabilities: &armcomputefleet.AdditionalCapabilities{
+	// 					UltraSSDEnabled: to.Ptr(true),
+	// 					HibernationEnabled: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			Mode: to.Ptr(armcomputefleet.FleetModeManaged),
+	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
+	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
+	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyBestEffortSingleZone),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcomputefleet.ProvisioningStateCreating),
+	// 			VMAttributes: &armcomputefleet.VMAttributes{
+	// 				VCPUCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				MemoryInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				MemoryInGiBPerVCpu: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				LocalStorageSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				LocalStorageInGiB: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				LocalStorageDiskTypes: []*armcomputefleet.LocalStorageDiskType{
+	// 					to.Ptr(armcomputefleet.LocalStorageDiskTypeHDD),
+	// 				},
+	// 				DataDiskCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				NetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				NetworkBandwidthInMbps: &armcomputefleet.VMAttributeMinMaxDouble{
+	// 					Min: to.Ptr[float64](2),
+	// 					Max: to.Ptr[float64](4),
+	// 				},
+	// 				RdmaSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				RdmaNetworkInterfaceCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				AcceleratorSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				AcceleratorManufacturers: []*armcomputefleet.AcceleratorManufacturer{
+	// 					to.Ptr(armcomputefleet.AcceleratorManufacturerAMD),
+	// 				},
+	// 				AcceleratorTypes: []*armcomputefleet.AcceleratorType{
+	// 					to.Ptr(armcomputefleet.AcceleratorTypeGPU),
+	// 				},
+	// 				AcceleratorCount: &armcomputefleet.VMAttributeMinMaxInteger{
+	// 					Min: to.Ptr[int32](2),
+	// 					Max: to.Ptr[int32](4),
+	// 				},
+	// 				VMCategories: []*armcomputefleet.VMCategory{
+	// 					to.Ptr(armcomputefleet.VMCategoryGeneralPurpose),
+	// 				},
+	// 				ArchitectureTypes: []*armcomputefleet.ArchitectureType{
+	// 					to.Ptr(armcomputefleet.ArchitectureTypeARM64),
+	// 				},
+	// 				CPUManufacturers: []*armcomputefleet.CPUManufacturer{
+	// 					to.Ptr(armcomputefleet.CPUManufacturerIntel),
+	// 				},
+	// 				BurstableSupport: to.Ptr(armcomputefleet.VMAttributeSupportExcluded),
+	// 				ExcludedVMSizes: []*string{
+	// 					to.Ptr("Standard_A1"),
+	// 				},
+	// 			},
+	// 			AdditionalLocationsProfile: &armcomputefleet.AdditionalLocationsProfile{
+	// 				LocationProfiles: []*armcomputefleet.LocationProfile{
+	// 					{
+	// 						Location: to.Ptr("v"),
+	// 						VirtualMachineProfileOverride: &armcomputefleet.BaseVirtualMachineProfile{
+	// 							OSProfile: &armcomputefleet.VirtualMachineScaleSetOSProfile{
+	// 								ComputerNamePrefix: to.Ptr("tec"),
+	// 								AdminUsername: to.Ptr("xdgnnqymtamdyqxy"),
+	// 								WindowsConfiguration: &armcomputefleet.WindowsConfiguration{
+	// 									ProvisionVMAgent: to.Ptr(true),
+	// 									EnableAutomaticUpdates: to.Ptr(true),
+	// 									TimeZone: to.Ptr("ktf"),
+	// 									AdditionalUnattendContent: []*armcomputefleet.AdditionalUnattendContent{
+	// 										{
+	// 											PassName: to.Ptr("OobeSystem"),
+	// 											ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+	// 											SettingName: to.Ptr(armcomputefleet.SettingNamesAutoLogon),
+	// 										},
+	// 									},
+	// 									PatchSettings: &armcomputefleet.PatchSettings{
+	// 										PatchMode: to.Ptr(armcomputefleet.WindowsVMGuestPatchModeManual),
+	// 										EnableHotpatching: to.Ptr(true),
+	// 										AssessmentMode: to.Ptr(armcomputefleet.WindowsPatchAssessmentModeImageDefault),
+	// 										AutomaticByPlatformSettings: &armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformSettings{
+	// 											RebootSetting: to.Ptr(armcomputefleet.WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+	// 											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									WinRM: &armcomputefleet.WinRMConfiguration{
+	// 										Listeners: []*armcomputefleet.WinRMListener{
+	// 											{
+	// 												Protocol: to.Ptr(armcomputefleet.ProtocolTypesHTTP),
+	// 												CertificateURL: to.Ptr("https://microsoft.com/apzd"),
+	// 											},
+	// 										},
+	// 									},
+	// 									EnableVMAgentPlatformUpdates: to.Ptr(true),
+	// 								},
+	// 								LinuxConfiguration: &armcomputefleet.LinuxConfiguration{
+	// 									DisablePasswordAuthentication: to.Ptr(true),
+	// 									SSH: &armcomputefleet.SSHConfiguration{
+	// 										PublicKeys: []*armcomputefleet.SSHPublicKey{
+	// 											{
+	// 												Path: to.Ptr("ebeglujkldnntlpmazrg"),
+	// 												KeyData: to.Ptr("vmgnwtwjcodavmu"),
+	// 											},
+	// 										},
+	// 									},
+	// 									ProvisionVMAgent: to.Ptr(true),
+	// 									PatchSettings: &armcomputefleet.LinuxPatchSettings{
+	// 										PatchMode: to.Ptr(armcomputefleet.LinuxVMGuestPatchModeImageDefault),
+	// 										AssessmentMode: to.Ptr(armcomputefleet.LinuxPatchAssessmentModeImageDefault),
+	// 										AutomaticByPlatformSettings: &armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformSettings{
+	// 											RebootSetting: to.Ptr(armcomputefleet.LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown),
+	// 											BypassPlatformSafetyChecksOnUserSchedule: to.Ptr(true),
+	// 										},
+	// 									},
+	// 									EnableVMAgentPlatformUpdates: to.Ptr(true),
+	// 								},
+	// 								Secrets: []*armcomputefleet.VaultSecretGroup{
+	// 									{
+	// 										SourceVault: &armcomputefleet.SubResource{
+	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+	// 										},
+	// 										VaultCertificates: []*armcomputefleet.VaultCertificate{
+	// 											{
+	// 												CertificateURL: to.Ptr("https://microsoft.com/a"),
+	// 												CertificateStore: to.Ptr("yycyfwpymjtwzza"),
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								AllowExtensionOperations: to.Ptr(true),
+	// 								RequireGuestProvisionSignal: to.Ptr(true),
+	// 							},
+	// 							StorageProfile: &armcomputefleet.VirtualMachineScaleSetStorageProfile{
+	// 								ImageReference: &armcomputefleet.ImageReference{
+	// 									Publisher: to.Ptr("mqxgwbiyjzmxavhbkd"),
+	// 									Offer: to.Ptr("isxgumkarlkomp"),
+	// 									SKU: to.Ptr("eojmppqcrnpmxirtp"),
+	// 									Version: to.Ptr("wvpcqefgtmqdgltiuz"),
+	// 									SharedGalleryImageID: to.Ptr("kmkgihoxwlawuuhcinfirktdwkmx"),
+	// 									CommunityGalleryImageID: to.Ptr("vlqe"),
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}/versions/{versionName}"),
+	// 								},
+	// 								OSDisk: &armcomputefleet.VirtualMachineScaleSetOSDisk{
+	// 									Name: to.Ptr("dt"),
+	// 									Caching: to.Ptr(armcomputefleet.CachingTypesNone),
+	// 									WriteAcceleratorEnabled: to.Ptr(true),
+	// 									CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+	// 									DiffDiskSettings: &armcomputefleet.DiffDiskSettings{
+	// 										Option: to.Ptr(armcomputefleet.DiffDiskOptionsLocal),
+	// 										Placement: to.Ptr(armcomputefleet.DiffDiskPlacementCacheDisk),
+	// 									},
+	// 									DiskSizeGB: to.Ptr[int32](9),
+	// 									OSType: to.Ptr(armcomputefleet.OperatingSystemTypesWindows),
+	// 									Image: &armcomputefleet.VirtualHardDisk{
+	// 										URI: to.Ptr("https://microsoft.com/a"),
+	// 									},
+	// 									VhdContainers: []*string{
+	// 										to.Ptr("kdagj"),
+	// 									},
+	// 									ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+	// 										StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+	// 										DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 										},
+	// 										SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+	// 											SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+	// 											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 											},
+	// 										},
+	// 									},
+	// 									DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+	// 								},
+	// 								DataDisks: []*armcomputefleet.VirtualMachineScaleSetDataDisk{
+	// 									{
+	// 										Name: to.Ptr("mhljivkyryuomrapmmxx"),
+	// 										Lun: to.Ptr[int32](6),
+	// 										Caching: to.Ptr(armcomputefleet.CachingTypesNone),
+	// 										WriteAcceleratorEnabled: to.Ptr(true),
+	// 										CreateOption: to.Ptr(armcomputefleet.DiskCreateOptionTypesFromImage),
+	// 										DiskSizeGB: to.Ptr[int32](9),
+	// 										ManagedDisk: &armcomputefleet.VirtualMachineScaleSetManagedDiskParameters{
+	// 											StorageAccountType: to.Ptr(armcomputefleet.StorageAccountTypesStandardLRS),
+	// 											DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 											},
+	// 											SecurityProfile: &armcomputefleet.VMDiskSecurityProfile{
+	// 												SecurityEncryptionType: to.Ptr(armcomputefleet.SecurityEncryptionTypesVMGuestStateOnly),
+	// 												DiskEncryptionSet: &armcomputefleet.DiskEncryptionSetParameters{
+	// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{diskEncryptionSetName}"),
+	// 												},
+	// 											},
+	// 										},
+	// 										DiskIOPSReadWrite: to.Ptr[int64](24),
+	// 										DiskMBpsReadWrite: to.Ptr[int64](4),
+	// 										DeleteOption: to.Ptr(armcomputefleet.DiskDeleteOptionTypesDelete),
+	// 									},
+	// 								},
+	// 								DiskControllerType: to.Ptr(armcomputefleet.DiskControllerTypesSCSI),
+	// 							},
+	// 							NetworkProfile: &armcomputefleet.VirtualMachineScaleSetNetworkProfile{
+	// 								HealthProbe: &armcomputefleet.APIEntityReference{
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"),
+	// 								},
+	// 								NetworkInterfaceConfigurations: []*armcomputefleet.VirtualMachineScaleSetNetworkConfiguration{
+	// 									{
+	// 										Name: to.Ptr("gpunpcdsdphgspvgwwbnk"),
+	// 										Properties: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 											Primary: to.Ptr(true),
+	// 											EnableAcceleratedNetworking: to.Ptr(true),
+	// 											DisableTCPStateTracking: to.Ptr(true),
+	// 											EnableFpga: to.Ptr(true),
+	// 											NetworkSecurityGroup: &armcomputefleet.SubResource{
+	// 												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}"),
+	// 											},
+	// 											DNSSettings: &armcomputefleet.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+	// 												DNSServers: []*string{
+	// 													to.Ptr("sjpmlu"),
+	// 												},
+	// 											},
+	// 											IPConfigurations: []*armcomputefleet.VirtualMachineScaleSetIPConfiguration{
+	// 												{
+	// 													Name: to.Ptr("fweiphgkyhbcsbfjmxzczkpg"),
+	// 													Properties: &armcomputefleet.VirtualMachineScaleSetIPConfigurationProperties{
+	// 														Subnet: &armcomputefleet.APIEntityReference{
+	// 															ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"),
+	// 														},
+	// 														Primary: to.Ptr(true),
+	// 														PublicIPAddressConfiguration: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfiguration{
+	// 															Name: to.Ptr("dvnoamqjyshquvtmf"),
+	// 															Properties: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+	// 																IdleTimeoutInMinutes: to.Ptr[int32](1),
+	// 																DNSSettings: &armcomputefleet.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
+	// 																	DomainNameLabel: to.Ptr("ayofnb"),
+	// 																	DomainNameLabelScope: to.Ptr(armcomputefleet.DomainNameLabelScopeTypesTenantReuse),
+	// 																},
+	// 																IPTags: []*armcomputefleet.VirtualMachineScaleSetIPTag{
+	// 																	{
+	// 																		IPTagType: to.Ptr("zqpznczmc"),
+	// 																		Tag: to.Ptr("ugnfzikniqjisffrbvryavenhmtd"),
+	// 																	},
+	// 																},
+	// 																PublicIPPrefix: &armcomputefleet.SubResource{
+	// 																	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}"),
+	// 																},
+	// 																PublicIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+	// 																DeleteOption: to.Ptr(armcomputefleet.DeleteOptionsDelete),
+	// 															},
+	// 															SKU: &armcomputefleet.PublicIPAddressSKU{
+	// 																Name: to.Ptr(armcomputefleet.PublicIPAddressSKUNameBasic),
+	// 																Tier: to.Ptr(armcomputefleet.PublicIPAddressSKUTierRegional),
+	// 															},
+	// 														},
+	// 														PrivateIPAddressVersion: to.Ptr(armcomputefleet.IPVersionIPv4),
+	// 														ApplicationGatewayBackendAddressPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}"),
+	// 															},
+	// 														},
+	// 														ApplicationSecurityGroups: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}"),
+	// 															},
+	// 														},
+	// 														LoadBalancerBackendAddressPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"),
+	// 															},
+	// 														},
+	// 														LoadBalancerInboundNatPools: []*armcomputefleet.SubResource{
+	// 															{
+	// 																ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}"),
+	// 															},
+	// 														},
+	// 													},
+	// 												},
+	// 											},
+	// 											EnableIPForwarding: to.Ptr(true),
+	// 											DeleteOption: to.Ptr(armcomputefleet.DeleteOptionsDelete),
+	// 											AuxiliaryMode: to.Ptr(armcomputefleet.NetworkInterfaceAuxiliaryModeNone),
+	// 											AuxiliarySKU: to.Ptr(armcomputefleet.NetworkInterfaceAuxiliarySKUNone),
+	// 										},
+	// 									},
+	// 								},
+	// 								NetworkAPIVersion: to.Ptr(armcomputefleet.NetworkAPIVersionV20201101),
+	// 							},
+	// 							SecurityProfile: &armcomputefleet.SecurityProfile{
+	// 								UefiSettings: &armcomputefleet.UefiSettings{
+	// 									SecureBootEnabled: to.Ptr(true),
+	// 									VTpmEnabled: to.Ptr(true),
+	// 								},
+	// 								EncryptionAtHost: to.Ptr(true),
+	// 								SecurityType: to.Ptr(armcomputefleet.SecurityTypesTrustedLaunch),
+	// 								EncryptionIdentity: &armcomputefleet.EncryptionIdentity{
+	// 									UserAssignedIdentityResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}"),
+	// 								},
+	// 								ProxyAgentSettings: &armcomputefleet.ProxyAgentSettings{
+	// 									Enabled: to.Ptr(true),
+	// 									Mode: to.Ptr(armcomputefleet.ModeAudit),
+	// 									KeyIncarnationID: to.Ptr[int32](6),
+	// 								},
+	// 							},
+	// 							DiagnosticsProfile: &armcomputefleet.DiagnosticsProfile{
+	// 								BootDiagnostics: &armcomputefleet.BootDiagnostics{
+	// 									Enabled: to.Ptr(true),
+	// 									StorageURI: to.Ptr("https://microsoft.com/a"),
+	// 								},
+	// 							},
+	// 							ExtensionProfile: &armcomputefleet.VirtualMachineScaleSetExtensionProfile{
+	// 								Extensions: []*armcomputefleet.VirtualMachineScaleSetExtension{
+	// 									{
+	// 										ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{extensionName}"),
+	// 										Name: to.Ptr("oredyuufsd"),
+	// 										Type: to.Ptr("qbmhvtcrufkhovrweggioqlcld"),
+	// 										Properties: &armcomputefleet.VirtualMachineScaleSetExtensionProperties{
+	// 											ForceUpdateTag: to.Ptr("muglieujh"),
+	// 											Publisher: to.Ptr("ccbiyfuveemaaopgxbjpm"),
+	// 											Type: to.Ptr("yorumzkbfpxnrdwgczwwaeaxmda"),
+	// 											TypeHandlerVersion: to.Ptr("nlnqbmgzwubbc"),
+	// 											AutoUpgradeMinorVersion: to.Ptr(true),
+	// 											EnableAutomaticUpgrade: to.Ptr(true),
+	// 											Settings: map[string]any{
+	// 											},
+	// 											ProvisioningState: to.Ptr("lcbvhjidublayqhmuzxzdvzgzslsys"),
+	// 											ProvisionAfterExtensions: []*string{
+	// 												to.Ptr("xuefrutmgzsxrpjjayvy"),
+	// 											},
+	// 											SuppressFailures: to.Ptr(true),
+	// 											ProtectedSettingsFromKeyVault: &armcomputefleet.KeyVaultSecretReference{
+	// 												SecretURL: to.Ptr("https://microsoft.com/a"),
+	// 												SourceVault: &armcomputefleet.SubResource{
+	// 													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"),
+	// 												},
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 								ExtensionsTimeBudget: to.Ptr("trluxrynunvdnukztblhbnsubr"),
+	// 							},
+	// 							LicenseType: to.Ptr("ginsqshzwimjteiyfxhnjxfrcaat"),
+	// 							ScheduledEventsProfile: &armcomputefleet.ScheduledEventsProfile{
+	// 								TerminateNotificationProfile: &armcomputefleet.TerminateNotificationProfile{
+	// 									NotBeforeTimeout: to.Ptr("plbazenobaeueixatewbey"),
+	// 									Enable: to.Ptr(true),
+	// 								},
+	// 								OSImageNotificationProfile: &armcomputefleet.OSImageNotificationProfile{
+	// 									NotBeforeTimeout: to.Ptr("ednjvcedpjmczw"),
+	// 									Enable: to.Ptr(true),
+	// 								},
+	// 							},
+	// 							UserData: to.Ptr("zekdr"),
+	// 							CapacityReservation: &armcomputefleet.CapacityReservationProfile{
+	// 								CapacityReservationGroup: &armcomputefleet.SubResource{
+	// 									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}"),
+	// 								},
+	// 							},
+	// 							ApplicationProfile: &armcomputefleet.ApplicationProfile{
+	// 								GalleryApplications: []*armcomputefleet.VMGalleryApplication{
+	// 									{
+	// 										Tags: to.Ptr("eomzidad"),
+	// 										Order: to.Ptr[int32](22),
+	// 										PackageReferenceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{applicationName}/versions/{versionName}"),
+	// 										ConfigurationReference: to.Ptr("zdqfcpvt"),
+	// 										TreatFailureAsDeploymentFailure: to.Ptr(true),
+	// 										EnableAutomaticUpgrade: to.Ptr(true),
+	// 									},
+	// 								},
+	// 							},
+	// 							HardwareProfile: &armcomputefleet.VirtualMachineScaleSetHardwareProfile{
+	// 								VMSizeProperties: &armcomputefleet.VMSizeProperties{
+	// 									VCPUsAvailable: to.Ptr[int32](8),
+	// 									VCPUsPerCore: to.Ptr[int32](17),
+	// 								},
+	// 							},
+	// 							ServiceArtifactReference: &armcomputefleet.ServiceArtifactReference{
+	// 								ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactsName}/vmArtifactsProfiles/{vmArtifactsProfileName}"),
+	// 							},
+	// 							SecurityPostureReference: &armcomputefleet.SecurityPostureReference{
+	// 								ID: to.Ptr("/CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest"),
+	// 								ExcludeExtensions: []*string{
+	// 									to.Ptr("ragwgzswxzzz"),
+	// 								},
+	// 								IsOverridable: to.Ptr(true),
+	// 							},
+	// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-29T18:51:38.722Z"); return t}()),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
 	// 			UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 	// 		},
 	// 		Zones: []*string{
-	// 			to.Ptr("zone1"),
-	// 			to.Ptr("zone2"),
+	// 			to.Ptr("1"),
+	// 			to.Ptr("2"),
 	// 		},
 	// 		Identity: &armcomputefleet.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armcomputefleet.ManagedServiceIdentityTypeUserAssigned),
@@ -3092,11 +5011,11 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Plan: &armcomputefleet.Plan{
-	// 			Name: to.Ptr("uapfngmdekvpgjhomthtpxjfdmmll"),
-	// 			Publisher: to.Ptr("aqhles"),
-	// 			Product: to.Ptr("bfzbkdnbexmedxdc"),
-	// 			PromotionCode: to.Ptr("gspehogwfjxirz"),
-	// 			Version: to.Ptr("yza"),
+	// 			Name: to.Ptr("jwgrcrnrtfoxn"),
+	// 			Publisher: to.Ptr("iozjbiqqckqm"),
+	// 			Product: to.Ptr("cgopbyvdyqikahwyxfpzwaqk"),
+	// 			PromotionCode: to.Ptr("naglezezplcaruqogtxnuizslqnnbr"),
+	// 			Version: to.Ptr("wa"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/7B0CD4DB-3381-4013-9B31-FB6E6FD0FF1C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/testFleet"),
 	// 		Name: to.Ptr("testFleet"),

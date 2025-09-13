@@ -64,6 +64,7 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 		&ManagedIdentityCredential{},
 		&AzureCLICredential{},
 		&AzureDeveloperCLICredential{},
+		&AzurePowerShellCredential{},
 	}
 	firstDevIndex := 3
 
@@ -137,6 +138,22 @@ func TestDefaultAzureCredential_CLICredentialOptions(t *testing.T) {
 	require.True(az.opts.inDefaultChain)
 	require.NotNil(azd, "%T should be in the default chain", azd)
 	require.True(azd.opts.inDefaultChain)
+}
+
+func TestDefaultAzureCredential_AzurePowerShellCredentialOptions(t *testing.T) {
+	require := require.New(t)
+	cred, err := NewDefaultAzureCredential(nil)
+	require.NoError(err)
+	var (
+		azurePowerShell *AzurePowerShellCredential
+	)
+	for _, s := range cred.chain.sources {
+		if azurePowerShell == nil {
+			azurePowerShell, _ = s.(*AzurePowerShellCredential)
+		}
+	}
+	require.NotNil(azurePowerShell, "%T should be in the default chain", azurePowerShell)
+	require.True(azurePowerShell.opts.inDefaultChain)
 }
 
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {

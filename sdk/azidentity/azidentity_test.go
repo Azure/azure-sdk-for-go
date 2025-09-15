@@ -1537,6 +1537,89 @@ func TestDoForClient(t *testing.T) {
 	}
 }
 
+func TestTicksToUnixTime(t *testing.T) {
+	now := time.Now().UTC()
+	oneHourLater := now.Add(time.Hour)
+	oneDayLater := now.Add(24 * time.Hour)
+	oneYearLater := now.AddDate(1, 0, 0)
+
+	cases := []struct {
+		name  string
+		ticks int64
+		want  time.Time
+	}{
+		{
+			name:  "Unix epoch",
+			ticks: epochTicks,
+			want:  time.Unix(0, 0).UTC(),
+		},
+		{
+			name:  "Y2K",
+			ticks: 630822816000000000,
+			want:  time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC),
+		},
+		{
+			name:  "Now",
+			ticks: epochTicks + now.UnixMilli()*10000,
+			want:  now.Truncate(time.Millisecond),
+		},
+		{
+			name:  "One hour later",
+			ticks: epochTicks + oneHourLater.UnixMilli()*10000,
+			want:  oneHourLater.Truncate(time.Millisecond),
+		},
+		{
+			name:  "One day later",
+			ticks: epochTicks + oneDayLater.UnixMilli()*10000,
+			want:  oneDayLater.Truncate(time.Millisecond),
+		},
+		{
+			name:  "One year later",
+			ticks: epochTicks + oneYearLater.UnixMilli()*10000,
+			want:  oneYearLater.Truncate(time.Millisecond),
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := ticksToUnixTime(tc.ticks)
+			if !got.Equal(tc.want) {
+				t.Errorf("%s: ticksToUnixTime(%d) = %v, want %v", tc.name, tc.ticks, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestBase64EncodeDecodeUTF16LE(t *testing.T) {
+	cases := []struct {
+		name  string
+		input string
+	}{
+		{name: "ASCII", input: "hello world"},
+		{name: "Unicode", input: "こんにちは世界"},
+		{name: "Empty", input: ""},
+		{name: "Emoji", input: "😀😃😄😁"},
+		{name: "Symbols", input: "!@#$%^&*()_+-=[]{}|;':,./<>?"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			encoded := base64EncodeUTF16LE(tc.input)
+			decoded, err := base64DecodeUTF16LE(encoded)
+			if err != nil {
+				t.Fatalf("decode error: %v", err)
+			}
+			if decoded != tc.input {
+				t.Errorf("roundtrip failed: got %q, want %q", decoded, tc.input)
+			}
+		})
+	}
+
+	// Test invalid base64 input for decode
+	_, err := base64DecodeUTF16LE("not-base64!!")
+	if err == nil {
+		t.Error("expected error for invalid base64 input")
+	}
+}
+
 // ==================================================================================================================================
 
 type fakeConfidentialClient struct {

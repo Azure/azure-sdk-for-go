@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/UsageMetrics_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/UsageMetrics_Get_MaximumSet_Gen.json
 func ExampleUsageMetricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -36,14 +36,14 @@ func ExampleUsageMetricsClient_Get() {
 	// 			TotalFirmwareCount: to.Ptr[int64](29),
 	// 			ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/exampleWorkspaceName/usageMetrics/default"),
-	// 		Name: to.Ptr("emj"),
-	// 		Type: to.Ptr("iqkjozafcbim"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/exampleWorkspaceName"),
+	// 		Name: to.Ptr("usageMetrics"),
+	// 		Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/usageMetrics"),
 	// 		SystemData: &armiotfirmwaredefense.SystemData{
-	// 			CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+	// 			CreatedBy: to.Ptr("UserName"),
 	// 			CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("of"),
+	// 			LastModifiedBy: to.Ptr("UserName"),
 	// 			LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 	// 		},
@@ -51,14 +51,14 @@ func ExampleUsageMetricsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UsageMetrics_ListByWorkspace_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/UsageMetrics_ListByWorkspace_MaximumSet_Gen.json
 func ExampleUsageMetricsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -82,14 +82,14 @@ func ExampleUsageMetricsClient_NewListByWorkspacePager() {
 		// 					TotalFirmwareCount: to.Ptr[int64](28),
 		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/exampleWorkspaceName/usageMetrics/current"),
-		// 				Name: to.Ptr("apalfbnzccynphwqeyzk"),
-		// 				Type: to.Ptr("jtvcvsrlngowwoapmmdeevho"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/exampleWorkspaceName/usageMetrics/current"),
+		// 				Name: to.Ptr("current"),
+		// 				Type: to.Ptr("Microsoft.IoTFirmwareDefense/usageMetrics"),
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
-		// 					CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("of"),
+		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 		// 				},

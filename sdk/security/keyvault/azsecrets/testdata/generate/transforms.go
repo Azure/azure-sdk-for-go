@@ -33,7 +33,4 @@ func main() {
 	// make secret IDs a convenience type so we can add parsing methods
 	regexReplace("models.go", `\sID \*string(\s+.*)`, "ID *ID$1")
 	regexReplace("models.go", `\sKID \*string(\s+.*)`, "KID *ID$1")
-
-	// remove the DeletionRecoveryLevel type
-	regexReplace("models.go", "DeletionRecoveryLevel", "string")
 }

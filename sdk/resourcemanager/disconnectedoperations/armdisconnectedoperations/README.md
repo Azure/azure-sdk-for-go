@@ -1,4 +1,4 @@
-# Azure Disconnectedoperations Module for Go
+# Azure Disconnected Operations Module for Go
 
 The `armdisconnectedoperations` module provides operations for working with Azure Disconnected Operations.
 

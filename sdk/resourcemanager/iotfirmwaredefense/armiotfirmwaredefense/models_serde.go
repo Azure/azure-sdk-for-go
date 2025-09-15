@@ -705,6 +705,41 @@ func (c *CryptoKeySummaryResource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type CveComponent.
+func (c CveComponent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "componentId", c.ComponentID)
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "version", c.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CveComponent.
+func (c *CveComponent) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "componentId":
+			err = unpopulate(val, "ComponentID", &c.ComponentID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &c.Name)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &c.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CveLink.
 func (c CveLink) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -813,12 +848,17 @@ func (c *CveResourceListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CveResult.
 func (c CveResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "component", c.Component)
 	populate(objectMap, "componentId", c.ComponentID)
 	populate(objectMap, "componentName", c.ComponentName)
 	populate(objectMap, "componentVersion", c.ComponentVersion)
 	populate(objectMap, "cveId", c.CveID)
 	populate(objectMap, "cveName", c.CveName)
+	populate(objectMap, "cvssScore", c.CvssScore)
 	populate(objectMap, "cvssScores", c.CvssScores)
+	populate(objectMap, "cvssV2Score", c.CvssV2Score)
+	populate(objectMap, "cvssV3Score", c.CvssV3Score)
+	populate(objectMap, "cvssVersion", c.CvssVersion)
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "effectiveCvssScore", c.EffectiveCvssScore)
 	populate(objectMap, "effectiveCvssVersion", c.EffectiveCvssVersion)
@@ -837,6 +877,9 @@ func (c *CveResult) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "component":
+			err = unpopulate(val, "Component", &c.Component)
+			delete(rawMsg, key)
 		case "componentId":
 			err = unpopulate(val, "ComponentID", &c.ComponentID)
 			delete(rawMsg, key)
@@ -852,8 +895,20 @@ func (c *CveResult) UnmarshalJSON(data []byte) error {
 		case "cveName":
 			err = unpopulate(val, "CveName", &c.CveName)
 			delete(rawMsg, key)
+		case "cvssScore":
+			err = unpopulate(val, "CvssScore", &c.CvssScore)
+			delete(rawMsg, key)
 		case "cvssScores":
 			err = unpopulate(val, "CvssScores", &c.CvssScores)
+			delete(rawMsg, key)
+		case "cvssV2Score":
+			err = unpopulate(val, "CvssV2Score", &c.CvssV2Score)
+			delete(rawMsg, key)
+		case "cvssV3Score":
+			err = unpopulate(val, "CvssV3Score", &c.CvssV3Score)
+			delete(rawMsg, key)
+		case "cvssVersion":
+			err = unpopulate(val, "CvssVersion", &c.CvssVersion)
 			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &c.Description)

@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/CryptoCertificates_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/CryptoCertificates_ListByFirmware_MaximumSet_Gen.json
 func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -38,55 +38,55 @@ func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesLi
 		// 		Value: []*armiotfirmwaredefense.CryptoCertificateResource{
 		// 			{
 		// 				Properties: &armiotfirmwaredefense.CryptoCertificate{
-		// 					CryptoCertID: to.Ptr("iillnitoieyjjhhymaggp"),
+		// 					CryptoCertID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					Subject: &armiotfirmwaredefense.CryptoCertificateEntity{
-		// 						CommonName: to.Ptr("as"),
-		// 						Organization: to.Ptr("uqaaxitzvimayheiixojfvtdkohwux"),
-		// 						OrganizationalUnit: to.Ptr("tjppbejdpjwndktgb"),
-		// 						State: to.Ptr("wptcsidcfwobyroygepitbmopuqyty"),
-		// 						Country: to.Ptr("uhztskdgmxwzxqrucsmycqwema"),
+		// 						CommonName: to.Ptr("SubjectName"),
+		// 						Organization: to.Ptr("ExampleOrg"),
+		// 						OrganizationalUnit: to.Ptr("ExampleUnit"),
+		// 						State: to.Ptr("ExampleState"),
+		// 						Country: to.Ptr("ExampleCountry"),
 		// 					},
 		// 					Issuer: &armiotfirmwaredefense.CryptoCertificateEntity{
-		// 						CommonName: to.Ptr("as"),
-		// 						Organization: to.Ptr("uqaaxitzvimayheiixojfvtdkohwux"),
-		// 						OrganizationalUnit: to.Ptr("tjppbejdpjwndktgb"),
-		// 						State: to.Ptr("wptcsidcfwobyroygepitbmopuqyty"),
-		// 						Country: to.Ptr("uhztskdgmxwzxqrucsmycqwema"),
+		// 						CommonName: to.Ptr("IssuerName"),
+		// 						Organization: to.Ptr("IssuerOrg"),
+		// 						OrganizationalUnit: to.Ptr("IssuerOrgUnit"),
+		// 						State: to.Ptr("IssuerState"),
+		// 						Country: to.Ptr("IssuerCountry"),
 		// 					},
 		// 					IssuedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:47.274Z"); return t}()),
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:47.274Z"); return t}()),
-		// 					SignatureAlgorithm: to.Ptr("yvnrjznhumg"),
-		// 					Encoding: to.Ptr("n"),
-		// 					SerialNumber: to.Ptr("tjvbzogfirohdwpckavvosyyevpar"),
-		// 					Fingerprint: to.Ptr("bjidncbwvrxfkliddw"),
+		// 					SignatureAlgorithm: to.Ptr("sha256RSA"),
+		// 					Encoding: to.Ptr("PEM"),
+		// 					SerialNumber: to.Ptr("01"),
+		// 					Fingerprint: to.Ptr("00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"),
 		// 					FilePaths: []*string{
-		// 						to.Ptr("tbtijbpxccby"),
+		// 						to.Ptr("path/to/certificate.crt"),
 		// 					},
 		// 					PairedKey: &armiotfirmwaredefense.PairedKey{
-		// 						Type: to.Ptr("tvdhzzrieepfxmsfymzky"),
-		// 						PairedKeyID: to.Ptr("krrhvprzbaccizagbobm"),
+		// 						Type: to.Ptr("Key"),
+		// 						PairedKeyID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					},
 		// 					IsExpired: to.Ptr(true),
 		// 					IsSelfSigned: to.Ptr(true),
 		// 					IsWeakSignature: to.Ptr(true),
 		// 					IsShortKeySize: to.Ptr(true),
 		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
-		// 					CertificateName: to.Ptr("mxcalihubqunqspgskjt"),
-		// 					CertificateRole: to.Ptr("bwjvtjizfmckztcedqmnzzaw"),
-		// 					CertificateKeySize: to.Ptr[int64](4),
-		// 					CertificateKeyAlgorithm: to.Ptr("xnsqvapvllvbwkckerpoef"),
+		// 					CertificateName: to.Ptr("CertificateName"),
+		// 					CertificateRole: to.Ptr("Root"),
+		// 					CertificateKeySize: to.Ptr[int64](4096),
+		// 					CertificateKeyAlgorithm: to.Ptr("sha256RSA"),
 		// 					CertificateUsage: []*armiotfirmwaredefense.CertificateUsage{
 		// 						to.Ptr(armiotfirmwaredefense.CertificateUsageDigitalSignature),
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-		// 				Name: to.Ptr("cwzjayiki"),
-		// 				Type: to.Ptr("vmrrtwzfdqtaaqyu"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000/cryptoCertificates/00000000-0000-0000-0000-000000000000"),
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares/cryptoCertificates"),
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
-		// 					CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("of"),
+		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 		// 				},
@@ -98,7 +98,7 @@ func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesLi
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/CryptoCertificates_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/CryptoCertificates_ListByFirmware_MinimumSet_Gen.json
 func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleCryptoCertificatesClient_NewListByFirmwarePager_cryptoCertificatesLi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCryptoCertificatesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000", nil)
+	pager := clientFactory.NewCryptoCertificatesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "00000000-0000-0000-0000-000000000000", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

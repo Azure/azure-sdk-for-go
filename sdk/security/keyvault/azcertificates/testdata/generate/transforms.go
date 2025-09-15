@@ -35,16 +35,8 @@ func main() {
 	regexReplace("models.go", `\sKID \*string(\s+.*)`, "KID *ID$1")
 	regexReplace("models.go", `\sSID \*string(\s+.*)`, "SID *ID$1")
 
-	// remove the DeletionRecoveryLevel type
-	regexReplace("models.go", "DeletionRecoveryLevel", "string")
-	regexReplace("constants.go", `(?:\/\/.*\s)+type DeletionRecoveryLevel string`, "")
-	regexReplace("constants.go", `(?:\/\/.*\s)+func PossibleDeletionRecovery(?:.+\s)+\}`, "")
-	regexReplace("constants.go", `const \(\n\/\/ DeletionRecoveryLevel(?:.+\s)+\)`, "")
-
 	// replace Error with ErrorInfo
-	regexReplace("models.go", `Error \*KeyVaultErrorError`, `Error *ErrorInfo`)
-	regexReplace("models.go", `type KeyVaultErrorError struct.+\{(?:\s.+\s)+\}`, "")
-	regexReplace("models_serde.go", `(?:\/\/.*\s)+func \(\w \*?KeyVaultErrorError\).*\{\s(?:.+\s)+\}\s`, "")
+	regexReplace("models.go", `Error \*string`, `Error *ErrorInfo`)
 
 	// clean up doc comments
 	regexReplace("models.go", `For valid values\, see JsonWebKeyCurveName\.`, "")

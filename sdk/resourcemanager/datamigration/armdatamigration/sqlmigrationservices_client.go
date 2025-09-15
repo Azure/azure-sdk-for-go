@@ -43,7 +43,7 @@ func NewSQLMigrationServicesClient(subscriptionID string, credential azcore.Toke
 // BeginCreateOrUpdate - Create or Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -70,7 +70,7 @@ func (client *SQLMigrationServicesClient) BeginCreateOrUpdate(ctx context.Contex
 // CreateOrUpdate - Create or Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *SQLMigrationServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationService, options *SQLMigrationServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLMigrationServicesClient.BeginCreateOrUpdate"
@@ -112,7 +112,7 @@ func (client *SQLMigrationServicesClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,7 +124,7 @@ func (client *SQLMigrationServicesClient) createOrUpdateCreateRequest(ctx contex
 // BeginDelete - Delete Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -150,7 +150,7 @@ func (client *SQLMigrationServicesClient) BeginDelete(ctx context.Context, resou
 // Delete - Delete Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *SQLMigrationServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, options *SQLMigrationServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLMigrationServicesClient.BeginDelete"
@@ -192,7 +192,7 @@ func (client *SQLMigrationServicesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -200,7 +200,7 @@ func (client *SQLMigrationServicesClient) deleteCreateRequest(ctx context.Contex
 // DeleteNode - Delete the integration runtime node.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -249,7 +249,7 @@ func (client *SQLMigrationServicesClient) deleteNodeCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -270,7 +270,7 @@ func (client *SQLMigrationServicesClient) deleteNodeHandleResponse(resp *http.Re
 // Get - Retrieve the Database Migration Service
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -318,7 +318,7 @@ func (client *SQLMigrationServicesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -336,7 +336,7 @@ func (client *SQLMigrationServicesClient) getHandleResponse(resp *http.Response)
 // ListAuthKeys - Retrieve the List of Authentication Keys for Self Hosted Integration Runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -384,7 +384,7 @@ func (client *SQLMigrationServicesClient) listAuthKeysCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -401,7 +401,7 @@ func (client *SQLMigrationServicesClient) listAuthKeysHandleResponse(resp *http.
 
 // NewListByResourceGroupPager - Retrieve all SQL migration services in the resource group.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - options - SQLMigrationServicesClientListByResourceGroupOptions contains the optional parameters for the SQLMigrationServicesClient.NewListByResourceGroupPager
@@ -445,7 +445,7 @@ func (client *SQLMigrationServicesClient) listByResourceGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -462,7 +462,7 @@ func (client *SQLMigrationServicesClient) listByResourceGroupHandleResponse(resp
 
 // NewListBySubscriptionPager - Retrieve all SQL migration services in the subscriptions.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - options - SQLMigrationServicesClientListBySubscriptionOptions contains the optional parameters for the SQLMigrationServicesClient.NewListBySubscriptionPager
 //     method.
 func (client *SQLMigrationServicesClient) NewListBySubscriptionPager(options *SQLMigrationServicesClientListBySubscriptionOptions) *runtime.Pager[SQLMigrationServicesClientListBySubscriptionResponse] {
@@ -500,7 +500,7 @@ func (client *SQLMigrationServicesClient) listBySubscriptionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -517,7 +517,7 @@ func (client *SQLMigrationServicesClient) listBySubscriptionHandleResponse(resp 
 
 // NewListMigrationsPager - Retrieve the List of database migrations attached to the service.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -566,7 +566,7 @@ func (client *SQLMigrationServicesClient) listMigrationsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -585,7 +585,7 @@ func (client *SQLMigrationServicesClient) listMigrationsHandleResponse(resp *htt
 // Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -633,7 +633,7 @@ func (client *SQLMigrationServicesClient) listMonitoringDataCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -651,7 +651,7 @@ func (client *SQLMigrationServicesClient) listMonitoringDataHandleResponse(resp 
 // RegenerateAuthKeys - Regenerate a new set of Authentication Keys for Self Hosted Integration Runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -700,7 +700,7 @@ func (client *SQLMigrationServicesClient) regenerateAuthKeysCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -721,7 +721,7 @@ func (client *SQLMigrationServicesClient) regenerateAuthKeysHandleResponse(resp 
 // BeginUpdate - Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - sqlMigrationServiceName - Name of the SQL Migration Service.
@@ -748,7 +748,7 @@ func (client *SQLMigrationServicesClient) BeginUpdate(ctx context.Context, resou
 // Update - Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *SQLMigrationServicesClient) update(ctx context.Context, resourceGroupName string, sqlMigrationServiceName string, parameters SQLMigrationServiceUpdate, options *SQLMigrationServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLMigrationServicesClient.BeginUpdate"
@@ -790,7 +790,7 @@ func (client *SQLMigrationServicesClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

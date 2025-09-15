@@ -43,7 +43,7 @@ func NewMigrationServicesClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreateOrUpdate - Create or Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - migrationServiceName - Name of the Migration Service.
@@ -70,7 +70,7 @@ func (client *MigrationServicesClient) BeginCreateOrUpdate(ctx context.Context, 
 // CreateOrUpdate - Create or Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *MigrationServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, migrationServiceName string, parameters MigrationService, options *MigrationServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MigrationServicesClient.BeginCreateOrUpdate"
@@ -112,7 +112,7 @@ func (client *MigrationServicesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -124,7 +124,7 @@ func (client *MigrationServicesClient) createOrUpdateCreateRequest(ctx context.C
 // BeginDelete - Delete Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - migrationServiceName - Name of the Migration Service.
@@ -150,7 +150,7 @@ func (client *MigrationServicesClient) BeginDelete(ctx context.Context, resource
 // Delete - Delete Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *MigrationServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, migrationServiceName string, options *MigrationServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MigrationServicesClient.BeginDelete"
@@ -192,7 +192,7 @@ func (client *MigrationServicesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +201,7 @@ func (client *MigrationServicesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Retrieve the Database Migration Service
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - migrationServiceName - Name of the Migration Service.
@@ -248,7 +248,7 @@ func (client *MigrationServicesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *MigrationServicesClient) getHandleResponse(resp *http.Response) (M
 
 // NewListByResourceGroupPager - Retrieve all migration services in the resource group.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - options - MigrationServicesClientListByResourceGroupOptions contains the optional parameters for the MigrationServicesClient.NewListByResourceGroupPager
@@ -309,7 +309,7 @@ func (client *MigrationServicesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +326,7 @@ func (client *MigrationServicesClient) listByResourceGroupHandleResponse(resp *h
 
 // NewListBySubscriptionPager - Retrieve all migration services in the subscriptions.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - options - MigrationServicesClientListBySubscriptionOptions contains the optional parameters for the MigrationServicesClient.NewListBySubscriptionPager
 //     method.
 func (client *MigrationServicesClient) NewListBySubscriptionPager(options *MigrationServicesClientListBySubscriptionOptions) *runtime.Pager[MigrationServicesClientListBySubscriptionResponse] {
@@ -364,7 +364,7 @@ func (client *MigrationServicesClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +381,7 @@ func (client *MigrationServicesClient) listBySubscriptionHandleResponse(resp *ht
 
 // NewListMigrationsPager - Retrieve the List of database migrations attached to the service.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - migrationServiceName - Name of the Migration Service.
@@ -430,7 +430,7 @@ func (client *MigrationServicesClient) listMigrationsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -448,7 +448,7 @@ func (client *MigrationServicesClient) listMigrationsHandleResponse(resp *http.R
 // BeginUpdate - Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - migrationServiceName - Name of the Migration Service.
@@ -475,7 +475,7 @@ func (client *MigrationServicesClient) BeginUpdate(ctx context.Context, resource
 // Update - Update Database Migration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *MigrationServicesClient) update(ctx context.Context, resourceGroupName string, migrationServiceName string, parameters MigrationServiceUpdate, options *MigrationServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MigrationServicesClient.BeginUpdate"
@@ -517,7 +517,7 @@ func (client *MigrationServicesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

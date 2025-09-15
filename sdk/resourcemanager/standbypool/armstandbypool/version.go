@@ -6,5 +6,5 @@ package armstandbypool
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v2.0.0"
 )

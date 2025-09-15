@@ -6,5 +6,5 @@ package armoracledatabase
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.1.0"
 )

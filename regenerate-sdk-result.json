@@ -1,0 +1,9 @@
+{
+  "succeed_to_regenerate": [],
+  "fail_to_regenerate": [
+    "armchaos"
+  ],
+  "not_found_api_version": [],
+  "not_found_module_version": [],
+  "time_to_regenerate": "2025-09-15 09:07:32.370404"
+}

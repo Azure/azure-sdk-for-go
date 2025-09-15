@@ -12,6 +12,13 @@ type AgentPoolsClientBeginAbortLatestOperationOptions struct {
 	ResumeToken string
 }
 
+// AgentPoolsClientBeginCompleteUpgradeOptions contains the optional parameters for the AgentPoolsClient.BeginCompleteUpgrade
+// method.
+type AgentPoolsClientBeginCompleteUpgradeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // AgentPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginCreateOrUpdate
 // method.
 type AgentPoolsClientBeginCreateOrUpdateOptions struct {
@@ -74,6 +81,55 @@ type AgentPoolsClientListOptions struct {
 
 // ClientListNodeImageVersionsOptions contains the optional parameters for the Client.NewListNodeImageVersionsPager method.
 type ClientListNodeImageVersionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityBindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the IdentityBindingsClient.BeginCreateOrUpdate
+// method.
+type IdentityBindingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityBindingsClientBeginDeleteOptions contains the optional parameters for the IdentityBindingsClient.BeginDelete method.
+type IdentityBindingsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityBindingsClientGetOptions contains the optional parameters for the IdentityBindingsClient.Get method.
+type IdentityBindingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityBindingsClientListByManagedClusterOptions contains the optional parameters for the IdentityBindingsClient.NewListByManagedClusterPager
+// method.
+type IdentityBindingsClientListByManagedClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JWTAuthenticatorsClientBeginCreateOrUpdateOptions contains the optional parameters for the JWTAuthenticatorsClient.BeginCreateOrUpdate
+// method.
+type JWTAuthenticatorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// JWTAuthenticatorsClientBeginDeleteOptions contains the optional parameters for the JWTAuthenticatorsClient.BeginDelete
+// method.
+type JWTAuthenticatorsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// JWTAuthenticatorsClientGetOptions contains the optional parameters for the JWTAuthenticatorsClient.Get method.
+type JWTAuthenticatorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JWTAuthenticatorsClientListByManagedClusterOptions contains the optional parameters for the JWTAuthenticatorsClient.NewListByManagedClusterPager
+// method.
+type JWTAuthenticatorsClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
 }
 

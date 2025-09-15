@@ -5,10 +5,26 @@
 
 package armcontainerservice
 
+// AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
+// host routing. This can be enabled only with Cilium dataplane. If not specified, the default value is
+// None (no acceleration). The acceleration mode can be changed on a pre-existing cluster. See https://aka.ms/acnsperformance
+// for a detailed explanation
+type AccelerationMode string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v7.3.0-beta.1"
+	// AccelerationModeBpfVeth - Enable eBPF host routing with veth device mode.
+	AccelerationModeBpfVeth AccelerationMode = "BpfVeth"
+	// AccelerationModeNone - Disable acceleration options.
+	AccelerationModeNone AccelerationMode = "None"
 )
+
+// PossibleAccelerationModeValues returns the possible values for the AccelerationMode const type.
+func PossibleAccelerationModeValues() []AccelerationMode {
+	return []AccelerationMode{
+		AccelerationModeBpfVeth,
+		AccelerationModeNone,
+	}
+}
 
 // AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
 type AddonAutoscaling string
@@ -460,6 +476,57 @@ func PossibleIPFamilyValues() []IPFamily {
 	}
 }
 
+// IdentityBindingProvisioningState - The provisioning state of the last accepted operation.
+type IdentityBindingProvisioningState string
+
+const (
+	// IdentityBindingProvisioningStateCanceled - Resource creation was canceled.
+	IdentityBindingProvisioningStateCanceled IdentityBindingProvisioningState = "Canceled"
+	// IdentityBindingProvisioningStateCreating - The identity binding is being created.
+	IdentityBindingProvisioningStateCreating IdentityBindingProvisioningState = "Creating"
+	// IdentityBindingProvisioningStateDeleting - The identity binding is being deleted.
+	IdentityBindingProvisioningStateDeleting IdentityBindingProvisioningState = "Deleting"
+	// IdentityBindingProvisioningStateFailed - Resource creation failed.
+	IdentityBindingProvisioningStateFailed IdentityBindingProvisioningState = "Failed"
+	// IdentityBindingProvisioningStateSucceeded - Resource has been created.
+	IdentityBindingProvisioningStateSucceeded IdentityBindingProvisioningState = "Succeeded"
+	// IdentityBindingProvisioningStateUpdating - The identity binding is being updated.
+	IdentityBindingProvisioningStateUpdating IdentityBindingProvisioningState = "Updating"
+)
+
+// PossibleIdentityBindingProvisioningStateValues returns the possible values for the IdentityBindingProvisioningState const type.
+func PossibleIdentityBindingProvisioningStateValues() []IdentityBindingProvisioningState {
+	return []IdentityBindingProvisioningState{
+		IdentityBindingProvisioningStateCanceled,
+		IdentityBindingProvisioningStateCreating,
+		IdentityBindingProvisioningStateDeleting,
+		IdentityBindingProvisioningStateFailed,
+		IdentityBindingProvisioningStateSucceeded,
+		IdentityBindingProvisioningStateUpdating,
+	}
+}
+
+// InfrastructureEncryption - Whether to enable encryption at rest of Kubernetes resource objects using service-managed keys.
+// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+type InfrastructureEncryption string
+
+const (
+	// InfrastructureEncryptionDisabled - Encryption at rest of Kubernetes resource objects using service-managed keys is disabled.
+	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+	InfrastructureEncryptionDisabled InfrastructureEncryption = "Disabled"
+	// InfrastructureEncryptionEnabled - Encryption at rest of Kubernetes resource objects using service-managed keys is enabled.
+	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+	InfrastructureEncryptionEnabled InfrastructureEncryption = "Enabled"
+)
+
+// PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
+func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
+	return []InfrastructureEncryption{
+		InfrastructureEncryptionDisabled,
+		InfrastructureEncryptionEnabled,
+	}
+}
+
 // IpvsScheduler - IPVS scheduler, for more information please see http://www.linuxvirtualserver.org/docs/scheduling.html.
 type IpvsScheduler string
 
@@ -493,6 +560,36 @@ func PossibleIstioIngressGatewayModeValues() []IstioIngressGatewayMode {
 	return []IstioIngressGatewayMode{
 		IstioIngressGatewayModeExternal,
 		IstioIngressGatewayModeInternal,
+	}
+}
+
+// JWTAuthenticatorProvisioningState - The provisioning state of the last accepted operation.
+type JWTAuthenticatorProvisioningState string
+
+const (
+	// JWTAuthenticatorProvisioningStateCanceled - Resource creation was canceled.
+	JWTAuthenticatorProvisioningStateCanceled JWTAuthenticatorProvisioningState = "Canceled"
+	// JWTAuthenticatorProvisioningStateCreating - The JWT authenticator is being created.
+	JWTAuthenticatorProvisioningStateCreating JWTAuthenticatorProvisioningState = "Creating"
+	// JWTAuthenticatorProvisioningStateDeleting - The JWT authenticator is being deleted.
+	JWTAuthenticatorProvisioningStateDeleting JWTAuthenticatorProvisioningState = "Deleting"
+	// JWTAuthenticatorProvisioningStateFailed - Resource creation failed.
+	JWTAuthenticatorProvisioningStateFailed JWTAuthenticatorProvisioningState = "Failed"
+	// JWTAuthenticatorProvisioningStateSucceeded - Resource has been created.
+	JWTAuthenticatorProvisioningStateSucceeded JWTAuthenticatorProvisioningState = "Succeeded"
+	// JWTAuthenticatorProvisioningStateUpdating - The JWT authenticator is being updated.
+	JWTAuthenticatorProvisioningStateUpdating JWTAuthenticatorProvisioningState = "Updating"
+)
+
+// PossibleJWTAuthenticatorProvisioningStateValues returns the possible values for the JWTAuthenticatorProvisioningState const type.
+func PossibleJWTAuthenticatorProvisioningStateValues() []JWTAuthenticatorProvisioningState {
+	return []JWTAuthenticatorProvisioningState{
+		JWTAuthenticatorProvisioningStateCanceled,
+		JWTAuthenticatorProvisioningStateCreating,
+		JWTAuthenticatorProvisioningStateDeleting,
+		JWTAuthenticatorProvisioningStateFailed,
+		JWTAuthenticatorProvisioningStateSucceeded,
+		JWTAuthenticatorProvisioningStateUpdating,
 	}
 }
 
@@ -808,6 +905,26 @@ func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
 	}
 }
 
+// ManagedGatewayType - Configuration for the managed Gateway API installation. If not specified, the default is 'Disabled'.
+// See https://aka.ms/k8s-gateway-api for more details.
+type ManagedGatewayType string
+
+const (
+	// ManagedGatewayTypeDisabled - Gateway API CRDs will not be reconciled on your cluster.
+	ManagedGatewayTypeDisabled ManagedGatewayType = "Disabled"
+	// ManagedGatewayTypeStandard - The latest Gateway CRD bundle from the standard channel that is compatible with your Kubernetes
+	// version will be reconciled onto your cluster. See https://gateway-api.sigs.k8s.io/concepts/versioning/ for more details.
+	ManagedGatewayTypeStandard ManagedGatewayType = "Standard"
+)
+
+// PossibleManagedGatewayTypeValues returns the possible values for the ManagedGatewayType const type.
+func PossibleManagedGatewayTypeValues() []ManagedGatewayType {
+	return []ManagedGatewayType{
+		ManagedGatewayTypeDisabled,
+		ManagedGatewayTypeStandard,
+	}
+}
+
 // Mode - Specify which proxy mode to use ('IPTABLES' or 'IPVS')
 type Mode string
 
@@ -1094,6 +1211,10 @@ const (
 	// OSSKUAzureLinux - Use AzureLinux as the OS for node images. Azure Linux is a container-optimized Linux distro built by
 	// Microsoft, visit https://aka.ms/azurelinux for more information.
 	OSSKUAzureLinux OSSKU = "AzureLinux"
+	// OSSKUAzureLinux3 - Use AzureLinux3 as the OS for node images. Azure Linux is a container-optimized Linux distro built by
+	// Microsoft, visit https://aka.ms/azurelinux for more information. For limitations, visit https://aka.ms/aks/node-images.
+	// For OS migration guidance, see https://aka.ms/aks/upgrade-os-version.
+	OSSKUAzureLinux3 OSSKU = "AzureLinux3"
 	// OSSKUCBLMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
 	OSSKUCBLMariner OSSKU = "CBLMariner"
 	// OSSKUMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
@@ -1112,6 +1233,9 @@ const (
 	// OSSKUWindows2022 - Use Windows2022 as the OS for node images. Unsupported for system node pools. Windows2022 only supports
 	// Windows2022 containers; it cannot run Windows2019 containers and vice versa.
 	OSSKUWindows2022 OSSKU = "Windows2022"
+	// OSSKUWindows2025 - Use Windows2025 as the OS for node images. Unsupported for system node pools. Windows2025 supports Windows2022
+	// and Windows 2025 containers; it cannot run Windows2019 containers and vice versa.
+	OSSKUWindows2025 OSSKU = "Windows2025"
 	// OSSKUWindowsAnnual - Use Windows Annual Channel version as the OS for node images. Unsupported for system node pools. Details
 	// about supported container images and kubernetes versions under different AKS Annual Channel versions could be seen in https://aka.ms/aks/windows-annual-channel-details.
 	OSSKUWindowsAnnual OSSKU = "WindowsAnnual"
@@ -1121,6 +1245,7 @@ const (
 func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
 		OSSKUAzureLinux,
+		OSSKUAzureLinux3,
 		OSSKUCBLMariner,
 		OSSKUMariner,
 		OSSKUUbuntu,
@@ -1128,6 +1253,7 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUUbuntu2404,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
+		OSSKUWindows2025,
 		OSSKUWindowsAnnual,
 	}
 }
@@ -1660,6 +1786,24 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 		UpgradeChannelPatch,
 		UpgradeChannelRapid,
 		UpgradeChannelStable,
+	}
+}
+
+// UpgradeStrategy - Defines the upgrade strategy for the agent pool. The default is Rolling.
+type UpgradeStrategy string
+
+const (
+	// UpgradeStrategyBlueGreen - Specifies that the agent pool will conduct blue-green upgrade.
+	UpgradeStrategyBlueGreen UpgradeStrategy = "BlueGreen"
+	// UpgradeStrategyRolling - Specifies that the agent pool will conduct rolling upgrade. This is the default upgrade strategy.
+	UpgradeStrategyRolling UpgradeStrategy = "Rolling"
+)
+
+// PossibleUpgradeStrategyValues returns the possible values for the UpgradeStrategy const type.
+func PossibleUpgradeStrategyValues() []UpgradeStrategy {
+	return []UpgradeStrategy{
+		UpgradeStrategyBlueGreen,
+		UpgradeStrategyRolling,
 	}
 }
 

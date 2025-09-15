@@ -1,5 +1,60 @@
 # Release History
 
+## 7.3.0-beta.2 (2025-09-15)
+### Breaking Changes
+
+- Type of `AgentPoolStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
+- Type of `MachineStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
+- Type of `ManagedClusterStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
+- Struct `CloudErrorBody` has been removed
+
+### Features Added
+
+- New value `OSSKUAzureLinux3`, `OSSKUWindows2025` added to enum type `OSSKU`
+- New enum type `AccelerationMode` with values `AccelerationModeBpfVeth`, `AccelerationModeNone`
+- New enum type `IdentityBindingProvisioningState` with values `IdentityBindingProvisioningStateCanceled`, `IdentityBindingProvisioningStateCreating`, `IdentityBindingProvisioningStateDeleting`, `IdentityBindingProvisioningStateFailed`, `IdentityBindingProvisioningStateSucceeded`, `IdentityBindingProvisioningStateUpdating`
+- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
+- New enum type `JWTAuthenticatorProvisioningState` with values `JWTAuthenticatorProvisioningStateCanceled`, `JWTAuthenticatorProvisioningStateCreating`, `JWTAuthenticatorProvisioningStateDeleting`, `JWTAuthenticatorProvisioningStateFailed`, `JWTAuthenticatorProvisioningStateSucceeded`, `JWTAuthenticatorProvisioningStateUpdating`
+- New enum type `ManagedGatewayType` with values `ManagedGatewayTypeDisabled`, `ManagedGatewayTypeStandard`
+- New enum type `UpgradeStrategy` with values `UpgradeStrategyBlueGreen`, `UpgradeStrategyRolling`
+- New function `*AgentPoolsClient.BeginCompleteUpgrade(context.Context, string, string, string, *AgentPoolsClientBeginCompleteUpgradeOptions) (*runtime.Poller[AgentPoolsClientCompleteUpgradeResponse], error)`
+- New function `*ClientFactory.NewIdentityBindingsClient() *IdentityBindingsClient`
+- New function `*ClientFactory.NewJWTAuthenticatorsClient() *JWTAuthenticatorsClient`
+- New function `NewIdentityBindingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IdentityBindingsClient, error)`
+- New function `*IdentityBindingsClient.BeginCreateOrUpdate(context.Context, string, string, string, IdentityBinding, *IdentityBindingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IdentityBindingsClientCreateOrUpdateResponse], error)`
+- New function `*IdentityBindingsClient.BeginDelete(context.Context, string, string, string, *IdentityBindingsClientBeginDeleteOptions) (*runtime.Poller[IdentityBindingsClientDeleteResponse], error)`
+- New function `*IdentityBindingsClient.Get(context.Context, string, string, string, *IdentityBindingsClientGetOptions) (IdentityBindingsClientGetResponse, error)`
+- New function `*IdentityBindingsClient.NewListByManagedClusterPager(string, string, *IdentityBindingsClientListByManagedClusterOptions) *runtime.Pager[IdentityBindingsClientListByManagedClusterResponse]`
+- New function `NewJWTAuthenticatorsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*JWTAuthenticatorsClient, error)`
+- New function `*JWTAuthenticatorsClient.BeginCreateOrUpdate(context.Context, string, string, string, JWTAuthenticator, *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JWTAuthenticatorsClientCreateOrUpdateResponse], error)`
+- New function `*JWTAuthenticatorsClient.BeginDelete(context.Context, string, string, string, *JWTAuthenticatorsClientBeginDeleteOptions) (*runtime.Poller[JWTAuthenticatorsClientDeleteResponse], error)`
+- New function `*JWTAuthenticatorsClient.Get(context.Context, string, string, string, *JWTAuthenticatorsClientGetOptions) (JWTAuthenticatorsClientGetResponse, error)`
+- New function `*JWTAuthenticatorsClient.NewListByManagedClusterPager(string, string, *JWTAuthenticatorsClientListByManagedClusterOptions) *runtime.Pager[JWTAuthenticatorsClientListByManagedClusterResponse]`
+- New struct `AdvancedNetworkingPerformance`
+- New struct `AgentPoolBlueGreenUpgradeSettings`
+- New struct `IdentityBinding`
+- New struct `IdentityBindingListResult`
+- New struct `IdentityBindingManagedIdentityProfile`
+- New struct `IdentityBindingOidcIssuerProfile`
+- New struct `IdentityBindingProperties`
+- New struct `JWTAuthenticator`
+- New struct `JWTAuthenticatorClaimMappingExpression`
+- New struct `JWTAuthenticatorClaimMappings`
+- New struct `JWTAuthenticatorExtraClaimMappingExpression`
+- New struct `JWTAuthenticatorIssuer`
+- New struct `JWTAuthenticatorListResult`
+- New struct `JWTAuthenticatorProperties`
+- New struct `JWTAuthenticatorValidationRule`
+- New struct `KubernetesResourceObjectEncryptionProfile`
+- New struct `ManagedClusterIngressProfileGatewayConfiguration`
+- New field `Performance` in struct `AdvancedNetworking`
+- New field `MinSurge` in struct `AgentPoolUpgradeSettings`
+- New field `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
+- New field `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `GatewayAPI` in struct `ManagedClusterIngressProfile`
+- New field `KubernetesResourceObjectEncryptionProfile` in struct `ManagedClusterSecurityProfile`
+
+
 ## 7.3.0-beta.1 (2025-07-17)
 ### Features Added
 

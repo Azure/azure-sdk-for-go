@@ -1,5 +1,24 @@
 # Release History
 
+## 3.0.0 (2025-09-15)
+### Breaking Changes
+
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `PatchTrackedResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceCapabilitiesBase` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `PatchVault`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `NextLink` in struct `ReplicationUsageList`
+- New field `SystemData` in struct `VaultExtendedInfoResource`
+- New field `NextLink` in struct `VaultUsageList`
+
+
 ## 2.1.0 (2025-06-12)
 ### Features Added
 

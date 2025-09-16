@@ -6,5 +6,5 @@ package armneonpostgres
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/neonpostgres/armneonpostgres"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.0.0"
 )

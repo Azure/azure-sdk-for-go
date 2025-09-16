@@ -6,5 +6,5 @@ package armterraform
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/terraform/armterraform"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.1.0"
 )

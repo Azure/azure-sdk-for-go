@@ -166,7 +166,7 @@ return $jsonToken
 		powershellExecutable = "pwsh"
 	}
 
-	command := fmt.Sprintf("%s -NoProfile -NonInteractive -EncodedCommand %s", powershellExecutable, base64EncodeUTF16LE(script))
+	command := fmt.Sprintf("%s -NoProfile -NonInteractive OutputFormat Text -EncodedCommand %s", powershellExecutable, base64EncodeUTF16LE(script))
 
 	c.mu.Lock()
 	defer c.mu.Unlock()

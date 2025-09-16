@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"encoding/base64"
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -212,8 +213,7 @@ func base64EncodeUTF16LE(text string) string {
 	u16 := utf16.Encode([]rune(text))
 	buf := make([]byte, len(u16)*2)
 	for i, v := range u16 {
-		buf[i*2] = byte(v)
-		buf[i*2+1] = byte(v >> 8)
+		binary.LittleEndian.PutUint16(buf[i*2:], v)
 	}
 	return base64.StdEncoding.EncodeToString(buf)
 }
@@ -226,7 +226,7 @@ func base64DecodeUTF16LE(encoded string) (string, error) {
 	}
 	u16 := make([]uint16, len(data)/2)
 	for i := range u16 {
-		u16[i] = uint16(data[2*i]) | uint16(data[2*i+1])<<8
+		u16[i] = binary.LittleEndian.Uint16(data[i*2:])
 	}
 	return string(utf16.Decode(u16)), nil
 }

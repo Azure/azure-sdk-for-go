@@ -22,7 +22,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-const credNameAzurePowerShell = "AzurePowerShellCredential"
+const (
+	credNameAzurePowerShell          = "AzurePowerShellCredential"
+	azurePowerShellNoAzAccountModule = "Az.Accounts PowerShell module not found."
+	azurePowerShellNoContextSet      = "Azure PowerShell context not set."
+)
 
 // AzurePowerShellCredentialOptions contains optional parameters for AzurePowerShellCredential.
 type AzurePowerShellCredentialOptions struct {
@@ -112,8 +116,12 @@ $ErrorActionPreference = 'Stop'
 
 $mod = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue
 
-if (!$mod) {
-    Write-Error 'Az.Accounts PowerShell module not found'
+if (-not $mod) {
+    Write-Error '%s'
+}
+
+if (-not (Get-AzContext)) {
+    Write-Error '%s'
 }
 
 $params = @{
@@ -152,7 +160,7 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, resource, tenant, tenant)
+`, azurePowerShellNoAzAccountModule, azurePowerShellNoContextSet, resource, tenant, tenant)
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)

@@ -59,6 +59,12 @@ var shellExec = func(ctx context.Context, credName, command string) ([]byte, err
 		if errors.As(err, &exErr) && exErr.ExitCode() == 127 || strings.Contains(msg, "' is not recognized") {
 			return nil, newCredentialUnavailableError(credName, "CLI executable not found on path")
 		}
+		if strings.Contains(msg, azurePowerShellNoAzAccountModule) {
+			msg = azurePowerShellNoAzAccountModule
+		}
+		if strings.Contains(msg, azurePowerShellNoContextSet) {
+			msg = azurePowerShellNoContextSet
+		}
 		if msg == "" {
 			msg = err.Error()
 		}

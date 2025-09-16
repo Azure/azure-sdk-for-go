@@ -110,10 +110,10 @@ func TestAzurePowerShellCredential_Error(t *testing.T) {
 func TestAzurePowerShellCredential_GetTokenSuccess(t *testing.T) {
 	expectedExpiresOn := time.Now().Add(time.Hour).UTC().Truncate(time.Second)
 	t.Run("fetches token with correct expiration", func(t *testing.T) {
-		ExpiresOn := epochTicks + expectedExpiresOn.UTC().UnixNano()/100
+		ExpiresOn := expectedExpiresOn.UTC().Unix()
+		output := azurePowerShellTokenOutput(ExpiresOn)
 		cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
 			exec: func(context.Context, string, string) ([]byte, error) {
-				output := azurePowerShellTokenOutput(ExpiresOn)
 				return output, nil
 			},
 		})

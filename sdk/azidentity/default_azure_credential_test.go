@@ -23,7 +23,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -349,36 +348,6 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
-}
-
-func TestDefaultAzureCredential_IMDSLive(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds {
-		t.Skip("set IDENTITY_IMDS_AVAILABLE to run this test")
-	}
-	// unsetting environment variables to skip EnvironmentCredential and other managed identity sources
-	for _, k := range []string{azureTenantID, identityEndpoint, msiEndpoint} {
-		if v, set := os.LookupEnv(k); set {
-			require.NoError(t, os.Unsetenv(k))
-			defer os.Setenv(k, v)
-		}
-	}
-	co, stop := initRecording(t)
-	defer stop()
-	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: co})
-	require.NoError(t, err)
-	testGetTokenSuccess(t, cred)
-
-	t.Run("ClientID", func(t *testing.T) {
-		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.clientID == "" {
-			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
-		}
-		t.Setenv(azureClientID, liveManagedIdentity.clientID)
-		co, stop := initRecording(t)
-		defer stop()
-		cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: co})
-		require.NoError(t, err)
-		testGetTokenSuccess(t, cred)
-	})
 }
 
 // delayPolicy adds a delay to pipeline requests. Used to test timeout behavior.

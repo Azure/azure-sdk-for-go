@@ -57,11 +57,11 @@ type AutonomousDatabase struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The database name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -75,11 +75,11 @@ type AutonomousDatabaseBackup struct {
 	// The resource-specific properties for this resource.
 	Properties *AutonomousDatabaseBackupProperties
 
-	// READ-ONLY; AutonomousDatabaseBackup id
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -415,11 +415,11 @@ type AutonomousDatabaseCharacterSet struct {
 	// The resource-specific properties for this resource.
 	Properties *AutonomousDatabaseCharacterSetProperties
 
-	// READ-ONLY; AutonomousDatabaseCharacterSet name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1507,11 +1507,11 @@ type AutonomousDatabaseNationalCharacterSet struct {
 	// The resource-specific properties for this resource.
 	Properties *AutonomousDatabaseNationalCharacterSetProperties
 
-	// READ-ONLY; AutonomousDatabaseNationalCharacterSets name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1978,11 +1978,11 @@ type AutonomousDbVersion struct {
 	// The resource-specific properties for this resource.
 	Properties *AutonomousDbVersionProperties
 
-	// READ-ONLY; AutonomousDbVersion name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2050,11 +2050,11 @@ type CloudExadataInfrastructure struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; CloudExadataInfrastructure name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2228,11 +2228,11 @@ type CloudVMCluster struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; CloudVmCluster name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2522,11 +2522,11 @@ type DNSPrivateView struct {
 	// The resource-specific properties for this resource.
 	Properties *DNSPrivateViewProperties
 
-	// READ-ONLY; DnsPrivateView OCID
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2576,11 +2576,11 @@ type DNSPrivateZone struct {
 	// The resource-specific properties for this resource.
 	Properties *DNSPrivateZoneProperties
 
-	// READ-ONLY; DnsPrivateZone name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2653,7 +2653,7 @@ type DayOfWeek struct {
 
 // DayOfWeekUpdate - DayOfWeek resource properties
 type DayOfWeekUpdate struct {
-	// REQUIRED; Name of the day of the week.
+	// Name of the day of the week.
 	Name *DayOfWeekName
 }
 
@@ -2680,11 +2680,11 @@ type DbNode struct {
 	// The resource-specific properties for this resource.
 	Properties *DbNodeProperties
 
-	// READ-ONLY; DbNode OCID.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2792,11 +2792,11 @@ type DbServer struct {
 	// The resource-specific properties for this resource.
 	Properties *DbServerProperties
 
-	// READ-ONLY; DbServer OCID.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2900,11 +2900,11 @@ type DbSystemShape struct {
 	// The resource-specific properties for this resource.
 	Properties *DbSystemShapeProperties
 
-	// READ-ONLY; DbSystemShape name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3078,11 +3078,11 @@ type ExadbVMCluster struct {
 	// The availability zones.
 	Zones []*string
 
-	// READ-ONLY; The name of the ExadbVmCluster
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3270,11 +3270,11 @@ type ExascaleDbNode struct {
 	// The resource-specific properties for this resource.
 	Properties *ExascaleDbNodeProperties
 
-	// READ-ONLY; The name of the ExascaleDbNode
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3364,11 +3364,11 @@ type ExascaleDbStorageVault struct {
 	// The availability zones.
 	Zones []*string
 
-	// READ-ONLY; The name of the ExascaleDbStorageVault
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3445,11 +3445,11 @@ type FlexComponent struct {
 	// The resource-specific properties for this resource.
 	Properties *FlexComponentProperties
 
-	// READ-ONLY; The name of the FlexComponent
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3517,11 +3517,11 @@ type GiMinorVersion struct {
 	// The resource-specific properties for this resource.
 	Properties *GiMinorVersionProperties
 
-	// READ-ONLY; The name of the GiMinorVersion
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3553,11 +3553,11 @@ type GiVersion struct {
 	// The resource-specific properties for this resource.
 	Properties *GiVersionProperties
 
-	// READ-ONLY; GiVersion name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3714,11 +3714,11 @@ type OracleSubscription struct {
 	// The resource-specific properties for this resource.
 	Properties *OracleSubscriptionProperties
 
-	// READ-ONLY; OracleSubscription name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -3973,7 +3973,7 @@ type ScheduledOperationsType struct {
 
 // ScheduledOperationsTypeUpdate - The list of scheduled operations.
 type ScheduledOperationsTypeUpdate struct {
-	// REQUIRED; Day of week
+	// Day of week
 	DayOfWeek *DayOfWeekUpdate
 
 	// auto start time. value must be of ISO-8601 format HH:mm
@@ -4009,11 +4009,11 @@ type SystemVersion struct {
 	// The resource-specific properties for this resource.
 	Properties *SystemVersionProperties
 
-	// READ-ONLY; SystemVersion name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -4042,11 +4042,11 @@ type VirtualNetworkAddress struct {
 	// The resource-specific properties for this resource.
 	Properties *VirtualNetworkAddressProperties
 
-	// READ-ONLY; Virtual IP address hostname.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

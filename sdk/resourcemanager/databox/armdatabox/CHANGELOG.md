@@ -1,5 +1,27 @@
 # Release History
 
+## 3.0.0 (2025-08-04)
+### Breaking Changes
+
+- Type of `AdditionalErrorInfo.Info` has been changed from `any` to `map[string]any`
+- Type of `Operation.Properties` has been changed from `any` to `*OperationProperties`
+- Type of `SystemData.CreatedByType` has been changed from `*string` to `*CreatedByType`
+- Type of `SystemData.LastModifiedByType` has been changed from `*string` to `*CreatedByType`
+- Struct `APIError` has been removed
+- Struct `ArmBaseObject` has been removed
+- Struct `Details` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `GranularCopyProgress` has been removed
+- Struct `Resource` has been removed
+- Field `JobResource` of struct `JobsClientCreateResponse` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New struct `OperationProperties`
+- New field `SecureErasureCertificateSasKey` in struct `DeviceErasureDetails`
+
+
 ## 2.2.0 (2025-03-27)
 ### Features Added
 

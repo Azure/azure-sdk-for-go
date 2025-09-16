@@ -128,3 +128,4 @@ type VerifyOptions struct {
 type WrapKeyOptions struct {
 	// placeholder for future optional parameters
 }
+

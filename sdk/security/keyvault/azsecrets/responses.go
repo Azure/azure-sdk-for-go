@@ -6,43 +6,43 @@ package azsecrets
 
 // BackupSecretResponse contains the response from method Client.BackupSecret.
 type BackupSecretResponse struct {
-	// The backup secret result, containing the backup blob.
+// The backup secret result, containing the backup blob.
 	BackupSecretResult
 }
 
 // DeleteSecretResponse contains the response from method Client.DeleteSecret.
 type DeleteSecretResponse struct {
-	// A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
+// A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 	DeletedSecret
 }
 
 // GetDeletedSecretResponse contains the response from method Client.GetDeletedSecret.
 type GetDeletedSecretResponse struct {
-	// A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
+// A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 	DeletedSecret
 }
 
 // GetSecretResponse contains the response from method Client.GetSecret.
 type GetSecretResponse struct {
-	// A secret consisting of a value, id and its attributes.
+// A secret consisting of a value, id and its attributes.
 	Secret
 }
 
 // ListDeletedSecretPropertiesResponse contains the response from method Client.NewListDeletedSecretPropertiesPager.
 type ListDeletedSecretPropertiesResponse struct {
-	// The deleted secret list result
+// The deleted secret list result
 	DeletedSecretPropertiesListResult
 }
 
 // ListSecretPropertiesResponse contains the response from method Client.NewListSecretPropertiesPager.
 type ListSecretPropertiesResponse struct {
-	// The secret list result.
+// The secret list result.
 	SecretPropertiesListResult
 }
 
 // ListSecretPropertiesVersionsResponse contains the response from method Client.NewListSecretPropertiesVersionsPager.
 type ListSecretPropertiesVersionsResponse struct {
-	// The secret list result.
+// The secret list result.
 	SecretPropertiesListResult
 }
 
@@ -53,24 +53,25 @@ type PurgeDeletedSecretResponse struct {
 
 // RecoverDeletedSecretResponse contains the response from method Client.RecoverDeletedSecret.
 type RecoverDeletedSecretResponse struct {
-	// A secret consisting of a value, id and its attributes.
+// A secret consisting of a value, id and its attributes.
 	Secret
 }
 
 // RestoreSecretResponse contains the response from method Client.RestoreSecret.
 type RestoreSecretResponse struct {
-	// A secret consisting of a value, id and its attributes.
+// A secret consisting of a value, id and its attributes.
 	Secret
 }
 
 // SetSecretResponse contains the response from method Client.SetSecret.
 type SetSecretResponse struct {
-	// A secret consisting of a value, id and its attributes.
+// A secret consisting of a value, id and its attributes.
 	Secret
 }
 
-// UpdateSecretPropertiesResponse contains the response from method Client.UpdateSecretProperties.
-type UpdateSecretPropertiesResponse struct {
-	// A secret consisting of a value, id and its attributes.
+// UpdateSecretResponse contains the response from method Client.UpdateSecret.
+type UpdateSecretResponse struct {
+// A secret consisting of a value, id and its attributes.
 	Secret
 }
+

@@ -8,19 +8,18 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // Server is a fake server for instances of the azkeys.Client type.
-type Server struct {
+type Server struct{
 	// BackupKey is the fake for method Client.BackupKey
 	// HTTP status codes to indicate success: http.StatusOK
 	BackupKey func(ctx context.Context, name string, options *azkeys.BackupKeyOptions) (resp azfake.Responder[azkeys.BackupKeyResponse], errResp azfake.ErrorResponder)
@@ -120,6 +119,7 @@ type Server struct {
 	// WrapKey is the fake for method Client.WrapKey
 	// HTTP status codes to indicate success: http.StatusOK
 	WrapKey func(ctx context.Context, name string, version string, parameters azkeys.KeyOperationParameters, options *azkeys.WrapKeyOptions) (resp azfake.Responder[azkeys.WrapKeyResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -127,9 +127,9 @@ type Server struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
-		srv:                               srv,
-		newListDeletedKeyPropertiesPager:  newTracker[azfake.PagerResponder[azkeys.ListDeletedKeyPropertiesResponse]](),
-		newListKeyPropertiesPager:         newTracker[azfake.PagerResponder[azkeys.ListKeyPropertiesResponse]](),
+		srv: srv,
+		newListDeletedKeyPropertiesPager: newTracker[azfake.PagerResponder[azkeys.ListDeletedKeyPropertiesResponse]](),
+		newListKeyPropertiesPager: newTracker[azfake.PagerResponder[azkeys.ListKeyPropertiesResponse]](),
 		newListKeyPropertiesVersionsPager: newTracker[azfake.PagerResponder[azkeys.ListKeyPropertiesVersionsResponse]](),
 	}
 }
@@ -137,9 +137,9 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // ServerTransport connects instances of azkeys.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
-	srv                               *Server
-	newListDeletedKeyPropertiesPager  *tracker[azfake.PagerResponder[azkeys.ListDeletedKeyPropertiesResponse]]
-	newListKeyPropertiesPager         *tracker[azfake.PagerResponder[azkeys.ListKeyPropertiesResponse]]
+	srv *Server
+	newListDeletedKeyPropertiesPager *tracker[azfake.PagerResponder[azkeys.ListDeletedKeyPropertiesResponse]]
+	newListKeyPropertiesPager *tracker[azfake.PagerResponder[azkeys.ListKeyPropertiesResponse]]
 	newListKeyPropertiesVersionsPager *tracker[azfake.PagerResponder[azkeys.ListKeyPropertiesVersionsResponse]]
 }
 
@@ -161,8 +161,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	go func() {
 		var intercepted bool
 		var res result
-		if serverTransportInterceptor != nil {
-			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		 if serverTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -216,8 +216,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchVerify(req)
 			case "Client.WrapKey":
 				res.resp, res.err = s.dispatchWrapKey(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -301,7 +301,7 @@ func (s *ServerTransport) dispatchDecrypt(req *http.Request) (*http.Response, er
 	if s.srv.Decrypt == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Decrypt not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/decrypt`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/decrypt`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -367,7 +367,7 @@ func (s *ServerTransport) dispatchEncrypt(req *http.Request) (*http.Response, er
 	if s.srv.Encrypt == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Encrypt not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/encrypt`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/encrypt`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -433,7 +433,7 @@ func (s *ServerTransport) dispatchGetKey(req *http.Request) (*http.Response, err
 	if s.srv.GetKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetKey not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -466,7 +466,7 @@ func (s *ServerTransport) dispatchGetKeyAttestation(req *http.Request) (*http.Re
 	if s.srv.GetKeyAttestation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetKeyAttestation not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/attestation`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attestation`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -586,7 +586,7 @@ func (s *ServerTransport) dispatchNewListDeletedKeyPropertiesPager(req *http.Req
 	}
 	newListDeletedKeyPropertiesPager := s.newListDeletedKeyPropertiesPager.get(req)
 	if newListDeletedKeyPropertiesPager == nil {
-		resp := s.srv.NewListDeletedKeyPropertiesPager(nil)
+resp := s.srv.NewListDeletedKeyPropertiesPager(nil)
 		newListDeletedKeyPropertiesPager = &resp
 		s.newListDeletedKeyPropertiesPager.add(req, newListDeletedKeyPropertiesPager)
 		server.PagerResponderInjectNextLinks(newListDeletedKeyPropertiesPager, req, func(page *azkeys.ListDeletedKeyPropertiesResponse, createLink func() string) {
@@ -613,7 +613,7 @@ func (s *ServerTransport) dispatchNewListKeyPropertiesPager(req *http.Request) (
 	}
 	newListKeyPropertiesPager := s.newListKeyPropertiesPager.get(req)
 	if newListKeyPropertiesPager == nil {
-		resp := s.srv.NewListKeyPropertiesPager(nil)
+resp := s.srv.NewListKeyPropertiesPager(nil)
 		newListKeyPropertiesPager = &resp
 		s.newListKeyPropertiesPager.add(req, newListKeyPropertiesPager)
 		server.PagerResponderInjectNextLinks(newListKeyPropertiesPager, req, func(page *azkeys.ListKeyPropertiesResponse, createLink func() string) {
@@ -640,17 +640,17 @@ func (s *ServerTransport) dispatchNewListKeyPropertiesVersionsPager(req *http.Re
 	}
 	newListKeyPropertiesVersionsPager := s.newListKeyPropertiesVersionsPager.get(req)
 	if newListKeyPropertiesVersionsPager == nil {
-		const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("key_name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListKeyPropertiesVersionsPager(nameParam, nil)
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("key_name")])
+	if err != nil {
+		return nil, err
+	}
+resp := s.srv.NewListKeyPropertiesVersionsPager(nameParam, nil)
 		newListKeyPropertiesVersionsPager = &resp
 		s.newListKeyPropertiesVersionsPager.add(req, newListKeyPropertiesVersionsPager)
 		server.PagerResponderInjectNextLinks(newListKeyPropertiesVersionsPager, req, func(page *azkeys.ListKeyPropertiesVersionsResponse, createLink func() string) {
@@ -733,7 +733,7 @@ func (s *ServerTransport) dispatchRelease(req *http.Request) (*http.Response, er
 	if s.srv.Release == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Release not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/release`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/release`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -822,7 +822,7 @@ func (s *ServerTransport) dispatchSign(req *http.Request) (*http.Response, error
 	if s.srv.Sign == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Sign not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/sign`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sign`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -859,7 +859,7 @@ func (s *ServerTransport) dispatchUnwrapKey(req *http.Request) (*http.Response, 
 	if s.srv.UnwrapKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UnwrapKey not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/unwrapkey`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/unwrapkey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -896,7 +896,7 @@ func (s *ServerTransport) dispatchUpdateKey(req *http.Request) (*http.Response, 
 	if s.srv.UpdateKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateKey not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -966,7 +966,7 @@ func (s *ServerTransport) dispatchVerify(req *http.Request) (*http.Response, err
 	if s.srv.Verify == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Verify not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/verify`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/verify`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -1003,7 +1003,7 @@ func (s *ServerTransport) dispatchWrapKey(req *http.Request) (*http.Response, er
 	if s.srv.WrapKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method WrapKey not implemented")}
 	}
-	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/wrapkey`
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wrapkey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

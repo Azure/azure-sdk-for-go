@@ -8,20 +8,19 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"strconv"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
 )
 
 // Server is a fake server for instances of the azcertificates.Client type.
-type Server struct {
+type Server struct{
 	// BackupCertificate is the fake for method Client.BackupCertificate
 	// HTTP status codes to indicate success: http.StatusOK
 	BackupCertificate func(ctx context.Context, name string, options *azcertificates.BackupCertificateOptions) (resp azfake.Responder[azcertificates.BackupCertificateResponse], errResp azfake.ErrorResponder)
@@ -129,6 +128,7 @@ type Server struct {
 	// UpdateIssuer is the fake for method Client.UpdateIssuer
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateIssuer func(ctx context.Context, name string, parameter azcertificates.UpdateIssuerParameters, options *azcertificates.UpdateIssuerOptions) (resp azfake.Responder[azcertificates.UpdateIssuerResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -136,22 +136,22 @@ type Server struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
-		srv:                               srv,
+		srv: srv,
 		newListCertificatePropertiesPager: newTracker[azfake.PagerResponder[azcertificates.ListCertificatePropertiesResponse]](),
 		newListCertificatePropertiesVersionsPager: newTracker[azfake.PagerResponder[azcertificates.ListCertificatePropertiesVersionsResponse]](),
-		newListDeletedCertificatePropertiesPager:  newTracker[azfake.PagerResponder[azcertificates.ListDeletedCertificatePropertiesResponse]](),
-		newListIssuerPropertiesPager:              newTracker[azfake.PagerResponder[azcertificates.ListIssuerPropertiesResponse]](),
+		newListDeletedCertificatePropertiesPager: newTracker[azfake.PagerResponder[azcertificates.ListDeletedCertificatePropertiesResponse]](),
+		newListIssuerPropertiesPager: newTracker[azfake.PagerResponder[azcertificates.ListIssuerPropertiesResponse]](),
 	}
 }
 
 // ServerTransport connects instances of azcertificates.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
-	srv                                       *Server
-	newListCertificatePropertiesPager         *tracker[azfake.PagerResponder[azcertificates.ListCertificatePropertiesResponse]]
+	srv *Server
+	newListCertificatePropertiesPager *tracker[azfake.PagerResponder[azcertificates.ListCertificatePropertiesResponse]]
 	newListCertificatePropertiesVersionsPager *tracker[azfake.PagerResponder[azcertificates.ListCertificatePropertiesVersionsResponse]]
-	newListDeletedCertificatePropertiesPager  *tracker[azfake.PagerResponder[azcertificates.ListDeletedCertificatePropertiesResponse]]
-	newListIssuerPropertiesPager              *tracker[azfake.PagerResponder[azcertificates.ListIssuerPropertiesResponse]]
+	newListDeletedCertificatePropertiesPager *tracker[azfake.PagerResponder[azcertificates.ListDeletedCertificatePropertiesResponse]]
+	newListIssuerPropertiesPager *tracker[azfake.PagerResponder[azcertificates.ListIssuerPropertiesResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -172,8 +172,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	go func() {
 		var intercepted bool
 		var res result
-		if serverTransportInterceptor != nil {
-			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		 if serverTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -231,8 +231,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchUpdateCertificatePolicy(req)
 			case "Client.UpdateIssuer":
 				res.resp, res.err = s.dispatchUpdateIssuer(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -422,7 +422,7 @@ func (s *ServerTransport) dispatchGetCertificate(req *http.Request) (*http.Respo
 	if s.srv.GetCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCertificate not implemented")}
 	}
-	const regexStr = `/certificates/(?P<certificate_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<certificate_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?`
+	const regexStr = `/certificates/(?P<certificate_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<certificate_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -625,22 +625,22 @@ func (s *ServerTransport) dispatchNewListCertificatePropertiesPager(req *http.Re
 	}
 	newListCertificatePropertiesPager := s.newListCertificatePropertiesPager.get(req)
 	if newListCertificatePropertiesPager == nil {
-		qp := req.URL.Query()
-		includePendingUnescaped, err := url.QueryUnescape(qp.Get("includePending"))
-		if err != nil {
-			return nil, err
+	qp := req.URL.Query()
+	includePendingUnescaped, err := url.QueryUnescape(qp.Get("includePending"))
+	if err != nil {
+		return nil, err
+	}
+	includePendingParam, err := parseOptional(includePendingUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	var options *azcertificates.ListCertificatePropertiesOptions
+	if includePendingParam != nil {
+		options = &azcertificates.ListCertificatePropertiesOptions{
+			IncludePending: includePendingParam,
 		}
-		includePendingParam, err := parseOptional(includePendingUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *azcertificates.ListCertificatePropertiesOptions
-		if includePendingParam != nil {
-			options = &azcertificates.ListCertificatePropertiesOptions{
-				IncludePending: includePendingParam,
-			}
-		}
-		resp := s.srv.NewListCertificatePropertiesPager(options)
+	}
+resp := s.srv.NewListCertificatePropertiesPager(options)
 		newListCertificatePropertiesPager = &resp
 		s.newListCertificatePropertiesPager.add(req, newListCertificatePropertiesPager)
 		server.PagerResponderInjectNextLinks(newListCertificatePropertiesPager, req, func(page *azcertificates.ListCertificatePropertiesResponse, createLink func() string) {
@@ -667,17 +667,17 @@ func (s *ServerTransport) dispatchNewListCertificatePropertiesVersionsPager(req 
 	}
 	newListCertificatePropertiesVersionsPager := s.newListCertificatePropertiesVersionsPager.get(req)
 	if newListCertificatePropertiesVersionsPager == nil {
-		const regexStr = `/certificates/(?P<certificate_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificate_name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListCertificatePropertiesVersionsPager(nameParam, nil)
+	const regexStr = `/certificates/(?P<certificate_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificate_name")])
+	if err != nil {
+		return nil, err
+	}
+resp := s.srv.NewListCertificatePropertiesVersionsPager(nameParam, nil)
 		newListCertificatePropertiesVersionsPager = &resp
 		s.newListCertificatePropertiesVersionsPager.add(req, newListCertificatePropertiesVersionsPager)
 		server.PagerResponderInjectNextLinks(newListCertificatePropertiesVersionsPager, req, func(page *azcertificates.ListCertificatePropertiesVersionsResponse, createLink func() string) {
@@ -704,22 +704,22 @@ func (s *ServerTransport) dispatchNewListDeletedCertificatePropertiesPager(req *
 	}
 	newListDeletedCertificatePropertiesPager := s.newListDeletedCertificatePropertiesPager.get(req)
 	if newListDeletedCertificatePropertiesPager == nil {
-		qp := req.URL.Query()
-		includePendingUnescaped, err := url.QueryUnescape(qp.Get("includePending"))
-		if err != nil {
-			return nil, err
+	qp := req.URL.Query()
+	includePendingUnescaped, err := url.QueryUnescape(qp.Get("includePending"))
+	if err != nil {
+		return nil, err
+	}
+	includePendingParam, err := parseOptional(includePendingUnescaped, strconv.ParseBool)
+	if err != nil {
+		return nil, err
+	}
+	var options *azcertificates.ListDeletedCertificatePropertiesOptions
+	if includePendingParam != nil {
+		options = &azcertificates.ListDeletedCertificatePropertiesOptions{
+			IncludePending: includePendingParam,
 		}
-		includePendingParam, err := parseOptional(includePendingUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *azcertificates.ListDeletedCertificatePropertiesOptions
-		if includePendingParam != nil {
-			options = &azcertificates.ListDeletedCertificatePropertiesOptions{
-				IncludePending: includePendingParam,
-			}
-		}
-		resp := s.srv.NewListDeletedCertificatePropertiesPager(options)
+	}
+resp := s.srv.NewListDeletedCertificatePropertiesPager(options)
 		newListDeletedCertificatePropertiesPager = &resp
 		s.newListDeletedCertificatePropertiesPager.add(req, newListDeletedCertificatePropertiesPager)
 		server.PagerResponderInjectNextLinks(newListDeletedCertificatePropertiesPager, req, func(page *azcertificates.ListDeletedCertificatePropertiesResponse, createLink func() string) {
@@ -746,7 +746,7 @@ func (s *ServerTransport) dispatchNewListIssuerPropertiesPager(req *http.Request
 	}
 	newListIssuerPropertiesPager := s.newListIssuerPropertiesPager.get(req)
 	if newListIssuerPropertiesPager == nil {
-		resp := s.srv.NewListIssuerPropertiesPager(nil)
+resp := s.srv.NewListIssuerPropertiesPager(nil)
 		newListIssuerPropertiesPager = &resp
 		s.newListIssuerPropertiesPager.add(req, newListIssuerPropertiesPager)
 		server.PagerResponderInjectNextLinks(newListIssuerPropertiesPager, req, func(page *azcertificates.ListIssuerPropertiesResponse, createLink func() string) {
@@ -941,7 +941,7 @@ func (s *ServerTransport) dispatchUpdateCertificate(req *http.Request) (*http.Re
 	if s.srv.UpdateCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateCertificate not implemented")}
 	}
-	const regexStr = `/certificates/(?P<certificate_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<certificate_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?`
+	const regexStr = `/certificates/(?P<certificate_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<certificate_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

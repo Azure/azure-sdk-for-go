@@ -7,19 +7,18 @@ package azsecrets
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
-	internal     *azcore.Client
+	internal *azcore.Client
 	vaultBaseUrl string
 }
 
@@ -29,7 +28,7 @@ type Client struct {
 // This operation requires the secrets/backup permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret.
 //   - options - BackupSecretOptions contains the optional parameters for the Client.BackupSecret method.
 func (client *Client) BackupSecret(ctx context.Context, name string, options *BackupSecretOptions) (BackupSecretResponse, error) {
@@ -56,19 +55,17 @@ func (client *Client) BackupSecret(ctx context.Context, name string, options *Ba
 
 // backupSecretCreateRequest creates the BackupSecret request.
 func (client *Client) backupSecretCreateRequest(ctx context.Context, name string, _ *BackupSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/backup"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -89,7 +86,7 @@ func (client *Client) backupSecretHandleResponse(resp *http.Response) (BackupSec
 // of a secret. This operation requires the secrets/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret.
 //   - options - DeleteSecretOptions contains the optional parameters for the Client.DeleteSecret method.
 func (client *Client) DeleteSecret(ctx context.Context, name string, options *DeleteSecretOptions) (DeleteSecretResponse, error) {
@@ -116,19 +113,17 @@ func (client *Client) DeleteSecret(ctx context.Context, name string, options *De
 
 // deleteSecretCreateRequest creates the DeleteSecret request.
 func (client *Client) deleteSecretCreateRequest(ctx context.Context, name string, _ *DeleteSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -149,7 +144,7 @@ func (client *Client) deleteSecretHandleResponse(resp *http.Response) (DeleteSec
 // the secrets/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret.
 //   - options - GetDeletedSecretOptions contains the optional parameters for the Client.GetDeletedSecret method.
 func (client *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
@@ -176,19 +171,17 @@ func (client *Client) GetDeletedSecret(ctx context.Context, name string, options
 
 // getDeletedSecretCreateRequest creates the GetDeletedSecret request.
 func (client *Client) getDeletedSecretCreateRequest(ctx context.Context, name string, _ *GetDeletedSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -208,7 +201,7 @@ func (client *Client) getDeletedSecretHandleResponse(resp *http.Response) (GetDe
 // The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret.
 //   - version - The version of the secret. This URI fragment is optional. If not specified, the latest version of the secret
 //     is returned.
@@ -237,20 +230,21 @@ func (client *Client) GetSecret(ctx context.Context, name string, version string
 
 // getSecretCreateRequest creates the GetSecret request.
 func (client *Client) getSecretCreateRequest(ctx context.Context, name string, version string, _ *GetSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/{secret-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,16 +264,16 @@ func (client *Client) getSecretHandleResponse(resp *http.Response) (GetSecretRes
 // The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete. This
 // operation requires the secrets/list permission.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - options - ListDeletedSecretPropertiesOptions contains the optional parameters for the Client.NewListDeletedSecretPropertiesPager
 //     method.
-func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSecretPropertiesOptions) *runtime.Pager[ListDeletedSecretPropertiesResponse] {
+func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSecretPropertiesOptions) (*runtime.Pager[ListDeletedSecretPropertiesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedSecretPropertiesResponse]{
 		More: func(page ListDeletedSecretPropertiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListDeletedSecretPropertiesResponse) (ListDeletedSecretPropertiesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListDeletedSecretPropertiesPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListDeletedSecretPropertiesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -291,22 +285,20 @@ func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSe
 				return ListDeletedSecretPropertiesResponse{}, err
 			}
 			return client.listDeletedSecretPropertiesHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDeletedSecretPropertiesCreateRequest creates the ListDeletedSecretProperties request.
 func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Context, _ *ListDeletedSecretPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,15 +319,15 @@ func (client *Client) listDeletedSecretPropertiesHandleResponse(resp *http.Respo
 // are provided in the response. Individual secret versions are not listed in the response. This operation requires the secrets/list
 // permission.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - options - ListSecretPropertiesOptions contains the optional parameters for the Client.NewListSecretPropertiesPager method.
-func (client *Client) NewListSecretPropertiesPager(options *ListSecretPropertiesOptions) *runtime.Pager[ListSecretPropertiesResponse] {
+func (client *Client) NewListSecretPropertiesPager(options *ListSecretPropertiesOptions) (*runtime.Pager[ListSecretPropertiesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ListSecretPropertiesResponse]{
 		More: func(page ListSecretPropertiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListSecretPropertiesResponse) (ListSecretPropertiesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListSecretPropertiesPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListSecretPropertiesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -347,22 +339,20 @@ func (client *Client) NewListSecretPropertiesPager(options *ListSecretProperties
 				return ListSecretPropertiesResponse{}, err
 			}
 			return client.listSecretPropertiesHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSecretPropertiesCreateRequest creates the ListSecretProperties request.
 func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, _ *ListSecretPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -382,17 +372,17 @@ func (client *Client) listSecretPropertiesHandleResponse(resp *http.Response) (L
 // The full secret identifier and attributes are provided in the response. No values are returned for the secrets. This operations
 // requires the secrets/list permission.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret.
 //   - options - ListSecretPropertiesVersionsOptions contains the optional parameters for the Client.NewListSecretPropertiesVersionsPager
 //     method.
-func (client *Client) NewListSecretPropertiesVersionsPager(name string, options *ListSecretPropertiesVersionsOptions) *runtime.Pager[ListSecretPropertiesVersionsResponse] {
+func (client *Client) NewListSecretPropertiesVersionsPager(name string, options *ListSecretPropertiesVersionsOptions) (*runtime.Pager[ListSecretPropertiesVersionsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ListSecretPropertiesVersionsResponse]{
 		More: func(page ListSecretPropertiesVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListSecretPropertiesVersionsResponse) (ListSecretPropertiesVersionsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListSecretPropertiesVersionsPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListSecretPropertiesVersionsPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -404,26 +394,24 @@ func (client *Client) NewListSecretPropertiesVersionsPager(name string, options 
 				return ListSecretPropertiesVersionsResponse{}, err
 			}
 			return client.listSecretPropertiesVersionsHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSecretPropertiesVersionsCreateRequest creates the ListSecretPropertiesVersions request.
 func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListSecretPropertiesVersionsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/versions"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -444,7 +432,7 @@ func (client *Client) listSecretPropertiesVersionsHandleResponse(resp *http.Resp
 // can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret.
 //   - options - PurgeDeletedSecretOptions contains the optional parameters for the Client.PurgeDeletedSecret method.
 func (client *Client) PurgeDeletedSecret(ctx context.Context, name string, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
@@ -470,21 +458,18 @@ func (client *Client) PurgeDeletedSecret(ctx context.Context, name string, optio
 
 // purgeDeletedSecretCreateRequest creates the PurgeDeletedSecret request.
 func (client *Client) purgeDeletedSecretCreateRequest(ctx context.Context, name string, _ *PurgeDeletedSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -494,7 +479,7 @@ func (client *Client) purgeDeletedSecretCreateRequest(ctx context.Context, name 
 // This operation requires the secrets/recover permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the deleted secret.
 //   - options - RecoverDeletedSecretOptions contains the optional parameters for the Client.RecoverDeletedSecret method.
 func (client *Client) RecoverDeletedSecret(ctx context.Context, name string, options *RecoverDeletedSecretOptions) (RecoverDeletedSecretResponse, error) {
@@ -521,19 +506,17 @@ func (client *Client) RecoverDeletedSecret(ctx context.Context, name string, opt
 
 // recoverDeletedSecretCreateRequest creates the RecoverDeletedSecret request.
 func (client *Client) recoverDeletedSecretCreateRequest(ctx context.Context, name string, _ *RecoverDeletedSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets/{secret-name}/recover"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -553,7 +536,7 @@ func (client *Client) recoverDeletedSecretHandleResponse(resp *http.Response) (R
 // Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - parameters - The parameters to restore the secret.
 //   - options - RestoreSecretOptions contains the optional parameters for the Client.RestoreSecret method.
 func (client *Client) RestoreSecret(ctx context.Context, parameters RestoreSecretParameters, options *RestoreSecretOptions) (RestoreSecretResponse, error) {
@@ -580,22 +563,20 @@ func (client *Client) RestoreSecret(ctx context.Context, parameters RestoreSecre
 
 // restoreSecretCreateRequest creates the RestoreSecret request.
 func (client *Client) restoreSecretCreateRequest(ctx context.Context, parameters RestoreSecretParameters, _ *RestoreSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/restore"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+	return nil, err
+}
+;	return req, nil
 }
 
 // restoreSecretHandleResponse handles the RestoreSecret response.
@@ -613,7 +594,7 @@ func (client *Client) restoreSecretHandleResponse(resp *http.Response) (RestoreS
 // version of that secret. This operation requires the secrets/set permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret. The value you provide may be copied globally for the purpose of running the service. The
 //     value provided should not include personally identifiable or sensitive information.
 //   - parameters - The parameters for setting the secret.
@@ -642,26 +623,24 @@ func (client *Client) SetSecret(ctx context.Context, name string, parameters Set
 
 // setSecretCreateRequest creates the SetSecret request.
 func (client *Client) setSecretCreateRequest(ctx context.Context, name string, parameters SetSecretParameters, _ *SetSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+	return nil, err
+}
+;	return req, nil
 }
 
 // setSecretHandleResponse handles the SetSecret response.
@@ -673,69 +652,71 @@ func (client *Client) setSecretHandleResponse(resp *http.Response) (SetSecretRes
 	return result, nil
 }
 
-// UpdateSecretProperties - Updates the attributes associated with a specified secret in a given key vault.
+// UpdateSecret - Updates the attributes associated with a specified secret in a given key vault.
 //
 // The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified in the
 // request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-06-01-preview
 //   - name - The name of the secret.
 //   - version - The version of the secret.
 //   - parameters - The parameters for update secret operation.
-//   - options - UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
-func (client *Client) UpdateSecretProperties(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+//   - options - UpdateSecretOptions contains the optional parameters for the Client.UpdateSecret method.
+func (client *Client) UpdateSecret(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, options *UpdateSecretOptions) (UpdateSecretResponse, error) {
 	var err error
-	const operationName = "Client.UpdateSecretProperties"
+	const operationName = "Client.UpdateSecret"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateSecretPropertiesCreateRequest(ctx, name, version, parameters, options)
+	req, err := client.updateSecretCreateRequest(ctx, name, version, parameters, options)
 	if err != nil {
-		return UpdateSecretPropertiesResponse{}, err
+		return UpdateSecretResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return UpdateSecretPropertiesResponse{}, err
+		return UpdateSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return UpdateSecretPropertiesResponse{}, err
+		return UpdateSecretResponse{}, err
 	}
-	resp, err := client.updateSecretPropertiesHandleResponse(httpResp)
+	resp, err := client.updateSecretHandleResponse(httpResp)
 	return resp, err
 }
 
-// updateSecretPropertiesCreateRequest creates the UpdateSecretProperties request.
-func (client *Client) updateSecretPropertiesCreateRequest(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, _ *UpdateSecretPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
+// updateSecretCreateRequest creates the UpdateSecret request.
+func (client *Client) updateSecretCreateRequest(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, _ *UpdateSecretOptions) (*policy.Request, error) {
 	urlPath := "/secrets/{secret-name}/{secret-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+	return nil, err
+}
+;	return req, nil
 }
 
-// updateSecretPropertiesHandleResponse handles the UpdateSecretProperties response.
-func (client *Client) updateSecretPropertiesHandleResponse(resp *http.Response) (UpdateSecretPropertiesResponse, error) {
-	result := UpdateSecretPropertiesResponse{}
+// updateSecretHandleResponse handles the UpdateSecret response.
+func (client *Client) updateSecretHandleResponse(resp *http.Response) (UpdateSecretResponse, error) {
+	result := UpdateSecretResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
-		return UpdateSecretPropertiesResponse{}, err
+		return UpdateSecretResponse{}, err
 	}
 	return result, nil
 }
+

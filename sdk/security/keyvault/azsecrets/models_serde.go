@@ -7,10 +7,9 @@ package azsecrets
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type BackupSecretResult.
@@ -32,9 +31,9 @@ func (b *BackupSecretResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-			if val != nil && string(val) != "null" {
+		if val != nil && string(val) != "null" {
 				err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-			}
+		}
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -53,6 +52,7 @@ func (d DeletedSecret) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", d.ID)
 	populate(objectMap, "kid", d.KID)
 	populate(objectMap, "managed", d.Managed)
+	populate(objectMap, "previousVersion", d.PreviousVersion)
 	populate(objectMap, "recoveryId", d.RecoveryID)
 	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
 	populate(objectMap, "tags", d.Tags)
@@ -70,34 +70,37 @@ func (d *DeletedSecret) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, "Attributes", &d.Attributes)
+				err = unpopulate(val, "Attributes", &d.Attributes)
 			delete(rawMsg, key)
 		case "contentType":
-			err = unpopulate(val, "ContentType", &d.ContentType)
+				err = unpopulate(val, "ContentType", &d.ContentType)
 			delete(rawMsg, key)
 		case "deletedDate":
-			err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
+				err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &d.ID)
+				err = unpopulate(val, "ID", &d.ID)
 			delete(rawMsg, key)
 		case "kid":
-			err = unpopulate(val, "KID", &d.KID)
+				err = unpopulate(val, "KID", &d.KID)
 			delete(rawMsg, key)
 		case "managed":
-			err = unpopulate(val, "Managed", &d.Managed)
+				err = unpopulate(val, "Managed", &d.Managed)
+			delete(rawMsg, key)
+		case "previousVersion":
+				err = unpopulate(val, "PreviousVersion", &d.PreviousVersion)
 			delete(rawMsg, key)
 		case "recoveryId":
-			err = unpopulate(val, "RecoveryID", &d.RecoveryID)
+				err = unpopulate(val, "RecoveryID", &d.RecoveryID)
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
+				err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, "Tags", &d.Tags)
+				err = unpopulate(val, "Tags", &d.Tags)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &d.Value)
+				err = unpopulate(val, "Value", &d.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -131,28 +134,28 @@ func (d *DeletedSecretProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, "Attributes", &d.Attributes)
+				err = unpopulate(val, "Attributes", &d.Attributes)
 			delete(rawMsg, key)
 		case "contentType":
-			err = unpopulate(val, "ContentType", &d.ContentType)
+				err = unpopulate(val, "ContentType", &d.ContentType)
 			delete(rawMsg, key)
 		case "deletedDate":
-			err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
+				err = unpopulateTimeUnix(val, "DeletedDate", &d.DeletedDate)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &d.ID)
+				err = unpopulate(val, "ID", &d.ID)
 			delete(rawMsg, key)
 		case "managed":
-			err = unpopulate(val, "Managed", &d.Managed)
+				err = unpopulate(val, "Managed", &d.Managed)
 			delete(rawMsg, key)
 		case "recoveryId":
-			err = unpopulate(val, "RecoveryID", &d.RecoveryID)
+				err = unpopulate(val, "RecoveryID", &d.RecoveryID)
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
+				err = unpopulateTimeUnix(val, "ScheduledPurgeDate", &d.ScheduledPurgeDate)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, "Tags", &d.Tags)
+				err = unpopulate(val, "Tags", &d.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -180,10 +183,10 @@ func (d *DeletedSecretPropertiesListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &d.NextLink)
+				err = unpopulate(val, "NextLink", &d.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &d.Value)
+				err = unpopulate(val, "Value", &d.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -212,9 +215,9 @@ func (r *RestoreSecretParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-			if val != nil && string(val) != "null" {
+		if val != nil && string(val) != "null" {
 				err = runtime.DecodeByteArray(string(val), &r.SecretBackup, runtime.Base64URLFormat)
-			}
+		}
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -232,6 +235,7 @@ func (s Secret) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "kid", s.KID)
 	populate(objectMap, "managed", s.Managed)
+	populate(objectMap, "previousVersion", s.PreviousVersion)
 	populate(objectMap, "tags", s.Tags)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
@@ -247,25 +251,28 @@ func (s *Secret) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, "Attributes", &s.Attributes)
+				err = unpopulate(val, "Attributes", &s.Attributes)
 			delete(rawMsg, key)
 		case "contentType":
-			err = unpopulate(val, "ContentType", &s.ContentType)
+				err = unpopulate(val, "ContentType", &s.ContentType)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &s.ID)
+				err = unpopulate(val, "ID", &s.ID)
 			delete(rawMsg, key)
 		case "kid":
-			err = unpopulate(val, "KID", &s.KID)
+				err = unpopulate(val, "KID", &s.KID)
 			delete(rawMsg, key)
 		case "managed":
-			err = unpopulate(val, "Managed", &s.Managed)
+				err = unpopulate(val, "Managed", &s.Managed)
+			delete(rawMsg, key)
+		case "previousVersion":
+				err = unpopulate(val, "PreviousVersion", &s.PreviousVersion)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, "Tags", &s.Tags)
+				err = unpopulate(val, "Tags", &s.Tags)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &s.Value)
+				err = unpopulate(val, "Value", &s.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -298,25 +305,25 @@ func (s *SecretAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeUnix(val, "Created", &s.Created)
+				err = unpopulateTimeUnix(val, "Created", &s.Created)
 			delete(rawMsg, key)
 		case "enabled":
-			err = unpopulate(val, "Enabled", &s.Enabled)
+				err = unpopulate(val, "Enabled", &s.Enabled)
 			delete(rawMsg, key)
 		case "exp":
-			err = unpopulateTimeUnix(val, "Expires", &s.Expires)
+				err = unpopulateTimeUnix(val, "Expires", &s.Expires)
 			delete(rawMsg, key)
 		case "nbf":
-			err = unpopulateTimeUnix(val, "NotBefore", &s.NotBefore)
+				err = unpopulateTimeUnix(val, "NotBefore", &s.NotBefore)
 			delete(rawMsg, key)
 		case "recoverableDays":
-			err = unpopulate(val, "RecoverableDays", &s.RecoverableDays)
+				err = unpopulate(val, "RecoverableDays", &s.RecoverableDays)
 			delete(rawMsg, key)
 		case "recoveryLevel":
-			err = unpopulate(val, "RecoveryLevel", &s.RecoveryLevel)
+				err = unpopulate(val, "RecoveryLevel", &s.RecoveryLevel)
 			delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTimeUnix(val, "Updated", &s.Updated)
+				err = unpopulateTimeUnix(val, "Updated", &s.Updated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -347,19 +354,19 @@ func (s *SecretProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "attributes":
-			err = unpopulate(val, "Attributes", &s.Attributes)
+				err = unpopulate(val, "Attributes", &s.Attributes)
 			delete(rawMsg, key)
 		case "contentType":
-			err = unpopulate(val, "ContentType", &s.ContentType)
+				err = unpopulate(val, "ContentType", &s.ContentType)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &s.ID)
+				err = unpopulate(val, "ID", &s.ID)
 			delete(rawMsg, key)
 		case "managed":
-			err = unpopulate(val, "Managed", &s.Managed)
+				err = unpopulate(val, "Managed", &s.Managed)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, "Tags", &s.Tags)
+				err = unpopulate(val, "Tags", &s.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -387,10 +394,10 @@ func (s *SecretPropertiesListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &s.NextLink)
+				err = unpopulate(val, "NextLink", &s.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &s.Value)
+				err = unpopulate(val, "Value", &s.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -420,16 +427,16 @@ func (s *SetSecretParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contentType":
-			err = unpopulate(val, "ContentType", &s.ContentType)
+				err = unpopulate(val, "ContentType", &s.ContentType)
 			delete(rawMsg, key)
 		case "attributes":
-			err = unpopulate(val, "SecretAttributes", &s.SecretAttributes)
+				err = unpopulate(val, "SecretAttributes", &s.SecretAttributes)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, "Tags", &s.Tags)
+				err = unpopulate(val, "Tags", &s.Tags)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &s.Value)
+				err = unpopulate(val, "Value", &s.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -458,13 +465,13 @@ func (u *UpdateSecretPropertiesParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contentType":
-			err = unpopulate(val, "ContentType", &u.ContentType)
+				err = unpopulate(val, "ContentType", &u.ContentType)
 			delete(rawMsg, key)
 		case "attributes":
-			err = unpopulate(val, "SecretAttributes", &u.SecretAttributes)
+				err = unpopulate(val, "SecretAttributes", &u.SecretAttributes)
 			delete(rawMsg, key)
 		case "tags":
-			err = unpopulate(val, "Tags", &u.Tags)
+				err = unpopulate(val, "Tags", &u.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -503,3 +510,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

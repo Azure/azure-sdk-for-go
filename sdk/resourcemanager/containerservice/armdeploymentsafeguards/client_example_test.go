@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_Create.json
-func ExampleDeploymentSafeguardsClient_BeginCreate() {
+func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleDeploymentSafeguardsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDeploymentSafeguardsClient().BeginCreate(ctx, "subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", armdeploymentsafeguards.DeploymentSafeguard{
+	poller, err := clientFactory.NewClient().BeginCreate(ctx, "subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", armdeploymentsafeguards.DeploymentSafeguard{
 		Properties: &armdeploymentsafeguards.Properties{
 			Level:                     to.Ptr(armdeploymentsafeguards.LevelWarn),
 			PodSecurityStandardsLevel: to.Ptr(armdeploymentsafeguards.PodSecurityStandardsLevelPodSecurityStandardsBaseline),
@@ -39,7 +39,7 @@ func ExampleDeploymentSafeguardsClient_BeginCreate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeploymentsafeguards.DeploymentSafeguardsClientCreateResponse{
+	// res = armdeploymentsafeguards.ClientCreateResponse{
 	// 	DeploymentSafeguard: &armdeploymentsafeguards.DeploymentSafeguard{
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/providers/Microsoft.ContainerService/deploymentSafeguards/default"),
 	// 		Name: to.Ptr("default"),
@@ -67,7 +67,7 @@ func ExampleDeploymentSafeguardsClient_BeginCreate() {
 }
 
 // Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_Delete.json
-func ExampleDeploymentSafeguardsClient_BeginDelete() {
+func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -77,7 +77,7 @@ func ExampleDeploymentSafeguardsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDeploymentSafeguardsClient().BeginDelete(ctx, "subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", nil)
+	poller, err := clientFactory.NewClient().BeginDelete(ctx, "subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,7 +88,7 @@ func ExampleDeploymentSafeguardsClient_BeginDelete() {
 }
 
 // Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_Get.json
-func ExampleDeploymentSafeguardsClient_Get() {
+func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -98,14 +98,14 @@ func ExampleDeploymentSafeguardsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDeploymentSafeguardsClient().Get(ctx, "subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeploymentsafeguards.DeploymentSafeguardsClientGetResponse{
+	// res = armdeploymentsafeguards.ClientGetResponse{
 	// 	DeploymentSafeguard: &armdeploymentsafeguards.DeploymentSafeguard{
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/providers/Microsoft.ContainerService/deploymentSafeguards/default"),
 	// 		Name: to.Ptr("default"),
@@ -133,7 +133,7 @@ func ExampleDeploymentSafeguardsClient_Get() {
 }
 
 // Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_List.json
-func ExampleDeploymentSafeguardsClient_NewListPager() {
+func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -143,7 +143,7 @@ func ExampleDeploymentSafeguardsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDeploymentSafeguardsClient().NewListPager("subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", nil)
+	pager := clientFactory.NewClient().NewListPager("subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -154,7 +154,7 @@ func ExampleDeploymentSafeguardsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdeploymentsafeguards.DeploymentSafeguardsClientListResponse{
+		// page = armdeploymentsafeguards.ClientListResponse{
 		// 	DeploymentSafeguardListResult: armdeploymentsafeguards.DeploymentSafeguardListResult{
 		// 		Value: []*armdeploymentsafeguards.DeploymentSafeguard{
 		// 			{

@@ -14,21 +14,21 @@ import (
 	"strings"
 )
 
-// DeploymentSafeguardsClient contains the methods for the DeploymentSafeguards group.
-// Don't use this type directly, use NewDeploymentSafeguardsClient() instead.
-type DeploymentSafeguardsClient struct {
+// Client contains the methods for the service.
+// Don't use this type directly, use NewClient() instead.
+type Client struct {
 	internal *arm.Client
 }
 
-// NewDeploymentSafeguardsClient creates a new instance of DeploymentSafeguardsClient with the specified values.
+// NewClient creates a new instance of Client with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewDeploymentSafeguardsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentSafeguardsClient, error) {
+func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &DeploymentSafeguardsClient{
+	client := &Client{
 		internal: cl,
 	}
 	return client, nil
@@ -40,20 +40,19 @@ func NewDeploymentSafeguardsClient(credential azcore.TokenCredential, options *a
 // Generated from API version 2025-05-02-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - resource - Resource create parameters.
-//   - options - DeploymentSafeguardsClientBeginCreateOptions contains the optional parameters for the DeploymentSafeguardsClient.BeginCreate
-//     method.
-func (client *DeploymentSafeguardsClient) BeginCreate(ctx context.Context, resourceURI string, resource DeploymentSafeguard, options *DeploymentSafeguardsClientBeginCreateOptions) (*runtime.Poller[DeploymentSafeguardsClientCreateResponse], error) {
+//   - options - ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
+func (client *Client) BeginCreate(ctx context.Context, resourceURI string, resource DeploymentSafeguard, options *ClientBeginCreateOptions) (*runtime.Poller[ClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceURI, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentSafeguardsClientCreateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentSafeguardsClientCreateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -63,9 +62,9 @@ func (client *DeploymentSafeguardsClient) BeginCreate(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-02-preview
-func (client *DeploymentSafeguardsClient) create(ctx context.Context, resourceURI string, resource DeploymentSafeguard, options *DeploymentSafeguardsClientBeginCreateOptions) (*http.Response, error) {
+func (client *Client) create(ctx context.Context, resourceURI string, resource DeploymentSafeguard, options *ClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DeploymentSafeguardsClient.BeginCreate"
+	const operationName = "Client.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -85,7 +84,7 @@ func (client *DeploymentSafeguardsClient) create(ctx context.Context, resourceUR
 }
 
 // createCreateRequest creates the Create request.
-func (client *DeploymentSafeguardsClient) createCreateRequest(ctx context.Context, resourceURI string, resource DeploymentSafeguard, _ *DeploymentSafeguardsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *Client) createCreateRequest(ctx context.Context, resourceURI string, resource DeploymentSafeguard, _ *ClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -108,20 +107,19 @@ func (client *DeploymentSafeguardsClient) createCreateRequest(ctx context.Contex
 //
 // Generated from API version 2025-05-02-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - DeploymentSafeguardsClientBeginDeleteOptions contains the optional parameters for the DeploymentSafeguardsClient.BeginDelete
-//     method.
-func (client *DeploymentSafeguardsClient) BeginDelete(ctx context.Context, resourceURI string, options *DeploymentSafeguardsClientBeginDeleteOptions) (*runtime.Poller[DeploymentSafeguardsClientDeleteResponse], error) {
+//   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+func (client *Client) BeginDelete(ctx context.Context, resourceURI string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceURI, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentSafeguardsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentSafeguardsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -131,9 +129,9 @@ func (client *DeploymentSafeguardsClient) BeginDelete(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-02-preview
-func (client *DeploymentSafeguardsClient) deleteOperation(ctx context.Context, resourceURI string, options *DeploymentSafeguardsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *Client) deleteOperation(ctx context.Context, resourceURI string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DeploymentSafeguardsClient.BeginDelete"
+	const operationName = "Client.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -153,7 +151,7 @@ func (client *DeploymentSafeguardsClient) deleteOperation(ctx context.Context, r
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DeploymentSafeguardsClient) deleteCreateRequest(ctx context.Context, resourceURI string, _ *DeploymentSafeguardsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *Client) deleteCreateRequest(ctx context.Context, resourceURI string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -163,7 +161,6 @@ func (client *DeploymentSafeguardsClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-05-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -172,32 +169,31 @@ func (client *DeploymentSafeguardsClient) deleteCreateRequest(ctx context.Contex
 //
 // Generated from API version 2025-05-02-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - DeploymentSafeguardsClientGetOptions contains the optional parameters for the DeploymentSafeguardsClient.Get
-//     method.
-func (client *DeploymentSafeguardsClient) Get(ctx context.Context, resourceURI string, options *DeploymentSafeguardsClientGetOptions) (DeploymentSafeguardsClientGetResponse, error) {
+//   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
+func (client *Client) Get(ctx context.Context, resourceURI string, options *ClientGetOptions) (ClientGetResponse, error) {
 	var err error
-	const operationName = "DeploymentSafeguardsClient.Get"
+	const operationName = "Client.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return DeploymentSafeguardsClientGetResponse{}, err
+		return ClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DeploymentSafeguardsClientGetResponse{}, err
+		return ClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return DeploymentSafeguardsClientGetResponse{}, err
+		return ClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *DeploymentSafeguardsClient) getCreateRequest(ctx context.Context, resourceURI string, _ *DeploymentSafeguardsClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, resourceURI string, _ *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -212,10 +208,10 @@ func (client *DeploymentSafeguardsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *DeploymentSafeguardsClient) getHandleResponse(resp *http.Response) (DeploymentSafeguardsClientGetResponse, error) {
-	result := DeploymentSafeguardsClientGetResponse{}
+func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
+	result := ClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentSafeguard); err != nil {
-		return DeploymentSafeguardsClientGetResponse{}, err
+		return ClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -224,15 +220,14 @@ func (client *DeploymentSafeguardsClient) getHandleResponse(resp *http.Response)
 //
 // Generated from API version 2025-05-02-preview
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - DeploymentSafeguardsClientListOptions contains the optional parameters for the DeploymentSafeguardsClient.NewListPager
-//     method.
-func (client *DeploymentSafeguardsClient) NewListPager(resourceURI string, options *DeploymentSafeguardsClientListOptions) *runtime.Pager[DeploymentSafeguardsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DeploymentSafeguardsClientListResponse]{
-		More: func(page DeploymentSafeguardsClientListResponse) bool {
+//   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
+func (client *Client) NewListPager(resourceURI string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
+		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *DeploymentSafeguardsClientListResponse) (DeploymentSafeguardsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentSafeguardsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -241,7 +236,7 @@ func (client *DeploymentSafeguardsClient) NewListPager(resourceURI string, optio
 				return client.listCreateRequest(ctx, resourceURI, options)
 			}, nil)
 			if err != nil {
-				return DeploymentSafeguardsClientListResponse{}, err
+				return ClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -250,7 +245,7 @@ func (client *DeploymentSafeguardsClient) NewListPager(resourceURI string, optio
 }
 
 // listCreateRequest creates the List request.
-func (client *DeploymentSafeguardsClient) listCreateRequest(ctx context.Context, resourceURI string, _ *DeploymentSafeguardsClientListOptions) (*policy.Request, error) {
+func (client *Client) listCreateRequest(ctx context.Context, resourceURI string, _ *ClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -265,10 +260,10 @@ func (client *DeploymentSafeguardsClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *DeploymentSafeguardsClient) listHandleResponse(resp *http.Response) (DeploymentSafeguardsClientListResponse, error) {
-	result := DeploymentSafeguardsClientListResponse{}
+func (client *Client) listHandleResponse(resp *http.Response) (ClientListResponse, error) {
+	result := ClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentSafeguardListResult); err != nil {
-		return DeploymentSafeguardsClientListResponse{}, err
+		return ClientListResponse{}, err
 	}
 	return result, nil
 }

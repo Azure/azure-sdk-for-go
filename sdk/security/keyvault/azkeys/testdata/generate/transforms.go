@@ -33,20 +33,11 @@ func main() {
 	// make secret IDs a convenience type so we can add parsing methods
 	regexReplace("models.go", `\sKID \*string(\s+.*)`, "KID *ID$1")
 
-	// change type of KeyOps to KeyOperation
-	regexReplace("models.go", `KeyOps \[\]\*string`, `KeyOps []*KeyOperation`)
-
 	// delete SignatureAlgorithmRSNULL
 	regexReplace("constants.go", `.*(\bSignatureAlgorithmRSNULL\b).*`, "")
 
 	// delete KeyOperationExport
 	regexReplace("constants.go", `.*(\bKeyOperationExport\b).*`, "")
-
-	// delete DeletionRecoveryLevel
-	regexReplace("models.go", `RecoveryLevel \*DeletionRecoveryLevel`, "RecoveryLevel *string")
-	regexReplace("constants.go", `(?:\/\/.*\s)+type DeletionRecoveryLevel string`, "")
-	regexReplace("constants.go", `(?:\/\/.*\s)+func PossibleDeletionRecovery(?:.+\s)+\}`, "")
-	regexReplace("constants.go", `const \(\n\/\/ DeletionRecoveryLevel(?:.+\s)+\)`, "")
 
 	// fix up doc comments
 	regexReplace("models.go", `DeletedKeyBundle`, `DeletedKey`)

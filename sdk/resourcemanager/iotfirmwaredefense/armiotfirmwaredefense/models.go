@@ -352,6 +352,18 @@ func (c *CryptoKeySummaryResource) GetSummaryResourceProperties() *SummaryResour
 	}
 }
 
+// CveComponent - Legacy component of a CVE result.
+type CveComponent struct {
+	// ID of the SBOM component.
+	ComponentID *string
+
+	// Name of the SBOM component.
+	Name *string
+
+	// Version of the SBOM component.
+	Version *string
+}
+
 // CveLink - Properties of a reference link for a CVE.
 type CveLink struct {
 	// The destination of the reference link.
@@ -390,6 +402,9 @@ type CveResourceListResult struct {
 
 // CveResult - Details of a CVE detected in firmware.
 type CveResult struct {
+	// Legacy property for what is now componentName
+	Component *CveComponent
+
 	// ID of the affected SBOM component.
 	ComponentID *string
 
@@ -405,8 +420,20 @@ type CveResult struct {
 	// Name of the CVE.
 	CveName *string
 
+	// Legacy property for the effective CVE score.
+	CvssScore *string
+
 	// All known CVSS scores for the CVE.
 	CvssScores []*CvssScore
+
+	// Legacy property for the CVE CVSS version 2 score, if one existed.
+	CvssV2Score *string
+
+	// Legacy property for the CVE CVSS version 3 score, if one existed.
+	CvssV3Score *string
+
+	// Legacy property for the what CVSS version score was stored in the cvssScore property
+	CvssVersion *string
 
 	// The CVE description.
 	Description *string

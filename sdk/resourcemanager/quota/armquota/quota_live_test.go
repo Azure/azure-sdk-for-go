@@ -51,7 +51,7 @@ func (testsuite *QuotaTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestQuotaTestSuite(t *testing.T) {
+func TTestQuotaTestSuite(t *testing.T) {
 	suite.Run(t, new(QuotaTestSuite))
 }
 

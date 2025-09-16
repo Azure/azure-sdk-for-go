@@ -8,50 +8,50 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/rbac"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // Server is a fake server for instances of the rbac.Client type.
-type Server struct {
+type Server struct{
 	// CreateOrUpdateRoleDefinition is the fake for method Client.CreateOrUpdateRoleDefinition
 	// HTTP status codes to indicate success: http.StatusCreated
-	CreateOrUpdateRoleDefinition func(ctx context.Context, scope rbac.RoleScope, roleDefinitionName string, parameters rbac.RoleDefinitionCreateParameters, options *rbac.CreateOrUpdateRoleDefinitionOptions) (resp azfake.Responder[rbac.CreateOrUpdateRoleDefinitionResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateRoleDefinition func(ctx context.Context, scope string, roleDefinitionName string, parameters rbac.RoleDefinitionCreateParameters, options *rbac.CreateOrUpdateRoleDefinitionOptions) (resp azfake.Responder[rbac.CreateOrUpdateRoleDefinitionResponse], errResp azfake.ErrorResponder)
 
 	// CreateRoleAssignment is the fake for method Client.CreateRoleAssignment
 	// HTTP status codes to indicate success: http.StatusCreated
-	CreateRoleAssignment func(ctx context.Context, scope rbac.RoleScope, roleAssignmentName string, parameters rbac.RoleAssignmentCreateParameters, options *rbac.CreateRoleAssignmentOptions) (resp azfake.Responder[rbac.CreateRoleAssignmentResponse], errResp azfake.ErrorResponder)
+	CreateRoleAssignment func(ctx context.Context, scope string, roleAssignmentName string, parameters rbac.RoleAssignmentCreateParameters, options *rbac.CreateRoleAssignmentOptions) (resp azfake.Responder[rbac.CreateRoleAssignmentResponse], errResp azfake.ErrorResponder)
 
 	// DeleteRoleAssignment is the fake for method Client.DeleteRoleAssignment
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteRoleAssignment func(ctx context.Context, scope rbac.RoleScope, roleAssignmentName string, options *rbac.DeleteRoleAssignmentOptions) (resp azfake.Responder[rbac.DeleteRoleAssignmentResponse], errResp azfake.ErrorResponder)
+	DeleteRoleAssignment func(ctx context.Context, scope string, roleAssignmentName string, options *rbac.DeleteRoleAssignmentOptions) (resp azfake.Responder[rbac.DeleteRoleAssignmentResponse], errResp azfake.ErrorResponder)
 
 	// DeleteRoleDefinition is the fake for method Client.DeleteRoleDefinition
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteRoleDefinition func(ctx context.Context, scope rbac.RoleScope, roleDefinitionName string, options *rbac.DeleteRoleDefinitionOptions) (resp azfake.Responder[rbac.DeleteRoleDefinitionResponse], errResp azfake.ErrorResponder)
+	DeleteRoleDefinition func(ctx context.Context, scope string, roleDefinitionName string, options *rbac.DeleteRoleDefinitionOptions) (resp azfake.Responder[rbac.DeleteRoleDefinitionResponse], errResp azfake.ErrorResponder)
 
 	// GetRoleAssignment is the fake for method Client.GetRoleAssignment
 	// HTTP status codes to indicate success: http.StatusOK
-	GetRoleAssignment func(ctx context.Context, scope rbac.RoleScope, roleAssignmentName string, options *rbac.GetRoleAssignmentOptions) (resp azfake.Responder[rbac.GetRoleAssignmentResponse], errResp azfake.ErrorResponder)
+	GetRoleAssignment func(ctx context.Context, scope string, roleAssignmentName string, options *rbac.GetRoleAssignmentOptions) (resp azfake.Responder[rbac.GetRoleAssignmentResponse], errResp azfake.ErrorResponder)
 
 	// GetRoleDefinition is the fake for method Client.GetRoleDefinition
 	// HTTP status codes to indicate success: http.StatusOK
-	GetRoleDefinition func(ctx context.Context, scope rbac.RoleScope, roleDefinitionName string, options *rbac.GetRoleDefinitionOptions) (resp azfake.Responder[rbac.GetRoleDefinitionResponse], errResp azfake.ErrorResponder)
+	GetRoleDefinition func(ctx context.Context, scope string, roleDefinitionName string, options *rbac.GetRoleDefinitionOptions) (resp azfake.Responder[rbac.GetRoleDefinitionResponse], errResp azfake.ErrorResponder)
 
 	// NewListRoleAssignmentsPager is the fake for method Client.NewListRoleAssignmentsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListRoleAssignmentsPager func(scope rbac.RoleScope, options *rbac.ListRoleAssignmentsOptions) (resp azfake.PagerResponder[rbac.ListRoleAssignmentsResponse])
+	NewListRoleAssignmentsPager func(scope string, options *rbac.ListRoleAssignmentsOptions) (resp azfake.PagerResponder[rbac.ListRoleAssignmentsResponse])
 
 	// NewListRoleDefinitionsPager is the fake for method Client.NewListRoleDefinitionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListRoleDefinitionsPager func(scope rbac.RoleScope, options *rbac.ListRoleDefinitionsOptions) (resp azfake.PagerResponder[rbac.ListRoleDefinitionsResponse])
+	NewListRoleDefinitionsPager func(scope string, options *rbac.ListRoleDefinitionsOptions) (resp azfake.PagerResponder[rbac.ListRoleDefinitionsResponse])
+
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -59,7 +59,7 @@ type Server struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
-		srv:                         srv,
+		srv: srv,
 		newListRoleAssignmentsPager: newTracker[azfake.PagerResponder[rbac.ListRoleAssignmentsResponse]](),
 		newListRoleDefinitionsPager: newTracker[azfake.PagerResponder[rbac.ListRoleDefinitionsResponse]](),
 	}
@@ -68,7 +68,7 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // ServerTransport connects instances of rbac.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
-	srv                         *Server
+	srv *Server
 	newListRoleAssignmentsPager *tracker[azfake.PagerResponder[rbac.ListRoleAssignmentsResponse]]
 	newListRoleDefinitionsPager *tracker[azfake.PagerResponder[rbac.ListRoleDefinitionsResponse]]
 }
@@ -91,8 +91,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	go func() {
 		var intercepted bool
 		var res result
-		if serverTransportInterceptor != nil {
-			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		 if serverTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -112,8 +112,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchNewListRoleAssignmentsPager(req)
 			case "Client.NewListRoleDefinitionsPager":
 				res.resp, res.err = s.dispatchNewListRoleDefinitionsPager(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -135,7 +135,7 @@ func (s *ServerTransport) dispatchCreateOrUpdateRoleDefinition(req *http.Request
 	if s.srv.CreateOrUpdateRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateRoleDefinition not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -153,7 +153,7 @@ func (s *ServerTransport) dispatchCreateOrUpdateRoleDefinition(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CreateOrUpdateRoleDefinition(req.Context(), rbac.RoleScope(`/`+scopeParam), roleDefinitionNameParam, body, nil)
+	respr, errRespr := s.srv.CreateOrUpdateRoleDefinition(req.Context(), scopeParam, roleDefinitionNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -172,7 +172,7 @@ func (s *ServerTransport) dispatchCreateRoleAssignment(req *http.Request) (*http
 	if s.srv.CreateRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateRoleAssignment not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -190,7 +190,7 @@ func (s *ServerTransport) dispatchCreateRoleAssignment(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CreateRoleAssignment(req.Context(), rbac.RoleScope(`/`+scopeParam), roleAssignmentNameParam, body, nil)
+	respr, errRespr := s.srv.CreateRoleAssignment(req.Context(), scopeParam, roleAssignmentNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -209,7 +209,7 @@ func (s *ServerTransport) dispatchDeleteRoleAssignment(req *http.Request) (*http
 	if s.srv.DeleteRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteRoleAssignment not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -223,7 +223,7 @@ func (s *ServerTransport) dispatchDeleteRoleAssignment(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.DeleteRoleAssignment(req.Context(), rbac.RoleScope(`/`+scopeParam), roleAssignmentNameParam, nil)
+	respr, errRespr := s.srv.DeleteRoleAssignment(req.Context(), scopeParam, roleAssignmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -242,7 +242,7 @@ func (s *ServerTransport) dispatchDeleteRoleDefinition(req *http.Request) (*http
 	if s.srv.DeleteRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteRoleDefinition not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -256,7 +256,7 @@ func (s *ServerTransport) dispatchDeleteRoleDefinition(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.DeleteRoleDefinition(req.Context(), rbac.RoleScope(`/`+scopeParam), roleDefinitionNameParam, nil)
+	respr, errRespr := s.srv.DeleteRoleDefinition(req.Context(), scopeParam, roleDefinitionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -275,7 +275,7 @@ func (s *ServerTransport) dispatchGetRoleAssignment(req *http.Request) (*http.Re
 	if s.srv.GetRoleAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRoleAssignment not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -289,7 +289,7 @@ func (s *ServerTransport) dispatchGetRoleAssignment(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetRoleAssignment(req.Context(), rbac.RoleScope(`/`+scopeParam), roleAssignmentNameParam, nil)
+	respr, errRespr := s.srv.GetRoleAssignment(req.Context(), scopeParam, roleAssignmentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -308,7 +308,7 @@ func (s *ServerTransport) dispatchGetRoleDefinition(req *http.Request) (*http.Re
 	if s.srv.GetRoleDefinition == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRoleDefinition not implemented")}
 	}
-	const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -322,7 +322,7 @@ func (s *ServerTransport) dispatchGetRoleDefinition(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetRoleDefinition(req.Context(), rbac.RoleScope(`/`+scopeParam), roleDefinitionNameParam, nil)
+	respr, errRespr := s.srv.GetRoleDefinition(req.Context(), scopeParam, roleDefinitionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -343,29 +343,29 @@ func (s *ServerTransport) dispatchNewListRoleAssignmentsPager(req *http.Request)
 	}
 	newListRoleAssignmentsPager := s.newListRoleAssignmentsPager.get(req)
 	if newListRoleAssignmentsPager == nil {
-		const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *rbac.ListRoleAssignmentsOptions
+	if filterParam != nil {
+		options = &rbac.ListRoleAssignmentsOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *rbac.ListRoleAssignmentsOptions
-		if filterParam != nil {
-			options = &rbac.ListRoleAssignmentsOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := s.srv.NewListRoleAssignmentsPager(rbac.RoleScope(`/`+scopeParam), options)
+	}
+resp := s.srv.NewListRoleAssignmentsPager(scopeParam, options)
 		newListRoleAssignmentsPager = &resp
 		s.newListRoleAssignmentsPager.add(req, newListRoleAssignmentsPager)
 		server.PagerResponderInjectNextLinks(newListRoleAssignmentsPager, req, func(page *rbac.ListRoleAssignmentsResponse, createLink func() string) {
@@ -392,29 +392,29 @@ func (s *ServerTransport) dispatchNewListRoleDefinitionsPager(req *http.Request)
 	}
 	newListRoleDefinitionsPager := s.newListRoleDefinitionsPager.get(req)
 	if newListRoleDefinitionsPager == nil {
-		const regexStr = `/?(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?/providers/Microsoft\.Authorization/roleDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *rbac.ListRoleDefinitionsOptions
+	if filterParam != nil {
+		options = &rbac.ListRoleDefinitionsOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *rbac.ListRoleDefinitionsOptions
-		if filterParam != nil {
-			options = &rbac.ListRoleDefinitionsOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := s.srv.NewListRoleDefinitionsPager(rbac.RoleScope(`/`+scopeParam), options)
+	}
+resp := s.srv.NewListRoleDefinitionsPager(scopeParam, options)
 		newListRoleDefinitionsPager = &resp
 		s.newListRoleDefinitionsPager.add(req, newListRoleDefinitionsPager)
 		server.PagerResponderInjectNextLinks(newListRoleDefinitionsPager, req, func(page *rbac.ListRoleDefinitionsResponse, createLink func() string) {

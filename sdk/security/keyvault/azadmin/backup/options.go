@@ -6,30 +6,31 @@ package backup
 
 // BeginFullBackupOptions contains the optional parameters for the Client.BeginFullBackup method.
 type BeginFullBackupOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // BeginFullRestoreOptions contains the optional parameters for the Client.BeginFullRestore method.
 type BeginFullRestoreOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // BeginPreFullBackupOptions contains the optional parameters for the Client.BeginPreFullBackup method.
 type BeginPreFullBackupOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // BeginPreFullRestoreOptions contains the optional parameters for the Client.BeginPreFullRestore method.
 type BeginPreFullRestoreOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // BeginSelectiveKeyRestoreOptions contains the optional parameters for the Client.BeginSelectiveKeyRestore method.
 type BeginSelectiveKeyRestoreOptions struct {
-	// Resumes the long-running operation from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
+

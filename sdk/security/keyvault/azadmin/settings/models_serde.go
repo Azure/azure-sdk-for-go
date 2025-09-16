@@ -7,9 +7,8 @@ package settings
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type ListResult.
@@ -29,7 +28,7 @@ func (l *ListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "settings":
-			err = unpopulate(val, "Settings", &l.Settings)
+				err = unpopulate(val, "Settings", &l.Settings)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -58,13 +57,13 @@ func (s *Setting) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "name":
-			err = unpopulate(val, "Name", &s.Name)
+				err = unpopulate(val, "Name", &s.Name)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &s.Type)
+				err = unpopulate(val, "Type", &s.Type)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &s.Value)
+				err = unpopulate(val, "Value", &s.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -91,7 +90,7 @@ func (u *UpdateSettingRequest) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-			err = unpopulate(val, "Value", &u.Value)
+				err = unpopulate(val, "Value", &u.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -120,3 +119,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

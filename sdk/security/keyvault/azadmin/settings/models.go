@@ -6,24 +6,25 @@ package settings
 
 // ListResult - The settings list result.
 type ListResult struct {
-	// READ-ONLY; A response message containing a list of account settings with their associated value.
+// READ-ONLY; A response message containing a list of account settings with their associated value.
 	Settings []*Setting
 }
 
 // Setting - A Key Vault account setting.
 type Setting struct {
-	// REQUIRED; The account setting to be updated
+// REQUIRED; The account setting to be updated
 	Name *string
 
-	// REQUIRED; The value of the pool setting.
+// REQUIRED; The value of the pool setting.
 	Value *string
 
-	// The type specifier of the value.
+// The type specifier of the value.
 	Type *SettingType
 }
 
 // UpdateSettingRequest - The update settings request object.
 type UpdateSettingRequest struct {
-	// REQUIRED; The value of the pool setting.
+// REQUIRED; The value of the pool setting.
 	Value *string
 }
+

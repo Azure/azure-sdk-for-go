@@ -6,48 +6,49 @@ package rbac
 
 // CreateOrUpdateRoleDefinitionResponse contains the response from method Client.CreateOrUpdateRoleDefinition.
 type CreateOrUpdateRoleDefinitionResponse struct {
-	// Role definition.
+// Role definition.
 	RoleDefinition
 }
 
 // CreateRoleAssignmentResponse contains the response from method Client.CreateRoleAssignment.
 type CreateRoleAssignmentResponse struct {
-	// Role Assignments
+// Role Assignments
 	RoleAssignment
 }
 
 // DeleteRoleAssignmentResponse contains the response from method Client.DeleteRoleAssignment.
 type DeleteRoleAssignmentResponse struct {
-	// Role Assignments
+// Role Assignments
 	RoleAssignment
 }
 
 // DeleteRoleDefinitionResponse contains the response from method Client.DeleteRoleDefinition.
 type DeleteRoleDefinitionResponse struct {
-	// Role definition.
+// Role definition.
 	RoleDefinition
 }
 
 // GetRoleAssignmentResponse contains the response from method Client.GetRoleAssignment.
 type GetRoleAssignmentResponse struct {
-	// Role Assignments
+// Role Assignments
 	RoleAssignment
 }
 
 // GetRoleDefinitionResponse contains the response from method Client.GetRoleDefinition.
 type GetRoleDefinitionResponse struct {
-	// Role definition.
+// Role definition.
 	RoleDefinition
 }
 
 // ListRoleAssignmentsResponse contains the response from method Client.NewListRoleAssignmentsPager.
 type ListRoleAssignmentsResponse struct {
-	// Role assignment list operation result.
+// Role assignment list operation result.
 	RoleAssignmentListResult
 }
 
 // ListRoleDefinitionsResponse contains the response from method Client.NewListRoleDefinitionsPager.
 type ListRoleDefinitionsResponse struct {
-	// Role definition list operation result.
+// Role definition list operation result.
 	RoleDefinitionListResult
 }
+

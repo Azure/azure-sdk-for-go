@@ -8,119 +8,131 @@ import "time"
 
 // FullBackupOperation - Full backup operation
 type FullBackupOperation struct {
-	// The Azure blob storage container Uri which contains the full backup
+// The Azure blob storage container Uri which contains the full backup
 	AzureStorageBlobContainerURI *string
 
-	// The end time of the backup operation in UTC
+// The end time of the backup operation in UTC
 	EndTime *time.Time
 
-	// Error encountered, if any, during the full backup operation.
-	Error *ErrorInfo
+// Error encountered, if any, during the full backup operation.
+	Error *FullBackupOperationError
 
-	// Identifier for the full backup operation.
+// Identifier for the full backup operation.
 	JobID *string
 
-	// The start time of the backup operation in UTC
+// The start time of the backup operation in UTC
 	StartTime *time.Time
 
-	// Status of the backup operation.
-	Status *string
+// Status of the backup operation.
+	Status *OperationStatus
 
-	// The status details of backup operation.
+// The status details of backup operation.
 	StatusDetails *string
+}
+
+type FullBackupOperationError struct {
+// READ-ONLY; The error code.
+	Code *string
+
+// READ-ONLY; The key vault server error.
+	InnerError *FullBackupOperationError
+
+// READ-ONLY; The error message.
+	Message *string
 }
 
 // PreBackupOperationParameters - The authentication method and location for the backup operation.
 type PreBackupOperationParameters struct {
-	// Azure Blob storage container Uri
+// Azure Blob storage container Uri
 	StorageResourceURI *string
 
-	// The SAS token pointing to an Azure Blob storage container
+// The SAS token pointing to an Azure Blob storage container
 	Token *string
 
-	// Indicates which authentication method should be used. If set to true, Managed HSM will use the configured user-assigned
-	// managed identity to authenticate with Azure Storage. Otherwise, a SAS token has to be specified.
+// Indicates which authentication method should be used. If set to true, Managed HSM will use the configured user-assigned
+// managed identity to authenticate with Azure Storage. Otherwise, a SAS token has to be specified.
 	UseManagedIdentity *bool
 }
 
 // PreRestoreOperationParameters - The authentication method and location for the restore operation.
 type PreRestoreOperationParameters struct {
-	// The Folder name of the blob where the previous successful full backup was stored
+// The Folder name of the blob where the previous successful full backup was stored
 	FolderToRestore *string
 
-	// A user-provided SAS token to an Azure blob storage container.
+// A user-provided SAS token to an Azure blob storage container.
 	SASTokenParameters *SASTokenParameters
 }
 
 // RestoreOperation - Restore operation
 type RestoreOperation struct {
-	// The end time of the restore operation
+// The end time of the restore operation
 	EndTime *time.Time
 
-	// Error encountered, if any, during the restore operation.
-	Error *ErrorInfo
+// Error encountered, if any, during the restore operation.
+	Error *FullBackupOperationError
 
-	// Identifier for the restore operation.
+// Identifier for the restore operation.
 	JobID *string
 
-	// The start time of the restore operation
+// The start time of the restore operation
 	StartTime *time.Time
 
-	// Status of the restore operation.
-	Status *string
+// Status of the restore operation.
+	Status *OperationStatus
 
-	// The status details of restore operation.
+// The status details of restore operation.
 	StatusDetails *string
 }
 
 // RestoreOperationParameters - The authentication method and location for the restore operation.
 type RestoreOperationParameters struct {
-	// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
+// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
 	FolderToRestore *string
 
-	// REQUIRED; A user-provided SAS token to an Azure blob storage container.
+// REQUIRED; A user-provided SAS token to an Azure blob storage container.
 	SASTokenParameters *SASTokenParameters
 }
 
 // SASTokenParameters - An authentication method and location for the operation.
 type SASTokenParameters struct {
-	// REQUIRED; Azure Blob storage container Uri
+// REQUIRED; Azure Blob storage container Uri
 	StorageResourceURI *string
 
-	// The SAS token pointing to an Azure Blob storage container
+// The SAS token pointing to an Azure Blob storage container
 	Token *string
 
-	// Indicates which authentication method should be used. If set to true, Managed HSM will use the configured user-assigned
-	// managed identity to authenticate with Azure Storage. Otherwise, a SAS token has to be specified.
+// Indicates which authentication method should be used. If set to true, Managed HSM will use the configured user-assigned
+// managed identity to authenticate with Azure Storage. Otherwise, a SAS token has to be specified.
 	UseManagedIdentity *bool
 }
 
 // SelectiveKeyRestoreOperation - Selective Key Restore operation
 type SelectiveKeyRestoreOperation struct {
-	// The end time of the restore operation
+// The end time of the restore operation
 	EndTime *time.Time
 
-	// Error encountered, if any, during the selective key restore operation.
-	Error *ErrorInfo
+// Error encountered, if any, during the selective key restore operation.
+	Error *FullBackupOperationError
 
-	// Identifier for the selective key restore operation.
+// Identifier for the selective key restore operation.
 	JobID *string
 
-	// The start time of the restore operation
+// The start time of the restore operation
 	StartTime *time.Time
 
-	// Status of the restore operation.
-	Status *string
+// Status of the restore operation.
+	Status *OperationStatus
 
-	// The status details of restore operation.
+// The status details of restore operation.
 	StatusDetails *string
 }
 
 // SelectiveKeyRestoreOperationParameters - The authentication method and location for the selective key restore operation.
 type SelectiveKeyRestoreOperationParameters struct {
-	// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
+// REQUIRED; The Folder name of the blob where the previous successful full backup was stored
 	Folder *string
 
-	// REQUIRED; A user-provided SAS token to an Azure blob storage container.
+// REQUIRED; A user-provided SAS token to an Azure blob storage container.
 	SASTokenParameters *SASTokenParameters
 }
+

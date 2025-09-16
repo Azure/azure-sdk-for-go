@@ -8,18 +8,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // Server is a fake server for instances of the backup.Client type.
-type Server struct {
+type Server struct{
 	// BeginFullBackup is the fake for method Client.BeginFullBackup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginFullBackup func(ctx context.Context, azureStorageBlobContainerURI backup.SASTokenParameters, options *backup.BeginFullBackupOptions) (resp azfake.PollerResponder[backup.FullBackupResponse], errResp azfake.ErrorResponder)
@@ -39,6 +38,7 @@ type Server struct {
 	// BeginSelectiveKeyRestore is the fake for method Client.BeginSelectiveKeyRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSelectiveKeyRestore func(ctx context.Context, keyName string, restoreBlobDetails backup.SelectiveKeyRestoreOperationParameters, options *backup.BeginSelectiveKeyRestoreOptions) (resp azfake.PollerResponder[backup.SelectiveKeyRestoreResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -46,11 +46,11 @@ type Server struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
-		srv:                      srv,
-		beginFullBackup:          newTracker[azfake.PollerResponder[backup.FullBackupResponse]](),
-		beginFullRestore:         newTracker[azfake.PollerResponder[backup.FullRestoreResponse]](),
-		beginPreFullBackup:       newTracker[azfake.PollerResponder[backup.PreFullBackupResponse]](),
-		beginPreFullRestore:      newTracker[azfake.PollerResponder[backup.PreFullRestoreResponse]](),
+		srv: srv,
+		beginFullBackup: newTracker[azfake.PollerResponder[backup.FullBackupResponse]](),
+		beginFullRestore: newTracker[azfake.PollerResponder[backup.FullRestoreResponse]](),
+		beginPreFullBackup: newTracker[azfake.PollerResponder[backup.PreFullBackupResponse]](),
+		beginPreFullRestore: newTracker[azfake.PollerResponder[backup.PreFullRestoreResponse]](),
 		beginSelectiveKeyRestore: newTracker[azfake.PollerResponder[backup.SelectiveKeyRestoreResponse]](),
 	}
 }
@@ -58,11 +58,11 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // ServerTransport connects instances of backup.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
-	srv                      *Server
-	beginFullBackup          *tracker[azfake.PollerResponder[backup.FullBackupResponse]]
-	beginFullRestore         *tracker[azfake.PollerResponder[backup.FullRestoreResponse]]
-	beginPreFullBackup       *tracker[azfake.PollerResponder[backup.PreFullBackupResponse]]
-	beginPreFullRestore      *tracker[azfake.PollerResponder[backup.PreFullRestoreResponse]]
+	srv *Server
+	beginFullBackup *tracker[azfake.PollerResponder[backup.FullBackupResponse]]
+	beginFullRestore *tracker[azfake.PollerResponder[backup.FullRestoreResponse]]
+	beginPreFullBackup *tracker[azfake.PollerResponder[backup.PreFullBackupResponse]]
+	beginPreFullRestore *tracker[azfake.PollerResponder[backup.PreFullRestoreResponse]]
 	beginSelectiveKeyRestore *tracker[azfake.PollerResponder[backup.SelectiveKeyRestoreResponse]]
 }
 
@@ -84,8 +84,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	go func() {
 		var intercepted bool
 		var res result
-		if serverTransportInterceptor != nil {
-			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		 if serverTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -99,8 +99,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginPreFullRestore(req)
 			case "Client.BeginSelectiveKeyRestore":
 				res.resp, res.err = s.dispatchBeginSelectiveKeyRestore(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
@@ -124,14 +124,14 @@ func (s *ServerTransport) dispatchBeginFullBackup(req *http.Request) (*http.Resp
 	}
 	beginFullBackup := s.beginFullBackup.get(req)
 	if beginFullBackup == nil {
-		body, err := server.UnmarshalRequestAsJSON[backup.SASTokenParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginFullBackup(req.Context(), body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	body, err := server.UnmarshalRequestAsJSON[backup.SASTokenParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginFullBackup(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginFullBackup = &respr
 		s.beginFullBackup.add(req, beginFullBackup)
 	}
@@ -158,14 +158,14 @@ func (s *ServerTransport) dispatchBeginFullRestore(req *http.Request) (*http.Res
 	}
 	beginFullRestore := s.beginFullRestore.get(req)
 	if beginFullRestore == nil {
-		body, err := server.UnmarshalRequestAsJSON[backup.RestoreOperationParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginFullRestore(req.Context(), body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	body, err := server.UnmarshalRequestAsJSON[backup.RestoreOperationParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginFullRestore(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginFullRestore = &respr
 		s.beginFullRestore.add(req, beginFullRestore)
 	}
@@ -192,14 +192,14 @@ func (s *ServerTransport) dispatchBeginPreFullBackup(req *http.Request) (*http.R
 	}
 	beginPreFullBackup := s.beginPreFullBackup.get(req)
 	if beginPreFullBackup == nil {
-		body, err := server.UnmarshalRequestAsJSON[backup.PreBackupOperationParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginPreFullBackup(req.Context(), body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	body, err := server.UnmarshalRequestAsJSON[backup.PreBackupOperationParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginPreFullBackup(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginPreFullBackup = &respr
 		s.beginPreFullBackup.add(req, beginPreFullBackup)
 	}
@@ -226,14 +226,14 @@ func (s *ServerTransport) dispatchBeginPreFullRestore(req *http.Request) (*http.
 	}
 	beginPreFullRestore := s.beginPreFullRestore.get(req)
 	if beginPreFullRestore == nil {
-		body, err := server.UnmarshalRequestAsJSON[backup.PreRestoreOperationParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginPreFullRestore(req.Context(), body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	body, err := server.UnmarshalRequestAsJSON[backup.PreRestoreOperationParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginPreFullRestore(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginPreFullRestore = &respr
 		s.beginPreFullRestore.add(req, beginPreFullRestore)
 	}
@@ -260,24 +260,24 @@ func (s *ServerTransport) dispatchBeginSelectiveKeyRestore(req *http.Request) (*
 	}
 	beginSelectiveKeyRestore := s.beginSelectiveKeyRestore.get(req)
 	if beginSelectiveKeyRestore == nil {
-		const regexStr = `/keys/(?P<keyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[backup.SelectiveKeyRestoreOperationParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		keyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginSelectiveKeyRestore(req.Context(), keyNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/keys/(?P<keyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[backup.SelectiveKeyRestoreOperationParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	keyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginSelectiveKeyRestore(req.Context(), keyNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginSelectiveKeyRestore = &respr
 		s.beginSelectiveKeyRestore.add(req, beginSelectiveKeyRestore)
 	}

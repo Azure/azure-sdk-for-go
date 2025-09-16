@@ -7,9 +7,8 @@ package backup
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type FullBackupOperation.
@@ -35,25 +34,60 @@ func (f *FullBackupOperation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "azureStorageBlobContainerUri":
-			err = unpopulate(val, "AzureStorageBlobContainerURI", &f.AzureStorageBlobContainerURI)
+				err = unpopulate(val, "AzureStorageBlobContainerURI", &f.AzureStorageBlobContainerURI)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeUnix(val, "EndTime", &f.EndTime)
+				err = unpopulateTimeUnix(val, "EndTime", &f.EndTime)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, "Error", &f.Error)
+				err = unpopulate(val, "Error", &f.Error)
 			delete(rawMsg, key)
 		case "jobId":
-			err = unpopulate(val, "JobID", &f.JobID)
+				err = unpopulate(val, "JobID", &f.JobID)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeUnix(val, "StartTime", &f.StartTime)
+				err = unpopulateTimeUnix(val, "StartTime", &f.StartTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, "Status", &f.Status)
+				err = unpopulate(val, "Status", &f.Status)
 			delete(rawMsg, key)
 		case "statusDetails":
-			err = unpopulate(val, "StatusDetails", &f.StatusDetails)
+				err = unpopulate(val, "StatusDetails", &f.StatusDetails)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FullBackupOperationError.
+func (f FullBackupOperationError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", f.Code)
+	populate(objectMap, "innererror", f.InnerError)
+	populate(objectMap, "message", f.Message)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FullBackupOperationError.
+func (f *FullBackupOperationError) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+				err = unpopulate(val, "Code", &f.Code)
+			delete(rawMsg, key)
+		case "innererror":
+				err = unpopulate(val, "InnerError", &f.InnerError)
+			delete(rawMsg, key)
+		case "message":
+				err = unpopulate(val, "Message", &f.Message)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -82,13 +116,13 @@ func (p *PreBackupOperationParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "storageResourceUri":
-			err = unpopulate(val, "StorageResourceURI", &p.StorageResourceURI)
+				err = unpopulate(val, "StorageResourceURI", &p.StorageResourceURI)
 			delete(rawMsg, key)
 		case "token":
-			err = unpopulate(val, "Token", &p.Token)
+				err = unpopulate(val, "Token", &p.Token)
 			delete(rawMsg, key)
 		case "useManagedIdentity":
-			err = unpopulate(val, "UseManagedIdentity", &p.UseManagedIdentity)
+				err = unpopulate(val, "UseManagedIdentity", &p.UseManagedIdentity)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -116,10 +150,10 @@ func (p *PreRestoreOperationParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "folderToRestore":
-			err = unpopulate(val, "FolderToRestore", &p.FolderToRestore)
+				err = unpopulate(val, "FolderToRestore", &p.FolderToRestore)
 			delete(rawMsg, key)
 		case "sasTokenParameters":
-			err = unpopulate(val, "SASTokenParameters", &p.SASTokenParameters)
+				err = unpopulate(val, "SASTokenParameters", &p.SASTokenParameters)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -151,22 +185,22 @@ func (r *RestoreOperation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeUnix(val, "EndTime", &r.EndTime)
+				err = unpopulateTimeUnix(val, "EndTime", &r.EndTime)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, "Error", &r.Error)
+				err = unpopulate(val, "Error", &r.Error)
 			delete(rawMsg, key)
 		case "jobId":
-			err = unpopulate(val, "JobID", &r.JobID)
+				err = unpopulate(val, "JobID", &r.JobID)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeUnix(val, "StartTime", &r.StartTime)
+				err = unpopulateTimeUnix(val, "StartTime", &r.StartTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, "Status", &r.Status)
+				err = unpopulate(val, "Status", &r.Status)
 			delete(rawMsg, key)
 		case "statusDetails":
-			err = unpopulate(val, "StatusDetails", &r.StatusDetails)
+				err = unpopulate(val, "StatusDetails", &r.StatusDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -194,10 +228,10 @@ func (r *RestoreOperationParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "folderToRestore":
-			err = unpopulate(val, "FolderToRestore", &r.FolderToRestore)
+				err = unpopulate(val, "FolderToRestore", &r.FolderToRestore)
 			delete(rawMsg, key)
 		case "sasTokenParameters":
-			err = unpopulate(val, "SASTokenParameters", &r.SASTokenParameters)
+				err = unpopulate(val, "SASTokenParameters", &r.SASTokenParameters)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -226,13 +260,13 @@ func (s *SASTokenParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "storageResourceUri":
-			err = unpopulate(val, "StorageResourceURI", &s.StorageResourceURI)
+				err = unpopulate(val, "StorageResourceURI", &s.StorageResourceURI)
 			delete(rawMsg, key)
 		case "token":
-			err = unpopulate(val, "Token", &s.Token)
+				err = unpopulate(val, "Token", &s.Token)
 			delete(rawMsg, key)
 		case "useManagedIdentity":
-			err = unpopulate(val, "UseManagedIdentity", &s.UseManagedIdentity)
+				err = unpopulate(val, "UseManagedIdentity", &s.UseManagedIdentity)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -264,22 +298,22 @@ func (s *SelectiveKeyRestoreOperation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeUnix(val, "EndTime", &s.EndTime)
+				err = unpopulateTimeUnix(val, "EndTime", &s.EndTime)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, "Error", &s.Error)
+				err = unpopulate(val, "Error", &s.Error)
 			delete(rawMsg, key)
 		case "jobId":
-			err = unpopulate(val, "JobID", &s.JobID)
+				err = unpopulate(val, "JobID", &s.JobID)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeUnix(val, "StartTime", &s.StartTime)
+				err = unpopulateTimeUnix(val, "StartTime", &s.StartTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, "Status", &s.Status)
+				err = unpopulate(val, "Status", &s.Status)
 			delete(rawMsg, key)
 		case "statusDetails":
-			err = unpopulate(val, "StatusDetails", &s.StatusDetails)
+				err = unpopulate(val, "StatusDetails", &s.StatusDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -307,10 +341,10 @@ func (s *SelectiveKeyRestoreOperationParameters) UnmarshalJSON(data []byte) erro
 		var err error
 		switch key {
 		case "folder":
-			err = unpopulate(val, "Folder", &s.Folder)
+				err = unpopulate(val, "Folder", &s.Folder)
 			delete(rawMsg, key)
 		case "sasTokenParameters":
-			err = unpopulate(val, "SASTokenParameters", &s.SASTokenParameters)
+				err = unpopulate(val, "SASTokenParameters", &s.SASTokenParameters)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -339,3 +373,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

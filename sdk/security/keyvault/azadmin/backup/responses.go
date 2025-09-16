@@ -6,30 +6,31 @@ package backup
 
 // FullBackupResponse contains the response from method Client.BeginFullBackup.
 type FullBackupResponse struct {
-	// Full backup operation
+// Full backup operation
 	FullBackupOperation
 }
 
 // FullRestoreResponse contains the response from method Client.BeginFullRestore.
 type FullRestoreResponse struct {
-	// Restore operation
+// Restore operation
 	RestoreOperation
 }
 
 // PreFullBackupResponse contains the response from method Client.BeginPreFullBackup.
 type PreFullBackupResponse struct {
-	// Full backup operation
+// Full backup operation
 	FullBackupOperation
 }
 
 // PreFullRestoreResponse contains the response from method Client.BeginPreFullRestore.
 type PreFullRestoreResponse struct {
-	// Restore operation
+// Restore operation
 	RestoreOperation
 }
 
 // SelectiveKeyRestoreResponse contains the response from method Client.BeginSelectiveKeyRestore.
 type SelectiveKeyRestoreResponse struct {
-	// Selective Key Restore operation
+// Selective Key Restore operation
 	SelectiveKeyRestoreOperation
 }
+

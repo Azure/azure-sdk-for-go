@@ -7,9 +7,8 @@ package rbac
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type Permission.
@@ -32,16 +31,16 @@ func (p *Permission) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "actions":
-			err = unpopulate(val, "Actions", &p.Actions)
+				err = unpopulate(val, "Actions", &p.Actions)
 			delete(rawMsg, key)
 		case "dataActions":
-			err = unpopulate(val, "DataActions", &p.DataActions)
+				err = unpopulate(val, "DataActions", &p.DataActions)
 			delete(rawMsg, key)
 		case "notActions":
-			err = unpopulate(val, "NotActions", &p.NotActions)
+				err = unpopulate(val, "NotActions", &p.NotActions)
 			delete(rawMsg, key)
 		case "notDataActions":
-			err = unpopulate(val, "NotDataActions", &p.NotDataActions)
+				err = unpopulate(val, "NotDataActions", &p.NotDataActions)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -71,16 +70,16 @@ func (r *RoleAssignment) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &r.ID)
+				err = unpopulate(val, "ID", &r.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &r.Name)
+				err = unpopulate(val, "Name", &r.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, "Properties", &r.Properties)
+				err = unpopulate(val, "Properties", &r.Properties)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &r.Type)
+				err = unpopulate(val, "Type", &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -107,7 +106,7 @@ func (r *RoleAssignmentCreateParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "properties":
-			err = unpopulate(val, "Properties", &r.Properties)
+				err = unpopulate(val, "Properties", &r.Properties)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -135,10 +134,10 @@ func (r *RoleAssignmentListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &r.NextLink)
+				err = unpopulate(val, "NextLink", &r.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &r.Value)
+				err = unpopulate(val, "Value", &r.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -166,10 +165,10 @@ func (r *RoleAssignmentProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "principalId":
-			err = unpopulate(val, "PrincipalID", &r.PrincipalID)
+				err = unpopulate(val, "PrincipalID", &r.PrincipalID)
 			delete(rawMsg, key)
 		case "roleDefinitionId":
-			err = unpopulate(val, "RoleDefinitionID", &r.RoleDefinitionID)
+				err = unpopulate(val, "RoleDefinitionID", &r.RoleDefinitionID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -198,13 +197,13 @@ func (r *RoleAssignmentPropertiesWithScope) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "principalId":
-			err = unpopulate(val, "PrincipalID", &r.PrincipalID)
+				err = unpopulate(val, "PrincipalID", &r.PrincipalID)
 			delete(rawMsg, key)
 		case "roleDefinitionId":
-			err = unpopulate(val, "RoleDefinitionID", &r.RoleDefinitionID)
+				err = unpopulate(val, "RoleDefinitionID", &r.RoleDefinitionID)
 			delete(rawMsg, key)
 		case "scope":
-			err = unpopulate(val, "Scope", &r.Scope)
+				err = unpopulate(val, "Scope", &r.Scope)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -234,16 +233,16 @@ func (r *RoleDefinition) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &r.ID)
+				err = unpopulate(val, "ID", &r.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &r.Name)
+				err = unpopulate(val, "Name", &r.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, "Properties", &r.Properties)
+				err = unpopulate(val, "Properties", &r.Properties)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &r.Type)
+				err = unpopulate(val, "Type", &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -270,7 +269,7 @@ func (r *RoleDefinitionCreateParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "properties":
-			err = unpopulate(val, "Properties", &r.Properties)
+				err = unpopulate(val, "Properties", &r.Properties)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -298,10 +297,10 @@ func (r *RoleDefinitionListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &r.NextLink)
+				err = unpopulate(val, "NextLink", &r.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &r.Value)
+				err = unpopulate(val, "Value", &r.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -332,19 +331,19 @@ func (r *RoleDefinitionProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "assignableScopes":
-			err = unpopulate(val, "AssignableScopes", &r.AssignableScopes)
+				err = unpopulate(val, "AssignableScopes", &r.AssignableScopes)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, "Description", &r.Description)
+				err = unpopulate(val, "Description", &r.Description)
 			delete(rawMsg, key)
 		case "permissions":
-			err = unpopulate(val, "Permissions", &r.Permissions)
+				err = unpopulate(val, "Permissions", &r.Permissions)
 			delete(rawMsg, key)
 		case "roleName":
-			err = unpopulate(val, "RoleName", &r.RoleName)
+				err = unpopulate(val, "RoleName", &r.RoleName)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "RoleType", &r.RoleType)
+				err = unpopulate(val, "RoleType", &r.RoleType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -373,3 +372,4 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+

@@ -8,18 +8,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings"
+	"net/http"
+	"net/url"
+	"regexp"
 )
 
 // Server is a fake server for instances of the settings.Client type.
-type Server struct {
+type Server struct{
 	// GetSetting is the fake for method Client.GetSetting
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSetting func(ctx context.Context, settingName string, options *settings.GetSettingOptions) (resp azfake.Responder[settings.GetSettingResponse], errResp azfake.ErrorResponder)
@@ -31,6 +30,7 @@ type Server struct {
 	// UpdateSetting is the fake for method Client.UpdateSetting
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateSetting func(ctx context.Context, settingName string, parameters settings.UpdateSettingRequest, options *settings.UpdateSettingOptions) (resp azfake.Responder[settings.UpdateSettingResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -64,8 +64,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	go func() {
 		var intercepted bool
 		var res result
-		if serverTransportInterceptor != nil {
-			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		 if serverTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -75,8 +75,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchGetSettings(req)
 			case "Client.UpdateSetting":
 				res.resp, res.err = s.dispatchUpdateSetting(req)
-			default:
-				res.err = fmt.Errorf("unhandled API %s", method)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}

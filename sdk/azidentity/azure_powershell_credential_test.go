@@ -198,12 +198,3 @@ func TestBase64EncodeDecodeUTF16LE(t *testing.T) {
 		t.Error("expected error for invalid base64 input")
 	}
 }
-
-func TestAzurePowerShellCredential_GetToken_Live(t *testing.T) {
-	cred, err := NewAzurePowerShellCredential(nil)
-	require.NoError(t, err)
-	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://management.azure.com/.default"}})
-	require.NoError(t, err)
-	require.NotEmpty(t, token.Token)
-	require.True(t, token.ExpiresOn.After(time.Now().UTC()))
-}

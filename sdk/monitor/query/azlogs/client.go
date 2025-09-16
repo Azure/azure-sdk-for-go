@@ -7,16 +7,15 @@ package azlogs
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
-// Client contains the methods for the group.
+// Client contains the methods for the service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal   *azcore.Client
@@ -90,14 +89,14 @@ func (client *Client) queryBatchHandleResponse(resp *http.Response) (QueryBatchR
 //   - resourceID - The identifier of the resource.
 //   - body - The Analytics query. Learn more about the
 //     [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
-//   - opts - QueryResourceOptions contains the optional parameters for the Client.QueryResource method.
-func (client *Client) QueryResource(ctx context.Context, resourceID string, body QueryBody, opts *QueryResourceOptions) (QueryResourceResponse, error) {
+//   - options - QueryResourceOptions contains the optional parameters for the Client.QueryResource method.
+func (client *Client) QueryResource(ctx context.Context, resourceID string, body QueryBody, options *QueryResourceOptions) (QueryResourceResponse, error) {
 	var err error
 	const operationName = "Client.QueryResource"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.queryResourceCreateRequest(ctx, resourceID, body, opts)
+	req, err := client.queryResourceCreateRequest(ctx, resourceID, body, options)
 	if err != nil {
 		return QueryResourceResponse{}, err
 	}
@@ -114,7 +113,7 @@ func (client *Client) QueryResource(ctx context.Context, resourceID string, body
 }
 
 // queryResourceCreateRequest creates the QueryResource request.
-func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID string, body QueryBody, opts *QueryResourceOptions) (*policy.Request, error) {
+func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID string, body QueryBody, options *QueryResourceOptions) (*policy.Request, error) {
 	host := "{endpoint}/{apiVersion}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	host = strings.ReplaceAll(host, "{apiVersion}", string(client.apiVersion))
@@ -125,8 +124,8 @@ func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if opts != nil && opts.Options != nil {
-		req.Raw().Header["Prefer"] = []string{opts.Options.preferHeader()}
+	if options != nil && options.Options != nil {
+		req.Raw().Header["Prefer"] = []string{options.Options.preferHeader()}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -154,14 +153,14 @@ func (client *Client) queryResourceHandleResponse(resp *http.Response) (QueryRes
 //     blade in the Azure portal.
 //   - body - The Analytics query. Learn more about the
 //     [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
-//   - opts - QueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
-func (client *Client) QueryWorkspace(ctx context.Context, workspaceID string, body QueryBody, opts *QueryWorkspaceOptions) (QueryWorkspaceResponse, error) {
+//   - options - QueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
+func (client *Client) QueryWorkspace(ctx context.Context, workspaceID string, body QueryBody, options *QueryWorkspaceOptions) (QueryWorkspaceResponse, error) {
 	var err error
 	const operationName = "Client.QueryWorkspace"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.queryWorkspaceCreateRequest(ctx, workspaceID, body, opts)
+	req, err := client.queryWorkspaceCreateRequest(ctx, workspaceID, body, options)
 	if err != nil {
 		return QueryWorkspaceResponse{}, err
 	}
@@ -178,7 +177,7 @@ func (client *Client) QueryWorkspace(ctx context.Context, workspaceID string, bo
 }
 
 // queryWorkspaceCreateRequest creates the QueryWorkspace request.
-func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspaceID string, body QueryBody, opts *QueryWorkspaceOptions) (*policy.Request, error) {
+func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspaceID string, body QueryBody, options *QueryWorkspaceOptions) (*policy.Request, error) {
 	host := "{endpoint}/{apiVersion}"
 	host = strings.ReplaceAll(host, "{endpoint}", client.endpoint)
 	host = strings.ReplaceAll(host, "{apiVersion}", string(client.apiVersion))
@@ -192,8 +191,8 @@ func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspace
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if opts != nil && opts.Options != nil {
-		req.Raw().Header["Prefer"] = []string{opts.Options.preferHeader()}
+	if options != nil && options.Options != nil {
+		req.Raw().Header["Prefer"] = []string{options.Options.preferHeader()}
 	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

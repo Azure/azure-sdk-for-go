@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -87,14 +88,22 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 			return nil, errors.New("no tenant ID specified. Check pod configuration or set TenantID in the options")
 		}
 	}
+
 	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
-	caco := ClientAssertionCredentialOptions{
+	caco := &ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Cache:                      options.Cache,
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
-	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
+
+	// configure custom token proxy if environment variables are present.
+	// In custom token proxy mode, a dedicated transport will be used for proxying token requests to a dedicated proxy endpoint.
+	if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
+		return nil, err
+	}
+
+	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, caco)
 	if err != nil {
 		return nil, err
 	}

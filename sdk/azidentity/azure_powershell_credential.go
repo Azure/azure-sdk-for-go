@@ -87,7 +87,7 @@ func (c *AzurePowerShellCredential) GetToken(ctx context.Context, opts policy.To
 		return at, err
 	}
 
-	// pass the CLI a Microsoft Entra ID v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
+	// Always pass a Microsoft Entra ID v1 resource URI (not a v2 scope) because Get-AzAccessToken only supports v1 resource URIs.
 	resource := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 
 	tenantArg := ""

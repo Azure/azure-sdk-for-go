@@ -94,9 +94,7 @@ func TestAzurePowerShellCredential_Error(t *testing.T) {
 		},
 	}
 	cred, err := NewAzurePowerShellCredential(&o)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	_, err = cred.GetToken(context.Background(), testTRO)
 	if err == nil {
 		t.Fatal("expected an error")

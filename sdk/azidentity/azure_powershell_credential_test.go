@@ -34,7 +34,7 @@ func mockAzurePowerShellSuccess(_ context.Context, credName string, _ string) ([
 	if credName != credNameAzurePowerShell {
 		return nil, errors.New("unexpected credential name: " + credName)
 	}
-	return azurePowerShellTokenOutput(638930167310000000), nil
+	return azurePowerShellTokenOutput(time.Now().Add(time.Hour).Unix()), nil
 }
 
 func TestAzurePowerShellCredential_Claims(t *testing.T) {
@@ -109,22 +109,20 @@ func TestAzurePowerShellCredential_Error(t *testing.T) {
 
 func TestAzurePowerShellCredential_GetTokenSuccess(t *testing.T) {
 	expectedExpiresOn := time.Now().Add(time.Hour).UTC().Truncate(time.Second)
-	t.Run("fetches token with correct expiration", func(t *testing.T) {
-		ExpiresOn := expectedExpiresOn.UTC().Unix()
-		output := azurePowerShellTokenOutput(ExpiresOn)
-		cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
-			exec: func(context.Context, string, string) ([]byte, error) {
-				return output, nil
-			},
-		})
-		require.NoError(t, err)
-
-		actual, err := cred.GetToken(context.Background(), testTRO)
-		require.NoError(t, err)
-		require.NotEmpty(t, actual.Token, "Token should not be empty")
-		require.True(t, actual.ExpiresOn.Equal(expectedExpiresOn))
-		require.Equal(t, time.UTC, actual.ExpiresOn.Location())
+	ExpiresOn := expectedExpiresOn.UTC().Unix()
+	output := azurePowerShellTokenOutput(ExpiresOn)
+	cred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
+		exec: func(context.Context, string, string) ([]byte, error) {
+			return output, nil
+		},
 	})
+	require.NoError(t, err)
+
+	actual, err := cred.GetToken(context.Background(), testTRO)
+	require.NoError(t, err)
+	require.NotEmpty(t, actual.Token, "Token should not be empty")
+	require.True(t, actual.ExpiresOn.Equal(expectedExpiresOn))
+	require.Equal(t, time.UTC, actual.ExpiresOn.Location())
 }
 
 func TestAzurePowerShellCredential_GetTokenInvalidToken(t *testing.T) {

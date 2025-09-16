@@ -36,7 +36,7 @@ type AzurePowerShellCredentialOptions struct {
 	AdditionallyAllowedTenants []string
 
 	// TenantID identifies the tenant the credential should authenticate in.
-	// Defaults to the Azure PowerShell's default tenant, which is typically the home tenant of the logged in user.
+	// Defaults to Azure PowerShell's default tenant, which is typically the home tenant of the logged in user.
 	TenantID string
 
 	// inDefaultChain is true when the credential is part of DefaultAzureCredential

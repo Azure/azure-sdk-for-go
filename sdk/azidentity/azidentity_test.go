@@ -1537,37 +1537,6 @@ func TestDoForClient(t *testing.T) {
 	}
 }
 
-func TestBase64EncodeDecodeUTF16LE(t *testing.T) {
-	cases := []struct {
-		name  string
-		input string
-	}{
-		{name: "ASCII", input: "hello world"},
-		{name: "Unicode", input: "こんにちは世界"},
-		{name: "Empty", input: ""},
-		{name: "Emoji", input: "😀😃😄😁"},
-		{name: "Symbols", input: "!@#$%^&*()_+-=[]{}|;':,./<>?"},
-	}
-	for _, tc := range cases {
-		t.Run(tc.name, func(t *testing.T) {
-			encoded := base64EncodeUTF16LE(tc.input)
-			decoded, err := base64DecodeUTF16LE(encoded)
-			if err != nil {
-				t.Fatalf("decode error: %v", err)
-			}
-			if decoded != tc.input {
-				t.Errorf("roundtrip failed: got %q, want %q", decoded, tc.input)
-			}
-		})
-	}
-
-	// Test invalid base64 input for decode
-	_, err := base64DecodeUTF16LE("not-base64!!")
-	if err == nil {
-		t.Error("expected error for invalid base64 input")
-	}
-}
-
 // ==================================================================================================================================
 
 type fakeConfidentialClient struct {

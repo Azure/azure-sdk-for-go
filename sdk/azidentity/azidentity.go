@@ -9,14 +9,12 @@ package azidentity
 import (
 	"bytes"
 	"context"
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
-	"unicode/utf16"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -164,30 +162,6 @@ func validTenantID(tenantID string) bool {
 		}
 	}
 	return true
-}
-
-// Encodes a string to Base64 using UTF-16LE encoding
-func base64EncodeUTF16LE(text string) string {
-	u16 := utf16.Encode([]rune(text))
-	buf := make([]byte, len(u16)*2)
-	for i, v := range u16 {
-		buf[i*2] = byte(v)
-		buf[i*2+1] = byte(v >> 8)
-	}
-	return base64.StdEncoding.EncodeToString(buf)
-}
-
-// Decodes a Base64 UTF-16LE string back to string
-func base64DecodeUTF16LE(encoded string) (string, error) {
-	data, err := base64.StdEncoding.DecodeString(encoded)
-	if err != nil {
-		return "", err
-	}
-	u16 := make([]uint16, len(data)/2)
-	for i := range u16 {
-		u16[i] = uint16(data[2*i]) | uint16(data[2*i+1])<<8
-	}
-	return string(utf16.Decode(u16)), nil
 }
 
 func doForClient(client *azcore.Client, r *http.Request) (*http.Response, error) {

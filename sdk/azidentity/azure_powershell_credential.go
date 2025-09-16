@@ -13,6 +13,7 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -145,7 +146,7 @@ if ($token.Token -is [System.Security.SecureString]) {
 } else {
     $customToken | Add-Member -MemberType NoteProperty -Name Token -Value $token.Token
 }
-$customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token.ExpiresOn.UtcDateTime.Ticks
+$customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token.ExpiresOn.ToUnixTimeSeconds()
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
@@ -199,7 +200,7 @@ func (c *AzurePowerShellCredential) createAccessToken(tk []byte) (azcore.AccessT
 
 	converted := azcore.AccessToken{
 		Token:     t.Token,
-		ExpiresOn: ticksToUnixTime(t.ExpiresOn),
+		ExpiresOn: time.Unix(t.ExpiresOn, 0).UTC(),
 	}
 
 	return converted, nil

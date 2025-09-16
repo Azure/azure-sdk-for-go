@@ -16,7 +16,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"time"
 	"unicode/utf16"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -165,14 +164,6 @@ func validTenantID(tenantID string) bool {
 		}
 	}
 	return true
-}
-
-func ticksToUnixTime(ticks int64) time.Time {
-	// normalize our time so it starts from the Unix epoch, then convert from ticks
-	// to milliseconds.
-	millisFromTicks := (ticks - epochTicks) / 10000
-
-	return time.UnixMilli(millisFromTicks).UTC()
 }
 
 // Encodes a string to Base64 using UTF-16LE encoding

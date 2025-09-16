@@ -7,13 +7,14 @@ package armquota
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // GroupQuotaSubscriptionAllocationRequestClient contains the methods for the GroupQuotaSubscriptionAllocationRequest group.
@@ -176,7 +177,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) listCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", Filter)
+	reqQP.Set("$filter", filter)
 	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

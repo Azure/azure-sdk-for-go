@@ -48,9 +48,6 @@ const (
 	traceNamespace      = "Microsoft.Entra"
 	traceOpGetToken     = "GetToken"
 	traceOpAuthenticate = "Authenticate"
-
-	// 1970-01-01, represented in "ticks" (100ns per millisecond) (ie: .NET's time unit for DateTimeOffset)
-	epochTicks = int64(621355968000000000)
 )
 
 var (

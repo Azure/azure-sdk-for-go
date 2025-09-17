@@ -3,7 +3,9 @@
 ## 1.12.1-beta.1 (Unreleased)
 
 ### Features Added
-- Added `AzurePowerShellCredential` to `azidentity` package.
+
+- Added `AzurePowerShellCredential`, which authenticates as the identity logged in to Azure PowerShell
+  (thanks [ArmaanMcleod](https://github.com/ArmaanMcleod))
 
 ### Breaking Changes
 

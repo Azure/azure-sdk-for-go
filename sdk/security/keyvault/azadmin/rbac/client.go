@@ -7,16 +7,15 @@ package rbac
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
-// Client contains the methods for the group.
+// Client contains the methods for the service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal     *azcore.Client
@@ -56,15 +55,13 @@ func (client *Client) CreateOrUpdateRoleDefinition(ctx context.Context, scope Ro
 
 // createOrUpdateRoleDefinitionCreateRequest creates the CreateOrUpdateRoleDefinition request.
 func (client *Client) createOrUpdateRoleDefinitionCreateRequest(ctx context.Context, scope RoleScope, roleDefinitionName string, parameters RoleDefinitionCreateParameters, _ *CreateOrUpdateRoleDefinitionOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleDefinitionName == "" {
 		return nil, errors.New("parameter roleDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionName}", url.PathEscape(roleDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,15 +117,13 @@ func (client *Client) CreateRoleAssignment(ctx context.Context, scope RoleScope,
 
 // createRoleAssignmentCreateRequest creates the CreateRoleAssignment request.
 func (client *Client) createRoleAssignmentCreateRequest(ctx context.Context, scope RoleScope, roleAssignmentName string, parameters RoleAssignmentCreateParameters, _ *CreateRoleAssignmentOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleAssignmentName == "" {
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", url.PathEscape(roleAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,15 +178,13 @@ func (client *Client) DeleteRoleAssignment(ctx context.Context, scope RoleScope,
 
 // deleteRoleAssignmentCreateRequest creates the DeleteRoleAssignment request.
 func (client *Client) deleteRoleAssignmentCreateRequest(ctx context.Context, scope RoleScope, roleAssignmentName string, _ *DeleteRoleAssignmentOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleAssignmentName == "" {
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", url.PathEscape(roleAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -242,15 +235,13 @@ func (client *Client) DeleteRoleDefinition(ctx context.Context, scope RoleScope,
 
 // deleteRoleDefinitionCreateRequest creates the DeleteRoleDefinition request.
 func (client *Client) deleteRoleDefinitionCreateRequest(ctx context.Context, scope RoleScope, roleDefinitionName string, _ *DeleteRoleDefinitionOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleDefinitionName == "" {
 		return nil, errors.New("parameter roleDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionName}", url.PathEscape(roleDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -301,15 +292,13 @@ func (client *Client) GetRoleAssignment(ctx context.Context, scope RoleScope, ro
 
 // getRoleAssignmentCreateRequest creates the GetRoleAssignment request.
 func (client *Client) getRoleAssignmentCreateRequest(ctx context.Context, scope RoleScope, roleAssignmentName string, _ *GetRoleAssignmentOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleAssignmentName == "" {
 		return nil, errors.New("parameter roleAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", url.PathEscape(roleAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,15 +349,13 @@ func (client *Client) GetRoleDefinition(ctx context.Context, scope RoleScope, ro
 
 // getRoleDefinitionCreateRequest creates the GetRoleDefinition request.
 func (client *Client) getRoleDefinitionCreateRequest(ctx context.Context, scope RoleScope, roleDefinitionName string, _ *GetRoleDefinitionOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
 	if roleDefinitionName == "" {
 		return nil, errors.New("parameter roleDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionName}", url.PathEscape(roleDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -418,11 +405,9 @@ func (client *Client) NewListRoleAssignmentsPager(scope RoleScope, options *List
 
 // listRoleAssignmentsCreateRequest creates the ListRoleAssignments request.
 func (client *Client) listRoleAssignmentsCreateRequest(ctx context.Context, scope RoleScope, options *ListRoleAssignmentsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -475,11 +460,9 @@ func (client *Client) NewListRoleDefinitionsPager(scope RoleScope, options *List
 
 // listRoleDefinitionsCreateRequest creates the ListRoleDefinitions request.
 func (client *Client) listRoleDefinitionsCreateRequest(ctx context.Context, scope RoleScope, options *ListRoleDefinitionsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}

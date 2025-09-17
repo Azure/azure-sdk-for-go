@@ -7,13 +7,12 @@ package azkeys
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
@@ -62,14 +61,12 @@ func (client *Client) BackupKey(ctx context.Context, name string, options *Backu
 
 // backupKeyCreateRequest creates the BackupKey request.
 func (client *Client) backupKeyCreateRequest(ctx context.Context, name string, _ *BackupKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/backup"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -125,14 +122,12 @@ func (client *Client) CreateKey(ctx context.Context, name string, parameters Cre
 
 // createKeyCreateRequest creates the CreateKey request.
 func (client *Client) createKeyCreateRequest(ctx context.Context, name string, parameters CreateKeyParameters, _ *CreateKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/create"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,15 +190,13 @@ func (client *Client) Decrypt(ctx context.Context, name string, version string, 
 
 // decryptCreateRequest creates the Decrypt request.
 func (client *Client) decryptCreateRequest(ctx context.Context, name string, version string, parameters KeyOperationParameters, _ *DecryptOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/decrypt"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -261,14 +254,12 @@ func (client *Client) DeleteKey(ctx context.Context, name string, options *Delet
 
 // deleteKeyCreateRequest creates the DeleteKey request.
 func (client *Client) deleteKeyCreateRequest(ctx context.Context, name string, _ *DeleteKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,15 +318,13 @@ func (client *Client) Encrypt(ctx context.Context, name string, version string, 
 
 // encryptCreateRequest creates the Encrypt request.
 func (client *Client) encryptCreateRequest(ctx context.Context, name string, version string, parameters KeyOperationParameters, _ *EncryptOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/encrypt"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,14 +381,12 @@ func (client *Client) GetDeletedKey(ctx context.Context, name string, options *G
 
 // getDeletedKeyCreateRequest creates the GetDeletedKey request.
 func (client *Client) getDeletedKeyCreateRequest(ctx context.Context, name string, _ *GetDeletedKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedkeys/{key-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -454,15 +441,13 @@ func (client *Client) GetKey(ctx context.Context, name string, version string, o
 
 // getKeyCreateRequest creates the GetKey request.
 func (client *Client) getKeyCreateRequest(ctx context.Context, name string, version string, _ *GetKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -517,15 +502,13 @@ func (client *Client) GetKeyAttestation(ctx context.Context, name string, versio
 
 // getKeyAttestationCreateRequest creates the GetKeyAttestation request.
 func (client *Client) getKeyAttestationCreateRequest(ctx context.Context, name string, version string, _ *GetKeyAttestationOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/attestation"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -578,14 +561,12 @@ func (client *Client) GetKeyRotationPolicy(ctx context.Context, name string, opt
 
 // getKeyRotationPolicyCreateRequest creates the GetKeyRotationPolicy request.
 func (client *Client) getKeyRotationPolicyCreateRequest(ctx context.Context, name string, _ *GetKeyRotationPolicyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/rotationpolicy"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -637,10 +618,8 @@ func (client *Client) GetRandomBytes(ctx context.Context, parameters GetRandomBy
 
 // getRandomBytesCreateRequest creates the GetRandomBytes request.
 func (client *Client) getRandomBytesCreateRequest(ctx context.Context, parameters GetRandomBytesParameters, _ *GetRandomBytesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/rng"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -699,14 +678,12 @@ func (client *Client) ImportKey(ctx context.Context, name string, parameters Imp
 
 // importKeyCreateRequest creates the ImportKey request.
 func (client *Client) importKeyCreateRequest(ctx context.Context, name string, parameters ImportKeyParameters, _ *ImportKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -765,10 +742,8 @@ func (client *Client) NewListDeletedKeyPropertiesPager(options *ListDeletedKeyPr
 
 // listDeletedKeyPropertiesCreateRequest creates the ListDeletedKeyProperties request.
 func (client *Client) listDeletedKeyPropertiesCreateRequest(ctx context.Context, _ *ListDeletedKeyPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedkeys"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -821,10 +796,8 @@ func (client *Client) NewListKeyPropertiesPager(options *ListKeyPropertiesOption
 
 // listKeyPropertiesCreateRequest creates the ListKeyProperties request.
 func (client *Client) listKeyPropertiesCreateRequest(ctx context.Context, _ *ListKeyPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -877,14 +850,12 @@ func (client *Client) NewListKeyPropertiesVersionsPager(name string, options *Li
 
 // listKeyPropertiesVersionsCreateRequest creates the ListKeyPropertiesVersions request.
 func (client *Client) listKeyPropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListKeyPropertiesVersionsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/versions"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -936,21 +907,18 @@ func (client *Client) PurgeDeletedKey(ctx context.Context, name string, options 
 
 // purgeDeletedKeyCreateRequest creates the PurgeDeletedKey request.
 func (client *Client) purgeDeletedKeyCreateRequest(ctx context.Context, name string, _ *PurgeDeletedKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedkeys/{key-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -988,14 +956,12 @@ func (client *Client) RecoverDeletedKey(ctx context.Context, name string, option
 
 // recoverDeletedKeyCreateRequest creates the RecoverDeletedKey request.
 func (client *Client) recoverDeletedKeyCreateRequest(ctx context.Context, name string, _ *RecoverDeletedKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedkeys/{key-name}/recover"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1050,15 +1016,13 @@ func (client *Client) Release(ctx context.Context, name string, version string, 
 
 // releaseCreateRequest creates the Release request.
 func (client *Client) releaseCreateRequest(ctx context.Context, name string, version string, parameters ReleaseParameters, _ *ReleaseOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/release"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1121,10 +1085,8 @@ func (client *Client) RestoreKey(ctx context.Context, parameters RestoreKeyParam
 
 // restoreKeyCreateRequest creates the RestoreKey request.
 func (client *Client) restoreKeyCreateRequest(ctx context.Context, parameters RestoreKeyParameters, _ *RestoreKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/restore"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1180,14 +1142,12 @@ func (client *Client) RotateKey(ctx context.Context, name string, options *Rotat
 
 // rotateKeyCreateRequest creates the RotateKey request.
 func (client *Client) rotateKeyCreateRequest(ctx context.Context, name string, _ *RotateKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/rotate"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1242,15 +1202,13 @@ func (client *Client) Sign(ctx context.Context, name string, version string, par
 
 // signCreateRequest creates the Sign request.
 func (client *Client) signCreateRequest(ctx context.Context, name string, version string, parameters SignParameters, _ *SignOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/sign"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1310,15 +1268,13 @@ func (client *Client) UnwrapKey(ctx context.Context, name string, version string
 
 // unwrapKeyCreateRequest creates the UnwrapKey request.
 func (client *Client) unwrapKeyCreateRequest(ctx context.Context, name string, version string, parameters KeyOperationParameters, _ *UnwrapKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/unwrapkey"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1378,15 +1334,13 @@ func (client *Client) UpdateKey(ctx context.Context, name string, version string
 
 // updateKeyCreateRequest creates the UpdateKey request.
 func (client *Client) updateKeyCreateRequest(ctx context.Context, name string, version string, parameters UpdateKeyParameters, _ *UpdateKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1443,14 +1397,12 @@ func (client *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, 
 
 // updateKeyRotationPolicyCreateRequest creates the UpdateKeyRotationPolicy request.
 func (client *Client) updateKeyRotationPolicyCreateRequest(ctx context.Context, name string, keyRotationPolicy KeyRotationPolicy, _ *UpdateKeyRotationPolicyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/rotationpolicy"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1511,15 +1463,13 @@ func (client *Client) Verify(ctx context.Context, name string, version string, p
 
 // verifyCreateRequest creates the Verify request.
 func (client *Client) verifyCreateRequest(ctx context.Context, name string, version string, parameters VerifyParameters, _ *VerifyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/verify"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1581,15 +1531,13 @@ func (client *Client) WrapKey(ctx context.Context, name string, version string, 
 
 // wrapKeyCreateRequest creates the WrapKey request.
 func (client *Client) wrapKeyCreateRequest(ctx context.Context, name string, version string, parameters KeyOperationParameters, _ *WrapKeyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{key-name}/{key-version}/wrapkey"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}

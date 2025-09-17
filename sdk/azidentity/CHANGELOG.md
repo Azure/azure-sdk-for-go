@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `AzurePowerShellCredential`, which authenticates as the identity logged in to Azure PowerShell
+  (thanks [ArmaanMcleod](https://github.com/ArmaanMcleod))
+
 ### Breaking Changes
 
 ### Bugs Fixed

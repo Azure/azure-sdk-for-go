@@ -145,6 +145,15 @@ type Handle struct {
 	ParentID *string `xml:"ParentId"`
 }
 
+// KeyInfo - Key information
+type KeyInfo struct {
+	// REQUIRED; The date-time the key expires in ISO 8601 UTC time
+	Expiry *string `xml:"Expiry"`
+
+	// The date-time the key is active in ISO 8601 UTC time
+	Start *string `xml:"Start"`
+}
+
 // ListFilesAndDirectoriesSegmentResponse - An enumeration of directories and files.
 type ListFilesAndDirectoriesSegmentResponse struct {
 	// REQUIRED
@@ -208,6 +217,9 @@ type Metrics struct {
 
 // ProtocolSettings - Protocol settings
 type ProtocolSettings struct {
+	// Settings for NFS protocol.
+	Nfs *ShareNfsSettings `xml:"NFS"`
+
 	// Settings for SMB protocol.
 	Smb *SMBSettings `xml:"SMB"`
 }
@@ -225,8 +237,17 @@ type RetentionPolicy struct {
 
 // SMBSettings - Settings for SMB protocol.
 type SMBSettings struct {
+	// Enable or disable encryption in transit.
+	EncryptionInTransit *SMBSettingsEncryptionInTransit `xml:"EncryptionInTransit"`
+
 	// Settings for SMB Multichannel.
 	Multichannel *SMBMultichannel `xml:"Multichannel"`
+}
+
+// SMBSettingsEncryptionInTransit - Enable or disable encryption in transit.
+type SMBSettingsEncryptionInTransit struct {
+	// If encryption in transit is required
+	Required *bool `xml:"Required"`
 }
 
 // Share - A listed Azure Storage share item.
@@ -250,6 +271,18 @@ type ShareFileRangeList struct {
 	Ranges      []*FileRange  `xml:"Range"`
 }
 
+// ShareNfsSettings - Settings for SMB protocol.
+type ShareNfsSettings struct {
+	// Enable or disable encryption in transit.
+	EncryptionInTransit *ShareNfsSettingsEncryptionInTransit `xml:"EncryptionInTransit"`
+}
+
+// ShareNfsSettingsEncryptionInTransit - Enable or disable encryption in transit.
+type ShareNfsSettingsEncryptionInTransit struct {
+	// If encryption in transit is required
+	Required *bool `xml:"Required"`
+}
+
 // SharePermission - A permission (a security descriptor) at the share level.
 type SharePermission struct {
 	// REQUIRED; The permission in the Security Descriptor Definition Language (SDDL).
@@ -271,6 +304,7 @@ type ShareProperties struct {
 	AccessTierChangeTime                 *time.Time `xml:"AccessTierChangeTime"`
 	AccessTierTransitionState            *string    `xml:"AccessTierTransitionState"`
 	DeletedTime                          *time.Time `xml:"DeletedTime"`
+	EnableSmbDirectoryLease              *bool      `xml:"EnableSmbDirectoryLease"`
 	EnableSnapshotVirtualDirectoryAccess *bool      `xml:"EnableSnapshotVirtualDirectoryAccess"`
 	EnabledProtocols                     *string    `xml:"EnabledProtocols"`
 	IncludedBurstIops                    *int64     `xml:"IncludedBurstIops"`
@@ -322,6 +356,9 @@ type SMBMultichannel struct {
 
 type StorageError struct {
 	AuthenticationErrorDetail *string
+	CopySourceErrorCode       *string
+	CopySourceErrorMessage    *string
+	CopySourceStatusCode      *int64
 	Message                   *string
 }
 
@@ -343,4 +380,28 @@ type StorageServiceProperties struct {
 type StringEncoded struct {
 	Content *string `xml:",chardata"`
 	Encoded *bool   `xml:"Encoded,attr"`
+}
+
+// UserDelegationKey - A user delegation key
+type UserDelegationKey struct {
+	// REQUIRED; The date-time the key expires
+	SignedExpiry *time.Time `xml:"SignedExpiry"`
+
+	// REQUIRED; The Azure Active Directory object ID in GUID format.
+	SignedOid *string `xml:"SignedOid"`
+
+	// REQUIRED; Abbreviation of the Azure Storage service that accepts the key
+	SignedService *string `xml:"SignedService"`
+
+	// REQUIRED; The date-time the key is active
+	SignedStart *time.Time `xml:"SignedStart"`
+
+	// REQUIRED; The Azure Active Directory tenant ID in GUID format
+	SignedTid *string `xml:"SignedTid"`
+
+	// REQUIRED; The service version that created the key
+	SignedVersion *string `xml:"SignedVersion"`
+
+	// REQUIRED; The key as a base64 string
+	Value *string `xml:"Value"`
 }

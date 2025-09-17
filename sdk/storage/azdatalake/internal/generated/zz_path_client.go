@@ -28,7 +28,7 @@ type PathClient struct {
 // AppendData - Append data to the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - body - Initial data
 //   - options - PathClientAppendDataOptions contains the optional parameters for the PathClient.AppendData method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
@@ -110,7 +110,7 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	if err := req.SetBody(body, "application/json"); err != nil {
 		return nil, err
 	}
@@ -179,12 +179,12 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 // Create - Create or rename a file or directory. By default, the destination is overwritten and if the destination already
 // exists and has a lease the lease is broken. This operation supports conditional HTTP
 // requests. For more information, see Specifying Conditional Headers for Blob Service Operations
-// [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
-// To fail if the destination already exists, use a conditional request with
+// [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations]. To fail
+// if the destination already exists, use a conditional request with
 // If-None-Match: "*".
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - PathClientCreateOptions contains the optional parameters for the PathClient.Create method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -325,7 +325,7 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 	if options != nil && options.Umask != nil {
 		req.Raw().Header["x-ms-umask"] = []string{*options.Umask}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -380,10 +380,10 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 
 // Delete - Delete the file or directory. This operation supports conditional HTTP requests. For more information, see Specifying
 // Conditional Headers for Blob Service Operations
-// [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
+// [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - PathClientDeleteOptions contains the optional parameters for the PathClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -445,7 +445,7 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -486,7 +486,7 @@ func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientD
 // FlushData - Set the owner, group, permissions, or access control list for a path.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - PathClientFlushDataOptions contains the optional parameters for the PathClient.FlushData method.
 //   - PathHTTPHeaders - PathHTTPHeaders contains a group of parameters for the PathClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
@@ -590,7 +590,7 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -654,10 +654,10 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 // defined properties for a path. Get Access Control List returns the access control list for a
 // path. This operation supports conditional HTTP requests. For more information, see Specifying Conditional Headers for Blob
 // Service Operations
-// [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
+// [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - PathClientGetPropertiesOptions contains the optional parameters for the PathClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -716,7 +716,7 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -757,6 +757,13 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
+		creationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return PathClientGetPropertiesResponse{}, err
+		}
+		result.CreationTime = &creationTime
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -767,8 +774,31 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-encryption-context"); val != "" {
+		result.EncryptionContext = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySHA256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-expiry-time"); val != "" {
+		expiresOn, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return PathClientGetPropertiesResponse{}, err
+		}
+		result.ExpiresOn = &expiresOn
+	}
 	if val := resp.Header.Get("x-ms-group"); val != "" {
 		result.Group = &val
+	}
+	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return PathClientGetPropertiesResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -809,10 +839,10 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 
 // Lease - Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
 // HTTP requests. For more information, see Specifying Conditional Headers for Blob Service
-// Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
+// Operations [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - xmsLeaseAction - There are five lease actions: "acquire", "break", "change", "renew", and "release". Use "acquire" and
 //     specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
 //     to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which time no lease
@@ -882,7 +912,7 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, xmsLeaseAction
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -923,10 +953,10 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 
 // Read - Read the contents of a file. For read operations, range requests are supported. This operation supports conditional
 // HTTP requests. For more information, see Specifying Conditional Headers for Blob
-// Service Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
+// Service Operations [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - PathClientReadOptions contains the optional parameters for the PathClient.Read method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -996,7 +1026,7 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 	if options != nil && options.XMSRangeGetContentMD5 != nil {
 		req.Raw().Header["x-ms-range-get-content-md5"] = []string{strconv.FormatBool(*options.XMSRangeGetContentMD5)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -1091,7 +1121,7 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 // SetAccessControl - Set the owner, group, permissions, or access control list for a path.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - PathClientSetAccessControlOptions contains the optional parameters for the PathClient.SetAccessControl method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the PathClient.Create method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the FileSystemClient.SetProperties
@@ -1157,7 +1187,7 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 	if options != nil && options.Permissions != nil {
 		req.Raw().Header["x-ms-permissions"] = []string{*options.Permissions}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -1196,7 +1226,7 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 // SetAccessControlRecursive - Set the access control list for a path and sub-paths.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - mode - Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more POSIX access
 //     control rights that pre-exist on files and directories, "remove" removes one or more
 //     POSIX access control rights that were present earlier on files and directories
@@ -1249,7 +1279,7 @@ func (client *PathClient) SetAccessControlRecursiveCreateRequest(ctx context.Con
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -1284,7 +1314,7 @@ func (client *PathClient) SetAccessControlRecursiveHandleResponse(resp *http.Res
 // SetExpiry - Sets the time a blob will expire and be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - expiryOptions - Required. Indicates mode of the expiry time
 //   - options - PathClientSetExpiryOptions contains the optional parameters for the PathClient.SetExpiry method.
 func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOptions, options *PathClientSetExpiryOptions) (PathClientSetExpiryResponse, error) {
@@ -1325,7 +1355,7 @@ func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 	if options != nil && options.ExpiresOn != nil {
 		req.Raw().Header["x-ms-expiry-time"] = []string{*options.ExpiresOn}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -1364,7 +1394,7 @@ func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClie
 // Undelete - Undelete a path that was previously soft deleted
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - PathClientUndeleteOptions contains the optional parameters for the PathClient.Undelete method.
 func (client *PathClient) Undelete(ctx context.Context, options *PathClientUndeleteOptions) (PathClientUndeleteResponse, error) {
 	var err error
@@ -1403,7 +1433,7 @@ func (client *PathClient) undeleteCreateRequest(ctx context.Context, options *Pa
 	if options != nil && options.UndeleteSource != nil {
 		req.Raw().Header["x-ms-undelete-source"] = []string{*options.UndeleteSource}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -1436,10 +1466,10 @@ func (client *PathClient) undeleteHandleResponse(resp *http.Response) (PathClien
 // a file or directory, or sets access control for a file or directory. Data can only be
 // appended to a file. Concurrent writes to the same file using multiple clients are not supported. This operation supports
 // conditional HTTP requests. For more information, see Specifying Conditional
-// Headers for Blob Service Operations [https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
+// Headers for Blob Service Operations [https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - action - The action must be "append" to upload data to be appended to a file, "flush" to flush previously uploaded data
 //     to a file, "setProperties" to set the properties of a file or directory,
 //     "setAccessControl" to set the owner, group, permissions, or access control list for a file or directory, or "setAccessControlRecursive"
@@ -1566,7 +1596,7 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
 	}

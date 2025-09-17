@@ -72,20 +72,26 @@ func (b *BgpPeersServerTransport) dispatchToMethodFake(req *http.Request, method
 	defer close(resultChan)
 
 	go func() {
+		var intercepted bool
 		var res result
-		switch method {
-		case "BgpPeersClient.BeginCreateOrUpdate":
-			res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
-		case "BgpPeersClient.Delete":
-			res.resp, res.err = b.dispatchDelete(req)
-		case "BgpPeersClient.Get":
-			res.resp, res.err = b.dispatchGet(req)
-		case "BgpPeersClient.NewListPager":
-			res.resp, res.err = b.dispatchNewListPager(req)
-		default:
-			res.err = fmt.Errorf("unhandled API %s", method)
+		if bgpPeersServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = bgpPeersServerTransportInterceptor.Do(req)
 		}
+		if !intercepted {
+			switch method {
+			case "BgpPeersClient.BeginCreateOrUpdate":
+				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
+			case "BgpPeersClient.Delete":
+				res.resp, res.err = b.dispatchDelete(req)
+			case "BgpPeersClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BgpPeersClient.NewListPager":
+				res.resp, res.err = b.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
 
+		}
 		select {
 		case resultChan <- res:
 		case <-req.Context().Done():
@@ -109,7 +115,7 @@ func (b *BgpPeersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers/(?P<bgpPeerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcontainerorchestratorruntime.BgpPeer](req)
@@ -155,7 +161,7 @@ func (b *BgpPeersServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers/(?P<bgpPeerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -188,7 +194,7 @@ func (b *BgpPeersServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers/(?P<bgpPeerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -223,7 +229,7 @@ func (b *BgpPeersServerTransport) dispatchNewListPager(req *http.Request) (*http
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/bgpPeers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -249,4 +255,10 @@ func (b *BgpPeersServerTransport) dispatchNewListPager(req *http.Request) (*http
 		b.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to BgpPeersServerTransport
+var bgpPeersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -159,19 +159,16 @@ return $jsonToken
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)
-	var powershellExecutable string
+	exe := "pwsh"
 	if runtime.GOOS == "windows" {
-		_, err := exec.LookPath("pwsh.exe")
-		if err == nil {
-			powershellExecutable = "pwsh.exe"
+		if _, err := exec.LookPath("pwsh.exe"); err == nil {
+			exe = "pwsh.exe"
 		} else {
-			powershellExecutable = "powershell.exe"
+			exe = "powershell.exe"
 		}
-	} else {
-		powershellExecutable = "pwsh"
 	}
 
-	command := fmt.Sprintf("%s -NoProfile -NonInteractive -OutputFormat Text -EncodedCommand %s", powershellExecutable, base64EncodeUTF16LE(script))
+	command := exe + " -NoProfile -NonInteractive -OutputFormat Text -EncodedCommand " + base64EncodeUTF16LE(script)
 
 	c.mu.Lock()
 	defer c.mu.Unlock()

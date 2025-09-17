@@ -6,5 +6,5 @@ package armedgezones
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgezones/armedgezones"
-	moduleVersion = "v0.1.1"
+	moduleVersion = "v0.1.0"
 )

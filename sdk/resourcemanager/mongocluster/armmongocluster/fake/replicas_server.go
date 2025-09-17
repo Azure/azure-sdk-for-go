@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,7 +21,7 @@ import (
 type ReplicasServer struct {
 	// NewListByParentPager is the fake for method ReplicasClient.NewListByParentPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByParentPager func(resourceGroupName string, mongoClusterName string, options *armmongocluster.ReplicasClientListByParentOptions) (resp azfake.PagerResponder[armmongocluster.ReplicasClientListByParentResponse])
+	NewListByParentPager func(apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.ReplicasClientListByParentOptions) (resp azfake.PagerResponder[armmongocluster.ReplicasClientListByParentResponse])
 }
 
 // NewReplicasServerTransport creates a new instance of ReplicasServerTransport with the provided implementation.
@@ -97,6 +97,11 @@ func (r *ReplicasServerTransport) dispatchNewListByParentPager(req *http.Request
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -105,7 +110,7 @@ func (r *ReplicasServerTransport) dispatchNewListByParentPager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListByParentPager(resourceGroupNameParam, mongoClusterNameParam, nil)
+		resp := r.srv.NewListByParentPager(apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 		newListByParentPager = &resp
 		r.newListByParentPager.add(req, newListByParentPager)
 		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armmongocluster.ReplicasClientListByParentResponse, createLink func() string) {

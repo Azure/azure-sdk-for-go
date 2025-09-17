@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"log"
 )
 
@@ -23,7 +23,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreate(ctx, "TestGroup", "myMongoCluster", "pecTest", armmongocluster.PrivateEndpointConnectionResource{
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreate(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "pecTest", armmongocluster.PrivateEndpointConnectionResource{
 		Properties: &armmongocluster.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armmongocluster.PrivateLinkServiceConnectionState{
 				Status:      to.Ptr(armmongocluster.PrivateEndpointServiceConnectionStatusApproved),
@@ -83,7 +83,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0", nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,7 +104,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0", nil)
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -153,7 +153,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListByMongoClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListByMongoClusterPager("TestGroup", "myMongoCluster", nil)
+	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListByMongoClusterPager("2025-07-01-preview", "TestGroup", "myMongoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

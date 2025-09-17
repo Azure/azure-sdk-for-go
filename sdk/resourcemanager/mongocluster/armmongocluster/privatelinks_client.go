@@ -40,13 +40,12 @@ func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // NewListByMongoClusterPager - list private links on the given resource
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - options - PrivateLinksClientListByMongoClusterOptions contains the optional parameters for the PrivateLinksClient.NewListByMongoClusterPager
 //     method.
-func (client *PrivateLinksClient) NewListByMongoClusterPager(resourceGroupName string, mongoClusterName string, options *PrivateLinksClientListByMongoClusterOptions) *runtime.Pager[PrivateLinksClientListByMongoClusterResponse] {
+func (client *PrivateLinksClient) NewListByMongoClusterPager(apiVersion string, resourceGroupName string, mongoClusterName string, options *PrivateLinksClientListByMongoClusterOptions) *runtime.Pager[PrivateLinksClientListByMongoClusterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinksClientListByMongoClusterResponse]{
 		More: func(page PrivateLinksClientListByMongoClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -58,7 +57,7 @@ func (client *PrivateLinksClient) NewListByMongoClusterPager(resourceGroupName s
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByMongoClusterCreateRequest(ctx, resourceGroupName, mongoClusterName, options)
+				return client.listByMongoClusterCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, options)
 			}, nil)
 			if err != nil {
 				return PrivateLinksClientListByMongoClusterResponse{}, err
@@ -70,7 +69,7 @@ func (client *PrivateLinksClient) NewListByMongoClusterPager(resourceGroupName s
 }
 
 // listByMongoClusterCreateRequest creates the ListByMongoCluster request.
-func (client *PrivateLinksClient) listByMongoClusterCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, _ *PrivateLinksClientListByMongoClusterOptions) (*policy.Request, error) {
+func (client *PrivateLinksClient) listByMongoClusterCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, _ *PrivateLinksClientListByMongoClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +88,7 @@ func (client *PrivateLinksClient) listByMongoClusterCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

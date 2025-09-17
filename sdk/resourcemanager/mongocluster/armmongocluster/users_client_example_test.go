@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"log"
 )
 
@@ -23,7 +23,7 @@ func ExampleUsersClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewUsersClient().BeginCreateOrUpdate(ctx, "TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu", armmongocluster.User{
+	poller, err := clientFactory.NewUsersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu", armmongocluster.User{
 		Properties: &armmongocluster.UserProperties{
 			Roles: []*armmongocluster.DatabaseRole{
 				{
@@ -92,7 +92,7 @@ func ExampleUsersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewUsersClient().BeginDelete(ctx, "TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu", nil)
+	poller, err := clientFactory.NewUsersClient().BeginDelete(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,7 +113,7 @@ func ExampleUsersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewUsersClient().Get(ctx, "TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu", nil)
+	res, err := clientFactory.NewUsersClient().Get(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -163,7 +163,7 @@ func ExampleUsersClient_NewListByMongoClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewUsersClient().NewListByMongoClusterPager("TestGroup", "myMongoCluster", nil)
+	pager := clientFactory.NewUsersClient().NewListByMongoClusterPager("2025-07-01-preview", "TestGroup", "myMongoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

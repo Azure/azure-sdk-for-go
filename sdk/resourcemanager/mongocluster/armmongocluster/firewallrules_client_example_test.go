@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"log"
 )
 
@@ -23,7 +23,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFirewallRulesClient().BeginCreateOrUpdate(ctx, "TestGroup", "myMongoCluster", "rule1", armmongocluster.FirewallRule{
+	poller, err := clientFactory.NewFirewallRulesClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "rule1", armmongocluster.FirewallRule{
 		Properties: &armmongocluster.FirewallRuleProperties{
 			StartIPAddress: to.Ptr("0.0.0.0"),
 			EndIPAddress:   to.Ptr("255.255.255.255"),
@@ -72,7 +72,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFirewallRulesClient().BeginDelete(ctx, "TestGroup", "myMongoCluster", "rule1", nil)
+	poller, err := clientFactory.NewFirewallRulesClient().BeginDelete(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "rule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -93,7 +93,7 @@ func ExampleFirewallRulesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFirewallRulesClient().Get(ctx, "TestGroup", "myMongoCluster", "rule1", nil)
+	res, err := clientFactory.NewFirewallRulesClient().Get(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", "rule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -133,7 +133,7 @@ func ExampleFirewallRulesClient_NewListByMongoClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFirewallRulesClient().NewListByMongoClusterPager("TestGroup", "myMongoCluster", nil)
+	pager := clientFactory.NewFirewallRulesClient().NewListByMongoClusterPager("2025-07-01-preview", "TestGroup", "myMongoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

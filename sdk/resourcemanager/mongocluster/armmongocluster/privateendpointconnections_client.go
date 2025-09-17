@@ -41,17 +41,16 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // BeginCreate - Create a Private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - resource - Resource create parameters.
 //   - options - PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
 //     method.
-func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, mongoClusterName, privateEndpointConnectionName, resource, options)
+		resp, err := client.create(ctx, apiVersion, resourceGroupName, mongoClusterName, privateEndpointConnectionName, resource, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,15 +68,13 @@ func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context,
 
 // Create - Create a Private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
-func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*http.Response, error) {
+func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, mongoClusterName, privateEndpointConnectionName, resource, options)
+	req, err := client.createCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, privateEndpointConnectionName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +90,7 @@ func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, reso
 }
 
 // createCreateRequest creates the Create request.
-func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, _ *PrivateEndpointConnectionsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, _ *PrivateEndpointConnectionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,7 +113,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,16 +125,15 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 
 // BeginDelete - Delete the private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 //     method.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, mongoClusterName, privateEndpointConnectionName, options)
+		resp, err := client.deleteOperation(ctx, apiVersion, resourceGroupName, mongoClusterName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -154,15 +150,13 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 
 // Delete - Delete the private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
-func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, mongoClusterName, privateEndpointConnectionName, options)
+	req, err := client.deleteCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +172,7 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,27 +195,26 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get a specific private connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - options - PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
 //     method.
-func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error) {
+func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, mongoClusterName, privateEndpointConnectionName, options)
+	req, err := client.getCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
@@ -238,7 +231,7 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -261,7 +254,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,13 +270,12 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByMongoClusterPager - List existing private connections
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - options - PrivateEndpointConnectionsClientListByMongoClusterOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByMongoClusterPager
 //     method.
-func (client *PrivateEndpointConnectionsClient) NewListByMongoClusterPager(resourceGroupName string, mongoClusterName string, options *PrivateEndpointConnectionsClientListByMongoClusterOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByMongoClusterResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByMongoClusterPager(apiVersion string, resourceGroupName string, mongoClusterName string, options *PrivateEndpointConnectionsClientListByMongoClusterOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByMongoClusterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListByMongoClusterResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByMongoClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -295,7 +287,7 @@ func (client *PrivateEndpointConnectionsClient) NewListByMongoClusterPager(resou
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByMongoClusterCreateRequest(ctx, resourceGroupName, mongoClusterName, options)
+				return client.listByMongoClusterCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, options)
 			}, nil)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListByMongoClusterResponse{}, err
@@ -307,7 +299,7 @@ func (client *PrivateEndpointConnectionsClient) NewListByMongoClusterPager(resou
 }
 
 // listByMongoClusterCreateRequest creates the ListByMongoCluster request.
-func (client *PrivateEndpointConnectionsClient) listByMongoClusterCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, _ *PrivateEndpointConnectionsClientListByMongoClusterOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) listByMongoClusterCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, _ *PrivateEndpointConnectionsClientListByMongoClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -326,7 +318,7 @@ func (client *PrivateEndpointConnectionsClient) listByMongoClusterCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

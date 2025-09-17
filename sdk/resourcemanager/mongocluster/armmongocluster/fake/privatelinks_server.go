@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,7 +21,7 @@ import (
 type PrivateLinksServer struct {
 	// NewListByMongoClusterPager is the fake for method PrivateLinksClient.NewListByMongoClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByMongoClusterPager func(resourceGroupName string, mongoClusterName string, options *armmongocluster.PrivateLinksClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.PrivateLinksClientListByMongoClusterResponse])
+	NewListByMongoClusterPager func(apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.PrivateLinksClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.PrivateLinksClientListByMongoClusterResponse])
 }
 
 // NewPrivateLinksServerTransport creates a new instance of PrivateLinksServerTransport with the provided implementation.
@@ -97,6 +97,11 @@ func (p *PrivateLinksServerTransport) dispatchNewListByMongoClusterPager(req *ht
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -105,7 +110,7 @@ func (p *PrivateLinksServerTransport) dispatchNewListByMongoClusterPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListByMongoClusterPager(resourceGroupNameParam, mongoClusterNameParam, nil)
+		resp := p.srv.NewListByMongoClusterPager(apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 		newListByMongoClusterPager = &resp
 		p.newListByMongoClusterPager.add(req, newListByMongoClusterPager)
 		server.PagerResponderInjectNextLinks(newListByMongoClusterPager, req, func(page *armmongocluster.PrivateLinksClientListByMongoClusterResponse, createLink func() string) {

@@ -40,13 +40,12 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 }
 
 // NewListByParentPager - List all the replicas for the mongo cluster.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - options - ReplicasClientListByParentOptions contains the optional parameters for the ReplicasClient.NewListByParentPager
 //     method.
-func (client *ReplicasClient) NewListByParentPager(resourceGroupName string, mongoClusterName string, options *ReplicasClientListByParentOptions) *runtime.Pager[ReplicasClientListByParentResponse] {
+func (client *ReplicasClient) NewListByParentPager(apiVersion string, resourceGroupName string, mongoClusterName string, options *ReplicasClientListByParentOptions) *runtime.Pager[ReplicasClientListByParentResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicasClientListByParentResponse]{
 		More: func(page ReplicasClientListByParentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -58,7 +57,7 @@ func (client *ReplicasClient) NewListByParentPager(resourceGroupName string, mon
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByParentCreateRequest(ctx, resourceGroupName, mongoClusterName, options)
+				return client.listByParentCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, options)
 			}, nil)
 			if err != nil {
 				return ReplicasClientListByParentResponse{}, err
@@ -70,7 +69,7 @@ func (client *ReplicasClient) NewListByParentPager(resourceGroupName string, mon
 }
 
 // listByParentCreateRequest creates the ListByParent request.
-func (client *ReplicasClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, _ *ReplicasClientListByParentOptions) (*policy.Request, error) {
+func (client *ReplicasClient) listByParentCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, _ *ReplicasClientListByParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/replicas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +88,7 @@ func (client *ReplicasClient) listByParentCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

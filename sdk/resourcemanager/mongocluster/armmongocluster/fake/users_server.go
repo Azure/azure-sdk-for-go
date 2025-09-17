@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,19 +22,19 @@ import (
 type UsersServer struct {
 	// BeginCreateOrUpdate is the fake for method UsersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource armmongocluster.User, options *armmongocluster.UsersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.UsersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, resource armmongocluster.User, options *armmongocluster.UsersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.UsersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method UsersClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *armmongocluster.UsersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.UsersClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, options *armmongocluster.UsersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.UsersClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method UsersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *armmongocluster.UsersClientGetOptions) (resp azfake.Responder[armmongocluster.UsersClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, options *armmongocluster.UsersClientGetOptions) (resp azfake.Responder[armmongocluster.UsersClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByMongoClusterPager is the fake for method UsersClient.NewListByMongoClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByMongoClusterPager func(resourceGroupName string, mongoClusterName string, options *armmongocluster.UsersClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.UsersClientListByMongoClusterResponse])
+	NewListByMongoClusterPager func(apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.UsersClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.UsersClientListByMongoClusterResponse])
 }
 
 // NewUsersServerTransport creates a new instance of UsersServerTransport with the provided implementation.
@@ -120,7 +120,12 @@ func (u *UsersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.User](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -136,7 +141,7 @@ func (u *UsersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := u.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, mongoClusterNameParam, userNameParam, body, nil)
+		respr, errRespr := u.srv.BeginCreateOrUpdate(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, userNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -172,6 +177,11 @@ func (u *UsersServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -184,7 +194,7 @@ func (u *UsersServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := u.srv.BeginDelete(req.Context(), resourceGroupNameParam, mongoClusterNameParam, userNameParam, nil)
+		respr, errRespr := u.srv.BeginDelete(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, userNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -218,6 +228,11 @@ func (u *UsersServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -230,7 +245,7 @@ func (u *UsersServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := u.srv.Get(req.Context(), resourceGroupNameParam, mongoClusterNameParam, userNameParam, nil)
+	respr, errRespr := u.srv.Get(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, userNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -257,6 +272,11 @@ func (u *UsersServerTransport) dispatchNewListByMongoClusterPager(req *http.Requ
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -265,7 +285,7 @@ func (u *UsersServerTransport) dispatchNewListByMongoClusterPager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		resp := u.srv.NewListByMongoClusterPager(resourceGroupNameParam, mongoClusterNameParam, nil)
+		resp := u.srv.NewListByMongoClusterPager(apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 		newListByMongoClusterPager = &resp
 		u.newListByMongoClusterPager.add(req, newListByMongoClusterPager)
 		server.PagerResponderInjectNextLinks(newListByMongoClusterPager, req, func(page *armmongocluster.UsersClientListByMongoClusterResponse, createLink func() string) {

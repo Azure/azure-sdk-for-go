@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,39 +22,39 @@ import (
 type MongoClustersServer struct {
 	// CheckNameAvailability is the fake for method MongoClustersClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, location string, body armmongocluster.CheckNameAvailabilityRequest, options *armmongocluster.MongoClustersClientCheckNameAvailabilityOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckNameAvailability func(ctx context.Context, apiVersion string, location string, body armmongocluster.CheckNameAvailabilityRequest, options *armmongocluster.MongoClustersClientCheckNameAvailabilityOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method MongoClustersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, mongoClusterName string, resource armmongocluster.MongoCluster, options *armmongocluster.MongoClustersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, resource armmongocluster.MongoCluster, options *armmongocluster.MongoClustersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method MongoClustersClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MongoClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientGetOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientGetOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method MongoClustersClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armmongocluster.MongoClustersClientListOptions) (resp azfake.PagerResponder[armmongocluster.MongoClustersClientListResponse])
+	NewListPager func(apiVersion string, options *armmongocluster.MongoClustersClientListOptions) (resp azfake.PagerResponder[armmongocluster.MongoClustersClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method MongoClustersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armmongocluster.MongoClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmongocluster.MongoClustersClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(apiVersion string, resourceGroupName string, options *armmongocluster.MongoClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmongocluster.MongoClustersClientListByResourceGroupResponse])
 
 	// ListConnectionStrings is the fake for method MongoClustersClient.ListConnectionStrings
 	// HTTP status codes to indicate success: http.StatusOK
-	ListConnectionStrings func(ctx context.Context, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientListConnectionStringsOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
+	ListConnectionStrings func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.MongoClustersClientListConnectionStringsOptions) (resp azfake.Responder[armmongocluster.MongoClustersClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
 
 	// BeginPromote is the fake for method MongoClustersClient.BeginPromote
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPromote func(ctx context.Context, resourceGroupName string, mongoClusterName string, body armmongocluster.PromoteReplicaRequest, options *armmongocluster.MongoClustersClientBeginPromoteOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientPromoteResponse], errResp azfake.ErrorResponder)
+	BeginPromote func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, body armmongocluster.PromoteReplicaRequest, options *armmongocluster.MongoClustersClientBeginPromoteOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientPromoteResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method MongoClustersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, mongoClusterName string, properties armmongocluster.Update, options *armmongocluster.MongoClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, properties armmongocluster.Update, options *armmongocluster.MongoClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armmongocluster.MongoClustersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMongoClustersServerTransport creates a new instance of MongoClustersServerTransport with the provided implementation.
@@ -154,7 +154,12 @@ func (m *MongoClustersServerTransport) dispatchCheckNameAvailability(req *http.R
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
 	body, err := server.UnmarshalRequestAsJSON[armmongocluster.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 	if err != nil {
 		return nil, err
 	}
@@ -162,7 +167,7 @@ func (m *MongoClustersServerTransport) dispatchCheckNameAvailability(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
+	respr, errRespr := m.srv.CheckNameAvailability(req.Context(), apiVersionParam, locationParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -189,7 +194,12 @@ func (m *MongoClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.MongoCluster](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -201,7 +211,7 @@ func (m *MongoClustersServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, mongoClusterNameParam, body, nil)
+		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -237,6 +247,11 @@ func (m *MongoClustersServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -245,7 +260,7 @@ func (m *MongoClustersServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, mongoClusterNameParam, nil)
+		respr, errRespr := m.srv.BeginDelete(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -279,6 +294,11 @@ func (m *MongoClustersServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -287,7 +307,7 @@ func (m *MongoClustersServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, mongoClusterNameParam, nil)
+	respr, errRespr := m.srv.Get(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -314,7 +334,12 @@ func (m *MongoClustersServerTransport) dispatchNewListPager(req *http.Request) (
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := m.srv.NewListPager(nil)
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListPager(apiVersionParam, nil)
 		newListPager = &resp
 		m.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmongocluster.MongoClustersClientListResponse, createLink func() string) {
@@ -347,11 +372,16 @@ func (m *MongoClustersServerTransport) dispatchNewListByResourceGroupPager(req *
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		resp := m.srv.NewListByResourceGroupPager(apiVersionParam, resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmongocluster.MongoClustersClientListByResourceGroupResponse, createLink func() string) {
@@ -382,6 +412,11 @@ func (m *MongoClustersServerTransport) dispatchListConnectionStrings(req *http.R
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -390,7 +425,7 @@ func (m *MongoClustersServerTransport) dispatchListConnectionStrings(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.ListConnectionStrings(req.Context(), resourceGroupNameParam, mongoClusterNameParam, nil)
+	respr, errRespr := m.srv.ListConnectionStrings(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -417,7 +452,12 @@ func (m *MongoClustersServerTransport) dispatchBeginPromote(req *http.Request) (
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.PromoteReplicaRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -429,7 +469,7 @@ func (m *MongoClustersServerTransport) dispatchBeginPromote(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginPromote(req.Context(), resourceGroupNameParam, mongoClusterNameParam, body, nil)
+		respr, errRespr := m.srv.BeginPromote(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -465,7 +505,12 @@ func (m *MongoClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.Update](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -477,7 +522,7 @@ func (m *MongoClustersServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, mongoClusterNameParam, body, nil)
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

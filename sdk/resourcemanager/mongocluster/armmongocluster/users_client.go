@@ -41,17 +41,16 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreateOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - userName - The name of the mongo cluster user.
 //   - resource - Resource create parameters.
 //   - options - UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate
 //     method.
-func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, options *UsersClientBeginCreateOrUpdateOptions) (*runtime.Poller[UsersClientCreateOrUpdateResponse], error) {
+func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, resource User, options *UsersClientBeginCreateOrUpdateOptions) (*runtime.Poller[UsersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, mongoClusterName, userName, resource, options)
+		resp, err := client.createOrUpdate(ctx, apiVersion, resourceGroupName, mongoClusterName, userName, resource, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,15 +68,13 @@ func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 
 // CreateOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
-func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, options *UsersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *UsersClient) createOrUpdate(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, resource User, options *UsersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UsersClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, mongoClusterName, userName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, userName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +90,7 @@ func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, _ *UsersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, resource User, _ *UsersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,7 +113,7 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,15 +125,14 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Deletes a mongo cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - userName - The name of the mongo cluster user.
 //   - options - UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
-func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*runtime.Poller[UsersClientDeleteResponse], error) {
+func (client *UsersClient) BeginDelete(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*runtime.Poller[UsersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, mongoClusterName, userName, options)
+		resp, err := client.deleteOperation(ctx, apiVersion, resourceGroupName, mongoClusterName, userName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -153,15 +149,13 @@ func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName st
 
 // Delete - Deletes a mongo cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
-func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *UsersClient) deleteOperation(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UsersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, mongoClusterName, userName, options)
+	req, err := client.deleteCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, userName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +171,7 @@ func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *UsersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, _ *UsersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *UsersClient) deleteCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, _ *UsersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,26 +194,25 @@ func (client *UsersClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the defintion of a Mongo cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - userName - The name of the mongo cluster user.
 //   - options - UsersClientGetOptions contains the optional parameters for the UsersClient.Get method.
-func (client *UsersClient) Get(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientGetOptions) (UsersClientGetResponse, error) {
+func (client *UsersClient) Get(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientGetOptions) (UsersClientGetResponse, error) {
 	var err error
 	const operationName = "UsersClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, mongoClusterName, userName, options)
+	req, err := client.getCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, userName, options)
 	if err != nil {
 		return UsersClientGetResponse{}, err
 	}
@@ -236,7 +229,7 @@ func (client *UsersClient) Get(ctx context.Context, resourceGroupName string, mo
 }
 
 // getCreateRequest creates the Get request.
-func (client *UsersClient) getCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, _ *UsersClientGetOptions) (*policy.Request, error) {
+func (client *UsersClient) getCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, userName string, _ *UsersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -259,7 +252,7 @@ func (client *UsersClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -275,13 +268,12 @@ func (client *UsersClient) getHandleResponse(resp *http.Response) (UsersClientGe
 }
 
 // NewListByMongoClusterPager - List all the users on a mongo cluster.
-//
-// Generated from API version 2025-07-01-preview
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - options - UsersClientListByMongoClusterOptions contains the optional parameters for the UsersClient.NewListByMongoClusterPager
 //     method.
-func (client *UsersClient) NewListByMongoClusterPager(resourceGroupName string, mongoClusterName string, options *UsersClientListByMongoClusterOptions) *runtime.Pager[UsersClientListByMongoClusterResponse] {
+func (client *UsersClient) NewListByMongoClusterPager(apiVersion string, resourceGroupName string, mongoClusterName string, options *UsersClientListByMongoClusterOptions) *runtime.Pager[UsersClientListByMongoClusterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsersClientListByMongoClusterResponse]{
 		More: func(page UsersClientListByMongoClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -293,7 +285,7 @@ func (client *UsersClient) NewListByMongoClusterPager(resourceGroupName string, 
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByMongoClusterCreateRequest(ctx, resourceGroupName, mongoClusterName, options)
+				return client.listByMongoClusterCreateRequest(ctx, apiVersion, resourceGroupName, mongoClusterName, options)
 			}, nil)
 			if err != nil {
 				return UsersClientListByMongoClusterResponse{}, err
@@ -305,7 +297,7 @@ func (client *UsersClient) NewListByMongoClusterPager(resourceGroupName string, 
 }
 
 // listByMongoClusterCreateRequest creates the ListByMongoCluster request.
-func (client *UsersClient) listByMongoClusterCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, _ *UsersClientListByMongoClusterOptions) (*policy.Request, error) {
+func (client *UsersClient) listByMongoClusterCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, _ *UsersClientListByMongoClusterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -324,7 +316,7 @@ func (client *UsersClient) listByMongoClusterCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

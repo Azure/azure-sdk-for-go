@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"log"
 	"time"
 )
@@ -24,7 +24,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoC
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMongoClustersClient().CheckNameAvailability(ctx, "westus2", armmongocluster.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewMongoClustersClient().CheckNameAvailability(ctx, "2025-07-01-preview", "westus2", armmongocluster.CheckNameAvailabilityRequest{
 		Name: to.Ptr("newmongocluster"),
 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	}, nil)
@@ -52,7 +52,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMon
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMongoClustersClient().CheckNameAvailability(ctx, "westus2", armmongocluster.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewMongoClustersClient().CheckNameAvailability(ctx, "2025-07-01-preview", "westus2", armmongocluster.CheckNameAvailabilityRequest{
 		Name: to.Ptr("existingmongocluster"),
 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 	}, nil)
@@ -82,7 +82,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
 		Location: to.Ptr("westus2"),
 		Properties: &armmongocluster.Properties{
 			Administrator: &armmongocluster.AdministratorProperties{
@@ -187,7 +187,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myReplicaMongoCluster", armmongocluster.MongoCluster{
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myReplicaMongoCluster", armmongocluster.MongoCluster{
 		Location: to.Ptr("centralus"),
 		Properties: &armmongocluster.Properties{
 			CreateMode: to.Ptr(armmongocluster.CreateModeGeoReplica),
@@ -270,7 +270,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myReplicaMongoCluster", armmongocluster.MongoCluster{
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myReplicaMongoCluster", armmongocluster.MongoCluster{
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
@@ -398,7 +398,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
 		Location: to.Ptr("westus2"),
 		Properties: &armmongocluster.Properties{
 			CreateMode: to.Ptr(armmongocluster.CreateModePointInTimeRestore),
@@ -478,7 +478,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
@@ -600,7 +600,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
@@ -737,7 +737,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
 		Location: to.Ptr("westus2"),
 		Properties: &armmongocluster.Properties{
 			Administrator: &armmongocluster.AdministratorProperties{
@@ -847,7 +847,7 @@ func ExampleMongoClustersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginDelete(ctx, "TestResourceGroup", "myMongoCluster", nil)
+	poller, err := clientFactory.NewMongoClustersClient().BeginDelete(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -868,7 +868,7 @@ func ExampleMongoClustersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMongoClustersClient().Get(ctx, "TestResourceGroup", "myMongoCluster", nil)
+	res, err := clientFactory.NewMongoClustersClient().Get(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -949,7 +949,7 @@ func ExampleMongoClustersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMongoClustersClient().NewListPager(nil)
+	pager := clientFactory.NewMongoClustersClient().NewListPager("2025-07-01-preview", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1096,7 +1096,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMongoClustersClient().NewListByResourceGroupPager("TestResourceGroup", nil)
+	pager := clientFactory.NewMongoClustersClient().NewListByResourceGroupPager("2025-07-01-preview", "TestResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1243,7 +1243,7 @@ func ExampleMongoClustersClient_ListConnectionStrings() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMongoClustersClient().ListConnectionStrings(ctx, "TestGroup", "myMongoCluster", nil)
+	res, err := clientFactory.NewMongoClustersClient().ListConnectionStrings(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1273,7 +1273,7 @@ func ExampleMongoClustersClient_BeginPromote() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginPromote(ctx, "TestGroup", "myMongoCluster", armmongocluster.PromoteReplicaRequest{
+	poller, err := clientFactory.NewMongoClustersClient().BeginPromote(ctx, "2025-07-01-preview", "TestGroup", "myMongoCluster", armmongocluster.PromoteReplicaRequest{
 		PromoteOption: to.Ptr(armmongocluster.PromoteOptionForced),
 		Mode:          to.Ptr(armmongocluster.PromoteModeSwitchover),
 	}, nil)
@@ -1297,7 +1297,7 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			DataAPI: &armmongocluster.DataAPIProperties{
 				Mode: to.Ptr(armmongocluster.DataAPIModeEnabled),
@@ -1408,7 +1408,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			Storage: &armmongocluster.StorageProperties{
 				SizeGb: to.Ptr[int64](256),
@@ -1493,7 +1493,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			AuthConfig: &armmongocluster.AuthConfigProperties{
 				AllowedModes: []*armmongocluster.AuthenticationMode{
@@ -1582,7 +1582,7 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessDisabled),
 		},
@@ -1691,7 +1691,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeIopsAndThr
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			Storage: &armmongocluster.StorageProperties{
 				SizeGb:     to.Ptr[int64](128),
@@ -1781,7 +1781,7 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),
@@ -1867,7 +1867,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "2025-07-01-preview", "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
 		Properties: &armmongocluster.UpdateProperties{
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),

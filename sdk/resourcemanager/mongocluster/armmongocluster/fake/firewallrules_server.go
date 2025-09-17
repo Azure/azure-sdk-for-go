@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,19 +22,19 @@ import (
 type FirewallRulesServer struct {
 	// BeginCreateOrUpdate is the fake for method FirewallRulesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, resource armmongocluster.FirewallRule, options *armmongocluster.FirewallRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.FirewallRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, firewallRuleName string, resource armmongocluster.FirewallRule, options *armmongocluster.FirewallRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.FirewallRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method FirewallRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, options *armmongocluster.FirewallRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.FirewallRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, firewallRuleName string, options *armmongocluster.FirewallRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.FirewallRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FirewallRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, options *armmongocluster.FirewallRulesClientGetOptions) (resp azfake.Responder[armmongocluster.FirewallRulesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, firewallRuleName string, options *armmongocluster.FirewallRulesClientGetOptions) (resp azfake.Responder[armmongocluster.FirewallRulesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByMongoClusterPager is the fake for method FirewallRulesClient.NewListByMongoClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByMongoClusterPager func(resourceGroupName string, mongoClusterName string, options *armmongocluster.FirewallRulesClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.FirewallRulesClientListByMongoClusterResponse])
+	NewListByMongoClusterPager func(apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.FirewallRulesClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.FirewallRulesClientListByMongoClusterResponse])
 }
 
 // NewFirewallRulesServerTransport creates a new instance of FirewallRulesServerTransport with the provided implementation.
@@ -120,7 +120,12 @@ func (f *FirewallRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.FirewallRule](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -136,7 +141,7 @@ func (f *FirewallRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := f.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, mongoClusterNameParam, firewallRuleNameParam, body, nil)
+		respr, errRespr := f.srv.BeginCreateOrUpdate(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, firewallRuleNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -172,6 +177,11 @@ func (f *FirewallRulesServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -184,7 +194,7 @@ func (f *FirewallRulesServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := f.srv.BeginDelete(req.Context(), resourceGroupNameParam, mongoClusterNameParam, firewallRuleNameParam, nil)
+		respr, errRespr := f.srv.BeginDelete(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, firewallRuleNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -218,6 +228,11 @@ func (f *FirewallRulesServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -230,7 +245,7 @@ func (f *FirewallRulesServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := f.srv.Get(req.Context(), resourceGroupNameParam, mongoClusterNameParam, firewallRuleNameParam, nil)
+	respr, errRespr := f.srv.Get(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, firewallRuleNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -257,6 +272,11 @@ func (f *FirewallRulesServerTransport) dispatchNewListByMongoClusterPager(req *h
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -265,7 +285,7 @@ func (f *FirewallRulesServerTransport) dispatchNewListByMongoClusterPager(req *h
 		if err != nil {
 			return nil, err
 		}
-		resp := f.srv.NewListByMongoClusterPager(resourceGroupNameParam, mongoClusterNameParam, nil)
+		resp := f.srv.NewListByMongoClusterPager(apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 		newListByMongoClusterPager = &resp
 		f.newListByMongoClusterPager.add(req, newListByMongoClusterPager)
 		server.PagerResponderInjectNextLinks(newListByMongoClusterPager, req, func(page *armmongocluster.FirewallRulesClientListByMongoClusterResponse, createLink func() string) {

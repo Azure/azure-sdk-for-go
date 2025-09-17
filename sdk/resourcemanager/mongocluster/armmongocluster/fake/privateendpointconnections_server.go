@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,19 +22,19 @@ import (
 type PrivateEndpointConnectionsServer struct {
 	// BeginCreate is the fake for method PrivateEndpointConnectionsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreate func(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource armmongocluster.PrivateEndpointConnectionResource, options *armmongocluster.PrivateEndpointConnectionsClientBeginCreateOptions) (resp azfake.PollerResponder[armmongocluster.PrivateEndpointConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource armmongocluster.PrivateEndpointConnectionResource, options *armmongocluster.PrivateEndpointConnectionsClientBeginCreateOptions) (resp azfake.PollerResponder[armmongocluster.PrivateEndpointConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *armmongocluster.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *armmongocluster.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *armmongocluster.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armmongocluster.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, apiVersion string, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *armmongocluster.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armmongocluster.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByMongoClusterPager is the fake for method PrivateEndpointConnectionsClient.NewListByMongoClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByMongoClusterPager func(resourceGroupName string, mongoClusterName string, options *armmongocluster.PrivateEndpointConnectionsClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.PrivateEndpointConnectionsClientListByMongoClusterResponse])
+	NewListByMongoClusterPager func(apiVersion string, resourceGroupName string, mongoClusterName string, options *armmongocluster.PrivateEndpointConnectionsClientListByMongoClusterOptions) (resp azfake.PagerResponder[armmongocluster.PrivateEndpointConnectionsClientListByMongoClusterResponse])
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -120,7 +120,12 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginCreate(req *htt
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.PrivateEndpointConnectionResource](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -136,7 +141,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginCreate(req *htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCreate(req.Context(), resourceGroupNameParam, mongoClusterNameParam, privateEndpointConnectionNameParam, body, nil)
+		respr, errRespr := p.srv.BeginCreate(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, privateEndpointConnectionNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -172,6 +177,11 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -184,7 +194,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, mongoClusterNameParam, privateEndpointConnectionNameParam, nil)
+		respr, errRespr := p.srv.BeginDelete(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, privateEndpointConnectionNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -218,6 +228,11 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -230,7 +245,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, mongoClusterNameParam, privateEndpointConnectionNameParam, nil)
+	respr, errRespr := p.srv.Get(req.Context(), apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, privateEndpointConnectionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -257,6 +272,11 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByMongoCluste
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -265,7 +285,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByMongoCluste
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListByMongoClusterPager(resourceGroupNameParam, mongoClusterNameParam, nil)
+		resp := p.srv.NewListByMongoClusterPager(apiVersionParam, resourceGroupNameParam, mongoClusterNameParam, nil)
 		newListByMongoClusterPager = &resp
 		p.newListByMongoClusterPager.add(req, newListByMongoClusterPager)
 		server.PagerResponderInjectNextLinks(newListByMongoClusterPager, req, func(page *armmongocluster.PrivateEndpointConnectionsClientListByMongoClusterResponse, createLink func() string) {

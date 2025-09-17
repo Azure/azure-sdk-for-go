@@ -7,7 +7,7 @@ package armmongocluster_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/v2"
 	"log"
 )
 
@@ -22,7 +22,7 @@ func ExampleReplicasClient_NewListByParentPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicasClient().NewListByParentPager("TestGroup", "myMongoCluster", nil)
+	pager := clientFactory.NewReplicasClient().NewListByParentPager("2025-07-01-preview", "TestGroup", "myMongoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

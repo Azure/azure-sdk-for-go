@@ -4,11 +4,6 @@
 
 package armcontainerservicefleet
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
-	moduleVersion = "v2.0.0"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -195,6 +190,63 @@ func PossibleFleetUpdateStrategyProvisioningStateValues() []FleetUpdateStrategyP
 	}
 }
 
+// GateProvisioningState - The provisioning state of the Gate resource.
+type GateProvisioningState string
+
+const (
+	// GateProvisioningStateCanceled - Resource creation was canceled.
+	GateProvisioningStateCanceled GateProvisioningState = "Canceled"
+	// GateProvisioningStateFailed - Resource creation failed.
+	GateProvisioningStateFailed GateProvisioningState = "Failed"
+	// GateProvisioningStateSucceeded - Resource has been created.
+	GateProvisioningStateSucceeded GateProvisioningState = "Succeeded"
+)
+
+// PossibleGateProvisioningStateValues returns the possible values for the GateProvisioningState const type.
+func PossibleGateProvisioningStateValues() []GateProvisioningState {
+	return []GateProvisioningState{
+		GateProvisioningStateCanceled,
+		GateProvisioningStateFailed,
+		GateProvisioningStateSucceeded,
+	}
+}
+
+// GateState - The state of the Gate.
+type GateState string
+
+const (
+	// GateStateCompleted - An Completed Gate allows the staged rollout process to continue.
+	GateStateCompleted GateState = "Completed"
+	// GateStatePending - A Pending Gate will continue to block the staged rollout process it is controlling.
+	GateStatePending GateState = "Pending"
+	// GateStateSkipped - A Skipped Gate means that the staged rollout process it is controlling was skipped.
+	GateStateSkipped GateState = "Skipped"
+)
+
+// PossibleGateStateValues returns the possible values for the GateState const type.
+func PossibleGateStateValues() []GateState {
+	return []GateState{
+		GateStateCompleted,
+		GateStatePending,
+		GateStateSkipped,
+	}
+}
+
+// GateType - The type of the Gate determines how it is completed.
+type GateType string
+
+const (
+	// GateTypeApproval - An approval gate is completed by setting its state to be Completed.
+	GateTypeApproval GateType = "Approval"
+)
+
+// PossibleGateTypeValues returns the possible values for the GateType const type.
+func PossibleGateTypeValues() []GateType {
+	return []GateType{
+		GateTypeApproval,
+	}
+}
+
 // ManagedClusterUpgradeType - The type of upgrade to perform when targeting ManagedClusters.
 type ManagedClusterUpgradeType string
 
@@ -318,6 +370,24 @@ func PossibleTargetTypeValues() []TargetType {
 	}
 }
 
+// Timing - Whether the Gate is placed before or after the target.
+type Timing string
+
+const (
+	// TimingAfter - The Gate is after the target.
+	TimingAfter Timing = "After"
+	// TimingBefore - The Gate is before the target.
+	TimingBefore Timing = "Before"
+)
+
+// PossibleTimingValues returns the possible values for the Timing const type.
+func PossibleTimingValues() []Timing {
+	return []Timing{
+		TimingAfter,
+		TimingBefore,
+	}
+}
+
 // UpdateRunProvisioningState - The provisioning state of the UpdateRun resource.
 type UpdateRunProvisioningState string
 
@@ -349,6 +419,8 @@ const (
 	UpdateStateFailed UpdateState = "Failed"
 	// UpdateStateNotStarted - The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has not been started.
 	UpdateStateNotStarted UpdateState = "NotStarted"
+	// UpdateStatePending - The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that is pending.
+	UpdateStatePending UpdateState = "Pending"
 	// UpdateStateRunning - The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that is running.
 	UpdateStateRunning UpdateState = "Running"
 	// UpdateStateSkipped - The state of an UpdateRun/UpdateStage/UpdateGroup/MemberUpdate that has been skipped.
@@ -365,6 +437,7 @@ func PossibleUpdateStateValues() []UpdateState {
 		UpdateStateCompleted,
 		UpdateStateFailed,
 		UpdateStateNotStarted,
+		UpdateStatePending,
 		UpdateStateRunning,
 		UpdateStateSkipped,
 		UpdateStateStopped,
@@ -386,6 +459,11 @@ const (
 	// For example, if a cluster runs version 1.17.7 and versions 1.17.9, 1.18.4, 1.18.6, and 1.19.1 are available, the cluster
 	// upgrades to 1.18.6.
 	UpgradeChannelStable UpgradeChannel = "Stable"
+	// UpgradeChannelTargetKubernetesVersion - Upgrades the clusters Kubernetes version to the latest supported patch version
+	// of the specified target Kubernetes version.
+	// For information on the behavior of update run for Kubernetes version upgrade,
+	// see https://learn.microsoft.com/en-us/azure/kubernetes-fleet/update-orchestration?tabs=azure-portal
+	UpgradeChannelTargetKubernetesVersion UpgradeChannel = "TargetKubernetesVersion"
 )
 
 // PossibleUpgradeChannelValues returns the possible values for the UpgradeChannel const type.
@@ -394,5 +472,6 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 		UpgradeChannelNodeImage,
 		UpgradeChannelRapid,
 		UpgradeChannelStable,
+		UpgradeChannelTargetKubernetesVersion,
 	}
 }

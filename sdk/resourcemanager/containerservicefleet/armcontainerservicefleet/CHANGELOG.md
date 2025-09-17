@@ -1,5 +1,42 @@
 # Release History
 
+## 3.0.0-beta.1 (2025-08-07)
+### Breaking Changes
+
+- Struct `ErrorAdditionalInfoInfo` has been removed
+
+### Features Added
+
+- Type of `ErrorAdditionalInfo.Info` has been changed from `*ErrorAdditionalInfoInfo` to `any`
+- New value `UpdateStatePending` added to enum type `UpdateState`
+- New value `UpgradeChannelTargetKubernetesVersion` added to enum type `UpgradeChannel`
+- New enum type `GateProvisioningState` with values `GateProvisioningStateCanceled`, `GateProvisioningStateFailed`, `GateProvisioningStateSucceeded`
+- New enum type `GateState` with values `GateStateCompleted`, `GateStatePending`, `GateStateSkipped`
+- New enum type `GateType` with values `GateTypeApproval`
+- New enum type `Timing` with values `TimingAfter`, `TimingBefore`
+- New function `*ClientFactory.NewGatesClient() *GatesClient`
+- New function `NewGatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GatesClient, error)`
+- New function `*GatesClient.Get(context.Context, string, string, string, *GatesClientGetOptions) (GatesClientGetResponse, error)`
+- New function `*GatesClient.NewListByFleetPager(string, string, *GatesClientListByFleetOptions) *runtime.Pager[GatesClientListByFleetResponse]`
+- New function `*GatesClient.BeginUpdate(context.Context, string, string, string, GatePatch, *GatesClientBeginUpdateOptions) (*runtime.Poller[GatesClientUpdateResponse], error)`
+- New struct `Gate`
+- New struct `GateConfiguration`
+- New struct `GateListResult`
+- New struct `GatePatch`
+- New struct `GatePatchProperties`
+- New struct `GateProperties`
+- New struct `GateTarget`
+- New struct `UpdateRunGateStatus`
+- New struct `UpdateRunGateTargetProperties`
+- New field `LongTermSupport`, `TargetKubernetesVersion` in struct `AutoUpgradeProfileProperties`
+- New field `Labels` in struct `FleetMemberProperties`
+- New field `Labels` in struct `FleetMemberUpdateProperties`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateGroup`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateGroupStatus`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateStage`
+- New field `AfterGates`, `BeforeGates` in struct `UpdateStageStatus`
+
+
 ## 2.0.0 (2025-04-15)
 ### Breaking Changes
 

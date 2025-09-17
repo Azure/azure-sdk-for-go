@@ -10,7 +10,9 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"encoding/base64"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"hash/crc64"
 	"io"
@@ -3707,4 +3709,94 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClientCustomAudience() {
 
 	_, err = abClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserObjectId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountImmutable)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	cntClientTokenCred := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, cntClientTokenCred)
+
+	blobName := testcommon.GenerateBlobName("append-sduoid")
+	blobClient := cntClientTokenCred.NewAppendBlobClient(blobName)
+
+	// Set current and past time and create key
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(30 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	permissions := sas.BlobPermissions{Read: true, Create: true, Write: true}
+
+	blobParts, _ := blob.ParseURL(blobClient.URL())
+
+	// Get oid from the same bearer token
+	expectedOid, err := getOIDFromCredential(context.Background(), cred)
+	_require.NoError(err)
+	_require.NotEmpty(expectedOid)
+	blobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:                    sas.ProtocolHTTPS,
+		StartTime:                   time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:                  time.Now().UTC().Add(15 * time.Minute),
+		Permissions:                 permissions.String(),
+		ContainerName:               containerName,
+		SignedDelegatedUserObjectId: expectedOid,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+
+	// Round-trip check: SAS should contain sduoid=expectedOid
+	qp := blobParts.SAS
+	_require.Equal(expectedOid, qp.SignedDelegatedUserObjectId())
+
+	blobURLWithSAS := blobParts.String()
+	// Use the same AAD credential so the bearer token is presented along with the SAS
+	blobClient, err = appendblob.NewClient(blobURLWithSAS, cred, nil)
+	_require.NoError(err)
+
+	// Try a basic create, should succeed in same-tenant
+	createResp, err := blobClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(createResp)
+}
+
+// getOIDFromCredential obtains an access token using the provided credential and returns the oid claim.
+func getOIDFromCredential(ctx context.Context, cred azcore.TokenCredential) (string, error) {
+	tok, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	if err != nil {
+		return "", err
+	}
+	parts := strings.Split(tok.Token, ".")
+	if len(parts) != 3 {
+		return "", fmt.Errorf("unexpected JWT format")
+	}
+	payloadJSON, err := base64.RawURLEncoding.DecodeString(parts[1])
+	if err != nil {
+		return "", err
+	}
+	var claims map[string]any
+	if err := json.Unmarshal(payloadJSON, &claims); err != nil {
+		return "", err
+	}
+	oidAny := claims["oid"]
+	oid, _ := oidAny.(string)
+	if oid == "" {
+		return "", fmt.Errorf("empty oid claim")
+	}
+	return oid, nil
 }

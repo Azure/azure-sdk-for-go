@@ -1,6 +1,6 @@
 # Release History
 
-## 1.18.3-beta.1 (Unreleased)
+## 1.19.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,17 @@
 
 ### Bugs Fixed
 
+* Fixed resource identifier parsing for provider-specific resource hierarchies containing "resourceGroups" segments.
+
 ### Other Changes
+
+* Improved error fall-back for improperly authored long-running operations.
+
+## 1.19.0 (2025-08-21)
+
+### Features Added
+
+* Added `runtime.APIVersionLocationPath` to be set by clients that set the API version in the path.
 
 ## 1.18.2 (2025-07-31)
 

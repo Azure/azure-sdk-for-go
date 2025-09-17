@@ -47,7 +47,7 @@ type OrganizationsServer struct {
 
 	// BeginUpdate is the fake for method OrganizationsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, organizationName string, properties armneonpostgres.OrganizationResource, options *armneonpostgres.OrganizationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armneonpostgres.OrganizationsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, organizationName string, properties armneonpostgres.OrganizationResourceUpdate, options *armneonpostgres.OrganizationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armneonpostgres.OrganizationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOrganizationsServerTransport creates a new instance of OrganizationsServerTransport with the provided implementation.
@@ -377,7 +377,7 @@ func (o *OrganizationsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armneonpostgres.OrganizationResource](req)
+		body, err := server.UnmarshalRequestAsJSON[armneonpostgres.OrganizationResourceUpdate](req)
 		if err != nil {
 			return nil, err
 		}

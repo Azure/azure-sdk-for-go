@@ -20,29 +20,33 @@ import (
 
 // PoolsServer is a fake server for instances of the armdevopsinfrastructure.PoolsClient type.
 type PoolsServer struct {
+	// CheckNameAvailability is the fake for method PoolsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, apiVersion string, body armdevopsinfrastructure.CheckNameAvailability, options *armdevopsinfrastructure.PoolsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdevopsinfrastructure.PoolsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method PoolsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, poolName string, resource armdevopsinfrastructure.Pool, options *armdevopsinfrastructure.PoolsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, apiVersion string, resourceGroupName string, poolName string, resource armdevopsinfrastructure.Pool, options *armdevopsinfrastructure.PoolsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PoolsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, poolName string, options *armdevopsinfrastructure.PoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, apiVersion string, resourceGroupName string, poolName string, options *armdevopsinfrastructure.PoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, poolName string, options *armdevopsinfrastructure.PoolsClientGetOptions) (resp azfake.Responder[armdevopsinfrastructure.PoolsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, apiVersion string, resourceGroupName string, poolName string, options *armdevopsinfrastructure.PoolsClientGetOptions) (resp azfake.Responder[armdevopsinfrastructure.PoolsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method PoolsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armdevopsinfrastructure.PoolsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.PoolsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(apiVersion string, resourceGroupName string, options *armdevopsinfrastructure.PoolsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.PoolsClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method PoolsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armdevopsinfrastructure.PoolsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.PoolsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager func(apiVersion string, options *armdevopsinfrastructure.PoolsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.PoolsClientListBySubscriptionResponse])
 
 	// BeginUpdate is the fake for method PoolsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, poolName string, properties armdevopsinfrastructure.PoolUpdate, options *armdevopsinfrastructure.PoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, apiVersion string, resourceGroupName string, poolName string, properties armdevopsinfrastructure.PoolUpdate, options *armdevopsinfrastructure.PoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPoolsServerTransport creates a new instance of PoolsServerTransport with the provided implementation.
@@ -93,6 +97,8 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 		}
 		if !intercepted {
 			switch method {
+			case "PoolsClient.CheckNameAvailability":
+				res.resp, res.err = p.dispatchCheckNameAvailability(req)
 			case "PoolsClient.BeginCreateOrUpdate":
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PoolsClient.BeginDelete":
@@ -124,6 +130,40 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 	}
 }
 
+func (p *PoolsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	body, err := server.UnmarshalRequestAsJSON[armdevopsinfrastructure.CheckNameAvailability](req)
+	if err != nil {
+		return nil, err
+	}
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckNameAvailability(req.Context(), apiVersionParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *PoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
@@ -133,10 +173,15 @@ func (p *PoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armdevopsinfrastructure.Pool](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -148,7 +193,7 @@ func (p *PoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, poolNameParam, body, nil)
+		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), apiVersionParam, resourceGroupNameParam, poolNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -181,8 +226,13 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
@@ -192,7 +242,7 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, poolNameParam, nil)
+		respr, errRespr := p.srv.BeginDelete(req.Context(), apiVersionParam, resourceGroupNameParam, poolNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -223,8 +273,13 @@ func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+	if err != nil {
+		return nil, err
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
@@ -234,7 +289,7 @@ func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, poolNameParam, nil)
+	respr, errRespr := p.srv.Get(req.Context(), apiVersionParam, resourceGroupNameParam, poolNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -258,14 +313,19 @@ func (p *PoolsServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		resp := p.srv.NewListByResourceGroupPager(apiVersionParam, resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdevopsinfrastructure.PoolsClientListByResourceGroupResponse, createLink func() string) {
@@ -295,10 +355,15 @@ func (p *PoolsServerTransport) dispatchNewListBySubscriptionPager(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := p.srv.NewListBySubscriptionPager(nil)
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListBySubscriptionPager(apiVersionParam, nil)
 		newListBySubscriptionPager = &resp
 		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdevopsinfrastructure.PoolsClientListBySubscriptionResponse, createLink func() string) {
@@ -328,10 +393,15 @@ func (p *PoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armdevopsinfrastructure.PoolUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
 		if err != nil {
 			return nil, err
 		}
@@ -343,7 +413,7 @@ func (p *PoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, poolNameParam, body, nil)
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), apiVersionParam, resourceGroupNameParam, poolNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

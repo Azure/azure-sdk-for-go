@@ -40,13 +40,12 @@ func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCreden
 }
 
 // NewListByImagePager - List ImageVersion resources by Image
-//
-// Generated from API version 2024-10-19
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageName - Name of the image.
 //   - options - ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.NewListByImagePager
 //     method.
-func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string, imageName string, options *ImageVersionsClientListByImageOptions) *runtime.Pager[ImageVersionsClientListByImageResponse] {
+func (client *ImageVersionsClient) NewListByImagePager(apiVersion string, resourceGroupName string, imageName string, options *ImageVersionsClientListByImageOptions) *runtime.Pager[ImageVersionsClientListByImageResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ImageVersionsClientListByImageResponse]{
 		More: func(page ImageVersionsClientListByImageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -58,7 +57,7 @@ func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string,
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByImageCreateRequest(ctx, resourceGroupName, imageName, options)
+				return client.listByImageCreateRequest(ctx, apiVersion, resourceGroupName, imageName, options)
 			}, nil)
 			if err != nil {
 				return ImageVersionsClientListByImageResponse{}, err
@@ -70,7 +69,7 @@ func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string,
 }
 
 // listByImageCreateRequest creates the ListByImage request.
-func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, resourceGroupName string, imageName string, _ *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
+func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, imageName string, _ *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/images/{imageName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +88,7 @@ func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

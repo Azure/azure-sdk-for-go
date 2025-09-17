@@ -12,7 +12,38 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-19/CreateOrUpdatePool.json
+// Generated from example definition: 2025-01-21/Pools_CheckNameAvailability.json
+func ExamplePoolsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevopsinfrastructure.NewClientFactory("a2e95d27-c161-4b61-bda4-11512c14c2c2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolsClient().CheckNameAvailability(ctx, "2025-01-21", armdevopsinfrastructure.CheckNameAvailability{
+		Name: to.Ptr("mydevopspool"),
+		Type: to.Ptr(armdevopsinfrastructure.ResourceTypeMicrosoftDevOpsInfrastructurePools),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevopsinfrastructure.PoolsClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: &armdevopsinfrastructure.CheckNameAvailabilityResult{
+	// 		Available: to.Ptr(armdevopsinfrastructure.AvailabilityStatusUnavailable),
+	// 		Message: to.Ptr("Managed DevOps pool mydevopspool is already in use. Please choose a pool name that has not been taken."),
+	// 		Name: to.Ptr("mydevopspool"),
+	// 		Reason: to.Ptr(armdevopsinfrastructure.CheckNameAvailabilityReasonAlreadyExists),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-01-21/CreateOrUpdatePool.json
 func ExamplePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +54,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPoolsClient().BeginCreateOrUpdate(ctx, "rg", "pool", armdevopsinfrastructure.Pool{
+	poller, err := clientFactory.NewPoolsClient().BeginCreateOrUpdate(ctx, "2025-01-21", "rg", "pool", armdevopsinfrastructure.Pool{
 		Location: to.Ptr("eastus"),
 		Properties: &armdevopsinfrastructure.PoolProperties{
 			ProvisioningState:          to.Ptr(armdevopsinfrastructure.ProvisioningStateSucceeded),
@@ -33,7 +64,8 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 				Kind: to.Ptr("AzureDevOps"),
 				Organizations: []*armdevopsinfrastructure.Organization{
 					{
-						URL: to.Ptr("https://mseng.visualstudio.com"),
+						URL:        to.Ptr("https://mseng.visualstudio.com"),
+						OpenAccess: to.Ptr(true),
 					},
 				},
 			},
@@ -47,7 +79,17 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 				},
 				Images: []*armdevopsinfrastructure.PoolImage{
 					{
-						ResourceID: to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+						ResourceID:    to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+						EphemeralType: to.Ptr(armdevopsinfrastructure.EphemeralTypeAutomatic),
+					},
+				},
+				OSProfile: &armdevopsinfrastructure.OsProfile{
+					SecretsManagementSettings: &armdevopsinfrastructure.SecretsManagementSettings{
+						CertificateStoreName: to.Ptr(armdevopsinfrastructure.CertificateStoreNameOptionRoot),
+						ObservedCertificates: []*string{
+							to.Ptr("https://abc.vault.azure.net/secrets/one"),
+						},
+						KeyExportable: to.Ptr(false),
 					},
 				},
 			},
@@ -90,6 +132,15 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	// 						ResourceID: to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
 	// 					},
 	// 				},
+	// 				OSProfile: &armdevopsinfrastructure.OsProfile{
+	// 					SecretsManagementSettings: &armdevopsinfrastructure.SecretsManagementSettings{
+	// 						CertificateStoreName: to.Ptr(armdevopsinfrastructure.CertificateStoreNameOptionRoot),
+	// 						ObservedCertificates: []*string{
+	// 							to.Ptr("https://abc.vault.azure.net/secrets/one"),
+	// 						},
+	// 						KeyExportable: to.Ptr(false),
+	// 					},
+	// 				},
 	// 			},
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.DevOpsInfrastructure/Pools/pool"),
@@ -98,7 +149,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-10-19/DeletePool.json
+// Generated from example definition: 2025-01-21/DeletePool.json
 func ExamplePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +160,7 @@ func ExamplePoolsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPoolsClient().BeginDelete(ctx, "rg", "pool", nil)
+	poller, err := clientFactory.NewPoolsClient().BeginDelete(ctx, "2025-01-21", "rg", "pool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -119,7 +170,7 @@ func ExamplePoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-10-19/GetPool.json
+// Generated from example definition: 2025-01-21/GetPool.json
 func ExamplePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +181,7 @@ func ExamplePoolsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPoolsClient().Get(ctx, "rg", "pool", nil)
+	res, err := clientFactory.NewPoolsClient().Get(ctx, "2025-01-21", "rg", "pool", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -172,7 +223,7 @@ func ExamplePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-10-19/ListPoolsBySubscriptionAndResourceGroup.json
+// Generated from example definition: 2025-01-21/ListPoolsBySubscriptionAndResourceGroup.json
 func ExamplePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +234,7 @@ func ExamplePoolsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPoolsClient().NewListByResourceGroupPager("rg", nil)
+	pager := clientFactory.NewPoolsClient().NewListByResourceGroupPager("2025-01-21", "rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -207,7 +258,7 @@ func ExamplePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-19/ListPoolsBySubscription.json
+// Generated from example definition: 2025-01-21/ListPoolsBySubscription.json
 func ExamplePoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +269,7 @@ func ExamplePoolsClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPoolsClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewPoolsClient().NewListBySubscriptionPager("2025-01-21", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -242,7 +293,7 @@ func ExamplePoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-19/UpdatePool.json
+// Generated from example definition: 2025-01-21/UpdatePool.json
 func ExamplePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +304,7 @@ func ExamplePoolsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPoolsClient().BeginUpdate(ctx, "rg", "pool", armdevopsinfrastructure.PoolUpdate{}, nil)
+	poller, err := clientFactory.NewPoolsClient().BeginUpdate(ctx, "2025-01-21", "rg", "pool", armdevopsinfrastructure.PoolUpdate{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

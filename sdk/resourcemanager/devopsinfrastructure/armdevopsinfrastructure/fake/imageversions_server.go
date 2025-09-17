@@ -21,7 +21,7 @@ import (
 type ImageVersionsServer struct {
 	// NewListByImagePager is the fake for method ImageVersionsClient.NewListByImagePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByImagePager func(resourceGroupName string, imageName string, options *armdevopsinfrastructure.ImageVersionsClientListByImageOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.ImageVersionsClientListByImageResponse])
+	NewListByImagePager func(apiVersion string, resourceGroupName string, imageName string, options *armdevopsinfrastructure.ImageVersionsClientListByImageOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.ImageVersionsClientListByImageResponse])
 }
 
 // NewImageVersionsServerTransport creates a new instance of ImageVersionsServerTransport with the provided implementation.
@@ -94,8 +94,13 @@ func (i *ImageVersionsServerTransport) dispatchNewListByImagePager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/images/(?P<imageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
@@ -105,7 +110,7 @@ func (i *ImageVersionsServerTransport) dispatchNewListByImagePager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListByImagePager(resourceGroupNameParam, imageNameParam, nil)
+		resp := i.srv.NewListByImagePager(apiVersionParam, resourceGroupNameParam, imageNameParam, nil)
 		newListByImagePager = &resp
 		i.newListByImagePager.add(req, newListByImagePager)
 		server.PagerResponderInjectNextLinks(newListByImagePager, req, func(page *armdevopsinfrastructure.ImageVersionsClientListByImageResponse, createLink func() string) {

@@ -40,12 +40,11 @@ func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewUsagesPager - List Quota resources by subscription ID
-//
-// Generated from API version 2024-10-19
 //   - location - The name of the Azure region.
+//   - apiVersion - The API version to use for this operation.
 //   - options - SubscriptionUsagesClientUsagesOptions contains the optional parameters for the SubscriptionUsagesClient.NewUsagesPager
 //     method.
-func (client *SubscriptionUsagesClient) NewUsagesPager(location string, options *SubscriptionUsagesClientUsagesOptions) *runtime.Pager[SubscriptionUsagesClientUsagesResponse] {
+func (client *SubscriptionUsagesClient) NewUsagesPager(location string, apiVersion string, options *SubscriptionUsagesClientUsagesOptions) *runtime.Pager[SubscriptionUsagesClientUsagesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SubscriptionUsagesClientUsagesResponse]{
 		More: func(page SubscriptionUsagesClientUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -57,7 +56,7 @@ func (client *SubscriptionUsagesClient) NewUsagesPager(location string, options 
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.usagesCreateRequest(ctx, location, options)
+				return client.usagesCreateRequest(ctx, location, apiVersion, options)
 			}, nil)
 			if err != nil {
 				return SubscriptionUsagesClientUsagesResponse{}, err
@@ -69,7 +68,7 @@ func (client *SubscriptionUsagesClient) NewUsagesPager(location string, options 
 }
 
 // usagesCreateRequest creates the Usages request.
-func (client *SubscriptionUsagesClient) usagesCreateRequest(ctx context.Context, location string, _ *SubscriptionUsagesClientUsagesOptions) (*policy.Request, error) {
+func (client *SubscriptionUsagesClient) usagesCreateRequest(ctx context.Context, location string, apiVersion string, _ *SubscriptionUsagesClientUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -84,7 +83,7 @@ func (client *SubscriptionUsagesClient) usagesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

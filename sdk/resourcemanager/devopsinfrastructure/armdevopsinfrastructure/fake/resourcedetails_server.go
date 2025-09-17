@@ -21,7 +21,7 @@ import (
 type ResourceDetailsServer struct {
 	// NewListByPoolPager is the fake for method ResourceDetailsClient.NewListByPoolPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByPoolPager func(resourceGroupName string, poolName string, options *armdevopsinfrastructure.ResourceDetailsClientListByPoolOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.ResourceDetailsClientListByPoolResponse])
+	NewListByPoolPager func(apiVersion string, resourceGroupName string, poolName string, options *armdevopsinfrastructure.ResourceDetailsClientListByPoolOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.ResourceDetailsClientListByPoolResponse])
 }
 
 // NewResourceDetailsServerTransport creates a new instance of ResourceDetailsServerTransport with the provided implementation.
@@ -94,8 +94,13 @@ func (r *ResourceDetailsServerTransport) dispatchNewListByPoolPager(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
@@ -105,7 +110,7 @@ func (r *ResourceDetailsServerTransport) dispatchNewListByPoolPager(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListByPoolPager(resourceGroupNameParam, poolNameParam, nil)
+		resp := r.srv.NewListByPoolPager(apiVersionParam, resourceGroupNameParam, poolNameParam, nil)
 		newListByPoolPager = &resp
 		r.newListByPoolPager.add(req, newListByPoolPager)
 		server.PagerResponderInjectNextLinks(newListByPoolPager, req, func(page *armdevopsinfrastructure.ResourceDetailsClientListByPoolResponse, createLink func() string) {

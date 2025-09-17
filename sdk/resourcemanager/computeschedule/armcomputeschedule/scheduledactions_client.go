@@ -332,7 +332,6 @@ func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -457,7 +456,6 @@ func (client *ScheduledActionsClient) disableCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -511,7 +509,6 @@ func (client *ScheduledActionsClient) enableCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

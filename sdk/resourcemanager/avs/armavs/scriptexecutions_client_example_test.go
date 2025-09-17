@@ -6,10 +6,11 @@ package armavs_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs/v2"
-	"log"
 )
 
 // Generated from example definition: 2024-09-01/ScriptExecutions_CreateOrUpdate.json
@@ -178,7 +179,7 @@ func ExampleScriptExecutionsClient_GetExecutionLogs() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewScriptExecutionsClient().GetExecutionLogs(ctx, "group1", "cloud1", "addSsoServer", &armavs.ScriptExecutionsClientGetExecutionLogsOptions{
-		ScriptOutputStreamType: &[]*armavs.ScriptOutputStreamType{
+		ScriptOutputStreamType: []*armavs.ScriptOutputStreamType{
 			to.Ptr(armavs.ScriptOutputStreamTypeInformation),
 			to.Ptr(armavs.ScriptOutputStreamType("Warnings")),
 			to.Ptr(armavs.ScriptOutputStreamType("Errors")),

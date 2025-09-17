@@ -332,35 +332,35 @@ func (client *OccurrencesClient) listByScheduledActionHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListResourcesPager - List resources attached to Scheduled Actions for the given occurrence
+// ListResources - List resources attached to Scheduled Actions for the given occurrence
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
 //   - occurrenceID - The name of the Occurrence
-//   - options - OccurrencesClientListResourcesOptions contains the optional parameters for the OccurrencesClient.NewListResourcesPager
+//   - options - OccurrencesClientListResourcesOptions contains the optional parameters for the OccurrencesClient.ListResources
 //     method.
-func (client *OccurrencesClient) NewListResourcesPager(resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientListResourcesOptions) *runtime.Pager[OccurrencesClientListResourcesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OccurrencesClientListResourcesResponse]{
-		More: func(page OccurrencesClientListResourcesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *OccurrencesClientListResourcesResponse) (OccurrencesClientListResourcesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OccurrencesClient.NewListResourcesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listResourcesCreateRequest(ctx, resourceGroupName, scheduledActionName, occurrenceID, options)
-			}, nil)
-			if err != nil {
-				return OccurrencesClientListResourcesResponse{}, err
-			}
-			return client.listResourcesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *OccurrencesClient) ListResources(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientListResourcesOptions) (OccurrencesClientListResourcesResponse, error) {
+	var err error
+	const operationName = "OccurrencesClient.ListResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listResourcesCreateRequest(ctx, resourceGroupName, scheduledActionName, occurrenceID, options)
+	if err != nil {
+		return OccurrencesClientListResourcesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OccurrencesClientListResourcesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return OccurrencesClientListResourcesResponse{}, err
+	}
+	resp, err := client.listResourcesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listResourcesCreateRequest creates the ListResources request.

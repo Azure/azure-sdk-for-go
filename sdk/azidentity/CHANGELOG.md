@@ -1,17 +1,12 @@
 # Release History
 
-## 1.12.1-beta.1 (Unreleased)
+## 1.13.0-beta.1 (2025-09-17)
 
 ### Features Added
 
 - Added `AzurePowerShellCredential`, which authenticates as the identity logged in to Azure PowerShell
   (thanks [ArmaanMcleod](https://github.com/ArmaanMcleod))
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- `WorkloadIdentityCredential` supports identity binding mode ([#25056](https://github.com/Azure/azure-sdk-for-go/issues/25056))
 
 ## 1.12.0 (2025-09-16)
 

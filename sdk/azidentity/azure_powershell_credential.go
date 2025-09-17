@@ -23,9 +23,8 @@ import (
 )
 
 const (
-	credNameAzurePowerShell          = "AzurePowerShellCredential"
-	azurePowerShellNoAzAccountModule = "Az.Accounts PowerShell module not found."
-	azurePowerShellNoContextSet      = "Azure PowerShell context not set."
+	credNameAzurePowerShell = "AzurePowerShellCredential"
+	noAzAccountModule       = "Az.Accounts module not found"
 )
 
 // AzurePowerShellCredentialOptions contains optional parameters for AzurePowerShellCredential.
@@ -120,10 +119,6 @@ if (-not $mod) {
     Write-Error '%s'
 }
 
-if (-not (Get-AzContext)) {
-    Write-Error '%s'
-}
-
 $params = @{
     ResourceUrl   = '%s'
 	WarningAction = 'Ignore'
@@ -160,7 +155,7 @@ $customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token
 
 $jsonToken = $customToken | ConvertTo-Json
 return $jsonToken
-`, azurePowerShellNoAzAccountModule, azurePowerShellNoContextSet, resource, tenant, tenant)
+`, noAzAccountModule, resource, tenant, tenant)
 
 	// Windows: prefer pwsh.exe (PowerShell Core), fallback to powershell.exe (Windows PowerShell)
 	// Unix: only support pwsh (PowerShell Core)

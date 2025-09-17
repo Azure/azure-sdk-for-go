@@ -34,7 +34,8 @@ func mockAzurePowerShellSuccess(_ context.Context, credName string, _ string) ([
 	if credName != credNameAzurePowerShell {
 		return nil, errors.New("unexpected credential name: " + credName)
 	}
-	return azurePowerShellTokenOutput(time.Now().Add(time.Hour).Unix()), nil
+	// 981173106 = 2001-02-03T04:05:06Z
+	return azurePowerShellTokenOutput(981173106), nil
 }
 
 func TestAzurePowerShellCredential_Claims(t *testing.T) {

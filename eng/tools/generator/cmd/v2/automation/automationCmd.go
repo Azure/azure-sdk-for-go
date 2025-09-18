@@ -209,7 +209,13 @@ func processNamespaceResult(generateCtx common.GenerateContext, namespaceResult 
 	breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
 	srcFolder := filepath.Join(generateCtx.SDKPath, namespaceResult.PackageRelativePath)
-	apiViewArtifact := filepath.Join(generateCtx.SDKPath, namespaceResult.PackageRelativePath+".gosource")
+	goSourceArtifact := namespaceResult.PackageRelativePath + ".gosource"
+	apiViewArtifact := filepath.Join(generateCtx.SDKPath, goSourceArtifact)
+	if namespaceResult.ModuleRelativePath != "" {
+		srcFolder = filepath.Join(generateCtx.SDKPath, namespaceResult.ModuleRelativePath)
+		goSourceArtifact = namespaceResult.ModuleRelativePath + ".gosource"
+		apiViewArtifact = filepath.Join(generateCtx.SDKPath, goSourceArtifact)
+	}
 	err := zipDirectory(srcFolder, apiViewArtifact)
 	if err != nil {
 		fmt.Println(err)
@@ -225,7 +231,7 @@ func processNamespaceResult(generateCtx common.GenerateContext, namespaceResult 
 			HasBreakingChange:   &breaking,
 			BreakingChangeItems: &breakingChangeItems,
 		},
-		APIViewArtifact: namespaceResult.PackageRelativePath + ".gosource",
+		APIViewArtifact: goSourceArtifact,
 		Language:        "Go",
 	}
 }

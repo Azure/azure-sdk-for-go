@@ -11,6 +11,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -171,6 +172,33 @@ func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
+}
+
+func TestAzureCLICredential_Live(t *testing.T) {
+	if os.Getenv("CI_HAS_DEPLOYED_RESOURCES") == "" {
+		t.Skip("this test runs only in the live pipeline")
+	}
+	cred, err := NewAzureCLICredential(nil)
+	require.NoError(t, err)
+	tk, err := cred.GetToken(context.Background(), testTRO)
+	require.NoError(t, err)
+	require.NotEmpty(t, tk.Token)
+	require.Greater(t, tk.ExpiresOn.Unix(), time.Now().Unix())
+
+	t.Run("SubscriptionID", func(t *testing.T) {
+		subscriptionID := os.Getenv("AZURE_SUBSCRIPTION_ID")
+		if subscriptionID == "" {
+			t.Skip("no value for AZURE_SUBSCRIPTION_ID")
+		}
+		cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{
+			Subscription: subscriptionID,
+		})
+		require.NoError(t, err)
+		tk, err := cred.GetToken(context.Background(), testTRO)
+		require.NoError(t, err)
+		require.NotEmpty(t, tk.Token)
+		require.Greater(t, tk.ExpiresOn.Unix(), time.Now().Unix())
+	})
 }
 
 func TestAzureCLICredential_Subscription(t *testing.T) {

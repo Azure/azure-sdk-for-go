@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -137,6 +138,18 @@ func TestAzurePowerShellCredential_GetTokenInvalidToken(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
+}
+
+func TestAzurePowerShellCredential_Live(t *testing.T) {
+	if os.Getenv("CI_HAS_DEPLOYED_RESOURCES") == "" {
+		t.Skip("this test runs only in the live pipeline")
+	}
+	cred, err := NewAzurePowerShellCredential(nil)
+	require.NoError(t, err)
+	tk, err := cred.GetToken(context.Background(), testTRO)
+	require.NoError(t, err)
+	require.NotEmpty(t, tk.Token)
+	require.Greater(t, tk.ExpiresOn.Unix(), time.Now().Unix())
 }
 
 func TestAzurePowerShellCredential_TenantID(t *testing.T) {

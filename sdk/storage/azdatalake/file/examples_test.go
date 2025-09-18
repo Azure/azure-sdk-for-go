@@ -428,3 +428,36 @@ func Example_file_AppendAndFlushDataWithAcquireAndReleaseLease() {
 	fmt.Println(lease.StateTypeAvailable, *gResp2.LeaseState)
 
 }
+
+// This example shows how to use GetPathProperties to get file properties via the DFS endpoint.
+// GetPathProperties is recommended over GetProperties for file identification in flat namespace (FNS) accounts.
+func Example_file_GetPathProperties() {
+	// make sure you create the filesystem and file before running this example
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	
+	// Create a file client
+	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/file1.txt", accountName)
+	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	
+	fileClient, err := file.NewClientWithSharedKeyCredential(u, credential, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Get file properties using DFS endpoint
+	response, err := fileClient.GetPathProperties(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// The ResourceType field helps identify if this is a directory or file
+	fmt.Printf("Resource Type: %s\n", *response.ResourceType)
+	fmt.Printf("Content Length: %d\n", *response.ContentLength)
+	fmt.Printf("Last Modified: %s\n", response.LastModified.Format(time.RFC3339))
+}

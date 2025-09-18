@@ -1,5 +1,13 @@
 # Release History
 
+## 7.3.0 (2025-09-25)
+### Features Added
+
+- New value `ManagedClusterSKUNameAutomatic` added to enum type `ManagedClusterSKUName`
+- New value `OSSKUAzureLinux3` added to enum type `OSSKU`
+- New field `Kind` in struct `ManagedCluster`
+
+
 ## 7.3.0-beta.1 (2025-07-17)
 ### Features Added
 

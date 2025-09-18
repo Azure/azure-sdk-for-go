@@ -140,7 +140,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginCreate(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.SAPApplicationServerInstance](req)
@@ -192,7 +192,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginDelete(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -238,7 +238,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchGet(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -277,7 +277,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchNewListPager(req 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -318,7 +318,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginStart(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.StartRequest](req)
@@ -376,7 +376,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchBeginStop(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.StopRequest](req)
@@ -432,7 +432,7 @@ func (s *SAPApplicationServerInstancesServerTransport) dispatchUpdate(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Workloads/sapVirtualInstances/(?P<sapVirtualInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationInstances/(?P<applicationInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armworkloadssapvirtualinstance.UpdateSAPApplicationInstanceRequest](req)

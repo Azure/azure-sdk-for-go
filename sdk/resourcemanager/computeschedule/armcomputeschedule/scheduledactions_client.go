@@ -332,7 +332,6 @@ func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -457,7 +456,6 @@ func (client *ScheduledActionsClient) disableCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -511,7 +509,6 @@ func (client *ScheduledActionsClient) enableCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -694,34 +691,34 @@ func (client *ScheduledActionsClient) listBySubscriptionHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListResourcesPager - List resources attached to Scheduled Actions
+// ListResources - List resources attached to Scheduled Actions
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scheduledActionName - The name of the ScheduledAction
-//   - options - ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.NewListResourcesPager
+//   - options - ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.ListResources
 //     method.
-func (client *ScheduledActionsClient) NewListResourcesPager(resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientListResourcesOptions) *runtime.Pager[ScheduledActionsClientListResourcesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ScheduledActionsClientListResourcesResponse]{
-		More: func(page ScheduledActionsClientListResourcesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ScheduledActionsClientListResourcesResponse) (ScheduledActionsClientListResourcesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledActionsClient.NewListResourcesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listResourcesCreateRequest(ctx, resourceGroupName, scheduledActionName, options)
-			}, nil)
-			if err != nil {
-				return ScheduledActionsClientListResourcesResponse{}, err
-			}
-			return client.listResourcesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *ScheduledActionsClient) ListResources(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientListResourcesOptions) (ScheduledActionsClientListResourcesResponse, error) {
+	var err error
+	const operationName = "ScheduledActionsClient.ListResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listResourcesCreateRequest(ctx, resourceGroupName, scheduledActionName, options)
+	if err != nil {
+		return ScheduledActionsClientListResourcesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ScheduledActionsClientListResourcesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientListResourcesResponse{}, err
+	}
+	resp, err := client.listResourcesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listResourcesCreateRequest creates the ListResources request.

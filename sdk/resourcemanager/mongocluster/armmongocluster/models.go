@@ -554,14 +554,8 @@ type ShardingProperties struct {
 // StorageProperties - The storage properties of the cluster. This includes the data storage size and scaling applied to servers
 // in the cluster.
 type StorageProperties struct {
-	// The IOPs of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-	Iops *int64
-
 	// The size of the data disk assigned to each server.
 	SizeGb *int64
-
-	// The throughput of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-	Throughput *int64
 
 	// The type of storage to provision the cluster servers with.
 	Type *StorageType

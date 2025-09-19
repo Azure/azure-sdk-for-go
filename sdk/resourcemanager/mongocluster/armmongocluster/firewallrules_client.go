@@ -42,7 +42,7 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - firewallRuleName - The name of the mongo cluster firewall rule.
@@ -70,7 +70,7 @@ func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, resource FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallRulesClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,7 +129,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes a mongo cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - firewallRuleName - The name of the mongo cluster firewall rule.
@@ -155,7 +155,7 @@ func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes a mongo cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallRulesClient.BeginDelete"
@@ -201,7 +201,7 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -209,7 +209,7 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets information about a mongo cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - firewallRuleName - The name of the mongo cluster firewall rule.
@@ -260,7 +260,7 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 
 // NewListByMongoClusterPager - List all the firewall rules in a given mongo cluster.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - options - FirewallRulesClientListByMongoClusterOptions contains the optional parameters for the FirewallRulesClient.NewListByMongoClusterPager
@@ -325,7 +325,7 @@ func (client *FirewallRulesClient) listByMongoClusterCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,5 +1,11 @@
 # Release History
 
+## 1.1.0-beta.2 (2025-09-19)
+### Breaking Changes
+
+- Field `Iops`, `Throughput` of struct `StorageProperties` has been removed
+
+
 ## 1.1.0-beta.1 (2025-07-23)
 ### Features Added
 

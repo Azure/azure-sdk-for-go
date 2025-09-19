@@ -1,5 +1,61 @@
 # Release History
 
+## 2.0.0 (2025-09-19)
+### Breaking Changes
+
+- Function `*GroupQuotaLimitsRequestClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, *GroupQuotaLimitsRequestClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, GroupQuotaLimitList, *GroupQuotaLimitsRequestClientBeginUpdateOptions)`
+- Function `*GroupQuotasClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, *GroupQuotasClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, GroupQuotasEntity, *GroupQuotasClientBeginCreateOrUpdateOptions)`
+- Function `*GroupQuotasClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, *GroupQuotasClientBeginUpdateOptions)` to `(context.Context, string, string, GroupQuotasEntityPatch, *GroupQuotasClientBeginUpdateOptions)`
+- Struct `CommonResourceProperties` has been removed
+- Struct `CreateGenericQuotaRequestParameters` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExceptionResponse` has been removed
+- Struct `GroupQuotaDetails` has been removed
+- Struct `GroupQuotasEntityBase` has been removed
+- Struct `GroupQuotasEntityBasePatch` has been removed
+- Struct `LROResponse` has been removed
+- Struct `LROResponseProperties` has been removed
+- Struct `LimitsResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `RequestOneResourceProperties` has been removed
+- Struct `RequestOneResourceSubmitResponse` has been removed
+- Struct `RequestStatusDetails` has been removed
+- Struct `RequestSubmitResponse` has been removed
+- Struct `RequestSubmitResponse202` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceBaseRequest` has been removed
+- Struct `ServiceError` has been removed
+- Struct `SubscriptionGroupQuotaAssignment` has been removed
+- Struct `SubscriptionQuotaAllocationRequestList` has been removed
+- Struct `SubscriptionQuotaAllocationsStatusList` has been removed
+- Struct `SubscriptionQuotaDetails` has been removed
+- Field `GroupQuotaRequest` of struct `GroupQuotaLimitsRequestClientBeginUpdateOptions` has been removed
+- Field `GroupQuotaPutRequestBody` of struct `GroupQuotasClientBeginCreateOrUpdateOptions` has been removed
+- Field `GroupQuotasPatchRequestBody` of struct `GroupQuotasClientBeginUpdateOptions` has been removed
+
+### Features Added
+
+- New value `RequestStateEscalated` added to enum type `RequestState`
+- New enum type `EnforcementState` with values `EnforcementStateDisabled`, `EnforcementStateEnabled`, `EnforcementStateNotAvailable`
+- New enum type `GroupType` with values `GroupTypeAllocationGroup`, `GroupTypeEnforcedGroup`
+- New function `*ClientFactory.NewGroupQuotaLocationSettingsClient() *GroupQuotaLocationSettingsClient`
+- New function `*ClientFactory.NewGroupQuotaUsagesClient() *GroupQuotaUsagesClient`
+- New function `NewGroupQuotaLocationSettingsClient(azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaLocationSettingsClient, error)`
+- New function `*GroupQuotaLocationSettingsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, GroupQuotasEnforcementStatus, *GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GroupQuotaLocationSettingsClientCreateOrUpdateResponse], error)`
+- New function `*GroupQuotaLocationSettingsClient.Get(context.Context, string, string, string, string, *GroupQuotaLocationSettingsClientGetOptions) (GroupQuotaLocationSettingsClientGetResponse, error)`
+- New function `*GroupQuotaLocationSettingsClient.BeginUpdate(context.Context, string, string, string, string, GroupQuotasEnforcementStatus, *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaLocationSettingsClientUpdateResponse], error)`
+- New function `NewGroupQuotaUsagesClient(azcore.TokenCredential, *arm.ClientOptions) (*GroupQuotaUsagesClient, error)`
+- New function `*GroupQuotaUsagesClient.NewListPager(string, string, string, string, *GroupQuotaUsagesClientListOptions) *runtime.Pager[GroupQuotaUsagesClientListResponse]`
+- New struct `GroupQuotasEnforcementStatus`
+- New struct `GroupQuotasEnforcementStatusProperties`
+- New field `SystemData` in struct `CurrentQuotaLimitBase`
+- New field `SystemData` in struct `CurrentUsagesBase`
+- New field `GroupType` in struct `GroupQuotasEntityProperties`
+- New field `SystemData` in struct `RequestDetails`
+
+
 ## 1.1.0 (2025-02-25)
 ### Features Added
 

@@ -21,7 +21,7 @@ import (
 type SubscriptionUsagesServer struct {
 	// NewUsagesPager is the fake for method SubscriptionUsagesClient.NewUsagesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewUsagesPager func(location string, options *armdevopsinfrastructure.SubscriptionUsagesClientUsagesOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.SubscriptionUsagesClientUsagesResponse])
+	NewUsagesPager func(location string, apiVersion string, options *armdevopsinfrastructure.SubscriptionUsagesClientUsagesOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.SubscriptionUsagesClientUsagesResponse])
 }
 
 // NewSubscriptionUsagesServerTransport creates a new instance of SubscriptionUsagesServerTransport with the provided implementation.
@@ -94,14 +94,19 @@ func (s *SubscriptionUsagesServerTransport) dispatchNewUsagesPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		resp := s.srv.NewUsagesPager(locationParam, nil)
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewUsagesPager(locationParam, apiVersionParam, nil)
 		newUsagesPager = &resp
 		s.newUsagesPager.add(req, newUsagesPager)
 		server.PagerResponderInjectNextLinks(newUsagesPager, req, func(page *armdevopsinfrastructure.SubscriptionUsagesClientUsagesResponse, createLink func() string) {

@@ -40,13 +40,12 @@ func NewResourceDetailsClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListByPoolPager - List ResourceDetailsObject resources by Pool
-//
-// Generated from API version 2024-10-19
+//   - apiVersion - The API version to use for this operation.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - options - ResourceDetailsClientListByPoolOptions contains the optional parameters for the ResourceDetailsClient.NewListByPoolPager
 //     method.
-func (client *ResourceDetailsClient) NewListByPoolPager(resourceGroupName string, poolName string, options *ResourceDetailsClientListByPoolOptions) *runtime.Pager[ResourceDetailsClientListByPoolResponse] {
+func (client *ResourceDetailsClient) NewListByPoolPager(apiVersion string, resourceGroupName string, poolName string, options *ResourceDetailsClientListByPoolOptions) *runtime.Pager[ResourceDetailsClientListByPoolResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceDetailsClientListByPoolResponse]{
 		More: func(page ResourceDetailsClientListByPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -58,7 +57,7 @@ func (client *ResourceDetailsClient) NewListByPoolPager(resourceGroupName string
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPoolCreateRequest(ctx, resourceGroupName, poolName, options)
+				return client.listByPoolCreateRequest(ctx, apiVersion, resourceGroupName, poolName, options)
 			}, nil)
 			if err != nil {
 				return ResourceDetailsClientListByPoolResponse{}, err
@@ -70,7 +69,7 @@ func (client *ResourceDetailsClient) NewListByPoolPager(resourceGroupName string
 }
 
 // listByPoolCreateRequest creates the ListByPool request.
-func (client *ResourceDetailsClient) listByPoolCreateRequest(ctx context.Context, resourceGroupName string, poolName string, _ *ResourceDetailsClientListByPoolOptions) (*policy.Request, error) {
+func (client *ResourceDetailsClient) listByPoolCreateRequest(ctx context.Context, apiVersion string, resourceGroupName string, poolName string, _ *ResourceDetailsClientListByPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}/resources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +88,7 @@ func (client *ResourceDetailsClient) listByPoolCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

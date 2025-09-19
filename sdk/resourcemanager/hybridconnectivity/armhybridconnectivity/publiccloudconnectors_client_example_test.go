@@ -322,7 +322,7 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	// 					AdditionalInfo: []*armhybridconnectivity.ErrorAdditionalInfo{
 	// 						{
 	// 							Type: to.Ptr("qivvrewsjvcildjgwwytgimwklh"),
-	// 							Info: &armhybridconnectivity.ErrorAdditionalInfoInfo{
+	// 							Info: map[string]any{
 	// 							},
 	// 						},
 	// 					},
@@ -338,7 +338,7 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	// 			AdditionalInfo: []*armhybridconnectivity.ErrorAdditionalInfo{
 	// 				{
 	// 					Type: to.Ptr("qivvrewsjvcildjgwwytgimwklh"),
-	// 					Info: &armhybridconnectivity.ErrorAdditionalInfoInfo{
+	// 					Info: map[string]any{
 	// 					},
 	// 				},
 	// 			},
@@ -358,10 +358,10 @@ func ExamplePublicCloudConnectorsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Update(ctx, "rgpublicCloud", "svtirlbyqpepbzyessjenlueeznhg", armhybridconnectivity.PublicCloudConnector{
+	res, err := clientFactory.NewPublicCloudConnectorsClient("5ACC4579-DB34-4C2F-8F8C-25061168F342").Update(ctx, "rgpublicCloud", "svtirlbyqpepbzyessjenlueeznhg", armhybridconnectivity.PublicCloudConnectorUpdate{
 		Tags: map[string]*string{},
-		Properties: &armhybridconnectivity.PublicCloudConnectorProperties{
-			AwsCloudProfile: &armhybridconnectivity.AwsCloudProfile{
+		Properties: &armhybridconnectivity.PublicCloudConnectorPropertiesUpdate{
+			AwsCloudProfile: &armhybridconnectivity.AwsCloudProfileUpdate{
 				ExcludedAccounts: []*string{
 					to.Ptr("zrbtd"),
 				},

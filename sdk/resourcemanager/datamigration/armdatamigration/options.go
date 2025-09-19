@@ -87,6 +87,13 @@ type DatabaseMigrationsSQLDbClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// DatabaseMigrationsSQLDbClientBeginRetryOptions contains the optional parameters for the DatabaseMigrationsSQLDbClient.BeginRetry
+// method.
+type DatabaseMigrationsSQLDbClientBeginRetryOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // DatabaseMigrationsSQLDbClientGetOptions contains the optional parameters for the DatabaseMigrationsSQLDbClient.Get method.
 type DatabaseMigrationsSQLDbClientGetOptions struct {
 	// Complete migration details be included in the response.
@@ -119,6 +126,16 @@ type DatabaseMigrationsSQLMiClientBeginCutoverOptions struct {
 	ResumeToken string
 }
 
+// DatabaseMigrationsSQLMiClientBeginDeleteOptions contains the optional parameters for the DatabaseMigrationsSQLMiClient.BeginDelete
+// method.
+type DatabaseMigrationsSQLMiClientBeginDeleteOptions struct {
+	// Optional force delete boolean. If this is provided as true, migration will be deleted even if active.
+	Force *bool
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // DatabaseMigrationsSQLMiClientGetOptions contains the optional parameters for the DatabaseMigrationsSQLMiClient.Get method.
 type DatabaseMigrationsSQLMiClientGetOptions struct {
 	// Complete migration details be included in the response.
@@ -147,6 +164,16 @@ type DatabaseMigrationsSQLVMClientBeginCreateOrUpdateOptions struct {
 // DatabaseMigrationsSQLVMClientBeginCutoverOptions contains the optional parameters for the DatabaseMigrationsSQLVMClient.BeginCutover
 // method.
 type DatabaseMigrationsSQLVMClientBeginCutoverOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DatabaseMigrationsSQLVMClientBeginDeleteOptions contains the optional parameters for the DatabaseMigrationsSQLVMClient.BeginDelete
+// method.
+type DatabaseMigrationsSQLVMClientBeginDeleteOptions struct {
+	// Optional force delete boolean. If this is provided as true, migration will be deleted even if active.
+	Force *bool
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

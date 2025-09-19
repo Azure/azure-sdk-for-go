@@ -5,11 +5,6 @@
 
 package armdatamigration
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration"
-	moduleVersion = "v2.0.0-beta.1"
-)
-
 // AuthType - Authentication type used for accessing Azure Blob Storage.
 type AuthType string
 

@@ -433,12 +433,8 @@ type AccountProperties struct {
 	MigrationToken *string
 
 	// A collection of rules governing the accessibility from specific network locations.
-	NetworkACLs *NetworkRuleSet
-
-	// Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely within the user's
-	// private network, eliminating public internet exposure while maintaining
-	// control over network configurations and resources.
-	NetworkInjections *NetworkInjections
+	NetworkACLs       *NetworkRuleSet
+	NetworkInjections []*NetworkInjection
 
 	// Whether or not public endpoint access is allowed for this account.
 	PublicNetworkAccess *PublicNetworkAccess
@@ -1559,10 +1555,10 @@ type MultiRegionSettings struct {
 	RoutingMethod *RoutingMethods
 }
 
-// NetworkInjections - Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely
+// NetworkInjection - Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely
 // within the user's private network, eliminating public internet exposure while maintaining
 // control over network configurations and resources.
-type NetworkInjections struct {
+type NetworkInjection struct {
 	// Specifies what features in AI Foundry network injection applies to. Currently only supports 'agent' for agent scenarios.
 	// 'none' means no network injection.
 	Scenario *ScenarioType

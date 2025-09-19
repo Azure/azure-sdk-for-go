@@ -5,11 +5,6 @@
 
 package armcognitiveservices
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
-	moduleVersion = "v1.8.0"
-)
-
 // AbusePenaltyAction - The action of AbusePenalty.
 type AbusePenaltyAction string
 

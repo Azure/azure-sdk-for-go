@@ -25,7 +25,7 @@ type ContainerAppsDiagnosticsClient struct {
 }
 
 // NewContainerAppsDiagnosticsClient creates a new instance of ContainerAppsDiagnosticsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsDiagnosticsClient, error) {
@@ -43,7 +43,7 @@ func NewContainerAppsDiagnosticsClient(subscriptionID string, credential azcore.
 // GetDetector - Get a diagnostics result of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - detectorName - Name of the Container App Detector.
@@ -95,7 +95,7 @@ func (client *ContainerAppsDiagnosticsClient) getDetectorCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +113,7 @@ func (client *ContainerAppsDiagnosticsClient) getDetectorHandleResponse(resp *ht
 // GetRevision - Get a revision of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - revisionName - Name of the Container App Revision.
@@ -165,7 +165,7 @@ func (client *ContainerAppsDiagnosticsClient) getRevisionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *ContainerAppsDiagnosticsClient) getRevisionHandleResponse(resp *ht
 // GetRoot - Get the properties of a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - options - ContainerAppsDiagnosticsClientGetRootOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.GetRoot
@@ -230,7 +230,7 @@ func (client *ContainerAppsDiagnosticsClient) getRootCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,7 +247,7 @@ func (client *ContainerAppsDiagnosticsClient) getRootHandleResponse(resp *http.R
 
 // NewListDetectorsPager - Get the list of diagnostics for a given Container App.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App for which detector info is needed.
 //   - options - ContainerAppsDiagnosticsClientListDetectorsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListDetectorsPager
@@ -295,7 +295,7 @@ func (client *ContainerAppsDiagnosticsClient) listDetectorsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -312,7 +312,7 @@ func (client *ContainerAppsDiagnosticsClient) listDetectorsHandleResponse(resp *
 
 // NewListRevisionsPager - Get the Revisions for a given Container App.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App for which Revisions are needed.
 //   - options - ContainerAppsDiagnosticsClientListRevisionsOptions contains the optional parameters for the ContainerAppsDiagnosticsClient.NewListRevisionsPager
@@ -363,7 +363,7 @@ func (client *ContainerAppsDiagnosticsClient) listRevisionsCreateRequest(ctx con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

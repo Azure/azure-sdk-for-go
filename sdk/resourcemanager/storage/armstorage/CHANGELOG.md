@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2025-08-21)
+## 2.0.0 (2025-09-25)
 ### Breaking Changes
 
 - Type of `TriggerParameters.IntervalUnit` has been changed from `*string` to `*IntervalUnit`

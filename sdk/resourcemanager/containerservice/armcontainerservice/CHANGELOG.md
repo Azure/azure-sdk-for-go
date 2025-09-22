@@ -1,6 +1,6 @@
 # Release History
 
-## 8.0.0-beta.1 (2025-09-19)
+## 8.0.0-beta.1 (2025-09-25)
 ### Breaking Changes
 
 - Type of `AgentPoolStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
@@ -2241,6 +2241,7 @@
 
 
 ## 1.0.0 (2022-05-16)
+### Other Changes
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
 

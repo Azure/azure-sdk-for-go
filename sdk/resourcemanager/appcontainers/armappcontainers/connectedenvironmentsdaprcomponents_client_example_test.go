@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsDaprComponents_List.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,13 +40,13 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.DaprComponentsCollection = armappcontainers.DaprComponentsCollection{
-		// 	Value: []*armappcontainers.DaprComponent{
+		// page.ConnectedEnvironmentDaprComponentsCollection = armappcontainers.ConnectedEnvironmentDaprComponentsCollection{
+		// 	Value: []*armappcontainers.ConnectedEnvironmentDaprComponent{
 		// 		{
 		// 			Name: to.Ptr("reddog"),
 		// 			Type: to.Ptr("Microsoft.App/connectedEnvironments/daprcomponents"),
 		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/myenvironment/daprcomponents/reddog"),
-		// 			Properties: &armappcontainers.DaprComponentProperties{
+		// 			Properties: &armappcontainers.ConnectedEnvironmentDaprComponentProperties{
 		// 				ComponentType: to.Ptr("state.azure.cosmosdb"),
 		// 				IgnoreErrors: to.Ptr(false),
 		// 				InitTimeout: to.Ptr("50s"),
@@ -74,14 +74,24 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 		// 						{
 		// 							Name: to.Ptr("masterkey"),
 		// 					}},
+		// 					ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+		// 						{
+		// 							Name: to.Ptr("statestore"),
+		// 							Metadata: &armappcontainers.DaprServiceBindMetadata{
+		// 								Name: to.Ptr("daprcomponentBind"),
+		// 								Value: to.Ptr("redis-bind"),
+		// 							},
+		// 							ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+		// 					}},
 		// 					Version: to.Ptr("v1"),
+		// 					ProvisioningState: to.Ptr(armappcontainers.ConnectedEnvironmentDaprComponentProvisioningStateSucceeded),
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsDaprComponents_Get.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,11 +109,11 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DaprComponent = armappcontainers.DaprComponent{
+	// res.ConnectedEnvironmentDaprComponent = armappcontainers.ConnectedEnvironmentDaprComponent{
 	// 	Name: to.Ptr("reddog"),
 	// 	Type: to.Ptr("Microsoft.App/connectedEnvironments/daprcomponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/jlaw-demo1/daprcomponents/reddog"),
-	// 	Properties: &armappcontainers.DaprComponentProperties{
+	// 	Properties: &armappcontainers.ConnectedEnvironmentDaprComponentProperties{
 	// 		ComponentType: to.Ptr("state.azure.cosmosdb"),
 	// 		IgnoreErrors: to.Ptr(false),
 	// 		InitTimeout: to.Ptr("50s"),
@@ -131,13 +141,23 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	// 				{
 	// 					Name: to.Ptr("masterkey"),
 	// 			}},
+	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+	// 				{
+	// 					Name: to.Ptr("statestore"),
+	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
+	// 						Name: to.Ptr("daprcomponentBind"),
+	// 						Value: to.Ptr("redis-bind"),
+	// 					},
+	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+	// 			}},
 	// 			Version: to.Ptr("v1"),
+	// 			ProvisioningState: to.Ptr(armappcontainers.ConnectedEnvironmentDaprComponentProvisioningStateSucceeded),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
-func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
+func ExampleConnectedEnvironmentsDaprComponentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -147,8 +167,8 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewConnectedEnvironmentsDaprComponentsClient().CreateOrUpdate(ctx, "examplerg", "myenvironment", "reddog", armappcontainers.DaprComponent{
-		Properties: &armappcontainers.DaprComponentProperties{
+	poller, err := clientFactory.NewConnectedEnvironmentsDaprComponentsClient().BeginCreateOrUpdate(ctx, "examplerg", "myenvironment", "reddog", armappcontainers.ConnectedEnvironmentDaprComponent{
+		Properties: &armappcontainers.ConnectedEnvironmentDaprComponentProperties{
 			ComponentType: to.Ptr("state.azure.cosmosdb"),
 			IgnoreErrors:  to.Ptr(false),
 			InitTimeout:   to.Ptr("50s"),
@@ -177,20 +197,33 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 					Name:  to.Ptr("masterkey"),
 					Value: to.Ptr("keyvalue"),
 				}},
+			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+				{
+					Name: to.Ptr("statestore"),
+					Metadata: &armappcontainers.DaprServiceBindMetadata{
+						Name:  to.Ptr("daprcomponentBind"),
+						Value: to.Ptr("redis-bind"),
+					},
+					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+				}},
 			Version: to.Ptr("v1"),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DaprComponent = armappcontainers.DaprComponent{
+	// res.ConnectedEnvironmentDaprComponent = armappcontainers.ConnectedEnvironmentDaprComponent{
 	// 	Name: to.Ptr("reddog"),
 	// 	Type: to.Ptr("Microsoft.App/connectedEnvironments/daprcomponents"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/jlaw-demo1/daprcomponents/reddog"),
-	// 	Properties: &armappcontainers.DaprComponentProperties{
+	// 	Properties: &armappcontainers.ConnectedEnvironmentDaprComponentProperties{
 	// 		ComponentType: to.Ptr("state.azure.cosmosdb"),
 	// 		IgnoreErrors: to.Ptr(false),
 	// 		InitTimeout: to.Ptr("50s"),
@@ -218,13 +251,23 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	// 				{
 	// 					Name: to.Ptr("masterkey"),
 	// 			}},
+	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+	// 				{
+	// 					Name: to.Ptr("statestore"),
+	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
+	// 						Name: to.Ptr("daprcomponentBind"),
+	// 						Value: to.Ptr("redis-bind"),
+	// 					},
+	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+	// 			}},
 	// 			Version: to.Ptr("v1"),
+	// 			ProvisioningState: to.Ptr(armappcontainers.ConnectedEnvironmentDaprComponentProvisioningStateSucceeded),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_Delete.json
-func ExampleConnectedEnvironmentsDaprComponentsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsDaprComponents_Delete.json
+func ExampleConnectedEnvironmentsDaprComponentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -234,13 +277,17 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewConnectedEnvironmentsDaprComponentsClient().Delete(ctx, "examplerg", "myenvironment", "reddog", nil)
+	poller, err := clientFactory.NewConnectedEnvironmentsDaprComponentsClient().BeginDelete(ctx, "examplerg", "myenvironment", "reddog", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_ListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsDaprComponents_ListSecrets.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

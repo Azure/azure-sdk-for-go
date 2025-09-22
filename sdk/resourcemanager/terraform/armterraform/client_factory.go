@@ -32,17 +32,17 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewClient creates a new instance of Client.
+func (c *ClientFactory) NewClient() *Client {
+	return &Client{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
-	}
-}
-
-// NewTerraformClient creates a new instance of TerraformClient.
-func (c *ClientFactory) NewTerraformClient() *TerraformClient {
-	return &TerraformClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
 	}
 }

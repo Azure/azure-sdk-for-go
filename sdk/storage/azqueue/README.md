@@ -16,7 +16,7 @@ up to the total capacity limit of a storage account.
 Install the Azure Queue Storage SDK for Go with [go get][goget]:
 
 ```Powershell
-go get github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue
+go get github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2
 ```
 
 If you're going to authenticate with Azure Active Directory (recommended), install the [azidentity][azidentity] module.

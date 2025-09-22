@@ -5,11 +5,10 @@
 package fake
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
 	"reflect"
 	"sync"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 )
 
 type result struct {
@@ -39,6 +38,14 @@ func getOptional[T any](v T) *T {
 		return nil
 	}
 	return &v
+}
+
+func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
+	t, err := parse(v)
+	if err != nil {
+		return *new(T), err
+	}
+	return t, err
 }
 
 func newTracker[T any]() *tracker[T] {

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/QuotaLimits_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/QuotaLimits_List.json
 func ExampleResourceQuotaLimitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,13 +39,13 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.QuotaItemList = armnetapp.QuotaItemList{
-		// 	Value: []*armnetapp.QuotaItem{
+		// page.SubscriptionQuotaItemList = armnetapp.SubscriptionQuotaItemList{
+		// 	Value: []*armnetapp.SubscriptionQuotaItem{
 		// 		{
 		// 			Name: to.Ptr("eastus/accountsPerSubscription"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/accountsPerSubscription"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](10),
 		// 				Current: to.Ptr[int32](10),
 		// 			},
@@ -54,7 +54,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		// 			Name: to.Ptr("eastus/poolsPerAccount"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/poolsPerAccount"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](25),
 		// 				Current: to.Ptr[int32](25),
 		// 			},
@@ -63,7 +63,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		// 			Name: to.Ptr("eastus/volumesPerPool"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/volumesPerPool"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](500),
 		// 				Current: to.Ptr[int32](500),
 		// 			},
@@ -72,7 +72,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		// 			Name: to.Ptr("eastus/snapshotsPerVolume"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/snapshotsPerVolume"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](255),
 		// 				Current: to.Ptr[int32](255),
 		// 			},
@@ -81,7 +81,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		// 			Name: to.Ptr("eastus/totalTiBsPerSubscription"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/totalTiBsPerSubscription"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](25),
 		// 				Current: to.Ptr[int32](1000),
 		// 			},
@@ -90,7 +90,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		// 			Name: to.Ptr("eastus/totalDPVolumesPerSubscription"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/totalDPVolumesPerSubscription"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](10),
 		// 				Current: to.Ptr[int32](10),
 		// 			},
@@ -99,7 +99,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		// 			Name: to.Ptr("eastus/totalVolumesPerSubscription"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/totalVolumesPerSubscription"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](500),
 		// 				Current: to.Ptr[int32](500),
 		// 			},
@@ -108,7 +108,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 		// 			Name: to.Ptr("eastus/totalCoolAccessVolumesPerSubscription"),
 		// 			Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/totalCoolAccessVolumesPerSubscription"),
-		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 			Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 				Default: to.Ptr[int32](10),
 		// 				Current: to.Ptr[int32](10),
 		// 			},
@@ -117,7 +117,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/QuotaLimits_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/QuotaLimits_Get.json
 func ExampleResourceQuotaLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,11 +135,11 @@ func ExampleResourceQuotaLimitsClient_Get() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.QuotaItem = armnetapp.QuotaItem{
+	// res.SubscriptionQuotaItem = armnetapp.SubscriptionQuotaItem{
 	// 	Name: to.Ptr("eastus/totalCoolAccessVolumesPerSubscription"),
 	// 	Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/totalCoolAccessVolumesPerSubscription"),
-	// 	Properties: &armnetapp.QuotaItemProperties{
+	// 	Properties: &armnetapp.SubscriptionQuotaItemProperties{
 	// 		Default: to.Ptr[int32](10),
 	// 		Current: to.Ptr[int32](10),
 	// 	},

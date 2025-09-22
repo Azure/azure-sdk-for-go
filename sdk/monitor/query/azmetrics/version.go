@@ -5,5 +5,5 @@ package azmetrics
 
 const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics"
-	version    = "v1.3.0-beta.2"
+	version    = "v1.3.1-beta.1"
 )

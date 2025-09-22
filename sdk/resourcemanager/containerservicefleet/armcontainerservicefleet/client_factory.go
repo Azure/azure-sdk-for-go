@@ -72,6 +72,14 @@ func (c *ClientFactory) NewFleetsClient() *FleetsClient {
 	}
 }
 
+// NewGatesClient creates a new instance of GatesClient.
+func (c *ClientFactory) NewGatesClient() *GatesClient {
+	return &GatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

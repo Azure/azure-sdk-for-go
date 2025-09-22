@@ -4,11 +4,10 @@
 
 package armhardwaresecuritymodules
 
-// CloudHsmClusterBackupStatusClientBeginGetOptions contains the optional parameters for the CloudHsmClusterBackupStatusClient.BeginGet
+// CloudHsmClusterBackupStatusClientGetOptions contains the optional parameters for the CloudHsmClusterBackupStatusClient.Get
 // method.
-type CloudHsmClusterBackupStatusClientBeginGetOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
+type CloudHsmClusterBackupStatusClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete
@@ -36,11 +35,10 @@ type CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions struc
 	// placeholder for future optional parameters
 }
 
-// CloudHsmClusterRestoreStatusClientBeginGetOptions contains the optional parameters for the CloudHsmClusterRestoreStatusClient.BeginGet
+// CloudHsmClusterRestoreStatusClientGetOptions contains the optional parameters for the CloudHsmClusterRestoreStatusClient.Get
 // method.
-type CloudHsmClusterRestoreStatusClientBeginGetOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
+type CloudHsmClusterRestoreStatusClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // CloudHsmClustersClientBeginBackupOptions contains the optional parameters for the CloudHsmClustersClient.BeginBackup method.

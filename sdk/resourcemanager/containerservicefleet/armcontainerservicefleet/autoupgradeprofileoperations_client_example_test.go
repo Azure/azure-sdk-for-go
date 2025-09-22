@@ -7,11 +7,11 @@ package armcontainerservicefleet_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfileOperationsClient_BeginGenerateUpdateRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

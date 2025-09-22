@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopics_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopics_Get.json
 func ExampleDomainTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,14 +38,14 @@ func ExampleDomainTopicsClient_Get() {
 	// res.DomainTopic = armeventgrid.DomainTopic{
 	// 	Name: to.Ptr("topic1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/domains/topics"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampledomain2/topics/topic1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/domains/exampledomain2/topics/topic1"),
 	// 	Properties: &armeventgrid.DomainTopicProperties{
 	// 		ProvisioningState: to.Ptr(armeventgrid.DomainTopicProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopics_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopics_CreateOrUpdate.json
 func ExampleDomainTopicsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleDomainTopicsClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopics_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopics_Delete.json
 func ExampleDomainTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleDomainTopicsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/DomainTopics_ListByDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/DomainTopics_ListByDomain.json
 func ExampleDomainTopicsClient_NewListByDomainPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleDomainTopicsClient_NewListByDomainPager() {
 		// 		{
 		// 			Name: to.Ptr("domainCli100topic1"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/domains/topics"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/devexprg/providers/Microsoft.EventGrid/domains/domainCli100/topics/domainCli100topic1"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/devexprg/providers/Microsoft.EventGrid/domains/domainCli100/topics/domainCli100topic1"),
 		// 			Properties: &armeventgrid.DomainTopicProperties{
 		// 				ProvisioningState: to.Ptr(armeventgrid.DomainTopicProvisioningStateSucceeded),
 		// 			},
@@ -124,7 +124,7 @@ func ExampleDomainTopicsClient_NewListByDomainPager() {
 		// 		{
 		// 			Name: to.Ptr("domainCli100topic2"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/domains/topics"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/devexprg/providers/Microsoft.EventGrid/domains/domainCli100/topics/domainCli100topic2"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/devexprg/providers/Microsoft.EventGrid/domains/domainCli100/topics/domainCli100topic2"),
 		// 			Properties: &armeventgrid.DomainTopicProperties{
 		// 				ProvisioningState: to.Ptr(armeventgrid.DomainTopicProvisioningStateSucceeded),
 		// 			},

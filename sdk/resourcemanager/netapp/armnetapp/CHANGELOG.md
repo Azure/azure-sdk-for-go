@@ -1,5 +1,22 @@
 # Release History
 
+## 7.7.0 (2025-08-13)
+### Features Added
+
+- New value `ServiceLevelFlexible` added to enum type `ServiceLevel`
+- New enum type `AcceptGrowCapacityPoolForShortTermCloneSplit` with values `AcceptGrowCapacityPoolForShortTermCloneSplitAccepted`, `AcceptGrowCapacityPoolForShortTermCloneSplitDeclined`
+- New function `*VolumesClient.BeginSplitCloneFromParent(context.Context, string, string, string, string, *VolumesClientBeginSplitCloneFromParentOptions) (*runtime.Poller[VolumesClientSplitCloneFromParentResponse], error)`
+- New field `CustomThroughputMibps` in struct `PoolPatchProperties`
+- New field `CustomThroughputMibps` in struct `PoolProperties`
+- New field `AcceptGrowCapacityPoolForShortTermCloneSplit`, `InheritedSizeInBytes` in struct `VolumeProperties`
+
+
+## 7.6.0 (2025-07-25)
+### Features Added
+
+- New field `NextLink` in struct `SubscriptionQuotaItemList`
+
+
 ## 8.0.0-beta.1 (2025-05-23)
 ### Breaking Changes
 

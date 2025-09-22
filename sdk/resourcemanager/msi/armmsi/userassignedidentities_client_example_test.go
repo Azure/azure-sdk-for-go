@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/msi/armmsi"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3d7a3848106b831a4a7f46976fe38aa605c4f44d/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityListBySubscription.json
 func ExampleUserAssignedIdentitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,6 +53,7 @@ func ExampleUserAssignedIdentitiesClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			Properties: &armmsi.UserAssignedIdentityProperties{
 		// 				ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
+		// 				IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
 		// 				PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 		// 				TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
 		// 			},
@@ -61,7 +62,7 @@ func ExampleUserAssignedIdentitiesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3d7a3848106b831a4a7f46976fe38aa605c4f44d/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityListByResourceGroup.json
 func ExampleUserAssignedIdentitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,6 +97,7 @@ func ExampleUserAssignedIdentitiesClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armmsi.UserAssignedIdentityProperties{
 		// 				ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
+		// 				IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
 		// 				PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 		// 				TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
 		// 			},
@@ -104,7 +106,7 @@ func ExampleUserAssignedIdentitiesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3d7a3848106b831a4a7f46976fe38aa605c4f44d/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityCreate.json
 func ExampleUserAssignedIdentitiesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,13 +141,14 @@ func ExampleUserAssignedIdentitiesClient_CreateOrUpdate() {
 	// 	},
 	// 	Properties: &armmsi.UserAssignedIdentityProperties{
 	// 		ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
+	// 		IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
 	// 		PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 	// 		TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3d7a3848106b831a4a7f46976fe38aa605c4f44d/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityUpdate.json
 func ExampleUserAssignedIdentitiesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,6 +161,9 @@ func ExampleUserAssignedIdentitiesClient_Update() {
 	}
 	res, err := clientFactory.NewUserAssignedIdentitiesClient().Update(ctx, "rgName", "resourceName", armmsi.IdentityUpdate{
 		Location: to.Ptr("eastus"),
+		Properties: &armmsi.UserAssignedIdentityProperties{
+			IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
+		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 			"key2": to.Ptr("value2"),
@@ -180,13 +186,14 @@ func ExampleUserAssignedIdentitiesClient_Update() {
 	// 	},
 	// 	Properties: &armmsi.UserAssignedIdentityProperties{
 	// 		ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
+	// 		IsolationScope: to.Ptr(armmsi.IsolationScopeRegional),
 	// 		PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 	// 		TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3d7a3848106b831a4a7f46976fe38aa605c4f44d/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityGet.json
 func ExampleUserAssignedIdentitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,13 +222,14 @@ func ExampleUserAssignedIdentitiesClient_Get() {
 	// 	},
 	// 	Properties: &armmsi.UserAssignedIdentityProperties{
 	// 		ClientID: to.Ptr("4024ab25-56a8-4370-aea6-6389221caf29"),
+	// 		IsolationScope: to.Ptr(armmsi.IsolationScopeNone),
 	// 		PrincipalID: to.Ptr("25cc773c-7f05-40fc-a104-32d2300754ad"),
 	// 		TenantID: to.Ptr("b6c948ef-f6b5-4384-8354-da3a15eca969"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3d7a3848106b831a4a7f46976fe38aa605c4f44d/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityDelete.json
 func ExampleUserAssignedIdentitiesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

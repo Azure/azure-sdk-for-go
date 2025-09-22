@@ -16,6 +16,9 @@ import (
 )
 
 func TestUsernamePasswordCredential_Live(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("the test tenant requires MFA")
+	}
 	for _, disabledID := range []bool{true, false} {
 		name := "default options"
 		if disabledID {

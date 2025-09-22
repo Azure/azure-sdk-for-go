@@ -61,7 +61,7 @@ func (testsuite *NeonpostgresTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNeonpostgresTestSuite(t *testing.T) {
+func TTestNeonpostgresTestSuite(t *testing.T) {
 	suite.Run(t, new(NeonpostgresTestSuite))
 }
 

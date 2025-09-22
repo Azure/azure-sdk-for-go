@@ -7,16 +7,15 @@ package backup
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
-// Client contains the methods for the group.
+// Client contains the methods for the service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal     *azcore.Client
@@ -75,10 +74,8 @@ func (client *Client) fullBackup(ctx context.Context, azureStorageBlobContainerU
 
 // fullBackupCreateRequest creates the FullBackup request.
 func (client *Client) fullBackupCreateRequest(ctx context.Context, azureStorageBlobContainerURI SASTokenParameters, _ *BeginFullBackupOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/backup"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,10 +129,8 @@ func (client *Client) fullRestore(ctx context.Context, restoreBlobDetails Restor
 
 // fullRestoreCreateRequest creates the FullRestore request.
 func (client *Client) fullRestoreCreateRequest(ctx context.Context, restoreBlobDetails RestoreOperationParameters, _ *BeginFullRestoreOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/restore"
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,10 +196,8 @@ func (client *Client) preFullBackup(ctx context.Context, preBackupOperationParam
 
 // preFullBackupCreateRequest creates the PreFullBackup request.
 func (client *Client) preFullBackupCreateRequest(ctx context.Context, preBackupOperationParameters PreBackupOperationParameters, _ *BeginPreFullBackupOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/prebackup"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,10 +249,8 @@ func (client *Client) preFullRestore(ctx context.Context, preRestoreOperationPar
 
 // preFullRestoreCreateRequest creates the PreFullRestore request.
 func (client *Client) preFullRestoreCreateRequest(ctx context.Context, preRestoreOperationParameters PreRestoreOperationParameters, _ *BeginPreFullRestoreOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/prerestore"
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,14 +305,12 @@ func (client *Client) selectiveKeyRestore(ctx context.Context, keyName string, r
 
 // selectiveKeyRestoreCreateRequest creates the SelectiveKeyRestore request.
 func (client *Client) selectiveKeyRestoreCreateRequest(ctx context.Context, keyName string, restoreBlobDetails SelectiveKeyRestoreOperationParameters, _ *BeginSelectiveKeyRestoreOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/keys/{keyName}/restore"
 	if keyName == "" {
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -46,7 +46,7 @@ type AvailabilitySetsClientListAvailableSizesOptions struct {
 // AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.NewListBySubscriptionPager
 // method.
 type AvailabilitySetsClientListBySubscriptionOptions struct {
-	// The expand expression to apply to the operation. Allowed values are 'virtualMachines/$ref'.
+	// The expand expression to apply to the operation. Allowed values are 'instanceView'.
 	Expand *string
 }
 
@@ -1271,7 +1271,7 @@ type VirtualMachineImagesClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachineImagesClientListWithPropertiesOptions contains the optional parameters for the VirtualMachineImagesClient.NewListWithPropertiesPager
+// VirtualMachineImagesClientListWithPropertiesOptions contains the optional parameters for the VirtualMachineImagesClient.ListWithProperties
 // method.
 type VirtualMachineImagesClientListWithPropertiesOptions struct {
 	Orderby *string
@@ -1612,9 +1612,7 @@ type VirtualMachineScaleSetVMsClientGetInstanceViewOptions struct {
 // method.
 type VirtualMachineScaleSetVMsClientGetOptions struct {
 	// The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of the virtual machine.
-	// 'UserData' will retrieve the UserData of the virtual machine. 'resiliencyView'
-	// will retrieve the instance view of the Virtual machine (if applicable) and include 'resilientVMDeletionStatus' as part
-	// of it.
+	// 'UserData' will retrieve the UserData of the virtual machine.
 	Expand *InstanceViewTypes
 }
 
@@ -1934,13 +1932,7 @@ type VirtualMachinesClientBeginDeallocateOptions struct {
 
 // VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete method.
 type VirtualMachinesClientBeginDeleteOptions struct {
-	// Optional parameter to force delete virtual machines. NOTE: As of api-version 2024-11-01, we are rolling out a feature where
-	// if the forceDeletion parameter is unspecified OR not explicitly set to
-	// false, AND all of the VM's attached disks including the OS disk are marked with the delete option, then the VM will be
-	// force deleted. For more details on how to configure delete options for a VM's
-	// resources, see Delete a VM and attached resources [https://learn.microsoft.com/en-us/azure/virtual-machines/delete]. To
-	// avoid defaulting to force delete, ensure that the forceDeletion parameter is
-	// explicitly set to false. This feature is expected to rollout by end of March 2025.
+	// Optional parameter to force delete virtual machines.
 	ForceDeletion *bool
 
 	// Resumes the long-running operation from the provided token.

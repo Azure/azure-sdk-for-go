@@ -47,38 +47,32 @@ azure-rest-api-specs directory: the directory path of the azure-rest-api-specs w
 }
 
 type Flags struct {
-	VersionNumber       string
 	SwaggerRepo         string
 	SDKRepo             string
 	ReleaseDate         string
 	SkipCreateBranch    bool
 	SkipGenerateExample bool
-	GoVersion           string
 	RPs                 string
 	UpdateSpecVersion   bool
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
-	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
-	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.String("rps", "", "Specify RP list to refresh, seperated by ','")
 	flagSet.Bool("update-spec-version", true, "Whether to update the commit id, the default is true")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber:       flags.GetString(flagSet, "version-number"),
 		SDKRepo:             flags.GetString(flagSet, "sdk-repo"),
 		SwaggerRepo:         flags.GetString(flagSet, "spec-repo"),
 		ReleaseDate:         flags.GetString(flagSet, "release-date"),
 		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
-		GoVersion:           flags.GetString(flagSet, "go-version"),
 		RPs:                 flags.GetString(flagSet, "rps"),
 		UpdateSpecVersion:   flags.GetBool(flagSet, "update-spec-version"),
 	}
@@ -144,11 +138,9 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 				RPName:               rpName,
 				NamespaceName:        namespace.Name(),
 				SpecificPackageTitle: "",
-				SpecificVersion:      c.flags.VersionNumber,
 				SpecRPName:           specRpName,
 				ReleaseDate:          c.flags.ReleaseDate,
 				SkipGenerateExample:  c.flags.SkipGenerateExample,
-				GoVersion:            c.flags.GoVersion,
 			})
 			if err != nil {
 				fmt.Printf("failed to finish release generation process: %+v", err)

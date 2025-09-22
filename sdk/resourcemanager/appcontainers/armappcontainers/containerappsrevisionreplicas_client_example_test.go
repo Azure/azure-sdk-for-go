@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Replicas_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Replicas_Get.json
 func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,6 +44,7 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// 			{
 	// 				Name: to.Ptr("hello92"),
 	// 				ContainerID: to.Ptr("containerd://6bac7bb3afed1c704b5fe563c34c0ecf59ac30c766bb73488f7fa552dc42ee54"),
+	// 				DebugEndpoint: to.Ptr("wss://eastasia.azurecontainerapps.dev/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/workerapps-rg-xj/containerApps/myapp/revisions/myapp--0wlqy09/replicas/myapp--0wlqy09-5d9774cff-5wnd8/debug?targetContainer=hello92"),
 	// 				ExecEndpoint: to.Ptr("testExecEndpoint"),
 	// 				LogStreamEndpoint: to.Ptr("testLogStreamEndpoint"),
 	// 				Ready: to.Ptr(true),
@@ -61,7 +62,7 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Replicas_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Replicas_List.json
 func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,6 +91,7 @@ func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	// 					{
 	// 						Name: to.Ptr("hello92"),
 	// 						ContainerID: to.Ptr("containerd://6bac7bb3afed1c704b5fe563c34c0ecf59ac30c766bb73488f7fa552dc42ee54"),
+	// 						DebugEndpoint: to.Ptr("wss://eastasia.azurecontainerapps.dev/subscriptions/651f8027-33e8-4ec4-97b4-f6e9f3dc8744/resourceGroups/workerapps-rg-xj/containerApps/myapp/revisions/myapp--0wlqy09/replicas/myapp--0wlqy09-5d9774cff-5wnd8/debug?targetContainer=hello92"),
 	// 						ExecEndpoint: to.Ptr("testExecEndpoint"),
 	// 						LogStreamEndpoint: to.Ptr("testLogStreamEndpoint"),
 	// 						Ready: to.Ptr(true),

@@ -7,14 +7,13 @@ package azcertificates
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
@@ -57,14 +56,12 @@ func (client *Client) BackupCertificate(ctx context.Context, name string, option
 
 // backupCertificateCreateRequest creates the BackupCertificate request.
 func (client *Client) backupCertificateCreateRequest(ctx context.Context, name string, _ *BackupCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/backup"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,14 +115,12 @@ func (client *Client) CreateCertificate(ctx context.Context, name string, parame
 
 // createCertificateCreateRequest creates the CreateCertificate request.
 func (client *Client) createCertificateCreateRequest(ctx context.Context, name string, parameters CreateCertificateParameters, _ *CreateCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/create"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -182,14 +177,12 @@ func (client *Client) DeleteCertificate(ctx context.Context, name string, option
 
 // deleteCertificateCreateRequest creates the DeleteCertificate request.
 func (client *Client) deleteCertificateCreateRequest(ctx context.Context, name string, _ *DeleteCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,14 +236,12 @@ func (client *Client) DeleteCertificateOperation(ctx context.Context, name strin
 
 // deleteCertificateOperationCreateRequest creates the DeleteCertificateOperation request.
 func (client *Client) deleteCertificateOperationCreateRequest(ctx context.Context, name string, _ *DeleteCertificateOperationOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/pending"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -302,10 +293,8 @@ func (client *Client) DeleteContacts(ctx context.Context, options *DeleteContact
 
 // deleteContactsCreateRequest creates the DeleteContacts request.
 func (client *Client) deleteContactsCreateRequest(ctx context.Context, _ *DeleteContactsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/contacts"
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -358,14 +347,12 @@ func (client *Client) DeleteIssuer(ctx context.Context, name string, options *De
 
 // deleteIssuerCreateRequest creates the DeleteIssuer request.
 func (client *Client) deleteIssuerCreateRequest(ctx context.Context, name string, _ *DeleteIssuerOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -419,15 +406,13 @@ func (client *Client) GetCertificate(ctx context.Context, name string, version s
 
 // getCertificateCreateRequest creates the GetCertificate request.
 func (client *Client) getCertificateCreateRequest(ctx context.Context, name string, version string, _ *GetCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/{certificate-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -479,14 +464,12 @@ func (client *Client) GetCertificateOperation(ctx context.Context, name string, 
 
 // getCertificateOperationCreateRequest creates the GetCertificateOperation request.
 func (client *Client) getCertificateOperationCreateRequest(ctx context.Context, name string, _ *GetCertificateOperationOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/pending"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -539,14 +522,12 @@ func (client *Client) GetCertificatePolicy(ctx context.Context, name string, opt
 
 // getCertificatePolicyCreateRequest creates the GetCertificatePolicy request.
 func (client *Client) getCertificatePolicyCreateRequest(ctx context.Context, name string, _ *GetCertificatePolicyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/policy"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -598,10 +579,8 @@ func (client *Client) GetContacts(ctx context.Context, options *GetContactsOptio
 
 // getContactsCreateRequest creates the GetContacts request.
 func (client *Client) getContactsCreateRequest(ctx context.Context, _ *GetContactsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/contacts"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -655,14 +634,12 @@ func (client *Client) GetDeletedCertificate(ctx context.Context, name string, op
 
 // getDeletedCertificateCreateRequest creates the GetDeletedCertificate request.
 func (client *Client) getDeletedCertificateCreateRequest(ctx context.Context, name string, _ *GetDeletedCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedcertificates/{certificate-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -715,14 +692,12 @@ func (client *Client) GetIssuer(ctx context.Context, name string, options *GetIs
 
 // getIssuerCreateRequest creates the GetIssuer request.
 func (client *Client) getIssuerCreateRequest(ctx context.Context, name string, _ *GetIssuerOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -778,14 +753,12 @@ func (client *Client) ImportCertificate(ctx context.Context, name string, parame
 
 // importCertificateCreateRequest creates the ImportCertificate request.
 func (client *Client) importCertificateCreateRequest(ctx context.Context, name string, parameters ImportCertificateParameters, _ *ImportCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/import"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -842,10 +815,8 @@ func (client *Client) NewListCertificatePropertiesPager(options *ListCertificate
 
 // listCertificatePropertiesCreateRequest creates the ListCertificateProperties request.
 func (client *Client) listCertificatePropertiesCreateRequest(ctx context.Context, options *ListCertificatePropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -902,14 +873,12 @@ func (client *Client) NewListCertificatePropertiesVersionsPager(name string, opt
 
 // listCertificatePropertiesVersionsCreateRequest creates the ListCertificatePropertiesVersions request.
 func (client *Client) listCertificatePropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListCertificatePropertiesVersionsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/versions"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -964,10 +933,8 @@ func (client *Client) NewListDeletedCertificatePropertiesPager(options *ListDele
 
 // listDeletedCertificatePropertiesCreateRequest creates the ListDeletedCertificateProperties request.
 func (client *Client) listDeletedCertificatePropertiesCreateRequest(ctx context.Context, options *ListDeletedCertificatePropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedcertificates"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1022,10 +989,8 @@ func (client *Client) NewListIssuerPropertiesPager(options *ListIssuerProperties
 
 // listIssuerPropertiesCreateRequest creates the ListIssuerProperties request.
 func (client *Client) listIssuerPropertiesCreateRequest(ctx context.Context, _ *ListIssuerPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1079,14 +1044,12 @@ func (client *Client) MergeCertificate(ctx context.Context, name string, paramet
 
 // mergeCertificateCreateRequest creates the MergeCertificate request.
 func (client *Client) mergeCertificateCreateRequest(ctx context.Context, name string, parameters MergeCertificateParameters, _ *MergeCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/pending/merge"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1143,21 +1106,18 @@ func (client *Client) PurgeDeletedCertificate(ctx context.Context, name string, 
 
 // purgeDeletedCertificateCreateRequest creates the PurgeDeletedCertificate request.
 func (client *Client) purgeDeletedCertificateCreateRequest(ctx context.Context, name string, _ *PurgeDeletedCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedcertificates/{certificate-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1195,14 +1155,12 @@ func (client *Client) RecoverDeletedCertificate(ctx context.Context, name string
 
 // recoverDeletedCertificateCreateRequest creates the RecoverDeletedCertificate request.
 func (client *Client) recoverDeletedCertificateCreateRequest(ctx context.Context, name string, _ *RecoverDeletedCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedcertificates/{certificate-name}/recover"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1254,10 +1212,8 @@ func (client *Client) RestoreCertificate(ctx context.Context, parameters Restore
 
 // restoreCertificateCreateRequest creates the RestoreCertificate request.
 func (client *Client) restoreCertificateCreateRequest(ctx context.Context, parameters RestoreCertificateParameters, _ *RestoreCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/restore"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1313,10 +1269,8 @@ func (client *Client) SetContacts(ctx context.Context, contacts Contacts, option
 
 // setContactsCreateRequest creates the SetContacts request.
 func (client *Client) setContactsCreateRequest(ctx context.Context, contacts Contacts, _ *SetContactsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/contacts"
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1375,14 +1329,12 @@ func (client *Client) SetIssuer(ctx context.Context, name string, parameter SetI
 
 // setIssuerCreateRequest creates the SetIssuer request.
 func (client *Client) setIssuerCreateRequest(ctx context.Context, name string, parameter SetIssuerParameters, _ *SetIssuerOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1441,15 +1393,13 @@ func (client *Client) UpdateCertificate(ctx context.Context, name string, versio
 
 // updateCertificateCreateRequest creates the UpdateCertificate request.
 func (client *Client) updateCertificateCreateRequest(ctx context.Context, name string, version string, parameters UpdateCertificateParameters, _ *UpdateCertificateOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/{certificate-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1507,14 +1457,12 @@ func (client *Client) UpdateCertificateOperation(ctx context.Context, name strin
 
 // updateCertificateOperationCreateRequest creates the UpdateCertificateOperation request.
 func (client *Client) updateCertificateOperationCreateRequest(ctx context.Context, name string, certificateOperation UpdateCertificateOperationParameter, _ *UpdateCertificateOperationOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/pending"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1572,14 +1520,12 @@ func (client *Client) UpdateCertificatePolicy(ctx context.Context, name string, 
 
 // updateCertificatePolicyCreateRequest creates the UpdateCertificatePolicy request.
 func (client *Client) updateCertificatePolicyCreateRequest(ctx context.Context, name string, certificatePolicy CertificatePolicy, _ *UpdateCertificatePolicyOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/{certificate-name}/policy"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1637,14 +1583,12 @@ func (client *Client) UpdateIssuer(ctx context.Context, name string, parameter U
 
 // updateIssuerCreateRequest creates the UpdateIssuer request.
 func (client *Client) updateIssuerCreateRequest(ctx context.Context, name string, parameter UpdateIssuerParameters, _ *UpdateIssuerOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/certificates/issuers/{issuer-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{issuer-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}

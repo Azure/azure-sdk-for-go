@@ -6,7 +6,7 @@ package armprogrammableconnectivity
 
 // GatewaysClientCreateOrUpdateResponse contains the response from method GatewaysClient.BeginCreateOrUpdate.
 type GatewaysClientCreateOrUpdateResponse struct {
-	// A Programmable Connectivity Gateway resource
+	// A Programmable Connectivity Gateway resource.
 	Gateway
 }
 
@@ -17,7 +17,7 @@ type GatewaysClientDeleteResponse struct {
 
 // GatewaysClientGetResponse contains the response from method GatewaysClient.Get.
 type GatewaysClientGetResponse struct {
-	// A Programmable Connectivity Gateway resource
+	// A Programmable Connectivity Gateway resource.
 	Gateway
 }
 
@@ -35,7 +35,7 @@ type GatewaysClientListBySubscriptionResponse struct {
 
 // GatewaysClientUpdateResponse contains the response from method GatewaysClient.Update.
 type GatewaysClientUpdateResponse struct {
-	// A Programmable Connectivity Gateway resource
+	// A Programmable Connectivity Gateway resource.
 	Gateway
 }
 

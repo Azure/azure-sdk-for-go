@@ -17,7 +17,7 @@ type ApplicationProperties struct {
 	// Legal name of the organization owning the application.
 	LegalName *string
 
-	// Name of the application. Example: Contoso App.
+	// Name of the application.
 	Name *string
 
 	// A description of the organization owning the application.
@@ -30,7 +30,7 @@ type ApplicationProperties struct {
 	TaxNumber *string
 }
 
-// Gateway - A Programmable Connectivity Gateway resource
+// Gateway - A Programmable Connectivity Gateway resource.
 type Gateway struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -41,11 +41,11 @@ type Gateway struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Azure Programmable Connectivity Gateway Name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -63,13 +63,13 @@ type GatewayListResult struct {
 	NextLink *string
 }
 
-// GatewayProperties - Gateway resource properties
+// GatewayProperties - Gateway resource properties.
 type GatewayProperties struct {
-	// READ-ONLY; Base URL of the Gateway resource. This is the URL that the users would use to make Open API Gateway requests
-	// to the Operators via Azure.
+	// READ-ONLY; Base URL of the Gateway resource. This is the URL that the users would use to make Network API requests to the
+	// Operators via Azure.
 	GatewayBaseURL *string
 
-	// READ-ONLY; List of Operator API Connections selected by the user
+	// READ-ONLY; List of Operator API Connections selected by the user.
 	OperatorAPIConnections []*string
 
 	// READ-ONLY; The status of the last operation on the Gateway resource.
@@ -100,7 +100,9 @@ type MarketplaceProperties struct {
 	TermID *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -160,11 +162,11 @@ type OperatorAPIConnection struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Azure Programmable Connectivity (APC) Operator API Connection Name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -254,11 +256,11 @@ type OperatorAPIPlan struct {
 	// The resource-specific properties for this resource.
 	Properties *OperatorAPIPlanProperties
 
-	// READ-ONLY; APC Gateway Plan Name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

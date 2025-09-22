@@ -1,6 +1,6 @@
-# Azure Compute Module for Go
+# Azure Compute Recommender Module for Go
 
-The `armrecommender` module provides operations for working with Azure Compute.
+The `armrecommender` module provides operations for working with Azure Compute Recommender.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/compute/armrecommender)
 
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armrecommen
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Compute.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Compute Recommender.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Compute module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Compute Recommender module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armrecommender.NewClientFactory(<subscription ID>, cred, nil)

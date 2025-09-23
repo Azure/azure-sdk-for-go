@@ -150,8 +150,8 @@ func (f *Client) URL() string {
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
-	fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
-	resp, err := f.generated().Create(ctx, fileContentLength, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+	fileCreateOptions, fileHTTPHeaders, leaseAccessConditions, body := options.format()
+	resp, err := f.generated().Create(ctx, fileContentLength, body, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -472,6 +472,33 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)
 	return err
 }
+
+//
+//// CreateAndUpload creates a new file with the specified size and uploads the provided data in a single convenience call.
+//// The provided data length must exactly match size. For large inputs, this will upload in chunks using UploadStream.
+//func (f *Client) CreateAndUpload(ctx context.Context, size int64, data io.Reader, options *CreateAndUploadOptions) error {
+//	if size < 0 {
+//		return fmt.Errorf("size must be non-negative")
+//	}
+//	// Create (initialize) the file with the given maximum length
+//	createOpts := (*CreateOptions)(nil)
+//	if options != nil {
+//		createOpts = options.CreateOptions
+//	}
+//	if _, err := f.generated().Create(ctx, size, nil, createOpts.format(), nil, nil); err != nil {
+//		return err
+//	}
+//
+//	// Upload the data
+//	uploadOpts := (*UploadStreamOptions)(nil)
+//	if options != nil {
+//		uploadOpts = options.UploadStreamOptions
+//	}
+//	if err := f.UploadStream(ctx, io.LimitReader(data, size), uploadOpts); err != nil {
+//		return err
+//	}
+//	return nil
+//}
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 

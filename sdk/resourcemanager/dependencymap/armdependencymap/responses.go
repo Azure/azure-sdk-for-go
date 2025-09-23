@@ -46,7 +46,8 @@ type MapsClientDeleteResponse struct {
 
 // MapsClientExportDependenciesResponse contains the response from method MapsClient.BeginExportDependencies.
 type MapsClientExportDependenciesResponse struct {
-	// placeholder for future response values
+	// Model representing the result of the export dependencies asynchronous operation.
+	ExportDependenciesOperationResult
 }
 
 // MapsClientGetConnectionsForProcessOnFocusedMachineResponse contains the response from method MapsClient.BeginGetConnectionsForProcessOnFocusedMachine.
@@ -57,6 +58,12 @@ type MapsClientGetConnectionsForProcessOnFocusedMachineResponse struct {
 // MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse contains the response from method MapsClient.BeginGetConnectionsWithConnectedMachineForFocusedMachine.
 type MapsClientGetConnectionsWithConnectedMachineForFocusedMachineResponse struct {
 	// placeholder for future response values
+}
+
+// MapsClientGetDependencyViewForAllMachinesResponse contains the response from method MapsClient.BeginGetDependencyViewForAllMachines.
+type MapsClientGetDependencyViewForAllMachinesResponse struct {
+	// Model representing the result of the export dependencies asynchronous operation.
+	GetDependencyViewForAllMachinesOperationResult
 }
 
 // MapsClientGetDependencyViewForFocusedMachineResponse contains the response from method MapsClient.BeginGetDependencyViewForFocusedMachine.

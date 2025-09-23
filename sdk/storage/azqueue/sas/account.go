@@ -19,6 +19,9 @@ import (
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// UserDelegationCredential contains an account's name and its user delegation key.
+type UserDelegationCredential = exported.UserDelegationCredential
+
 // AccountSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
 type AccountSignatureValues struct {

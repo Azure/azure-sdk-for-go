@@ -41,6 +41,7 @@ type GenerateResult struct {
 	ChangelogMD         string
 	PullRequestLabels   string
 	PackageRelativePath string
+	ModuleRelativePath  string
 	GenerationType      string
 }
 
@@ -729,6 +730,7 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, c
 		ChangelogMD:         changelog.ToCompactMarkdown() + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
+		ModuleRelativePath:  t.ModuleRelativePath,
 		GenerationType:      "TypeSpecOnBoard",
 	}, nil
 }
@@ -873,6 +875,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		ChangelogMD:         changelogMd + "\n" + changelog.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
 		PackageRelativePath: packageRelativePath,
+		ModuleRelativePath:  moduleRelativePath,
 		GenerationType:      generationType,
 	}, nil
 }

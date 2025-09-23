@@ -147,11 +147,11 @@ func (e *EventServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		if err != nil {
 			return nil, err
 		}
-		odataOptionsUnescaped, err := url.QueryUnescape(qp.Get("odataOptions"))
+		oDataOptionsUnescaped, err := url.QueryUnescape(qp.Get("odataOptions"))
 		if err != nil {
 			return nil, err
 		}
-		odataOptionsParam := getOptional(odataOptionsUnescaped)
+		oDataOptionsParam := getOptional(oDataOptionsUnescaped)
 		continuationTokenUnescaped, err := url.QueryUnescape(qp.Get("continuationToken"))
 		if err != nil {
 			return nil, err
@@ -176,9 +176,9 @@ func (e *EventServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 			return nil, err
 		}
 		var options *armrecoveryservicesdatareplication.EventClientListOptions
-		if odataOptionsParam != nil || continuationTokenParam != nil || pageSizeParam != nil {
+		if oDataOptionsParam != nil || continuationTokenParam != nil || pageSizeParam != nil {
 			options = &armrecoveryservicesdatareplication.EventClientListOptions{
-				OdataOptions:      odataOptionsParam,
+				ODataOptions:      oDataOptionsParam,
 				ContinuationToken: continuationTokenParam,
 				PageSize:          pageSizeParam,
 			}

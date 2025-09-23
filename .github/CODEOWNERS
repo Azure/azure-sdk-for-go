@@ -507,7 +507,7 @@
 # ServiceOwners:                                                   @Sharmistha-Rai
 
 # ServiceLabel: %Redis Cache
-# ServiceOwners:                                                   @yegu-ms
+# ServiceOwners:                                                   @yegu-ms @ArthurMa1978 @m-nash
 
 # ServiceLabel: %Reservations
 # ServiceOwners:                                                   @Rkapso
@@ -528,7 +528,7 @@
 # ServiceOwners:                                                   @axisc @sjkwak @hmlam
 
 # ServiceLabel: %Search
-# ServiceOwners:                                                   @bleroy @tjacobhi @markheff @miwelsh
+# ServiceOwners:                                                   @tjacobhi @markheff @miwelsh
 
 # ServiceLabel: %Security
 # ServiceOwners:                                                   @chlahav

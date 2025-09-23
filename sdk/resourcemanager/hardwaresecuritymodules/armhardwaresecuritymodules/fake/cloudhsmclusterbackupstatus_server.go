@@ -19,26 +19,22 @@ import (
 
 // CloudHsmClusterBackupStatusServer is a fake server for instances of the armhardwaresecuritymodules.CloudHsmClusterBackupStatusClient type.
 type CloudHsmClusterBackupStatusServer struct {
-	// BeginGet is the fake for method CloudHsmClusterBackupStatusClient.BeginGet
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginGet func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, jobID string, options *armhardwaresecuritymodules.CloudHsmClusterBackupStatusClientBeginGetOptions) (resp azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClusterBackupStatusClientGetResponse], errResp azfake.ErrorResponder)
+	// Get is the fake for method CloudHsmClusterBackupStatusClient.Get
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	Get func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, jobID string, options *armhardwaresecuritymodules.CloudHsmClusterBackupStatusClientGetOptions) (resp azfake.Responder[armhardwaresecuritymodules.CloudHsmClusterBackupStatusClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudHsmClusterBackupStatusServerTransport creates a new instance of CloudHsmClusterBackupStatusServerTransport with the provided implementation.
 // The returned CloudHsmClusterBackupStatusServerTransport instance is connected to an instance of armhardwaresecuritymodules.CloudHsmClusterBackupStatusClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudHsmClusterBackupStatusServerTransport(srv *CloudHsmClusterBackupStatusServer) *CloudHsmClusterBackupStatusServerTransport {
-	return &CloudHsmClusterBackupStatusServerTransport{
-		srv:      srv,
-		beginGet: newTracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClusterBackupStatusClientGetResponse]](),
-	}
+	return &CloudHsmClusterBackupStatusServerTransport{srv: srv}
 }
 
 // CloudHsmClusterBackupStatusServerTransport connects instances of armhardwaresecuritymodules.CloudHsmClusterBackupStatusClient to instances of CloudHsmClusterBackupStatusServer.
 // Don't use this type directly, use NewCloudHsmClusterBackupStatusServerTransport instead.
 type CloudHsmClusterBackupStatusServerTransport struct {
-	srv      *CloudHsmClusterBackupStatusServer
-	beginGet *tracker[azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClusterBackupStatusClientGetResponse]]
+	srv *CloudHsmClusterBackupStatusServer
 }
 
 // Do implements the policy.Transporter interface for CloudHsmClusterBackupStatusServerTransport.
@@ -64,8 +60,8 @@ func (c *CloudHsmClusterBackupStatusServerTransport) dispatchToMethodFake(req *h
 		}
 		if !intercepted {
 			switch method {
-			case "CloudHsmClusterBackupStatusClient.BeginGet":
-				res.resp, res.err = c.dispatchBeginGet(req)
+			case "CloudHsmClusterBackupStatusClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -85,51 +81,46 @@ func (c *CloudHsmClusterBackupStatusServerTransport) dispatchToMethodFake(req *h
 	}
 }
 
-func (c *CloudHsmClusterBackupStatusServerTransport) dispatchBeginGet(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginGet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGet not implemented")}
+func (c *CloudHsmClusterBackupStatusServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	beginGet := c.beginGet.get(req)
-	if beginGet == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupOperationStatus/(?P<jobId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		jobIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginGet(req.Context(), resourceGroupNameParam, cloudHsmClusterNameParam, jobIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGet = &respr
-		c.beginGet.add(req, beginGet)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupOperationStatus/(?P<jobId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginGet, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		c.beginGet.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginGet) {
-		c.beginGet.remove(req)
+	jobIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobId")])
+	if err != nil {
+		return nil, err
 	}
-
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cloudHsmClusterNameParam, jobIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BackupResult, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).Location; val != nil {
+		resp.Header.Set("Location", *val)
+	}
+	if val := server.GetResponse(respr).XMSRequestID; val != nil {
+		resp.Header.Set("x-ms-request-id", *val)
+	}
 	return resp, nil
 }
 

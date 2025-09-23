@@ -43,7 +43,7 @@ func NewCapacitiesClient(subscriptionID string, credential azcore.TokenCredentia
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-11-01
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - body - The CheckAvailability request
 //   - options - CapacitiesClientCheckNameAvailabilityOptions contains the optional parameters for the CapacitiesClient.CheckNameAvailability
 //     method.
@@ -256,7 +256,6 @@ func (client *CapacitiesClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -497,7 +496,7 @@ func (client *CapacitiesClient) listSKUsHandleResponse(resp *http.Response) (Cap
 //
 // Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - capacityName - The name of the capacity.
+//   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - CapacitiesClientListSKUsForCapacityOptions contains the optional parameters for the CapacitiesClient.NewListSKUsForCapacityPager
 //     method.
 func (client *CapacitiesClient) NewListSKUsForCapacityPager(resourceGroupName string, capacityName string, options *CapacitiesClientListSKUsForCapacityOptions) *runtime.Pager[CapacitiesClientListSKUsForCapacityResponse] {
@@ -629,7 +628,6 @@ func (client *CapacitiesClient) resumeCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -704,7 +702,6 @@ func (client *CapacitiesClient) suspendCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -22,6 +22,12 @@ type ServerFactory struct {
 	// Server contains the fakes for client Client
 	Server Server
 
+	// IdentityBindingsServer contains the fakes for client IdentityBindingsClient
+	IdentityBindingsServer IdentityBindingsServer
+
+	// JWTAuthenticatorsServer contains the fakes for client JWTAuthenticatorsClient
+	JWTAuthenticatorsServer JWTAuthenticatorsServer
+
 	// LoadBalancersServer contains the fakes for client LoadBalancersClient
 	LoadBalancersServer LoadBalancersServer
 
@@ -81,6 +87,8 @@ type ServerFactoryTransport struct {
 	trMu                                sync.Mutex
 	trAgentPoolsServer                  *AgentPoolsServerTransport
 	trServer                            *ServerTransport
+	trIdentityBindingsServer            *IdentityBindingsServerTransport
+	trJWTAuthenticatorsServer           *JWTAuthenticatorsServerTransport
 	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
@@ -116,6 +124,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "IdentityBindingsClient":
+		initServer(s, &s.trIdentityBindingsServer, func() *IdentityBindingsServerTransport {
+			return NewIdentityBindingsServerTransport(&s.srv.IdentityBindingsServer)
+		})
+		resp, err = s.trIdentityBindingsServer.Do(req)
+	case "JWTAuthenticatorsClient":
+		initServer(s, &s.trJWTAuthenticatorsServer, func() *JWTAuthenticatorsServerTransport {
+			return NewJWTAuthenticatorsServerTransport(&s.srv.JWTAuthenticatorsServer)
+		})
+		resp, err = s.trJWTAuthenticatorsServer.Do(req)
 	case "LoadBalancersClient":
 		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
 			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)

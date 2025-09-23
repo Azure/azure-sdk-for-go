@@ -6,12 +6,14 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -727,6 +729,216 @@ func TestSpanResponseAttributes(t *testing.T) {
 	if charge_value != float32(13.42) {
 		t.Fatalf("Expected db.cosmosdb.request_charge attribute with 13.42 value, got %v", charge_value)
 	}
+}
+
+func TestAADScope_Override_NoFallbackOnSuccess(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	override := "https://custom.example.com/.default"
+	t.Setenv(envCosmosScopeOverride, override)
+
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			if scope != override {
+				t.Fatalf("expected override scope, got %s", scope)
+			}
+			return tokenOK(), nil
+		},
+	}
+
+	client, err := NewClient(srv.URL(), cred, &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: srv},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	_, err = client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Assert:
+	if len(cred.calls) == 0 {
+		t.Fatalf("expected at least one token call, got none")
+	}
+	for _, s := range cred.calls {
+		if s != override {
+			t.Fatalf("expected only override scope, saw %q in calls: %#v", s, cred.calls)
+		}
+	}
+}
+
+func TestAADScope_NoOverride_AADSTS500011_FallbackToDefault(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	t.Setenv(envCosmosScopeOverride, "")
+
+	u, _ := url.Parse(srv.URL())
+	accountScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
+
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			// Account scope simulates AADSTS500011 to trigger fallback
+			if scope == accountScope {
+				return azcore.AccessToken{}, fmt.Errorf("AADSTS500011: audience scope is not valid")
+			}
+			// Fallback scope should succeed
+			if scope == defaultCosmosScope {
+				return tokenOK(), nil
+			}
+			t.Fatalf("unexpected scope requested: %s", scope)
+			return azcore.AccessToken{}, nil
+		},
+	}
+
+	client, err := NewClient(srv.URL(), cred, &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: srv},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	_, err = client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Assert: at least one call used the account scope followed by at least one call using the default scope
+	if len(cred.calls) == 0 {
+		t.Fatalf("expected token calls, got none")
+	}
+	var firstAccountIdx = -1
+	var firstDefaultIdx = -1
+	for i, s := range cred.calls {
+		if s == accountScope && firstAccountIdx == -1 {
+			firstAccountIdx = i
+		}
+		if s == defaultCosmosScope && firstDefaultIdx == -1 {
+			firstDefaultIdx = i
+		}
+	}
+	if firstAccountIdx == -1 || firstDefaultIdx == -1 {
+		t.Fatalf("expected both account and default scopes; calls: %#v", cred.calls)
+	}
+	if firstDefaultIdx < firstAccountIdx {
+		t.Fatalf("expected fallback order account → default; calls: %#v", cred.calls)
+	}
+}
+
+func TestAADScope_NoOverride_NonAADSTS500011_NoFallback(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	t.Setenv(envCosmosScopeOverride, "")
+
+	u, _ := url.Parse(srv.URL())
+	accountScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
+
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			if scope != accountScope {
+				t.Fatalf("expected account scope, got %s", scope)
+			}
+			// No fallback
+			return azcore.AccessToken{}, fmt.Errorf("some other AAD error")
+		},
+	}
+
+	client, err := NewClient(srv.URL(), cred, &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: srv},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	_, err = client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil)
+	if err == nil {
+		t.Fatal("expected error due to token acquisition failure")
+	}
+
+	// Assert: all calls used ONLY the account scope
+	if len(cred.calls) == 0 {
+		t.Fatalf("expected token call(s), got none")
+	}
+	for _, s := range cred.calls {
+		if s != accountScope {
+			t.Fatalf("expected only account scope, saw %q in calls: %#v", s, cred.calls)
+		}
+	}
+}
+
+func TestAADScope_Override_Failure_NoFallback(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	override := "https://custom.example.com/.default"
+	t.Setenv(envCosmosScopeOverride, override)
+
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			if scope != override {
+				t.Fatalf("expected override scope, got %s", scope)
+			}
+			return azcore.AccessToken{}, fmt.Errorf("override scope failed")
+		},
+	}
+
+	client, err := NewClient(srv.URL(), cred, &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: srv},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	_, err = client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil)
+	if err == nil {
+		t.Fatal("expected error due to override failure without fallback")
+	}
+
+	// Assert: all calls used ONLY the override scope (no fallback)
+	if len(cred.calls) == 0 {
+		t.Fatalf("expected token call(s), got none")
+	}
+	for _, s := range cred.calls {
+		if s != override {
+			t.Fatalf("expected only override scope, saw %q in calls: %#v", s, cred.calls)
+		}
+	}
+}
+
+type stubCred struct {
+	t     *testing.T
+	calls []string
+	onGet func(scope string) (azcore.AccessToken, error)
+}
+
+func (s *stubCred) GetToken(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if len(tro.Scopes) != 1 {
+		s.t.Fatalf("expected exactly 1 scope, got %d", len(tro.Scopes))
+	}
+	scope := tro.Scopes[0]
+	s.calls = append(s.calls, scope)
+	return s.onGet(scope)
+}
+
+func tokenOK() azcore.AccessToken {
+	return azcore.AccessToken{Token: "ok", ExpiresOn: time.Now().Add(time.Hour)}
 }
 
 type pipelineVerifier struct {

@@ -6,7 +6,12 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"net/url"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 func TestAAD(t *testing.T) {
@@ -140,5 +145,84 @@ func TestAAD(t *testing.T) {
 
 	if len(itemResponse.Value) != 0 {
 		t.Fatalf("Expected empty response, got %v", itemResponse.Value)
+	}
+}
+
+type emulatorFailAccountScopeCredential struct {
+	accountScope string
+	delegate     azcore.TokenCredential // emulatorTokenCredential
+}
+
+func (c *emulatorFailAccountScopeCredential) GetToken(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if len(tro.Scopes) == 1 && tro.Scopes[0] == c.accountScope {
+		// this exact string is what your client fallback looks for
+		return azcore.AccessToken{}, fmt.Errorf("AADSTS500011: simulated resource not found")
+	}
+	return c.delegate.GetToken(ctx, tro)
+}
+
+func TestAAD_Fallback_E2E_WithEmulator(t *testing.T) {
+	t.Setenv("EMULATOR", "true")
+	t.Setenv(envCosmosScopeOverride, "") // ensure product code uses endpoint scope + fallback
+
+	em := newEmulatorTests(t)
+
+	// 1) Set up DB/container using key auth
+	keyClient := em.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
+	db := em.createDatabase(t, context.TODO(), keyClient, "aadFallbackE2E")
+	defer em.deleteDatabase(t, context.TODO(), db)
+
+	props := ContainerProperties{
+		ID:                     "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{Paths: []string{"/id"}},
+	}
+	if _, err := db.CreateContainer(context.TODO(), props, nil); err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	// 2) Build a cred that FAILS on account scope to trigger fallback
+	u, err := url.Parse(em.host)
+	if err != nil {
+		t.Fatal(err)
+	}
+	accountScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
+
+	failingThenDelegateCred := &emulatorFailAccountScopeCredential{
+		accountScope: accountScope,
+		delegate:     &emulatorTokenCredential{}, // emulator-success path
+	}
+
+	// 3) Create AAD client
+	aadClient, err := NewClient(em.host, failingThenDelegateCred, &ClientOptions{
+		ClientOptions: azcore.ClientOptions{},
+	})
+	if err != nil {
+		t.Fatalf("Failed to create AAD client: %v", err)
+	}
+
+	// 4) Multiple CreateItem calls
+	container, err := aadClient.NewContainer("aadFallbackE2E", "aContainer")
+	if err != nil {
+		t.Fatalf("NewContainer: %v", err)
+	}
+
+	for i := 0; i < 5; i++ {
+		id := fmt.Sprintf("id-%d", i)
+		item := map[string]string{
+			"id":    id, // value at /id
+			"value": fmt.Sprintf("v-%d", i),
+		}
+		body, _ := json.Marshal(item)
+
+		pk := NewPartitionKeyString(id)
+		if _, err := container.CreateItem(context.TODO(), pk, body, nil); err != nil {
+			t.Fatalf("create item %d failed (fallback should succeed): %v", i, err)
+		}
+	}
+
+	readPK := NewPartitionKeyString("id-0")
+	ri, err := container.ReadItem(context.TODO(), readPK, "id-0", nil)
+	if err != nil || len(ri.Value) == 0 {
+		t.Fatalf("read item failed: %v", err)
 	}
 }

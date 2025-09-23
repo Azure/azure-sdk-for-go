@@ -473,33 +473,6 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 	return err
 }
 
-//
-//// CreateAndUpload creates a new file with the specified size and uploads the provided data in a single convenience call.
-//// The provided data length must exactly match size. For large inputs, this will upload in chunks using UploadStream.
-//func (f *Client) CreateAndUpload(ctx context.Context, size int64, data io.Reader, options *CreateAndUploadOptions) error {
-//	if size < 0 {
-//		return fmt.Errorf("size must be non-negative")
-//	}
-//	// Create (initialize) the file with the given maximum length
-//	createOpts := (*CreateOptions)(nil)
-//	if options != nil {
-//		createOpts = options.CreateOptions
-//	}
-//	if _, err := f.generated().Create(ctx, size, nil, createOpts.format(), nil, nil); err != nil {
-//		return err
-//	}
-//
-//	// Upload the data
-//	uploadOpts := (*UploadStreamOptions)(nil)
-//	if options != nil {
-//		uploadOpts = options.UploadStreamOptions
-//	}
-//	if err := f.UploadStream(ctx, io.LimitReader(data, size), uploadOpts); err != nil {
-//		return err
-//	}
-//	return nil
-//}
-
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // download method downloads an Azure file to a WriterAt in parallel.

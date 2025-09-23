@@ -109,7 +109,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 	return AddSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: SyncToken(*resp.SyncToken),
+		SyncToken: safeSyncToken(resp.SyncToken),
 	}, nil
 }
 
@@ -132,7 +132,7 @@ func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteS
 
 	return DeleteSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: SyncToken(*resp.SyncToken),
+		SyncToken: safeSyncToken(resp.SyncToken),
 	}, nil
 }
 
@@ -155,7 +155,7 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
-		SyncToken:    SyncToken(*resp.SyncToken),
+		SyncToken:    safeSyncToken(resp.SyncToken),
 		LastModified: resp.KeyValue.LastModified,
 	}, nil
 }
@@ -178,7 +178,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: SyncToken(*resp.SyncToken),
+				SyncToken: safeSyncToken(resp.SyncToken),
 			}, nil
 		}
 	} else {
@@ -187,7 +187,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: SyncToken(*resp.SyncToken),
+				SyncToken: safeSyncToken(resp.SyncToken),
 			}, nil
 		}
 	}
@@ -219,7 +219,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 
 	return SetSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: SyncToken(*resp.SyncToken),
+		SyncToken: safeSyncToken(resp.SyncToken),
 	}, nil
 }
 
@@ -244,7 +244,7 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 
 			return ListRevisionsPageResponse{
 				Settings:  css,
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: safeSyncToken(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -274,7 +274,7 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 			return ListSettingsPageResponse{
 				Settings:  css,
 				ETag:      (*azcore.ETag)(page.ETag),
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: safeSyncToken(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -329,7 +329,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 
 			return ListSnapshotsResponse{
 				Snapshots: snapshots,
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: safeSyncToken(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -375,7 +375,7 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 
 			return ListSettingsForSnapshotResponse{
 				Settings:  settings,
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: safeSyncToken(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -478,7 +478,7 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 			Size:            getResp.Size,
 			Status:          getResp.Snapshot.Status,
 		},
-		SyncToken: SyncToken(*getResp.SyncToken),
+		SyncToken: safeSyncToken(getResp.SyncToken),
 		Link:      getResp.Link,
 	}
 
@@ -573,9 +573,17 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 			Size:            updateResp.Size,
 			Status:          updateResp.Snapshot.Status,
 		},
-		SyncToken: SyncToken(*updateResp.SyncToken),
+		SyncToken: safeSyncToken(updateResp.SyncToken),
 		Link:      updateResp.Link,
 	}
 
 	return resp, nil
+}
+
+// safeSyncToken safely converts a pointer to string to a SyncToken, returning empty SyncToken if nil
+func safeSyncToken(syncTokenPtr *string) SyncToken {
+	if syncTokenPtr == nil {
+		return SyncToken("")
+	}
+	return SyncToken(*syncTokenPtr)
 }

@@ -42,7 +42,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListByLocationPager - Gets the current usage count and the limit for the resources of the location under the subscription.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2025-01-01
 //   - location - The location of the Azure Storage resource.
 //   - options - UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager
 //     method.
@@ -86,7 +86,7 @@ func (client *UsagesClient) listByLocationCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
+	reqQP.Set("api-version", "2025-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

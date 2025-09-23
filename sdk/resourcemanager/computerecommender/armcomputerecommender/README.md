@@ -1,5 +1,7 @@
 # Azure Compute Recommender Module for Go
 
+> Deprecated: use [github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armrecommender](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armrecommender) instead. Refer to the [migration guide](https://aka.ms/mpt/migration-guidance) for guidance on upgrading. Refer to our [deprecation policy](https://azure.github.io/azure-sdk/policies_support.html).
+
 The `armcomputerecommender` module provides operations for working with Azure Compute Recommender.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/computerecommender/armcomputerecommender)

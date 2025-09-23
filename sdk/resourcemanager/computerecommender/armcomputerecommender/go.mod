@@ -1,3 +1,4 @@
+// Deprecated: Please note, this package has been deprecated. The service backing this library is retired on September 23th, 2025. For more details on the Azure Service Fabric Mesh retirement, please visit: https://azure.microsoft.com/updates/azure-service-fabric-mesh-preview-retirement/.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computerecommender/armcomputerecommender
 
 go 1.23.0

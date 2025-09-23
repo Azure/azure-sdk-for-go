@@ -7,11 +7,11 @@ package armoracledatabase_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/dbServers_listByParent.json
+// Generated from example definition: 2025-09-01/dbServers_listByParent.json
 func ExampleDbServersClient_NewListByCloudExadataInfrastructurePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -42,7 +42,7 @@ func NewCloudVMClustersClient(subscriptionID string, credential azcore.TokenCred
 // BeginAddVMs - Add VMs to the VM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - body - The content of the action request
@@ -68,7 +68,7 @@ func (client *CloudVMClustersClient) BeginAddVMs(ctx context.Context, resourceGr
 // AddVMs - Add VMs to the VM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *CloudVMClustersClient) addVMs(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, options *CloudVMClustersClientBeginAddVMsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudVMClustersClient.BeginAddVMs"
@@ -110,7 +110,7 @@ func (client *CloudVMClustersClient) addVMsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *CloudVMClustersClient) addVMsCreateRequest(ctx context.Context, re
 // BeginCreateOrUpdate - Create a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - resource - Resource create parameters.
@@ -149,7 +149,7 @@ func (client *CloudVMClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *CloudVMClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudvmclustername string, resource CloudVMCluster, options *CloudVMClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudVMClustersClient.BeginCreateOrUpdate"
@@ -191,7 +191,7 @@ func (client *CloudVMClustersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -204,7 +204,7 @@ func (client *CloudVMClustersClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - options - CloudVMClustersClientBeginDeleteOptions contains the optional parameters for the CloudVMClustersClient.BeginDelete
@@ -229,7 +229,7 @@ func (client *CloudVMClustersClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *CloudVMClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudvmclustername string, options *CloudVMClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudVMClustersClient.BeginDelete"
@@ -271,7 +271,7 @@ func (client *CloudVMClustersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -279,7 +279,7 @@ func (client *CloudVMClustersClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - options - CloudVMClustersClientGetOptions contains the optional parameters for the CloudVMClustersClient.Get method.
@@ -325,7 +325,7 @@ func (client *CloudVMClustersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *CloudVMClustersClient) getHandleResponse(resp *http.Response) (Clo
 
 // NewListByResourceGroupPager - List CloudVmCluster resources by resource group
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CloudVMClustersClientListByResourceGroupOptions contains the optional parameters for the CloudVMClustersClient.NewListByResourceGroupPager
 //     method.
@@ -385,7 +385,7 @@ func (client *CloudVMClustersClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -402,7 +402,7 @@ func (client *CloudVMClustersClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - List CloudVmCluster resources by subscription ID
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - options - CloudVMClustersClientListBySubscriptionOptions contains the optional parameters for the CloudVMClustersClient.NewListBySubscriptionPager
 //     method.
 func (client *CloudVMClustersClient) NewListBySubscriptionPager(options *CloudVMClustersClientListBySubscriptionOptions) *runtime.Pager[CloudVMClustersClientListBySubscriptionResponse] {
@@ -440,7 +440,7 @@ func (client *CloudVMClustersClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -458,7 +458,7 @@ func (client *CloudVMClustersClient) listBySubscriptionHandleResponse(resp *http
 // ListPrivateIPAddresses - List Private IP Addresses by the provided filter
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - body - The content of the action request
@@ -506,7 +506,7 @@ func (client *CloudVMClustersClient) listPrivateIPAddressesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -528,7 +528,7 @@ func (client *CloudVMClustersClient) listPrivateIPAddressesHandleResponse(resp *
 // BeginRemoveVMs - Remove VMs from the VM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - body - The content of the action request
@@ -554,7 +554,7 @@ func (client *CloudVMClustersClient) BeginRemoveVMs(ctx context.Context, resourc
 // RemoveVMs - Remove VMs from the VM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *CloudVMClustersClient) removeVMs(ctx context.Context, resourceGroupName string, cloudvmclustername string, body AddRemoveDbNode, options *CloudVMClustersClientBeginRemoveVMsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudVMClustersClient.BeginRemoveVMs"
@@ -596,7 +596,7 @@ func (client *CloudVMClustersClient) removeVMsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -609,7 +609,7 @@ func (client *CloudVMClustersClient) removeVMsCreateRequest(ctx context.Context,
 // BeginUpdate - Update a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - properties - The resource properties to be updated.
@@ -635,7 +635,7 @@ func (client *CloudVMClustersClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - Update a CloudVmCluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *CloudVMClustersClient) update(ctx context.Context, resourceGroupName string, cloudvmclustername string, properties CloudVMClusterUpdate, options *CloudVMClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudVMClustersClient.BeginUpdate"
@@ -677,7 +677,7 @@ func (client *CloudVMClustersClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

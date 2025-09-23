@@ -42,7 +42,7 @@ func NewDNSPrivateZonesClient(subscriptionID string, credential azcore.TokenCred
 // Get - Get a DnsPrivateZone
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - dnsprivatezonename - DnsPrivateZone name
 //   - options - DNSPrivateZonesClientGetOptions contains the optional parameters for the DNSPrivateZonesClient.Get method.
@@ -88,7 +88,7 @@ func (client *DNSPrivateZonesClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *DNSPrivateZonesClient) getHandleResponse(resp *http.Response) (DNS
 
 // NewListByLocationPager - List DnsPrivateZone resources by SubscriptionLocationResource
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - DNSPrivateZonesClientListByLocationOptions contains the optional parameters for the DNSPrivateZonesClient.NewListByLocationPager
 //     method.
@@ -148,7 +148,7 @@ func (client *DNSPrivateZonesClient) listByLocationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

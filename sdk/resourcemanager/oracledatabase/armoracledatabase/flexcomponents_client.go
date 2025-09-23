@@ -42,7 +42,7 @@ func NewFlexComponentsClient(subscriptionID string, credential azcore.TokenCrede
 // Get - Get a FlexComponent
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - flexComponentName - The name of the FlexComponent
 //   - options - FlexComponentsClientGetOptions contains the optional parameters for the FlexComponentsClient.Get method.
@@ -88,7 +88,7 @@ func (client *FlexComponentsClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *FlexComponentsClient) getHandleResponse(resp *http.Response) (Flex
 
 // NewListByParentPager - List FlexComponent resources by SubscriptionLocationResource
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - FlexComponentsClientListByParentOptions contains the optional parameters for the FlexComponentsClient.NewListByParentPager
 //     method.
@@ -148,7 +148,7 @@ func (client *FlexComponentsClient) listByParentCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	if options != nil && options.Shape != nil {
 		reqQP.Set("shape", string(*options.Shape))
 	}

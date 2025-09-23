@@ -42,7 +42,7 @@ func NewDNSPrivateViewsClient(subscriptionID string, credential azcore.TokenCred
 // Get - Get a DnsPrivateView
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - dnsprivateviewocid - DnsPrivateView OCID
 //   - options - DNSPrivateViewsClientGetOptions contains the optional parameters for the DNSPrivateViewsClient.Get method.
@@ -88,7 +88,7 @@ func (client *DNSPrivateViewsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *DNSPrivateViewsClient) getHandleResponse(resp *http.Response) (DNS
 
 // NewListByLocationPager - List DnsPrivateView resources by SubscriptionLocationResource
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - DNSPrivateViewsClientListByLocationOptions contains the optional parameters for the DNSPrivateViewsClient.NewListByLocationPager
 //     method.
@@ -148,7 +148,7 @@ func (client *DNSPrivateViewsClient) listByLocationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

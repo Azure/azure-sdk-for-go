@@ -128,6 +128,22 @@ func (c *ClientFactory) NewDbSystemShapesClient() *DbSystemShapesClient {
 	}
 }
 
+// NewDbSystemsClient creates a new instance of DbSystemsClient.
+func (c *ClientFactory) NewDbSystemsClient() *DbSystemsClient {
+	return &DbSystemsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDbVersionsClient creates a new instance of DbVersionsClient.
+func (c *ClientFactory) NewDbVersionsClient() *DbVersionsClient {
+	return &DbVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewExadbVMClustersClient creates a new instance of ExadbVMClustersClient.
 func (c *ClientFactory) NewExadbVMClustersClient() *ExadbVMClustersClient {
 	return &ExadbVMClustersClient{
@@ -176,6 +192,14 @@ func (c *ClientFactory) NewGiVersionsClient() *GiVersionsClient {
 	}
 }
 
+// NewNetworkAnchorsClient creates a new instance of NetworkAnchorsClient.
+func (c *ClientFactory) NewNetworkAnchorsClient() *NetworkAnchorsClient {
+	return &NetworkAnchorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -186,6 +210,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewOracleSubscriptionsClient creates a new instance of OracleSubscriptionsClient.
 func (c *ClientFactory) NewOracleSubscriptionsClient() *OracleSubscriptionsClient {
 	return &OracleSubscriptionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewResourceAnchorsClient creates a new instance of ResourceAnchorsClient.
+func (c *ClientFactory) NewResourceAnchorsClient() *ResourceAnchorsClient {
+	return &ResourceAnchorsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

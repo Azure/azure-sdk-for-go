@@ -1,5 +1,97 @@
 # Release History
 
+## 2.0.0 (2025-09-23)
+### Breaking Changes
+
+- Field `ScheduledOperations` of struct `AutonomousDatabaseBaseProperties` has been removed
+- Field `ScheduledOperations` of struct `AutonomousDatabaseCloneProperties` has been removed
+- Field `ScheduledOperations` of struct `AutonomousDatabaseCrossRegionDisasterRecoveryProperties` has been removed
+- Field `ScheduledOperations` of struct `AutonomousDatabaseFromBackupTimestampProperties` has been removed
+- Field `ScheduledOperations` of struct `AutonomousDatabaseProperties` has been removed
+- Field `ScheduledOperations` of struct `AutonomousDatabaseUpdateProperties` has been removed
+
+### Features Added
+
+- New enum type `AutonomousDatabaseLifecycleActionEnum` with values `AutonomousDatabaseLifecycleActionEnumRestart`, `AutonomousDatabaseLifecycleActionEnumStart`, `AutonomousDatabaseLifecycleActionEnumStop`
+- New enum type `BaseDbSystemShapes` with values `BaseDbSystemShapesVMStandardX86`
+- New enum type `DbSystemDatabaseEditionType` with values `DbSystemDatabaseEditionTypeEnterpriseEdition`, `DbSystemDatabaseEditionTypeEnterpriseEditionDeveloper`, `DbSystemDatabaseEditionTypeEnterpriseEditionExtreme`, `DbSystemDatabaseEditionTypeEnterpriseEditionHighPerformance`, `DbSystemDatabaseEditionTypeStandardEdition`
+- New enum type `DbSystemLifecycleState` with values `DbSystemLifecycleStateAvailable`, `DbSystemLifecycleStateFailed`, `DbSystemLifecycleStateMaintenanceInProgress`, `DbSystemLifecycleStateMigrated`, `DbSystemLifecycleStateNeedsAttention`, `DbSystemLifecycleStateProvisioning`, `DbSystemLifecycleStateTerminated`, `DbSystemLifecycleStateTerminating`, `DbSystemLifecycleStateUpdating`, `DbSystemLifecycleStateUpgrading`
+- New enum type `DbSystemSourceType` with values `DbSystemSourceTypeNone`
+- New enum type `DiskRedundancyType` with values `DiskRedundancyTypeHigh`, `DiskRedundancyTypeNormal`
+- New enum type `ExadataVMClusterStorageManagementType` with values `ExadataVMClusterStorageManagementTypeASM`, `ExadataVMClusterStorageManagementTypeExascale`
+- New enum type `ShapeAttribute` with values `ShapeAttributeBLOCKSTORAGE`, `ShapeAttributeSMARTSTORAGE`
+- New enum type `ShapeFamilyType` with values `ShapeFamilyTypeExadata`, `ShapeFamilyTypeExadbXs`, `ShapeFamilyTypeSingleNode`, `ShapeFamilyTypeVirtualMachine`
+- New enum type `StorageManagementType` with values `StorageManagementTypeLVM`
+- New enum type `StorageVolumePerformanceMode` with values `StorageVolumePerformanceModeBalanced`, `StorageVolumePerformanceModeHighPerformance`
+- New function `*AutonomousDatabasesClient.BeginAction(context.Context, string, string, AutonomousDatabaseLifecycleAction, *AutonomousDatabasesClientBeginActionOptions) (*runtime.Poller[AutonomousDatabasesClientActionResponse], error)`
+- New function `*ClientFactory.NewDbSystemsClient() *DbSystemsClient`
+- New function `*ClientFactory.NewDbVersionsClient() *DbVersionsClient`
+- New function `*ClientFactory.NewNetworkAnchorsClient() *NetworkAnchorsClient`
+- New function `*ClientFactory.NewResourceAnchorsClient() *ResourceAnchorsClient`
+- New function `*CloudExadataInfrastructuresClient.BeginConfigureExascale(context.Context, string, string, ConfigureExascaleCloudExadataInfrastructureDetails, *CloudExadataInfrastructuresClientBeginConfigureExascaleOptions) (*runtime.Poller[CloudExadataInfrastructuresClientConfigureExascaleResponse], error)`
+- New function `*DbSystemBaseProperties.GetDbSystemBaseProperties() *DbSystemBaseProperties`
+- New function `*DbSystemProperties.GetDbSystemBaseProperties() *DbSystemBaseProperties`
+- New function `NewDbSystemsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DbSystemsClient, error)`
+- New function `*DbSystemsClient.BeginCreateOrUpdate(context.Context, string, string, DbSystem, *DbSystemsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DbSystemsClientCreateOrUpdateResponse], error)`
+- New function `*DbSystemsClient.BeginDelete(context.Context, string, string, *DbSystemsClientBeginDeleteOptions) (*runtime.Poller[DbSystemsClientDeleteResponse], error)`
+- New function `*DbSystemsClient.Get(context.Context, string, string, *DbSystemsClientGetOptions) (DbSystemsClientGetResponse, error)`
+- New function `*DbSystemsClient.NewListByResourceGroupPager(string, *DbSystemsClientListByResourceGroupOptions) *runtime.Pager[DbSystemsClientListByResourceGroupResponse]`
+- New function `*DbSystemsClient.NewListBySubscriptionPager(*DbSystemsClientListBySubscriptionOptions) *runtime.Pager[DbSystemsClientListBySubscriptionResponse]`
+- New function `*DbSystemsClient.BeginUpdate(context.Context, string, string, DbSystemUpdate, *DbSystemsClientBeginUpdateOptions) (*runtime.Poller[DbSystemsClientUpdateResponse], error)`
+- New function `NewDbVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DbVersionsClient, error)`
+- New function `*DbVersionsClient.Get(context.Context, string, string, *DbVersionsClientGetOptions) (DbVersionsClientGetResponse, error)`
+- New function `*DbVersionsClient.NewListByLocationPager(string, *DbVersionsClientListByLocationOptions) *runtime.Pager[DbVersionsClientListByLocationResponse]`
+- New function `NewResourceAnchorsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceAnchorsClient, error)`
+- New function `*ResourceAnchorsClient.BeginCreateOrUpdate(context.Context, string, string, ResourceAnchor, *ResourceAnchorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ResourceAnchorsClientCreateOrUpdateResponse], error)`
+- New function `*ResourceAnchorsClient.BeginDelete(context.Context, string, string, *ResourceAnchorsClientBeginDeleteOptions) (*runtime.Poller[ResourceAnchorsClientDeleteResponse], error)`
+- New function `*ResourceAnchorsClient.Get(context.Context, string, string, *ResourceAnchorsClientGetOptions) (ResourceAnchorsClientGetResponse, error)`
+- New function `*ResourceAnchorsClient.NewListByResourceGroupPager(string, *ResourceAnchorsClientListByResourceGroupOptions) *runtime.Pager[ResourceAnchorsClientListByResourceGroupResponse]`
+- New function `*ResourceAnchorsClient.NewListBySubscriptionPager(*ResourceAnchorsClientListBySubscriptionOptions) *runtime.Pager[ResourceAnchorsClientListBySubscriptionResponse]`
+- New function `*ResourceAnchorsClient.BeginUpdate(context.Context, string, string, ResourceAnchorUpdate, *ResourceAnchorsClientBeginUpdateOptions) (*runtime.Poller[ResourceAnchorsClientUpdateResponse], error)`
+- New function `NewNetworkAnchorsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkAnchorsClient, error)`
+- New function `*NetworkAnchorsClient.BeginCreateOrUpdate(context.Context, string, string, NetworkAnchor, *NetworkAnchorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NetworkAnchorsClientCreateOrUpdateResponse], error)`
+- New function `*NetworkAnchorsClient.BeginDelete(context.Context, string, string, *NetworkAnchorsClientBeginDeleteOptions) (*runtime.Poller[NetworkAnchorsClientDeleteResponse], error)`
+- New function `*NetworkAnchorsClient.Get(context.Context, string, string, *NetworkAnchorsClientGetOptions) (NetworkAnchorsClientGetResponse, error)`
+- New function `*NetworkAnchorsClient.NewListByResourceGroupPager(string, *NetworkAnchorsClientListByResourceGroupOptions) *runtime.Pager[NetworkAnchorsClientListByResourceGroupResponse]`
+- New function `*NetworkAnchorsClient.NewListBySubscriptionPager(*NetworkAnchorsClientListBySubscriptionOptions) *runtime.Pager[NetworkAnchorsClientListBySubscriptionResponse]`
+- New function `*NetworkAnchorsClient.BeginUpdate(context.Context, string, string, NetworkAnchorUpdate, *NetworkAnchorsClientBeginUpdateOptions) (*runtime.Poller[NetworkAnchorsClientUpdateResponse], error)`
+- New struct `AutonomousDatabaseLifecycleAction`
+- New struct `ConfigureExascaleCloudExadataInfrastructureDetails`
+- New struct `DNSForwardingRule`
+- New struct `DbSystem`
+- New struct `DbSystemListResult`
+- New struct `DbSystemOptions`
+- New struct `DbSystemProperties`
+- New struct `DbSystemUpdate`
+- New struct `DbSystemUpdateProperties`
+- New struct `DbVersion`
+- New struct `DbVersionListResult`
+- New struct `DbVersionProperties`
+- New struct `ExascaleConfigDetails`
+- New struct `NetworkAnchor`
+- New struct `NetworkAnchorListResult`
+- New struct `NetworkAnchorProperties`
+- New struct `NetworkAnchorUpdate`
+- New struct `NetworkAnchorUpdateProperties`
+- New struct `ResourceAnchor`
+- New struct `ResourceAnchorListResult`
+- New struct `ResourceAnchorProperties`
+- New struct `ResourceAnchorUpdate`
+- New field `ScheduledOperationsList` in struct `AutonomousDatabaseBaseProperties`
+- New field `ScheduledOperationsList` in struct `AutonomousDatabaseCloneProperties`
+- New field `ScheduledOperationsList` in struct `AutonomousDatabaseCrossRegionDisasterRecoveryProperties`
+- New field `ScheduledOperationsList` in struct `AutonomousDatabaseFromBackupTimestampProperties`
+- New field `ScheduledOperationsList` in struct `AutonomousDatabaseProperties`
+- New field `ScheduledOperationsList` in struct `AutonomousDatabaseUpdateProperties`
+- New field `ExascaleConfig` in struct `CloudExadataInfrastructureProperties`
+- New field `ExascaleDbStorageVaultID`, `StorageManagementType` in struct `CloudVMClusterProperties`
+- New field `ShapeAttributes` in struct `DbSystemShapeProperties`
+- New field `ShapeAttribute` in struct `DbSystemShapesClientListByLocationOptions`
+- New field `ShapeAttribute` in struct `ExadbVMClusterProperties`
+- New field `AttachedShapeAttributes`, `ExadataInfrastructureID` in struct `ExascaleDbStorageVaultProperties`
+- New field `ShapeAttribute` in struct `GiVersionsClientListByLocationOptions`
+
+
 ## 1.1.0 (2025-06-04)
 
 ### Features Added

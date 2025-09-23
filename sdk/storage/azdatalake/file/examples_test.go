@@ -72,7 +72,7 @@ func Example_file_HTTPHeaders() {
 	}, nil)
 	handleError(err)
 
-	get, err := fileClient.GetProperties(context.TODO(), nil)
+	get, err := fileClient.GetPathProperties(context.TODO(), nil)
 	handleError(err)
 
 	fmt.Println(get.ContentType)
@@ -300,7 +300,7 @@ func Example_file_UploadFileAndDownloadStream() {
 	})
 	handleError(err)
 
-	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	gResp2, err := fClient.GetPathProperties(context.Background(), nil)
 	handleError(err)
 	fmt.Println(*gResp2.ContentLength, fileSize)
 
@@ -338,7 +338,7 @@ func Example_file_UploadBufferAndDownloadStream() {
 		ChunkSize:   2 * 1024,
 	})
 	handleError(err)
-	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	gResp2, err := fClient.GetPathProperties(context.Background(), nil)
 	handleError(err)
 	fmt.Println(*gResp2.ContentLength, fileSize)
 
@@ -385,7 +385,7 @@ func Example_file_AppendAndFlushDataWithValidation() {
 	handleError(err)
 
 	// compare content length as well
-	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	gResp2, err := fClient.GetPathProperties(context.Background(), nil)
 	handleError(err)
 	fmt.Println(*gResp2.ContentLength, int64(contentSize))
 }
@@ -422,7 +422,7 @@ func Example_file_AppendAndFlushDataWithAcquireAndReleaseLease() {
 	})
 	handleError(err)
 
-	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	gResp2, err := fClient.GetPathProperties(context.Background(), nil)
 	handleError(err)
 	// Check if the lease is released
 	fmt.Println(lease.StateTypeAvailable, *gResp2.LeaseState)

@@ -60,7 +60,7 @@ func Example_directory_HTTPHeaders() {
 	}, nil)
 	handleError(err)
 
-	get, err := dirClient.GetProperties(context.TODO(), nil)
+	get, err := dirClient.GetPathProperties(context.TODO(), nil)
 	handleError(err)
 
 	fmt.Println(get.ContentType)

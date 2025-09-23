@@ -17,6 +17,8 @@
 
 ### Other Changes
 
+* Added a fallback mechanism to AAD scope override. See [PR 25305](https://github.com/Azure/azure-sdk-for-go/pull/25305)
+
 ## 1.5.0-beta.0 (2025-06-09)
 
 ### Features Added

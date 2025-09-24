@@ -162,7 +162,6 @@ func (c *emulatorFailAccountScopeCredential) GetToken(ctx context.Context, tro p
 }
 
 func TestAAD_Fallback_E2E_WithEmulator(t *testing.T) {
-	t.Setenv("EMULATOR", "true")
 	t.Setenv(envCosmosScopeOverride, "") // ensure product code uses endpoint scope + fallback
 
 	em := newEmulatorTests(t)

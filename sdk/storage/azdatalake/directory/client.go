@@ -273,10 +273,7 @@ func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 	}
 }
 
-// GetProperties gets the properties of a directory.
-//
-// Deprecated: GetProperties uses the blob endpoint, which may cause issues with directory identification in flat namespace (FNS) accounts.
-// Use GetPathProperties instead, which calls the DFS endpoint and properly returns x-ms-resource-type headers for directory identification.
+// GetProperties gets the properties of a directory using blob endpoint.
 func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
 	var respFromCtx *http.Response
@@ -290,8 +287,6 @@ func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 }
 
 // GetPathProperties gets the properties of a directory using the DFS endpoint.
-// This method is recommended over GetProperties as it properly returns x-ms-resource-type headers
-// which can be used to identify directories in flat namespace (FNS) accounts.
 func (d *Client) GetPathProperties(ctx context.Context, options *GetPathPropertiesOptions) (GetPathPropertiesResponse, error) {
 	opts, lac, mac := path.FormatGetPathPropertiesOptions(options)
 	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)

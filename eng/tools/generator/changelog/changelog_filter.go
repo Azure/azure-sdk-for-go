@@ -101,6 +101,9 @@ func FuncFilter(changelog *Changelog) {
 
 		// function operation parameters from interface{} to any is not a breaking change
 		for f, v := range changelog.Modified.BreakingChanges.Funcs {
+			if v.Params == nil {
+				continue
+			}
 			from := strings.Split(v.Params.From, ",")
 			to := strings.Split(v.Params.To, ",")
 			if len(from) != len(to) {

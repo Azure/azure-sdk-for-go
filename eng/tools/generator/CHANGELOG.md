@@ -6,6 +6,10 @@
 
 - Secure tsp-client usage by using pinned tsp-client versions from `eng/common/tsp-client`.
 
+### Bugs Fixed
+
+- Fixed `FuncFilter` to be compatible with unchanged parameter signatures.
+
 ## 0.2.0 (2025-09-18)
 
 ### Features Added

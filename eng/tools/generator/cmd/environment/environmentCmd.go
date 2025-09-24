@@ -261,27 +261,13 @@ func checkTypeSpecCompiler() EnvironmentChecker {
 }
 
 func checkTypeSpecClientCLI() EnvironmentChecker {
-	// Check if eng/common/tsp-client directory exists and has node_modules
-	tspClientPath := "eng/common/tsp-client"
-	nodeModulesPath := tspClientPath + "/node_modules"
-	
-	// Check if the tsp-client directory exists
-	if _, err := runCommand("test", "-d", tspClientPath); err != nil {
+	_, err := runCommand("tsp-client", "--version")
+	if err != nil {
 		return EnvironmentChecker{
 			Name:        "TypeSpec Client Generator CLI",
-			Status:      "ERROR",
-			Message:     "eng/common/tsp-client directory not found",
-			InstallHint: "Run from the root of azure-sdk-for-go repository",
-		}
-	}
-	
-	// Check if node_modules is installed
-	if _, err := runCommand("test", "-d", nodeModulesPath); err != nil {
-		return EnvironmentChecker{
-			Name:        "TypeSpec Client Generator CLI",
-			Status:      "WARNING", 
-			Message:     "TypeSpec client generator CLI dependencies not installed",
-			InstallHint: "Run 'cd eng/common/tsp-client && npm ci' to install pinned dependencies",
+			Status:      "WARNING",
+			Message:     "TypeSpec client generator CLI is not installed",
+			InstallHint: "Will be installed automatically, or run: npm install -g @azure-tools/typespec-client-generator-cli",
 		}
 	}
 
@@ -310,20 +296,19 @@ func installTypeSpecCompiler() EnvironmentChecker {
 }
 
 func installTypeSpecClientCLI() EnvironmentChecker {
-	// Install using the pinned version from eng/common/tsp-client
-	_, err := runCommand("sh", "-c", "cd eng/common/tsp-client && npm ci")
+	_, err := runCommand("npm", "install", "-g", "@azure-tools/typespec-client-generator-cli")
 	if err != nil {
 		return EnvironmentChecker{
 			Name:    "TypeSpec Client Generator CLI Installation",
 			Status:  "ERROR",
-			Message: fmt.Sprintf("Failed to install TypeSpec client generator CLI from eng/common/tsp-client: %v", err),
+			Message: fmt.Sprintf("Failed to install TypeSpec client generator CLI: %v", err),
 		}
 	}
 
 	return EnvironmentChecker{
 		Name:    "TypeSpec Client Generator CLI Installation",
 		Status:  "SUCCESS",
-		Message: "TypeSpec client generator CLI installed successfully from pinned version ✓",
+		Message: "TypeSpec client generator CLI installed successfully ✓",
 	}
 }
 

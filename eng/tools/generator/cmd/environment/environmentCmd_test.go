@@ -172,7 +172,7 @@ func TestCheckTypeSpecClientCLI(t *testing.T) {
 			name:           "TypeSpec client CLI not installed",
 			commandOutput:  "",
 			commandErr:     &mockError{msg: "command not found"},
-			expectedStatus: "ERROR", // Changed from WARNING to ERROR to match new implementation
+			expectedStatus: "WARNING",
 			expectedName:   "TypeSpec Client Generator CLI",
 		},
 	}

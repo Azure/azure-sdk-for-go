@@ -1,5 +1,11 @@
 # Release History
 
+## 0.2.1 (Unreleased)
+
+### Other Changes
+
+- Secure tsp-client usage by using pinned tsp-client versions from `eng/common/tsp-client`.
+
 ## 0.2.0 (2025-09-18)
 
 ### Features Added

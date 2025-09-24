@@ -7,16 +7,29 @@
 package service
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
-	"time"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
+
+// UserDelegationCredential contains an account's name and its user delegation key.
+type UserDelegationCredential = exported.UserDelegationCredential
+
+// KeyInfo contains KeyInfo struct.
+type KeyInfo = generated.KeyInfo
+
+type GetUserDelegationCredentialOptions struct{}
+
+func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
+	return nil
+}
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.

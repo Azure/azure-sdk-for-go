@@ -473,6 +473,90 @@ func (s *ShareRecordedTestsSuite) TestShareCreateNegativeInvalidMetadata() {
 	_require.Error(err)
 }
 
+func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDisabled() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Create share with directory leases disabled
+	resp, err := shareClient.Create(context.Background(), &share.CreateOptions{
+		EnableSmbDirectoryLease: to.Ptr(false),
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Verify with GetProperties
+	getResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.ETag)
+	_require.NotNil(getResp.LastModified)
+	_require.Equal(false, *getResp.EnableSmbDirectoryLease)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Create share with directory leases explicitly enabled
+	resp, err := shareClient.Create(context.Background(), &share.CreateOptions{
+		EnableSmbDirectoryLease: to.Ptr(true),
+	})
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Verify with GetProperties
+	getResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(true, *getResp.EnableSmbDirectoryLease)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// Create share with no explicit option (should default to true)
+	resp, err := shareClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp.ETag)
+
+	// Verify with GetProperties
+	getResp, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(true, *getResp.EnableSmbDirectoryLease)
+}
+
 func (s *ShareRecordedTestsSuite) TestShareDeleteNegativeNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

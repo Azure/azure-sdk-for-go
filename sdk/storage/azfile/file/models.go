@@ -90,11 +90,16 @@ type CreateOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
+	// SMB only, default value is New. Restore will apply changes without further modification.
+	FilePropertySemantics *PropertySemantics
+	OptionalBody          io.ReadSeekCloser
+	ContentLength         *int64
+	ContentMD5            []byte
 }
 
-func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
+func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions, io.ReadSeekCloser) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, nil
 	}
 
 	var createOptions *generated.FileClientCreateOptions
@@ -135,8 +140,14 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 				createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormatSddl) // optional, default
 			}
 		}
+		if o.FilePropertySemantics != nil {
+			createOptions.FilePropertySemantics = o.FilePropertySemantics
+		}
+		if len(o.ContentMD5) > 0 {
+			createOptions.ContentMD5 = o.ContentMD5
+		}
 	}
-	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
+	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions, o.OptionalBody
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -90,6 +90,21 @@ func PossibleFilePermissionFormatValues() []FilePermissionFormat {
 	}
 }
 
+type FilePropertySemantics string
+
+const (
+	FilePropertySemanticsNew     FilePropertySemantics = "New"
+	FilePropertySemanticsRestore FilePropertySemantics = "Restore"
+)
+
+// PossibleFilePropertySemanticsValues returns the possible values for the FilePropertySemantics const type.
+func PossibleFilePropertySemanticsValues() []FilePropertySemantics {
+	return []FilePropertySemantics{
+		FilePropertySemanticsNew,
+		FilePropertySemanticsRestore,
+	}
+}
+
 type FileRangeWriteType string
 
 const (

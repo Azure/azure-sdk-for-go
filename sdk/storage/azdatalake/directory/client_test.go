@@ -2906,11 +2906,11 @@ func (s *RecordedTestSuite) TestDirGetPathProperties() {
 	response, err := dirClient.GetPathProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(response)
-	
+
 	// Verify that we get the expected resource type for a directory
 	_require.NotNil(response.ResourceType)
 	_require.Equal("directory", *response.ResourceType)
-	
+
 	// Test GetPathProperties with access conditions
 	getPathPropertiesOpts := &directory.GetPathPropertiesOptions{
 		AccessConditions: &directory.AccessConditions{

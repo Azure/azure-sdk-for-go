@@ -229,9 +229,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 }
 
 // GetProperties gets the properties of a file.
-//
-// Deprecated: GetProperties uses the blob endpoint, which may cause issues with file identification in flat namespace (FNS) accounts.
-// Use GetPathProperties instead, which calls the DFS endpoint and properly returns x-ms-resource-type headers for file identification.
+// GetProperties uses the blob endpoint, which may cause issues with file identification in flat namespace (FNS) accounts - Use GetPathProperties instead, which calls the DFS endpoint.
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
 	var respFromCtx *http.Response
@@ -246,8 +244,6 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 }
 
 // GetPathProperties gets the properties of a file using the DFS endpoint.
-// This method is recommended over GetProperties as it properly returns x-ms-resource-type headers
-// which can be used to identify files in flat namespace (FNS) accounts.
 func (f *Client) GetPathProperties(ctx context.Context, options *GetPathPropertiesOptions) (GetPathPropertiesResponse, error) {
 	opts, lac, mac := path.FormatGetPathPropertiesOptions(options)
 	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)

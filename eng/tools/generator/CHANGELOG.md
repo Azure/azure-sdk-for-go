@@ -4,9 +4,7 @@
 
 ### Other Changes
 
-- Secure tsp-client usage by adopting pinned package-lock mechanism.
-- Updated `ExecuteTspClient` function to use pinned tsp-client versions from `eng/common/tsp-client` instead of globally installed packages to mitigate npm supply chain security risks.
-- Use `npm --prefix` for cleaner directory management when executing tsp-client commands.
+- Secure tsp-client usage by using pinned tsp-client versions from `eng/common/tsp-client`.
 
 ## 0.2.0 (2025-09-18)
 

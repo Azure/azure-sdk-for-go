@@ -50,7 +50,7 @@ func TestFuncFilter(t *testing.T) {
 
 	FilterChangelog(changelog, FuncFilter)
 
-	excepted := "### Breaking Changes\n\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n"
+	excepted := "### Breaking Changes\n\n- Function `*Client.Get` return value(s) have been changed from `(error)` to `(ClientGetResponse, error)`\n- Function `*Client.BeingDelete` has been removed\n- Function `*Client.NewListPager` has been removed\n- Function `*Client.Update` has been removed\n\n### Features Added\n\n- New function `*Client.BeginCreateOrUpdate(string, *ClientBeginCreateOrUpdateOptions) (ClientBeginCreateOrUpdateResponse, error)`\n- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`\n- New struct `ClientGetResponse`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 

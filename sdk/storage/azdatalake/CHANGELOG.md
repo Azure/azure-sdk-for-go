@@ -4,14 +4,12 @@
 
 ### Features Added
 * Added `GetPathProperties` method to `directory.Client` and `file.Client` that uses DFS endpoint for property retrieval
-* Added `GetPathPropertiesOptions` and `GetPathPropertiesResponse` types for the new method
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
-* Deprecated `GetProperties` method in favor of `GetPathProperties` for better directory identification in flat namespace (FNS) accounts
 
 ## 1.4.2 (2025-07-23)
 

@@ -80,6 +80,4 @@ fi
 
 echo Install tsp-client
 tspClientDir="$(realpath $DIRECTORY/../common/tsp-client)"
-cd "$tspClientDir"
-npm ci 2>&1
-cd $DIRECTORY
+npm --prefix "$tspClientDir" ci 2>&1

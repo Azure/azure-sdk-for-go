@@ -202,9 +202,9 @@ func ExecuteGoFmt(dir string, args ...string) error {
 func ExecuteTspClient(path string, args ...string) error {
 	// Use pinned tsp-client from eng/common/tsp-client instead of global npx
 	tspClientDir := filepath.Join(path, "eng", "common", "tsp-client")
-	args = append([]string{"--no", "--", "tsp-client"}, args...)
-	cmd := exec.Command("npm", append([]string{"exec"}, args...)...)
-	cmd.Dir = tspClientDir
+	args = append([]string{"--prefix", tspClientDir, "exec", "--no", "--", "tsp-client"}, args...)
+	cmd := exec.Command("npm", args...)
+	cmd.Dir = path
 
 	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {

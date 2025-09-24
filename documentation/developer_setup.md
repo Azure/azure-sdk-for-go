@@ -113,7 +113,13 @@ Setting up your project involves a few steps:
 	```
 2. Create a tsp-location.yaml file at the root of your module directory. This file gives the location and commit that should be used to generate your code: ([example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/eventgrid/aznamespaces/tsp-location.yaml)).
 
-3. Install `tsp-client`: [(instructions)](https://github.com/Azure/azure-sdk-tools/blob/main/tools/tsp-client/README.md)
+3. Install `tsp-client`: You have two options:
+   - **Recommended for CI/CD and security**: Use the pinned version from eng/common/tsp-client:
+     ```bash
+     cd eng/common/tsp-client && npm ci
+     # Then use: npm exec --no -- tsp-client <commands>
+     ```
+   - **For local development**: Install globally using [(instructions)](https://github.com/Azure/azure-sdk-tools/blob/main/tools/tsp-client/README.md)
 4. Create a `build.go` file, and add `go generate` commands to run tsp-client: ([example](https://github.com/Azure/azure-sdk-for-go/blob/656c879ce93a0bc011d60df1f7b300620be08f82/sdk/messaging/eventgrid/aznamespaces/build.go#L4)).
     
 	NOTE: the formatting here is _very_ important:

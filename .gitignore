@@ -59,3 +59,6 @@ vendor/
 
 # Default sync TypeSpec Project directory
 TempTypeSpecFiles/
+
+# Node modules for pinned tsp-client
+/eng/common/tsp-client/node_modules

@@ -1,5 +1,12 @@
 # Release History
 
+## 0.2.1 (Unreleased)
+
+### Other Changes
+
+- Updated `ExecuteTspClient` function to use pinned tsp-client versions from `eng/common/tsp-client` instead of globally installed packages to mitigate npm supply chain security risks.
+- Use `npm --prefix` for cleaner directory management when executing tsp-client commands.
+
 ## 0.2.0 (2025-09-18)
 
 ### Features Added

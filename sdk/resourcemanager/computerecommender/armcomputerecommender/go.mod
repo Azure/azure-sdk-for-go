@@ -1,3 +1,4 @@
+// Deprecated: use [github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armrecommender](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armrecommender) instead.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computerecommender/armcomputerecommender
 
 go 1.23.0

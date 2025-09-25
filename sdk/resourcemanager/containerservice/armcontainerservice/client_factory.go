@@ -49,6 +49,22 @@ func (c *ClientFactory) NewClient() *Client {
 	}
 }
 
+// NewIdentityBindingsClient creates a new instance of IdentityBindingsClient.
+func (c *ClientFactory) NewIdentityBindingsClient() *IdentityBindingsClient {
+	return &IdentityBindingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewJWTAuthenticatorsClient creates a new instance of JWTAuthenticatorsClient.
+func (c *ClientFactory) NewJWTAuthenticatorsClient() *JWTAuthenticatorsClient {
+	return &JWTAuthenticatorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewLoadBalancersClient creates a new instance of LoadBalancersClient.
 func (c *ClientFactory) NewLoadBalancersClient() *LoadBalancersClient {
 	return &LoadBalancersClient{

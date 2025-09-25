@@ -42,7 +42,7 @@ type EventClientListOptions struct {
 	ContinuationToken *string
 
 	// OData options.
-	OdataOptions *string
+	ODataOptions *string
 
 	// Page size.
 	PageSize *int32
@@ -116,7 +116,7 @@ type JobClientListOptions struct {
 	ContinuationToken *string
 
 	// OData options.
-	OdataOptions *string
+	ODataOptions *string
 
 	// Page size.
 	PageSize *int32
@@ -235,11 +235,11 @@ type ProtectedItemClientBeginCreateOptions struct {
 
 // ProtectedItemClientBeginDeleteOptions contains the optional parameters for the ProtectedItemClient.BeginDelete method.
 type ProtectedItemClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
 	// A flag indicating whether to do force delete or not.
 	ForceDelete *bool
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // ProtectedItemClientBeginPlannedFailoverOptions contains the optional parameters for the ProtectedItemClient.BeginPlannedFailover
@@ -266,7 +266,7 @@ type ProtectedItemClientListOptions struct {
 	ContinuationToken *string
 
 	// OData options.
-	OdataOptions *string
+	ODataOptions *string
 
 	// Page size.
 	PageSize *int32

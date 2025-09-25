@@ -79,4 +79,5 @@ else
 fi
 
 echo Install tsp-client
-npm install -g @azure-tools/typespec-client-generator-cli@v0.21.0 2>&1
+tspClientDir="$(realpath $DIRECTORY/../common/tsp-client)"
+npm --prefix "$tspClientDir" ci 2>&1

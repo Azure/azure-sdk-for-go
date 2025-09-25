@@ -25,7 +25,7 @@ type AvailableWorkloadProfilesClient struct {
 }
 
 // NewAvailableWorkloadProfilesClient creates a new instance of AvailableWorkloadProfilesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAvailableWorkloadProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableWorkloadProfilesClient, error) {
@@ -42,7 +42,7 @@ func NewAvailableWorkloadProfilesClient(subscriptionID string, credential azcore
 
 // NewGetPager - Get all available workload profiles for a location.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-02-02-preview
 //   - location - The name of Azure region.
 //   - options - AvailableWorkloadProfilesClientGetOptions contains the optional parameters for the AvailableWorkloadProfilesClient.NewGetPager
 //     method.
@@ -85,7 +85,7 @@ func (client *AvailableWorkloadProfilesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

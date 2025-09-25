@@ -1,12 +1,26 @@
 # Release History
 
-## 0.2.0 (UNRELEASED)
+## 0.2.1 (Unreleased)
+
+### Other Changes
+
+- Secure tsp-client usage by using pinned tsp-client versions from `eng/common/tsp-client`.
+
+### Bugs Fixed
+
+- Fixed `FuncFilter` to be compatible with unchanged parameter signatures.
+
+## 0.2.0 (2025-09-18)
 
 ### Features Added
 
 - Add `environment` command to check and validate environment prerequisites for Azure Go SDK generation.
 - Add `generate` command to generate Azure Go SDK packages from TypeSpec specifications.
 - Support major version suffix in the `module` flag to specify the major version of the generated module.
+
+### Bugs Fixed
+
+- Use module as the root of API view generation path.
 
 ### Breaking Changes
 

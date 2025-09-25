@@ -106,6 +106,10 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, 1, len(actual.chain.sources))
 			require.Equal(t, "*azidentity."+c, fmt.Sprintf("%T", actual.chain.sources[0]))
+			if c == credNameManagedIdentity {
+				mic := actual.chain.sources[0].(*ManagedIdentityCredential)
+				require.False(t, mic.mic.probeIMDS, "probeIMDS should be false when ManagedIdentityCredential is selected")
+			}
 		})
 	}
 
@@ -351,7 +355,11 @@ func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 }
 
 func TestDefaultAzureCredential_IMDS(t *testing.T) {
-	t.Setenv(azureTokenCredentials, credNameManagedIdentity)
+	before := shellExec
+	defer func() { shellExec = before }()
+	shellExec = func(context.Context, string, string) ([]byte, error) {
+		return nil, NewCredentialUnavailableError("CLI credentials are disabled for this test")
+	}
 
 	t.Run("probe", func(t *testing.T) {
 		probed := false

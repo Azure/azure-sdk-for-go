@@ -1,4 +1,4 @@
 directory: specification/liftrneon/Neon.Postgres.Management
-commit: 5e94c9b9219eceb607fb7709b27881a3475906c7
+commit: 64532bab58086c84b9dbe5e08766e8ffde8c4493
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

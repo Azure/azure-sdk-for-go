@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota
 
 go 1.24.0
 
@@ -7,6 +7,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.12.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3 v3.1.0
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2 v2.0.0
 	github.com/stretchr/testify v1.11.1
 )
 

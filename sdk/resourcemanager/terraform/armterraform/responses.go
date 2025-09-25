@@ -6,7 +6,7 @@ package armterraform
 
 // ClientExportTerraformResponse contains the response from method Client.BeginExportTerraform.
 type ClientExportTerraformResponse struct {
-	// The status of the LRO operation.
+	// The status of the LRO (Long Running Operation) and the export result.
 	OperationStatus
 }
 

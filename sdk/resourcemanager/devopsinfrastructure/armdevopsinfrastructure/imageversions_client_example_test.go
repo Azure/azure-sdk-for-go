@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-19/ImageVersions_ListByImage.json
+// Generated from example definition: 2025-09-20/ImageVersions_ListByImage.json
 func ExampleImageVersionsClient_NewListByImagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleImageVersionsClient_NewListByImagePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewImageVersionsClient().NewListByImagePager("my-resource-group", "windows-2022", nil)
+	pager := clientFactory.NewImageVersionsClient().NewListByImagePager("2025-09-20", "my-resource-group", "windows-2022", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

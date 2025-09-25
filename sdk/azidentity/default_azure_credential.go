@@ -164,7 +164,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		}
 	}
 	if selected&managedIdentity != 0 {
-		o := &ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions, dac: true}
+		o := &ManagedIdentityCredentialOptions{
+			ClientOptions: options.ClientOptions,
+			// enable special DefaultAzureCredential behavior (IMDS probing) only when the chain contains another credential
+			dac: selected^managedIdentity != 0,
+		}
 		if ID, ok := os.LookupEnv(azureClientID); ok {
 			o.ID = ClientID(ID)
 		}

@@ -31,7 +31,7 @@
 # ServiceOwners:                                                   @miaojiang
 
 # PRLabel: %App Configuration
-/sdk/data/azappconfig/                                             @jhendrixMSFT @rickwinter @RichardChen820 @linglingye001
+/sdk/data/azappconfig/                                             @RichardChen820 @linglingye001 @jhendrixMSFT
 
 # ServiceLabel: %App Configuration
 # AzureSdkOwners:                                                  @jhendrixMSFT

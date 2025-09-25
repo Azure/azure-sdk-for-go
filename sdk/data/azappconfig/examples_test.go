@@ -468,8 +468,8 @@ func ExampleClient_NewListSettingsPager_usingTags() {
 	// First, create a configuration setting with tags
 	_, err = client.AddSetting(context.Background(), "endpoint", to.Ptr("https://beta.endpoint.com"), &azappconfig.AddSettingOptions{
 		Label: to.Ptr("beta"),
-		Tags: map[string]string{
-			"someKey": "someValue",
+		Tags: map[string]*string{
+			"someKey": to.Ptr("someValue"),
 		},
 	})
 	if err != nil {

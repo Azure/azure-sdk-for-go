@@ -775,10 +775,10 @@ func TestAddSettingWithTags(t *testing.T) {
 	)
 
 	value := "value"
-	tags := map[string]string{
-		"environment": "test",
-		"region":      "eastus",
-		"component":   "api",
+	tags := map[string]*string{
+		"environment": to.Ptr("test"),
+		"region":      to.Ptr("eastus"),
+		"component":   to.Ptr("api"),
 	}
 	client := NewClientFromConnectionString(t)
 
@@ -818,10 +818,10 @@ func TestSetSettingWithTags(t *testing.T) {
 	)
 
 	value := "value1"
-	tags := map[string]string{
-		"environment": "prod",
-		"region":      "westus",
-		"version":     "1.0",
+	tags := map[string]*string{
+		"environment": to.Ptr("prod"),
+		"region":      to.Ptr("westus"),
+		"version":     to.Ptr("1.0"),
 	}
 	client := NewClientFromConnectionString(t)
 
@@ -841,11 +841,11 @@ func TestSetSettingWithTags(t *testing.T) {
 	require.Equal(t, tags, setResp.Tags)
 
 	// Update with different tags
-	newTags := map[string]string{
-		"environment": "staging",
-		"region":      "centralus",
-		"version":     "2.0",
-		"feature":     "beta",
+	newTags := map[string]*string{
+		"environment": to.Ptr("staging"),
+		"region":      to.Ptr("centralus"),
+		"version":     to.Ptr("2.0"),
+		"feature":     to.Ptr("beta"),
 	}
 	newValue := "updated-value"
 
@@ -877,30 +877,30 @@ func TestListSettingsWithTagsFilter(t *testing.T) {
 	settings := []struct {
 		key   string
 		value string
-		tags  map[string]string
+		tags  map[string]*string
 	}{
 		{
 			key:   key1,
 			value: "value1",
-			tags: map[string]string{
-				"environment": "prod",
-				"region":      "eastus",
+			tags: map[string]*string{
+				"environment": to.Ptr("prod"),
+				"region":      to.Ptr("eastus"),
 			},
 		},
 		{
 			key:   key2,
 			value: "value2",
-			tags: map[string]string{
-				"environment": "test",
-				"region":      "eastus",
+			tags: map[string]*string{
+				"environment": to.Ptr("test"),
+				"region":      to.Ptr("eastus"),
 			},
 		},
 		{
 			key:   key3,
 			value: "value3",
-			tags: map[string]string{
-				"environment": "prod",
-				"region":      "westus",
+			tags: map[string]*string{
+				"environment": to.Ptr("prod"),
+				"region":      to.Ptr("westus"),
 			},
 		},
 	}
@@ -929,7 +929,7 @@ func TestListSettingsWithTagsFilter(t *testing.T) {
 			if *setting.Key == key1 || *setting.Key == key2 || *setting.Key == key3 {
 				foundKeys = append(foundKeys, *setting.Key)
 				// Verify the setting has the expected tag
-				require.Equal(t, "prod", setting.Tags["environment"])
+				require.Equal(t, "prod", *setting.Tags["environment"])
 			}
 		}
 	}
@@ -982,11 +982,11 @@ func TestSettingTagsWithSpecialCharacters(t *testing.T) {
 	client := NewClientFromConnectionString(t)
 
 	// Test tags with special characters
-	tags := map[string]string{
-		"app-name":    "my-app",
-		"team.owner":  "backend-team",
-		"cost_center": "engineering",
-		"env_type":    "staging-test",
+	tags := map[string]*string{
+		"app-name":    to.Ptr("my-app"),
+		"team.owner":  to.Ptr("backend-team"),
+		"cost_center": to.Ptr("engineering"),
+		"env_type":    to.Ptr("staging-test"),
 	}
 	value := "value"
 
@@ -1041,7 +1041,7 @@ func TestEmptyTagsHandling(t *testing.T) {
 
 	// Test setting with empty tags map
 	setResp, err := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
-		Tags: make(map[string]string),
+		Tags: make(map[string]*string),
 	})
 	require.NoError(t, err)
 	require.Empty(t, setResp.Tags)
@@ -1059,46 +1059,46 @@ func TestTagsFilteringEndToEnd(t *testing.T) {
 		key   string
 		value string
 		label string
-		tags  map[string]string
+		tags  map[string]*string
 	}{
 		{
 			key:   "app-config-1",
 			value: "value1",
 			label: "production",
-			tags: map[string]string{
-				"environment": "production",
-				"service":     "api",
-				"version":     "1.0",
+			tags: map[string]*string{
+				"environment": to.Ptr("production"),
+				"service":     to.Ptr("api"),
+				"version":     to.Ptr("1.0"),
 			},
 		},
 		{
 			key:   "app-config-2",
 			value: "value2",
 			label: "staging",
-			tags: map[string]string{
-				"environment": "staging",
-				"service":     "api",
-				"version":     "1.1",
+			tags: map[string]*string{
+				"environment": to.Ptr("staging"),
+				"service":     to.Ptr("api"),
+				"version":     to.Ptr("1.1"),
 			},
 		},
 		{
 			key:   "app-config-3",
 			value: "value3",
 			label: "production",
-			tags: map[string]string{
-				"environment": "production",
-				"service":     "web",
-				"version":     "2.0",
+			tags: map[string]*string{
+				"environment": to.Ptr("production"),
+				"service":     to.Ptr("web"),
+				"version":     to.Ptr("2.0"),
 			},
 		},
 		{
 			key:   "app-config-4",
 			value: "value4",
 			label: "development",
-			tags: map[string]string{
-				"environment": "development",
-				"service":     "api",
-				"version":     "1.0",
+			tags: map[string]*string{
+				"environment": to.Ptr("development"),
+				"service":     to.Ptr("api"),
+				"version":     to.Ptr("1.0"),
 			},
 		},
 	}
@@ -1183,7 +1183,7 @@ func TestTagsFilteringEndToEnd(t *testing.T) {
 					foundKeys = append(foundKeys, *setting.Key)
 					// Verify the setting matches both filters
 					require.Equal(t, "production", *setting.Label)
-					require.Equal(t, "api", setting.Tags["service"])
+					require.Equal(t, "api", *setting.Tags["service"])
 				}
 			}
 		}
@@ -1201,10 +1201,10 @@ func TestTagsFilteringEndToEnd(t *testing.T) {
 		newValue := "updated-value"
 		_, err := client.SetSetting(context.Background(), "app-config-1", &newValue, &azappconfig.SetSettingOptions{
 			Label: to.Ptr("production"),
-			Tags: map[string]string{
-				"environment": "production",
-				"service":     "api",
-				"version":     "1.1", // Changed version
+			Tags: map[string]*string{
+				"environment": to.Ptr("production"),
+				"service":     to.Ptr("api"),
+				"version":     to.Ptr("1.1"), // Changed version
 			},
 		})
 		require.NoError(t, err)
@@ -1229,7 +1229,7 @@ func TestTagsFilteringEndToEnd(t *testing.T) {
 		require.GreaterOrEqual(t, len(revisions), 2)
 		for _, revision := range revisions {
 			if *revision.Key == "app-config-1" {
-				require.Equal(t, "api", revision.Tags["service"])
+				require.Equal(t, "api", *revision.Tags["service"])
 			}
 		}
 	})

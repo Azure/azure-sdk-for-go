@@ -66,6 +66,13 @@ type MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions s
 	ResumeToken string
 }
 
+// MapsClientBeginGetDependencyViewForAllMachinesOptions contains the optional parameters for the MapsClient.BeginGetDependencyViewForAllMachines
+// method.
+type MapsClientBeginGetDependencyViewForAllMachinesOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // MapsClientBeginGetDependencyViewForFocusedMachineOptions contains the optional parameters for the MapsClient.BeginGetDependencyViewForFocusedMachine
 // method.
 type MapsClientBeginGetDependencyViewForFocusedMachineOptions struct {

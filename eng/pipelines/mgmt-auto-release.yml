@@ -31,7 +31,7 @@ extends:
 
               - task: GoTool@0
                 inputs:
-                  version: '1.23.2'
+                  version: '1.24.7'
 
               - task: ShellScript@2
                 inputs:

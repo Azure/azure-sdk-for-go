@@ -9,7 +9,7 @@ package azappconfig
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
 )
 
 // SettingFilter to select configuration setting entities.

@@ -15,9 +15,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/synctoken"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/synctoken"
 )
 
 const timeFormat = time.RFC3339Nano

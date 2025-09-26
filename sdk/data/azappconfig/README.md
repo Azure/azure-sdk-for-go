@@ -12,7 +12,7 @@ It allows you to create and manage application configuration settings and retrie
 Install `azappconfig` with `go get`:
 
 ```Bash
-go get github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig
+go get github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2
 ```
 
 ### Prerequisites

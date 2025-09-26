@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -954,8 +954,8 @@ func TestListSettingsWithTagsFilter(t *testing.T) {
 			if *setting.Key == key1 || *setting.Key == key2 || *setting.Key == key3 {
 				foundKeysMultiple = append(foundKeysMultiple, *setting.Key)
 				// Verify the setting has both expected tags
-				require.Equal(t, "prod", setting.Tags["environment"])
-				require.Equal(t, "eastus", setting.Tags["region"])
+				require.Equal(t, "prod", *setting.Tags["environment"])
+				require.Equal(t, "eastus", *setting.Tags["region"])
 			}
 		}
 	}

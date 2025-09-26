@@ -4,7 +4,13 @@
 
 ### Features Added
 
+* Support assigning Tags and filtering by Tags
+  * Added `Tags` field to `AddSettingOptions` and `SetSettingOptions` structs, enabling users to assign key-value metadata tags when creating or updating configuration settings.
+  * Added `TagsFilter` field to `SettingSelector` struct, allowing retrieval of settings and revisions filtered by tags.
+
 ### Breaking Changes
+
+* Changed `Tags` field type in `Setting` from `map[string]string` to `map[string]*string` to support null tag values and maintain compatibility with the Azure App Configuration service backend.
 
 ### Bugs Fixed
 

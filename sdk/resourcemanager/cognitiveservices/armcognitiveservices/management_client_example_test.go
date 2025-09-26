@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CheckSkuAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CheckSkuAvailability.json
 func ExampleManagementClient_CheckSKUAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleManagementClient_CheckSKUAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CheckDomainAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CheckDomainAvailability.json
 func ExampleManagementClient_CheckDomainAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleManagementClient_CheckDomainAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44319b51c6f952fdc9543d3dc4fdd9959350d102/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CalculateModelCapacity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CalculateModelCapacity.json
 func ExampleManagementClient_CalculateModelCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

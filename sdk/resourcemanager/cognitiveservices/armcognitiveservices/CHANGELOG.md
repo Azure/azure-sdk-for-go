@@ -1,5 +1,16 @@
 # Release History
 
+## 2.0.0 (2025-09-15)
+### Breaking Changes
+
+- Type of `AccountProperties.NetworkInjections` has been changed from `*NetworkInjections` to `[]*NetworkInjection`
+- Struct `NetworkInjections` has been removed
+
+### Features Added
+
+- New struct `NetworkInjection`
+
+
 ## 1.8.0 (2025-07-25)
 ### Features Added
 

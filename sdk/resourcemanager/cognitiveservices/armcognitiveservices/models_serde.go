@@ -3697,8 +3697,8 @@ func (m *MultiRegionSettings) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkInjections.
-func (n NetworkInjections) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type NetworkInjection.
+func (n NetworkInjection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "scenario", n.Scenario)
 	populate(objectMap, "subnetArmId", n.SubnetArmID)
@@ -3706,8 +3706,8 @@ func (n NetworkInjections) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkInjections.
-func (n *NetworkInjections) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkInjection.
+func (n *NetworkInjection) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", n, err)

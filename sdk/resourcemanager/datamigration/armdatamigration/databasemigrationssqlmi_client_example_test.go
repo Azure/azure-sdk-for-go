@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/SqlMiGetDatabaseMigrationExpanded.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiGetDatabaseMigrationExpanded.json
 func ExampleDatabaseMigrationsSQLMiClient_Get_getSqlMiDatabaseMigrationWithTheExpandParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleDatabaseMigrationsSQLMiClient_Get_getSqlMiDatabaseMigrationWithTheEx
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/SqlMiGetDatabaseMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiGetDatabaseMigration.json
 func ExampleDatabaseMigrationsSQLMiClient_Get_getSqlMiDatabaseMigrationWithoutTheExpandParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleDatabaseMigrationsSQLMiClient_Get_getSqlMiDatabaseMigrationWithoutTh
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/SqlMiCreateOrUpdateDatabaseMigrationBlobManagedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiCreateOrUpdateDatabaseMigrationBlobManagedIdentity.json
 func ExampleDatabaseMigrationsSQLMiClient_BeginCreateOrUpdate_createOrUpdateDatabaseMigrationResourceFromAzureBlobUsingManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleDatabaseMigrationsSQLMiClient_BeginCreateOrUpdate_createOrUpdateData
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/SqlMiCreateOrUpdateDatabaseMigrationMAX.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiCreateOrUpdateDatabaseMigrationMAX.json
 func ExampleDatabaseMigrationsSQLMiClient_BeginCreateOrUpdate_createOrUpdateDatabaseMigrationResourceWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ func ExampleDatabaseMigrationsSQLMiClient_BeginCreateOrUpdate_createOrUpdateData
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/SqlMiCreateOrUpdateDatabaseMigrationMIN.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiCreateOrUpdateDatabaseMigrationMIN.json
 func ExampleDatabaseMigrationsSQLMiClient_BeginCreateOrUpdate_createOrUpdateDatabaseMigrationResourceWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,53 @@ func ExampleDatabaseMigrationsSQLMiClient_BeginCreateOrUpdate_createOrUpdateData
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/SqlMiCancelDatabaseMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiDeleteDatabaseMigration.json
+func ExampleDatabaseMigrationsSQLMiClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDatabaseMigrationsSQLMiClient().BeginDelete(ctx, "testrg", "managedInstance1", "db1", &armdatamigration.DatabaseMigrationsSQLMiClientBeginDeleteOptions{Force: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DatabaseMigrationSQLMi = armdatamigration.DatabaseMigrationSQLMi{
+	// 	Name: to.Ptr("db1"),
+	// 	Type: to.Ptr("Microsoft.DataMigration/databaseMigrations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/miname/providers/Microsoft.DataMigration/databaseMigrations/db1"),
+	// 	Properties: &armdatamigration.DatabaseMigrationPropertiesSQLMi{
+	// 		EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T08:00:00.000Z"); return t}()),
+	// 		Kind: to.Ptr(armdatamigration.ResourceTypeSQLMi),
+	// 		MigrationOperationID: to.Ptr("858ba109-5ab7-4fa1-8aea-bea487cacdcd"),
+	// 		MigrationService: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.DataMigration/sqlMigrationServices/testagent"),
+	// 		MigrationStatus: to.Ptr("InProgress"),
+	// 		ProvisioningState: to.Ptr(armdatamigration.ProvisioningStateSucceeded),
+	// 		Scope: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/managedInstance1"),
+	// 		StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T08:00:00.000Z"); return t}()),
+	// 		SourceDatabaseName: to.Ptr("sourcename"),
+	// 		SourceServerName: to.Ptr("sourceserver"),
+	// 		BackupConfiguration: &armdatamigration.BackupConfiguration{
+	// 			SourceLocation: &armdatamigration.SourceLocation{
+	// 				FileStorageType: to.Ptr("FileShare"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiCancelDatabaseMigration.json
 func ExampleDatabaseMigrationsSQLMiClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +413,7 @@ func ExampleDatabaseMigrationsSQLMiClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/SqlMiCutoverDatabaseMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/SqlMiCutoverDatabaseMigration.json
 func ExampleDatabaseMigrationsSQLMiClient_BeginCutover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

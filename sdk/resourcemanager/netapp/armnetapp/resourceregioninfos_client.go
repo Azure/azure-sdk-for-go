@@ -43,7 +43,7 @@ func NewResourceRegionInfosClient(subscriptionID string, credential azcore.Token
 // Get - Provides storage to network proximity and logical zone mapping information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-07-01-preview
 //   - location - The name of the Azure region.
 //   - options - ResourceRegionInfosClientGetOptions contains the optional parameters for the ResourceRegionInfosClient.Get method.
 func (client *ResourceRegionInfosClient) Get(ctx context.Context, location string, options *ResourceRegionInfosClientGetOptions) (ResourceRegionInfosClientGetResponse, error) {
@@ -84,7 +84,7 @@ func (client *ResourceRegionInfosClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -101,7 +101,7 @@ func (client *ResourceRegionInfosClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Provides region specific information.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-07-01-preview
 //   - location - The name of the Azure region.
 //   - options - ResourceRegionInfosClientListOptions contains the optional parameters for the ResourceRegionInfosClient.NewListPager
 //     method.
@@ -144,7 +144,7 @@ func (client *ResourceRegionInfosClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Usages_List.json
-func ExampleResourceUsagesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/QuotaLimitsAccount_List.json
+func ExampleResourceQuotaLimitsAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,7 +28,7 @@ func ExampleResourceUsagesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewResourceUsagesClient().NewListPager("eastus", nil)
+	pager := clientFactory.NewResourceQuotaLimitsAccountClient().NewListPager("myRG", "myAccount", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -39,26 +39,24 @@ func ExampleResourceUsagesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.UsagesListResult = armnetapp.UsagesListResult{
-		// 	Value: []*armnetapp.UsageResult{
+		// page.QuotaItemList = armnetapp.QuotaItemList{
+		// 	Value: []*armnetapp.QuotaItem{
 		// 		{
-		// 			Name: &armnetapp.UsageName{
-		// 				LocalizedValue: to.Ptr("Total TiBs per subscription"),
-		// 				Value: to.Ptr("totalTibsPerSubscription"),
-		// 			},
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/usages"),
-		// 			Properties: &armnetapp.UsageProperties{
-		// 				CurrentValue: to.Ptr[int32](75),
-		// 				Limit: to.Ptr[int32](100),
-		// 				Unit: to.Ptr("count"),
+		// 			Name: to.Ptr("myAccount/poolsPerAccount"),
+		// 			Type: to.Ptr("Microsoft.NetApp/netAppAccounts/quotaLimits"),
+		// 			ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
+		// 			Properties: &armnetapp.QuotaItemProperties{
+		// 				Default: to.Ptr[int32](10),
+		// 				Current: to.Ptr[int32](10),
+		// 				Usage: to.Ptr[int32](10),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Usages_Get.json
-func ExampleResourceUsagesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/QuotaLimitsAccount_Get.json
+func ExampleResourceQuotaLimitsAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -68,23 +66,21 @@ func ExampleResourceUsagesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceUsagesClient().Get(ctx, "eastus", "totalTibsPerSubscription", nil)
+	res, err := clientFactory.NewResourceQuotaLimitsAccountClient().Get(ctx, "myRG", "myAccount", "poolsPerAccount", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.UsageResult = armnetapp.UsageResult{
-	// 	Name: &armnetapp.UsageName{
-	// 		LocalizedValue: to.Ptr("Total TiBs per subscription"),
-	// 		Value: to.Ptr("totalTibsPerSubscription"),
-	// 	},
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/usages"),
-	// 	Properties: &armnetapp.UsageProperties{
-	// 		CurrentValue: to.Ptr[int32](75),
-	// 		Limit: to.Ptr[int32](100),
-	// 		Unit: to.Ptr("count"),
+	// res.QuotaItem = armnetapp.QuotaItem{
+	// 	Name: to.Ptr("myAccount/poolsPerAccount"),
+	// 	Type: to.Ptr("Microsoft.NetApp/netAppAccounts/quotaLimits"),
+	// 	ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
+	// 	Properties: &armnetapp.QuotaItemProperties{
+	// 		Default: to.Ptr[int32](10),
+	// 		Current: to.Ptr[int32](10),
+	// 		Usage: to.Ptr[int32](10),
 	// 	},
 	// }
 }

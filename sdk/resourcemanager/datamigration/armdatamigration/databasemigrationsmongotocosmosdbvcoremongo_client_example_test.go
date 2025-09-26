@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/CosmosDbMongoGetDatabaseMigrationExpanded.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/CosmosDbMongoGetDatabaseMigrationExpanded.json
 func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_Get_getMongoToCosmosDbMongoVCoreDatabaseMigrationWithTheExpandParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_Get_getMongoToCosm
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/CosmosDbMongoGetDatabaseMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/CosmosDbMongoGetDatabaseMigration.json
 func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_Get_getMongoToCosmosDbMongoVCoreDatabaseMigrationWithoutTheExpandParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_Get_getMongoToCosm
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/CosmosDbMongoCreateOrUpdateDatabaseMigrationMAX.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/CosmosDbMongoCreateOrUpdateDatabaseMigrationMAX.json
 func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_BeginCreate_createMongoToCosmosDbMongoVCoreDatabaseMigrationResourceWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_BeginCreate_create
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/CosmosDbMongoCreateOrUpdateDatabaseMigrationMIN.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/CosmosDbMongoCreateOrUpdateDatabaseMigrationMIN.json
 func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_BeginCreate_createMongoToCosmosDbMongoVCoreDatabaseMigrationResourceWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_BeginCreate_create
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/CosmosDbMongoDeleteDatabaseMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/CosmosDbMongoDeleteDatabaseMigration.json
 func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/CosmosDbMongoListByScopeDatabaseMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/CosmosDbMongoListByScopeDatabaseMigration.json
 func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_NewGetForScopePager_getMongoToCosmosDbMongoVCoreDatabaseMigrationWithTheExpandParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_NewGetForScopePage
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/CosmosDbMongoListByScopeDatabaseMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/33a2135c8115465b292b71a521ea50c1cc336c8c/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/CosmosDbMongoListByScopeDatabaseMigration.json
 func ExampleDatabaseMigrationsMongoToCosmosDbvCoreMongoClient_NewGetForScopePager_getMongoToCosmosDbMongoVCoreDatabaseMigrationWithoutTheExpandParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

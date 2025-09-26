@@ -45,7 +45,7 @@ func NewServiceTasksClient(subscriptionID string, credential azcore.TokenCredent
 // This method cancels a service task if it's currently queued or running.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - taskName - Name of the Task
@@ -96,7 +96,7 @@ func (client *ServiceTasksClient) cancelCreateRequest(ctx context.Context, group
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +116,7 @@ func (client *ServiceTasksClient) cancelHandleResponse(resp *http.Response) (Ser
 // since service tasks have no mutable custom properties, there is little reason to update an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - taskName - Name of the Task
@@ -169,7 +169,7 @@ func (client *ServiceTasksClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -191,7 +191,7 @@ func (client *ServiceTasksClient) createOrUpdateHandleResponse(resp *http.Respon
 // The DELETE method deletes a service task, canceling it first if it's running.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - taskName - Name of the Task
@@ -241,7 +241,7 @@ func (client *ServiceTasksClient) deleteCreateRequest(ctx context.Context, group
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	if options != nil && options.DeleteRunningTasks != nil {
 		reqQP.Set("deleteRunningTasks", strconv.FormatBool(*options.DeleteRunningTasks))
 	}
@@ -254,7 +254,7 @@ func (client *ServiceTasksClient) deleteCreateRequest(ctx context.Context, group
 // The GET method retrieves information about a service task.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - taskName - Name of the Task
@@ -308,7 +308,7 @@ func (client *ServiceTasksClient) getCreateRequest(ctx context.Context, groupNam
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +327,7 @@ func (client *ServiceTasksClient) getHandleResponse(resp *http.Response) (Servic
 // This method returns a list of service level tasks owned by a service resource. Some
 // tasks may have a status of Unknown, which indicates that an error occurred while querying the status of that task.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - options - ServiceTasksClientListOptions contains the optional parameters for the ServiceTasksClient.NewListPager method.
@@ -374,7 +374,7 @@ func (client *ServiceTasksClient) listCreateRequest(ctx context.Context, groupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	if options != nil && options.TaskType != nil {
 		reqQP.Set("taskType", *options.TaskType)
 	}
@@ -397,7 +397,7 @@ func (client *ServiceTasksClient) listHandleResponse(resp *http.Response) (Servi
 // mutable custom properties, there is little reason to do so.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - groupName - Name of the resource group
 //   - serviceName - Name of the service
 //   - taskName - Name of the Task
@@ -449,7 +449,7 @@ func (client *ServiceTasksClient) updateCreateRequest(ctx context.Context, group
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

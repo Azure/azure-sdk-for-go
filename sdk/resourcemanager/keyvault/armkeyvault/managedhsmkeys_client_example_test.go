@@ -15,102 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/managedHsmCreateKey.json
-func ExampleManagedHsmKeysClient_CreateIfNotExist() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagedHsmKeysClient().CreateIfNotExist(ctx, "sample-group", "sample-managedhsm-name", "sample-key-name", armkeyvault.ManagedHsmKeyCreateParameters{
-		Properties: &armkeyvault.ManagedHsmKeyProperties{
-			Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedHsmKey = armkeyvault.ManagedHsmKey{
-	// 	Name: to.Ptr("sample-key-name"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name"),
-	// 	Properties: &armkeyvault.ManagedHsmKeyProperties{
-	// 		Attributes: &armkeyvault.ManagedHsmKeyAttributes{
-	// 			Created: to.Ptr[int64](1598533051),
-	// 			Enabled: to.Ptr(true),
-	// 			RecoveryLevel: to.Ptr(armkeyvault.DeletionRecoveryLevelPurgeable),
-	// 			Updated: to.Ptr[int64](1598533051),
-	// 		},
-	// 		KeyOps: []*armkeyvault.JSONWebKeyOperation{
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationEncrypt),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationDecrypt),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationSign),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationVerify),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationWrapKey),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationUnwrapKey)},
-	// 			KeySize: to.Ptr[int32](2048),
-	// 			KeyURI: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name"),
-	// 			KeyURIWithVersion: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name/fd618d9519b74f9aae94ade66b876acc"),
-	// 			Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/managedHsmGetKey.json
-func ExampleManagedHsmKeysClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagedHsmKeysClient().Get(ctx, "sample-group", "sample-managedhsm-name", "sample-key-name", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedHsmKey = armkeyvault.ManagedHsmKey{
-	// 	Name: to.Ptr("sample-key-name"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name"),
-	// 	Properties: &armkeyvault.ManagedHsmKeyProperties{
-	// 		Attributes: &armkeyvault.ManagedHsmKeyAttributes{
-	// 			Created: to.Ptr[int64](1598533051),
-	// 			Enabled: to.Ptr(true),
-	// 			RecoveryLevel: to.Ptr(armkeyvault.DeletionRecoveryLevelPurgeable),
-	// 			Updated: to.Ptr[int64](1598533051),
-	// 		},
-	// 		KeyOps: []*armkeyvault.JSONWebKeyOperation{
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationEncrypt),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationDecrypt),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationSign),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationVerify),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationWrapKey),
-	// 			to.Ptr(armkeyvault.JSONWebKeyOperationUnwrapKey)},
-	// 			KeySize: to.Ptr[int32](2048),
-	// 			KeyURI: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name"),
-	// 			KeyURIWithVersion: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name/fd618d9519b74f9aae94ade66b876acc"),
-	// 			Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/managedHsmListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/managedHsmListKeys.json
 func ExampleManagedHsmKeysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,8 +74,8 @@ func ExampleManagedHsmKeysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/managedHsmGetKeyVersion.json
-func ExampleManagedHsmKeysClient_GetVersion() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/managedHsmGetKey.json
+func ExampleManagedHsmKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -177,7 +85,7 @@ func ExampleManagedHsmKeysClient_GetVersion() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagedHsmKeysClient().GetVersion(ctx, "sample-group", "sample-managedhsm-name", "sample-key-name", "fd618d9519b74f9aae94ade66b876acc", nil)
+	res, err := clientFactory.NewManagedHsmKeysClient().Get(ctx, "sample-group", "sample-managedhsm-name", "sample-key-name", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -185,9 +93,9 @@ func ExampleManagedHsmKeysClient_GetVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ManagedHsmKey = armkeyvault.ManagedHsmKey{
-	// 	Name: to.Ptr("fd618d9519b74f9aae94ade66b876acc"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys/versions"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name/versions/fd618d9519b74f9aae94ade66b876acc"),
+	// 	Name: to.Ptr("sample-key-name"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name"),
 	// 	Properties: &armkeyvault.ManagedHsmKeyProperties{
 	// 		Attributes: &armkeyvault.ManagedHsmKeyAttributes{
 	// 			Created: to.Ptr[int64](1598533051),
@@ -210,7 +118,55 @@ func ExampleManagedHsmKeysClient_GetVersion() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/managedHsmListKeyVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/managedHsmCreateKey.json
+func ExampleManagedHsmKeysClient_CreateIfNotExist() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedHsmKeysClient().CreateIfNotExist(ctx, "sample-group", "sample-managedhsm-name", "sample-key-name", armkeyvault.ManagedHsmKeyCreateParameters{
+		Properties: &armkeyvault.ManagedHsmKeyProperties{
+			Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedHsmKey = armkeyvault.ManagedHsmKey{
+	// 	Name: to.Ptr("sample-key-name"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name"),
+	// 	Properties: &armkeyvault.ManagedHsmKeyProperties{
+	// 		Attributes: &armkeyvault.ManagedHsmKeyAttributes{
+	// 			Created: to.Ptr[int64](1598533051),
+	// 			Enabled: to.Ptr(true),
+	// 			RecoveryLevel: to.Ptr(armkeyvault.DeletionRecoveryLevelPurgeable),
+	// 			Updated: to.Ptr[int64](1598533051),
+	// 		},
+	// 		KeyOps: []*armkeyvault.JSONWebKeyOperation{
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationEncrypt),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationDecrypt),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationSign),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationVerify),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationWrapKey),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationUnwrapKey)},
+	// 			KeySize: to.Ptr[int32](2048),
+	// 			KeyURI: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name"),
+	// 			KeyURIWithVersion: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name/fd618d9519b74f9aae94ade66b876acc"),
+	// 			Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/managedHsmListKeyVersions.json
 func ExampleManagedHsmKeysClient_NewListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,4 +222,48 @@ func ExampleManagedHsmKeysClient_NewListVersionsPager() {
 		// 	}},
 		// }
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/managedHsmGetKeyVersion.json
+func ExampleManagedHsmKeysClient_GetVersion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedHsmKeysClient().GetVersion(ctx, "sample-group", "sample-managedhsm-name", "sample-key-name", "fd618d9519b74f9aae94ade66b876acc", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedHsmKey = armkeyvault.ManagedHsmKey{
+	// 	Name: to.Ptr("fd618d9519b74f9aae94ade66b876acc"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys/versions"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name/versions/fd618d9519b74f9aae94ade66b876acc"),
+	// 	Properties: &armkeyvault.ManagedHsmKeyProperties{
+	// 		Attributes: &armkeyvault.ManagedHsmKeyAttributes{
+	// 			Created: to.Ptr[int64](1598533051),
+	// 			Enabled: to.Ptr(true),
+	// 			RecoveryLevel: to.Ptr(armkeyvault.DeletionRecoveryLevelPurgeable),
+	// 			Updated: to.Ptr[int64](1598533051),
+	// 		},
+	// 		KeyOps: []*armkeyvault.JSONWebKeyOperation{
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationEncrypt),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationDecrypt),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationSign),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationVerify),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationWrapKey),
+	// 			to.Ptr(armkeyvault.JSONWebKeyOperationUnwrapKey)},
+	// 			KeySize: to.Ptr[int32](2048),
+	// 			KeyURI: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name"),
+	// 			KeyURIWithVersion: to.Ptr("https://sample-managedhsm-name.managedhsm.azure.net:443/keys/sample-key-name/fd618d9519b74f9aae94ade66b876acc"),
+	// 			Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
+	// 		},
+	// 	}
 }

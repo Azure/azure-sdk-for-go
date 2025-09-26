@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_CreateOrUpdate.json
-func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/ManagedHsm_checkMhsmNameAvailability.json
+func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,341 +29,21 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewManagedHsmsClient().BeginCreateOrUpdate(ctx, "hsm-group", "hsm1", armkeyvault.ManagedHsm{
-		Location: to.Ptr("westus"),
-		SKU: &armkeyvault.ManagedHsmSKU{
-			Name:   to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-		},
-		Tags: map[string]*string{
-			"Dept":        to.Ptr("hsm"),
-			"Environment": to.Ptr("dogfood"),
-		},
-		Properties: &armkeyvault.ManagedHsmProperties{
-			EnablePurgeProtection: to.Ptr(false),
-			EnableSoftDelete:      to.Ptr(true),
-			InitialAdminObjectIDs: []*string{
-				to.Ptr("00000000-0000-0000-0000-000000000000")},
-			SoftDeleteRetentionInDays: to.Ptr[int32](90),
-			TenantID:                  to.Ptr("00000000-0000-0000-0000-000000000000"),
-		},
+	res, err := clientFactory.NewManagedHsmsClient().CheckMhsmNameAvailability(ctx, armkeyvault.CheckMhsmNameAvailabilityParameters{
+		Name: to.Ptr("sample-mhsm"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedHsm = armkeyvault.ManagedHsm{
-	// 	Name: to.Ptr("hsm1"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
-	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armkeyvault.ManagedHsmSKU{
-	// 		Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-	// 		Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"Dept": to.Ptr("hsm"),
-	// 		"Environment": to.Ptr("dogfood"),
-	// 	},
-	// 	Properties: &armkeyvault.ManagedHsmProperties{
-	// 		EnablePurgeProtection: to.Ptr(false),
-	// 		EnableSoftDelete: to.Ptr(true),
-	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
-	// 		InitialAdminObjectIDs: []*string{
-	// 			to.Ptr("00000000-0000-0000-0000-000000000000")},
-	// 			ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
-	// 			SoftDeleteRetentionInDays: to.Ptr[int32](90),
-	// 			StatusMessage: to.Ptr("ManagedHsm is functional."),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		},
-	// 	}
+	// res.CheckMhsmNameAvailabilityResult = armkeyvault.CheckMhsmNameAvailabilityResult{
+	// 	NameAvailable: to.Ptr(true),
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_Update.json
-func ExampleManagedHsmsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedHsmsClient().BeginUpdate(ctx, "hsm-group", "hsm1", armkeyvault.ManagedHsm{
-		Tags: map[string]*string{
-			"Dept":        to.Ptr("hsm"),
-			"Environment": to.Ptr("dogfood"),
-			"Slice":       to.Ptr("A"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedHsm = armkeyvault.ManagedHsm{
-	// 	Name: to.Ptr("hsm1"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
-	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armkeyvault.ManagedHsmSKU{
-	// 		Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-	// 		Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"Dept": to.Ptr("hsm"),
-	// 		"Environment": to.Ptr("dogfood"),
-	// 		"Slice": to.Ptr("A"),
-	// 	},
-	// 	Properties: &armkeyvault.ManagedHsmProperties{
-	// 		EnablePurgeProtection: to.Ptr(false),
-	// 		EnableSoftDelete: to.Ptr(true),
-	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
-	// 		InitialAdminObjectIDs: []*string{
-	// 			to.Ptr("00000000-0000-0000-0000-000000000000")},
-	// 			ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
-	// 			SoftDeleteRetentionInDays: to.Ptr[int32](90),
-	// 			StatusMessage: to.Ptr("ManagedHsm is functional."),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_Delete.json
-func ExampleManagedHsmsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedHsmsClient().BeginDelete(ctx, "hsm-group", "hsm1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_Get.json
-func ExampleManagedHsmsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagedHsmsClient().Get(ctx, "hsm-group", "hsm1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ManagedHsm = armkeyvault.ManagedHsm{
-	// 	Name: to.Ptr("hsm1"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
-	// 	Location: to.Ptr("westus"),
-	// 	SKU: &armkeyvault.ManagedHsmSKU{
-	// 		Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-	// 		Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"Dept": to.Ptr("hsm"),
-	// 		"Environment": to.Ptr("dogfood"),
-	// 	},
-	// 	Properties: &armkeyvault.ManagedHsmProperties{
-	// 		EnablePurgeProtection: to.Ptr(false),
-	// 		EnableSoftDelete: to.Ptr(true),
-	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
-	// 		InitialAdminObjectIDs: []*string{
-	// 			to.Ptr("00000000-0000-0000-0000-000000000000")},
-	// 			ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
-	// 			SoftDeleteRetentionInDays: to.Ptr[int32](90),
-	// 			StatusMessage: to.Ptr("ManagedHsm is functional."),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_ListByResourceGroup.json
-func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedHsmsClient().NewListByResourceGroupPager("hsm-group", &armkeyvault.ManagedHsmsClientListByResourceGroupOptions{Top: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ManagedHsmListResult = armkeyvault.ManagedHsmListResult{
-		// 	Value: []*armkeyvault.ManagedHsm{
-		// 		{
-		// 			Name: to.Ptr("hsm1"),
-		// 			Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armkeyvault.ManagedHsmSKU{
-		// 				Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-		// 				Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 				"Dept": to.Ptr("hsm"),
-		// 				"Environment": to.Ptr("dogfood"),
-		// 			},
-		// 			Properties: &armkeyvault.ManagedHsmProperties{
-		// 				EnablePurgeProtection: to.Ptr(false),
-		// 				EnableSoftDelete: to.Ptr(true),
-		// 				HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
-		// 				InitialAdminObjectIDs: []*string{
-		// 					to.Ptr("00000000-0000-0000-0000-000000000000")},
-		// 					ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
-		// 					SoftDeleteRetentionInDays: to.Ptr[int32](90),
-		// 					StatusMessage: to.Ptr("ManagedHsm is functional."),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("hsm2"),
-		// 				Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm2"),
-		// 				Location: to.Ptr("westus"),
-		// 				SKU: &armkeyvault.ManagedHsmSKU{
-		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Dept": to.Ptr("hsm"),
-		// 					"Environment": to.Ptr("production"),
-		// 				},
-		// 				Properties: &armkeyvault.ManagedHsmProperties{
-		// 					EnablePurgeProtection: to.Ptr(false),
-		// 					EnableSoftDelete: to.Ptr(true),
-		// 					HsmURI: to.Ptr("https://westus.hsm2.managedhsm.azure.net"),
-		// 					InitialAdminObjectIDs: []*string{
-		// 						to.Ptr("00000000-0000-0000-0000-000000000000")},
-		// 						ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
-		// 						SoftDeleteRetentionInDays: to.Ptr[int32](90),
-		// 						StatusMessage: to.Ptr("ManagedHsm is functional."),
-		// 						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					},
-		// 			}},
-		// 		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_ListBySubscription.json
-func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedHsmsClient().NewListBySubscriptionPager(&armkeyvault.ManagedHsmsClientListBySubscriptionOptions{Top: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ManagedHsmListResult = armkeyvault.ManagedHsmListResult{
-		// 	Value: []*armkeyvault.ManagedHsm{
-		// 		{
-		// 			Name: to.Ptr("hsm1"),
-		// 			Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
-		// 			Location: to.Ptr("westus"),
-		// 			SKU: &armkeyvault.ManagedHsmSKU{
-		// 				Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-		// 				Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 				"Dept": to.Ptr("hsm"),
-		// 				"Environment": to.Ptr("dogfood"),
-		// 			},
-		// 			Properties: &armkeyvault.ManagedHsmProperties{
-		// 				EnablePurgeProtection: to.Ptr(false),
-		// 				EnableSoftDelete: to.Ptr(true),
-		// 				HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
-		// 				InitialAdminObjectIDs: []*string{
-		// 					to.Ptr("00000000-0000-0000-0000-000000000000")},
-		// 					ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
-		// 					SoftDeleteRetentionInDays: to.Ptr[int32](90),
-		// 					StatusMessage: to.Ptr("ManagedHsm is functional."),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("hsm2"),
-		// 				Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm2"),
-		// 				Location: to.Ptr("westus"),
-		// 				SKU: &armkeyvault.ManagedHsmSKU{
-		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
-		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Dept": to.Ptr("hsm"),
-		// 					"Environment": to.Ptr("production"),
-		// 				},
-		// 				Properties: &armkeyvault.ManagedHsmProperties{
-		// 					EnablePurgeProtection: to.Ptr(false),
-		// 					EnableSoftDelete: to.Ptr(true),
-		// 					HsmURI: to.Ptr("https://westus.hsm2.managedhsm.azure.net"),
-		// 					InitialAdminObjectIDs: []*string{
-		// 						to.Ptr("00000000-0000-0000-0000-000000000000")},
-		// 						ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
-		// 						SoftDeleteRetentionInDays: to.Ptr[int32](90),
-		// 						StatusMessage: to.Ptr("ManagedHsm is functional."),
-		// 						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					},
-		// 			}},
-		// 		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/DeletedManagedHsm_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/DeletedManagedHsm_List.json
 func ExampleManagedHsmsClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +103,7 @@ func ExampleManagedHsmsClient_NewListDeletedPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/DeletedManagedHsm_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/DeletedManagedHsm_Get.json
 func ExampleManagedHsmsClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,7 +114,7 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagedHsmsClient().GetDeleted(ctx, "hsm1", "westus", nil)
+	res, err := clientFactory.NewManagedHsmsClient().GetDeleted(ctx, "westus", "hsm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -459,7 +139,7 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/DeletedManagedHsm_Purge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/DeletedManagedHsm_Purge.json
 func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +150,7 @@ func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewManagedHsmsClient().BeginPurgeDeleted(ctx, "hsm1", "westus", nil)
+	poller, err := clientFactory.NewManagedHsmsClient().BeginPurgeDeleted(ctx, "westus", "hsm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -480,8 +160,8 @@ func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_checkMhsmNameAvailability.json
-func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/ManagedHsm_ListBySubscription.json
+func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -491,16 +171,336 @@ func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagedHsmsClient().CheckMhsmNameAvailability(ctx, armkeyvault.CheckMhsmNameAvailabilityParameters{
-		Name: to.Ptr("sample-mhsm"),
-	}, nil)
+	pager := clientFactory.NewManagedHsmsClient().NewListBySubscriptionPager(&armkeyvault.ManagedHsmsClientListBySubscriptionOptions{Top: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ManagedHsmListResult = armkeyvault.ManagedHsmListResult{
+		// 	Value: []*armkeyvault.ManagedHsm{
+		// 		{
+		// 			Name: to.Ptr("hsm1"),
+		// 			Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armkeyvault.ManagedHsmProperties{
+		// 				EnablePurgeProtection: to.Ptr(false),
+		// 				EnableSoftDelete: to.Ptr(true),
+		// 				HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
+		// 				InitialAdminObjectIDs: []*string{
+		// 					to.Ptr("00000000-0000-0000-0000-000000000000")},
+		// 					ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
+		// 					SoftDeleteRetentionInDays: to.Ptr[int32](90),
+		// 					StatusMessage: to.Ptr("ManagedHsm is functional."),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 				SKU: &armkeyvault.ManagedHsmSKU{
+		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Dept": to.Ptr("hsm"),
+		// 					"Environment": to.Ptr("dogfood"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("hsm2"),
+		// 				Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armkeyvault.ManagedHsmProperties{
+		// 					EnablePurgeProtection: to.Ptr(false),
+		// 					EnableSoftDelete: to.Ptr(true),
+		// 					HsmURI: to.Ptr("https://westus.hsm2.managedhsm.azure.net"),
+		// 					InitialAdminObjectIDs: []*string{
+		// 						to.Ptr("00000000-0000-0000-0000-000000000000")},
+		// 						ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
+		// 						SoftDeleteRetentionInDays: to.Ptr[int32](90),
+		// 						StatusMessage: to.Ptr("ManagedHsm is functional."),
+		// 						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					},
+		// 					SKU: &armkeyvault.ManagedHsmSKU{
+		// 						Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+		// 						Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+		// 					},
+		// 					Tags: map[string]*string{
+		// 						"Dept": to.Ptr("hsm"),
+		// 						"Environment": to.Ptr("production"),
+		// 					},
+		// 			}},
+		// 		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/ManagedHsm_ListByResourceGroup.json
+func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagedHsmsClient().NewListByResourceGroupPager("hsm-group", &armkeyvault.ManagedHsmsClientListByResourceGroupOptions{Top: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ManagedHsmListResult = armkeyvault.ManagedHsmListResult{
+		// 	Value: []*armkeyvault.ManagedHsm{
+		// 		{
+		// 			Name: to.Ptr("hsm1"),
+		// 			Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armkeyvault.ManagedHsmProperties{
+		// 				EnablePurgeProtection: to.Ptr(false),
+		// 				EnableSoftDelete: to.Ptr(true),
+		// 				HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
+		// 				InitialAdminObjectIDs: []*string{
+		// 					to.Ptr("00000000-0000-0000-0000-000000000000")},
+		// 					ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
+		// 					SoftDeleteRetentionInDays: to.Ptr[int32](90),
+		// 					StatusMessage: to.Ptr("ManagedHsm is functional."),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 				SKU: &armkeyvault.ManagedHsmSKU{
+		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Dept": to.Ptr("hsm"),
+		// 					"Environment": to.Ptr("dogfood"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("hsm2"),
+		// 				Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armkeyvault.ManagedHsmProperties{
+		// 					EnablePurgeProtection: to.Ptr(false),
+		// 					EnableSoftDelete: to.Ptr(true),
+		// 					HsmURI: to.Ptr("https://westus.hsm2.managedhsm.azure.net"),
+		// 					InitialAdminObjectIDs: []*string{
+		// 						to.Ptr("00000000-0000-0000-0000-000000000000")},
+		// 						ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
+		// 						SoftDeleteRetentionInDays: to.Ptr[int32](90),
+		// 						StatusMessage: to.Ptr("ManagedHsm is functional."),
+		// 						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					},
+		// 					SKU: &armkeyvault.ManagedHsmSKU{
+		// 						Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+		// 						Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+		// 					},
+		// 					Tags: map[string]*string{
+		// 						"Dept": to.Ptr("hsm"),
+		// 						"Environment": to.Ptr("production"),
+		// 					},
+		// 			}},
+		// 		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/ManagedHsm_Get.json
+func ExampleManagedHsmsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedHsmsClient().Get(ctx, "hsm-group", "hsm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckMhsmNameAvailabilityResult = armkeyvault.CheckMhsmNameAvailabilityResult{
-	// 	NameAvailable: to.Ptr(true),
-	// }
+	// res.ManagedHsm = armkeyvault.ManagedHsm{
+	// 	Name: to.Ptr("hsm1"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armkeyvault.ManagedHsmProperties{
+	// 		EnablePurgeProtection: to.Ptr(false),
+	// 		EnableSoftDelete: to.Ptr(true),
+	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
+	// 		InitialAdminObjectIDs: []*string{
+	// 			to.Ptr("00000000-0000-0000-0000-000000000000")},
+	// 			ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
+	// 			SoftDeleteRetentionInDays: to.Ptr[int32](90),
+	// 			StatusMessage: to.Ptr("ManagedHsm is functional."),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		},
+	// 		SKU: &armkeyvault.ManagedHsmSKU{
+	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+	// 			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("hsm"),
+	// 			"Environment": to.Ptr("dogfood"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/ManagedHsm_CreateOrUpdate.json
+func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedHsmsClient().BeginCreateOrUpdate(ctx, "hsm-group", "hsm1", armkeyvault.ManagedHsm{
+		Location: to.Ptr("westus"),
+		Properties: &armkeyvault.ManagedHsmProperties{
+			EnablePurgeProtection: to.Ptr(false),
+			EnableSoftDelete:      to.Ptr(true),
+			InitialAdminObjectIDs: []*string{
+				to.Ptr("00000000-0000-0000-0000-000000000000")},
+			SoftDeleteRetentionInDays: to.Ptr[int32](90),
+			TenantID:                  to.Ptr("00000000-0000-0000-0000-000000000000"),
+		},
+		SKU: &armkeyvault.ManagedHsmSKU{
+			Name:   to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+		},
+		Tags: map[string]*string{
+			"Dept":        to.Ptr("hsm"),
+			"Environment": to.Ptr("dogfood"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedHsm = armkeyvault.ManagedHsm{
+	// 	Name: to.Ptr("hsm1"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armkeyvault.ManagedHsmProperties{
+	// 		EnablePurgeProtection: to.Ptr(false),
+	// 		EnableSoftDelete: to.Ptr(true),
+	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
+	// 		InitialAdminObjectIDs: []*string{
+	// 			to.Ptr("00000000-0000-0000-0000-000000000000")},
+	// 			ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
+	// 			SoftDeleteRetentionInDays: to.Ptr[int32](90),
+	// 			StatusMessage: to.Ptr("ManagedHsm is functional."),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		},
+	// 		SKU: &armkeyvault.ManagedHsmSKU{
+	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+	// 			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("hsm"),
+	// 			"Environment": to.Ptr("dogfood"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/ManagedHsm_Update.json
+func ExampleManagedHsmsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedHsmsClient().BeginUpdate(ctx, "hsm-group", "hsm1", armkeyvault.ManagedHsm{
+		Tags: map[string]*string{
+			"Dept":        to.Ptr("hsm"),
+			"Environment": to.Ptr("dogfood"),
+			"Slice":       to.Ptr("A"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedHsm = armkeyvault.ManagedHsm{
+	// 	Name: to.Ptr("hsm1"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armkeyvault.ManagedHsmProperties{
+	// 		EnablePurgeProtection: to.Ptr(false),
+	// 		EnableSoftDelete: to.Ptr(true),
+	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
+	// 		InitialAdminObjectIDs: []*string{
+	// 			to.Ptr("00000000-0000-0000-0000-000000000000")},
+	// 			ProvisioningState: to.Ptr(armkeyvault.ProvisioningStateSucceeded),
+	// 			SoftDeleteRetentionInDays: to.Ptr[int32](90),
+	// 			StatusMessage: to.Ptr("ManagedHsm is functional."),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		},
+	// 		SKU: &armkeyvault.ManagedHsmSKU{
+	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
+	// 			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("hsm"),
+	// 			"Environment": to.Ptr("dogfood"),
+	// 			"Slice": to.Ptr("A"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/ManagedHsm_Delete.json
+func ExampleManagedHsmsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedHsmsClient().BeginDelete(ctx, "hsm-group", "hsm1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

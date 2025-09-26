@@ -5,11 +5,6 @@
 
 package armkeyvault
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
-	moduleVersion = "v1.5.0"
-)
-
 type AccessPolicyUpdateKind string
 
 const (
@@ -126,6 +121,26 @@ func PossibleCreateModeValues() []CreateMode {
 	}
 }
 
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
 // DeletionRecoveryLevel - The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then
 // the object can be permanently deleted by a privileged user; otherwise, only the system can purge the
 // object at the end of the retention interval.
@@ -169,26 +184,6 @@ func PossibleGeoReplicationRegionProvisioningStateValues() []GeoReplicationRegio
 		GeoReplicationRegionProvisioningStatePreprovisioning,
 		GeoReplicationRegionProvisioningStateProvisioning,
 		GeoReplicationRegionProvisioningStateSucceeded,
-	}
-}
-
-// IdentityType - The type of identity.
-type IdentityType string
-
-const (
-	IdentityTypeApplication     IdentityType = "Application"
-	IdentityTypeKey             IdentityType = "Key"
-	IdentityTypeManagedIdentity IdentityType = "ManagedIdentity"
-	IdentityTypeUser            IdentityType = "User"
-)
-
-// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
-		IdentityTypeApplication,
-		IdentityTypeKey,
-		IdentityTypeManagedIdentity,
-		IdentityTypeUser,
 	}
 }
 

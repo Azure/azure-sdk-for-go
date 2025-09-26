@@ -25,13 +25,13 @@ type KeysClientGetVersionResponse struct {
 
 // KeysClientListResponse contains the response from method KeysClient.NewListPager.
 type KeysClientListResponse struct {
-	// The page of keys.
+	// The response of a Key list operation.
 	KeyListResult
 }
 
 // KeysClientListVersionsResponse contains the response from method KeysClient.NewListVersionsPager.
 type KeysClientListVersionsResponse struct {
-	// The page of keys.
+	// The response of a Key list operation.
 	KeyListResult
 }
 
@@ -97,13 +97,13 @@ type ManagedHsmKeysClientGetVersionResponse struct {
 
 // ManagedHsmKeysClientListResponse contains the response from method ManagedHsmKeysClient.NewListPager.
 type ManagedHsmKeysClientListResponse struct {
-	// The page of keys.
+	// The response of a ManagedHsmKey list operation.
 	ManagedHsmKeyListResult
 }
 
 // ManagedHsmKeysClientListVersionsResponse contains the response from method ManagedHsmKeysClient.NewListVersionsPager.
 type ManagedHsmKeysClientListVersionsResponse struct {
-	// The page of keys.
+	// The response of a ManagedHsmKey list operation.
 	ManagedHsmKeyListResult
 }
 
@@ -126,6 +126,7 @@ type ManagedHsmsClientDeleteResponse struct {
 
 // ManagedHsmsClientGetDeletedResponse contains the response from method ManagedHsmsClient.GetDeleted.
 type ManagedHsmsClientGetDeletedResponse struct {
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
 	DeletedManagedHsm
 }
 
@@ -137,19 +138,19 @@ type ManagedHsmsClientGetResponse struct {
 
 // ManagedHsmsClientListByResourceGroupResponse contains the response from method ManagedHsmsClient.NewListByResourceGroupPager.
 type ManagedHsmsClientListByResourceGroupResponse struct {
-	// List of managed HSM Pools
+	// The response of a ManagedHsm list operation.
 	ManagedHsmListResult
 }
 
 // ManagedHsmsClientListBySubscriptionResponse contains the response from method ManagedHsmsClient.NewListBySubscriptionPager.
 type ManagedHsmsClientListBySubscriptionResponse struct {
-	// List of managed HSM Pools
+	// The response of a ManagedHsm list operation.
 	ManagedHsmListResult
 }
 
 // ManagedHsmsClientListDeletedResponse contains the response from method ManagedHsmsClient.NewListDeletedPager.
 type ManagedHsmsClientListDeletedResponse struct {
-	// List of deleted managed HSM Pools
+	// The response of a DeletedManagedHsm list operation.
 	DeletedManagedHsmListResult
 }
 
@@ -185,7 +186,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 
 // PrivateEndpointConnectionsClientListByResourceResponse contains the response from method PrivateEndpointConnectionsClient.NewListByResourcePager.
 type PrivateEndpointConnectionsClientListByResourceResponse struct {
-	// List of private endpoint connections.
+	// The response of a PrivateEndpointConnection list operation.
 	PrivateEndpointConnectionListResult
 }
 
@@ -211,6 +212,9 @@ type PrivateLinkResourcesClientListByVaultResponse struct {
 type SecretsClientCreateOrUpdateResponse struct {
 	// Resource information with extended details.
 	Secret
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
 }
 
 // SecretsClientGetResponse contains the response from method SecretsClient.Get.
@@ -221,7 +225,7 @@ type SecretsClientGetResponse struct {
 
 // SecretsClientListResponse contains the response from method SecretsClient.NewListPager.
 type SecretsClientListResponse struct {
-	// List of secrets
+	// The response of a Secret list operation.
 	SecretListResult
 }
 
@@ -262,25 +266,25 @@ type VaultsClientGetResponse struct {
 
 // VaultsClientListByResourceGroupResponse contains the response from method VaultsClient.NewListByResourceGroupPager.
 type VaultsClientListByResourceGroupResponse struct {
-	// List of vaults
+	// The response of a Vault list operation.
 	VaultListResult
 }
 
 // VaultsClientListBySubscriptionResponse contains the response from method VaultsClient.NewListBySubscriptionPager.
 type VaultsClientListBySubscriptionResponse struct {
-	// List of vaults
+	// The response of a Vault list operation.
 	VaultListResult
 }
 
 // VaultsClientListDeletedResponse contains the response from method VaultsClient.NewListDeletedPager.
 type VaultsClientListDeletedResponse struct {
-	// List of vaults
+	// The response of a DeletedVault list operation.
 	DeletedVaultListResult
 }
 
 // VaultsClientListResponse contains the response from method VaultsClient.NewListPager.
 type VaultsClientListResponse struct {
-	// List of vault resources.
+	// The list of vault resources.
 	ResourceListResult
 }
 

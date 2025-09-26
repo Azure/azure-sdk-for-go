@@ -25,8 +25,7 @@ type MHSMPrivateLinkResourcesClient struct {
 }
 
 // NewMHSMPrivateLinkResourcesClient creates a new instance of MHSMPrivateLinkResourcesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMHSMPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MHSMPrivateLinkResourcesClient, error) {
@@ -44,9 +43,9 @@ func NewMHSMPrivateLinkResourcesClient(subscriptionID string, credential azcore.
 // ListByMHSMResource - Gets the private link resources supported for the managed hsm pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - Name of the resource group that contains the managed HSM pool.
-//   - name - Name of the managed HSM Pool
+// Generated from API version 2025-05-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - The name of the managed HSM Pool.
 //   - options - MHSMPrivateLinkResourcesClientListByMHSMResourceOptions contains the optional parameters for the MHSMPrivateLinkResourcesClient.ListByMHSMResource
 //     method.
 func (client *MHSMPrivateLinkResourcesClient) ListByMHSMResource(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateLinkResourcesClientListByMHSMResourceOptions) (MHSMPrivateLinkResourcesClientListByMHSMResourceResponse, error) {
@@ -91,7 +90,7 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

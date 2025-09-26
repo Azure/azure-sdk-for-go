@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -43,7 +44,7 @@ func NewDatabaseMigrationsSQLVMClient(subscriptionID string, credential azcore.T
 // BeginCancel - Stop in-progress database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -69,7 +70,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCancel(ctx context.Context, re
 // Cancel - Stop in-progress database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *DatabaseMigrationsSQLVMClient) cancel(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLVMClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLVMClient.BeginCancel"
@@ -115,7 +116,7 @@ func (client *DatabaseMigrationsSQLVMClient) cancelCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -126,7 +127,7 @@ func (client *DatabaseMigrationsSQLVMClient) cancelCreateRequest(ctx context.Con
 // BeginCreateOrUpdate - Create a new database migration to a given SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -153,7 +154,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Create a new database migration to a given SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *DatabaseMigrationsSQLVMClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters DatabaseMigrationSQLVM, options *DatabaseMigrationsSQLVMClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLVMClient.BeginCreateOrUpdate"
@@ -199,7 +200,7 @@ func (client *DatabaseMigrationsSQLVMClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -211,7 +212,7 @@ func (client *DatabaseMigrationsSQLVMClient) createOrUpdateCreateRequest(ctx con
 // BeginCutover - Initiate cutover for in-progress online database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -237,7 +238,7 @@ func (client *DatabaseMigrationsSQLVMClient) BeginCutover(ctx context.Context, r
 // Cutover - Initiate cutover for in-progress online database migration to SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *DatabaseMigrationsSQLVMClient) cutover(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLVMClientBeginCutoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLVMClient.BeginCutover"
@@ -283,7 +284,7 @@ func (client *DatabaseMigrationsSQLVMClient) cutoverCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -291,10 +292,94 @@ func (client *DatabaseMigrationsSQLVMClient) cutoverCreateRequest(ctx context.Co
 	return req, nil
 }
 
+// BeginDelete - Delete Database Migration resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-30
+//   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+//     Manager API or the portal.
+//   - targetDbName - The name of the target database.
+//   - options - DatabaseMigrationsSQLVMClientBeginDeleteOptions contains the optional parameters for the DatabaseMigrationsSQLVMClient.BeginDelete
+//     method.
+func (client *DatabaseMigrationsSQLVMClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, options *DatabaseMigrationsSQLVMClientBeginDeleteOptions) (*runtime.Poller[DatabaseMigrationsSQLVMClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, sqlVirtualMachineName, targetDbName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabaseMigrationsSQLVMClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabaseMigrationsSQLVMClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete Database Migration resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-30
+func (client *DatabaseMigrationsSQLVMClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, options *DatabaseMigrationsSQLVMClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabaseMigrationsSQLVMClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sqlVirtualMachineName, targetDbName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *DatabaseMigrationsSQLVMClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, targetDbName string, options *DatabaseMigrationsSQLVMClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlVirtualMachineName == "" {
+		return nil, errors.New("parameter sqlVirtualMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlVirtualMachineName}", url.PathEscape(sqlVirtualMachineName))
+	if targetDbName == "" {
+		return nil, errors.New("parameter targetDbName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetDbName}", url.PathEscape(targetDbName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-06-30")
+	if options != nil && options.Force != nil {
+		reqQP.Set("force", strconv.FormatBool(*options.Force))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Retrieve the specified database migration for a given SQL VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -349,7 +434,7 @@ func (client *DatabaseMigrationsSQLVMClient) getCreateRequest(ctx context.Contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	if options != nil && options.MigrationOperationID != nil {
 		reqQP.Set("migrationOperationId", *options.MigrationOperationID)
 	}

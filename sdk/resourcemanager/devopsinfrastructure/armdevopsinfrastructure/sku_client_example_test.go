@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-19/Sku_ListByLocation.json
+// Generated from example definition: 2025-09-20/Sku_ListByLocation.json
 func ExampleSKUClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleSKUClient_NewListByLocationPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSKUClient().NewListByLocationPager("eastus", nil)
+	pager := clientFactory.NewSKUClient().NewListByLocationPager("2025-09-20", "eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -31,7 +31,7 @@ func ExampleGeoCatalogsClient_BeginCreate() {
 		Identity: &armplanetarycomputer.ManagedServiceIdentity{
 			Type: to.Ptr(armplanetarycomputer.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armplanetarycomputer.UserAssignedIdentity{
-				"/subscriptions/cd9b6cdf-dcf0-4dca-ab19-82be07b74704/resourceGroups/MyResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyManagedIdentity": {},
+				"/subscriptions/cd9b6cdf-dcf0-4dca-ab19-82be07b74704/resourceGroups/MyResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyManagedIdentity": &armplanetarycomputer.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{
@@ -306,7 +306,7 @@ func ExampleGeoCatalogsClient_BeginUpdate() {
 		Identity: &armplanetarycomputer.ManagedServiceIdentityUpdate{
 			Type: to.Ptr(armplanetarycomputer.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armplanetarycomputer.UserAssignedIdentity{
-				"/subscriptions/cd9b6cdf-dcf0-4dca-ab19-82be07b74704/resourceGroups/MyResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyManagedIdentity": {},
+				"/subscriptions/cd9b6cdf-dcf0-4dca-ab19-82be07b74704/resourceGroups/MyResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyManagedIdentity": &armplanetarycomputer.UserAssignedIdentity{},
 			},
 		},
 	}, nil)

@@ -274,7 +274,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{},
 			},
 		},
 		Location: to.Ptr("centralus"),
@@ -482,7 +482,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{},
 			},
 		},
 		Location: to.Ptr("westus2"),
@@ -604,7 +604,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{},
 			},
 		},
 		Location: to.Ptr("westus2"),

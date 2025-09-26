@@ -70,6 +70,9 @@ func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName s
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -125,6 +128,9 @@ func (client *UsagesClient) NewListPager(scope string, options *UsagesClientList
 // listCreateRequest creates the List request.
 func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string, _ *UsagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/usages"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

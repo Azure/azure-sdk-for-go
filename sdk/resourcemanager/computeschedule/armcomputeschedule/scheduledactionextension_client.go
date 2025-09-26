@@ -6,6 +6,7 @@ package armcomputeschedule
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -66,6 +67,9 @@ func (client *ScheduledActionExtensionClient) NewListByVMsPager(resourceURI stri
 // listByVMsCreateRequest creates the ListByVMs request.
 func (client *ScheduledActionExtensionClient) listByVMsCreateRequest(ctx context.Context, resourceURI string, _ *ScheduledActionExtensionClientListByVMsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ComputeSchedule/associatedScheduledActions"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

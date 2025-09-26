@@ -6,6 +6,7 @@ package armazurestackhcivm
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -66,6 +67,9 @@ func (client *HybridIdentityMetadataClient) Get(ctx context.Context, resourceURI
 // getCreateRequest creates the Get request.
 func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context, resourceURI string, _ *HybridIdentityMetadataClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/hybridIdentityMetadata/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -119,6 +123,9 @@ func (client *HybridIdentityMetadataClient) NewListByVirtualMachineInstancePager
 // listByVirtualMachineInstanceCreateRequest creates the ListByVirtualMachineInstance request.
 func (client *HybridIdentityMetadataClient) listByVirtualMachineInstanceCreateRequest(ctx context.Context, resourceURI string, _ *HybridIdentityMetadataClientListByVirtualMachineInstanceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/hybridIdentityMetadata"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

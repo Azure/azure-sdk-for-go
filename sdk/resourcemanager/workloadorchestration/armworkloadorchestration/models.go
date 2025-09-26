@@ -51,7 +51,7 @@ type BulkPublishTargetDetails struct {
 	SolutionInstanceName *string
 }
 
-// Capability, to match in Solution Templates & Targets
+// Capability, to match in Solution Templates and Targets
 type Capability struct {
 	// REQUIRED; Description of Capability
 	Description *string

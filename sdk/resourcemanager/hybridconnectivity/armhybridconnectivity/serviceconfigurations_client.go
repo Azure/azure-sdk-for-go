@@ -6,6 +6,7 @@ package armhybridconnectivity
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -69,8 +70,17 @@ func (client *ServiceConfigurationsClient) CreateOrupdate(ctx context.Context, r
 // createOrupdateCreateRequest creates the CreateOrupdate request.
 func (client *ServiceConfigurationsClient) createOrupdateCreateRequest(ctx context.Context, resourceURI string, endpointName string, serviceConfigurationName string, serviceConfigurationResource ServiceConfigurationResource, _ *ServiceConfigurationsClientCreateOrupdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	if serviceConfigurationName == "" {
+		return nil, errors.New("parameter serviceConfigurationName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceConfigurationName}", serviceConfigurationName)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -129,8 +139,17 @@ func (client *ServiceConfigurationsClient) Delete(ctx context.Context, resourceU
 // deleteCreateRequest creates the Delete request.
 func (client *ServiceConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceURI string, endpointName string, serviceConfigurationName string, _ *ServiceConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	if serviceConfigurationName == "" {
+		return nil, errors.New("parameter serviceConfigurationName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceConfigurationName}", serviceConfigurationName)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -139,7 +158,6 @@ func (client *ServiceConfigurationsClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -177,8 +195,17 @@ func (client *ServiceConfigurationsClient) Get(ctx context.Context, resourceURI 
 // getCreateRequest creates the Get request.
 func (client *ServiceConfigurationsClient) getCreateRequest(ctx context.Context, resourceURI string, endpointName string, serviceConfigurationName string, _ *ServiceConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	if serviceConfigurationName == "" {
+		return nil, errors.New("parameter serviceConfigurationName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceConfigurationName}", serviceConfigurationName)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -235,7 +262,13 @@ func (client *ServiceConfigurationsClient) NewListByEndpointResourcePager(resour
 // listByEndpointResourceCreateRequest creates the ListByEndpointResource request.
 func (client *ServiceConfigurationsClient) listByEndpointResourceCreateRequest(ctx context.Context, resourceURI string, endpointName string, _ *ServiceConfigurationsClientListByEndpointResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -292,8 +325,17 @@ func (client *ServiceConfigurationsClient) Update(ctx context.Context, resourceU
 // updateCreateRequest creates the Update request.
 func (client *ServiceConfigurationsClient) updateCreateRequest(ctx context.Context, resourceURI string, endpointName string, serviceConfigurationName string, serviceConfigurationResource ServiceConfigurationResourcePatch, _ *ServiceConfigurationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	if serviceConfigurationName == "" {
+		return nil, errors.New("parameter serviceConfigurationName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceConfigurationName}", serviceConfigurationName)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

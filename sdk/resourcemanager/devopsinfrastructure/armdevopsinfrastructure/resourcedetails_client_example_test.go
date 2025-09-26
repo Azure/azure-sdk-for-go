@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-19/ResourceDetails_ListByPool.json
+// Generated from example definition: 2025-09-20/ResourceDetails_ListByPool.json
 func ExampleResourceDetailsClient_NewListByPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleResourceDetailsClient_NewListByPoolPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewResourceDetailsClient().NewListByPoolPager("my-resource-group", "my-dev-ops-pool", nil)
+	pager := clientFactory.NewResourceDetailsClient().NewListByPoolPager("2025-09-20", "my-resource-group", "my-dev-ops-pool", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

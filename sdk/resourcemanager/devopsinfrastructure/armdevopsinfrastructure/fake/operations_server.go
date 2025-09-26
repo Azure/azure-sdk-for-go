@@ -13,13 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devopsinfrastructure/armdevopsinfrastructure"
 	"net/http"
+	"net/url"
 )
 
 // OperationsServer is a fake server for instances of the armdevopsinfrastructure.OperationsClient type.
 type OperationsServer struct {
 	// NewListPager is the fake for method OperationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdevopsinfrastructure.OperationsClientListOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.OperationsClientListResponse])
+	NewListPager func(apiVersion string, options *armdevopsinfrastructure.OperationsClientListOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.OperationsClientListResponse])
 }
 
 // NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
@@ -89,7 +90,12 @@ func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	newListPager := o.newListPager.get(req)
 	if newListPager == nil {
-		resp := o.srv.NewListPager(nil)
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
+		}
+		resp := o.srv.NewListPager(apiVersionParam, nil)
 		newListPager = &resp
 		o.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdevopsinfrastructure.OperationsClientListResponse, createLink func() string) {

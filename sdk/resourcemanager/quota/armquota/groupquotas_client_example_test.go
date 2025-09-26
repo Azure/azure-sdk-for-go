@@ -6,11 +6,10 @@ package armquota_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
+	"log"
 )
 
 // Generated from example definition: 2025-09-01/GroupQuotas/PutGroupQuotas.json
@@ -159,7 +158,7 @@ func ExampleGroupQuotasClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewGroupQuotasClient().BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", armquota.GroupQuotasEntityPatch{}, &armquota.GroupQuotasClientBeginUpdateOptions{})
+	poller, err := clientFactory.NewGroupQuotasClient().BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

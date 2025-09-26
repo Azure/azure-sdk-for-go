@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computefleet/armcomputefleet
 
 go 1.24.0
 

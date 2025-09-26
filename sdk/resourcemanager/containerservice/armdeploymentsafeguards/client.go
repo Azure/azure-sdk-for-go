@@ -6,6 +6,7 @@ package armdeploymentsafeguards
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -86,6 +87,9 @@ func (client *Client) create(ctx context.Context, resourceURI string, resource D
 // createCreateRequest creates the Create request.
 func (client *Client) createCreateRequest(ctx context.Context, resourceURI string, resource DeploymentSafeguard, _ *ClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -153,6 +157,9 @@ func (client *Client) deleteOperation(ctx context.Context, resourceURI string, o
 // deleteCreateRequest creates the Delete request.
 func (client *Client) deleteCreateRequest(ctx context.Context, resourceURI string, _ *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -195,6 +202,9 @@ func (client *Client) Get(ctx context.Context, resourceURI string, options *Clie
 // getCreateRequest creates the Get request.
 func (client *Client) getCreateRequest(ctx context.Context, resourceURI string, _ *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -247,6 +257,9 @@ func (client *Client) NewListPager(resourceURI string, options *ClientListOption
 // listCreateRequest creates the List request.
 func (client *Client) listCreateRequest(ctx context.Context, resourceURI string, _ *ClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ContainerService/deploymentSafeguards"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

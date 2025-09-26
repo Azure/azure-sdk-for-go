@@ -69,6 +69,9 @@ func (client *InventoryClient) Get(ctx context.Context, resourceURI string, solu
 // getCreateRequest creates the Get request.
 func (client *InventoryClient) getCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, inventoryID string, _ *InventoryClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/inventory/{inventoryId}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {
 		return nil, errors.New("parameter solutionConfiguration cannot be empty")
@@ -131,6 +134,9 @@ func (client *InventoryClient) NewListBySolutionConfigurationPager(resourceURI s
 // listBySolutionConfigurationCreateRequest creates the ListBySolutionConfiguration request.
 func (client *InventoryClient) listBySolutionConfigurationCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, _ *InventoryClientListBySolutionConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/inventory"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {
 		return nil, errors.New("parameter solutionConfiguration cannot be empty")

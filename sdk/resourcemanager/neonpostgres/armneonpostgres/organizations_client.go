@@ -450,7 +450,7 @@ func (client *OrganizationsClient) listBySubscriptionHandleResponse(resp *http.R
 //   - properties - The resource properties to be updated.
 //   - options - OrganizationsClientBeginUpdateOptions contains the optional parameters for the OrganizationsClient.BeginUpdate
 //     method.
-func (client *OrganizationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, organizationName string, properties OrganizationResource, options *OrganizationsClientBeginUpdateOptions) (*runtime.Poller[OrganizationsClientUpdateResponse], error) {
+func (client *OrganizationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, organizationName string, properties OrganizationResourceUpdate, options *OrganizationsClientBeginUpdateOptions) (*runtime.Poller[OrganizationsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, organizationName, properties, options)
 		if err != nil {
@@ -471,7 +471,7 @@ func (client *OrganizationsClient) BeginUpdate(ctx context.Context, resourceGrou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01
-func (client *OrganizationsClient) update(ctx context.Context, resourceGroupName string, organizationName string, properties OrganizationResource, options *OrganizationsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *OrganizationsClient) update(ctx context.Context, resourceGroupName string, organizationName string, properties OrganizationResourceUpdate, options *OrganizationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrganizationsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -493,7 +493,7 @@ func (client *OrganizationsClient) update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the Update request.
-func (client *OrganizationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, properties OrganizationResource, _ *OrganizationsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *OrganizationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, properties OrganizationResourceUpdate, _ *OrganizationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

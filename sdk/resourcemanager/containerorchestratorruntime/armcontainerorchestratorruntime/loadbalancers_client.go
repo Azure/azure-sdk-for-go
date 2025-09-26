@@ -91,9 +91,6 @@ func (client *LoadBalancersClient) createOrUpdate(ctx context.Context, resourceU
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, loadBalancerName string, resource LoadBalancer, _ *LoadBalancersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if loadBalancerName == "" {
 		return nil, errors.New("parameter loadBalancerName cannot be empty")
@@ -145,9 +142,6 @@ func (client *LoadBalancersClient) Delete(ctx context.Context, resourceURI strin
 // deleteCreateRequest creates the Delete request.
 func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, resourceURI string, loadBalancerName string, _ *LoadBalancersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if loadBalancerName == "" {
 		return nil, errors.New("parameter loadBalancerName cannot be empty")
@@ -160,7 +154,6 @@ func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -196,9 +189,6 @@ func (client *LoadBalancersClient) Get(ctx context.Context, resourceURI string, 
 // getCreateRequest creates the Get request.
 func (client *LoadBalancersClient) getCreateRequest(ctx context.Context, resourceURI string, loadBalancerName string, _ *LoadBalancersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if loadBalancerName == "" {
 		return nil, errors.New("parameter loadBalancerName cannot be empty")
@@ -255,9 +245,6 @@ func (client *LoadBalancersClient) NewListPager(resourceURI string, options *Loa
 // listCreateRequest creates the List request.
 func (client *LoadBalancersClient) listCreateRequest(ctx context.Context, resourceURI string, _ *LoadBalancersClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

@@ -62,27 +62,31 @@ type CheckNameAvailabilityResult struct {
 	Reason *Reason
 }
 
+// DeletedManagedHsm - Concrete proxy resource types can be created by aliasing this type using a specific property type.
 type DeletedManagedHsm struct {
 	// Properties of the deleted managed HSM
 	Properties *DeletedManagedHsmProperties
 
-	// READ-ONLY; The Azure Resource Manager resource ID for the deleted managed HSM Pool.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the managed HSM Pool.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The resource type of the managed HSM Pool.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// DeletedManagedHsmListResult - List of deleted managed HSM Pools
+// DeletedManagedHsmListResult - The response of a DeletedManagedHsm list operation.
 type DeletedManagedHsmListResult struct {
-	// The URL to get the next set of deleted managed HSM Pools.
-	NextLink *string
-
-	// The list of deleted managed HSM Pools.
+	// REQUIRED; The DeletedManagedHsm items on this page
 	Value []*DeletedManagedHsm
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // DeletedManagedHsmProperties - Properties of the deleted managed HSM.
@@ -111,23 +115,26 @@ type DeletedVault struct {
 	// Properties of the vault
 	Properties *DeletedVaultProperties
 
-	// READ-ONLY; The resource ID for the deleted key vault.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the key vault.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The resource type of the key vault.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// DeletedVaultListResult - List of vaults
+// DeletedVaultListResult - The response of a DeletedVault list operation.
 type DeletedVaultListResult struct {
-	// The URL to get the next set of deleted vaults.
-	NextLink *string
-
-	// The list of deleted vaults.
+	// REQUIRED; The DeletedVault items on this page
 	Value []*DeletedVault
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // DeletedVaultProperties - Properties of the deleted vault.
@@ -175,19 +182,22 @@ type Key struct {
 	// REQUIRED; The properties of the key.
 	Properties *KeyProperties
 
-	// READ-ONLY; Fully qualified identifier of the key vault resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Azure location of the key vault resource.
+	// READ-ONLY; The supported Azure location where the managed HSM Pool should be created.
 	Location *string
 
-	// READ-ONLY; Name of the key vault resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Tags assigned to the key vault resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Resource type of the key vault resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -226,13 +236,13 @@ type KeyCreateParameters struct {
 	Tags map[string]*string
 }
 
-// KeyListResult - The page of keys.
+// KeyListResult - The response of a Key list operation.
 type KeyListResult struct {
-	// The URL to get the next page of keys.
-	NextLink *string
-
-	// The key resources.
+	// REQUIRED; The Key items on this page
 	Value []*Key
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // KeyProperties - The properties of the key.
@@ -334,6 +344,9 @@ type MHSMNetworkRuleSet struct {
 	// The list of IP address rules.
 	IPRules []*MHSMIPRule
 
+	// The list of service tags.
+	ServiceTags []*MHSMServiceTagRule
+
 	// The list of virtual network rules.
 	VirtualNetworkRules []*MHSMVirtualNetworkRule
 }
@@ -349,10 +362,10 @@ type MHSMPrivateEndpointConnection struct {
 	// Modified whenever there is a change in the state of private endpoint connection.
 	Etag *string
 
-	// Managed service identity (system assigned and/or user assigned identities)
+	// Managed service identity
 	Identity *ManagedServiceIdentity
 
-	// The supported Azure location where the managed HSM Pool should be created.
+	// The geo-location where the resource lives
 	Location *string
 
 	// Resource properties.
@@ -361,19 +374,19 @@ type MHSMPrivateEndpointConnection struct {
 	// SKU details
 	SKU *ManagedHsmSKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The Azure Resource Manager resource ID for the managed HSM Pool.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the managed HSM Pool.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the key vault resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The resource type of the managed HSM Pool.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -397,17 +410,17 @@ type MHSMPrivateEndpointConnectionProperties struct {
 	// Approval state of the private link connection.
 	PrivateLinkServiceConnectionState *MHSMPrivateLinkServiceConnectionState
 
-	// Provisioning state of the private endpoint connection.
+	// READ-ONLY; Provisioning state of the private endpoint connection.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // MHSMPrivateEndpointConnectionsListResult - List of private endpoint connections associated with a managed HSM Pools
 type MHSMPrivateEndpointConnectionsListResult struct {
-	// The URL to get the next set of managed HSM Pools.
-	NextLink *string
-
-	// The private endpoint connection associated with a managed HSM Pools.
+	// REQUIRED; The MhsmPrivateEndpointConnection items on this page
 	Value []*MHSMPrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // MHSMPrivateLinkResource - A private link resource
@@ -472,11 +485,17 @@ type MHSMPrivateLinkServiceConnectionState struct {
 
 // MHSMRegionsListResult - List of regions associated with a managed HSM Pools
 type MHSMRegionsListResult struct {
-	// The URL to get the next set of managed HSM Pools.
-	NextLink *string
-
-	// The region associated with a managed HSM Pools.
+	// REQUIRED; The MhsmGeoReplicatedRegion items on this page
 	Value []*MHSMGeoReplicatedRegion
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MHSMServiceTagRule - A rule governing the accessibility of a managed hsm pool from a specific service tags.
+type MHSMServiceTagRule struct {
+	// REQUIRED; Name of the service tag.
+	Tag *string
 }
 
 // MHSMVirtualNetworkRule - A rule governing the accessibility of a managed hsm pool from a specific virtual network.
@@ -496,10 +515,10 @@ type ManagedHSMSecurityDomainProperties struct {
 
 // ManagedHsm - Resource information with extended details.
 type ManagedHsm struct {
-	// Managed service identity (system assigned and/or user assigned identities)
+	// Managed service identity
 	Identity *ManagedServiceIdentity
 
-	// The supported Azure location where the managed HSM Pool should be created.
+	// The geo-location where the resource lives
 	Location *string
 
 	// Properties of the managed HSM
@@ -508,19 +527,19 @@ type ManagedHsm struct {
 	// SKU details
 	SKU *ManagedHsmSKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The Azure Resource Manager resource ID for the managed HSM Pool.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the managed HSM Pool.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the key vault resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The resource type of the managed HSM Pool.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -534,14 +553,17 @@ type ManagedHsmKey struct {
 	// REQUIRED; The properties of the key.
 	Properties *ManagedHsmKeyProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -582,13 +604,13 @@ type ManagedHsmKeyCreateParameters struct {
 	Tags map[string]*string
 }
 
-// ManagedHsmKeyListResult - The page of keys.
+// ManagedHsmKeyListResult - The response of a ManagedHsmKey list operation.
 type ManagedHsmKeyListResult struct {
-	// The URL to get the next page of keys.
-	NextLink *string
-
-	// The key resources.
+	// REQUIRED; The ManagedHsmKey items on this page
 	Value []*ManagedHsmKey
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ManagedHsmKeyProperties - The properties of the key.
@@ -647,13 +669,13 @@ type ManagedHsmLifetimeAction struct {
 	Trigger *ManagedHsmTrigger
 }
 
-// ManagedHsmListResult - List of managed HSM Pools
+// ManagedHsmListResult - The response of a ManagedHsm list operation.
 type ManagedHsmListResult struct {
-	// The URL to get the next set of managed HSM Pools.
-	NextLink *string
-
-	// The list of managed HSM Pools.
+	// REQUIRED; The ManagedHsm items on this page
 	Value []*ManagedHsm
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ManagedHsmProperties - Properties of the managed HSM Pool
@@ -843,11 +865,11 @@ type OperationDisplay struct {
 // OperationListResult - Result of the request to list Storage operations. It contains a list of operations and a URL link
 // to get the next set of results.
 type OperationListResult struct {
+	// REQUIRED; List of Storage operations supported by the Storage resource provider.
+	Value []*Operation
+
 	// The URL to get the next set of operations.
 	NextLink *string
-
-	// List of Storage operations supported by the Storage resource provider.
-	Value []*Operation
 }
 
 // OperationProperties - Properties of operation, include metric specifications.
@@ -885,19 +907,22 @@ type PrivateEndpointConnection struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified identifier of the key vault resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; Azure location of the key vault resource.
 	Location *string
 
-	// READ-ONLY; Name of the key vault resource.
+	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; Tags assigned to the key vault resource.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource type of the key vault resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -913,13 +938,13 @@ type PrivateEndpointConnectionItem struct {
 	Properties *PrivateEndpointConnectionProperties
 }
 
-// PrivateEndpointConnectionListResult - List of private endpoint connections.
+// PrivateEndpointConnectionListResult - The response of a PrivateEndpointConnection list operation.
 type PrivateEndpointConnectionListResult struct {
-	// The URL to get the next set of private endpoint connections.
-	NextLink *string
-
-	// The list of private endpoint connections.
+	// REQUIRED; The PrivateEndpointConnection items on this page
 	Value []*PrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // PrivateEndpointConnectionProperties - Properties of the private endpoint connection resource.
@@ -930,7 +955,7 @@ type PrivateEndpointConnectionProperties struct {
 	// Approval state of the private link connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
-	// Provisioning state of the private endpoint connection.
+	// READ-ONLY; Provisioning state of the private endpoint connection.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
@@ -939,19 +964,22 @@ type PrivateLinkResource struct {
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; Fully qualified identifier of the key vault resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; Azure location of the key vault resource.
 	Location *string
 
-	// READ-ONLY; Name of the key vault resource.
+	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; Tags assigned to the key vault resource.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource type of the key vault resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -985,31 +1013,13 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
-// Resource - Key Vault resource
-type Resource struct {
-	// READ-ONLY; Fully qualified identifier of the key vault resource.
-	ID *string
-
-	// READ-ONLY; Azure location of the key vault resource.
-	Location *string
-
-	// READ-ONLY; Name of the key vault resource.
-	Name *string
-
-	// READ-ONLY; Tags assigned to the key vault resource.
-	Tags map[string]*string
-
-	// READ-ONLY; Resource type of the key vault resource.
-	Type *string
-}
-
-// ResourceListResult - List of vault resources.
+// ResourceListResult - The list of vault resources.
 type ResourceListResult struct {
+	// REQUIRED; The list of vault resources.
+	Value []*TrackedResource
+
 	// The URL to get the next set of vault resources.
 	NextLink *string
-
-	// The list of vault resources.
-	Value []*Resource
 }
 
 type RotationPolicy struct {
@@ -1034,19 +1044,22 @@ type Secret struct {
 	// REQUIRED; Properties of the secret
 	Properties *SecretProperties
 
-	// READ-ONLY; Fully qualified identifier of the key vault resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; Azure location of the key vault resource.
 	Location *string
 
-	// READ-ONLY; Name of the key vault resource.
+	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; Tags assigned to the key vault resource.
 	Tags map[string]*string
 
-	// READ-ONLY; Resource type of the key vault resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1077,13 +1090,13 @@ type SecretCreateOrUpdateParameters struct {
 	Tags map[string]*string
 }
 
-// SecretListResult - List of secrets
+// SecretListResult - The response of a Secret list operation.
 type SecretListResult struct {
-	// The URL to get the next set of secrets.
-	NextLink *string
-
-	// The list of secrets.
+	// REQUIRED; The Secret items on this page
 	Value []*Secret
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // SecretPatchParameters - Parameters for patching a secret
@@ -1136,25 +1149,47 @@ type ServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification
 }
 
-// SystemData - Metadata pertaining to creation and last modification of the key vault resource.
+// SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-	// The timestamp of the key vault resource creation (UTC).
+	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-	// The identity that created the key vault resource.
+	// The identity that created the resource.
 	CreatedBy *string
 
-	// The type of identity that created the key vault resource.
-	CreatedByType *IdentityType
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
 
-	// The timestamp of the key vault resource last modification (UTC).
+	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
 
-	// The identity that last modified the key vault resource.
+	// The identity that last modified the resource.
 	LastModifiedBy *string
 
-	// The type of identity that last modified the key vault resource.
-	LastModifiedByType *IdentityType
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 type Trigger struct {
@@ -1186,16 +1221,16 @@ type Vault struct {
 	// Tags assigned to the key vault resource.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified identifier of the key vault resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Name of the key vault resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; System metadata for the key vault.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource type of the key vault resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1246,13 +1281,13 @@ type VaultCreateOrUpdateParameters struct {
 	Tags map[string]*string
 }
 
-// VaultListResult - List of vaults
+// VaultListResult - The response of a Vault list operation.
 type VaultListResult struct {
-	// The URL to get the next set of vaults.
-	NextLink *string
-
-	// The list of vaults.
+	// REQUIRED; The Vault items on this page
 	Value []*Vault
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // VaultPatchParameters - Parameters for creating or updating a vault

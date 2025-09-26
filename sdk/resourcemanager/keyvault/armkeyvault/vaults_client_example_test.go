@@ -15,10 +15,443 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/createVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/checkVaultNameAvailability.json
+func ExampleVaultsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().CheckNameAvailability(ctx, armkeyvault.VaultCheckNameAvailabilityParameters{
+		Name: to.Ptr("sample-vault"),
+		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CheckNameAvailabilityResult = armkeyvault.CheckNameAvailabilityResult{
+	// 	NameAvailable: to.Ptr(true),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/listDeletedVaults.json
+func ExampleVaultsClient_NewListDeletedPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVaultsClient().NewListDeletedPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.DeletedVaultListResult = armkeyvault.DeletedVaultListResult{
+		// 	Value: []*armkeyvault.DeletedVault{
+		// 		{
+		// 			Name: to.Ptr("vault-agile-drawer-6404"),
+		// 			Type: to.Ptr("Microsoft.KeyVault/deletedVaults"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/sample-vault"),
+		// 			Properties: &armkeyvault.DeletedVaultProperties{
+		// 				DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T00:00:59.000Z"); return t}()),
+		// 				Location: to.Ptr("westus"),
+		// 				PurgeProtectionEnabled: to.Ptr(true),
+		// 				ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-01T00:00:59.000Z"); return t}()),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				VaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/getDeletedVault.json
+func ExampleVaultsClient_GetDeleted() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().GetDeleted(ctx, "westus", "sample-vault", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DeletedVault = armkeyvault.DeletedVault{
+	// 	Name: to.Ptr("sample-vault"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/deletedVaults"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/sample-vault"),
+	// 	Properties: &armkeyvault.DeletedVaultProperties{
+	// 		DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T00:00:59.000Z"); return t}()),
+	// 		Location: to.Ptr("westus"),
+	// 		PurgeProtectionEnabled: to.Ptr(true),
+	// 		ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-01T00:00:59.000Z"); return t}()),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		VaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/purgeDeletedVault.json
+func ExampleVaultsClient_BeginPurgeDeleted() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginPurgeDeleted(ctx, "westus", "sample-vault", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/listVaultBySubscription.json
+func ExampleVaultsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVaultsClient().NewListBySubscriptionPager(&armkeyvault.VaultsClientListBySubscriptionOptions{Top: to.Ptr[int32](1)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VaultListResult = armkeyvault.VaultListResult{
+		// 	Value: []*armkeyvault.Vault{
+		// 		{
+		// 			Name: to.Ptr("sample-vault"),
+		// 			Type: to.Ptr("Microsoft.KeyVault/vaults"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+		// 			SystemData: &armkeyvault.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("keyVaultUser1"),
+		// 				CreatedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("keyVaultUser2"),
+		// 				LastModifiedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armkeyvault.VaultProperties{
+		// 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+		// 					{
+		// 						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						Permissions: &armkeyvault.Permissions{
+		// 							Certificates: []*armkeyvault.CertificatePermissions{
+		// 								to.Ptr(armkeyvault.CertificatePermissionsGet),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsList),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsDelete),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsCreate),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsImport),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsUpdate),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsManagecontacts),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsGetissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsListissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsSetissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsDeleteissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsManageissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsRecover),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsPurge)},
+		// 								Keys: []*armkeyvault.KeyPermissions{
+		// 									to.Ptr(armkeyvault.KeyPermissionsEncrypt),
+		// 									to.Ptr(armkeyvault.KeyPermissionsDecrypt),
+		// 									to.Ptr(armkeyvault.KeyPermissionsWrapKey),
+		// 									to.Ptr(armkeyvault.KeyPermissionsUnwrapKey),
+		// 									to.Ptr(armkeyvault.KeyPermissionsSign),
+		// 									to.Ptr(armkeyvault.KeyPermissionsVerify),
+		// 									to.Ptr(armkeyvault.KeyPermissionsGet),
+		// 									to.Ptr(armkeyvault.KeyPermissionsList),
+		// 									to.Ptr(armkeyvault.KeyPermissionsCreate),
+		// 									to.Ptr(armkeyvault.KeyPermissionsUpdate),
+		// 									to.Ptr(armkeyvault.KeyPermissionsImport),
+		// 									to.Ptr(armkeyvault.KeyPermissionsDelete),
+		// 									to.Ptr(armkeyvault.KeyPermissionsBackup),
+		// 									to.Ptr(armkeyvault.KeyPermissionsRestore),
+		// 									to.Ptr(armkeyvault.KeyPermissionsRecover),
+		// 									to.Ptr(armkeyvault.KeyPermissionsPurge)},
+		// 									Secrets: []*armkeyvault.SecretPermissions{
+		// 										to.Ptr(armkeyvault.SecretPermissionsGet),
+		// 										to.Ptr(armkeyvault.SecretPermissionsList),
+		// 										to.Ptr(armkeyvault.SecretPermissionsSet),
+		// 										to.Ptr(armkeyvault.SecretPermissionsDelete),
+		// 										to.Ptr(armkeyvault.SecretPermissionsBackup),
+		// 										to.Ptr(armkeyvault.SecretPermissionsRestore),
+		// 										to.Ptr(armkeyvault.SecretPermissionsRecover),
+		// 										to.Ptr(armkeyvault.SecretPermissionsPurge)},
+		// 									},
+		// 									TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							}},
+		// 							EnableSoftDelete: to.Ptr(true),
+		// 							EnabledForDeployment: to.Ptr(true),
+		// 							EnabledForDiskEncryption: to.Ptr(true),
+		// 							EnabledForTemplateDeployment: to.Ptr(true),
+		// 							HsmPoolResourceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+		// 							SKU: &armkeyvault.SKU{
+		// 								Name: to.Ptr(armkeyvault.SKUNamePremium),
+		// 								Family: to.Ptr(armkeyvault.SKUFamilyA),
+		// 							},
+		// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							VaultURI: to.Ptr("https://sample-vault.vault.azure.net/"),
+		// 						},
+		// 						Tags: map[string]*string{
+		// 						},
+		// 				}},
+		// 			}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/listVaultByResourceGroup.json
+func ExampleVaultsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVaultsClient().NewListByResourceGroupPager("sample-group", &armkeyvault.VaultsClientListByResourceGroupOptions{Top: to.Ptr[int32](1)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VaultListResult = armkeyvault.VaultListResult{
+		// 	Value: []*armkeyvault.Vault{
+		// 		{
+		// 			Name: to.Ptr("sample-vault"),
+		// 			Type: to.Ptr("Microsoft.KeyVault/vaults"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+		// 			SystemData: &armkeyvault.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("keyVaultUser1"),
+		// 				CreatedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("keyVaultUser2"),
+		// 				LastModifiedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+		// 			},
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armkeyvault.VaultProperties{
+		// 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+		// 					{
+		// 						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						Permissions: &armkeyvault.Permissions{
+		// 							Certificates: []*armkeyvault.CertificatePermissions{
+		// 								to.Ptr(armkeyvault.CertificatePermissionsGet),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsList),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsDelete),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsCreate),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsImport),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsUpdate),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsManagecontacts),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsGetissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsListissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsSetissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsDeleteissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsManageissuers),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsRecover),
+		// 								to.Ptr(armkeyvault.CertificatePermissionsPurge)},
+		// 								Keys: []*armkeyvault.KeyPermissions{
+		// 									to.Ptr(armkeyvault.KeyPermissionsEncrypt),
+		// 									to.Ptr(armkeyvault.KeyPermissionsDecrypt),
+		// 									to.Ptr(armkeyvault.KeyPermissionsWrapKey),
+		// 									to.Ptr(armkeyvault.KeyPermissionsUnwrapKey),
+		// 									to.Ptr(armkeyvault.KeyPermissionsSign),
+		// 									to.Ptr(armkeyvault.KeyPermissionsVerify),
+		// 									to.Ptr(armkeyvault.KeyPermissionsGet),
+		// 									to.Ptr(armkeyvault.KeyPermissionsList),
+		// 									to.Ptr(armkeyvault.KeyPermissionsCreate),
+		// 									to.Ptr(armkeyvault.KeyPermissionsUpdate),
+		// 									to.Ptr(armkeyvault.KeyPermissionsImport),
+		// 									to.Ptr(armkeyvault.KeyPermissionsDelete),
+		// 									to.Ptr(armkeyvault.KeyPermissionsBackup),
+		// 									to.Ptr(armkeyvault.KeyPermissionsRestore),
+		// 									to.Ptr(armkeyvault.KeyPermissionsRecover),
+		// 									to.Ptr(armkeyvault.KeyPermissionsPurge)},
+		// 									Secrets: []*armkeyvault.SecretPermissions{
+		// 										to.Ptr(armkeyvault.SecretPermissionsGet),
+		// 										to.Ptr(armkeyvault.SecretPermissionsList),
+		// 										to.Ptr(armkeyvault.SecretPermissionsSet),
+		// 										to.Ptr(armkeyvault.SecretPermissionsDelete),
+		// 										to.Ptr(armkeyvault.SecretPermissionsBackup),
+		// 										to.Ptr(armkeyvault.SecretPermissionsRestore),
+		// 										to.Ptr(armkeyvault.SecretPermissionsRecover),
+		// 										to.Ptr(armkeyvault.SecretPermissionsPurge)},
+		// 									},
+		// 									TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							}},
+		// 							EnableSoftDelete: to.Ptr(true),
+		// 							EnabledForDeployment: to.Ptr(true),
+		// 							EnabledForDiskEncryption: to.Ptr(true),
+		// 							EnabledForTemplateDeployment: to.Ptr(true),
+		// 							HsmPoolResourceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+		// 							SKU: &armkeyvault.SKU{
+		// 								Name: to.Ptr(armkeyvault.SKUNamePremium),
+		// 								Family: to.Ptr(armkeyvault.SKUFamilyA),
+		// 							},
+		// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							VaultURI: to.Ptr("https://sample-vault.vault.azure.net/"),
+		// 						},
+		// 						Tags: map[string]*string{
+		// 						},
+		// 				}},
+		// 			}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/getVault.json
+func ExampleVaultsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().Get(ctx, "sample-resource-group", "sample-vault", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Vault = armkeyvault.Vault{
+	// 	Name: to.Ptr("sample-vault"),
+	// 	Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 	SystemData: &armkeyvault.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("keyVaultUser1"),
+	// 		CreatedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("keyVaultUser2"),
+	// 		LastModifiedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armkeyvault.VaultProperties{
+	// 		AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			{
+	// 				ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				Permissions: &armkeyvault.Permissions{
+	// 					Certificates: []*armkeyvault.CertificatePermissions{
+	// 						to.Ptr(armkeyvault.CertificatePermissionsGet),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsList),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsDelete),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsCreate),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsImport),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsUpdate),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsManagecontacts),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsGetissuers),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsListissuers),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsSetissuers),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsDeleteissuers),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsManageissuers),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsRecover),
+	// 						to.Ptr(armkeyvault.CertificatePermissionsPurge)},
+	// 						Keys: []*armkeyvault.KeyPermissions{
+	// 							to.Ptr(armkeyvault.KeyPermissionsEncrypt),
+	// 							to.Ptr(armkeyvault.KeyPermissionsDecrypt),
+	// 							to.Ptr(armkeyvault.KeyPermissionsWrapKey),
+	// 							to.Ptr(armkeyvault.KeyPermissionsUnwrapKey),
+	// 							to.Ptr(armkeyvault.KeyPermissionsSign),
+	// 							to.Ptr(armkeyvault.KeyPermissionsVerify),
+	// 							to.Ptr(armkeyvault.KeyPermissionsGet),
+	// 							to.Ptr(armkeyvault.KeyPermissionsList),
+	// 							to.Ptr(armkeyvault.KeyPermissionsCreate),
+	// 							to.Ptr(armkeyvault.KeyPermissionsUpdate),
+	// 							to.Ptr(armkeyvault.KeyPermissionsImport),
+	// 							to.Ptr(armkeyvault.KeyPermissionsDelete),
+	// 							to.Ptr(armkeyvault.KeyPermissionsBackup),
+	// 							to.Ptr(armkeyvault.KeyPermissionsRestore),
+	// 							to.Ptr(armkeyvault.KeyPermissionsRecover),
+	// 							to.Ptr(armkeyvault.KeyPermissionsPurge)},
+	// 							Secrets: []*armkeyvault.SecretPermissions{
+	// 								to.Ptr(armkeyvault.SecretPermissionsGet),
+	// 								to.Ptr(armkeyvault.SecretPermissionsList),
+	// 								to.Ptr(armkeyvault.SecretPermissionsSet),
+	// 								to.Ptr(armkeyvault.SecretPermissionsDelete),
+	// 								to.Ptr(armkeyvault.SecretPermissionsBackup),
+	// 								to.Ptr(armkeyvault.SecretPermissionsRestore),
+	// 								to.Ptr(armkeyvault.SecretPermissionsRecover),
+	// 								to.Ptr(armkeyvault.SecretPermissionsPurge)},
+	// 							},
+	// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					}},
+	// 					EnabledForDeployment: to.Ptr(true),
+	// 					EnabledForDiskEncryption: to.Ptr(true),
+	// 					EnabledForTemplateDeployment: to.Ptr(true),
+	// 					HsmPoolResourceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 					PublicNetworkAccess: to.Ptr("Enabled"),
+	// 					SKU: &armkeyvault.SKU{
+	// 						Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 						Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 					},
+	// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 				},
+	// 				Tags: map[string]*string{
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/createVault.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,6 +538,14 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	// 	Name: to.Ptr("sample-vault"),
 	// 	Type: to.Ptr("Microsoft.KeyVault/vaults"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 	SystemData: &armkeyvault.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("keyVaultUser1"),
+	// 		CreatedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("keyVaultUser2"),
+	// 		LastModifiedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armkeyvault.VaultProperties{
 	// 		AccessPolicies: []*armkeyvault.AccessPolicyEntry{
@@ -196,20 +637,12 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
 	// 				},
-	// 				SystemData: &armkeyvault.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 					CreatedBy: to.Ptr("keyVaultUser1"),
-	// 					CreatedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 					LastModifiedBy: to.Ptr("keyVaultUser2"),
-	// 					LastModifiedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 				},
 	// 				Tags: map[string]*string{
 	// 				},
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/createVaultWithNetworkAcls.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/createVaultWithNetworkAcls.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,6 +695,14 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls
 	// 	Name: to.Ptr("sample-vault"),
 	// 	Type: to.Ptr("Microsoft.KeyVault/vaults"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 	SystemData: &armkeyvault.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("keyVaultUser1"),
+	// 		CreatedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("keyVaultUser2"),
+	// 		LastModifiedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armkeyvault.VaultProperties{
 	// 		EnabledForDeployment: to.Ptr(true),
@@ -290,20 +731,12 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls
 	// 		TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
 	// 	},
-	// 	SystemData: &armkeyvault.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("keyVaultUser1"),
-	// 		CreatedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("keyVaultUser2"),
-	// 		LastModifiedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 	},
 	// 	Tags: map[string]*string{
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/updateVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/updateVault.json
 func ExampleVaultsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,6 +818,14 @@ func ExampleVaultsClient_Update() {
 	// 	Name: to.Ptr("sample-vault"),
 	// 	Type: to.Ptr("Microsoft.KeyVault/vaults"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 	SystemData: &armkeyvault.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("keyVaultUser1"),
+	// 		CreatedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("keyVaultUser2"),
+	// 		LastModifiedByType: to.Ptr(armkeyvault.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armkeyvault.VaultProperties{
 	// 		AccessPolicies: []*armkeyvault.AccessPolicyEntry{
@@ -475,20 +916,12 @@ func ExampleVaultsClient_Update() {
 	// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
 	// 				},
-	// 				SystemData: &armkeyvault.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 					CreatedBy: to.Ptr("keyVaultUser1"),
-	// 					CreatedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 					LastModifiedBy: to.Ptr("keyVaultUser2"),
-	// 					LastModifiedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 				},
 	// 				Tags: map[string]*string{
 	// 				},
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/deleteVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/deleteVault.json
 func ExampleVaultsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,105 +938,7 @@ func ExampleVaultsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/getVault.json
-func ExampleVaultsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVaultsClient().Get(ctx, "sample-resource-group", "sample-vault", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Vault = armkeyvault.Vault{
-	// 	Name: to.Ptr("sample-vault"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/vaults"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armkeyvault.VaultProperties{
-	// 		AccessPolicies: []*armkeyvault.AccessPolicyEntry{
-	// 			{
-	// 				ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 				Permissions: &armkeyvault.Permissions{
-	// 					Certificates: []*armkeyvault.CertificatePermissions{
-	// 						to.Ptr(armkeyvault.CertificatePermissionsGet),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsList),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsDelete),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsCreate),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsImport),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsUpdate),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsManagecontacts),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsGetissuers),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsListissuers),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsSetissuers),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsDeleteissuers),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsManageissuers),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsRecover),
-	// 						to.Ptr(armkeyvault.CertificatePermissionsPurge)},
-	// 						Keys: []*armkeyvault.KeyPermissions{
-	// 							to.Ptr(armkeyvault.KeyPermissionsEncrypt),
-	// 							to.Ptr(armkeyvault.KeyPermissionsDecrypt),
-	// 							to.Ptr(armkeyvault.KeyPermissionsWrapKey),
-	// 							to.Ptr(armkeyvault.KeyPermissionsUnwrapKey),
-	// 							to.Ptr(armkeyvault.KeyPermissionsSign),
-	// 							to.Ptr(armkeyvault.KeyPermissionsVerify),
-	// 							to.Ptr(armkeyvault.KeyPermissionsGet),
-	// 							to.Ptr(armkeyvault.KeyPermissionsList),
-	// 							to.Ptr(armkeyvault.KeyPermissionsCreate),
-	// 							to.Ptr(armkeyvault.KeyPermissionsUpdate),
-	// 							to.Ptr(armkeyvault.KeyPermissionsImport),
-	// 							to.Ptr(armkeyvault.KeyPermissionsDelete),
-	// 							to.Ptr(armkeyvault.KeyPermissionsBackup),
-	// 							to.Ptr(armkeyvault.KeyPermissionsRestore),
-	// 							to.Ptr(armkeyvault.KeyPermissionsRecover),
-	// 							to.Ptr(armkeyvault.KeyPermissionsPurge)},
-	// 							Secrets: []*armkeyvault.SecretPermissions{
-	// 								to.Ptr(armkeyvault.SecretPermissionsGet),
-	// 								to.Ptr(armkeyvault.SecretPermissionsList),
-	// 								to.Ptr(armkeyvault.SecretPermissionsSet),
-	// 								to.Ptr(armkeyvault.SecretPermissionsDelete),
-	// 								to.Ptr(armkeyvault.SecretPermissionsBackup),
-	// 								to.Ptr(armkeyvault.SecretPermissionsRestore),
-	// 								to.Ptr(armkeyvault.SecretPermissionsRecover),
-	// 								to.Ptr(armkeyvault.SecretPermissionsPurge)},
-	// 							},
-	// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					}},
-	// 					EnabledForDeployment: to.Ptr(true),
-	// 					EnabledForDiskEncryption: to.Ptr(true),
-	// 					EnabledForTemplateDeployment: to.Ptr(true),
-	// 					HsmPoolResourceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
-	// 					PublicNetworkAccess: to.Ptr("Enabled"),
-	// 					SKU: &armkeyvault.SKU{
-	// 						Name: to.Ptr(armkeyvault.SKUNameStandard),
-	// 						Family: to.Ptr(armkeyvault.SKUFamilyA),
-	// 					},
-	// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
-	// 				},
-	// 				SystemData: &armkeyvault.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 					CreatedBy: to.Ptr("keyVaultUser1"),
-	// 					CreatedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-	// 					LastModifiedBy: to.Ptr("keyVaultUser2"),
-	// 					LastModifiedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-	// 				},
-	// 				Tags: map[string]*string{
-	// 				},
-	// 			}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/updateAccessPoliciesAdd.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/updateAccessPoliciesAdd.json
 func ExampleVaultsClient_UpdateAccessPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -658,316 +993,7 @@ func ExampleVaultsClient_UpdateAccessPolicy() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/listVaultByResourceGroup.json
-func ExampleVaultsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVaultsClient().NewListByResourceGroupPager("sample-group", &armkeyvault.VaultsClientListByResourceGroupOptions{Top: to.Ptr[int32](1)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VaultListResult = armkeyvault.VaultListResult{
-		// 	Value: []*armkeyvault.Vault{
-		// 		{
-		// 			Name: to.Ptr("sample-vault"),
-		// 			Type: to.Ptr("Microsoft.KeyVault/vaults"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armkeyvault.VaultProperties{
-		// 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
-		// 					{
-		// 						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						Permissions: &armkeyvault.Permissions{
-		// 							Certificates: []*armkeyvault.CertificatePermissions{
-		// 								to.Ptr(armkeyvault.CertificatePermissionsGet),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsList),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsDelete),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsCreate),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsImport),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsUpdate),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsManagecontacts),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsGetissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsListissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsSetissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsDeleteissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsManageissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsRecover),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsPurge)},
-		// 								Keys: []*armkeyvault.KeyPermissions{
-		// 									to.Ptr(armkeyvault.KeyPermissionsEncrypt),
-		// 									to.Ptr(armkeyvault.KeyPermissionsDecrypt),
-		// 									to.Ptr(armkeyvault.KeyPermissionsWrapKey),
-		// 									to.Ptr(armkeyvault.KeyPermissionsUnwrapKey),
-		// 									to.Ptr(armkeyvault.KeyPermissionsSign),
-		// 									to.Ptr(armkeyvault.KeyPermissionsVerify),
-		// 									to.Ptr(armkeyvault.KeyPermissionsGet),
-		// 									to.Ptr(armkeyvault.KeyPermissionsList),
-		// 									to.Ptr(armkeyvault.KeyPermissionsCreate),
-		// 									to.Ptr(armkeyvault.KeyPermissionsUpdate),
-		// 									to.Ptr(armkeyvault.KeyPermissionsImport),
-		// 									to.Ptr(armkeyvault.KeyPermissionsDelete),
-		// 									to.Ptr(armkeyvault.KeyPermissionsBackup),
-		// 									to.Ptr(armkeyvault.KeyPermissionsRestore),
-		// 									to.Ptr(armkeyvault.KeyPermissionsRecover),
-		// 									to.Ptr(armkeyvault.KeyPermissionsPurge)},
-		// 									Secrets: []*armkeyvault.SecretPermissions{
-		// 										to.Ptr(armkeyvault.SecretPermissionsGet),
-		// 										to.Ptr(armkeyvault.SecretPermissionsList),
-		// 										to.Ptr(armkeyvault.SecretPermissionsSet),
-		// 										to.Ptr(armkeyvault.SecretPermissionsDelete),
-		// 										to.Ptr(armkeyvault.SecretPermissionsBackup),
-		// 										to.Ptr(armkeyvault.SecretPermissionsRestore),
-		// 										to.Ptr(armkeyvault.SecretPermissionsRecover),
-		// 										to.Ptr(armkeyvault.SecretPermissionsPurge)},
-		// 									},
-		// 									TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							}},
-		// 							EnableSoftDelete: to.Ptr(true),
-		// 							EnabledForDeployment: to.Ptr(true),
-		// 							EnabledForDiskEncryption: to.Ptr(true),
-		// 							EnabledForTemplateDeployment: to.Ptr(true),
-		// 							HsmPoolResourceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
-		// 							SKU: &armkeyvault.SKU{
-		// 								Name: to.Ptr(armkeyvault.SKUNamePremium),
-		// 								Family: to.Ptr(armkeyvault.SKUFamilyA),
-		// 							},
-		// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							VaultURI: to.Ptr("https://sample-vault.vault.azure.net/"),
-		// 						},
-		// 						SystemData: &armkeyvault.SystemData{
-		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 							CreatedBy: to.Ptr("keyVaultUser1"),
-		// 							CreatedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 							LastModifiedBy: to.Ptr("keyVaultUser2"),
-		// 							LastModifiedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-		// 						},
-		// 						Tags: map[string]*string{
-		// 						},
-		// 				}},
-		// 			}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/listVaultBySubscription.json
-func ExampleVaultsClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVaultsClient().NewListBySubscriptionPager(&armkeyvault.VaultsClientListBySubscriptionOptions{Top: to.Ptr[int32](1)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VaultListResult = armkeyvault.VaultListResult{
-		// 	Value: []*armkeyvault.Vault{
-		// 		{
-		// 			Name: to.Ptr("sample-vault"),
-		// 			Type: to.Ptr("Microsoft.KeyVault/vaults"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armkeyvault.VaultProperties{
-		// 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
-		// 					{
-		// 						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						Permissions: &armkeyvault.Permissions{
-		// 							Certificates: []*armkeyvault.CertificatePermissions{
-		// 								to.Ptr(armkeyvault.CertificatePermissionsGet),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsList),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsDelete),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsCreate),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsImport),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsUpdate),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsManagecontacts),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsGetissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsListissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsSetissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsDeleteissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsManageissuers),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsRecover),
-		// 								to.Ptr(armkeyvault.CertificatePermissionsPurge)},
-		// 								Keys: []*armkeyvault.KeyPermissions{
-		// 									to.Ptr(armkeyvault.KeyPermissionsEncrypt),
-		// 									to.Ptr(armkeyvault.KeyPermissionsDecrypt),
-		// 									to.Ptr(armkeyvault.KeyPermissionsWrapKey),
-		// 									to.Ptr(armkeyvault.KeyPermissionsUnwrapKey),
-		// 									to.Ptr(armkeyvault.KeyPermissionsSign),
-		// 									to.Ptr(armkeyvault.KeyPermissionsVerify),
-		// 									to.Ptr(armkeyvault.KeyPermissionsGet),
-		// 									to.Ptr(armkeyvault.KeyPermissionsList),
-		// 									to.Ptr(armkeyvault.KeyPermissionsCreate),
-		// 									to.Ptr(armkeyvault.KeyPermissionsUpdate),
-		// 									to.Ptr(armkeyvault.KeyPermissionsImport),
-		// 									to.Ptr(armkeyvault.KeyPermissionsDelete),
-		// 									to.Ptr(armkeyvault.KeyPermissionsBackup),
-		// 									to.Ptr(armkeyvault.KeyPermissionsRestore),
-		// 									to.Ptr(armkeyvault.KeyPermissionsRecover),
-		// 									to.Ptr(armkeyvault.KeyPermissionsPurge)},
-		// 									Secrets: []*armkeyvault.SecretPermissions{
-		// 										to.Ptr(armkeyvault.SecretPermissionsGet),
-		// 										to.Ptr(armkeyvault.SecretPermissionsList),
-		// 										to.Ptr(armkeyvault.SecretPermissionsSet),
-		// 										to.Ptr(armkeyvault.SecretPermissionsDelete),
-		// 										to.Ptr(armkeyvault.SecretPermissionsBackup),
-		// 										to.Ptr(armkeyvault.SecretPermissionsRestore),
-		// 										to.Ptr(armkeyvault.SecretPermissionsRecover),
-		// 										to.Ptr(armkeyvault.SecretPermissionsPurge)},
-		// 									},
-		// 									TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							}},
-		// 							EnableSoftDelete: to.Ptr(true),
-		// 							EnabledForDeployment: to.Ptr(true),
-		// 							EnabledForDiskEncryption: to.Ptr(true),
-		// 							EnabledForTemplateDeployment: to.Ptr(true),
-		// 							HsmPoolResourceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
-		// 							SKU: &armkeyvault.SKU{
-		// 								Name: to.Ptr(armkeyvault.SKUNamePremium),
-		// 								Family: to.Ptr(armkeyvault.SKUFamilyA),
-		// 							},
-		// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							VaultURI: to.Ptr("https://sample-vault.vault.azure.net/"),
-		// 						},
-		// 						SystemData: &armkeyvault.SystemData{
-		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 							CreatedBy: to.Ptr("keyVaultUser1"),
-		// 							CreatedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.000Z"); return t}()),
-		// 							LastModifiedBy: to.Ptr("keyVaultUser2"),
-		// 							LastModifiedByType: to.Ptr(armkeyvault.IdentityTypeUser),
-		// 						},
-		// 						Tags: map[string]*string{
-		// 						},
-		// 				}},
-		// 			}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/listDeletedVaults.json
-func ExampleVaultsClient_NewListDeletedPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVaultsClient().NewListDeletedPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.DeletedVaultListResult = armkeyvault.DeletedVaultListResult{
-		// 	Value: []*armkeyvault.DeletedVault{
-		// 		{
-		// 			Name: to.Ptr("vault-agile-drawer-6404"),
-		// 			Type: to.Ptr("Microsoft.KeyVault/deletedVaults"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/sample-vault"),
-		// 			Properties: &armkeyvault.DeletedVaultProperties{
-		// 				DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T00:00:59.000Z"); return t}()),
-		// 				Location: to.Ptr("westus"),
-		// 				PurgeProtectionEnabled: to.Ptr(true),
-		// 				ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-01T00:00:59.000Z"); return t}()),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				VaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/getDeletedVault.json
-func ExampleVaultsClient_GetDeleted() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVaultsClient().GetDeleted(ctx, "sample-vault", "westus", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.DeletedVault = armkeyvault.DeletedVault{
-	// 	Name: to.Ptr("sample-vault"),
-	// 	Type: to.Ptr("Microsoft.KeyVault/deletedVaults"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/sample-vault"),
-	// 	Properties: &armkeyvault.DeletedVaultProperties{
-	// 		DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T00:00:59.000Z"); return t}()),
-	// 		Location: to.Ptr("westus"),
-	// 		PurgeProtectionEnabled: to.Ptr(true),
-	// 		ScheduledPurgeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-01T00:00:59.000Z"); return t}()),
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		VaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/purgeDeletedVault.json
-func ExampleVaultsClient_BeginPurgeDeleted() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVaultsClient().BeginPurgeDeleted(ctx, "sample-vault", "westus", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/listVault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2025-05-01/examples/listVault.json
 func ExampleVaultsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -990,7 +1016,7 @@ func ExampleVaultsClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.ResourceListResult = armkeyvault.ResourceListResult{
-		// 	Value: []*armkeyvault.Resource{
+		// 	Value: []*armkeyvault.TrackedResource{
 		// 		{
 		// 			Name: to.Ptr("sample-vault"),
 		// 			Type: to.Ptr("Microsoft.KeyVault/vaults"),
@@ -1001,30 +1027,4 @@ func ExampleVaultsClient_NewListPager() {
 		// 	}},
 		// }
 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ee1eec42dcc710ff88db2d1bf574b2f9afe3d654/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/checkVaultNameAvailability.json
-func ExampleVaultsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVaultsClient().CheckNameAvailability(ctx, armkeyvault.VaultCheckNameAvailabilityParameters{
-		Name: to.Ptr("sample-vault"),
-		Type: to.Ptr("Microsoft.KeyVault/vaults"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckNameAvailabilityResult = armkeyvault.CheckNameAvailabilityResult{
-	// 	NameAvailable: to.Ptr(true),
-	// }
 }

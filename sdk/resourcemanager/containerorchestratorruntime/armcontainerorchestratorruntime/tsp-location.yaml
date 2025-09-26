@@ -1,4 +1,4 @@
 directory: specification/kubernetesruntime/KubernetesRuntime.Management
-commit: 34b917e73ab4372df2066aae259cbf86910cf8cf
+commit: 0076d53056c97ccf2913b481e9401aaf15c8ce60
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

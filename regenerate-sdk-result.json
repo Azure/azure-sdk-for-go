@@ -1,0 +1,8 @@
+{
+  "succeed_to_regenerate": [
+    "armcontainerorchestratorruntime"
+  ],
+  "fail_to_regenerate": [],
+  "not_found_api_version": [],
+  "time_to_regenerate": "2025-09-26 03:27:08.413260"
+}

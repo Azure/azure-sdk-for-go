@@ -42,7 +42,7 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListSKUsPager - The skus action returns the list of SKUs that DMS (classic) supports.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - options - ResourceSKUsClientListSKUsOptions contains the optional parameters for the ResourceSKUsClient.NewListSKUsPager
 //     method.
 func (client *ResourceSKUsClient) NewListSKUsPager(options *ResourceSKUsClientListSKUsOptions) *runtime.Pager[ResourceSKUsClientListSKUsResponse] {
@@ -80,7 +80,7 @@ func (client *ResourceSKUsClient) listSKUsCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

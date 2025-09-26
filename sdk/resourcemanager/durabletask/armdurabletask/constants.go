@@ -139,3 +139,21 @@ func PossibleRedundancyStateValues() []RedundancyState {
 		RedundancyStateZone,
 	}
 }
+
+// SchedulerSKUName - The name of the Stock Keeping Unit (SKU) of a Durable Task Scheduler
+type SchedulerSKUName string
+
+const (
+	// SchedulerSKUNameConsumption - Consumption SKU
+	SchedulerSKUNameConsumption SchedulerSKUName = "Consumption"
+	// SchedulerSKUNameDedicated - Dedicated SKU
+	SchedulerSKUNameDedicated SchedulerSKUName = "Dedicated"
+)
+
+// PossibleSchedulerSKUNameValues returns the possible values for the SchedulerSKUName const type.
+func PossibleSchedulerSKUNameValues() []SchedulerSKUName {
+	return []SchedulerSKUName{
+		SchedulerSKUNameConsumption,
+		SchedulerSKUNameDedicated,
+	}
+}

@@ -91,9 +91,6 @@ func (client *BgpPeersClient) createOrUpdate(ctx context.Context, resourceURI st
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *BgpPeersClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, bgpPeerName string, resource BgpPeer, _ *BgpPeersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if bgpPeerName == "" {
 		return nil, errors.New("parameter bgpPeerName cannot be empty")
@@ -145,9 +142,6 @@ func (client *BgpPeersClient) Delete(ctx context.Context, resourceURI string, bg
 // deleteCreateRequest creates the Delete request.
 func (client *BgpPeersClient) deleteCreateRequest(ctx context.Context, resourceURI string, bgpPeerName string, _ *BgpPeersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if bgpPeerName == "" {
 		return nil, errors.New("parameter bgpPeerName cannot be empty")
@@ -160,7 +154,6 @@ func (client *BgpPeersClient) deleteCreateRequest(ctx context.Context, resourceU
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -196,9 +189,6 @@ func (client *BgpPeersClient) Get(ctx context.Context, resourceURI string, bgpPe
 // getCreateRequest creates the Get request.
 func (client *BgpPeersClient) getCreateRequest(ctx context.Context, resourceURI string, bgpPeerName string, _ *BgpPeersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if bgpPeerName == "" {
 		return nil, errors.New("parameter bgpPeerName cannot be empty")
@@ -255,9 +245,6 @@ func (client *BgpPeersClient) NewListPager(resourceURI string, options *BgpPeers
 // listCreateRequest creates the List request.
 func (client *BgpPeersClient) listCreateRequest(ctx context.Context, resourceURI string, _ *BgpPeersClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

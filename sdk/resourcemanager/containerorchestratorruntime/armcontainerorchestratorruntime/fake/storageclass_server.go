@@ -80,22 +80,28 @@ func (s *StorageClassServerTransport) dispatchToMethodFake(req *http.Request, me
 	defer close(resultChan)
 
 	go func() {
+		var intercepted bool
 		var res result
-		switch method {
-		case "StorageClassClient.BeginCreateOrUpdate":
-			res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
-		case "StorageClassClient.BeginDelete":
-			res.resp, res.err = s.dispatchBeginDelete(req)
-		case "StorageClassClient.Get":
-			res.resp, res.err = s.dispatchGet(req)
-		case "StorageClassClient.NewListPager":
-			res.resp, res.err = s.dispatchNewListPager(req)
-		case "StorageClassClient.BeginUpdate":
-			res.resp, res.err = s.dispatchBeginUpdate(req)
-		default:
-			res.err = fmt.Errorf("unhandled API %s", method)
+		if storageClassServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = storageClassServerTransportInterceptor.Do(req)
 		}
+		if !intercepted {
+			switch method {
+			case "StorageClassClient.BeginCreateOrUpdate":
+				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
+			case "StorageClassClient.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StorageClassClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "StorageClassClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "StorageClassClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
 
+		}
 		select {
 		case resultChan <- res:
 		case <-req.Context().Done():
@@ -119,7 +125,7 @@ func (s *StorageClassServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/storageClasses/(?P<storageClassName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcontainerorchestratorruntime.StorageClassResource](req)
@@ -167,7 +173,7 @@ func (s *StorageClassServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/storageClasses/(?P<storageClassName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -209,7 +215,7 @@ func (s *StorageClassServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/storageClasses/(?P<storageClassName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -244,7 +250,7 @@ func (s *StorageClassServerTransport) dispatchNewListPager(req *http.Request) (*
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/storageClasses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
@@ -281,7 +287,7 @@ func (s *StorageClassServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.KubernetesRuntime/storageClasses/(?P<storageClassName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcontainerorchestratorruntime.StorageClassResourceUpdate](req)
@@ -318,4 +324,10 @@ func (s *StorageClassServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to StorageClassServerTransport
+var storageClassServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

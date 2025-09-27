@@ -686,6 +686,48 @@ func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithNonZeroOffsetAndCount
 	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
+func (s *AZBlobUnrecordedTestsSuite) TestAzureStackAPIVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	// Get credentials for testing
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+	svcURL := "https://" + cred.AccountName() + ".blob.core.windows.net/"
+
+	// Test custom API version
+	customVersion := "2020-01-01"
+	os.Setenv("AZURESTACK_STORAGE_API_VERSION", customVersion)
+	client, err := azblob.NewClientWithSharedKeyCredential(svcURL, cred, nil)
+	_require.NoError(err)
+
+	// Test the client by creating a container
+	containerName := testcommon.GenerateContainerName(testName + "Custom")
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer client.DeleteContainer(context.Background(), containerName, nil)
+
+	// Test wildcard version
+	os.Setenv("AZURESTACK_STORAGE_API_VERSION", "*")
+	client, err = azblob.NewClientWithSharedKeyCredential(svcURL, cred, nil)
+	_require.NoError(err)
+
+	containerName = testcommon.GenerateContainerName(testName + "Wildcard")
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer client.DeleteContainer(context.Background(), containerName, nil)
+
+	// Test with empty environment variable
+	os.Unsetenv("AZURESTACK_STORAGE_API_VERSION")
+	client, err = azblob.NewClientWithSharedKeyCredential(svcURL, cred, nil)
+	_require.NoError(err)
+
+	containerName = testcommon.GenerateContainerName(testName + "Empty")
+	_, err = client.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer client.DeleteContainer(context.Background(), containerName, nil)
+}
+
 func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 	_require := require.New(s.T())
 	// test the basic multi-routine processing

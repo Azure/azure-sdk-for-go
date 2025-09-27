@@ -42,7 +42,7 @@ func NewDbNodesClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginAction - VM actions on DbNode of VM Cluster by the provided filter
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - dbnodeocid - DbNode OCID.
@@ -68,7 +68,7 @@ func (client *DbNodesClient) BeginAction(ctx context.Context, resourceGroupName 
 // Action - VM actions on DbNode of VM Cluster by the provided filter
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *DbNodesClient) action(ctx context.Context, resourceGroupName string, cloudvmclustername string, dbnodeocid string, body DbNodeAction, options *DbNodesClientBeginActionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DbNodesClient.BeginAction"
@@ -114,7 +114,7 @@ func (client *DbNodesClient) actionCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -127,7 +127,7 @@ func (client *DbNodesClient) actionCreateRequest(ctx context.Context, resourceGr
 // Get - Get a DbNode
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - dbnodeocid - DbNode OCID.
@@ -178,7 +178,7 @@ func (client *DbNodesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -195,7 +195,7 @@ func (client *DbNodesClient) getHandleResponse(resp *http.Response) (DbNodesClie
 
 // NewListByCloudVMClusterPager - List DbNode resources by CloudVmCluster
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - options - DbNodesClientListByCloudVMClusterOptions contains the optional parameters for the DbNodesClient.NewListByCloudVMClusterPager
@@ -243,7 +243,7 @@ func (client *DbNodesClient) listByCloudVMClusterCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

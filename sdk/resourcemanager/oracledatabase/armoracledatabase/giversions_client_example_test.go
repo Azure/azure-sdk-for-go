@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/GiVersions_ListByLocation_MaximumSet_Gen.json
-func ExampleGiVersionsClient_NewListByLocationPager_listGiVersionsByLocationGeneratedByMaximumSetRule() {
+// Generated from example definition: 2025-09-01/GiVersions_ListByLocation_MaximumSet_Gen.json
+func ExampleGiVersionsClient_NewListByLocationPager_giVersionsListByLocationMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -24,7 +24,8 @@ func ExampleGiVersionsClient_NewListByLocationPager_listGiVersionsByLocationGene
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewGiVersionsClient().NewListByLocationPager("eastus", &armoracledatabase.GiVersionsClientListByLocationOptions{
-		Shape: to.Ptr(armoracledatabase.SystemShapes("osixsklyaauhoqnkxvnvsqeqenhzogntqnpubldrrfvqncwetdtwqwjjcvspwhgecbimdlulwcubikebrdzmidrucgtsuqvytkqutmbyrvvyioxpocpmuwiivyanjzucaegihztluuvpznzaoakfsselumhhsvrtrbzwpjhcihsvyouonlxdluwhqfxoqvgthkaxppbydtqjntscgzbivfdcaobbkthrbdjwpejirqmbly"))})
+		Shape: to.Ptr(armoracledatabase.SystemShapesExadataX9M),
+		Zone:  to.Ptr("hpzuyaemum")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,14 +45,14 @@ func ExampleGiVersionsClient_NewListByLocationPager_listGiVersionsByLocationGene
 		// 				Properties: &armoracledatabase.GiVersionProperties{
 		// 					Version: to.Ptr("19.0.0.0"),
 		// 				},
-		// 				Name: to.Ptr("lmktkddwvpv"),
+		// 				Name: to.Ptr("hitornrpyhizxmoirxa"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("ilrpjodjmvzhybazxipoplnql"),
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("lhjbxchqkaia"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -61,8 +62,8 @@ func ExampleGiVersionsClient_NewListByLocationPager_listGiVersionsByLocationGene
 	}
 }
 
-// Generated from example definition: 2025-03-01/GiVersions_ListByLocation_MinimumSet_Gen.json
-func ExampleGiVersionsClient_NewListByLocationPager_listGiVersionsByLocationGeneratedByMinimumSetRule() {
+// Generated from example definition: 2025-09-01/GiVersions_ListByLocation_MinimumSet_Gen.json
+func ExampleGiVersionsClient_NewListByLocationPager_giVersionsListByLocationMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

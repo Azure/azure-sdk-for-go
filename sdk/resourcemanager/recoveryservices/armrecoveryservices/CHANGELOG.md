@@ -1,5 +1,35 @@
 # Release History
 
+## 3.0.0 (2025-09-29)
+### Breaking Changes
+
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `PatchTrackedResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceCapabilitiesBase` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New function `*ClientFactory.NewDeletedVaultsClient() *DeletedVaultsClient`
+- New function `NewDeletedVaultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DeletedVaultsClient, error)`
+- New function `*DeletedVaultsClient.Get(context.Context, string, string, *DeletedVaultsClientGetOptions) (DeletedVaultsClientGetResponse, error)`
+- New function `*DeletedVaultsClient.GetOperationStatus(context.Context, string, string, string, *DeletedVaultsClientGetOperationStatusOptions) (DeletedVaultsClientGetOperationStatusResponse, error)`
+- New function `*DeletedVaultsClient.NewListBySubscriptionIDPager(string, *DeletedVaultsClientListBySubscriptionIDOptions) *runtime.Pager[DeletedVaultsClientListBySubscriptionIDResponse]`
+- New function `*DeletedVaultsClient.BeginUndelete(context.Context, string, string, DeletedVaultUndeleteInput, *DeletedVaultsClientBeginUndeleteOptions) (*runtime.Poller[DeletedVaultsClientUndeleteResponse], error)`
+- New struct `DeletedVault`
+- New struct `DeletedVaultList`
+- New struct `DeletedVaultProperties`
+- New struct `DeletedVaultUndeleteInput`
+- New struct `DeletedVaultUndeleteInputProperties`
+- New field `SystemData` in struct `PatchVault`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `NextLink` in struct `ReplicationUsageList`
+- New field `SystemData` in struct `VaultExtendedInfoResource`
+- New field `NextLink` in struct `VaultUsageList`
+
+
 ## 2.1.0 (2025-06-12)
 ### Features Added
 

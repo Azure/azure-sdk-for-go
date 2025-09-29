@@ -4,13 +4,14 @@ The Azure Go SDK generally prohibits breaking changes unless they result from se
 
 Breaking changes can be resolved by client Customizations:
 
-Client customizations should be implemented in a file named `client.tsp` located in the service's specification directory alongside the main entry point `main.tsp`. This `client.tsp` becomes the new specification entry point, so import `main.tsp` in the `client.tsp` file. **Do not** import `client.tsp` in the `main.tsp` file.
+Client customizations should be implemented in a file named `client.tsp` located in the service's specification directory alongside the main entry point `main.tsp`. This `client.tsp` becomes the new specification entry point, so import `main.tsp` in the `client.tsp` file. **Do not** import `client.tsp` in the `main.tsp` file. **Do not** modify the entry point in `tspconfig.yaml`.
 
 ```tsp
 import "./main.tsp";
 import "@azure-tools/typespec-client-generator-core";
 
 using Azure.ClientGenerator.Core;
+using MainNamespaceInMainTsp; // Replace with the actual main namespace in main.tsp
 
 // Add your customizations here
 ```

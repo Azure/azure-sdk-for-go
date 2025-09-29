@@ -58,7 +58,7 @@ type AzureAppConfigurationClientCheckKeyValuesOptions struct {
 	// Used to select what fields are present in the returned resource(s).
 	Select []SettingFields
 
-	// A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+	// A filter used get key-values for a snapshot. Not valid when used with 'key', 'label' or `tags` filters.
 	Snapshot *string
 
 	// A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering
@@ -199,8 +199,8 @@ type AzureAppConfigurationClientGetKeyValuesOptions struct {
 	// Used to select what fields are present in the returned resource(s).
 	Select []SettingFields
 
-	// A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not valid when used with 'key'
-	// and 'label' filters.
+	// A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not valid when used with 'key',
+	// 'label' or 'tags' filters.
 	Snapshot *string
 
 	// A filter used to query by tags. Syntax reference: https://aka.ms/azconfig/docs/keyvaluefiltering

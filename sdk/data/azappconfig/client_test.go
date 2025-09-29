@@ -983,10 +983,10 @@ func TestSettingTagsWithSpecialCharacters(t *testing.T) {
 
 	// Test tags with special characters
 	tags := map[string]*string{
-		"app-name":    to.Ptr("my-app"),
+		"app&name":    to.Ptr("my-app"),
 		"team.owner":  to.Ptr("backend-team"),
 		"cost_center": to.Ptr("engineering"),
-		"env_type":    to.Ptr("staging-test"),
+		"env?type":    to.Ptr("staging-test"),
 	}
 	value := "value"
 
@@ -999,7 +999,7 @@ func TestSettingTagsWithSpecialCharacters(t *testing.T) {
 
 	// Test filtering with special characters
 	selector := azappconfig.SettingSelector{
-		TagsFilter: []string{"app-name=my-app"},
+		TagsFilter: []string{"app&name=my-app"},
 	}
 
 	found := false
@@ -1232,6 +1232,246 @@ func TestTagsFilteringEndToEnd(t *testing.T) {
 				require.Equal(t, "api", *revision.Tags["service"])
 			}
 		}
+	})
+
+	// Clean up all test settings
+	for _, data := range testData {
+		_, err := client.DeleteSetting(context.Background(), data.key, &azappconfig.DeleteSettingOptions{
+			Label: to.Ptr(data.label),
+		})
+		require.NoError(t, err)
+	}
+}
+
+func TestTagsFilterMultipleAndNilValues(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	// Test data with various tag scenarios including nil and empty values
+	testData := []struct {
+		key   string
+		value string
+		label string
+		tags  map[string]*string
+	}{
+		{
+			key:   "setting-with-normal-tags",
+			value: "value1",
+			label: "prod",
+			tags: map[string]*string{
+				"env":     to.Ptr("production"),
+				"service": to.Ptr("api"),
+				"version": to.Ptr("1.0"),
+			},
+		},
+		{
+			key:   "setting-with-nil-tag-value",
+			value: "value2",
+			label: "prod",
+			tags: map[string]*string{
+				"env":     to.Ptr("production"),
+				"service": nil, // nil tag value
+				"version": to.Ptr("1.0"),
+			},
+		},
+		{
+			key:   "setting-with-empty-tag-value",
+			value: "value3",
+			label: "prod",
+			tags: map[string]*string{
+				"env":     to.Ptr("production"),
+				"service": to.Ptr(""), // empty string tag value
+				"version": to.Ptr("1.0"),
+			},
+		},
+		{
+			key:   "setting-mixed-tags",
+			value: "value4",
+			label: "staging",
+			tags: map[string]*string{
+				"env":       to.Ptr("staging"),
+				"service":   to.Ptr("web"),
+				"version":   to.Ptr("2.0"),
+				"feature":   nil,                // nil value
+				"debug":     to.Ptr(""),         // empty value
+				"component": to.Ptr("frontend"), // normal value
+			},
+		},
+		{
+			key:   "setting-only-nil-tags",
+			value: "value5",
+			label: "test",
+			tags: map[string]*string{
+				"tag1": nil,
+				"tag2": nil,
+				"tag3": nil,
+			},
+		},
+		{
+			key:   "setting-only-empty-tags",
+			value: "value6",
+			label: "test",
+			tags: map[string]*string{
+				"tag1": to.Ptr(""),
+				"tag2": to.Ptr(""),
+				"tag3": to.Ptr(""),
+			},
+		},
+	}
+
+	// Create all test settings
+	for _, data := range testData {
+		_, err := client.AddSetting(context.Background(), data.key, &data.value, &azappconfig.AddSettingOptions{
+			Label: to.Ptr(data.label),
+			Tags:  data.tags,
+		})
+		require.NoError(t, err)
+	}
+
+	// Test 1: Filter by multiple specific tag values
+	t.Run("MultipleTagsFilter", func(t *testing.T) {
+		selector := azappconfig.SettingSelector{
+			TagsFilter: []string{"env=production", "version=1.0"},
+		}
+
+		var foundKeys []string
+		pager := client.NewListSettingsPager(selector, nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+
+			for _, setting := range page.Settings {
+				if strings.HasPrefix(*setting.Key, "setting-") {
+					foundKeys = append(foundKeys, *setting.Key)
+				}
+			}
+		}
+
+		// Should find settings with both env=production AND version=1.0
+		require.Contains(t, foundKeys, "setting-with-normal-tags")
+		require.Contains(t, foundKeys, "setting-with-nil-tag-value")
+		require.Contains(t, foundKeys, "setting-with-empty-tag-value")
+		require.NotContains(t, foundKeys, "setting-mixed-tags") // has env=staging
+	})
+
+	// Test 2: Filter by tag key regardless of value (including nil/empty)
+	t.Run("TagKeyExistsFilter", func(t *testing.T) {
+		// Note: This test depends on how the backend handles tag key existence
+		// Some implementations might not return nil-valued tags
+		selector := azappconfig.SettingSelector{
+			TagsFilter: []string{"service=api"},
+		}
+
+		var foundKeys []string
+		pager := client.NewListSettingsPager(selector, nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+
+			for _, setting := range page.Settings {
+				if strings.HasPrefix(*setting.Key, "setting-") {
+					foundKeys = append(foundKeys, *setting.Key)
+				}
+			}
+		}
+
+		// Should find only the setting with service=api
+		require.Contains(t, foundKeys, "setting-with-normal-tags")
+		require.NotContains(t, foundKeys, "setting-with-nil-tag-value")   // service is nil
+		require.NotContains(t, foundKeys, "setting-with-empty-tag-value") // service is empty
+	})
+
+	// Test 3: Filter by empty string tag value
+	t.Run("EmptyStringTagValueFilter", func(t *testing.T) {
+		selector := azappconfig.SettingSelector{
+			TagsFilter: []string{"service="},
+		}
+
+		var foundKeys []string
+		pager := client.NewListSettingsPager(selector, nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+
+			for _, setting := range page.Settings {
+				if strings.HasPrefix(*setting.Key, "setting-") {
+					foundKeys = append(foundKeys, *setting.Key)
+				}
+			}
+		}
+
+		// Should find settings where service tag has empty string value
+		require.Contains(t, foundKeys, "setting-with-empty-tag-value")
+		require.NotContains(t, foundKeys, "setting-with-normal-tags")   // service=api
+		require.NotContains(t, foundKeys, "setting-with-nil-tag-value") // service is nil
+	})
+
+	// Test 4: Complex filter with multiple conditions
+	t.Run("ComplexMultipleTagsFilter", func(t *testing.T) {
+		selector := azappconfig.SettingSelector{
+			TagsFilter: []string{"env=staging", "service=web", "version=2.0"},
+		}
+
+		var foundKeys []string
+		pager := client.NewListSettingsPager(selector, nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+
+			for _, setting := range page.Settings {
+				if strings.HasPrefix(*setting.Key, "setting-") {
+					foundKeys = append(foundKeys, *setting.Key)
+				}
+			}
+		}
+
+		// Should find only setting-mixed-tags that matches all conditions
+		require.Contains(t, foundKeys, "setting-mixed-tags")
+		require.Len(t, foundKeys, 1) // Only one setting should match all conditions
+	})
+
+	// Test 6: Filter with non-existent tag
+	t.Run("NonExistentTagFilter", func(t *testing.T) {
+		selector := azappconfig.SettingSelector{
+			TagsFilter: []string{"nonexistent=value"},
+		}
+
+		var foundKeys []string
+		pager := client.NewListSettingsPager(selector, nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+
+			for _, setting := range page.Settings {
+				if strings.HasPrefix(*setting.Key, "setting-") {
+					foundKeys = append(foundKeys, *setting.Key)
+				}
+			}
+		}
+
+		// Should find no settings with non-existent tag
+		require.Empty(t, foundKeys)
+	})
+
+	// Test 7: Filter by tag key that exists with nil values
+	t.Run("TagKeyExistsWithNilValuesFilter", func(t *testing.T) {
+		selector := azappconfig.SettingSelector{
+			TagsFilter: []string{"tag1=\x00"}, // tag1 exists with nil or empty values in some settings
+		}
+		var foundKeys []string
+		pager := client.NewListSettingsPager(selector, nil)
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			for _, setting := range page.Settings {
+				if strings.HasPrefix(*setting.Key, "setting-") {
+					foundKeys = append(foundKeys, *setting.Key)
+				}
+			}
+		}
+
+		// Should find settings that have tag1 with nil values
+		require.Contains(t, foundKeys, "setting-only-nil-tags")
+		require.Len(t, foundKeys, 1) // Only two settings should match
 	})
 
 	// Clean up all test settings

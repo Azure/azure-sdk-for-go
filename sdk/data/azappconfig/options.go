@@ -21,7 +21,6 @@ type AddSettingOptions struct {
 	Label *string
 
 	// A dictionary of tags used to assign additional properties to a configuration setting.
-	// These can be used to indicate how a configuration setting may be applied.
 	Tags map[string]*string
 }
 

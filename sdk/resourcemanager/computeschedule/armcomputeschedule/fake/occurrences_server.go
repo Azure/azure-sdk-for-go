@@ -36,9 +36,9 @@ type OccurrencesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByScheduledActionPager func(resourceGroupName string, scheduledActionName string, options *armcomputeschedule.OccurrencesClientListByScheduledActionOptions) (resp azfake.PagerResponder[armcomputeschedule.OccurrencesClientListByScheduledActionResponse])
 
-	// NewListResourcesPager is the fake for method OccurrencesClient.NewListResourcesPager
+	// ListResources is the fake for method OccurrencesClient.ListResources
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListResourcesPager func(resourceGroupName string, scheduledActionName string, occurrenceID string, options *armcomputeschedule.OccurrencesClientListResourcesOptions) (resp azfake.PagerResponder[armcomputeschedule.OccurrencesClientListResourcesResponse])
+	ListResources func(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, options *armcomputeschedule.OccurrencesClientListResourcesOptions) (resp azfake.Responder[armcomputeschedule.OccurrencesClientListResourcesResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOccurrencesServerTransport creates a new instance of OccurrencesServerTransport with the provided implementation.
@@ -49,7 +49,6 @@ func NewOccurrencesServerTransport(srv *OccurrencesServer) *OccurrencesServerTra
 		srv:                           srv,
 		beginDelay:                    newTracker[azfake.PollerResponder[armcomputeschedule.OccurrencesClientDelayResponse]](),
 		newListByScheduledActionPager: newTracker[azfake.PagerResponder[armcomputeschedule.OccurrencesClientListByScheduledActionResponse]](),
-		newListResourcesPager:         newTracker[azfake.PagerResponder[armcomputeschedule.OccurrencesClientListResourcesResponse]](),
 	}
 }
 
@@ -59,7 +58,6 @@ type OccurrencesServerTransport struct {
 	srv                           *OccurrencesServer
 	beginDelay                    *tracker[azfake.PollerResponder[armcomputeschedule.OccurrencesClientDelayResponse]]
 	newListByScheduledActionPager *tracker[azfake.PagerResponder[armcomputeschedule.OccurrencesClientListByScheduledActionResponse]]
-	newListResourcesPager         *tracker[azfake.PagerResponder[armcomputeschedule.OccurrencesClientListResourcesResponse]]
 }
 
 // Do implements the policy.Transporter interface for OccurrencesServerTransport.
@@ -93,8 +91,8 @@ func (o *OccurrencesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = o.dispatchGet(req)
 			case "OccurrencesClient.NewListByScheduledActionPager":
 				res.resp, res.err = o.dispatchNewListByScheduledActionPager(req)
-			case "OccurrencesClient.NewListResourcesPager":
-				res.resp, res.err = o.dispatchNewListResourcesPager(req)
+			case "OccurrencesClient.ListResources":
+				res.resp, res.err = o.dispatchListResources(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -285,47 +283,39 @@ func (o *OccurrencesServerTransport) dispatchNewListByScheduledActionPager(req *
 	return resp, nil
 }
 
-func (o *OccurrencesServerTransport) dispatchNewListResourcesPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListResourcesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListResourcesPager not implemented")}
+func (o *OccurrencesServerTransport) dispatchListResources(req *http.Request) (*http.Response, error) {
+	if o.srv.ListResources == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListResources not implemented")}
 	}
-	newListResourcesPager := o.newListResourcesPager.get(req)
-	if newListResourcesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeSchedule/scheduledActions/(?P<scheduledActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/occurrences/(?P<occurrenceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
-		if err != nil {
-			return nil, err
-		}
-		occurrenceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("occurrenceId")])
-		if err != nil {
-			return nil, err
-		}
-		resp := o.srv.NewListResourcesPager(resourceGroupNameParam, scheduledActionNameParam, occurrenceIDParam, nil)
-		newListResourcesPager = &resp
-		o.newListResourcesPager.add(req, newListResourcesPager)
-		server.PagerResponderInjectNextLinks(newListResourcesPager, req, func(page *armcomputeschedule.OccurrencesClientListResourcesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeSchedule/scheduledActions/(?P<scheduledActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/occurrences/(?P<occurrenceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListResourcesPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListResourcesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListResourcesPager) {
-		o.newListResourcesPager.remove(req)
+	occurrenceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("occurrenceId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.ListResources(req.Context(), resourceGroupNameParam, scheduledActionNameParam, occurrenceIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OccurrenceResourceListResponse, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

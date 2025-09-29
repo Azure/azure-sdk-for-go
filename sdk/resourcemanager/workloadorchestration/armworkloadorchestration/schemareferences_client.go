@@ -68,6 +68,9 @@ func (client *SchemaReferencesClient) Get(ctx context.Context, resourceURI strin
 // getCreateRequest creates the Get request.
 func (client *SchemaReferencesClient) getCreateRequest(ctx context.Context, resourceURI string, schemaReferenceName string, _ *SchemaReferencesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if schemaReferenceName == "" {
 		return nil, errors.New("parameter schemaReferenceName cannot be empty")
@@ -125,6 +128,9 @@ func (client *SchemaReferencesClient) NewListByResourceGroupPager(resourceURI st
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *SchemaReferencesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceURI string, _ *SchemaReferencesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

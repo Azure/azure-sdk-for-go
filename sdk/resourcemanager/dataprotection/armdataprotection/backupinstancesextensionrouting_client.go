@@ -6,6 +6,7 @@ package armdataprotection
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -66,6 +67,9 @@ func (client *BackupInstancesExtensionRoutingClient) NewListPager(resourceID str
 // listCreateRequest creates the List request.
 func (client *BackupInstancesExtensionRoutingClient) listCreateRequest(ctx context.Context, resourceID string, _ *BackupInstancesExtensionRoutingClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.DataProtection/backupInstances"
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

@@ -32,8 +32,7 @@ type OccurrencesClientListByScheduledActionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OccurrencesClientListResourcesOptions contains the optional parameters for the OccurrencesClient.NewListResourcesPager
-// method.
+// OccurrencesClientListResourcesOptions contains the optional parameters for the OccurrencesClient.ListResources method.
 type OccurrencesClientListResourcesOptions struct {
 	// placeholder for future optional parameters
 }
@@ -107,7 +106,7 @@ type ScheduledActionsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.NewListResourcesPager
+// ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.ListResources
 // method.
 type ScheduledActionsClientListResourcesOptions struct {
 	// placeholder for future optional parameters

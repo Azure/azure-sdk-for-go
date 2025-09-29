@@ -6,11 +6,10 @@ package armstandbypool_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool"
+	"log"
 )
 
 // Generated from example definition: 2025-03-01/StandbyContainerGroupPools_CreateOrUpdate.json

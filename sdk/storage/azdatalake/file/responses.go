@@ -245,11 +245,13 @@ func FormatDownloadStreamResponse(r *blob.DownloadStreamResponse, rawResponse *h
 		newResp.Version = r.Version
 		newResp.VersionID = r.VersionID
 	}
-	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
-		newResp.EncryptionContext = &val
-	}
-	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
-		newResp.AccessControlList = &val
+	if rawResponse != nil {
+		if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+			newResp.EncryptionContext = &val
+		}
+		if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+			newResp.AccessControlList = &val
+		}
 	}
 	return newResp
 }

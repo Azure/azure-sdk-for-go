@@ -2,7 +2,7 @@
 
 The Azure Go SDK generally prohibits breaking changes unless they result from service behavior modifications. This guide helps you identify, review, and resolve breaking changes that may occur in new SDK versions due to migrating of service specifications from Swagger to TypeSpec. For service's TypeSpec specification update scenario, refer this [doc](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/sdk-breaking-changes-guide.md).
 
-Breaking changes can be resolved by:
+Some breaking changes can be accepted as they have low impact on users. Some can be resolved through client customizations or TypeSpec configuration changes:
 
 1. Client Customizations
 
@@ -235,6 +235,8 @@ Multiple changes related to the `Operation` type and its fields, sometimes inclu
 
 **Resolution**: Accept these breaking changes.
 
+**Migration Guide**: Change to use the new `OperationList` operation and the new related types.
+
 ## 7. Common Types Upgrade
 
 **Changelog Pattern**:
@@ -254,6 +256,8 @@ Multiple changes related to common infrastructure types such as `SystemData`, `E
 **Impact**: Low impact since these are common infrastructure types rarely used directly by users.
 
 **Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Change to use the new types.
 
 ## 8. Removal of Unreferenced Types
 
@@ -296,6 +300,8 @@ An additional parameter is added to an operation, and a corresponding field is r
 
 **Resolution**: Accept these breaking changes.
 
+**Migration Guide**: Update the code to pass the request body as a separate parameter instead of including it in the options struct.
+
 ## 10. Naming Changes from Directive
 
 **Changelog Pattern**:
@@ -336,3 +342,65 @@ Use client customization to do the same renaming as the directives in the legacy
 ```tsp
 @@clientName(RedisResource, "ResourceInfo", "go");
 ```
+
+## 11. Model Naming Changes from Anti-Stuttering Rules
+
+**Changelog Pattern**:
+
+Removal of a `xxxListResult` model, addition of a `xxxListListResult` model and change of related fields:
+
+```md
+- Struct `DomainListResult` has been removed
+- Field `DomainListResult` of struct `DomainListsClientListByResourceGroupResponse` has been removed
+- Field `DomainListResult` of struct `DomainListsClientListResponse` has been removed
+- New struct `DomainListListResult`
+- New anonymous field `DomainListListResult` in struct `DomainListsClientListByResourceGroupResponse`
+- New anonymous field `DomainListListResult` in struct `DomainListsClientListResponse`
+```
+
+**Reason**: Swagger has a naming magic to remove stuttering part of the type names. When we migrate to TypeSpec, we want to keep the original names without the magic to avoid confusion.
+
+**Impact**: Low impact since list structs are rarely used directly by users.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Change to use the new structs.
+
+## 12. Type Changes for Enum Values
+
+**Changelog Pattern**:
+
+Removal of enum values and addition of new enum values with the new enum type:
+
+```md
+- `ActionTypeEnable`, `ActionTypeOptOut` from enum `ActionType` has been removed
+- New enum type `ActionTypeFlag` with values `ActionTypeFlagEnable`, `ActionTypeFlagOptOut`
+```
+
+**Reason**: Swagger merges the enum values of enum type with same name. This is incorrect. When migrating to TypeSpec, we fix it with a new enum type.
+
+**Impact**: This corrects the previous SDK behavior.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to use the new enum types.
+
+## 13. Type Changes for Enum Values
+
+**Changelog Pattern**:
+
+Removal of an enum type and change the refer of this enum type to string:
+
+```md
+- Type of `MessageProperties.ContentType` has been changed from `*TranscriptContentType` to `*string`
+- Enum `TranscriptContentType` has been removed
+- Function `PossibleTranscriptContentTypeValues` has been removed
+```
+
+**Reason**: Swagger allows extensible enum without any known value. This is incorrect. When migrating to TypeSpec, we change it to string directly.
+
+**Impact**: This corrects the previous SDK behavior.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to remove the type casing.

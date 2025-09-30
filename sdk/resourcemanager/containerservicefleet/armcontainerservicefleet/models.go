@@ -39,9 +39,6 @@ type AutoUpgradeProfile struct {
 	// The resource-specific properties for this resource.
 	Properties *AutoUpgradeProfileProperties
 
-	// READ-ONLY; The name of the AutoUpgradeProfile resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -50,6 +47,9 @@ type AutoUpgradeProfile struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -81,8 +81,22 @@ type AutoUpgradeProfileProperties struct {
 	// By default, this is set to False.
 	Disabled *bool
 
+	// If upgrade channel is not TargetKubernetesVersion, this field must be False.
+	// If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than N-2
+	// (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+	// By default, this is set to False.
+	// For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support
+	LongTermSupport *bool
+
 	// The node image upgrade to be applied to the target clusters in auto upgrade.
 	NodeImageSelection *AutoUpgradeNodeImageSelection
+
+	// This is the target Kubernetes version for auto-upgrade. The format must be `{major version}.{minor version}`. For example,
+	// "1.30".
+	// By default, this is empty.
+	// If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+	// If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+	TargetKubernetesVersion *string
 
 	// The resource id of the UpdateStrategy resource to reference. If not specified, the auto upgrade will run on all clusters
 	// which are members of the fleet.
@@ -111,13 +125,10 @@ type AutoUpgradeProfileStatus struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info *ErrorAdditionalInfoInfo
+	Info any
 
 	// READ-ONLY; The additional info type.
 	Type *string
-}
-
-type ErrorAdditionalInfoInfo struct {
 }
 
 // ErrorDetail - The error detail.
@@ -143,9 +154,6 @@ type Fleet struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; The name of the Fleet resource.
-	Name *string
-
 	// Managed identity.
 	Identity *ManagedServiceIdentity
 
@@ -163,6 +171,9 @@ type Fleet struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -221,9 +232,6 @@ type FleetMember struct {
 	// The resource-specific properties for this resource.
 	Properties *FleetMemberProperties
 
-	// READ-ONLY; The name of the Fleet member resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -232,6 +240,9 @@ type FleetMember struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -256,6 +267,9 @@ type FleetMemberProperties struct {
 
 	// The group this member belongs to for multi-cluster update management.
 	Group *string
+
+	// The labels for the fleet member.
+	Labels map[string]*string
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *FleetMemberProvisioningState
@@ -283,6 +297,9 @@ type FleetMemberUpdate struct {
 type FleetMemberUpdateProperties struct {
 	// The group this member belongs to for multi-cluster update management.
 	Group *string
+
+	// The labels for the fleet member.
+	Labels map[string]*string
 }
 
 // FleetPatch - Properties of a Fleet that can be patched.
@@ -320,9 +337,6 @@ type FleetUpdateStrategy struct {
 	// The resource-specific properties for this resource.
 	Properties *FleetUpdateStrategyProperties
 
-	// READ-ONLY; The name of the UpdateStrategy resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -331,6 +345,9 @@ type FleetUpdateStrategy struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -355,6 +372,88 @@ type FleetUpdateStrategyProperties struct {
 
 	// READ-ONLY; The provisioning state of the UpdateStrategy resource.
 	ProvisioningState *FleetUpdateStrategyProvisioningState
+}
+
+// Gate - A Gate controls the progression during a staged rollout, e.g. in an Update Run.
+type Gate struct {
+	// The resource-specific properties for this resource.
+	Properties *GateProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GateConfiguration is used to define where Gates should be placed within the Update Run.
+type GateConfiguration struct {
+	// REQUIRED; The type of the Gate determines how it is completed.
+	Type *GateType
+
+	// The human-readable display name of the Gate.
+	DisplayName *string
+}
+
+// GateListResult - The response of a Gate list operation.
+type GateListResult struct {
+	// REQUIRED; The Gate items on this page
+	Value []*Gate
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// GatePatch - Patch a Gate resource.
+type GatePatch struct {
+	// REQUIRED; Properties of a Gate that can be patched.
+	Properties *GatePatchProperties
+}
+
+// GatePatchProperties - Properties of a Gate that can be patched.
+type GatePatchProperties struct {
+	// REQUIRED; The state of the Gate.
+	State *GateState
+}
+
+// GateProperties - A Gate controls the progression during a staged rollout, e.g. in an Update Run.
+type GateProperties struct {
+	// REQUIRED; The type of the Gate determines how it is completed.
+	GateType *GateType
+
+	// REQUIRED; The state of the Gate.
+	State *GateState
+
+	// REQUIRED; The target that the Gate is controlling, e.g. an Update Run.
+	Target *GateTarget
+
+	// The human-readable display name of the Gate.
+	DisplayName *string
+
+	// READ-ONLY; The provisioning state of the Gate resource.
+	ProvisioningState *GateProvisioningState
+}
+
+// GateTarget - The target that the Gate is controlling, e.g. an Update Run. Exactly one of the properties objects will be
+// set.
+type GateTarget struct {
+	// REQUIRED; The resource id that the Gate is controlling the rollout of.
+	ID *string
+
+	// The properties of the Update Run that the Gate is targeting.
+	UpdateRunProperties *UpdateRunGateTargetProperties
 }
 
 // GenerateResponse is the response of a generate request.
@@ -439,7 +538,9 @@ type NodeImageVersion struct {
 	Version *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -531,10 +632,22 @@ type UpdateGroup struct {
 	// REQUIRED; Name of the group.
 	// It must match a group name of an existing fleet member.
 	Name *string
+
+	// A list of Gates that will be created after this Group is executed.
+	AfterGates []*GateConfiguration
+
+	// A list of Gates that will be created before this Group is executed.
+	BeforeGates []*GateConfiguration
 }
 
 // UpdateGroupStatus - The status of a UpdateGroup.
 type UpdateGroupStatus struct {
+	// READ-ONLY; The list of Gates that will run after this UpdateGroup.
+	AfterGates []*UpdateRunGateStatus
+
+	// READ-ONLY; The list of Gates that will run before this UpdateGroup.
+	BeforeGates []*UpdateRunGateStatus
+
 	// READ-ONLY; The list of member this UpdateGroup updates.
 	Members []*MemberUpdateStatus
 
@@ -550,9 +663,6 @@ type UpdateRun struct {
 	// The resource-specific properties for this resource.
 	Properties *UpdateRunProperties
 
-	// READ-ONLY; The name of the UpdateRun resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -562,11 +672,41 @@ type UpdateRun struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
+	// READ-ONLY; The name of the resource
+	Name *string
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// UpdateRunGateStatus - The status of the Gate, as represented in the Update Run.
+type UpdateRunGateStatus struct {
+	// READ-ONLY; The human-readable display name of the Gate.
+	DisplayName *string
+
+	// READ-ONLY; The resource id of the Gate.
+	GateID *string
+
+	// READ-ONLY; The status of the Gate.
+	Status *UpdateStatus
+}
+
+// UpdateRunGateTargetProperties - The properties of the Update Run that the Gate is targeting.
+type UpdateRunGateTargetProperties struct {
+	// REQUIRED; Whether the Gate is placed before or after the update itself.
+	Timing *Timing
+
+	// READ-ONLY; The name of the Update Run.
+	Name *string
+
+	// READ-ONLY; The Update Group of the Update Run.
+	Group *string
+
+	// READ-ONLY; The Update Stage of the Update Run.
+	Stage *string
 }
 
 // UpdateRunListResult - The response of a UpdateRun list operation.
@@ -642,8 +782,14 @@ type UpdateStage struct {
 	// REQUIRED; The name of the stage. Must be unique within the UpdateRun.
 	Name *string
 
+	// A list of Gates that will be created after this Stage is executed.
+	AfterGates []*GateConfiguration
+
 	// The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if unspecified.
 	AfterStageWaitInSeconds *int32
+
+	// A list of Gates that will be created before this Stage is executed.
+	BeforeGates []*GateConfiguration
 
 	// Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
 	Groups []*UpdateGroup
@@ -651,8 +797,14 @@ type UpdateStage struct {
 
 // UpdateStageStatus - The status of a UpdateStage.
 type UpdateStageStatus struct {
+	// READ-ONLY; The list of Gates that will run after this UpdateStage.
+	AfterGates []*UpdateRunGateStatus
+
 	// READ-ONLY; The status of the wait period configured on the UpdateStage.
 	AfterStageWaitStatus *WaitStatus
+
+	// READ-ONLY; The list of Gates that will run before this UpdateStage.
+	BeforeGates []*UpdateRunGateStatus
 
 	// READ-ONLY; The list of groups to be updated as part of this UpdateStage.
 	Groups []*UpdateGroupStatus

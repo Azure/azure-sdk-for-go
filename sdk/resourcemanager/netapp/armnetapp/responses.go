@@ -175,41 +175,6 @@ type BackupsUnderVolumeClientMigrateBackupsResponse struct {
 	// placeholder for future response values
 }
 
-// BucketsClientCreateOrUpdateResponse contains the response from method BucketsClient.BeginCreateOrUpdate.
-type BucketsClientCreateOrUpdateResponse struct {
-	// Bucket resource
-	Bucket
-}
-
-// BucketsClientDeleteResponse contains the response from method BucketsClient.BeginDelete.
-type BucketsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// BucketsClientGenerateCredentialsResponse contains the response from method BucketsClient.GenerateCredentials.
-type BucketsClientGenerateCredentialsResponse struct {
-	// Bucket Access Key, Secret Key, and Expiry date and time of the key pair
-	BucketGenerateCredentials
-}
-
-// BucketsClientGetResponse contains the response from method BucketsClient.Get.
-type BucketsClientGetResponse struct {
-	// Bucket resource
-	Bucket
-}
-
-// BucketsClientListResponse contains the response from method BucketsClient.NewListPager.
-type BucketsClientListResponse struct {
-	// List of volume bucket resources
-	BucketList
-}
-
-// BucketsClientUpdateResponse contains the response from method BucketsClient.BeginUpdate.
-type BucketsClientUpdateResponse struct {
-	// Bucket resource
-	Bucket
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the request to list Cloud Volume operations. It contains a list of operations and a URL link to get the next
@@ -282,28 +247,16 @@ type ResourceClientUpdateNetworkSiblingSetResponse struct {
 	NetworkSiblingSet
 }
 
-// ResourceQuotaLimitsAccountClientGetResponse contains the response from method ResourceQuotaLimitsAccountClient.Get.
-type ResourceQuotaLimitsAccountClientGetResponse struct {
-	// Information regarding Quota Item.
-	QuotaItem
-}
-
-// ResourceQuotaLimitsAccountClientListResponse contains the response from method ResourceQuotaLimitsAccountClient.NewListPager.
-type ResourceQuotaLimitsAccountClientListResponse struct {
-	// List of Quota Items
-	QuotaItemList
-}
-
 // ResourceQuotaLimitsClientGetResponse contains the response from method ResourceQuotaLimitsClient.Get.
 type ResourceQuotaLimitsClientGetResponse struct {
-	// Information regarding Quota Item.
-	QuotaItem
+	// Information regarding Subscription Quota Item.
+	SubscriptionQuotaItem
 }
 
 // ResourceQuotaLimitsClientListResponse contains the response from method ResourceQuotaLimitsClient.NewListPager.
 type ResourceQuotaLimitsClientListResponse struct {
-	// List of Quota Items
-	QuotaItemList
+	// List of Subscription Quota Items
+	SubscriptionQuotaItemList
 }
 
 // ResourceRegionInfosClientGetResponse contains the response from method ResourceRegionInfosClient.Get.
@@ -543,12 +496,6 @@ type VolumesClientGetResponse struct {
 type VolumesClientListGetGroupIDListForLdapUserResponse struct {
 	// Group Id list for Ldap user
 	GetGroupIDListForLDAPUserResponse
-}
-
-// VolumesClientListQuotaReportResponse contains the response from method VolumesClient.BeginListQuotaReport.
-type VolumesClientListQuotaReportResponse struct {
-	// Quota Report for volume
-	ListQuotaReportResponse
 }
 
 // VolumesClientListReplicationsResponse contains the response from method VolumesClient.NewListReplicationsPager.

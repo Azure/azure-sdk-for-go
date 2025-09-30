@@ -69,9 +69,6 @@ type ApplicationHealthPolicy struct {
 
 // ApplicationResource - The application resource.
 type ApplicationResource struct {
-	// READ-ONLY; The name of the application resource.
-	Name *string
-
 	// Describes the managed identities for an Azure resource.
 	Identity *ManagedIdentity
 
@@ -86,6 +83,9 @@ type ApplicationResource struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -124,20 +124,20 @@ type ApplicationResourceProperties struct {
 
 // ApplicationTypeResource - The application type name resource
 type ApplicationTypeResource struct {
-	// The application type name properties
-	Properties *ApplicationTypeResourceProperties
-
-	// READ-ONLY; The name of the application type name resource.
-	Name *string
-
 	// The geo-location where the resource lives
 	Location *string
+
+	// The application type name properties
+	Properties *ApplicationTypeResourceProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -169,20 +169,20 @@ type ApplicationTypeUpdateParameters struct {
 
 // ApplicationTypeVersionResource - An application type version resource for the specified application type name resource.
 type ApplicationTypeVersionResource struct {
-	// The properties of the application type version resource.
-	Properties *ApplicationTypeVersionResourceProperties
-
-	// READ-ONLY; The application type version.
-	Name *string
-
 	// The geo-location where the resource lives
 	Location *string
+
+	// The properties of the application type version resource.
+	Properties *ApplicationTypeVersionResourceProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -694,9 +694,6 @@ type ManagedCluster struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the cluster resource.
-	Name *string
-
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
 	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
 	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
@@ -705,6 +702,9 @@ type ManagedCluster struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -804,6 +804,10 @@ type ManagedClusterProperties struct {
 	// Setting this to true creates IPv6 address space for the default VNet used by the cluster. This setting cannot be changed
 	// once the cluster is created. The default value for this setting is false.
 	EnableIPv6 *bool
+
+	// Enable the creation of node types with only outbound traffic enabled. If set, a separate load balancer backend pool will
+	// be created for node types with inbound traffic enabled. Can only be set at the time of cluster creation.
+	EnableOutboundOnlyNodeTypes *bool
 
 	// Setting this to true will link the IPv4 address as the ServicePublicIP of the IPv6 address. It can only be set to True
 	// if IPv6 is enabled on the cluster.
@@ -1042,11 +1046,11 @@ type NodeType struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the node type.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1195,6 +1199,9 @@ type NodeTypeProperties struct {
 
 	// Specifies the full host group resource Id. This property is used for deploying on azure dedicated hosts.
 	HostGroupID *string
+
+	// Specifies the node type should be configured for only outbound traffic and not inbound traffic.
+	IsOutboundOnly *bool
 
 	// Indicates whether the node type will be Spot Virtual Machines. Azure will allocate the VMs if there is capacity available
 	// and the VMs can be evicted at any time.
@@ -1515,6 +1522,9 @@ type ServiceEndpoint struct {
 
 	// A list of locations.
 	Locations []*string
+
+	// Specifies the resource id of the service endpoint to be used in the cluster.
+	NetworkIdentifier *string
 }
 
 // ServiceLoadMetric - Specifies a metric to load balance a service during runtime.
@@ -1559,8 +1569,7 @@ func (s *ServicePlacementInvalidDomainPolicy) GetServicePlacementPolicy() *Servi
 // ServicePlacementNonPartiallyPlaceServicePolicy - The type of placement policy for a service fabric service. Following are
 // the possible values.
 type ServicePlacementNonPartiallyPlaceServicePolicy struct {
-	// CONSTANT; undefinedField has constant value ServicePlacementPolicyTypeNonPartiallyPlaceService, any specified value is
-	// ignored.
+	// CONSTANT; Field has constant value ServicePlacementPolicyTypeNonPartiallyPlaceService, any specified value is ignored.
 	Type *ServicePlacementPolicyType
 }
 
@@ -1649,20 +1658,20 @@ func (s *ServicePlacementRequiredDomainPolicy) GetServicePlacementPolicy() *Serv
 
 // ServiceResource - The service resource.
 type ServiceResource struct {
-	// The service resource properties.
-	Properties ServiceResourcePropertiesClassification
-
-	// READ-ONLY; The name of the service resource in the format of {applicationName}~{serviceName}.
-	Name *string
-
 	// The geo-location where the resource lives
 	Location *string
+
+	// The service resource properties.
+	Properties ServiceResourcePropertiesClassification
 
 	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

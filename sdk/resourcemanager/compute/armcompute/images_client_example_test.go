@@ -15,10 +15,193 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_ListBySubscription.json
+func ExampleImagesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewImagesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ImageListResult = armcompute.ImageListResult{
+		// 	Value: []*armcompute.Image{
+		// 		{
+		// 			Name: to.Ptr("myImage"),
+		// 			Type: to.Ptr("Microsoft.Compute/images"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
+		// 			Location: to.Ptr("West US"),
+		// 			Properties: &armcompute.ImageProperties{
+		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				StorageProfile: &armcompute.ImageStorageProfile{
+		// 					DataDisks: []*armcompute.ImageDataDisk{
+		// 						{
+		// 							BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd"),
+		// 							ManagedDisk: &armcompute.SubResource{
+		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"),
+		// 							},
+		// 							Snapshot: &armcompute.SubResource{
+		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
+		// 							},
+		// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+		// 							Lun: to.Ptr[int32](1),
+		// 					}},
+		// 					OSDisk: &armcompute.ImageOSDisk{
+		// 						BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
+		// 						ManagedDisk: &armcompute.SubResource{
+		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1"),
+		// 						},
+		// 						Snapshot: &armcompute.SubResource{
+		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
+		// 						},
+		// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+		// 						OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+		// 						OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+		// 					},
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_ListByResourceGroup.json
+func ExampleImagesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewImagesClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ImageListResult = armcompute.ImageListResult{
+		// 	Value: []*armcompute.Image{
+		// 		{
+		// 			Name: to.Ptr("myImage"),
+		// 			Type: to.Ptr("Microsoft.Compute/images"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
+		// 			Location: to.Ptr("West US"),
+		// 			Properties: &armcompute.ImageProperties{
+		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				StorageProfile: &armcompute.ImageStorageProfile{
+		// 					DataDisks: []*armcompute.ImageDataDisk{
+		// 						{
+		// 							BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd"),
+		// 							ManagedDisk: &armcompute.SubResource{
+		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"),
+		// 							},
+		// 							Snapshot: &armcompute.SubResource{
+		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
+		// 							},
+		// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+		// 							Lun: to.Ptr[int32](1),
+		// 					}},
+		// 					OSDisk: &armcompute.ImageOSDisk{
+		// 						BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
+		// 						ManagedDisk: &armcompute.SubResource{
+		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1"),
+		// 						},
+		// 						Snapshot: &armcompute.SubResource{
+		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
+		// 						},
+		// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+		// 						OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+		// 						OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+		// 					},
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Get.json
+func ExampleImagesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewImagesClient().Get(ctx, "myResourceGroup", "myImage", &armcompute.ImagesClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Image = armcompute.Image{
+	// 	Name: to.Ptr("myImage"),
+	// 	Type: to.Ptr("Microsoft.Compute/images"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
+	// 	Location: to.Ptr("West US"),
+	// 	Properties: &armcompute.ImageProperties{
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		StorageProfile: &armcompute.ImageStorageProfile{
+	// 			DataDisks: []*armcompute.ImageDataDisk{
+	// 				{
+	// 					BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd"),
+	// 					ManagedDisk: &armcompute.SubResource{
+	// 						ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"),
+	// 					},
+	// 					Snapshot: &armcompute.SubResource{
+	// 						ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
+	// 					},
+	// 					StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+	// 					Lun: to.Ptr[int32](1),
+	// 			}},
+	// 			OSDisk: &armcompute.ImageOSDisk{
+	// 				BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
+	// 				DiskSizeGB: to.Ptr[int32](20),
+	// 				ManagedDisk: &armcompute.SubResource{
+	// 					ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1"),
+	// 				},
+	// 				Snapshot: &armcompute.SubResource{
+	// 					ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
+	// 				},
+	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+	// 				OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+	// 				OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 			},
+	// 			ZoneResilient: to.Ptr(true),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlobWithDiskEncryptionSetResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +261,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlob
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromABlob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromABlob.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +317,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlob
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAManagedDiskWithDiskEncryptionSetResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +381,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAMana
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromAManagedDisk.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromAManagedDisk.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAManagedDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +441,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAMana
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnapshotWithDiskEncryptionSetResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +505,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnap
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromASnapshot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromASnapshot.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +565,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnap
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromAVM.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_CreateFromAVM.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAnExistingVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,7 +621,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAnExi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatIncludesADataDiskFromABlob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +685,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatInclu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatIncludesADataDiskFromAManagedDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -574,7 +757,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatInclu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
 func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatIncludesADataDiskFromASnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,7 +829,7 @@ func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatInclu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Update.json
 func ExampleImagesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -720,7 +903,7 @@ func ExampleImagesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Images_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Images_Delete_MaximumSet_Gen.json
 func ExampleImagesClient_BeginDelete_imageDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -741,7 +924,7 @@ func ExampleImagesClient_BeginDelete_imageDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Images_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Images_Delete_MinimumSet_Gen.json
 func ExampleImagesClient_BeginDelete_imageDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -759,188 +942,5 @@ func ExampleImagesClient_BeginDelete_imageDeleteMinimumSetGen() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_Get.json
-func ExampleImagesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewImagesClient().Get(ctx, "myResourceGroup", "myImage", &armcompute.ImagesClientGetOptions{Expand: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Image = armcompute.Image{
-	// 	Name: to.Ptr("myImage"),
-	// 	Type: to.Ptr("Microsoft.Compute/images"),
-	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
-	// 	Location: to.Ptr("West US"),
-	// 	Properties: &armcompute.ImageProperties{
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		StorageProfile: &armcompute.ImageStorageProfile{
-	// 			DataDisks: []*armcompute.ImageDataDisk{
-	// 				{
-	// 					BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd"),
-	// 					ManagedDisk: &armcompute.SubResource{
-	// 						ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"),
-	// 					},
-	// 					Snapshot: &armcompute.SubResource{
-	// 						ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
-	// 					},
-	// 					StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 					Lun: to.Ptr[int32](1),
-	// 			}},
-	// 			OSDisk: &armcompute.ImageOSDisk{
-	// 				BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
-	// 				DiskSizeGB: to.Ptr[int32](20),
-	// 				ManagedDisk: &armcompute.SubResource{
-	// 					ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1"),
-	// 				},
-	// 				Snapshot: &armcompute.SubResource{
-	// 					ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
-	// 				},
-	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 				OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-	// 				OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 			},
-	// 			ZoneResilient: to.Ptr(true),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_ListByResourceGroup.json
-func ExampleImagesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewImagesClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ImageListResult = armcompute.ImageListResult{
-		// 	Value: []*armcompute.Image{
-		// 		{
-		// 			Name: to.Ptr("myImage"),
-		// 			Type: to.Ptr("Microsoft.Compute/images"),
-		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
-		// 			Location: to.Ptr("West US"),
-		// 			Properties: &armcompute.ImageProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				StorageProfile: &armcompute.ImageStorageProfile{
-		// 					DataDisks: []*armcompute.ImageDataDisk{
-		// 						{
-		// 							BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd"),
-		// 							ManagedDisk: &armcompute.SubResource{
-		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"),
-		// 							},
-		// 							Snapshot: &armcompute.SubResource{
-		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
-		// 							},
-		// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-		// 							Lun: to.Ptr[int32](1),
-		// 					}},
-		// 					OSDisk: &armcompute.ImageOSDisk{
-		// 						BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
-		// 						ManagedDisk: &armcompute.SubResource{
-		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1"),
-		// 						},
-		// 						Snapshot: &armcompute.SubResource{
-		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
-		// 						},
-		// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-		// 						OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-		// 						OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-		// 					},
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/imageExamples/Image_ListBySubscription.json
-func ExampleImagesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewImagesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ImageListResult = armcompute.ImageListResult{
-		// 	Value: []*armcompute.Image{
-		// 		{
-		// 			Name: to.Ptr("myImage"),
-		// 			Type: to.Ptr("Microsoft.Compute/images"),
-		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/myImage"),
-		// 			Location: to.Ptr("West US"),
-		// 			Properties: &armcompute.ImageProperties{
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				StorageProfile: &armcompute.ImageStorageProfile{
-		// 					DataDisks: []*armcompute.ImageDataDisk{
-		// 						{
-		// 							BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd"),
-		// 							ManagedDisk: &armcompute.SubResource{
-		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"),
-		// 							},
-		// 							Snapshot: &armcompute.SubResource{
-		// 								ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
-		// 							},
-		// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-		// 							Lun: to.Ptr[int32](1),
-		// 					}},
-		// 					OSDisk: &armcompute.ImageOSDisk{
-		// 						BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
-		// 						ManagedDisk: &armcompute.SubResource{
-		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk1"),
-		// 						},
-		// 						Snapshot: &armcompute.SubResource{
-		// 							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
-		// 						},
-		// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-		// 						OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-		// 						OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-		// 					},
-		// 				},
-		// 			},
-		// 	}},
-		// }
 	}
 }

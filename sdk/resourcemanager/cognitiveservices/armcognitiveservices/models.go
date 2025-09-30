@@ -13,16 +13,24 @@ type AADAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
+	Category *ConnectionCategory
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -68,16 +76,24 @@ type APIKeyAuthConnectionProperties struct {
 	Category *ConnectionCategory
 
 	// Api key object for connection credential.
-	Credentials   *ConnectionAPIKey
+	Credentials *ConnectionAPIKey
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -169,17 +185,25 @@ type AccessKeyAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
-	Credentials   *ConnectionAccessKey
+	Category    *ConnectionCategory
+	Credentials *ConnectionAccessKey
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -255,16 +279,24 @@ type AccountKeyAuthTypeConnectionProperties struct {
 	Category *ConnectionCategory
 
 	// Account key object for connection credential.
-	Credentials   *ConnectionAccountKey
+	Credentials *ConnectionAccountKey
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -378,13 +410,13 @@ type AccountProperties struct {
 	// The user owned AML account properties.
 	AmlWorkspace *UserOwnedAmlWorkspace
 
-	// Specifies the projects that are associated with this resource.
+	// Specifies the projects, by project name, that are associated with this resource.
 	AssociatedProjects []*string
 
 	// Optional subdomain name used for token-based authentication.
 	CustomSubDomainName *string
 
-	// Specifies the project that is targeted when data plane endpoints are called without a project parameter.
+	// Specifies the project, by project name, that is targeted when data plane endpoints are called without a project parameter.
 	DefaultProject   *string
 	DisableLocalAuth *bool
 
@@ -401,12 +433,8 @@ type AccountProperties struct {
 	MigrationToken *string
 
 	// A collection of rules governing the accessibility from specific network locations.
-	NetworkACLs *NetworkRuleSet
-
-	// Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely within the user's
-	// private network, eliminating public internet exposure while maintaining
-	// control over network configurations and resources.
-	NetworkInjections *NetworkInjections
+	NetworkACLs       *NetworkRuleSet
+	NetworkInjections []*NetworkInjection
 
 	// Whether or not public endpoint access is allowed for this account.
 	PublicNetworkAccess *PublicNetworkAccess
@@ -568,16 +596,16 @@ type CapabilityHostProperties struct {
 	// The asset description text.
 	Description *string
 
-	// List of Storage connections.
+	// List of connection names from those available in the account or project to be used as a storage resource.
 	StorageConnections []*string
 
 	// Tag dictionary. Tags can be added, removed, and updated.
 	Tags map[string]*string
 
-	// List of Thread storage connections.
+	// List of connection names from those available in the account or project to be used for Thread storage.
 	ThreadStorageConnections []*string
 
-	// List of VectorStore connections.
+	// List of connection names from those available in the account or project to be used for vector database (e.g. CosmosDB).
 	VectorStoreConnections []*string
 
 	// READ-ONLY; Provisioning state for the CapabilityHost.
@@ -874,16 +902,24 @@ type ConnectionPropertiesV2 struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
+	Category *ConnectionCategory
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -969,16 +1005,24 @@ type CustomKeysConnectionProperties struct {
 	Category *ConnectionCategory
 
 	// Custom Keys credential object
-	Credentials   *CustomKeys
+	Credentials *CustomKeys
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -1335,17 +1379,25 @@ type ManagedIdentityAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
-	Credentials   *ConnectionManagedIdentity
+	Category    *ConnectionCategory
+	Credentials *ConnectionManagedIdentity
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -1503,10 +1555,10 @@ type MultiRegionSettings struct {
 	RoutingMethod *RoutingMethods
 }
 
-// NetworkInjections - Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely
+// NetworkInjection - Specifies in AI Foundry where virtual network injection occurs to secure scenarios like Agents entirely
 // within the user's private network, eliminating public internet exposure while maintaining
 // control over network configurations and resources.
-type NetworkInjections struct {
+type NetworkInjection struct {
 	// Specifies what features in AI Foundry network injection applies to. Currently only supports 'agent' for agent scenarios.
 	// 'none' means no network injection.
 	Scenario *ScenarioType
@@ -1652,16 +1704,24 @@ type NoneAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
+	Category *ConnectionCategory
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -1699,16 +1759,24 @@ type OAuth2AuthTypeConnectionProperties struct {
 	Category *ConnectionCategory
 
 	// ClientId and ClientSecret are required. Other properties are optional depending on each OAuth2 provider's implementation.
-	Credentials   *ConnectionOAuth2
+	Credentials *ConnectionOAuth2
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -1792,17 +1860,25 @@ type PATAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
-	Credentials   *ConnectionPersonalAccessToken
+	Category    *ConnectionCategory
+	Credentials *ConnectionPersonalAccessToken
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -2256,8 +2332,8 @@ type RaiPolicyProperties struct {
 	CustomBlocklists []*CustomBlocklistConfig
 
 	// Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronousfilter =3. Please
-	// use 'Asynchronousfilter' after 2025-04-01-preview. It is the same as 'Deferred'
-	// in previous version.
+	// use 'Asynchronousfilter' after 2025-06-01. It is the same as 'Deferred' in
+	// previous version.
 	Mode *RaiPolicyMode
 
 	// READ-ONLY; Content Filters policy type.
@@ -2366,17 +2442,25 @@ type SASAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
-	Credentials   *ConnectionSharedAccessSignature
+	Category    *ConnectionCategory
+	Credentials *ConnectionSharedAccessSignature
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -2491,17 +2575,25 @@ type ServicePrincipalAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
-	Credentials   *ConnectionServicePrincipal
+	Category    *ConnectionCategory
+	Credentials *ConnectionServicePrincipal
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 
@@ -2625,17 +2717,25 @@ type UsernamePasswordAuthTypeConnectionProperties struct {
 	AuthType *ConnectionAuthType
 
 	// Category of the connection
-	Category      *ConnectionCategory
-	Credentials   *ConnectionUsernamePassword
+	Category    *ConnectionCategory
+	Credentials *ConnectionUsernamePassword
+
+	// Provides the error message if the connection fails
 	Error         *string
 	ExpiryTime    *time.Time
 	IsSharedToAll *bool
 
 	// Store user metadata for this connection
-	Metadata                    map[string]*string
-	PeRequirement               *ManagedPERequirement
-	PeStatus                    *ManagedPEStatus
-	SharedUserList              []*string
+	Metadata map[string]*string
+
+	// Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
+	PeRequirement *ManagedPERequirement
+
+	// Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
+	PeStatus       *ManagedPEStatus
+	SharedUserList []*string
+
+	// The connection URL to be used.
 	Target                      *string
 	UseWorkspaceManagedIdentity *bool
 

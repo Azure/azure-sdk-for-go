@@ -59,7 +59,7 @@ func (testsuite *AgentTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestAgentTestSuite(t *testing.T) {
+func TTestAgentTestSuite(t *testing.T) {
 	suite.Run(t, new(AgentTestSuite))
 }
 

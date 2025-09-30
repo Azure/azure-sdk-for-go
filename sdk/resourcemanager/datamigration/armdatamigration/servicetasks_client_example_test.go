@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/ServiceTasks_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ServiceTasks_List.json
 func ExampleServiceTasksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,11 +47,15 @@ func ExampleServiceTasksClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.DataMigration/services/serviceTasks"),
 		// 			ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/serviceTasks/DmsSdkTask"),
 		// 			Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
-		// 			Properties: &armdatamigration.CheckOCIDriverTaskProperties{
+		// 			Properties: &armdatamigration.ConnectToSourceMySQLTaskProperties{
 		// 				State: to.Ptr(armdatamigration.TaskStateQueued),
-		// 				TaskType: to.Ptr("Service.Check.OCI"),
-		// 				Input: &armdatamigration.CheckOCIDriverTaskInput{
-		// 					ServerVersion: to.Ptr("NA"),
+		// 				TaskType: to.Ptr(armdatamigration.TaskTypeConnectToSourceMySQL),
+		// 				Input: &armdatamigration.ConnectToSourceMySQLTaskInput{
+		// 					SourceConnectionInfo: &armdatamigration.MySQLConnectionInfo{
+		// 						Type: to.Ptr("MySqlConnectionInfo"),
+		// 						Port: to.Ptr[int32](3306),
+		// 						ServerName: to.Ptr("localhost"),
+		// 					},
 		// 				},
 		// 			},
 		// 	}},
@@ -59,7 +63,7 @@ func ExampleServiceTasksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/ServiceTasks_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ServiceTasks_CreateOrUpdate.json
 func ExampleServiceTasksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,10 +75,14 @@ func ExampleServiceTasksClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServiceTasksClient().CreateOrUpdate(ctx, "DmsSdkRg", "DmsSdkService", "DmsSdkTask", armdatamigration.ProjectTask{
-		Properties: &armdatamigration.CheckOCIDriverTaskProperties{
-			TaskType: to.Ptr("Service.Check.OCI"),
-			Input: &armdatamigration.CheckOCIDriverTaskInput{
-				ServerVersion: to.Ptr("NA"),
+		Properties: &armdatamigration.ConnectToSourceMySQLTaskProperties{
+			TaskType: to.Ptr(armdatamigration.TaskTypeConnectToSourceMySQL),
+			Input: &armdatamigration.ConnectToSourceMySQLTaskInput{
+				SourceConnectionInfo: &armdatamigration.MySQLConnectionInfo{
+					Type:       to.Ptr("MySqlConnectionInfo"),
+					Port:       to.Ptr[int32](3306),
+					ServerName: to.Ptr("localhost"),
+				},
 			},
 		},
 	}, nil)
@@ -89,17 +97,21 @@ func ExampleServiceTasksClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.DataMigration/services/serviceTasks"),
 	// 	ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/serviceTasks/DmsSdkTask"),
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
-	// 	Properties: &armdatamigration.CheckOCIDriverTaskProperties{
+	// 	Properties: &armdatamigration.ConnectToSourceMySQLTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("Service.Check.OCI"),
-	// 		Input: &armdatamigration.CheckOCIDriverTaskInput{
-	// 			ServerVersion: to.Ptr("NA"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToSourceMySQL),
+	// 		Input: &armdatamigration.ConnectToSourceMySQLTaskInput{
+	// 			SourceConnectionInfo: &armdatamigration.MySQLConnectionInfo{
+	// 				Type: to.Ptr("MySqlConnectionInfo"),
+	// 				Port: to.Ptr[int32](3306),
+	// 				ServerName: to.Ptr("localhost"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/ServiceTasks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ServiceTasks_Get.json
 func ExampleServiceTasksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,17 +134,21 @@ func ExampleServiceTasksClient_Get() {
 	// 	Type: to.Ptr("Microsoft.DataMigration/services/serviceTasks"),
 	// 	ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/serviceTasks/DmsSdkTask"),
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
-	// 	Properties: &armdatamigration.CheckOCIDriverTaskProperties{
+	// 	Properties: &armdatamigration.ConnectToSourceMySQLTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("Service.Check.OCI"),
-	// 		Input: &armdatamigration.CheckOCIDriverTaskInput{
-	// 			ServerVersion: to.Ptr("NA"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToSourceMySQL),
+	// 		Input: &armdatamigration.ConnectToSourceMySQLTaskInput{
+	// 			SourceConnectionInfo: &armdatamigration.MySQLConnectionInfo{
+	// 				Type: to.Ptr("MySqlConnectionInfo"),
+	// 				Port: to.Ptr[int32](3306),
+	// 				ServerName: to.Ptr("localhost"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/ServiceTasks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ServiceTasks_Delete.json
 func ExampleServiceTasksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +165,7 @@ func ExampleServiceTasksClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/ServiceTasks_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ServiceTasks_Update.json
 func ExampleServiceTasksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,10 +177,14 @@ func ExampleServiceTasksClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServiceTasksClient().Update(ctx, "DmsSdkRg", "DmsSdkService", "DmsSdkTask", armdatamigration.ProjectTask{
-		Properties: &armdatamigration.CheckOCIDriverTaskProperties{
-			TaskType: to.Ptr("Service.Check.OCI"),
-			Input: &armdatamigration.CheckOCIDriverTaskInput{
-				ServerVersion: to.Ptr("NA"),
+		Properties: &armdatamigration.ConnectToSourceMySQLTaskProperties{
+			TaskType: to.Ptr(armdatamigration.TaskTypeConnectToSourceMySQL),
+			Input: &armdatamigration.ConnectToSourceMySQLTaskInput{
+				SourceConnectionInfo: &armdatamigration.MySQLConnectionInfo{
+					Type:       to.Ptr("MySqlConnectionInfo"),
+					Port:       to.Ptr[int32](3306),
+					ServerName: to.Ptr("localhost"),
+				},
 			},
 		},
 	}, nil)
@@ -179,17 +199,21 @@ func ExampleServiceTasksClient_Update() {
 	// 	Type: to.Ptr("Microsoft.DataMigration/services/serviceTasks"),
 	// 	ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/serviceTasks/DmsSdkTask"),
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
-	// 	Properties: &armdatamigration.CheckOCIDriverTaskProperties{
+	// 	Properties: &armdatamigration.ConnectToSourceMySQLTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("Service.Check.OCI"),
-	// 		Input: &armdatamigration.CheckOCIDriverTaskInput{
-	// 			ServerVersion: to.Ptr("NA"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToSourceMySQL),
+	// 		Input: &armdatamigration.ConnectToSourceMySQLTaskInput{
+	// 			SourceConnectionInfo: &armdatamigration.MySQLConnectionInfo{
+	// 				Type: to.Ptr("MySqlConnectionInfo"),
+	// 				Port: to.Ptr[int32](3306),
+	// 				ServerName: to.Ptr("localhost"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/ServiceTasks_Cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ServiceTasks_Cancel.json
 func ExampleServiceTasksClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,11 +236,15 @@ func ExampleServiceTasksClient_Cancel() {
 	// 	Type: to.Ptr("Microsoft.DataMigration/services/serviceTasks"),
 	// 	ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService/serviceTasks/DmsSdkTask"),
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
-	// 	Properties: &armdatamigration.CheckOCIDriverTaskProperties{
+	// 	Properties: &armdatamigration.ConnectToSourceMySQLTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("Service.Check.OCI"),
-	// 		Input: &armdatamigration.CheckOCIDriverTaskInput{
-	// 			ServerVersion: to.Ptr("NA"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToSourceMySQL),
+	// 		Input: &armdatamigration.ConnectToSourceMySQLTaskInput{
+	// 			SourceConnectionInfo: &armdatamigration.MySQLConnectionInfo{
+	// 				Type: to.Ptr("MySqlConnectionInfo"),
+	// 				Port: to.Ptr[int32](3306),
+	// 				ServerName: to.Ptr("localhost"),
+	// 			},
 	// 		},
 	// 	},
 	// }

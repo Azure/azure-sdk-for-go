@@ -125,7 +125,6 @@ func (client *CopilotSettingsClient) deleteCreateRequest(ctx context.Context, _ 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

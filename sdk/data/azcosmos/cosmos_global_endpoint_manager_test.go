@@ -447,6 +447,80 @@ func TestRequestToUpdateGEMPreservesIncomingContextWithoutCancellation(t *testin
 	}
 }
 
+func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
+	type contextKey string
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+	serverEndpoint, _ := url.Parse("https://myaccount.documents.azure.com:443/")
+	mocked_response := "{\"_self\":\"\",\"id\":\"my_account\",\"_rid\":\"my_account-westus.sql.cosmos.azure.com\",\"media\":\"//media/\",\"addresses\":\"//addresses/\",\"_dbs\":\"//dbs/\",\"writableLocations\":[{\"name\":\"West US\",\"databaseAccountEndpoint\":\"https://my_account-westus.documents.azure.com:443/\"},{\"name\":\"West US 3\",\"databaseAccountEndpoint\":\"https://my_account-westus3.documents.azure.com:443/\"}],\"readableLocations\":[{\"name\":\"West US\",\"databaseAccountEndpoint\":\"https://my_account-westus.documents.azure.com:443/\"},{\"name\":\"West US 3\",\"databaseAccountEndpoint\":\"https://my_account-westus3.documents.azure.com:443/\"}], \"enableMultipleWriteLocations\":true}"
+
+	gemServer.SetResponse(mock.WithBody([]byte(mocked_response)))
+	mockLc := createLocationCacheForGem(*serverEndpoint, true)
+
+	// The GEM needs it's own pipeline that doesn't have the GEM policy in it to avoid deadlocking.
+	capturePolicy := &requestCollector{}
+	gemPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer, PerCallPolicies: []policy.Policy{capturePolicy}})
+	mockGem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            gemPipeline,
+		preferredLocations:  []string{"Central US"},
+		locationCache:       mockLc,
+		refreshTimeInterval: 5 * time.Minute,
+	}
+
+	gemPolicy := &globalEndpointManagerPolicy{
+		gem: mockGem,
+	}
+
+	// For the "main" pipeline under test, we can insert the GEM policy, which will cause GEM updates to run (through the GEM pipeline).
+	testPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer, PerCallPolicies: []policy.Policy{gemPolicy}})
+
+	ctx, cancel := context.WithCancel(context.WithValue(context.Background(), contextKey("test"), "testValue"))
+	defer cancel()
+
+	// Issue a test request
+	req, err := azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+	resp, _ := testPipeline.Do(req)
+	// tentative write header should be sent for multi write account
+	if resp.Request.Header.Get(cosmosHeaderAllowTentativeWrites) == "" {
+		t.Fatalf("expected %s header to be set", cosmosHeaderAllowTentativeWrites)
+	}
+
+	// tentative write header should not be sent if the account is not multi-write
+	mocked_response = "{\"_self\":\"\",\"id\":\"my_account\",\"_rid\":\"my_account-westus.sql.cosmos.azure.com\",\"media\":\"//media/\",\"addresses\":\"//addresses/\",\"_dbs\":\"//dbs/\",\"writableLocations\":[{\"name\":\"West US\",\"databaseAccountEndpoint\":\"https://my_account-westus.documents.azure.com:443/\"},{\"name\":\"West US 3\",\"databaseAccountEndpoint\":\"https://my_account-westus3.documents.azure.com:443/\"}],\"readableLocations\":[{\"name\":\"West US\",\"databaseAccountEndpoint\":\"https://my_account-westus.documents.azure.com:443/\"},{\"name\":\"West US 3\",\"databaseAccountEndpoint\":\"https://my_account-westus3.documents.azure.com:443/\"}], \"enableMultipleWriteLocations\":false}"
+	gemServer.SetResponse(mock.WithBody([]byte(mocked_response)))
+	// change time to trigger another get account properties call
+	mockGem.lastUpdateTime = time.Now().Add(-10 * time.Minute)
+
+	// Issue another test request
+	req, err = azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+
+	// Used to trigger another get account properties call in the background
+	_, err = testPipeline.Do(req)
+	if err != nil {
+		t.Fatalf("testPipeline.Do failed: %v", err)
+	}
+
+	// Issue another test request that will use the updated account properties
+	req, err = azruntime.NewRequest(ctx, http.MethodGet, gemServer.URL())
+	if err != nil {
+		t.Fatalf("failed to create request: %v", err)
+	}
+
+	resp, _ = testPipeline.Do(req)
+	if resp.Request.Header.Get(cosmosHeaderAllowTentativeWrites) != "" {
+		t.Fatalf("expected %s header not to be set", cosmosHeaderAllowTentativeWrites)
+	}
+}
+
 func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	availableWriteLocs := []string{"East US"}
 	if isMultiMaster {

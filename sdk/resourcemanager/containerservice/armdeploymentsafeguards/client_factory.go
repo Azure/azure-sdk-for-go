@@ -29,9 +29,9 @@ func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOpti
 	}, nil
 }
 
-// NewDeploymentSafeguardsClient creates a new instance of DeploymentSafeguardsClient.
-func (c *ClientFactory) NewDeploymentSafeguardsClient() *DeploymentSafeguardsClient {
-	return &DeploymentSafeguardsClient{
+// NewClient creates a new instance of Client.
+func (c *ClientFactory) NewClient() *Client {
+	return &Client{
 		internal: c.internal,
 	}
 }

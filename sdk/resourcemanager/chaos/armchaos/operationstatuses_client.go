@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-// OperationStatusesClient contains the methods for the OperationStatuses group.
+// OperationStatusesClient - Chaos Studio async operation status resource operations.
 // Don't use this type directly, use NewOperationStatusesClient() instead.
 type OperationStatusesClient struct {
 	internal       *arm.Client

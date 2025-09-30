@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -45,7 +42,7 @@ func NewClient(credential azcore.TokenCredential, options *ClientOptions) (*Clie
 	if err != nil {
 		return nil, err
 	}
-	return &Client{host: c.Endpoint, internal: azcoreClient}, nil
+	return &Client{endpoint: c.Endpoint, internal: azcoreClient, apiVersion: versionsV1}, nil
 }
 
 // ErrorInfo - The code and message for an error.

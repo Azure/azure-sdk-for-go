@@ -107,6 +107,13 @@ extends:
           - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
             parameters:
               JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+              Pools: # eng/pipelines/templates/stages/platform-matrix.json only contains linux and windows OS currently so only pass those pools to avoid the other OS's being marked skipped in DevOps
+                - name: Linux
+                  filter: .*Linux.*Pool$
+                  os: linux
+                - name: Windows
+                  filter: .*Windows.*Pool$
+                  os: windows
               MatrixConfigs:
                 - ${{ each config in parameters.MatrixConfigs }}:
                     - ${{ config }}

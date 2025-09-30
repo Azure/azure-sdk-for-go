@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/managedAzResiliencyStatusGet_example.json
+// Generated from example definition: 2025-06-01-preview/managedAzResiliencyStatusGet_example.json
 func ExampleManagedAzResiliencyStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

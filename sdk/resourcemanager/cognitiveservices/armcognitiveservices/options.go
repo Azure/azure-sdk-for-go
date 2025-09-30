@@ -24,24 +24,24 @@ type AccountCapabilityHostsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountConnectionClientCreateOptions contains the optional parameters for the AccountConnectionClient.Create method.
-type AccountConnectionClientCreateOptions struct {
+// AccountConnectionsClientCreateOptions contains the optional parameters for the AccountConnectionsClient.Create method.
+type AccountConnectionsClientCreateOptions struct {
 	// The object for creating or updating a new account connection
-	Body *ConnectionPropertiesV2BasicResource
+	Connection *ConnectionPropertiesV2BasicResource
 }
 
-// AccountConnectionClientDeleteOptions contains the optional parameters for the AccountConnectionClient.Delete method.
-type AccountConnectionClientDeleteOptions struct {
+// AccountConnectionsClientDeleteOptions contains the optional parameters for the AccountConnectionsClient.Delete method.
+type AccountConnectionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountConnectionClientGetOptions contains the optional parameters for the AccountConnectionClient.Get method.
-type AccountConnectionClientGetOptions struct {
+// AccountConnectionsClientGetOptions contains the optional parameters for the AccountConnectionsClient.Get method.
+type AccountConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountConnectionClientListOptions contains the optional parameters for the AccountConnectionClient.NewListPager method.
-type AccountConnectionClientListOptions struct {
+// AccountConnectionsClientListOptions contains the optional parameters for the AccountConnectionsClient.NewListPager method.
+type AccountConnectionsClientListOptions struct {
 	// Category of the connection.
 	Category *string
 
@@ -52,10 +52,10 @@ type AccountConnectionClientListOptions struct {
 	Target *string
 }
 
-// AccountConnectionClientUpdateOptions contains the optional parameters for the AccountConnectionClient.Update method.
-type AccountConnectionClientUpdateOptions struct {
+// AccountConnectionsClientUpdateOptions contains the optional parameters for the AccountConnectionsClient.Update method.
+type AccountConnectionsClientUpdateOptions struct {
 	// Parameters for account connection update.
-	Body *ConnectionUpdateContent
+	Connection *ConnectionUpdateContent
 }
 
 // AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
@@ -412,24 +412,24 @@ type ProjectCapabilityHostsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectConnectionClientCreateOptions contains the optional parameters for the ProjectConnectionClient.Create method.
-type ProjectConnectionClientCreateOptions struct {
+// ProjectConnectionsClientCreateOptions contains the optional parameters for the ProjectConnectionsClient.Create method.
+type ProjectConnectionsClientCreateOptions struct {
 	// The object for creating or updating a new account connection
-	Body *ConnectionPropertiesV2BasicResource
+	Connection *ConnectionPropertiesV2BasicResource
 }
 
-// ProjectConnectionClientDeleteOptions contains the optional parameters for the ProjectConnectionClient.Delete method.
-type ProjectConnectionClientDeleteOptions struct {
+// ProjectConnectionsClientDeleteOptions contains the optional parameters for the ProjectConnectionsClient.Delete method.
+type ProjectConnectionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectConnectionClientGetOptions contains the optional parameters for the ProjectConnectionClient.Get method.
-type ProjectConnectionClientGetOptions struct {
+// ProjectConnectionsClientGetOptions contains the optional parameters for the ProjectConnectionsClient.Get method.
+type ProjectConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectConnectionClientListOptions contains the optional parameters for the ProjectConnectionClient.NewListPager method.
-type ProjectConnectionClientListOptions struct {
+// ProjectConnectionsClientListOptions contains the optional parameters for the ProjectConnectionsClient.NewListPager method.
+type ProjectConnectionsClientListOptions struct {
 	// Category of the connection.
 	Category *string
 
@@ -440,10 +440,10 @@ type ProjectConnectionClientListOptions struct {
 	Target *string
 }
 
-// ProjectConnectionClientUpdateOptions contains the optional parameters for the ProjectConnectionClient.Update method.
-type ProjectConnectionClientUpdateOptions struct {
+// ProjectConnectionsClientUpdateOptions contains the optional parameters for the ProjectConnectionsClient.Update method.
+type ProjectConnectionsClientUpdateOptions struct {
 	// Parameters for account connection update.
-	Body *ConnectionUpdateContent
+	Connection *ConnectionUpdateContent
 }
 
 // ProjectsClientBeginCreateOptions contains the optional parameters for the ProjectsClient.BeginCreate method.

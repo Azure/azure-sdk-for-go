@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Tasks_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_List.json
 func ExampleTasksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleTasksClient_NewListPager() {
 		// 			Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
 		// 			Properties: &armdatamigration.ConnectToTargetSQLDbTaskProperties{
 		// 				State: to.Ptr(armdatamigration.TaskStateQueued),
-		// 				TaskType: to.Ptr("ConnectToTarget.SqlDb"),
+		// 				TaskType: to.Ptr(armdatamigration.TaskTypeConnectToTargetSQLDb),
 		// 				Input: &armdatamigration.ConnectToTargetSQLDbTaskInput{
 		// 					TargetConnectionInfo: &armdatamigration.SQLConnectionInfo{
 		// 						Type: to.Ptr("SqlConnectionInfo"),
@@ -66,7 +66,7 @@ func ExampleTasksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Tasks_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_CreateOrUpdate.json
 func ExampleTasksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleTasksClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewTasksClient().CreateOrUpdate(ctx, "DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", armdatamigration.ProjectTask{
 		Properties: &armdatamigration.ConnectToTargetSQLDbTaskProperties{
-			TaskType: to.Ptr("ConnectToTarget.SqlDb"),
+			TaskType: to.Ptr(armdatamigration.TaskTypeConnectToTargetSQLDb),
 			Input: &armdatamigration.ConnectToTargetSQLDbTaskInput{
 				TargetConnectionInfo: &armdatamigration.SQLConnectionInfo{
 					Type:                   to.Ptr("SqlConnectionInfo"),
@@ -106,7 +106,7 @@ func ExampleTasksClient_CreateOrUpdate() {
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
 	// 	Properties: &armdatamigration.ConnectToTargetSQLDbTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("ConnectToTarget.SqlDb"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToTargetSQLDb),
 	// 		Input: &armdatamigration.ConnectToTargetSQLDbTaskInput{
 	// 			TargetConnectionInfo: &armdatamigration.SQLConnectionInfo{
 	// 				Type: to.Ptr("SqlConnectionInfo"),
@@ -121,7 +121,7 @@ func ExampleTasksClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Tasks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_Get.json
 func ExampleTasksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleTasksClient_Get() {
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
 	// 	Properties: &armdatamigration.ConnectToTargetSQLDbTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("ConnectToTarget.SqlDb"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToTargetSQLDb),
 	// 		Input: &armdatamigration.ConnectToTargetSQLDbTaskInput{
 	// 			TargetConnectionInfo: &armdatamigration.SQLConnectionInfo{
 	// 				Type: to.Ptr("SqlConnectionInfo"),
@@ -161,7 +161,7 @@ func ExampleTasksClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Tasks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_Delete.json
 func ExampleTasksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleTasksClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Tasks_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_Update.json
 func ExampleTasksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleTasksClient_Update() {
 	}
 	res, err := clientFactory.NewTasksClient().Update(ctx, "DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", armdatamigration.ProjectTask{
 		Properties: &armdatamigration.ConnectToTargetSQLDbTaskProperties{
-			TaskType: to.Ptr("ConnectToTarget.SqlDb"),
+			TaskType: to.Ptr(armdatamigration.TaskTypeConnectToTargetSQLDb),
 			Input: &armdatamigration.ConnectToTargetSQLDbTaskInput{
 				TargetConnectionInfo: &armdatamigration.SQLConnectionInfo{
 					Type:                   to.Ptr("SqlConnectionInfo"),
@@ -218,7 +218,7 @@ func ExampleTasksClient_Update() {
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
 	// 	Properties: &armdatamigration.ConnectToTargetSQLDbTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("ConnectToTarget.SqlDb"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToTargetSQLDb),
 	// 		Input: &armdatamigration.ConnectToTargetSQLDbTaskInput{
 	// 			TargetConnectionInfo: &armdatamigration.SQLConnectionInfo{
 	// 				Type: to.Ptr("SqlConnectionInfo"),
@@ -233,7 +233,7 @@ func ExampleTasksClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Tasks_Cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_Cancel.json
 func ExampleTasksClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleTasksClient_Cancel() {
 	// 	Etag: to.Ptr("0vPYxzfnDaDH9yhOJAnqTyTRpa09Kb7pm+LEukDBbw8="),
 	// 	Properties: &armdatamigration.ConnectToTargetSQLDbTaskProperties{
 	// 		State: to.Ptr(armdatamigration.TaskStateQueued),
-	// 		TaskType: to.Ptr("ConnectToTarget.SqlDb"),
+	// 		TaskType: to.Ptr(armdatamigration.TaskTypeConnectToTargetSQLDb),
 	// 		Input: &armdatamigration.ConnectToTargetSQLDbTaskInput{
 	// 			TargetConnectionInfo: &armdatamigration.SQLConnectionInfo{
 	// 				Type: to.Ptr("SqlConnectionInfo"),
@@ -273,7 +273,7 @@ func ExampleTasksClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Tasks_Command.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/Tasks_Command.json
 func ExampleTasksClient_Command() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleTasksClient_Command() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewTasksClient().Command(ctx, "DmsSdkRg", "DmsSdkService", "DmsSdkProject", "DmsSdkTask", &armdatamigration.MigrateSyncCompleteCommandProperties{
-		CommandType: to.Ptr("Migrate.Sync.Complete.Database"),
+		CommandType: to.Ptr(armdatamigration.CommandTypeMigrateSyncCompleteDatabase),
 		Input: &armdatamigration.MigrateSyncCompleteCommandInput{
 			DatabaseName: to.Ptr("TestDatabase"),
 		},
@@ -298,7 +298,7 @@ func ExampleTasksClient_Command() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatamigration.TasksClientCommandResponse{
 	// 	                            CommandPropertiesClassification: &armdatamigration.MigrateSyncCompleteCommandProperties{
-	// 		CommandType: to.Ptr("Migrate.Sync.Complete.Database"),
+	// 		CommandType: to.Ptr(armdatamigration.CommandTypeMigrateSyncCompleteDatabase),
 	// 		State: to.Ptr(armdatamigration.CommandStateAccepted),
 	// 		Input: &armdatamigration.MigrateSyncCompleteCommandInput{
 	// 			DatabaseName: to.Ptr("TestDatabase"),

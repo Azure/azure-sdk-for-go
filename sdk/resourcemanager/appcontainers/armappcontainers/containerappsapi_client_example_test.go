@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_Execution_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Job_Execution_Get.json
 func ExampleContainerAppsAPIClient_JobExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleContainerAppsAPIClient_JobExecution() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerAppsAPIClient().JobExecution(ctx, "rg", "testcontainerappsjob0", "jobExecution1", nil)
+	res, err := clientFactory.NewContainerAppsAPIClient().JobExecution(ctx, "rg", "testcontainerAppsJob0", "jobExecution1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -70,7 +70,7 @@ func ExampleContainerAppsAPIClient_JobExecution() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Subscriptions_GetCustomDomainVerificationId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Subscriptions_GetCustomDomainVerificationId.json
 func ExampleContainerAppsAPIClient_GetCustomDomainVerificationID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

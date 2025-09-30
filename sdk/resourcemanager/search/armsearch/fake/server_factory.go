@@ -25,9 +25,6 @@ type ServerFactory struct {
 	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
 	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
 
-	// OfferingsServer contains the fakes for client OfferingsClient
-	OfferingsServer OfferingsServer
-
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -67,7 +64,6 @@ type ServerFactoryTransport struct {
 	trAdminKeysServer                              *AdminKeysServerTransport
 	trManagementServer                             *ManagementServerTransport
 	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
-	trOfferingsServer                              *OfferingsServerTransport
 	trOperationsServer                             *OperationsServerTransport
 	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
@@ -101,9 +97,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
 		})
 		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
-	case "OfferingsClient":
-		initServer(s, &s.trOfferingsServer, func() *OfferingsServerTransport { return NewOfferingsServerTransport(&s.srv.OfferingsServer) })
-		resp, err = s.trOfferingsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

@@ -45,7 +45,7 @@ func NewPermissionBindingsClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - Create or update a permission binding with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - permissionBindingName - The permission binding name.
@@ -73,7 +73,7 @@ func (client *PermissionBindingsClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - Create or update a permission binding with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 func (client *PermissionBindingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, permissionBindingName string, permissionBindingInfo PermissionBinding, options *PermissionBindingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PermissionBindingsClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *PermissionBindingsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, permissionBindingInfo); err != nil {
@@ -131,7 +131,7 @@ func (client *PermissionBindingsClient) createOrUpdateCreateRequest(ctx context.
 // BeginDelete - Delete an existing permission binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - permissionBindingName - Name of the permission binding.
@@ -158,7 +158,7 @@ func (client *PermissionBindingsClient) BeginDelete(ctx context.Context, resourc
 // Delete - Delete an existing permission binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 func (client *PermissionBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, permissionBindingName string, options *PermissionBindingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PermissionBindingsClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *PermissionBindingsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *PermissionBindingsClient) deleteCreateRequest(ctx context.Context,
 // Get - Get properties of a permission binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - permissionBindingName - Name of the permission binding.
@@ -264,7 +264,7 @@ func (client *PermissionBindingsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *PermissionBindingsClient) getHandleResponse(resp *http.Response) (
 
 // NewListByNamespacePager - Get all the permission bindings under a namespace.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - options - PermissionBindingsClientListByNamespaceOptions contains the optional parameters for the PermissionBindingsClient.NewListByNamespacePager
@@ -335,7 +335,7 @@ func (client *PermissionBindingsClient) listByNamespaceCreateRequest(ctx context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

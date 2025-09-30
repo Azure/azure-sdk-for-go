@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,13 +21,13 @@ import (
 
 // ConnectedEnvironmentsDaprComponentsServer is a fake server for instances of the armappcontainers.ConnectedEnvironmentsDaprComponentsClient type.
 type ConnectedEnvironmentsDaprComponentsServer struct {
-	// CreateOrUpdate is the fake for method ConnectedEnvironmentsDaprComponentsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, daprComponentEnvelope armappcontainers.DaprComponent, options *armappcontainers.ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	// BeginCreateOrUpdate is the fake for method ConnectedEnvironmentsDaprComponentsClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, daprComponentEnvelope armappcontainers.ConnectedEnvironmentDaprComponent, options *armappcontainers.ConnectedEnvironmentsDaprComponentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method ConnectedEnvironmentsDaprComponentsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, options *armappcontainers.ConnectedEnvironmentsDaprComponentsClientDeleteOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method ConnectedEnvironmentsDaprComponentsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, options *armappcontainers.ConnectedEnvironmentsDaprComponentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ConnectedEnvironmentsDaprComponentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -47,16 +47,20 @@ type ConnectedEnvironmentsDaprComponentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewConnectedEnvironmentsDaprComponentsServerTransport(srv *ConnectedEnvironmentsDaprComponentsServer) *ConnectedEnvironmentsDaprComponentsServerTransport {
 	return &ConnectedEnvironmentsDaprComponentsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientListResponse]](),
 	}
 }
 
 // ConnectedEnvironmentsDaprComponentsServerTransport connects instances of armappcontainers.ConnectedEnvironmentsDaprComponentsClient to instances of ConnectedEnvironmentsDaprComponentsServer.
 // Don't use this type directly, use NewConnectedEnvironmentsDaprComponentsServerTransport instead.
 type ConnectedEnvironmentsDaprComponentsServerTransport struct {
-	srv          *ConnectedEnvironmentsDaprComponentsServer
-	newListPager *tracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientListResponse]]
+	srv                 *ConnectedEnvironmentsDaprComponentsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConnectedEnvironmentsDaprComponentsServerTransport.
@@ -82,10 +86,10 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchToMethodFak
 		}
 		if !intercepted {
 			switch method {
-			case "ConnectedEnvironmentsDaprComponentsClient.CreateOrUpdate":
-				res.resp, res.err = c.dispatchCreateOrUpdate(req)
-			case "ConnectedEnvironmentsDaprComponentsClient.Delete":
-				res.resp, res.err = c.dispatchDelete(req)
+			case "ConnectedEnvironmentsDaprComponentsClient.BeginCreateOrUpdate":
+				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "ConnectedEnvironmentsDaprComponentsClient.BeginDelete":
+				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "ConnectedEnvironmentsDaprComponentsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectedEnvironmentsDaprComponentsClient.NewListPager":
@@ -111,81 +115,103 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchToMethodFak
 	}
 }
 
-func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/daprComponents/(?P<componentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/daprComponents/(?P<componentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappcontainers.ConnectedEnvironmentDaprComponent](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
+		if err != nil {
+			return nil, err
+		}
+		componentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("componentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, componentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armappcontainers.DaprComponent](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		c.beginCreateOrUpdate.remove(req)
 	}
-	componentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("componentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, componentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DaprComponent, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if c.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/daprComponents/(?P<componentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/daprComponents/(?P<componentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
+		if err != nil {
+			return nil, err
+		}
+		componentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("componentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, componentNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	componentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("componentName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
 	}
-	respr, errRespr := c.srv.Delete(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, componentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
@@ -196,7 +222,7 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchGet(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/daprComponents/(?P<componentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -219,7 +245,7 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchGet(req *ht
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DaprComponent, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectedEnvironmentDaprComponent, req)
 	if err != nil {
 		return nil, err
 	}
@@ -235,7 +261,7 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchNewListPage
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/daprComponents`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -274,7 +300,7 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchListSecrets
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/daprComponents/(?P<componentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSecrets`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])

@@ -45,7 +45,7 @@ func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Synchronously creates or updates a new channel with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the partners subscription.
 //   - partnerNamespaceName - Name of the partner namespace.
 //   - channelName - Name of the channel.
@@ -97,7 +97,7 @@ func (client *ChannelsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, channelInfo); err != nil {
@@ -118,7 +118,7 @@ func (client *ChannelsClient) createOrUpdateHandleResponse(resp *http.Response) 
 // BeginDelete - Delete an existing channel.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the partners subscription.
 //   - partnerNamespaceName - Name of the partner namespace.
 //   - channelName - Name of the channel.
@@ -143,7 +143,7 @@ func (client *ChannelsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete an existing channel.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 func (client *ChannelsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *ChannelsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ChannelsClient.BeginDelete"
@@ -189,7 +189,7 @@ func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -197,7 +197,7 @@ func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get properties of a channel.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the partners subscription.
 //   - partnerNamespaceName - Name of the partner namespace.
 //   - channelName - Name of the channel.
@@ -248,7 +248,7 @@ func (client *ChannelsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsCl
 // GetFullURL - Get the full endpoint URL of a partner destination channel.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the partners subscription.
 //   - partnerNamespaceName - Name of the partner namespace.
 //   - channelName - Name of the Channel.
@@ -317,7 +317,7 @@ func (client *ChannelsClient) getFullURLCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,7 +334,7 @@ func (client *ChannelsClient) getFullURLHandleResponse(resp *http.Response) (Cha
 
 // NewListByPartnerNamespacePager - List all the channels in a partner namespace.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the partners subscription.
 //   - partnerNamespaceName - Name of the partner namespace.
 //   - options - ChannelsClientListByPartnerNamespaceOptions contains the optional parameters for the ChannelsClient.NewListByPartnerNamespacePager
@@ -388,7 +388,7 @@ func (client *ChannelsClient) listByPartnerNamespaceCreateRequest(ctx context.Co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -406,7 +406,7 @@ func (client *ChannelsClient) listByPartnerNamespaceHandleResponse(resp *http.Re
 // Update - Synchronously updates a channel with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-15
+// Generated from API version 2025-04-01-preview
 //   - resourceGroupName - The name of the resource group within the partners subscription.
 //   - partnerNamespaceName - Name of the partner namespace.
 //   - channelName - Name of the channel.
@@ -457,7 +457,7 @@ func (client *ChannelsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-15")
+	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, channelUpdateParameters); err != nil {
 		return nil, err

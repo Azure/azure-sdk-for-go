@@ -25,25 +25,19 @@ type ManagementClientUsageBySubscriptionSKUResponse struct {
 
 // NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
 type NetworkSecurityPerimeterConfigurationsClientGetResponse struct {
-	// Network security perimeter configuration for a server.
+	// Network security perimeter (NSP) configuration resource
 	NetworkSecurityPerimeterConfiguration
 }
 
 // NetworkSecurityPerimeterConfigurationsClientListByServiceResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListByServicePager.
 type NetworkSecurityPerimeterConfigurationsClientListByServiceResponse struct {
-	// A list of network security perimeter configurations for a server.
+	// Result of a list NSP (network security perimeter) configurations request.
 	NetworkSecurityPerimeterConfigurationListResult
 }
 
 // NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile.
 type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
 	// placeholder for future response values
-}
-
-// OfferingsClientListResponse contains the response from method OfferingsClient.NewListPager.
-type OfferingsClientListResponse struct {
-	// The response containing a list of features and SKUs offered in various regions.
-	OfferingsListResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

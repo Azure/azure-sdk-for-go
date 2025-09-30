@@ -25,8 +25,7 @@ type AvailabilitySetsClient struct {
 }
 
 // NewAvailabilitySetsClient creates a new instance of AvailabilitySetsClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilitySetsClient, error) {
@@ -45,7 +44,7 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the
 //     AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet method.
@@ -73,6 +72,10 @@ func (client *AvailabilitySetsClient) CancelMigrationToVirtualMachineScaleSet(ct
 // cancelMigrationToVirtualMachineScaleSetCreateRequest creates the CancelMigrationToVirtualMachineScaleSet request.
 func (client *AvailabilitySetsClient) cancelMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/cancelMigrationToVirtualMachineScaleSet"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -81,10 +84,6 @@ func (client *AvailabilitySetsClient) cancelMigrationToVirtualMachineScaleSetCre
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -101,7 +100,7 @@ func (client *AvailabilitySetsClient) cancelMigrationToVirtualMachineScaleSetCre
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions contains the optional parameters for the AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet
 //     method.
@@ -112,7 +111,8 @@ func (client *AvailabilitySetsClient) BeginConvertToVirtualMachineScaleSet(ctx c
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -151,6 +151,10 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSet(ctx contex
 // convertToVirtualMachineScaleSetCreateRequest creates the ConvertToVirtualMachineScaleSet request.
 func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/convertToVirtualMachineScaleSet"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -159,10 +163,6 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSetCreateReque
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -184,7 +184,7 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSetCreateReque
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the Create Availability Set operation.
 //   - options - AvailabilitySetsClientCreateOrUpdateOptions contains the optional parameters for the AvailabilitySetsClient.CreateOrUpdate
@@ -214,6 +214,10 @@ func (client *AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resour
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySet, _ *AvailabilitySetsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -222,10 +226,6 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -253,7 +253,7 @@ func (client *AvailabilitySetsClient) createOrUpdateHandleResponse(resp *http.Re
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientDeleteOptions contains the optional parameters for the AvailabilitySetsClient.Delete method.
 func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientDeleteOptions) (AvailabilitySetsClientDeleteResponse, error) {
@@ -280,6 +280,10 @@ func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupN
 // deleteCreateRequest creates the Delete request.
 func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -288,10 +292,6 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -307,7 +307,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
 func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientGetOptions) (AvailabilitySetsClientGetResponse, error) {
@@ -335,6 +335,10 @@ func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName
 // getCreateRequest creates the Get request.
 func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -343,10 +347,6 @@ func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -370,7 +370,7 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 // NewListPager - Lists all availability sets in a resource group.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.NewListPager
 //     method.
 func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, options *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse] {
@@ -399,14 +399,14 @@ func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, opt
 // listCreateRequest creates the List request.
 func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *AvailabilitySetsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -431,27 +431,26 @@ func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response) (A
 // in an existing availability set.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - options - AvailabilitySetsClientListAvailableSizesOptions contains the optional parameters for the AvailabilitySetsClient.NewListAvailableSizesPager
 //     method.
 func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientListAvailableSizesOptions) *runtime.Pager[AvailabilitySetsClientListAvailableSizesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListAvailableSizesResponse]{
 		More: func(page AvailabilitySetsClientListAvailableSizesResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListAvailableSizesResponse) (AvailabilitySetsClientListAvailableSizesResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListAvailableSizesPager")
-			req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAvailableSizesCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
+			}, nil)
 			if err != nil {
 				return AvailabilitySetsClientListAvailableSizesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailabilitySetsClientListAvailableSizesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailabilitySetsClientListAvailableSizesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAvailableSizesHandleResponse(resp)
 		},
@@ -462,6 +461,10 @@ func (client *AvailabilitySetsClient) NewListAvailableSizesPager(resourceGroupNa
 // listAvailableSizesCreateRequest creates the ListAvailableSizes request.
 func (client *AvailabilitySetsClient) listAvailableSizesCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientListAvailableSizesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -470,10 +473,6 @@ func (client *AvailabilitySetsClient) listAvailableSizesCreateRequest(ctx contex
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -558,7 +557,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the migrate operation on the availability set.
 //   - options - AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the
@@ -587,6 +586,10 @@ func (client *AvailabilitySetsClient) StartMigrationToVirtualMachineScaleSet(ctx
 // startMigrationToVirtualMachineScaleSetCreateRequest creates the StartMigrationToVirtualMachineScaleSet request.
 func (client *AvailabilitySetsClient) startMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters MigrateToVirtualMachineScaleSetInput, _ *AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/startMigrationToVirtualMachineScaleSet"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -595,10 +598,6 @@ func (client *AvailabilitySetsClient) startMigrationToVirtualMachineScaleSetCrea
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -617,7 +616,7 @@ func (client *AvailabilitySetsClient) startMigrationToVirtualMachineScaleSetCrea
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the Update Availability Set operation.
 //   - options - AvailabilitySetsClientUpdateOptions contains the optional parameters for the AvailabilitySetsClient.Update method.
@@ -646,6 +645,10 @@ func (client *AvailabilitySetsClient) Update(ctx context.Context, resourceGroupN
 // updateCreateRequest creates the Update request.
 func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySetUpdate, _ *AvailabilitySetsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -654,10 +657,6 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -686,7 +685,7 @@ func (client *AvailabilitySetsClient) updateHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetName - The name of the availability set.
 //   - parameters - Parameters supplied to the migrate operation on the availability set.
 //   - options - AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the
@@ -715,6 +714,10 @@ func (client *AvailabilitySetsClient) ValidateMigrationToVirtualMachineScaleSet(
 // validateMigrationToVirtualMachineScaleSetCreateRequest creates the ValidateMigrationToVirtualMachineScaleSet request.
 func (client *AvailabilitySetsClient) validateMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters MigrateToVirtualMachineScaleSetInput, _ *AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/validateMigrationToVirtualMachineScaleSet"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -723,10 +726,6 @@ func (client *AvailabilitySetsClient) validateMigrationToVirtualMachineScaleSetC
 		return nil, errors.New("parameter availabilitySetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

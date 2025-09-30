@@ -44,7 +44,7 @@ func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential,
 //
 // Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - gatewayName - Azure Programmable Connectivity Gateway Name
+//   - gatewayName - Azure Programmable Connectivity Gateway Name.
 //   - resource - Resource create parameters.
 //   - options - GatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewaysClient.BeginCreateOrUpdate
 //     method.
@@ -125,7 +125,7 @@ func (client *GatewaysClient) createOrUpdateCreateRequest(ctx context.Context, r
 //
 // Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - gatewayName - Azure Programmable Connectivity Gateway Name
+//   - gatewayName - Azure Programmable Connectivity Gateway Name.
 //   - options - GatewaysClientBeginDeleteOptions contains the optional parameters for the GatewaysClient.BeginDelete method.
 func (client *GatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, options *GatewaysClientBeginDeleteOptions) (*runtime.Poller[GatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -191,7 +191,6 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-01-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -200,7 +199,7 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 //
 // Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - gatewayName - Azure Programmable Connectivity Gateway Name
+//   - gatewayName - Azure Programmable Connectivity Gateway Name.
 //   - options - GatewaysClientGetOptions contains the optional parameters for the GatewaysClient.Get method.
 func (client *GatewaysClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, options *GatewaysClientGetOptions) (GatewaysClientGetResponse, error) {
 	var err error
@@ -379,7 +378,7 @@ func (client *GatewaysClient) listBySubscriptionHandleResponse(resp *http.Respon
 //
 // Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - gatewayName - Azure Programmable Connectivity Gateway Name
+//   - gatewayName - Azure Programmable Connectivity Gateway Name.
 //   - properties - The resource properties to be updated.
 //   - options - GatewaysClientUpdateOptions contains the optional parameters for the GatewaysClient.Update method.
 func (client *GatewaysClient) Update(ctx context.Context, resourceGroupName string, gatewayName string, properties GatewayTagsUpdate, options *GatewaysClientUpdateOptions) (GatewaysClientUpdateResponse, error) {

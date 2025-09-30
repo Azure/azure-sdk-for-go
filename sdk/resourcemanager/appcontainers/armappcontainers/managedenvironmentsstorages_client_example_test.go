@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironmentsStorages_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ManagedEnvironmentsStorages_List.json
 func ExampleManagedEnvironmentsStoragesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,6 +45,10 @@ func ExampleManagedEnvironmentsStoragesClient_List() {
 	// 			Properties: &armappcontainers.ManagedEnvironmentStorageProperties{
 	// 				AzureFile: &armappcontainers.AzureFileProperties{
 	// 					AccessMode: to.Ptr(armappcontainers.AccessModeReadOnly),
+	// 					AccountKeyVaultProperties: &armappcontainers.SecretKeyVaultProperties{
+	// 						Identity: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 						KeyVaultURL: to.Ptr("https://myvault.vault.azure.net/secrets/mysecret"),
+	// 					},
 	// 					AccountName: to.Ptr("account1"),
 	// 					ShareName: to.Ptr("share1"),
 	// 				},
@@ -65,7 +69,7 @@ func ExampleManagedEnvironmentsStoragesClient_List() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironmentsStorages_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ManagedEnvironmentsStorages_Get.json
 func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,6 +94,10 @@ func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorage() {
 	// 	Properties: &armappcontainers.ManagedEnvironmentStorageProperties{
 	// 		AzureFile: &armappcontainers.AzureFileProperties{
 	// 			AccessMode: to.Ptr(armappcontainers.AccessModeReadOnly),
+	// 			AccountKeyVaultProperties: &armappcontainers.SecretKeyVaultProperties{
+	// 				Identity: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 				KeyVaultURL: to.Ptr("https://myvault.vault.azure.net/secrets/mysecret"),
+	// 			},
 	// 			AccountName: to.Ptr("account1"),
 	// 			ShareName: to.Ptr("share1"),
 	// 		},
@@ -97,7 +105,7 @@ func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorage() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironmentsStorages_Get_NfsAzureFile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ManagedEnvironmentsStorages_Get_NfsAzureFile.json
 func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorageForNfsAzureFile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +137,7 @@ func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorageForNfsA
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironmentsStorages_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ManagedEnvironmentsStorages_CreateOrUpdate.json
 func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvironmentsStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,20 +165,10 @@ func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvir
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ManagedEnvironmentStorage = armappcontainers.ManagedEnvironmentStorage{
-	// 	Name: to.Ptr("jlaw-demo1"),
-	// 	Type: to.Ptr("Microsoft.App/managedEnvironments/storages"),
-	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/managedEnv/storages/jlaw-demo1"),
-	// 	Properties: &armappcontainers.ManagedEnvironmentStorageProperties{
-	// 		AzureFile: &armappcontainers.AzureFileProperties{
-	// 			AccessMode: to.Ptr(armappcontainers.AccessModeReadOnly),
-	// 			AccountName: to.Ptr("account1"),
-	// 			ShareName: to.Ptr("share1"),
-	// 		},
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironmentsStorages_CreateOrUpdate_NfsAzureFile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ManagedEnvironmentsStorages_CreateOrUpdate_NfsAzureFile.json
 func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvironmentsStorageForNfsAzureFile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +208,7 @@ func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvir
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironmentsStorages_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ManagedEnvironmentsStorages_Delete.json
 func ExampleManagedEnvironmentsStoragesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

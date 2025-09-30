@@ -35,9 +35,6 @@ type AgriServiceResource struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; The name of the AgriService resource.
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -52,6 +49,9 @@ type AgriServiceResource struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -224,7 +224,9 @@ type MoboBrokerResource struct {
 	ID *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay

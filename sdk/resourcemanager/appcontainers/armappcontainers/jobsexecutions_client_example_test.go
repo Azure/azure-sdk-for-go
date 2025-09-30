@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_Executions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Job_Executions_Get.json
 func ExampleJobsExecutionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleJobsExecutionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewJobsExecutionsClient().NewListPager("rg", "testcontainerappsjob0", &armappcontainers.JobsExecutionsClientListOptions{Filter: nil})
+	pager := clientFactory.NewJobsExecutionsClient().NewListPager("rg", "testcontainerAppsJob0", &armappcontainers.JobsExecutionsClientListOptions{Filter: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,6 +44,25 @@ func ExampleJobsExecutionsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("testcontainerAppJob-27944454"),
 		// 			Properties: &armappcontainers.JobExecutionProperties{
+		// 				DetailedStatus: &armappcontainers.ExecutionStatus{
+		// 					Replicas: []*armappcontainers.ReplicaExecutionStatus{
+		// 						{
+		// 							Name: to.Ptr("testcontainerappsjob0-0"),
+		// 							Containers: []*armappcontainers.ContainerExecutionStatus{
+		// 								{
+		// 									Name: to.Ptr("container1"),
+		// 									AdditionalInformation: to.Ptr("Completed"),
+		// 									Code: to.Ptr[int32](0),
+		// 									Status: to.Ptr("Succeeded"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("container2"),
+		// 									AdditionalInformation: to.Ptr("Completed"),
+		// 									Code: to.Ptr[int32](0),
+		// 									Status: to.Ptr("Succeeded"),
+		// 							}},
+		// 					}},
+		// 				},
 		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:47:30.000Z"); return t}()),
 		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T20:37:30.000Z"); return t}()),
 		// 				Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),

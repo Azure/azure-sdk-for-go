@@ -63,7 +63,6 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 }
 
 type Flags struct {
-	VersionNumber       string
 	SwaggerRepo         string
 	PackageTitle        string
 	SDKRepo             string
@@ -72,7 +71,6 @@ type Flags struct {
 	SkipCreateBranch    bool
 	SkipGenerateExample bool
 	PackageConfig       string
-	GoVersion           string
 	Token               string
 	TypeSpecConfig      string
 	TypeSpecGoOption    string
@@ -80,7 +78,6 @@ type Flags struct {
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
-	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("package-title", "", "Specifies the title of this package")
 	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
@@ -89,7 +86,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
 	flagSet.String("tsp-config", "", "The path of the typespec tspconfig.yaml")
 	flagSet.String("tsp-option", "", "Emit typespec-go options, only valid when tsp-config is configured. e: option1=value1;option2=value2")
@@ -98,7 +94,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber:       flags.GetString(flagSet, "version-number"),
 		PackageTitle:        flags.GetString(flagSet, "package-title"),
 		SDKRepo:             flags.GetString(flagSet, "sdk-repo"),
 		SwaggerRepo:         flags.GetString(flagSet, "spec-repo"),
@@ -107,7 +102,6 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SkipCreateBranch:    flags.GetBool(flagSet, "skip-create-branch"),
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
 		PackageConfig:       flags.GetString(flagSet, "package-config"),
-		GoVersion:           flags.GetString(flagSet, "go-version"),
 		Token:               flags.GetString(flagSet, "token"),
 		TypeSpecConfig:      flags.GetString(flagSet, "tsp-config"),
 		TypeSpecGoOption:    flags.GetString(flagSet, "tsp-option"),
@@ -169,11 +163,9 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			RPName:               c.rpName,
 			NamespaceName:        c.namespaceName,
 			SpecificPackageTitle: c.flags.PackageTitle,
-			SpecificVersion:      c.flags.VersionNumber,
 			SpecRPName:           c.flags.SpecRPName,
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,
-			GoVersion:            c.flags.GoVersion,
 			TypeSpecEmitOption:   c.flags.TypeSpecGoOption,
 			TspClientOptions:     c.flags.TspClientOption,
 		})
@@ -190,11 +182,9 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			NamespaceName:        c.namespaceName,
 			NamespaceConfig:      c.flags.PackageConfig,
 			SpecificPackageTitle: c.flags.PackageTitle,
-			SpecificVersion:      c.flags.VersionNumber,
 			SpecRPName:           c.flags.SpecRPName,
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,
-			GoVersion:            c.flags.GoVersion,
 		})
 		if len(errs) > 0 {
 			// GenerateFromSwagger is a batch run function, one error means one package is failed.

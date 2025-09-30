@@ -17,11 +17,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/testcommon"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
 	"github.com/stretchr/testify/require"
 )
 

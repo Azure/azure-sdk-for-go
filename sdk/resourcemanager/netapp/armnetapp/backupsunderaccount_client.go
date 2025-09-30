@@ -43,7 +43,7 @@ func NewBackupsUnderAccountClient(subscriptionID string, credential azcore.Token
 // BeginMigrateBackups - Migrate the backups under a NetApp account to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - body - Migrate backups under an account payload supplied in the body of the operation.
@@ -70,7 +70,7 @@ func (client *BackupsUnderAccountClient) BeginMigrateBackups(ctx context.Context
 // MigrateBackups - Migrate the backups under a NetApp account to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-06-01
 func (client *BackupsUnderAccountClient) migrateBackups(ctx context.Context, resourceGroupName string, accountName string, body BackupsMigrationRequest, options *BackupsUnderAccountClientBeginMigrateBackupsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsUnderAccountClient.BeginMigrateBackups"
@@ -112,7 +112,7 @@ func (client *BackupsUnderAccountClient) migrateBackupsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

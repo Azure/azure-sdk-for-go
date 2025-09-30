@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryManagementGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryManagementGroupScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForManagementGroupPager_queryAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForManagementGroupPager_queryA
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryManagementGroupScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryManagementGroupScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForManagementGroupPager_queryAtManagementGroupScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForManagementGroupPager_queryA
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_FilterAndAggregateOnly.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_FilterAndAggregateOnly.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAndAggregateOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_FilterAndGroupByWithAggregate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_FilterAndGroupByWithAggregate.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAndGroupWithAggregate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -310,7 +310,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_FilterAndGroupByWithoutAggregate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_FilterAndGroupByWithoutAggregate.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAndGroupWithoutAggregate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +363,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_FilterAndMultipleGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_FilterAndMultipleGroups.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAndMultipleGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -450,7 +450,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_queryAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -543,7 +543,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_queryAtSu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_queryAtSubscriptionScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +636,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_queryAtSu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_TimeRangeSortSelectTop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_TimeRangeSortSelectTop.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_timeRangeSortSelectAndLimit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,7 +693,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionPager_timeRange
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceGroupScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupPager_queryAtResourceGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -786,7 +786,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupPager_queryAtR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceGroupScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupPager_queryAtResourceGroupScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -879,7 +879,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupPager_queryAtR
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryNestedResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryNestedResourceScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtNestedResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -972,7 +972,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtNested
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1063,7 +1063,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtResour
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtResourceScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1154,7 +1154,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtResour
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelNestedResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelNestedResourceScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtSubscriptionLevelNestedResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1247,7 +1247,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtSubscr
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelResourceScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtSubscriptionLevelResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1338,7 +1338,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryAtSubscr
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceScopeExpandComponentsGroupByWithAggregate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceScopeExpandComponentsGroupByWithAggregate.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryComponentsPolicyEventsCountGroupedByUserAndActionTypeForResourceScopeFilteredByGivenAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1417,7 +1417,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryComponen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceScopeExpandComponents.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceScopeExpandComponents.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryComponentsPolicyEventsForResourceScopeFilteredByGivenAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1506,7 +1506,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourcePager_queryComponen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForPolicySetDefinitionPager_queryAtSubscriptionLevelPolicySetDefinitionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1597,7 +1597,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForPolicySetDefinitionPager_qu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForPolicySetDefinitionPager_queryAtSubscriptionLevelPolicySetDefinitionScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1688,7 +1688,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForPolicySetDefinitionPager_qu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForPolicyDefinitionPager_queryAtSubscriptionLevelPolicyDefinitionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1781,7 +1781,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForPolicyDefinitionPager_query
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForPolicyDefinitionPager_queryAtSubscriptionLevelPolicyDefinitionScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1874,7 +1874,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForPolicyDefinitionPager_query
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager_queryAtSubscriptionLevelPolicyAssignmentScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1965,7 +1965,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager_queryAtSubscriptionLevelPolicyAssignmentScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2056,7 +2056,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScope.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager_queryAtResourceGroupLevelPolicyAssignmentScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2141,7 +2141,7 @@ func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupLevelPolicyAss
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScopeNextLink.json
 func ExamplePolicyEventsClient_NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager_queryAtResourceGroupLevelPolicyAssignmentScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

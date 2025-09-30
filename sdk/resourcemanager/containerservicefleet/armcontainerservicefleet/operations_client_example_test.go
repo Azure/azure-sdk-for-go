@@ -7,11 +7,11 @@ package armcontainerservicefleet_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/Operations_List.json
+// Generated from example definition: 2025-04-01-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager_listTheOperationsForTheProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleOperationsClient_NewListPager_listTheOperationsForTheProvider() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_listTheOperationsForTheProviderGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleOperationsClient_NewListPager_listTheOperationsForTheProviderGenerat
 	}
 }
 
-// Generated from example definition: 2025-03-01/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_listTheOperationsForTheProviderGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

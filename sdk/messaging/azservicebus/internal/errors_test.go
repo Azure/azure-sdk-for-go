@@ -158,7 +158,6 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrCond("com.microsoft:server-busy")},
 		&amqp.Error{Condition: amqp.ErrCond("com.microsoft:timeout")},
 		&amqp.Error{Condition: amqp.ErrCond("com.microsoft:operation-cancelled")},
-		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		// simple timeouts from the mgmt link
 		RPCError{Resp: &amqpwrap.RPCResponse{Code: 408}},
 		RPCError{Resp: &amqpwrap.RPCResponse{Code: 503}},
@@ -229,6 +228,8 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusNotFound}}))
 	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: RPCResponseCodeLockLost}}))
 	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &amqpwrap.RPCResponse{Code: http.StatusUnauthorized}}))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(errClosed))
+
 }
 
 func Test_IsLockLostError(t *testing.T) {

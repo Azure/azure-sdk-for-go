@@ -4,11 +4,6 @@
 
 package armstandbypool
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/standbypool/armstandbypool"
-	moduleVersion = "v2.0.0"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

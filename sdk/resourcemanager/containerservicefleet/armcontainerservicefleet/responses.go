@@ -129,6 +129,24 @@ type FleetsClientUpdateAsyncResponse struct {
 	Fleet
 }
 
+// GatesClientGetResponse contains the response from method GatesClient.Get.
+type GatesClientGetResponse struct {
+	// A Gate controls the progression during a staged rollout, e.g. in an Update Run.
+	Gate
+}
+
+// GatesClientListByFleetResponse contains the response from method GatesClient.NewListByFleetPager.
+type GatesClientListByFleetResponse struct {
+	// The response of a Gate list operation.
+	GateListResult
+}
+
+// GatesClientUpdateResponse contains the response from method GatesClient.BeginUpdate.
+type GatesClientUpdateResponse struct {
+	// A Gate controls the progression during a staged rollout, e.g. in an Update Run.
+	Gate
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

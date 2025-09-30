@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.2-beta.2 (Unreleased)
+## 1.4.3-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.2 (2025-07-23)
+
+### Other Changes
+* Updated `azcore` version to `1.18.1`
 
 ## 1.4.2-beta.1 (2025-07-08)
 

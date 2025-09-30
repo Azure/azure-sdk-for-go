@@ -1754,6 +1754,7 @@ func (m ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enableAutoOSUpgrade", m.EnableAutoOSUpgrade)
 	populate(objectMap, "enableHttpGatewayExclusiveAuthMode", m.EnableHTTPGatewayExclusiveAuthMode)
 	populate(objectMap, "enableIpv6", m.EnableIPv6)
+	populate(objectMap, "enableOutboundOnlyNodeTypes", m.EnableOutboundOnlyNodeTypes)
 	populate(objectMap, "enableServicePublicIP", m.EnableServicePublicIP)
 	populate(objectMap, "fabricSettings", m.FabricSettings)
 	populate(objectMap, "fqdn", m.Fqdn)
@@ -1851,6 +1852,9 @@ func (m *ManagedClusterProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "enableIpv6":
 			err = unpopulate(val, "EnableIPv6", &m.EnableIPv6)
+			delete(rawMsg, key)
+		case "enableOutboundOnlyNodeTypes":
+			err = unpopulate(val, "EnableOutboundOnlyNodeTypes", &m.EnableOutboundOnlyNodeTypes)
 			delete(rawMsg, key)
 		case "enableServicePublicIP":
 			err = unpopulate(val, "EnableServicePublicIP", &m.EnableServicePublicIP)
@@ -2530,6 +2534,7 @@ func (n NodeTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "evictionPolicy", n.EvictionPolicy)
 	populate(objectMap, "frontendConfigurations", n.FrontendConfigurations)
 	populate(objectMap, "hostGroupId", n.HostGroupID)
+	populate(objectMap, "isOutboundOnly", n.IsOutboundOnly)
 	populate(objectMap, "isPrimary", n.IsPrimary)
 	populate(objectMap, "isSpotVM", n.IsSpotVM)
 	populate(objectMap, "isStateless", n.IsStateless)
@@ -2629,6 +2634,9 @@ func (n *NodeTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "hostGroupId":
 			err = unpopulate(val, "HostGroupID", &n.HostGroupID)
+			delete(rawMsg, key)
+		case "isOutboundOnly":
+			err = unpopulate(val, "IsOutboundOnly", &n.IsOutboundOnly)
 			delete(rawMsg, key)
 		case "isPrimary":
 			err = unpopulate(val, "IsPrimary", &n.IsPrimary)
@@ -3276,6 +3284,7 @@ func (s *ServiceCorrelation) UnmarshalJSON(data []byte) error {
 func (s ServiceEndpoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "locations", s.Locations)
+	populate(objectMap, "networkIdentifier", s.NetworkIdentifier)
 	populate(objectMap, "service", s.Service)
 	return json.Marshal(objectMap)
 }
@@ -3291,6 +3300,9 @@ func (s *ServiceEndpoint) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "locations":
 			err = unpopulate(val, "Locations", &s.Locations)
+			delete(rawMsg, key)
+		case "networkIdentifier":
+			err = unpopulate(val, "NetworkIdentifier", &s.NetworkIdentifier)
 			delete(rawMsg, key)
 		case "service":
 			err = unpopulate(val, "Service", &s.Service)

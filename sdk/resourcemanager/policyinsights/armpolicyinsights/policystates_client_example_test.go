@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryManagementGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryManagementGroupScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager_queryLatestAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager_queryL
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryManagementGroupScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryManagementGroupScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager_queryLatestAtManagementGroupScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager_queryL
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeManagementGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeManagementGroupScope.json
 func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,7 +259,7 @@ func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 	// 						ComplianceState: to.Ptr("noncompliant"),
 	// 						Count: to.Ptr[int32](14),
 	// 				}},
-	// 				QueryResultsURI: to.Ptr("https://management.azure.com/providers/Microsoft.Management/managementGroups/myManagementGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-05 18:00:00Z&$to=2019-10-06 18:00:00Z&$filter=(PolicyDefinitionAction eq 'deny' or PolicyDefinitionAction eq 'audit') and IsCompliant eq false"),
+	// 				QueryResultsURI: to.Ptr("https://management.azure.com/providers/Microsoft.Management/managementGroups/myManagementGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-05 18:00:00Z&$to=2019-10-06 18:00:00Z&$filter=(PolicyDefinitionAction eq 'deny' or PolicyDefinitionAction eq 'audit') and IsCompliant eq false"),
 	// 				ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 					{
 	// 						ComplianceState: to.Ptr("compliant"),
@@ -274,7 +274,7 @@ func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndAggregateOnly.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_FilterAndAggregateOnly.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAndAggregateOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +319,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndGroupByWithAggregate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_FilterAndGroupByWithAggregate.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAndGroupWithAggregate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndGroupByWithoutAggregate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_FilterAndGroupByWithoutAggregate.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAndGroupWithoutAggregate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,7 +431,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndMultipleGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_FilterAndMultipleGroups.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAndMultipleGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -570,7 +570,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_filterAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_queryLatestAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -667,7 +667,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_queryLate
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_queryLatestAtSubscriptionScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,7 +758,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_queryLate
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TimeRangeSortSelectTop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_TimeRangeSortSelectTop.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_timeRangeSortSelectAndLimit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -819,7 +819,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager_timeRange
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeSubscriptionScope.json
 func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -874,7 +874,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/c8b79b49-a579-4045-984e-1b249ab8b474'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/c8b79b49-a579-4045-984e-1b249ab8b474'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -901,7 +901,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/a03db67e-a286-43c3-9098-b2da83d361ad' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/a03db67e-a286-43c3-9098-b2da83d361ad' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -927,7 +927,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 									ComplianceState: to.Ptr("noncompliant"),
 	// 									Count: to.Ptr[int32](1),
 	// 							}},
-	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01'"),
+	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01'"),
 	// 							ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 								{
 	// 									ComplianceState: to.Ptr("compliant"),
@@ -958,7 +958,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -985,7 +985,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -1011,7 +1011,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 									ComplianceState: to.Ptr("noncompliant"),
 	// 									Count: to.Ptr[int32](1),
 	// 							}},
-	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
+	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
 	// 							ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 								{
 	// 									ComplianceState: to.Ptr("compliant"),
@@ -1042,7 +1042,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/dcda79d769674aea8bfcaa49' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/c8b79b49-a579-4045-984e-1b249ab8b474'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/dcda79d769674aea8bfcaa49' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/c8b79b49-a579-4045-984e-1b249ab8b474'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -1069,7 +1069,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/dcda79d769674aea8bfcaa49'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/dcda79d769674aea8bfcaa49'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -1095,7 +1095,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 									ComplianceState: to.Ptr("noncompliant"),
 	// 									Count: to.Ptr[int32](1),
 	// 							}},
-	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/dcda79d769674aea8bfcaa49'"),
+	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/dcda79d769674aea8bfcaa49'"),
 	// 							ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 								{
 	// 									ComplianceState: to.Ptr("compliant"),
@@ -1128,7 +1128,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -1155,7 +1155,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -1181,7 +1181,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -1214,7 +1214,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 													ComplianceState: to.Ptr("noncompliant"),
 	// 													Count: to.Ptr[int32](1),
 	// 											}},
-	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 											ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 												{
 	// 													ComplianceState: to.Ptr("compliant"),
@@ -1244,7 +1244,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 														ComplianceState: to.Ptr("noncompliant"),
 	// 														Count: to.Ptr[int32](1),
 	// 												}},
-	// 												QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/locationauditdefinition'"),
+	// 												QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/locationauditdefinition'"),
 	// 												ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 													{
 	// 														ComplianceState: to.Ptr("compliant"),
@@ -1274,7 +1274,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 															ComplianceState: to.Ptr("noncompliant"),
 	// 															Count: to.Ptr[int32](1),
 	// 													}},
-	// 													QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e3682'"),
+	// 													QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e3682'"),
 	// 													ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 														{
 	// 															ComplianceState: to.Ptr("compliant"),
@@ -1301,7 +1301,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 															ComplianceState: to.Ptr("noncompliant"),
 	// 															Count: to.Ptr[int32](1),
 	// 													}},
-	// 													QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e338c' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 													QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e338c' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 													ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 														{
 	// 															ComplianceState: to.Ptr("compliant"),
@@ -1327,7 +1327,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 													ComplianceState: to.Ptr("noncompliant"),
 	// 													Count: to.Ptr[int32](1),
 	// 											}},
-	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29'"),
+	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29'"),
 	// 											ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 												{
 	// 													ComplianceState: to.Ptr("compliant"),
@@ -1352,7 +1352,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=IsCompliant eq false"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -1367,7 +1367,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionScopeForPolicyGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeSubscriptionScopeForPolicyGroup.json
 func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionScopeForAPolicyDefinitionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1422,7 +1422,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/ab379b49-a579-4045-984e-1b249ab8b474'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/ab379b49-a579-4045-984e-1b249ab8b474'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -1452,7 +1452,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -1479,7 +1479,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/a03db67e-a286-43c3-9098-b2da83d361ad' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/a03db67e-a286-43c3-9098-b2da83d361ad' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -1505,7 +1505,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/e46af646ebdb461dba708e01'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -1530,7 +1530,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 								ComplianceState: to.Ptr("noncompliant"),
 	// 								Count: to.Ptr[int32](1),
 	// 						}},
-	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames"),
+	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames"),
 	// 						ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 							{
 	// 								ComplianceState: to.Ptr("compliant"),
@@ -1545,7 +1545,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscription_summarizeAtSubscriptionS
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceGroupScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager_queryLatestAtResourceGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1642,7 +1642,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager_queryLat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceGroupScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager_queryLatestAtResourceGroupScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1733,7 +1733,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager_queryLat
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeResourceGroupScope.json
 func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1788,7 +1788,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/186044306c044a1d8c0ff76c' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/186044306c044a1d8c0ff76c' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -1815,7 +1815,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/186044306c044a1d8c0ff76c' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/186044306c044a1d8c0ff76c' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -1841,7 +1841,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 									ComplianceState: to.Ptr("noncompliant"),
 	// 									Count: to.Ptr[int32](1),
 	// 							}},
-	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/186044306c044a1d8c0ff76c'"),
+	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/186044306c044a1d8c0ff76c'"),
 	// 							ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 								{
 	// 									ComplianceState: to.Ptr("compliant"),
@@ -1874,7 +1874,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -1901,7 +1901,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -1927,7 +1927,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/myManagementGroup/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -1952,7 +1952,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 								ComplianceState: to.Ptr("noncompliant"),
 	// 								Count: to.Ptr[int32](1),
 	// 						}},
-	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false"),
+	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/d0610b27-9663-4c05-89f8-5b4be01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:55:09Z&$to=2019-10-13 19:55:09Z&$filter=IsCompliant eq false"),
 	// 						ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 							{
 	// 								ComplianceState: to.Ptr("compliant"),
@@ -1967,7 +1967,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryNestedResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryNestedResourceScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolicyStatesAtNestedResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2058,7 +2058,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolic
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolicyStatesAtResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2149,7 +2149,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolic
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceScopeExpandPolicyEvaluationDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceScopeExpandPolicyEvaluationDetails.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolicyStatesAtResourceScopeAndExpandPolicyEvaluationDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2275,7 +2275,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolic
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolicyStatesAtResourceScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2362,7 +2362,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolic
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelNestedResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelNestedResourceScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolicyStatesAtSubscriptionLevelNestedResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2453,7 +2453,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolic
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelResourceScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolicyStatesAtSubscriptionLevelResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2544,7 +2544,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryAllPolic
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceScopeExpandComponents.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceScopeExpandComponents.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryComponentPolicyComplianceStateAtResourceScopeFilteredByGivenAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2648,7 +2648,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryComponen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceScopeExpandComponentsGroupByWithAggregate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceScopeExpandComponentsGroupByWithAggregate.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryComponentPolicyComplianceStateCountGroupedByStateTypeAtResourceScopeFilteredByGivenAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2729,7 +2729,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager_queryComponen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeResourceScope.json
 func ExamplePolicyStatesClient_SummarizeForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2782,7 +2782,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/8174043a1e2849179635b874' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policydefinitions/72c0c41a-c752-4bc0-9c61-0d6adc567066'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/8174043a1e2849179635b874' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policydefinitions/72c0c41a-c752-4bc0-9c61-0d6adc567066'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -2809,7 +2809,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/8174043a1e2849179635b874'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/8174043a1e2849179635b874'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -2835,7 +2835,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// 								ComplianceState: to.Ptr("noncompliant"),
 	// 								Count: to.Ptr[int32](1),
 	// 						}},
-	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/8174043a1e2849179635b874'"),
+	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/8174043a1e2849179635b874'"),
 	// 						ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 							{
 	// 								ComplianceState: to.Ptr("compliant"),
@@ -2866,7 +2866,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicyDefinitionId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policydefinitions/022d9357-5a90-46f7-9554-21d30ce4c32d'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -2893,7 +2893,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -2919,7 +2919,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// 								ComplianceState: to.Ptr("noncompliant"),
 	// 								Count: to.Ptr[int32](1),
 	// 						}},
-	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a'"),
+	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/providers/microsoft.management/managementgroups/mymg/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a'"),
 	// 						ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 							{
 	// 								ComplianceState: to.Ptr("compliant"),
@@ -2944,7 +2944,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// 						ComplianceState: to.Ptr("noncompliant"),
 	// 						Count: to.Ptr[int32](1),
 	// 				}},
-	// 				QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false"),
+	// 				QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fff10b27-fff3-fff5-fff8-fffbe01e86a5/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/my-vault/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:59:17Z&$to=2019-10-13 19:59:17Z&$filter=IsCompliant eq false"),
 	// 				ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 					{
 	// 						ComplianceState: to.Ptr("compliant"),
@@ -2959,7 +2959,7 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TriggerSubscriptionEvaluation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_TriggerSubscriptionEvaluation.json
 func ExamplePolicyStatesClient_BeginTriggerSubscriptionEvaluation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2980,7 +2980,7 @@ func ExamplePolicyStatesClient_BeginTriggerSubscriptionEvaluation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TriggerResourceGroupEvaluation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_TriggerResourceGroupEvaluation.json
 func ExamplePolicyStatesClient_BeginTriggerResourceGroupEvaluation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3001,7 +3001,7 @@ func ExamplePolicyStatesClient_BeginTriggerResourceGroupEvaluation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager_queryLatestAtSubscriptionLevelPolicySetDefinitionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3098,7 +3098,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager_qu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager_queryLatestAtSubscriptionLevelPolicySetDefinitionScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3189,7 +3189,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager_qu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicySetDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicySetDefinitionScope.json
 func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3237,7 +3237,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 	// 						ComplianceState: to.Ptr("compliant"),
 	// 						Count: to.Ptr[int32](1),
 	// 				}},
-	// 				QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policySetDefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e338c/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-05 18:00:00Z&$to=2019-10-06 18:00:00Z&$filter=(PolicyDefinitionAction eq 'deny') and IsCompliant eq false"),
+	// 				QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policySetDefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e338c/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-05 18:00:00Z&$to=2019-10-06 18:00:00Z&$filter=(PolicyDefinitionAction eq 'deny') and IsCompliant eq false"),
 	// 				ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 					{
 	// 						ComplianceState: to.Ptr("compliant"),
@@ -3248,7 +3248,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyDefinitionScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager_queryLatestAtSubscriptionLevelPolicyDefinitionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3339,7 +3339,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager_query
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyDefinitionScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyDefinitionScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager_queryLatestAtSubscriptionLevelPolicyDefinitionScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3426,7 +3426,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager_query
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyDefinitionScope.json
 func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3479,7 +3479,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -3506,7 +3506,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter=PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -3532,7 +3532,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 								ComplianceState: to.Ptr("noncompliant"),
 	// 								Count: to.Ptr[int32](1),
 	// 						}},
-	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
+	// 						QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/d9da7e80af6344ab9d342aa7'"),
 	// 						ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 							{
 	// 								ComplianceState: to.Ptr("compliant"),
@@ -3565,7 +3565,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -3592,7 +3592,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e338c' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e338c' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -3618,7 +3618,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 									ComplianceState: to.Ptr("noncompliant"),
 	// 									Count: to.Ptr[int32](1),
 	// 							}},
-	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29'"),
+	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/3f3c4330183b4e218fe6fd29'"),
 	// 							ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 								{
 	// 									ComplianceState: to.Ptr("compliant"),
@@ -3651,7 +3651,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/ddd8ef92e3714a5ea3d208c1' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/ddd8ef92e3714a5ea3d208c1' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -3678,7 +3678,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/12b58873-e0f8-4b95-936c-86cbe7c9d697' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/ddd8ef92e3714a5ea3d208c1' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/12b58873-e0f8-4b95-936c-86cbe7c9d697' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/ddd8ef92e3714a5ea3d208c1' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -3704,7 +3704,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/ddd8ef92e3714a5ea3d208c1'"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/ddd8ef92e3714a5ea3d208c1'"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -3737,7 +3737,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 													ComplianceState: to.Ptr("noncompliant"),
 	// 													Count: to.Ptr[int32](1),
 	// 											}},
-	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 											ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 												{
 	// 													ComplianceState: to.Ptr("compliant"),
@@ -3764,7 +3764,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 													ComplianceState: to.Ptr("noncompliant"),
 	// 													Count: to.Ptr[int32](1),
 	// 											}},
-	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/12b58873-e0f8-4b95-936c-86cbe7c9d697' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/12b58873-e0f8-4b95-936c-86cbe7c9d697' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 											ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 												{
 	// 													ComplianceState: to.Ptr("compliant"),
@@ -3780,7 +3780,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 								Results: &armpolicyinsights.SummaryResults{
 	// 									NonCompliantPolicies: to.Ptr[int32](1),
 	// 									NonCompliantResources: to.Ptr[int32](531),
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531'"),
 	// 								},
 	// 						}},
 	// 						Results: &armpolicyinsights.SummaryResults{
@@ -3796,7 +3796,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 									ComplianceState: to.Ptr("noncompliant"),
 	// 									Count: to.Ptr[int32](1),
 	// 							}},
-	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false"),
+	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.Authorization/policyDefinitions/24813039-7534-408a-9842-eb99f45721b1/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:07:10Z&$to=2019-10-13 20:07:10Z&$filter=IsCompliant eq false"),
 	// 							ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 								{
 	// 									ComplianceState: to.Ptr("compliant"),
@@ -3811,7 +3811,7 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyAssignmentScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager_queryLatestAtSubscriptionLevelPolicyAssignmentScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3910,7 +3910,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyAssignmentScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyAssignmentScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager_queryLatestAtSubscriptionLevelPolicyAssignmentScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4003,7 +4003,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyAssignmentScope.json
 func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4058,7 +4058,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/c8b79b49-a579-4045-984e-1b249ab8b474'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/c8b79b49-a579-4045-984e-1b249ab8b474'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -4088,7 +4088,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/24813039-7534-408a-9842-eb99f45721b1'"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -4118,7 +4118,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 													ComplianceState: to.Ptr("noncompliant"),
 	// 													Count: to.Ptr[int32](1),
 	// 											}},
-	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/locationauditdefinition'"),
+	// 											QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/locationauditdefinition'"),
 	// 											ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 												{
 	// 													ComplianceState: to.Ptr("compliant"),
@@ -4148,7 +4148,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 														ComplianceState: to.Ptr("noncompliant"),
 	// 														Count: to.Ptr[int32](1),
 	// 												}},
-	// 												QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e3682'"),
+	// 												QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/3e3807c1-65c9-49e0-a406-82d8ae3e3682'"),
 	// 												ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 													{
 	// 														ComplianceState: to.Ptr("compliant"),
@@ -4175,7 +4175,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 														ComplianceState: to.Ptr("noncompliant"),
 	// 														Count: to.Ptr[int32](1),
 	// 												}},
-	// 												QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 												QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/1ef5d536aec743a0aa801c1a' and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/335cefd2-ab16-430f-b364-974a170eb1d5' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 												ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 													{
 	// 														ComplianceState: to.Ptr("compliant"),
@@ -4201,7 +4201,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 												ComplianceState: to.Ptr("noncompliant"),
 	// 												Count: to.Ptr[int32](1),
 	// 										}},
-	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531'"),
+	// 										QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531'"),
 	// 										ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 											{
 	// 												ComplianceState: to.Ptr("compliant"),
@@ -4226,7 +4226,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 										ComplianceState: to.Ptr("noncompliant"),
 	// 										Count: to.Ptr[int32](1),
 	// 								}},
-	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false"),
+	// 								QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/f4cc58b7db524a9799381531/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 20:09:24Z&$to=2019-10-13 20:09:24Z&$filter=IsCompliant eq false"),
 	// 								ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 									{
 	// 										ComplianceState: to.Ptr("compliant"),
@@ -4241,7 +4241,7 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceGroupLevelPolicyAssignmentScope.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager_queryLatestAtResourceGroupLevelPolicyAssignmentScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4330,7 +4330,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAss
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupLevelPolicyAssignmentScopeNextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_QueryResourceGroupLevelPolicyAssignmentScopeNextLink.json
 func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager_queryLatestAtResourceGroupLevelPolicyAssignmentScopeWithNextLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4415,7 +4415,7 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAss
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/05a9cdab363b8ec824094ee73950c04594325172/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceGroupLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6c548b0bd279f5e233661b1c81fb5b61b19965cd/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/PolicyStates_SummarizeResourceGroupLevelPolicyAssignmentScope.json
 func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4470,7 +4470,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/b7a1ca2596524e3ab19597f2/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-22 23:54:22Z&$to=2019-10-23 23:54:22Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourcegroups/myResourceGroup/providers/microsoft.authorization/policyassignments/b7a1ca2596524e3ab19597f2' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/4a0425e4-97bf-4ad0-ab36-145b94083c60'"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/b7a1ca2596524e3ab19597f2/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-22 23:54:22Z&$to=2019-10-23 23:54:22Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourcegroups/myResourceGroup/providers/microsoft.authorization/policyassignments/b7a1ca2596524e3ab19597f2' and PolicyDefinitionId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policydefinitions/4a0425e4-97bf-4ad0-ab36-145b94083c60'"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -4497,7 +4497,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 	// 											ComplianceState: to.Ptr("noncompliant"),
 	// 											Count: to.Ptr[int32](1),
 	// 									}},
-	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/a03db67e-a286-43c3-9098-b2da83d361ad' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/b7a1ca2596524e3ab19597f2' and 'group1' IN PolicyDefinitionGroupNames"),
+	// 									QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-12 19:48:53Z&$to=2019-10-13 19:48:53Z&$filter='group1' IN PolicyDefinitionGroupNames and PolicySetDefinitiontId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policysetdefinitions/a03db67e-a286-43c3-9098-b2da83d361ad' and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/providers/microsoft.authorization/policyassignments/b7a1ca2596524e3ab19597f2' and 'group1' IN PolicyDefinitionGroupNames"),
 	// 									ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 										{
 	// 											ComplianceState: to.Ptr("compliant"),
@@ -4523,7 +4523,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 	// 									ComplianceState: to.Ptr("noncompliant"),
 	// 									Count: to.Ptr[int32](1),
 	// 							}},
-	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/b7a1ca2596524e3ab19597f2/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-22 23:54:22Z&$to=2019-10-23 23:54:22Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourcegroups/myResourceGroup/providers/microsoft.authorization/policyassignments/b7a1ca2596524e3ab19597f2'"),
+	// 							QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/b7a1ca2596524e3ab19597f2/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-22 23:54:22Z&$to=2019-10-23 23:54:22Z&$filter=IsCompliant eq false and PolicyAssignmentId eq '/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourcegroups/myResourceGroup/providers/microsoft.authorization/policyassignments/b7a1ca2596524e3ab19597f2'"),
 	// 							ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 								{
 	// 									ComplianceState: to.Ptr("compliant"),
@@ -4548,7 +4548,7 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 	// 							ComplianceState: to.Ptr("noncompliant"),
 	// 							Count: to.Ptr[int32](1),
 	// 					}},
-	// 					QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/b7a1ca2596524e3ab19597f2/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2019-10-01&$from=2019-10-22 23:54:22Z&$to=2019-10-23 23:54:22Z&$filter=IsCompliant eq false"),
+	// 					QueryResultsURI: to.Ptr("https://management.azure.com/subscriptions/fffedd8f-ffff-fffd-fffd-fffed2f84852/resourceGroups/myResourceGroup/providers/Microsoft.Authorization/policyAssignments/b7a1ca2596524e3ab19597f2/providers/Microsoft.PolicyInsights/policyStates/latest/queryResults?api-version=2024-10-01&$from=2019-10-22 23:54:22Z&$to=2019-10-23 23:54:22Z&$filter=IsCompliant eq false"),
 	// 					ResourceDetails: []*armpolicyinsights.ComplianceDetail{
 	// 						{
 	// 							ComplianceState: to.Ptr("compliant"),

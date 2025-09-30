@@ -22,6 +22,32 @@ type AdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type AdvancedFilter.
 func (a *AdvancedFilter) GetAdvancedFilter() *AdvancedFilter { return a }
 
+// AzureADPartnerClientAuthentication - Microsoft Entra ID Partner Client Authentication
+type AzureADPartnerClientAuthentication struct {
+	// REQUIRED; Type of client authentication
+	ClientAuthenticationType *PartnerClientAuthenticationType
+
+	// Microsoft Entra ID ClientAuthentication Properties
+	Properties *AzureADPartnerClientAuthenticationProperties
+}
+
+// GetPartnerClientAuthentication implements the PartnerClientAuthenticationClassification interface for type AzureADPartnerClientAuthentication.
+func (a *AzureADPartnerClientAuthentication) GetPartnerClientAuthentication() *PartnerClientAuthentication {
+	return &PartnerClientAuthentication{
+		ClientAuthenticationType: a.ClientAuthenticationType,
+	}
+}
+
+// AzureADPartnerClientAuthenticationProperties - Properties of a Microsoft Entra ID Partner Client Authentication.
+type AzureADPartnerClientAuthenticationProperties struct {
+	// The Microsoft Entra ID Application ID or URI to get the access token that will be included as the bearer token in delivery
+	// requests.
+	AzureActiveDirectoryApplicationIDOrURI *string
+
+	// The Microsoft Entra ID Tenant ID to get the access token that will be included as the bearer token in delivery requests.
+	AzureActiveDirectoryTenantID *string
+}
+
 // AzureFunctionEventSubscriptionDestination - Information about the azure function destination for an event subscription.
 type AzureFunctionEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
@@ -169,6 +195,10 @@ type ChannelProperties struct {
 	// Context or helpful message that can be used during the approval process by the subscriber.
 	MessageForActivation *string
 
+	// This property should be populated when channelType is PartnerDestination and represents information about the partner destination
+	// resource corresponding to the channel.
+	PartnerDestinationInfo PartnerDestinationInfoClassification
+
 	// This property should be populated when channelType is PartnerTopic and represents information about the partner topic resource
 	// corresponding to the channel.
 	PartnerTopicInfo *PartnerTopicInfo
@@ -192,6 +222,9 @@ type ChannelUpdateParametersProperties struct {
 	// activated, the channel and corresponding partner topic or partner
 	// destination are deleted.
 	ExpirationTimeIfNotActivatedUTC *time.Time
+
+	// Partner destination properties which can be updated if the channel is of type PartnerDestination.
+	PartnerDestinationInfo PartnerUpdateDestinationInfoClassification
 
 	// Partner topic properties which can be updated if the channel is of type PartnerTopic.
 	PartnerTopicInfo *PartnerUpdateTopicInfo
@@ -222,6 +255,18 @@ type Client struct {
 
 	// READ-ONLY; Type of the resource.
 	Type *string
+}
+
+// ClientAuthenticationSettings - Client authentication settings for namespace resource.
+type ClientAuthenticationSettings struct {
+	// Alternative authentication name sources related to client authentication settings for namespace resource.
+	AlternativeAuthenticationNameSources []*AlternativeAuthenticationNameSource
+
+	// Custom JWT authentication settings for namespace resource.
+	CustomJwtAuthentication *CustomJwtAuthenticationSettings
+
+	// Authentication settings for a webhook endpoint within a Namespace resource.
+	WebhookAuthentication *WebhookAuthenticationSettings
 }
 
 // ClientCertificateAuthentication - The certificate authentication properties for the client.
@@ -365,6 +410,36 @@ type CustomDomainOwnershipValidationResult struct {
 	CustomDomainsForTopicsConfiguration []*CustomDomainConfiguration
 }
 
+// CustomJwtAuthenticationManagedIdentity - The identity information for retrieving the certificate for custom JWT authentication.
+type CustomJwtAuthenticationManagedIdentity struct {
+	// REQUIRED; The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+	Type *CustomJwtAuthenticationManagedIdentityType
+
+	// The user identity associated with the resource.
+	UserAssignedIdentity *string
+}
+
+// CustomJwtAuthenticationSettings - Custom JWT authentication settings for namespace resource.
+type CustomJwtAuthenticationSettings struct {
+	// Information about the encoded public certificates that are used for custom authentication.
+	EncodedIssuerCertificates []*EncodedIssuerCertificateInfo
+
+	// Information about the certificates that are used for token validation. We currently support maximum 2 certificates.
+	IssuerCertificates []*IssuerCertificateInfo
+
+	// Expected JWT token issuer.
+	TokenIssuer *string
+}
+
+// CustomWebhookAuthenticationManagedIdentity - The identity configuration required for authenticating a custom webhook.
+type CustomWebhookAuthenticationManagedIdentity struct {
+	// REQUIRED; The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+	Type *CustomWebhookAuthenticationManagedIdentityType
+
+	// The user identity associated with the resource.
+	UserAssignedIdentity *string
+}
+
 // DeadLetterDestination - Information about the dead letter destination for an event subscription. To configure a deadletter
 // destination, do not directly instantiate an object of this class. Instead, instantiate an object of a
 // derived class. Currently, StorageBlobDeadLetterDestination is the only class that derives from this class.
@@ -439,6 +514,9 @@ type Domain struct {
 	// Properties of the Event Grid Domain resource.
 	Properties *DomainProperties
 
+	// The Sku pricing tier for the Event Grid Domain resource.
+	SKU *ResourceSKU
+
 	// Tags of the resource.
 	Tags map[string]*string
 
@@ -484,8 +562,9 @@ type DomainProperties struct {
 	// Data Residency Boundary of the resource.
 	DataResidencyBoundary *DataResidencyBoundary
 
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
-	// token will be used to authenticate if user is allowed to publish to the domain.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only Microsoft
+	// Entra ID token will be used to authenticate if user is allowed to publish
+	// to the domain.
 	DisableLocalAuth *bool
 
 	// Event Type Information for the domain. This information is provided by the publisher and can be used by the subscriber
@@ -599,8 +678,9 @@ type DomainUpdateParameterProperties struct {
 	// The data residency boundary for the domain.
 	DataResidencyBoundary *DataResidencyBoundary
 
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
-	// token will be used to authenticate if user is allowed to publish to the domain.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only Microsoft
+	// Entra ID token will be used to authenticate if user is allowed to publish
+	// to the domain.
 	DisableLocalAuth *bool
 
 	// The eventTypeInfo for the domain.
@@ -625,6 +705,9 @@ type DomainUpdateParameters struct {
 
 	// Properties of the resource.
 	Properties *DomainUpdateParameterProperties
+
+	// The Sku pricing tier for the domain.
+	SKU *ResourceSKU
 
 	// Tags of the domains resource.
 	Tags map[string]*string
@@ -671,6 +754,15 @@ type DynamicRoutingEnrichment struct {
 
 	// Dynamic routing enrichment value.
 	Value *string
+}
+
+// EncodedIssuerCertificateInfo - Information about the public certificate that is used for custom authentication.
+type EncodedIssuerCertificateInfo struct {
+	// REQUIRED; Certificate in pem format.
+	EncodedCertificate *string
+
+	// REQUIRED; Identifier for the certificate.
+	Kid *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -795,6 +887,9 @@ type EventSubscriptionFullURL struct {
 
 // EventSubscriptionIdentity - The identity information with the event subscription.
 type EventSubscriptionIdentity struct {
+	// The details of the Federated Identity Credential (FIC) used with the resource delivery.
+	FederatedIdentityCredentialInfo *FederatedIdentityCredentialInfo
+
 	// The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
 	Type *EventSubscriptionIdentityType
 
@@ -941,6 +1036,15 @@ type EventTypesListResult struct {
 	Value []*EventType
 }
 
+// ExtendedLocation - Definition of an Extended Location
+type ExtendedLocation struct {
+	// Fully qualified name of the extended location.
+	Name *string
+
+	// Type of the extended location.
+	Type *string
+}
+
 // ExtensionTopic - Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources.
 type ExtensionTopic struct {
 	// Properties of the extension topic.
@@ -966,6 +1070,12 @@ type ExtensionTopicProperties struct {
 
 	// System topic resource id which is mapped to the source.
 	SystemTopic *string
+}
+
+// FederatedIdentityCredentialInfo - The details of the Federated Identity Credential (FIC) used with the resource.
+type FederatedIdentityCredentialInfo struct {
+	// REQUIRED; The Multi-Tenant Microsoft Entra ID Application where the Federated Identity Credential (FIC) is associated with.
+	FederatedClientID *string
 }
 
 // Filter - This is the base type that represents a filter. To configure a filter, do not directly instantiate an object of
@@ -1137,6 +1247,16 @@ func (i *IsNullOrUndefinedFilter) GetFilter() *Filter {
 		Key:          i.Key,
 		OperatorType: i.OperatorType,
 	}
+}
+
+// IssuerCertificateInfo - Information about the certificate that is used for token validation.
+type IssuerCertificateInfo struct {
+	// REQUIRED; Keyvault certificate URL in https://keyvaultname.vault.azure.net/certificates/certificateName/certificateVersion
+	// format.
+	CertificateURL *string
+
+	// The identity that will be used to access the certificate.
+	Identity *CustomJwtAuthenticationManagedIdentity
 }
 
 // JSONField - This is used to express the source of an input schema mapping for a single target field in the Event Grid Event
@@ -1440,6 +1560,151 @@ type NamespacesListResult struct {
 
 	// A collection of namespaces.
 	Value []*Namespace
+}
+
+// NetworkSecurityPerimeterConfiguration - Network security perimeter configuration.
+type NetworkSecurityPerimeterConfiguration struct {
+	// Properties of the network security perimeter configuration.
+	Properties *NetworkSecurityPerimeterConfigurationProperties
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// NetworkSecurityPerimeterConfigurationIssues - Network security perimeter configuration issues.
+type NetworkSecurityPerimeterConfigurationIssues struct {
+	// Provisioning issue name.
+	Name *string
+
+	// Provisioning issue properties.
+	Properties *NetworkSecurityPerimeterConfigurationIssuesProperties
+}
+
+// NetworkSecurityPerimeterConfigurationIssuesProperties - Network security perimeter configuration issues properties.
+type NetworkSecurityPerimeterConfigurationIssuesProperties struct {
+	// Provisioning issue description.
+	Description *string
+
+	// Provisioning issue type.
+	IssueType *NetworkSecurityPerimeterConfigurationIssueType
+
+	// Provisioning issue severity.
+	Severity *NetworkSecurityPerimeterConfigurationIssueSeverity
+
+	// Access rules that can be added to the same profile to remediate the issue.
+	SuggestedAccessRules []*string
+
+	// ARM IDs of resources that can be associated to the same perimeter to remediate the issue.
+	SuggestedResourceIDs []*string
+}
+
+// NetworkSecurityPerimeterConfigurationList - Network security perimeter configuration List.
+type NetworkSecurityPerimeterConfigurationList struct {
+	// A link for the next page of Network Security Perimeter Configuration.
+	NextLink *string
+
+	// List of all network security parameter configurations.
+	Value []*NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationProfile - Nsp configuration with profile information.
+type NetworkSecurityPerimeterConfigurationProfile struct {
+	// List of inbound or outbound access rule setup on the nsp profile.
+	AccessRules []*NetworkSecurityPerimeterProfileAccessRule
+
+	// Access rules version number for nsp profile.
+	AccessRulesVersion *string
+
+	// Diagnostic settings version number for nsp profile.
+	DiagnosticSettingsVersion *string
+
+	// Enabled log categories for nsp profile.
+	EnabledLogCategories []*string
+
+	// Nsp configuration profile name.
+	Name *string
+}
+
+// NetworkSecurityPerimeterConfigurationProperties - Network security perimeter configuration information to reflect latest
+// association and nsp profile configuration.
+type NetworkSecurityPerimeterConfigurationProperties struct {
+	// Perimeter info for nsp association.
+	NetworkSecurityPerimeter *NetworkSecurityPerimeterInfo
+
+	// Nsp profile configuration, access rules and diagnostic settings.
+	Profile *NetworkSecurityPerimeterConfigurationProfile
+
+	// Provisioning issues to reflect status when attempting to retrieve nsp profile configuration.
+	ProvisioningIssues []*NetworkSecurityPerimeterConfigurationIssues
+
+	// Provisioning state to reflect configuration state and indicate status of nsp profile configuration retrieval.
+	ProvisioningState *NetworkSecurityPerimeterConfigProvisioningState
+
+	// Nsp association name and access mode of association.
+	ResourceAssociation *ResourceAssociation
+}
+
+// NetworkSecurityPerimeterInfo - Network security perimeter info.
+type NetworkSecurityPerimeterInfo struct {
+	// Arm id for network security perimeter.
+	ID *string
+
+	// Network security perimeter location.
+	Location *string
+
+	// Network security perimeter guid.
+	PerimeterGUID *string
+}
+
+// NetworkSecurityPerimeterProfileAccessRule - Network security perimeter profile access rule.
+type NetworkSecurityPerimeterProfileAccessRule struct {
+	// Fully Qualified Arm id for network security perimeter profile access rule.
+	FullyQualifiedArmID *string
+
+	// Name for nsp access rule.
+	Name *string
+
+	// NSP access rule properties.
+	Properties *NetworkSecurityPerimeterProfileAccessRuleProperties
+
+	// nsp access rule type.
+	Type *string
+}
+
+// NetworkSecurityPerimeterProfileAccessRuleProperties - Network security perimeter profile access rule properties.
+type NetworkSecurityPerimeterProfileAccessRuleProperties struct {
+	// Address prefixes.
+	AddressPrefixes []*string
+
+	// NSP access rule direction.
+	Direction *NetworkSecurityPerimeterProfileAccessRuleDirection
+
+	// List of email addresses.
+	EmailAddresses []*string
+
+	// Fully qualified domain names.
+	FullyQualifiedDomainNames []*string
+
+	// Network security perimeters.
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeterInfo
+
+	// List of phone numbers.
+	PhoneNumbers []*string
+
+	// List of subscriptions.
+	Subscriptions []*NetworkSecurityPerimeterSubscription
+}
+
+// NetworkSecurityPerimeterSubscription - Network security perimeter subscription inbound access rule.
+type NetworkSecurityPerimeterSubscription struct {
+	// Subscription id.
+	ID *string
 }
 
 // NumberGreaterThanAdvancedFilter - NumberGreaterThan Advanced Filter.
@@ -1828,6 +2093,17 @@ type PartnerAuthorization struct {
 	DefaultMaximumExpirationTimeInDays *int32
 }
 
+// PartnerClientAuthentication - Partner client authentication
+type PartnerClientAuthentication struct {
+	// REQUIRED; Type of client authentication
+	ClientAuthenticationType *PartnerClientAuthenticationType
+}
+
+// GetPartnerClientAuthentication implements the PartnerClientAuthenticationClassification interface for type PartnerClientAuthentication.
+func (p *PartnerClientAuthentication) GetPartnerClientAuthentication() *PartnerClientAuthentication {
+	return p
+}
+
 // PartnerConfiguration - Partner configuration information
 type PartnerConfiguration struct {
 	// Location of the resource.
@@ -1886,6 +2162,96 @@ type PartnerConfigurationsListResult struct {
 	Value []*PartnerConfiguration
 }
 
+// PartnerDestination - Event Grid Partner Destination.
+type PartnerDestination struct {
+	// REQUIRED; Location of the resource.
+	Location *string
+
+	// Properties of the Partner Destination.
+	Properties *PartnerDestinationProperties
+
+	// Tags of the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified identifier of the resource.
+	ID *string
+
+	// READ-ONLY; Name of the resource.
+	Name *string
+
+	// READ-ONLY; The system metadata relating to the Event Grid resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Type of the resource.
+	Type *string
+}
+
+// PartnerDestinationInfo - Properties of the corresponding partner destination of a Channel.
+type PartnerDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+
+	// Azure subscription ID of the subscriber. The partner destination associated with the channel will be created under this
+	// Azure subscription.
+	AzureSubscriptionID *string
+
+	// Additional context of the partner destination endpoint.
+	EndpointServiceContext *string
+
+	// Name of the partner destination associated with the channel.
+	Name *string
+
+	// Azure Resource Group of the subscriber. The partner destination associated with the channel will be created under this
+	// resource group.
+	ResourceGroupName *string
+
+	// Change history of the resource move.
+	ResourceMoveChangeHistory []*ResourceMoveChangeHistory
+}
+
+// GetPartnerDestinationInfo implements the PartnerDestinationInfoClassification interface for type PartnerDestinationInfo.
+func (p *PartnerDestinationInfo) GetPartnerDestinationInfo() *PartnerDestinationInfo { return p }
+
+// PartnerDestinationProperties - Properties of the Partner Destination.
+type PartnerDestinationProperties struct {
+	// Activation state of the partner destination.
+	ActivationState *PartnerDestinationActivationState
+
+	// Endpoint Base URL of the partner destination
+	EndpointBaseURL *string
+
+	// Endpoint context associated with this partner destination.
+	EndpointServiceContext *string
+
+	// Expiration time of the partner destination. If this timer expires and the partner destination was never activated, the
+	// partner destination and corresponding channel are deleted.
+	ExpirationTimeIfNotActivatedUTC *time.Time
+
+	// Context or helpful message that can be used during the approval process.
+	MessageForActivation *string
+
+	// The immutable Id of the corresponding partner registration.
+	PartnerRegistrationImmutableID *string
+
+	// READ-ONLY; Provisioning state of the partner destination.
+	ProvisioningState *PartnerDestinationProvisioningState
+}
+
+// PartnerDestinationUpdateParameters - Properties of the Partner Destination that can be updated.
+type PartnerDestinationUpdateParameters struct {
+	// Tags of the Partner Destination resource.
+	Tags map[string]*string
+}
+
+// PartnerDestinationsListResult - Result of the List Partner Destinations operation.
+type PartnerDestinationsListResult struct {
+	// A link for the next page of partner destinations.
+	NextLink *string
+
+	// A collection of partner destinations.
+	Value []*PartnerDestination
+}
+
 // PartnerDetails - Information about the partner.
 type PartnerDetails struct {
 	// This is short description about the partner. The length of this description should not exceed 256 characters.
@@ -1896,6 +2262,26 @@ type PartnerDetails struct {
 
 	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
 	SetupURI *string
+}
+
+type PartnerEventSubscriptionDestination struct {
+	// REQUIRED; Type of the endpoint for the event subscription destination.
+	EndpointType *EndpointType
+
+	// Partner Destination Properties of the event subscription destination.
+	Properties *PartnerEventSubscriptionDestinationProperties
+}
+
+// GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type PartnerEventSubscriptionDestination.
+func (p *PartnerEventSubscriptionDestination) GetEventSubscriptionDestination() *EventSubscriptionDestination {
+	return &EventSubscriptionDestination{
+		EndpointType: p.EndpointType,
+	}
+}
+
+type PartnerEventSubscriptionDestinationProperties struct {
+	// The Azure Resource Id that represents the endpoint of a Partner Destination of an event subscription.
+	ResourceID *string
 }
 
 // PartnerNamespace - EventGrid Partner Namespace.
@@ -1924,9 +2310,9 @@ type PartnerNamespace struct {
 
 // PartnerNamespaceProperties - Properties of the partner namespace.
 type PartnerNamespaceProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
-	// token will be used to authenticate if user is allowed to publish to the partner
-	// namespace.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only Microsoft
+	// Entra ID token will be used to authenticate if user is allowed to publish
+	// to the partner namespace.
 	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
@@ -1977,9 +2363,9 @@ type PartnerNamespaceSharedAccessKeys struct {
 
 // PartnerNamespaceUpdateParameterProperties - Information of Partner Namespace update parameter properties.
 type PartnerNamespaceUpdateParameterProperties struct {
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
-	// token will be used to authenticate if user is allowed to publish to the partner
-	// namespace.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only Microsoft
+	// Entra ID token will be used to authenticate if user is allowed to publish
+	// to the partner namespace.
 	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
@@ -2157,6 +2543,17 @@ type PartnerTopicsListResult struct {
 
 	// A collection of partner topics.
 	Value []*PartnerTopic
+}
+
+// PartnerUpdateDestinationInfo - Properties of the corresponding partner destination of a Channel.
+type PartnerUpdateDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+}
+
+// GetPartnerUpdateDestinationInfo implements the PartnerUpdateDestinationInfoClassification interface for type PartnerUpdateDestinationInfo.
+func (p *PartnerUpdateDestinationInfo) GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo {
+	return p
 }
 
 // PartnerUpdateTopicInfo - Update properties for the corresponding partner topic of a channel.
@@ -2369,6 +2766,33 @@ type Resource struct {
 
 	// READ-ONLY; Type of the resource.
 	Type *string
+}
+
+// ResourceAssociation - Nsp resource association
+type ResourceAssociation struct {
+	// Network security perimeter access mode.
+	AccessMode *NetworkSecurityPerimeterAssociationAccessMode
+
+	// Association name
+	Name *string
+}
+
+// ResourceMoveChangeHistory - The change history of the resource move.
+type ResourceMoveChangeHistory struct {
+	// Azure subscription ID of the resource.
+	AzureSubscriptionID *string
+
+	// UTC timestamp of when the resource was changed.
+	ChangedTimeUTC *time.Time
+
+	// Azure Resource Group of the resource.
+	ResourceGroupName *string
+}
+
+// ResourceSKU - Describes an EventGrid Resource Sku.
+type ResourceSKU struct {
+	// The Sku name of the resource. The possible values are: Basic or Premium.
+	Name *SKU
 }
 
 // RetryPolicy - Information about the retry policy for an event subscription.
@@ -2916,6 +3340,9 @@ type SubscriptionProperties struct {
 	// Information about the filter for the event subscription.
 	FiltersConfiguration *FiltersConfiguration
 
+	// Tags relating to Event Subscription resource.
+	Tags map[string]*string
+
 	// READ-ONLY; Provisioning state of the event subscription.
 	ProvisioningState *SubscriptionProvisioningState
 }
@@ -2939,6 +3366,9 @@ type SubscriptionUpdateParametersProperties struct {
 
 	// Information about the filter for the event subscription.
 	FiltersConfiguration *FiltersConfiguration
+
+	// Tags relating to Event Subscription resource.
+	Tags map[string]*string
 }
 
 // SubscriptionsListResult - Result of the List event subscriptions operation.
@@ -3036,11 +3466,20 @@ type Topic struct {
 	// REQUIRED; Location of the resource.
 	Location *string
 
+	// Extended location of the resource.
+	ExtendedLocation *ExtendedLocation
+
 	// Identity information for the resource.
 	Identity *IdentityInfo
 
+	// Kind of the resource.
+	Kind *ResourceKind
+
 	// Properties of the topic.
 	Properties *TopicProperties
+
+	// The Sku pricing tier for the topic.
+	SKU *ResourceSKU
 
 	// Tags of the resource.
 	Tags map[string]*string
@@ -3063,8 +3502,9 @@ type TopicProperties struct {
 	// Data Residency Boundary of the resource.
 	DataResidencyBoundary *DataResidencyBoundary
 
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
-	// token will be used to authenticate if user is allowed to publish to the topic.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only Microsoft
+	// Entra ID token will be used to authenticate if user is allowed to publish
+	// to the topic.
 	DisableLocalAuth *bool
 
 	// Event Type Information for the user topic. This information is provided by the publisher and can be used by the subscriber
@@ -3150,6 +3590,9 @@ type TopicSpaceProperties struct {
 
 // TopicSpacesConfiguration - Properties of the Topic Spaces Configuration.
 type TopicSpacesConfiguration struct {
+	// Client authentication settings for topic spaces configuration.
+	ClientAuthentication *ClientAuthenticationSettings
+
 	// List of custom domain configurations for the namespace.
 	CustomDomains []*CustomDomainConfiguration
 
@@ -3253,8 +3696,9 @@ type TopicUpdateParameterProperties struct {
 	// The data residency boundary for the topic.
 	DataResidencyBoundary *DataResidencyBoundary
 
-	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
-	// token will be used to authenticate if user is allowed to publish to the topic.
+	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only Microsoft
+	// Entra ID token will be used to authenticate if user is allowed to publish
+	// to the topic.
 	DisableLocalAuth *bool
 
 	// The eventTypeInfo for the topic.
@@ -3279,6 +3723,9 @@ type TopicUpdateParameters struct {
 
 	// Properties of the Topic resource.
 	Properties *TopicUpdateParameterProperties
+
+	// The Sku pricing tier for the topic.
+	SKU *ResourceSKU
 
 	// Tags of the Topic resource.
 	Tags map[string]*string
@@ -3322,6 +3769,9 @@ type TrackedResource struct {
 
 // UpdateTopicSpacesConfigurationInfo - Properties of the topic spaces configuration info of a namespace.
 type UpdateTopicSpacesConfigurationInfo struct {
+	// Client authentication settings for topic spaces configuration.
+	ClientAuthentication *ClientAuthenticationSettings
+
 	// Custom domain info for topic spaces configuration.
 	CustomDomains []*CustomDomainConfiguration
 
@@ -3384,6 +3834,9 @@ type VerifiedPartnerProperties struct {
 	// Official name of the Partner.
 	OrganizationName *string
 
+	// Details of the partner destination scenario.
+	PartnerDestinationDetails *PartnerDetails
+
 	// Display name of the verified partner.
 	PartnerDisplayName *string
 
@@ -3424,11 +3877,11 @@ func (w *WebHookEventSubscriptionDestination) GetEventSubscriptionDestination() 
 
 // WebHookEventSubscriptionDestinationProperties - Information about the webhook destination properties for an event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
-	// The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery
+	// The Microsoft Entra ID Application ID or URI to get the access token that will be included as the bearer token in delivery
 	// requests.
 	AzureActiveDirectoryApplicationIDOrURI *string
 
-	// The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.
+	// The Microsoft Entra ID Tenant ID to get the access token that will be included as the bearer token in delivery requests.
 	AzureActiveDirectoryTenantID *string
 
 	// Delivery attribute details.
@@ -3448,4 +3901,90 @@ type WebHookEventSubscriptionDestinationProperties struct {
 
 	// READ-ONLY; The base URL that represents the endpoint of the destination of an event subscription.
 	EndpointBaseURL *string
+}
+
+// WebhookAuthenticationSettings - Authentication settings for a webhook endpoint within a Namespace resource.
+type WebhookAuthenticationSettings struct {
+	// REQUIRED; Microsoft Entra ID Application ID or URI to get the access token that will be included as the bearer token in
+	// delivery requests.
+	AzureActiveDirectoryApplicationIDOrURI *string
+
+	// REQUIRED; Microsoft Entra ID Tenant ID to get the access token that will be included as the bearer token in delivery requests.
+	AzureActiveDirectoryTenantID *string
+
+	// REQUIRED; The URL endpoint where the Event Grid service sends authenticated webhook requests using the specified managed
+	// identity.
+	EndpointURL *string
+
+	// REQUIRED; The identity configuration required for authenticating a custom webhook.
+	Identity *CustomWebhookAuthenticationManagedIdentity
+
+	// The base URL endpoint where the Event Grid service sends authenticated webhook requests using the specified managed identity.
+	EndpointBaseURL *string
+}
+
+// WebhookPartnerDestinationInfo - Information about the WebHook of the partner destination.
+type WebhookPartnerDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+
+	// Azure subscription ID of the subscriber. The partner destination associated with the channel will be created under this
+	// Azure subscription.
+	AzureSubscriptionID *string
+
+	// Additional context of the partner destination endpoint.
+	EndpointServiceContext *string
+
+	// Name of the partner destination associated with the channel.
+	Name *string
+
+	// WebHook Properties of the partner destination.
+	Properties *WebhookPartnerDestinationProperties
+
+	// Azure Resource Group of the subscriber. The partner destination associated with the channel will be created under this
+	// resource group.
+	ResourceGroupName *string
+
+	// Change history of the resource move.
+	ResourceMoveChangeHistory []*ResourceMoveChangeHistory
+}
+
+// GetPartnerDestinationInfo implements the PartnerDestinationInfoClassification interface for type WebhookPartnerDestinationInfo.
+func (w *WebhookPartnerDestinationInfo) GetPartnerDestinationInfo() *PartnerDestinationInfo {
+	return &PartnerDestinationInfo{
+		AzureSubscriptionID:       w.AzureSubscriptionID,
+		EndpointServiceContext:    w.EndpointServiceContext,
+		EndpointType:              w.EndpointType,
+		Name:                      w.Name,
+		ResourceGroupName:         w.ResourceGroupName,
+		ResourceMoveChangeHistory: w.ResourceMoveChangeHistory,
+	}
+}
+
+// WebhookPartnerDestinationProperties - Properties of a partner destination webhook.
+type WebhookPartnerDestinationProperties struct {
+	// Partner client authentication
+	ClientAuthentication PartnerClientAuthenticationClassification
+
+	// The base URL that represents the endpoint of the partner destination.
+	EndpointBaseURL *string
+
+	// The URL that represents the endpoint of the partner destination.
+	EndpointURL *string
+}
+
+// WebhookUpdatePartnerDestinationInfo - Information about the update of the WebHook of the partner destination.
+type WebhookUpdatePartnerDestinationInfo struct {
+	// REQUIRED; Type of the endpoint for the partner destination
+	EndpointType *PartnerEndpointType
+
+	// WebHook Properties of the partner destination.
+	Properties *WebhookPartnerDestinationProperties
+}
+
+// GetPartnerUpdateDestinationInfo implements the PartnerUpdateDestinationInfoClassification interface for type WebhookUpdatePartnerDestinationInfo.
+func (w *WebhookUpdatePartnerDestinationInfo) GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo {
+	return &PartnerUpdateDestinationInfo{
+		EndpointType: w.EndpointType,
+	}
 }

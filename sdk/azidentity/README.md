@@ -153,6 +153,7 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |-|-
 |[AzureCLICredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AzureCLICredential)|Authenticate as the user signed in to the Azure CLI
 |[AzureDeveloperCLICredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AzureDeveloperCLICredential)|Authenticates as the user signed in to the Azure Developer CLI
+|[AzurePowerShellCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AzurePowerShellCredential)|Authenticates as the user signed in to Azure PowerShell
 
 ## Environment Variables
 

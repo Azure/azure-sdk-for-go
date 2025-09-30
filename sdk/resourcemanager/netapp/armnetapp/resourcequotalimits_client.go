@@ -43,7 +43,7 @@ func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.Token
 // Get - Get the default and current subscription quota limit
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-06-01
 //   - location - The name of the Azure region.
 //   - quotaLimitName - The name of the Quota Limit
 //   - options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
@@ -89,7 +89,7 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,7 +98,7 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 // getHandleResponse handles the Get response.
 func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) (ResourceQuotaLimitsClientGetResponse, error) {
 	result := ResourceQuotaLimitsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaItem); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItem); err != nil {
 		return ResourceQuotaLimitsClientGetResponse{}, err
 	}
 	return result, nil
@@ -106,27 +106,26 @@ func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Get the default and current limits for quotas
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-06-01
 //   - location - The name of the Azure region.
 //   - options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager
 //     method.
 func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceQuotaLimitsClientListResponse]{
 		More: func(page ResourceQuotaLimitsClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceQuotaLimitsClientListResponse) (ResourceQuotaLimitsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceQuotaLimitsClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, location, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return ResourceQuotaLimitsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceQuotaLimitsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceQuotaLimitsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -150,7 +149,7 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -159,7 +158,7 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 // listHandleResponse handles the List response.
 func (client *ResourceQuotaLimitsClient) listHandleResponse(resp *http.Response) (ResourceQuotaLimitsClientListResponse, error) {
 	result := ResourceQuotaLimitsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaItemList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItemList); err != nil {
 		return ResourceQuotaLimitsClientListResponse{}, err
 	}
 	return result, nil

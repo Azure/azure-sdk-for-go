@@ -10,7 +10,7 @@ import (
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/generated"
 )
 
 // HasCode returns true if the provided error is an *azcore.ResponseError

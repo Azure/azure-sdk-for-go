@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/computeRPCommonExamples/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/computeRPCommonExamples/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,19 +43,19 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 		// 	Value: []*armcompute.OperationValue{
 		// 		{
 		// 			Name: to.Ptr("aaaaaaaaaaaa"),
-		// 			Display: &armcompute.OperationValueDisplay{
+		// 			Display: &armcompute.OperationDisplay{
 		// 				Description: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
 		// 				Operation: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
 		// 				Provider: to.Ptr("aaaaaaaaaaaaaaaaaa"),
 		// 				Resource: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 			},
-		// 			Origin: to.Ptr("aaaaa"),
+		// 			Origin: to.Ptr(armcompute.Origin("aaaaa")),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/computeRPCommonExamples/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/computeRPCommonExamples/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

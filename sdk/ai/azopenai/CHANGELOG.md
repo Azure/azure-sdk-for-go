@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-07-03)
+## 1.0.0-beta.1 (TBD)
 
 ### Other Changes
 - Added examples demonstrating support for Managed Identity

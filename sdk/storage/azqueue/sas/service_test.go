@@ -8,7 +8,7 @@ package sas
 
 import (
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"

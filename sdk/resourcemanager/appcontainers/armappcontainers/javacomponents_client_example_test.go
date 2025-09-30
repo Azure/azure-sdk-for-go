@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_List.json
 func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,12 +87,43 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 		// 					Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
 		// 				},
 		// 			},
-		// 	}},
-		// }
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("reddog"),
+		// 			Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
+		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/reddog"),
+		// 			Properties: &armappcontainers.SpringCloudGatewayComponent{
+		// 				ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringCloudGateway),
+		// 				Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
+		// 					{
+		// 						PropertyName: to.Ptr("spring.cloud.gateway.enabled"),
+		// 						Value: to.Ptr("true"),
+		// 				}},
+		// 				ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
+		// 				Scale: &armappcontainers.JavaComponentPropertiesScale{
+		// 					MaxReplicas: to.Ptr[int32](1),
+		// 					MinReplicas: to.Ptr[int32](1),
+		// 				},
+		// 				Ingress: &armappcontainers.JavaComponentIngress{
+		// 					Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
+		// 				},
+		// 				SpringCloudGatewayRoutes: []*armappcontainers.ScgRoute{
+		// 					{
+		// 						Filters: []*string{
+		// 							to.Ptr("SetPath=/{path}")},
+		// 							ID: to.Ptr("route1"),
+		// 							Predicates: []*string{
+		// 								to.Ptr("Path=/v1/{path}"),
+		// 								to.Ptr("After=2024-01-20T17:42:47.789-07:00[America/Denver]")},
+		// 								URI: to.Ptr("https://otherjavacomponent.myenvironment.test.net"),
+		// 						}},
+		// 					},
+		// 			}},
+		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_List_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_List_ServiceBind.json
 func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +201,7 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_Get.json
 func ExampleJavaComponentsClient_Get_getJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +246,7 @@ func ExampleJavaComponentsClient_Get_getJavaComponent() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Get_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_Get_ServiceBind.json
 func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +293,7 @@ func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_CreateOrUpdate.json
 func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +359,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_CreateOrUpdate_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_CreateOrUpdate_ServiceBind.json
 func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,7 +432,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_Patch.json
 func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -467,7 +498,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Patch_ServiceBind.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_Patch_ServiceBind.json
 func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +571,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/JavaComponents_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/JavaComponents_Delete.json
 func ExampleJavaComponentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

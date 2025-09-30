@@ -103,12 +103,11 @@ type StorageTask struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the storage task within the specified resource group. Storage task names must be between 3 and 18
-	// characters in length and use numbers and lower-case letters only.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

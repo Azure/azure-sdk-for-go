@@ -32,6 +32,9 @@ const (
 
 	// CodeNotFound means the entity you're attempting to connect to doesn't exist.
 	CodeNotFound Code = "notfound"
+
+	// CodeClosed means the link or connection for this sender/receiver has been closed.
+	CodeClosed Code = "closed"
 )
 
 // Error represents a Service Bus specific error.

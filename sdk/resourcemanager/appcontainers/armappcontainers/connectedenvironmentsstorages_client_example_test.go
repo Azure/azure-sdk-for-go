@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsStorages_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsStorages_List.json
 func ExampleConnectedEnvironmentsStoragesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,12 +48,13 @@ func ExampleConnectedEnvironmentsStoragesClient_List() {
 	// 					AccountName: to.Ptr("account1"),
 	// 					ShareName: to.Ptr("share1"),
 	// 				},
+	// 				ProvisioningState: to.Ptr(armappcontainers.ConnectedEnvironmentStorageProvisioningStateSucceeded),
 	// 			},
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsStorages_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsStorages_Get.json
 func ExampleConnectedEnvironmentsStoragesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,12 +82,13 @@ func ExampleConnectedEnvironmentsStoragesClient_Get() {
 	// 			AccountName: to.Ptr("account1"),
 	// 			ShareName: to.Ptr("share1"),
 	// 		},
+	// 		ProvisioningState: to.Ptr(armappcontainers.ConnectedEnvironmentStorageProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsStorages_CreateOrUpdate.json
-func ExampleConnectedEnvironmentsStoragesClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsStorages_CreateOrUpdate.json
+func ExampleConnectedEnvironmentsStoragesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -96,7 +98,7 @@ func ExampleConnectedEnvironmentsStoragesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewConnectedEnvironmentsStoragesClient().CreateOrUpdate(ctx, "examplerg", "env", "jlaw-demo1", armappcontainers.ConnectedEnvironmentStorage{
+	poller, err := clientFactory.NewConnectedEnvironmentsStoragesClient().BeginCreateOrUpdate(ctx, "examplerg", "env", "jlaw-demo1", armappcontainers.ConnectedEnvironmentStorage{
 		Properties: &armappcontainers.ConnectedEnvironmentStorageProperties{
 			AzureFile: &armappcontainers.AzureFileProperties{
 				AccessMode:  to.Ptr(armappcontainers.AccessModeReadOnly),
@@ -108,6 +110,10 @@ func ExampleConnectedEnvironmentsStoragesClient_CreateOrUpdate() {
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -122,12 +128,13 @@ func ExampleConnectedEnvironmentsStoragesClient_CreateOrUpdate() {
 	// 			AccountName: to.Ptr("account1"),
 	// 			ShareName: to.Ptr("share1"),
 	// 		},
+	// 		ProvisioningState: to.Ptr(armappcontainers.ConnectedEnvironmentStorageProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsStorages_Delete.json
-func ExampleConnectedEnvironmentsStoragesClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/ConnectedEnvironmentsStorages_Delete.json
+func ExampleConnectedEnvironmentsStoragesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -137,8 +144,12 @@ func ExampleConnectedEnvironmentsStoragesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewConnectedEnvironmentsStoragesClient().Delete(ctx, "examplerg", "env", "jlaw-demo1", nil)
+	poller, err := clientFactory.NewConnectedEnvironmentsStoragesClient().BeginDelete(ctx, "examplerg", "env", "jlaw-demo1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/CreateOrUpdateSharedPrivateLinkResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/CreateOrUpdateSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/GetSharedPrivateLinkResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/GetSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/DeleteSharedPrivateLinkResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/DeleteSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/ListSharedPrivateLinkResourcesByService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/ListSharedPrivateLinkResourcesByService.json
 func ExampleSharedPrivateLinkResourcesClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

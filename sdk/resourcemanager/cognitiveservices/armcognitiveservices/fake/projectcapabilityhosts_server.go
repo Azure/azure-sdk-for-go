@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,7 +22,7 @@ import (
 type ProjectCapabilityHostsServer struct {
 	// BeginCreateOrUpdate is the fake for method ProjectCapabilityHostsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, body armcognitiveservices.CapabilityHost, options *armcognitiveservices.ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ProjectCapabilityHostsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost armcognitiveservices.CapabilityHost, options *armcognitiveservices.ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ProjectCapabilityHostsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ProjectCapabilityHostsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -109,7 +109,7 @@ func (p *ProjectCapabilityHostsServerTransport) dispatchBeginCreateOrUpdate(req 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilityHosts/(?P<capabilityHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.CapabilityHost](req)
@@ -165,7 +165,7 @@ func (p *ProjectCapabilityHostsServerTransport) dispatchBeginDelete(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilityHosts/(?P<capabilityHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -215,7 +215,7 @@ func (p *ProjectCapabilityHostsServerTransport) dispatchGet(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilityHosts/(?P<capabilityHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])

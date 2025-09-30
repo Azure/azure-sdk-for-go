@@ -25,8 +25,7 @@ type CloudServiceRoleInstancesClient struct {
 }
 
 // NewCloudServiceRoleInstancesClient creates a new instance of CloudServiceRoleInstancesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCloudServiceRoleInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceRoleInstancesClient, error) {

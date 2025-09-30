@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a3913f4b26467aed413cdc907116e99894f08994/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/ListDatabaseOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8358c7473dfe057d84a6b6a921225063c040b31a/specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/ListDatabaseOperations.json
 func ExampleDatabaseOperationsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,24 +63,74 @@ func ExampleDatabaseOperationsClient_NewListByDatabasePager() {
 		// 			Type: to.Ptr("Microsoft.Sql/servers/databases/operations"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb/operations/55555555-5555-5555-5555-555555555555"),
 		// 			Properties: &armsql.DatabaseOperationProperties{
-		// 				Description: to.Ptr("'UpdateLogicalDatabase' on database 'testdb', Source ServiceLevelObjective 'SQLDB_GP_Gen5_2', target ServiceLevelObjective 'SQLDB_HS_Gen5_2', target database MaxSize '32'GB"),
+		// 				Description: to.Ptr("'UpdateLogicalDatabase' on database 'testdb', Source ServiceLevelObjective 'SQLDB_BC_Gen5_6', target ServiceLevelObjective 'SQLDB_HS_Gen5_6', target database MaxSize '32'GB"),
 		// 				DatabaseName: to.Ptr("testdb"),
-		// 				EstimatedCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-17T14:30:30.710Z"); return t}()),
+		// 				EstimatedCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-27T12:44:33.953Z"); return t}()),
+		// 				IsCancellable: to.Ptr(true),
+		// 				Operation: to.Ptr("UpdateLogicalDatabase"),
+		// 				OperationFriendlyName: to.Ptr("ALTER DATABASE"),
+		// 				OperationPhaseDetails: &armsql.PhaseDetails{
+		// 					Phase: to.Ptr(armsql.PhaseLogTransitionInProgress),
+		// 					PhaseInformation: map[string]*string{
+		// 						"currentStep": to.Ptr("1"),
+		// 						"logTransitioningInProgress": to.Ptr("True"),
+		// 						"totalSteps": to.Ptr("6"),
+		// 					},
+		// 				},
+		// 				PercentComplete: to.Ptr[int32](50),
+		// 				ServerName: to.Ptr("testsvr"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-27T05:42:30.097Z"); return t}()),
+		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("55555555-5555-5555-5555-555555555555"),
+		// 			Type: to.Ptr("Microsoft.Sql/servers/databases/operations"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb/operations/55555555-5555-5555-5555-555555555555"),
+		// 			Properties: &armsql.DatabaseOperationProperties{
+		// 				Description: to.Ptr("'UpdateLogicalDatabase' on database 'testdb', Source ServiceLevelObjective 'SQLDB_GP_Gen5_6', target ServiceLevelObjective 'SQLDB_HS_Gen5_6', target database MaxSize '32'GB"),
+		// 				DatabaseName: to.Ptr("testdb"),
+		// 				EstimatedCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-27T12:28:10.830Z"); return t}()),
+		// 				IsCancellable: to.Ptr(true),
+		// 				Operation: to.Ptr("UpdateLogicalDatabase"),
+		// 				OperationFriendlyName: to.Ptr("ALTER DATABASE"),
+		// 				OperationPhaseDetails: &armsql.PhaseDetails{
+		// 					Phase: to.Ptr(armsql.PhaseBuildingHyperscaleComponents),
+		// 					PhaseInformation: map[string]*string{
+		// 						"creatingPrimaryHyperscaleComponents": to.Ptr("True"),
+		// 						"currentStep": to.Ptr("3"),
+		// 						"totalSteps": to.Ptr("6"),
+		// 					},
+		// 				},
+		// 				PercentComplete: to.Ptr[int32](50),
+		// 				ServerName: to.Ptr("testsvr"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-27T05:13:37.840Z"); return t}()),
+		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("55555555-5555-5555-5555-555555555555"),
+		// 			Type: to.Ptr("Microsoft.Sql/servers/databases/operations"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb/operations/55555555-5555-5555-5555-555555555555"),
+		// 			Properties: &armsql.DatabaseOperationProperties{
+		// 				Description: to.Ptr("'UpdateLogicalDatabase' on database 'testdb', Source ServiceLevelObjective 'SQLDB_GP_Gen5_6', target ServiceLevelObjective 'SQLDB_HS_Gen5_6', target database MaxSize '32'GB"),
+		// 				DatabaseName: to.Ptr("testdb"),
+		// 				EstimatedCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-27T14:59:54.380Z"); return t}()),
 		// 				IsCancellable: to.Ptr(true),
 		// 				Operation: to.Ptr("UpdateLogicalDatabase"),
 		// 				OperationFriendlyName: to.Ptr("ALTER DATABASE"),
 		// 				OperationPhaseDetails: &armsql.PhaseDetails{
 		// 					Phase: to.Ptr(armsql.PhaseWaitingForCutover),
 		// 					PhaseInformation: map[string]*string{
-		// 						"currentStep": to.Ptr("3"),
-		// 						"dataDelayInMb": to.Ptr("31"),
-		// 						"performCutoverBy": to.Ptr("2023-02-17T11:57:06.71Z"),
-		// 						"totalSteps": to.Ptr("4"),
+		// 						"currentStep": to.Ptr("5"),
+		// 						"dataDelayInMb": to.Ptr("0"),
+		// 						"performCutoverBy": to.Ptr("2024-09-30T07:43:55.08Z"),
+		// 						"totalSteps": to.Ptr("6"),
 		// 					},
 		// 				},
-		// 				PercentComplete: to.Ptr[int32](19),
+		// 				PercentComplete: to.Ptr[int32](50),
 		// 				ServerName: to.Ptr("testsvr"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-13T06:25:23.670Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-27T07:31:56.087Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
 		// 			},
 		// 		},
@@ -107,7 +157,7 @@ func ExampleDatabaseOperationsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a3913f4b26467aed413cdc907116e99894f08994/specification/sql/resource-manager/Microsoft.Sql/preview/2022-11-01-preview/examples/CancelDatabaseOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8358c7473dfe057d84a6b6a921225063c040b31a/specification/sql/resource-manager/Microsoft.Sql/preview/2024-11-01-preview/examples/CancelDatabaseOperation.json
 func ExampleDatabaseOperationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesList.json
 func ExampleFileServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleFileServicesClient_List() {
 	// 												}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesPut.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServices() {
 	// 												}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesPut_EnableSMBMultichannel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesPut_EnableSMBMultichannel.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMultichannel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSmbMult
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesPut_EnableSecureSmbFeatures.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesPut_EnableSecureSmbFeatures.json
 func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureSmbFeatures() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +328,65 @@ func ExampleFileServicesClient_SetServiceProperties_putFileServicesEnableSecureS
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesPut_EncryptionInTransitRequired.json
+func ExampleFileServicesClient_SetServiceProperties_putFileServicesEncryptionInTransitRequired() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFileServicesClient().SetServiceProperties(ctx, "res4410", "sto8607", armstorage.FileServiceProperties{
+		FileServiceProperties: &armstorage.FileServicePropertiesProperties{
+			ProtocolSettings: &armstorage.ProtocolSettings{
+				Nfs: &armstorage.NfsSetting{
+					EncryptionInTransit: &armstorage.EncryptionInTransit{
+						Required: to.Ptr(true),
+					},
+				},
+				Smb: &armstorage.SmbSetting{
+					EncryptionInTransit: &armstorage.EncryptionInTransit{
+						Required: to.Ptr(true),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.FileServiceProperties = armstorage.FileServiceProperties{
+	// 	Name: to.Ptr("default"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/fileServices"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res4410/providers/Microsoft.Storage/storageAccounts/sto8607/fileServices/default"),
+	// 	FileServiceProperties: &armstorage.FileServicePropertiesProperties{
+	// 		ProtocolSettings: &armstorage.ProtocolSettings{
+	// 			Nfs: &armstorage.NfsSetting{
+	// 				EncryptionInTransit: &armstorage.EncryptionInTransit{
+	// 					Required: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			Smb: &armstorage.SmbSetting{
+	// 				EncryptionInTransit: &armstorage.EncryptionInTransit{
+	// 					Required: to.Ptr(true),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	SKU: &armstorage.SKU{
+	// 		Name: to.Ptr(armstorage.SKUNamePremiumLRS),
+	// 		Tier: to.Ptr(armstorage.SKUTierPremium),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesGet.json
 func ExampleFileServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +465,7 @@ func ExampleFileServicesClient_GetServiceProperties() {
 	// 												}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesListUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesListUsages.json
 func ExampleFileServicesClient_NewListServiceUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +539,7 @@ func ExampleFileServicesClient_NewListServiceUsagesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/FileServicesGetUsage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileServicesGetUsage.json
 func ExampleFileServicesClient_GetServiceUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

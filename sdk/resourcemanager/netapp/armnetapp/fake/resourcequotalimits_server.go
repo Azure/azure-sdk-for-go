@@ -12,7 +12,8 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -99,7 +100,7 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchGet(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaLimits/(?P<quotaLimitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -118,7 +119,7 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchGet(req *http.Request) (*ht
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).QuotaItem, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubscriptionQuotaItem, req)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +135,7 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchNewListPager(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaLimits`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -144,6 +145,9 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchNewListPager(req *http.Requ
 		resp := r.srv.NewListPager(locationParam, nil)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.ResourceQuotaLimitsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {

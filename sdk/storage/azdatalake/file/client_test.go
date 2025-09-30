@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
@@ -2978,6 +2979,33 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPKNegative() {
 	_, err = fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{})
 	_require.Error(err)
 	_require.ErrorContains(err, "BlobUsesCustomerSpecifiedEncryption")
+}
+
+func (s *UnrecordedTestSuite) TestFormatDownloadStreamResponse_NilInputs() {
+	_require := require.New(s.T())
+	resp := file.FormatDownloadStreamResponse(nil, nil)
+
+	_require.NotNil(resp)
+	_require.Equal(file.DownloadResponse{}, resp)
+
+	blobResp := &blob.DownloadStreamResponse{}
+	resp = file.FormatDownloadStreamResponse(blobResp, nil)
+
+	_require.NotNil(resp)
+	_require.Equal(blobResp.AcceptRanges, resp.AcceptRanges)
+	_require.Nil(resp.EncryptionContext)
+	_require.Nil(resp.AccessControlList)
+
+	rawResp := &http.Response{Header: make(http.Header)}
+	rawResp.Header.Set("x-ms-encryption-context", "test-context")
+	rawResp.Header.Set("x-ms-acl", "test-acl")
+
+	resp = file.FormatDownloadStreamResponse(nil, rawResp)
+	_require.NotNil(resp)
+	_require.NotNil(resp.EncryptionContext)
+	_require.NotNil(resp.AccessControlList)
+	_require.Equal("test-context", *resp.EncryptionContext)
+	_require.Equal("test-acl", *resp.AccessControlList)
 }
 
 func (s *UnrecordedTestSuite) TestFileUploadFile() {

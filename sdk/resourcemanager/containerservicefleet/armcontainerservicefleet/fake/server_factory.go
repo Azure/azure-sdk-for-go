@@ -30,6 +30,9 @@ type ServerFactory struct {
 	// FleetsServer contains the fakes for client FleetsClient
 	FleetsServer FleetsServer
 
+	// GatesServer contains the fakes for client GatesClient
+	GatesServer GatesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -56,6 +59,7 @@ type ServerFactoryTransport struct {
 	trFleetMembersServer                 *FleetMembersServerTransport
 	trFleetUpdateStrategiesServer        *FleetUpdateStrategiesServerTransport
 	trFleetsServer                       *FleetsServerTransport
+	trGatesServer                        *GatesServerTransport
 	trOperationsServer                   *OperationsServerTransport
 	trUpdateRunsServer                   *UpdateRunsServerTransport
 }
@@ -94,6 +98,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "FleetsClient":
 		initServer(s, &s.trFleetsServer, func() *FleetsServerTransport { return NewFleetsServerTransport(&s.srv.FleetsServer) })
 		resp, err = s.trFleetsServer.Do(req)
+	case "GatesClient":
+		initServer(s, &s.trGatesServer, func() *GatesServerTransport { return NewGatesServerTransport(&s.srv.GatesServer) })
+		resp, err = s.trGatesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

@@ -109,6 +109,13 @@ stages:
               filePath: ./eng/scripts/validate_go_mod.ps1
               arguments: '${{ parameters.ServiceDirectory }}'
               pwsh: true
+          - task: PowerShell@2
+            displayName: 'Verify go.mod major version'
+            inputs:
+              targetType: 'filePath'
+              filePath: ./eng/scripts/validate_go_mod_major_version.ps1
+              arguments: '${{ parameters.ServiceDirectory }}'
+              pwsh: true
           - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
             parameters:
               ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
@@ -116,6 +123,10 @@ stages:
               ReleaseSha: $(Build.SourceVersion)
               RepoId: Azure/azure-sdk-for-go
               WorkingDirectory: $(System.DefaultWorkingDirectory)
+          - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml
+            parameters:
+              ConfigFileDir: $(Pipeline.Workspace)/PackageInfo
+              PackageArtifactName: sdk/${{ parameters.ServiceDirectory }}
 
       - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
         - job: UpdatePackageVersion

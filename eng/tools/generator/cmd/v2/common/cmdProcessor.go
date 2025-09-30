@@ -200,7 +200,10 @@ func ExecuteGoFmt(dir string, args ...string) error {
 
 // execute tsp-client command
 func ExecuteTspClient(path string, args ...string) error {
-	cmd := exec.Command("tsp-client", args...)
+	// Use pinned tsp-client from eng/common/tsp-client instead of global npx
+	tspClientDir := filepath.Join(path, "eng", "common", "tsp-client")
+	args = append([]string{"--prefix", tspClientDir, "exec", "--no", "--", "tsp-client"}, args...)
+	cmd := exec.Command("npm", args...)
 	cmd.Dir = path
 
 	stdoutPipe, err := cmd.StdoutPipe()
@@ -301,6 +304,7 @@ func ExecuteTypeSpecGenerate(ctx *GenerateContext, emitOptions string, tspClient
 
 	args := []string{
 		"init",
+		"--update-if-exists",
 		"--tsp-config", tspConfigAbs,
 		"--commit", ctx.SpecCommitHash,
 		"--repo", ctx.SpecRepoURL[len("https://github.com/"):],

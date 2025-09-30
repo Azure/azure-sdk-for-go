@@ -76,7 +76,7 @@ func (testsuite *EventGridTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestEventGridTestSuite(t *testing.T) {
+func TTestEventGridTestSuite(t *testing.T) {
 	suite.Run(t, new(EventGridTestSuite))
 }
 

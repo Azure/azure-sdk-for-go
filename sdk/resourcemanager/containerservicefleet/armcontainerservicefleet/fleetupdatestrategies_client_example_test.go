@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/FleetUpdateStrategies_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateStrategyGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 	// }
 }
 
-// Generated from example definition: 2025-03-01/UpdateStrategies_CreateOrUpdate.json
+// Generated from example definition: 2025-04-01-preview/UpdateStrategies_CreateOrUpdate.json
 func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateStrategy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginCreateOrUpdate(ctx, "rg1", "fleet1", "strartegy1", armcontainerservicefleet.FleetUpdateStrategy{
+	poller, err := clientFactory.NewFleetUpdateStrategiesClient().BeginCreateOrUpdate(ctx, "rg1", "fleet1", "strategy1", armcontainerservicefleet.FleetUpdateStrategy{
 		Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
 				Stages: []*armcontainerservicefleet.UpdateStage{
@@ -106,6 +106,30 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 						Groups: []*armcontainerservicefleet.UpdateGroup{
 							{
 								Name: to.Ptr("group-a"),
+								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+									{
+										DisplayName: to.Ptr("gate before group-a"),
+										Type:        to.Ptr(armcontainerservicefleet.GateTypeApproval),
+									},
+								},
+								AfterGates: []*armcontainerservicefleet.GateConfiguration{
+									{
+										DisplayName: to.Ptr("gate after group-a"),
+										Type:        to.Ptr(armcontainerservicefleet.GateTypeApproval),
+									},
+								},
+							},
+						},
+						BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+							{
+								DisplayName: to.Ptr("gate before stage1"),
+								Type:        to.Ptr(armcontainerservicefleet.GateTypeApproval),
+							},
+						},
+						AfterGates: []*armcontainerservicefleet.GateConfiguration{
+							{
+								DisplayName: to.Ptr("gate after stage1"),
+								Type:        to.Ptr(armcontainerservicefleet.GateTypeApproval),
 							},
 						},
 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
@@ -146,6 +170,30 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
+	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+	// 									{
+	// 										DisplayName: to.Ptr("gate before group-a"),
+	// 										Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+	// 									},
+	// 								},
+	// 								AfterGates: []*armcontainerservicefleet.GateConfiguration{
+	// 									{
+	// 										DisplayName: to.Ptr("gate after group-a"),
+	// 										Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+	// 							{
+	// 								DisplayName: to.Ptr("gate before stage1"),
+	// 								Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+	// 							},
+	// 						},
+	// 						AfterGates: []*armcontainerservicefleet.GateConfiguration{
+	// 							{
+	// 								DisplayName: to.Ptr("gate after stage1"),
+	// 								Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
@@ -158,7 +206,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetUpdateStrategies_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_Delete_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +233,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyRe
 	// }
 }
 
-// Generated from example definition: 2025-03-01/UpdateStrategies_Delete.json
+// Generated from example definition: 2025-04-01-preview/UpdateStrategies_Delete.json
 func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +259,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyRe
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetUpdateStrategies_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_Get_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +311,7 @@ func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResourceGener
 	// }
 }
 
-// Generated from example definition: 2025-03-01/UpdateStrategies_Get.json
+// Generated from example definition: 2025-04-01-preview/UpdateStrategies_Get.json
 func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,6 +351,30 @@ func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResource() {
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
+	// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+	// 									{
+	// 										DisplayName: to.Ptr("gate before group-a"),
+	// 										Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+	// 									},
+	// 								},
+	// 								AfterGates: []*armcontainerservicefleet.GateConfiguration{
+	// 									{
+	// 										DisplayName: to.Ptr("gate after group-a"),
+	// 										Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+	// 							{
+	// 								DisplayName: to.Ptr("gate before stage1"),
+	// 								Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+	// 							},
+	// 						},
+	// 						AfterGates: []*armcontainerservicefleet.GateConfiguration{
+	// 							{
+	// 								DisplayName: to.Ptr("gate after stage1"),
+	// 								Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
 	// 							},
 	// 						},
 	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
@@ -315,7 +387,7 @@ func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResource() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/FleetUpdateStrategies_ListByFleet_MaximumSet_Gen.json
+// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_ListByFleet_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateStrategyResourcesByFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,7 +449,7 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateSt
 	}
 }
 
-// Generated from example definition: 2025-03-01/UpdateStrategies_ListByFleet.json
+// Generated from example definition: 2025-04-01-preview/UpdateStrategies_ListByFleet.json
 func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateStrategyResourcesByFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,6 +495,30 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateSt
 		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
 		// 									{
 		// 										Name: to.Ptr("group-a"),
+		// 										BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+		// 											{
+		// 												DisplayName: to.Ptr("gate before group-a"),
+		// 												Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+		// 											},
+		// 										},
+		// 										AfterGates: []*armcontainerservicefleet.GateConfiguration{
+		// 											{
+		// 												DisplayName: to.Ptr("gate after group-a"),
+		// 												Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+		// 											},
+		// 										},
+		// 									},
+		// 								},
+		// 								BeforeGates: []*armcontainerservicefleet.GateConfiguration{
+		// 									{
+		// 										DisplayName: to.Ptr("gate before stage1"),
+		// 										Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
+		// 									},
+		// 								},
+		// 								AfterGates: []*armcontainerservicefleet.GateConfiguration{
+		// 									{
+		// 										DisplayName: to.Ptr("gate after stage1"),
+		// 										Type: to.Ptr(armcontainerservicefleet.GateTypeApproval),
 		// 									},
 		// 								},
 		// 								AfterStageWaitInSeconds: to.Ptr[int32](3600),

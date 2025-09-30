@@ -5,11 +5,6 @@
 
 package armcognitiveservices
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
-	moduleVersion = "v1.8.0-beta.1"
-)
-
 // AbusePenaltyAction - The action of AbusePenalty.
 type AbusePenaltyAction string
 
@@ -840,8 +835,8 @@ func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
 }
 
 // RaiPolicyMode - Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronousfilter
-// =3. Please use 'Asynchronousfilter' after 2025-04-01-preview. It is the same as 'Deferred'
-// in previous version.
+// =3. Please use 'Asynchronousfilter' after 2025-06-01. It is the same as 'Deferred' in
+// previous version.
 type RaiPolicyMode string
 
 const (

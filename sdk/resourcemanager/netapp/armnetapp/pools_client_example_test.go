@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_List.json
 func ExamplePoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExamplePoolsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armnetapp.PoolProperties{
-		// 				PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				QosType: to.Ptr(armnetapp.QosTypeAuto),
 		// 				ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
@@ -64,7 +64,7 @@ func ExamplePoolsClient_NewListPager() {
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armnetapp.PoolProperties{
 		// 				CustomThroughputMibps: to.Ptr[float32](128),
-		// 				PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				QosType: to.Ptr(armnetapp.QosTypeManual),
 		// 				ServiceLevel: to.Ptr(armnetapp.ServiceLevelFlexible),
@@ -77,7 +77,7 @@ func ExamplePoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Get.json
 func ExamplePoolsClient_Get_poolsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExamplePoolsClient_Get_poolsGet() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.PoolProperties{
-	// 		PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		QosType: to.Ptr(armnetapp.QosTypeManual),
 	// 		ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
@@ -112,7 +112,7 @@ func ExamplePoolsClient_Get_poolsGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Get_CustomThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Get_CustomThroughput.json
 func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.PoolProperties{
 	// 		CustomThroughputMibps: to.Ptr[float32](128),
-	// 		PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		QosType: to.Ptr(armnetapp.QosTypeManual),
 	// 		ServiceLevel: to.Ptr(armnetapp.ServiceLevelFlexible),
@@ -148,7 +148,7 @@ func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_CreateOrUpdate.json
 func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.PoolProperties{
-	// 		PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		QosType: to.Ptr(armnetapp.QosTypeAuto),
 	// 		ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
@@ -193,7 +193,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_CreateOrUpdate_CustomThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_CreateOrUpdate_CustomThroughput.json
 func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput(
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.PoolProperties{
 	// 		CustomThroughputMibps: to.Ptr[float32](128),
-	// 		PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		QosType: to.Ptr(armnetapp.QosTypeManual),
 	// 		ServiceLevel: to.Ptr(armnetapp.ServiceLevelFlexible),
@@ -240,7 +240,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Update.json
 func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.PoolProperties{
-	// 		PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		QosType: to.Ptr(armnetapp.QosTypeManual),
 	// 		ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
@@ -279,7 +279,7 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Update_CustomThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Update_CustomThroughput.json
 func ExamplePoolsClient_BeginUpdate_poolsUpdateCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,7 +308,7 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdateCustomThroughput() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armnetapp.PoolProperties{
 	// 		CustomThroughputMibps: to.Ptr[float32](128),
-	// 		PoolID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		PoolID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		QosType: to.Ptr(armnetapp.QosTypeManual),
 	// 		ServiceLevel: to.Ptr(armnetapp.ServiceLevelFlexible),
@@ -319,7 +319,7 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdateCustomThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/Pools_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_Delete.json
 func ExamplePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

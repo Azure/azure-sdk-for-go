@@ -5,7 +5,9 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -432,6 +434,28 @@ func (c *ContainerClient) ReadItem(
 	return response, err
 }
 
+// GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.
+// ctx - The context for the request.
+func (c *ContainerClient) GetFeedRanges(ctx context.Context) ([]FeedRange, error) {
+	// Get the partition key ranges from the container
+	response, err := c.getPartitionKeyRanges(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert partition key ranges to feed ranges
+	feedRanges := make([]FeedRange, 0, len(response.PartitionKeyRanges))
+	for _, pkr := range response.PartitionKeyRanges {
+		feedRange := FeedRange{
+			MinInclusive: pkr.MinInclusive,
+			MaxExclusive: pkr.MaxExclusive,
+		}
+		feedRanges = append(feedRanges, feedRange)
+	}
+
+	return feedRanges, nil
+}
+
 // DeleteItem deletes an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
@@ -521,6 +545,13 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       c.link,
 		headerOptionsOverride: &h,
+	}
+
+	// For now, we short-cut straight to the preview query engine if provided.
+	// In the future, we could consider running the normal pipeline until the Gateway fails due to an unsupported query and then switch over.
+	// However, this logic could also just be handled in the query engine itself.
+	if queryOptions.QueryEngine != nil {
+		return c.executeQueryWithEngine(queryOptions.QueryEngine, query, queryOptions, operationContext)
 	}
 
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
@@ -683,6 +714,104 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 
 	response, err := newTransactionalBatchResponse(azResponse)
 	return response, err
+}
+
+// GetChangeFeed retrieves a single page of the change feed using the provided options.
+// ctx - The context for the request.
+// options - Options for the operation
+// If options.FeedRange is set, it will retrieve the change feed for the specific range.
+// If options.Continuation contains a composite continuation token, it will extract the feed range from it.
+func (c *ContainerClient) GetChangeFeed(
+	ctx context.Context,
+	options *ChangeFeedOptions,
+) (ChangeFeedResponse, error) {
+	if options == nil {
+		options = &ChangeFeedOptions{}
+	}
+
+	if options.FeedRange == nil && options.Continuation != nil && *options.Continuation != "" {
+		var compositeToken compositeContinuationToken
+		if err := json.Unmarshal([]byte(*options.Continuation), &compositeToken); err == nil {
+			if len(compositeToken.Continuation) > 0 {
+				options.FeedRange = &FeedRange{
+					MinInclusive: compositeToken.Continuation[0].MinInclusive,
+					MaxExclusive: compositeToken.Continuation[0].MaxExclusive,
+				}
+			}
+		}
+	}
+
+	if options.FeedRange != nil {
+		return c.getChangeFeedForEPKRange(ctx, options.FeedRange, options)
+	} else {
+		return ChangeFeedResponse{}, fmt.Errorf("GetChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
+	}
+}
+
+func (c *ContainerClient) getChangeFeedForEPKRange(
+	ctx context.Context,
+	feedRange *FeedRange,
+	options *ChangeFeedOptions,
+) (ChangeFeedResponse, error) {
+	var err error
+	spanName, err := c.getSpanForItems(operationTypeRead)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
+	ctx, endSpan := runtime.StartSpan(ctx, spanName.name, c.database.client.internal.Tracer(), &spanName.options)
+	defer func() { endSpan(err) }()
+
+	if options == nil {
+		options = &ChangeFeedOptions{}
+	}
+
+	pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
+	partitionKeyRanges := pkrResp.PartitionKeyRanges
+
+	var addHeaders func(*policy.Request)
+	headersPtr := options.toHeaders(partitionKeyRanges)
+	if headersPtr != nil {
+		headers := *headersPtr
+		addHeaders = func(r *policy.Request) {
+			for k, v := range headers {
+				r.Raw().Header.Set(k, v)
+			}
+		}
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDocument,
+		resourceAddress: c.link,
+	}
+
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
+
+	azResponse, err := c.database.client.sendGetRequest(
+		path,
+		ctx,
+		operationContext,
+		nil,
+		addHeaders,
+	)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
+
+	response, err := newChangeFeedResponse(azResponse)
+	if err != nil {
+		return response, err
+	}
+
+	response.FeedRange = feedRange
+	response.PopulateCompositeContinuationToken()
+
+	return response, nil
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {

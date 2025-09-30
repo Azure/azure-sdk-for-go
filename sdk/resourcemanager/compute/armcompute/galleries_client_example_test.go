@@ -15,10 +15,311 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/CommunityGallery_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_ListBySubscription.json
+func ExampleGalleriesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewGalleriesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.GalleryList = armcompute.GalleryList{
+		// 	Value: []*armcompute.Gallery{
+		// 		{
+		// 			Name: to.Ptr("myGalleryName"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
+		// 			Location: to.Ptr("West US"),
+		// 			Properties: &armcompute.GalleryProperties{
+		// 				Description: to.Ptr("This is the gallery description."),
+		// 				Identifier: &armcompute.GalleryIdentifier{
+		// 					UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
+		// 				},
+		// 				ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_ListByResourceGroup.json
+func ExampleGalleriesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewGalleriesClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.GalleryList = armcompute.GalleryList{
+		// 	Value: []*armcompute.Gallery{
+		// 		{
+		// 			Name: to.Ptr("myGalleryName"),
+		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
+		// 			Location: to.Ptr("West US"),
+		// 			Properties: &armcompute.GalleryProperties{
+		// 				Description: to.Ptr("This is the gallery description."),
+		// 				Identifier: &armcompute.GalleryIdentifier{
+		// 					UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
+		// 				},
+		// 				ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/CommunityGallery_Get.json
+func ExampleGalleriesClient_Get_getACommunityGallery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
+		Expand: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Gallery = armcompute.Gallery{
+	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/communityGalleries/myGalleryName"),
+	// 	Location: to.Ptr("West US"),
+	// 	Properties: &armcompute.GalleryProperties{
+	// 		Description: to.Ptr("This is the gallery description."),
+	// 		Identifier: &armcompute.GalleryIdentifier{
+	// 			UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
+	// 		SharingProfile: &armcompute.SharingProfile{
+	// 			CommunityGalleryInfo: &armcompute.CommunityGalleryInfo{
+	// 				CommunityGalleryEnabled: to.Ptr(true),
+	// 				Eula: to.Ptr("eula"),
+	// 				PublicNames: []*string{
+	// 					to.Ptr("GalleryPublicName")},
+	// 					PublisherContact: to.Ptr("pir@microsoft.com"),
+	// 					PublisherURI: to.Ptr("uri"),
+	// 				},
+	// 				Permissions: to.Ptr(armcompute.GallerySharingPermissionTypesCommunity),
+	// 			},
+	// 			SharingStatus: &armcompute.SharingStatus{
+	// 				AggregatedState: to.Ptr(armcompute.SharingStateSucceeded),
+	// 				Summary: []*armcompute.RegionalSharingStatus{
+	// 					{
+	// 						Region: to.Ptr("westus"),
+	// 						State: to.Ptr(armcompute.SharingStateSucceeded),
+	// 						Details: to.Ptr(""),
+	// 				}},
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
+func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
+		Expand: to.Ptr(armcompute.GalleryExpandParamsSharingProfileGroups),
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Gallery = armcompute.Gallery{
+	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
+	// 	Location: to.Ptr("West US"),
+	// 	Properties: &armcompute.GalleryProperties{
+	// 		SharingProfile: &armcompute.SharingProfile{
+	// 			Groups: []*armcompute.SharingProfileGroup{
+	// 				{
+	// 					Type: to.Ptr(armcompute.SharingProfileGroupTypesSubscriptions),
+	// 					IDs: []*string{
+	// 						to.Ptr("34a4ab42-0d72-47d9-bd1a-aed207386dac"),
+	// 						to.Ptr("380fd389-260b-41aa-bad9-0a83108c370b")},
+	// 					},
+	// 					{
+	// 						Type: to.Ptr(armcompute.SharingProfileGroupTypesAADTenants),
+	// 						IDs: []*string{
+	// 							to.Ptr("c24c76aa-8897-4027-9b03-8f7928b54ff6")},
+	// 					}},
+	// 					Permissions: to.Ptr(armcompute.GallerySharingPermissionTypesGroups),
+	// 				},
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
+func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: to.Ptr(armcompute.SelectPermissionsPermissions),
+		Expand: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Gallery = armcompute.Gallery{
+	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
+	// 	Location: to.Ptr("West US"),
+	// 	Properties: &armcompute.GalleryProperties{
+	// 		SharingProfile: &armcompute.SharingProfile{
+	// 			Groups: []*armcompute.SharingProfileGroup{
+	// 				{
+	// 					Type: to.Ptr(armcompute.SharingProfileGroupTypesSubscriptions),
+	// 					IDs: []*string{
+	// 						to.Ptr("34a4ab42-0d72-47d9-bd1a-aed207386dac"),
+	// 						to.Ptr("380fd389-260b-41aa-bad9-0a83108c370b")},
+	// 					},
+	// 					{
+	// 						Type: to.Ptr(armcompute.SharingProfileGroupTypesAADTenants),
+	// 						IDs: []*string{
+	// 							to.Ptr("c24c76aa-8897-4027-9b03-8f7928b54ff6")},
+	// 					}},
+	// 					Permissions: to.Ptr(armcompute.GallerySharingPermissionTypesGroups),
+	// 				},
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get_WithManagedIdentity.json
+func ExampleGalleriesClient_Get_getAGalleryWithSystemAssignedAndUserAssignedManagedIdentities() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
+		Expand: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Gallery = armcompute.Gallery{
+	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
+	// 	Location: to.Ptr("West US"),
+	// 	Identity: &armcompute.GalleryIdentity{
+	// 		Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssignedUserAssigned),
+	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
+	// 			"/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": &armcompute.UserAssignedIdentitiesValue{
+	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Properties: &armcompute.GalleryProperties{
+	// 		Description: to.Ptr("This is the gallery description."),
+	// 		Identifier: &armcompute.GalleryIdentifier{
+	// 			UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get.json
+func ExampleGalleriesClient_Get_getAGallery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
+		Expand: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Gallery = armcompute.Gallery{
+	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
+	// 	Location: to.Ptr("West US"),
+	// 	Properties: &armcompute.GalleryProperties{
+	// 		Description: to.Ptr("This is the gallery description."),
+	// 		Identifier: &armcompute.GalleryIdentifier{
+	// 			UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/CommunityGallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +378,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create_WithSharingProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create_WithSharingProfile.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSharingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +425,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSoftDeletionEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +472,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create_WithManagedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create_WithManagedIdentity.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSystemAssignedAndUserAssignedManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +528,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +569,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Update.json
 func ExampleGalleriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,228 +608,7 @@ func ExampleGalleriesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/CommunityGallery_Get.json
-func ExampleGalleriesClient_Get_getACommunityGallery() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
-		Expand: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Gallery = armcompute.Gallery{
-	// 	Name: to.Ptr("myGalleryName"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/communityGalleries/myGalleryName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Properties: &armcompute.GalleryProperties{
-	// 		Description: to.Ptr("This is the gallery description."),
-	// 		Identifier: &armcompute.GalleryIdentifier{
-	// 			UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
-	// 		SharingProfile: &armcompute.SharingProfile{
-	// 			CommunityGalleryInfo: &armcompute.CommunityGalleryInfo{
-	// 				CommunityGalleryEnabled: to.Ptr(true),
-	// 				Eula: to.Ptr("eula"),
-	// 				PublicNames: []*string{
-	// 					to.Ptr("GalleryPublicName")},
-	// 					PublisherContact: to.Ptr("pir@microsoft.com"),
-	// 					PublisherURI: to.Ptr("uri"),
-	// 				},
-	// 				Permissions: to.Ptr(armcompute.GallerySharingPermissionTypesCommunity),
-	// 			},
-	// 			SharingStatus: &armcompute.SharingStatus{
-	// 				AggregatedState: to.Ptr(armcompute.SharingStateSucceeded),
-	// 				Summary: []*armcompute.RegionalSharingStatus{
-	// 					{
-	// 						Region: to.Ptr("westus"),
-	// 						State: to.Ptr(armcompute.SharingStateSucceeded),
-	// 						Details: to.Ptr(""),
-	// 				}},
-	// 			},
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
-func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
-		Expand: to.Ptr(armcompute.GalleryExpandParamsSharingProfileGroups),
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Gallery = armcompute.Gallery{
-	// 	Name: to.Ptr("myGalleryName"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Properties: &armcompute.GalleryProperties{
-	// 		SharingProfile: &armcompute.SharingProfile{
-	// 			Groups: []*armcompute.SharingProfileGroup{
-	// 				{
-	// 					Type: to.Ptr(armcompute.SharingProfileGroupTypesSubscriptions),
-	// 					IDs: []*string{
-	// 						to.Ptr("34a4ab42-0d72-47d9-bd1a-aed207386dac"),
-	// 						to.Ptr("380fd389-260b-41aa-bad9-0a83108c370b")},
-	// 					},
-	// 					{
-	// 						Type: to.Ptr(armcompute.SharingProfileGroupTypesAADTenants),
-	// 						IDs: []*string{
-	// 							to.Ptr("c24c76aa-8897-4027-9b03-8f7928b54ff6")},
-	// 					}},
-	// 					Permissions: to.Ptr(armcompute.GallerySharingPermissionTypesGroups),
-	// 				},
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
-func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: to.Ptr(armcompute.SelectPermissionsPermissions),
-		Expand: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Gallery = armcompute.Gallery{
-	// 	Name: to.Ptr("myGalleryName"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Properties: &armcompute.GalleryProperties{
-	// 		SharingProfile: &armcompute.SharingProfile{
-	// 			Groups: []*armcompute.SharingProfileGroup{
-	// 				{
-	// 					Type: to.Ptr(armcompute.SharingProfileGroupTypesSubscriptions),
-	// 					IDs: []*string{
-	// 						to.Ptr("34a4ab42-0d72-47d9-bd1a-aed207386dac"),
-	// 						to.Ptr("380fd389-260b-41aa-bad9-0a83108c370b")},
-	// 					},
-	// 					{
-	// 						Type: to.Ptr(armcompute.SharingProfileGroupTypesAADTenants),
-	// 						IDs: []*string{
-	// 							to.Ptr("c24c76aa-8897-4027-9b03-8f7928b54ff6")},
-	// 					}},
-	// 					Permissions: to.Ptr(armcompute.GallerySharingPermissionTypesGroups),
-	// 				},
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get_WithManagedIdentity.json
-func ExampleGalleriesClient_Get_getAGalleryWithSystemAssignedAndUserAssignedManagedIdentities() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
-		Expand: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Gallery = armcompute.Gallery{
-	// 	Name: to.Ptr("myGalleryName"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Identity: &armcompute.GalleryIdentity{
-	// 		Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssignedUserAssigned),
-	// 		PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
-	// 			"/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": &armcompute.UserAssignedIdentitiesValue{
-	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 				PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			},
-	// 		},
-	// 	},
-	// 	Properties: &armcompute.GalleryProperties{
-	// 		Description: to.Ptr("This is the gallery description."),
-	// 		Identifier: &armcompute.GalleryIdentifier{
-	// 			UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Get.json
-func ExampleGalleriesClient_Get_getAGallery() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGalleriesClient().Get(ctx, "myResourceGroup", "myGalleryName", &armcompute.GalleriesClientGetOptions{Select: nil,
-		Expand: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Gallery = armcompute.Gallery{
-	// 	Name: to.Ptr("myGalleryName"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Properties: &armcompute.GalleryProperties{
-	// 		Description: to.Ptr("This is the gallery description."),
-	// 		Identifier: &armcompute.GalleryIdentifier{
-	// 			UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4517f89a8ebd2f6a94e107e5ee60fff9886f3612/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_Delete.json
 func ExampleGalleriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -546,85 +626,5 @@ func ExampleGalleriesClient_BeginDelete() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_ListByResourceGroup.json
-func ExampleGalleriesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGalleriesClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.GalleryList = armcompute.GalleryList{
-		// 	Value: []*armcompute.Gallery{
-		// 		{
-		// 			Name: to.Ptr("myGalleryName"),
-		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
-		// 			Location: to.Ptr("West US"),
-		// 			Properties: &armcompute.GalleryProperties{
-		// 				Description: to.Ptr("This is the gallery description."),
-		// 				Identifier: &armcompute.GalleryIdentifier{
-		// 					UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/Gallery_ListBySubscription.json
-func ExampleGalleriesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGalleriesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.GalleryList = armcompute.GalleryList{
-		// 	Value: []*armcompute.Gallery{
-		// 		{
-		// 			Name: to.Ptr("myGalleryName"),
-		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
-		// 			Location: to.Ptr("West US"),
-		// 			Properties: &armcompute.GalleryProperties{
-		// 				Description: to.Ptr("This is the gallery description."),
-		// 				Identifier: &armcompute.GalleryIdentifier{
-		// 					UniqueName: to.Ptr("{subscription-id}-MYGALLERYNAME"),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
-		// 			},
-		// 	}},
-		// }
 	}
 }

@@ -25,7 +25,7 @@ import (
 // azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "automation-v2 <generate input filepath> <generate output filepath> [goVersion]",
+		Use:  "automation-v2 <generate input filepath> <generate output filepath>",
 		Args: cobra.RangeArgs(2, 3),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0)          // remove the time stamp prefix
@@ -34,11 +34,7 @@ func Command() *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			goVersion := "1.18"
-			if len(args) == 3 {
-				goVersion = args[2]
-			}
-			if err := execute(args[0], args[1], goVersion); err != nil {
+			if err := execute(args[0], args[1]); err != nil {
 				return errors.New(logError(err))
 			}
 			return nil
@@ -49,7 +45,7 @@ func Command() *cobra.Command {
 	return cmd
 }
 
-func execute(inputPath, outputPath, goVersion string) error {
+func execute(inputPath, outputPath string) error {
 	log.Printf("Reading generate input file from '%s'...", inputPath)
 	input, err := pipeline.ReadInput(inputPath)
 	if err != nil {
@@ -65,7 +61,6 @@ func execute(inputPath, outputPath, goVersion string) error {
 		sdkRoot:    utils.NormalizePath(cwd),
 		specRoot:   input.SpecFolder,
 		commitHash: input.HeadSha,
-		goVersion:  goVersion,
 	}
 	output, err := ctx.generate(input)
 	if output != nil && len(output.Packages) != 0 {
@@ -85,7 +80,6 @@ type automationContext struct {
 	sdkRoot    string
 	specRoot   string
 	commitHash string
-	goVersion  string
 }
 
 // TODO -- support dry run
@@ -133,7 +127,6 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	for _, tspProjectFolder := range input.RelatedTypeSpecProjectFolder {
 		log.Printf("Start to process typespec project: %s", tspProjectFolder)
 		result, err := generateCtx.GenerateFromTypeSpec(filepath.Join(input.SpecFolder, tspProjectFolder, "tspconfig.yaml"), &common.GenerateParam{
-			GoVersion:        ctx.goVersion,
 			TspClientOptions: []string{"--debug"},
 			ApiVersion:       input.ApiVersion,
 			SdkReleaseType:   input.SdkReleaseType,
@@ -173,7 +166,6 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			continue
 		}
 		result, errs := generateCtx.GenerateFromSwagger(rpMap, &common.GenerateParam{
-			GoVersion:           ctx.goVersion,
 			RemoveTagSet:        true,
 			SkipGenerateExample: true,
 		})
@@ -217,7 +209,13 @@ func processNamespaceResult(generateCtx common.GenerateContext, namespaceResult 
 	breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
 	srcFolder := filepath.Join(generateCtx.SDKPath, namespaceResult.PackageRelativePath)
-	apiViewArtifact := filepath.Join(generateCtx.SDKPath, namespaceResult.PackageRelativePath+".gosource")
+	goSourceArtifact := namespaceResult.PackageRelativePath + ".gosource"
+	apiViewArtifact := filepath.Join(generateCtx.SDKPath, goSourceArtifact)
+	if namespaceResult.ModuleRelativePath != "" {
+		srcFolder = filepath.Join(generateCtx.SDKPath, namespaceResult.ModuleRelativePath)
+		goSourceArtifact = namespaceResult.ModuleRelativePath + ".gosource"
+		apiViewArtifact = filepath.Join(generateCtx.SDKPath, goSourceArtifact)
+	}
 	err := zipDirectory(srcFolder, apiViewArtifact)
 	if err != nil {
 		fmt.Println(err)
@@ -233,7 +231,7 @@ func processNamespaceResult(generateCtx common.GenerateContext, namespaceResult 
 			HasBreakingChange:   &breaking,
 			BreakingChangeItems: &breakingChangeItems,
 		},
-		APIViewArtifact: namespaceResult.PackageRelativePath + ".gosource",
+		APIViewArtifact: goSourceArtifact,
 		Language:        "Go",
 	}
 }

@@ -4,11 +4,6 @@
 
 package armmongocluster
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
-	moduleVersion = "v1.1.0-beta.1"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -181,6 +176,45 @@ const (
 func PossibleIdentityProviderTypeValues() []IdentityProviderType {
 	return []IdentityProviderType{
 		IdentityProviderTypeMicrosoftEntraID,
+	}
+}
+
+// KeyEncryptionKeyIdentityType - The type of identity for key encryption key.
+type KeyEncryptionKeyIdentityType string
+
+const (
+	// KeyEncryptionKeyIdentityTypeUserAssignedIdentity - User assigned identity.
+	KeyEncryptionKeyIdentityTypeUserAssignedIdentity KeyEncryptionKeyIdentityType = "UserAssignedIdentity"
+)
+
+// PossibleKeyEncryptionKeyIdentityTypeValues returns the possible values for the KeyEncryptionKeyIdentityType const type.
+func PossibleKeyEncryptionKeyIdentityTypeValues() []KeyEncryptionKeyIdentityType {
+	return []KeyEncryptionKeyIdentityType{
+		KeyEncryptionKeyIdentityTypeUserAssignedIdentity,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 
@@ -455,13 +489,13 @@ func PossibleStorageTypeValues() []StorageType {
 type UserRole string
 
 const (
-	// UserRoleDatabaseOwner - Datbase owner role permissions on the target scope.
-	UserRoleDatabaseOwner UserRole = "dbOwner"
+	// UserRoleRoot - Root role permissions on the target scope.
+	UserRoleRoot UserRole = "root"
 )
 
 // PossibleUserRoleValues returns the possible values for the UserRole const type.
 func PossibleUserRoleValues() []UserRole {
 	return []UserRole{
-		UserRoleDatabaseOwner,
+		UserRoleRoot,
 	}
 }

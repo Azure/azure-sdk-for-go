@@ -43,17 +43,17 @@ func NewProjectCapabilityHostsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
 //   - capabilityHostName - The name of the capability host associated with the Cognitive Services Resource
-//   - body - CapabilityHost definition.
+//   - capabilityHost - CapabilityHost definition.
 //   - options - ProjectCapabilityHostsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectCapabilityHostsClient.BeginCreateOrUpdate
 //     method.
-func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, body CapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProjectCapabilityHostsClientCreateOrUpdateResponse], error) {
+func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost CapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProjectCapabilityHostsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, projectName, capabilityHostName, body, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, projectName, capabilityHostName, capabilityHost, options)
 		if err != nil {
 			return nil, err
 		}
@@ -72,14 +72,14 @@ func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
-func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, body CapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2025-06-01
+func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost CapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, projectName, capabilityHostName, body, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, projectName, capabilityHostName, capabilityHost, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, body CapabilityHost, _ *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost CapabilityHost, _ *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -122,10 +122,10 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if err := runtime.MarshalAsJSON(req, capabilityHost); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -134,7 +134,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -162,7 +162,7 @@ func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, res
 // Delete - Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 func (client *ProjectCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginDelete"
@@ -212,7 +212,7 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 // Get - Get project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -278,7 +278,7 @@ func (client *ProjectCapabilityHostsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

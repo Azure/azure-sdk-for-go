@@ -27,12 +27,10 @@ var liveManagedIdentity = struct {
 	clientID   string
 	objectID   string
 	resourceID string
-	imds       bool
 }{
 	clientID:   os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID"),
 	objectID:   os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_OBJECT_ID"),
 	resourceID: os.Getenv("IDENTITY_VM_USER_ASSIGNED_MI_RESOURCE_ID"),
-	imds:       os.Getenv("IDENTITY_IMDS_AVAILABLE") != "",
 }
 
 var liveSP = struct {

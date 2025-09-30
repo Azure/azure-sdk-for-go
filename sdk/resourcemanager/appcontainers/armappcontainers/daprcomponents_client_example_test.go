@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/DaprComponents_List.json
 func ExampleDaprComponentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,6 +74,15 @@ func ExampleDaprComponentsClient_NewListPager() {
 		// 						{
 		// 							Name: to.Ptr("masterkey"),
 		// 					}},
+		// 					ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+		// 						{
+		// 							Name: to.Ptr("statestore"),
+		// 							Metadata: &armappcontainers.DaprServiceBindMetadata{
+		// 								Name: to.Ptr("daprcomponentBind"),
+		// 								Value: to.Ptr("redis-bind"),
+		// 							},
+		// 							ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+		// 					}},
 		// 					Version: to.Ptr("v1"),
 		// 				},
 		// 			},
@@ -106,6 +115,15 @@ func ExampleDaprComponentsClient_NewListPager() {
 		// 						to.Ptr("container-app-1"),
 		// 						to.Ptr("container-app-2")},
 		// 						SecretStoreComponent: to.Ptr("my-secret-store"),
+		// 						ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+		// 							{
+		// 								Name: to.Ptr("statestore"),
+		// 								Metadata: &armappcontainers.DaprServiceBindMetadata{
+		// 									Name: to.Ptr("daprcomponentBind"),
+		// 									Value: to.Ptr("redis-bind"),
+		// 								},
+		// 								ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+		// 						}},
 		// 						Version: to.Ptr("v1"),
 		// 					},
 		// 				},
@@ -138,6 +156,15 @@ func ExampleDaprComponentsClient_NewListPager() {
 		// 							to.Ptr("container-app-1"),
 		// 							to.Ptr("container-app-2")},
 		// 							SecretStoreComponent: to.Ptr("my-secret-store"),
+		// 							ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+		// 								{
+		// 									Name: to.Ptr("statestore"),
+		// 									Metadata: &armappcontainers.DaprServiceBindMetadata{
+		// 										Name: to.Ptr("daprcomponentBind"),
+		// 										Value: to.Ptr("redis-bind"),
+		// 									},
+		// 									ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+		// 							}},
 		// 							Version: to.Ptr("v1"),
 		// 						},
 		// 				}},
@@ -145,7 +172,7 @@ func ExampleDaprComponentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_Get_SecretStoreComponent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/DaprComponents_Get_SecretStoreComponent.json
 func ExampleDaprComponentsClient_Get_getDaprComponentWithSecretStoreComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,12 +219,21 @@ func ExampleDaprComponentsClient_Get_getDaprComponentWithSecretStoreComponent() 
 	// 			to.Ptr("container-app-1"),
 	// 			to.Ptr("container-app-2")},
 	// 			SecretStoreComponent: to.Ptr("my-secret-store"),
+	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+	// 				{
+	// 					Name: to.Ptr("statestore"),
+	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
+	// 						Name: to.Ptr("daprcomponentBind"),
+	// 						Value: to.Ptr("redis-bind"),
+	// 					},
+	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+	// 			}},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_Get_Secrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/DaprComponents_Get_Secrets.json
 func ExampleDaprComponentsClient_Get_getDaprComponentWithSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,12 +283,21 @@ func ExampleDaprComponentsClient_Get_getDaprComponentWithSecrets() {
 	// 				{
 	// 					Name: to.Ptr("masterkey"),
 	// 			}},
+	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+	// 				{
+	// 					Name: to.Ptr("statestore"),
+	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
+	// 						Name: to.Ptr("daprcomponentBind"),
+	// 						Value: to.Ptr("redis-bind"),
+	// 					},
+	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+	// 			}},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_CreateOrUpdate_SecretStoreComponent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/DaprComponents_CreateOrUpdate_SecretStoreComponent.json
 func ExampleDaprComponentsClient_CreateOrUpdate_createOrUpdateDaprComponentWithSecretStoreComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +334,16 @@ func ExampleDaprComponentsClient_CreateOrUpdate_createOrUpdateDaprComponentWithS
 				to.Ptr("container-app-1"),
 				to.Ptr("container-app-2")},
 			SecretStoreComponent: to.Ptr("my-secret-store"),
-			Version:              to.Ptr("v1"),
+			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+				{
+					Name: to.Ptr("statestore"),
+					Metadata: &armappcontainers.DaprServiceBindMetadata{
+						Name:  to.Ptr("daprcomponentBind"),
+						Value: to.Ptr("redis-bind"),
+					},
+					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+				}},
+			Version: to.Ptr("v1"),
 		},
 	}, nil)
 	if err != nil {
@@ -327,12 +381,21 @@ func ExampleDaprComponentsClient_CreateOrUpdate_createOrUpdateDaprComponentWithS
 	// 			to.Ptr("container-app-1"),
 	// 			to.Ptr("container-app-2")},
 	// 			SecretStoreComponent: to.Ptr("my-secret-store"),
+	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+	// 				{
+	// 					Name: to.Ptr("statestore"),
+	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
+	// 						Name: to.Ptr("daprcomponentBind"),
+	// 						Value: to.Ptr("redis-bind"),
+	// 					},
+	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+	// 			}},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_CreateOrUpdate_Secrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/DaprComponents_CreateOrUpdate_Secrets.json
 func ExampleDaprComponentsClient_CreateOrUpdate_createOrUpdateDaprComponentWithSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,6 +435,15 @@ func ExampleDaprComponentsClient_CreateOrUpdate_createOrUpdateDaprComponentWithS
 				{
 					Name:  to.Ptr("masterkey"),
 					Value: to.Ptr("keyvalue"),
+				}},
+			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+				{
+					Name: to.Ptr("statestore"),
+					Metadata: &armappcontainers.DaprServiceBindMetadata{
+						Name:  to.Ptr("daprcomponentBind"),
+						Value: to.Ptr("redis-bind"),
+					},
+					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
 				}},
 			Version: to.Ptr("v1"),
 		},
@@ -414,12 +486,21 @@ func ExampleDaprComponentsClient_CreateOrUpdate_createOrUpdateDaprComponentWithS
 	// 				{
 	// 					Name: to.Ptr("masterkey"),
 	// 			}},
+	// 			ServiceComponentBind: []*armappcontainers.DaprComponentServiceBinding{
+	// 				{
+	// 					Name: to.Ptr("statestore"),
+	// 					Metadata: &armappcontainers.DaprServiceBindMetadata{
+	// 						Name: to.Ptr("daprcomponentBind"),
+	// 						Value: to.Ptr("redis-bind"),
+	// 					},
+	// 					ServiceID: to.Ptr("/subscriptions/9f7371f1-b593-4c3c-84e2-9167806ad358/resourceGroups/ca-syn2-group/providers/Microsoft.App/containerapps/cappredis"),
+	// 			}},
 	// 			Version: to.Ptr("v1"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/DaprComponents_Delete.json
 func ExampleDaprComponentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +517,7 @@ func ExampleDaprComponentsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_ListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/DaprComponents_ListSecrets.json
 func ExampleDaprComponentsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

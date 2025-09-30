@@ -51,6 +51,13 @@ jobs:
       image: $(OSVmImage)
     os: ${{ parameters.OSName }}
 
+  # Only run CG on the linux build(s) so we don't run it on all the jobs.
+  ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.OSName, 'linux')) }}:
+    templateContext:
+      sdl:
+        componentgovernance:
+          enabled: true
+
   steps:
   - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
     parameters:

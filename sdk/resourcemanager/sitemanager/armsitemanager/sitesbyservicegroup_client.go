@@ -39,7 +39,7 @@ func NewSitesByServiceGroupClient(credential azcore.TokenCredential, options *ar
 // BeginCreateOrUpdate - create or update Site at SG scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
 //   - siteName - The name of the site
 //   - resource - The properties of the site
@@ -65,7 +65,7 @@ func (client *SitesByServiceGroupClient) BeginCreateOrUpdate(ctx context.Context
 // CreateOrUpdate - create or update Site at SG scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 func (client *SitesByServiceGroupClient) createOrUpdate(ctx context.Context, servicegroupName string, siteName string, resource Site, options *SitesByServiceGroupClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SitesByServiceGroupClient.BeginCreateOrUpdate"
@@ -103,7 +103,7 @@ func (client *SitesByServiceGroupClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -116,7 +116,7 @@ func (client *SitesByServiceGroupClient) createOrUpdateCreateRequest(ctx context
 // Delete - delete Site at SG scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
 //   - siteName - The name of the site
 //   - options - SitesByServiceGroupClientDeleteOptions contains the optional parameters for the SitesByServiceGroupClient.Delete
@@ -158,16 +158,15 @@ func (client *SitesByServiceGroupClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get Site at SG scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
 //   - siteName - The name of the site
 //   - options - SitesByServiceGroupClientGetOptions contains the optional parameters for the SitesByServiceGroupClient.Get method.
@@ -209,7 +208,7 @@ func (client *SitesByServiceGroupClient) getCreateRequest(ctx context.Context, s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -226,7 +225,7 @@ func (client *SitesByServiceGroupClient) getHandleResponse(resp *http.Response) 
 
 // NewListByServiceGroupPager - list Site at SG scope
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
 //   - options - SitesByServiceGroupClientListByServiceGroupOptions contains the optional parameters for the SitesByServiceGroupClient.NewListByServiceGroupPager
 //     method.
@@ -265,7 +264,7 @@ func (client *SitesByServiceGroupClient) listByServiceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +282,7 @@ func (client *SitesByServiceGroupClient) listByServiceGroupHandleResponse(resp *
 // Update - update Site at SG scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
 //   - siteName - The name of the site
 //   - properties - The properties of the site
@@ -327,7 +326,7 @@ func (client *SitesByServiceGroupClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

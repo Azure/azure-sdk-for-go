@@ -91,13 +91,14 @@ type UsageMetricsClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesClientCreateOptions contains the optional parameters for the WorkspacesClient.Create method.
-type WorkspacesClientCreateOptions struct {
-	// placeholder for future optional parameters
+// WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+type WorkspacesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
-// WorkspacesClientDeleteOptions contains the optional parameters for the WorkspacesClient.Delete method.
-type WorkspacesClientDeleteOptions struct {
+// WorkspacesClientCreateOptions contains the optional parameters for the WorkspacesClient.Create method.
+type WorkspacesClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 

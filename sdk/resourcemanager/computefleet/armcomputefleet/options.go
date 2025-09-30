@@ -4,6 +4,12 @@
 
 package armcomputefleet
 
+// FleetsClientBeginCancelOptions contains the optional parameters for the FleetsClient.BeginCancel method.
+type FleetsClientBeginCancelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // FleetsClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetsClient.BeginCreateOrUpdate method.
 type FleetsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -43,6 +49,16 @@ type FleetsClientListBySubscriptionOptions struct {
 // method.
 type FleetsClientListVirtualMachineScaleSetsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// FleetsClientListVirtualMachinesOptions contains the optional parameters for the FleetsClient.NewListVirtualMachinesPager
+// method.
+type FleetsClientListVirtualMachinesOptions struct {
+	// Filter expression to filter the virtual machines.
+	Filter *string
+
+	// Skip token for pagination. Uses the token from a previous response to fetch the next page of results.
+	Skiptoken *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.

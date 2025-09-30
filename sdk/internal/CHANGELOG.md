@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.2-beta.1 (Unreleased)
+## 1.11.3-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.11.2 (2025-07-30)
+
+### Other Changes
+
+* `errorinfo.NonRetriable()` doesn't wrap errors which are already `NonRetriable`
 
 ## 1.11.1 (2025-04-07)
 

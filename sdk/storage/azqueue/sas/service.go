@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/exported"
 )
 
 // QueueSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage Queue.

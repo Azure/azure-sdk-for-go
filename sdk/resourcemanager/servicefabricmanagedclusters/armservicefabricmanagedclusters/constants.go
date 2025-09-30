@@ -4,11 +4,6 @@
 
 package armservicefabricmanagedclusters
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmanagedclusters/armservicefabricmanagedclusters"
-	moduleVersion = "v0.4.0"
-)
-
 // Access - The network traffic is allowed or denied.
 type Access string
 

@@ -496,6 +496,24 @@ type NamespacesClientValidateCustomDomainOwnershipResponse struct {
 	CustomDomainOwnershipValidationResult
 }
 
+// NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
+type NetworkSecurityPerimeterConfigurationsClientGetResponse struct {
+	// Network security perimeter configuration.
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListPager.
+type NetworkSecurityPerimeterConfigurationsClientListResponse struct {
+	// Network security perimeter configuration List.
+	NetworkSecurityPerimeterConfigurationList
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile.
+type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
+	// Network security perimeter configuration.
+	NetworkSecurityPerimeterConfiguration
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of the List Operations operation
@@ -547,6 +565,47 @@ type PartnerConfigurationsClientUnauthorizePartnerResponse struct {
 type PartnerConfigurationsClientUpdateResponse struct {
 	// Partner configuration information
 	PartnerConfiguration
+}
+
+// PartnerDestinationsClientActivateResponse contains the response from method PartnerDestinationsClient.Activate.
+type PartnerDestinationsClientActivateResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
+}
+
+// PartnerDestinationsClientCreateOrUpdateResponse contains the response from method PartnerDestinationsClient.BeginCreateOrUpdate.
+type PartnerDestinationsClientCreateOrUpdateResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
+}
+
+// PartnerDestinationsClientDeleteResponse contains the response from method PartnerDestinationsClient.BeginDelete.
+type PartnerDestinationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PartnerDestinationsClientGetResponse contains the response from method PartnerDestinationsClient.Get.
+type PartnerDestinationsClientGetResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
+}
+
+// PartnerDestinationsClientListByResourceGroupResponse contains the response from method PartnerDestinationsClient.NewListByResourceGroupPager.
+type PartnerDestinationsClientListByResourceGroupResponse struct {
+	// Result of the List Partner Destinations operation.
+	PartnerDestinationsListResult
+}
+
+// PartnerDestinationsClientListBySubscriptionResponse contains the response from method PartnerDestinationsClient.NewListBySubscriptionPager.
+type PartnerDestinationsClientListBySubscriptionResponse struct {
+	// Result of the List Partner Destinations operation.
+	PartnerDestinationsListResult
+}
+
+// PartnerDestinationsClientUpdateResponse contains the response from method PartnerDestinationsClient.BeginUpdate.
+type PartnerDestinationsClientUpdateResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
 }
 
 // PartnerNamespacesClientCreateOrUpdateResponse contains the response from method PartnerNamespacesClient.BeginCreateOrUpdate.

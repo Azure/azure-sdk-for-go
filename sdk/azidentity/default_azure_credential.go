@@ -21,11 +21,12 @@ const azureTokenCredentials = "AZURE_TOKEN_CREDENTIALS"
 
 // bit flags NewDefaultAzureCredential uses to parse AZURE_TOKEN_CREDENTIALS
 const (
-	env = 1 << iota
+	env = uint8(1) << iota
 	workloadIdentity
 	managedIdentity
 	az
 	azd
+	azurePowerShell
 )
 
 // DefaultAzureCredentialOptions contains optional parameters for DefaultAzureCredential.
@@ -48,6 +49,10 @@ type DefaultAzureCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
+	// RequireAzureTokenCredentials determines whether NewDefaultAzureCredential returns an error when the environment
+	// variable AZURE_TOKEN_CREDENTIALS has no value.
+	RequireAzureTokenCredentials bool
+
 	// TenantID sets the default tenant for authentication via the Azure CLI, Azure Developer CLI, and workload identity.
 	TenantID string
 }
@@ -67,6 +72,7 @@ type DefaultAzureCredentialOptions struct {
 //   - [ManagedIdentityCredential]
 //   - [AzureCLICredential]
 //   - [AzureDeveloperCLICredential]
+//   - [AzurePowerShellCredential]
 //
 // Consult the documentation for these credential types for more information on how they authenticate.
 // Once a credential has successfully authenticated, DefaultAzureCredential will use that credential for
@@ -79,8 +85,12 @@ type DefaultAzureCredentialOptions struct {
 // Valid values for AZURE_TOKEN_CREDENTIALS are the name of any single type in the above chain, for example
 // "EnvironmentCredential" or "AzureCLICredential", and these special values:
 //
-//   - "dev": try [AzureCLICredential] and [AzureDeveloperCLICredential], in that order
+//   - "dev": try [AzureCLICredential], [AzureDeveloperCLICredential], and [AzurePowerShellCredential], in that order
 //   - "prod": try [EnvironmentCredential], [WorkloadIdentityCredential], and [ManagedIdentityCredential], in that order
+//
+// [DefaultAzureCredentialOptions].RequireAzureTokenCredentials controls whether AZURE_TOKEN_CREDENTIALS must be set.
+// NewDefaultAzureCredential returns an error when RequireAzureTokenCredentials is true and AZURE_TOKEN_CREDENTIALS
+// has no value.
 //
 // [DefaultAzureCredential overview]: https://aka.ms/azsdk/go/identity/credential-chains#defaultazurecredential-overview
 type DefaultAzureCredential struct {
@@ -89,16 +99,20 @@ type DefaultAzureCredential struct {
 
 // NewDefaultAzureCredential creates a DefaultAzureCredential. Pass nil for options to accept defaults.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*DefaultAzureCredential, error) {
+	if options == nil {
+		options = &DefaultAzureCredentialOptions{}
+	}
+
 	var (
 		creds         []azcore.TokenCredential
 		errorMessages []string
-		selected      = uint8(env | workloadIdentity | managedIdentity | az | azd)
+		selected      = env | workloadIdentity | managedIdentity | az | azd | azurePowerShell
 	)
 
 	if atc, ok := os.LookupEnv(azureTokenCredentials); ok {
 		switch {
 		case atc == "dev":
-			selected = az | azd
+			selected = az | azd | azurePowerShell
 		case atc == "prod":
 			selected = env | workloadIdentity | managedIdentity
 		case strings.EqualFold(atc, credNameEnvironment):
@@ -111,14 +125,15 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 			selected = az
 		case strings.EqualFold(atc, credNameAzureDeveloperCLI):
 			selected = azd
+		case strings.EqualFold(atc, credNameAzurePowerShell):
+			selected = azurePowerShell
 		default:
 			return nil, fmt.Errorf(`invalid %s value %q. Valid values are "dev", "prod", or the name of any credential type in the default chain. See https://aka.ms/azsdk/go/identity/docs#DefaultAzureCredential for more information`, azureTokenCredentials, atc)
 		}
+	} else if options.RequireAzureTokenCredentials {
+		return nil, fmt.Errorf("%s must be set when RequireAzureTokenCredentials is true. See https://aka.ms/azsdk/go/identity/docs#DefaultAzureCredential for more information", azureTokenCredentials)
 	}
 
-	if options == nil {
-		options = &DefaultAzureCredentialOptions{}
-	}
 	additionalTenants := options.AdditionallyAllowedTenants
 	if len(additionalTenants) == 0 {
 		if tenants := os.Getenv(azureAdditionallyAllowedTenants); tenants != "" {
@@ -166,7 +181,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		}
 	}
 	if selected&az != 0 {
-		azCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{AdditionallyAllowedTenants: additionalTenants, TenantID: options.TenantID})
+		azCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{
+			AdditionallyAllowedTenants: additionalTenants,
+			TenantID:                   options.TenantID,
+			inDefaultChain:             true,
+		})
 		if err == nil {
 			creds = append(creds, azCred)
 		} else {
@@ -178,12 +197,26 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		azdCred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
 			AdditionallyAllowedTenants: additionalTenants,
 			TenantID:                   options.TenantID,
+			inDefaultChain:             true,
 		})
 		if err == nil {
 			creds = append(creds, azdCred)
 		} else {
 			errorMessages = append(errorMessages, credNameAzureDeveloperCLI+": "+err.Error())
 			creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzureDeveloperCLI, err: err})
+		}
+	}
+	if selected&azurePowerShell != 0 {
+		azurePowerShellCred, err := NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
+			AdditionallyAllowedTenants: additionalTenants,
+			TenantID:                   options.TenantID,
+			inDefaultChain:             true,
+		})
+		if err == nil {
+			creds = append(creds, azurePowerShellCred)
+		} else {
+			errorMessages = append(errorMessages, credNameAzurePowerShell+": "+err.Error())
+			creds = append(creds, &defaultCredentialErrorReporter{credType: credNameAzurePowerShell, err: err})
 		}
 	}
 

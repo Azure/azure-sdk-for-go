@@ -1,7 +1,6 @@
 # Release History
 
-## 2.1.0 (2025-05-29)
-
+## 2.1.0 (2025-07-29)
 ### Features Added
 
 - New enum type `HostKind` with values `HostKindGeneral`, `HostKindSpecialized`

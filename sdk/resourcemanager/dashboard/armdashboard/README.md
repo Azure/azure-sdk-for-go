@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Dashboard module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard/v2
 ```
 
 ## Authorization

@@ -3,12 +3,16 @@
 ## 1.4.1-beta.1 (Unreleased)
 
 ### Features Added
+* Added `PreviousVersion` field to `Secret` and `DeletedSecret` models for certificate version tracking
+* Added `OutContentType` parameter to `GetSecretOptions` for content type conversion support
+* Added `ContentType` constants for PEM and PFX formats
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded to API service version `2025-07-01`
 
 ## 1.4.0 (2025-06-12)
 

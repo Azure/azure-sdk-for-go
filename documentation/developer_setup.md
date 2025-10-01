@@ -411,5 +411,5 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [autorest_intro]: https://github.com/Azure/autorest/blob/main/docs/readme.md
 [autorest_directives]: https://github.com/Azure/autorest/blob/main/docs/generate/directives.md
 [test_resources]: https://github.com/Azure/azure-sdk-tools/tree/main/eng/common/TestResources
-[recording_package]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/internal/recording
+[recording_package]: https://github.com/Azure/azure-sdk-for-go/blob/61766db39da5137e78121e9b4754a1c594c3bee7/sdk/internal/recording/README.md
 [testable_examples]: https://go.dev/blog/examples

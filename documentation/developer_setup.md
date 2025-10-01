@@ -155,7 +155,7 @@ Testing is built into the Go toolchain as well with the `testing` library. The t
 | playback | `$ENV:AZURE_RECORD_MODE="playback"` | Running tests against recording HTTP interactiosn |
 | live | `$ENV:AZURE_RECORD_MODE="live"` | Bypassing test proxy, running against live service, and not recording HTTP interactions (used by live pipelines) |
 
-By default the [recording](recording_package) package will automatically install and run the test proxy server. If there are issues with auto-install or the proxy needs to be run standalone, it can be run manually instead. To get started first [install test-proxy][test_proxy_install] via the standalone executable, then to start the proxy, from the root of the repository, run the command `test-proxy start`. When invoking tests, set the environment variable `PROXY_MANUAL_START` to `true`.
+By default the recording package will automatically install and run the test proxy server. If there are issues with auto-install or the proxy needs to be run standalone, it can be run manually instead. To get started first [install test-proxy][test_proxy_install] via the standalone executable, then to start the proxy, from the root of the repository, run the command `test-proxy start`. When invoking tests, set the environment variable `PROXY_MANUAL_START` to `true`.
 
 ### Test Mode Options
 
@@ -411,5 +411,4 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [autorest_intro]: https://github.com/Azure/autorest/blob/main/docs/readme.md
 [autorest_directives]: https://github.com/Azure/autorest/blob/main/docs/generate/directives.md
 [test_resources]: https://github.com/Azure/azure-sdk-tools/tree/main/eng/common/TestResources
-[recording_package]: https://github.com/Azure/azure-sdk-for-go/blob/61766db39da5137e78121e9b4754a1c594c3bee7/sdk/internal/recording/README.md
 [testable_examples]: https://go.dev/blog/examples

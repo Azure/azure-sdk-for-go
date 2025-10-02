@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/exported"
 )
 
 // Cache contains a collection of sync token values.

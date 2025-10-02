@@ -26,8 +26,7 @@ type SecretsClient struct {
 }
 
 // NewSecretsClient creates a new instance of SecretsClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecretsClient, error) {
@@ -47,11 +46,10 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 // with vault secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the Resource Group to which the vault belongs.
-//   - vaultName - Name of the vault
-//   - secretName - Name of the secret. The value you provide may be copied globally for the purpose of running the service. The
-//     value provided should not include personally identifiable or sensitive information.
+// Generated from API version 2025-05-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the vault.
+//   - secretName - The name of the secret.
 //   - parameters - Parameters to create or update the secret
 //   - options - SecretsClientCreateOrUpdateOptions contains the optional parameters for the SecretsClient.CreateOrUpdate method.
 func (client *SecretsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, secretName string, parameters SecretCreateOrUpdateParameters, options *SecretsClientCreateOrUpdateOptions) (SecretsClientCreateOrUpdateResponse, error) {
@@ -79,6 +77,10 @@ func (client *SecretsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, secretName string, parameters SecretCreateOrUpdateParameters, _ *SecretsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -91,16 +93,12 @@ func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter secretName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secretName}", url.PathEscape(secretName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -112,6 +110,14 @@ func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SecretsClient) createOrUpdateHandleResponse(resp *http.Response) (SecretsClientCreateOrUpdateResponse, error) {
 	result := SecretsClientCreateOrUpdateResponse{}
+	if val := resp.Header.Get("Retry-After"); val != "" {
+		retryAfter32, err := strconv.ParseInt(val, 10, 32)
+		retryAfter := int32(retryAfter32)
+		if err != nil {
+			return SecretsClientCreateOrUpdateResponse{}, err
+		}
+		result.RetryAfter = &retryAfter
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return SecretsClientCreateOrUpdateResponse{}, err
 	}
@@ -122,8 +128,8 @@ func (client *SecretsClient) createOrUpdateHandleResponse(resp *http.Response) (
 // REST service for interaction with vault secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the Resource Group to which the vault belongs.
+// Generated from API version 2025-05-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the vault.
 //   - secretName - The name of the secret.
 //   - options - SecretsClientGetOptions contains the optional parameters for the SecretsClient.Get method.
@@ -152,6 +158,10 @@ func (client *SecretsClient) Get(ctx context.Context, resourceGroupName string, 
 // getCreateRequest creates the Get request.
 func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, secretName string, _ *SecretsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -164,16 +174,12 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter secretName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secretName}", url.PathEscape(secretName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,8 +198,8 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 // use in ARM deployments. Users should use the data-plane REST service for interaction with
 // vault secrets.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the Resource Group to which the vault belongs.
+// Generated from API version 2025-05-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the vault.
 //   - options - SecretsClientListOptions contains the optional parameters for the SecretsClient.NewListPager method.
 func (client *SecretsClient) NewListPager(resourceGroupName string, vaultName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
@@ -222,6 +228,10 @@ func (client *SecretsClient) NewListPager(resourceGroupName string, vaultName st
 // listCreateRequest creates the List request.
 func (client *SecretsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *SecretsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -230,10 +240,6 @@ func (client *SecretsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -242,7 +248,7 @@ func (client *SecretsClient) listCreateRequest(ctx context.Context, resourceGrou
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,10 +267,10 @@ func (client *SecretsClient) listHandleResponse(resp *http.Response) (SecretsCli
 // Users should use the data-plane REST service for interaction with vault secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the Resource Group to which the vault belongs.
-//   - vaultName - Name of the vault
-//   - secretName - Name of the secret
+// Generated from API version 2025-05-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the vault.
+//   - secretName - The name of the secret.
 //   - parameters - Parameters to patch the secret
 //   - options - SecretsClientUpdateOptions contains the optional parameters for the SecretsClient.Update method.
 func (client *SecretsClient) Update(ctx context.Context, resourceGroupName string, vaultName string, secretName string, parameters SecretPatchParameters, options *SecretsClientUpdateOptions) (SecretsClientUpdateResponse, error) {
@@ -292,6 +298,10 @@ func (client *SecretsClient) Update(ctx context.Context, resourceGroupName strin
 // updateCreateRequest creates the Update request.
 func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, secretName string, parameters SecretPatchParameters, _ *SecretsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -304,16 +314,12 @@ func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter secretName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secretName}", url.PathEscape(secretName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

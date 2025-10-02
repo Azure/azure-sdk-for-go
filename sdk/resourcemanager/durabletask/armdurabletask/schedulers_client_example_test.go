@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/Schedulers_CreateOrUpdate.json
+// Generated from example definition: 2025-11-01/Schedulers_CreateOrUpdate.json
 func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 				to.Ptr("10.0.0.0/8"),
 			},
 			SKU: &armdurabletask.SchedulerSKU{
-				Name: to.Ptr("Dedicated"),
+				Name: to.Ptr(armdurabletask.SchedulerSKUNameDedicated),
 			},
 		},
 		Tags: map[string]*string{
@@ -58,7 +58,7 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	// 				to.Ptr("10.0.0.0/8"),
 	// 			},
 	// 			SKU: &armdurabletask.SchedulerSKU{
-	// 				Name: to.Ptr("Dedicated"),
+	// 				Name: to.Ptr(armdurabletask.SchedulerSKUNameDedicated),
 	// 				Capacity: to.Ptr[int32](3),
 	// 				RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 	// 			},
@@ -82,7 +82,7 @@ func ExampleSchedulersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Schedulers_Delete.json
+// Generated from example definition: 2025-11-01/Schedulers_Delete.json
 func ExampleSchedulersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSchedulersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Schedulers_Get.json
+// Generated from example definition: 2025-11-01/Schedulers_Get.json
 func ExampleSchedulersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleSchedulersClient_Get() {
 	// 				to.Ptr("10.0.0.0/8"),
 	// 			},
 	// 			SKU: &armdurabletask.SchedulerSKU{
-	// 				Name: to.Ptr("Dedicated"),
+	// 				Name: to.Ptr(armdurabletask.SchedulerSKUNameDedicated),
 	// 				Capacity: to.Ptr[int32](3),
 	// 				RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 	// 			},
@@ -155,7 +155,7 @@ func ExampleSchedulersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/Schedulers_ListByResourceGroup.json
+// Generated from example definition: 2025-11-01/Schedulers_ListByResourceGroup.json
 func ExampleSchedulersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleSchedulersClient_NewListByResourceGroupPager() {
 		// 						to.Ptr("10.0.0.0/8"),
 		// 					},
 		// 					SKU: &armdurabletask.SchedulerSKU{
-		// 						Name: to.Ptr("Dedicated"),
+		// 						Name: to.Ptr(armdurabletask.SchedulerSKUNameDedicated),
 		// 						Capacity: to.Ptr[int32](3),
 		// 						RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 		// 					},
@@ -217,7 +217,7 @@ func ExampleSchedulersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Schedulers_ListBySubscription.json
+// Generated from example definition: 2025-11-01/Schedulers_ListBySubscription.json
 func ExampleSchedulersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleSchedulersClient_NewListBySubscriptionPager() {
 		// 						to.Ptr("10.0.0.0/8"),
 		// 					},
 		// 					SKU: &armdurabletask.SchedulerSKU{
-		// 						Name: to.Ptr("Dedicated"),
+		// 						Name: to.Ptr(armdurabletask.SchedulerSKUNameDedicated),
 		// 						Capacity: to.Ptr[int32](3),
 		// 						RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 		// 					},
@@ -279,7 +279,7 @@ func ExampleSchedulersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Schedulers_Update.json
+// Generated from example definition: 2025-11-01/Schedulers_Update.json
 func ExampleSchedulersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleSchedulersClient_BeginUpdate() {
 				to.Ptr("10.0.0.0/8"),
 			},
 			SKU: &armdurabletask.SchedulerSKUUpdate{
-				Name:     to.Ptr("Dedicated"),
+				Name:     to.Ptr(armdurabletask.SchedulerSKUNameDedicated),
 				Capacity: to.Ptr[int32](3),
 			},
 		},
@@ -324,7 +324,7 @@ func ExampleSchedulersClient_BeginUpdate() {
 	// 				to.Ptr("10.0.0.0/8"),
 	// 			},
 	// 			SKU: &armdurabletask.SchedulerSKU{
-	// 				Name: to.Ptr("Dedicated"),
+	// 				Name: to.Ptr(armdurabletask.SchedulerSKUNameDedicated),
 	// 				Capacity: to.Ptr[int32](3),
 	// 				RedundancyState: to.Ptr(armdurabletask.RedundancyStateZone),
 	// 			},

@@ -168,7 +168,7 @@ type SchedulerPropertiesUpdate struct {
 // SchedulerSKU - The SKU (Stock Keeping Unit) assigned to this durable task scheduler
 type SchedulerSKU struct {
 	// REQUIRED; The name of the SKU
-	Name *string
+	Name *SchedulerSKUName
 
 	// The SKU capacity. This allows scale out/in for the resource and impacts zone redundancy
 	Capacity *int32
@@ -183,7 +183,7 @@ type SchedulerSKUUpdate struct {
 	Capacity *int32
 
 	// The name of the SKU
-	Name *string
+	Name *SchedulerSKUName
 
 	// READ-ONLY; Indicates whether the current SKU configuration is zone redundant
 	RedundancyState *RedundancyState

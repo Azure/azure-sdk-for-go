@@ -6,5 +6,5 @@ package armdurabletask
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/durabletask/armdurabletask"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v1.0.0"
 )

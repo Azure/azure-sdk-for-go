@@ -97,6 +97,14 @@ const (
 	FilePermissionFormatSddl   PermissionFormat = generated.FilePermissionFormatSddl
 )
 
+// PropertySemantics has two values - New and Restore, SMB only
+type PropertySemantics = generated.FilePropertySemantics
+
+const (
+	FilePropertySemanticsNew     PropertySemantics = "New"
+	FilePropertySemanticsRestore PropertySemantics = "Restore"
+)
+
 // PossibleFilePermissionFormatValues returns the possible values for the FilePermissionFormat const type.
 func PossibleFilePermissionFormatValues() []PermissionFormat {
 	return generated.PossibleFilePermissionFormatValues()

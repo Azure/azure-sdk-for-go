@@ -34,6 +34,8 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
+type BlobModifiedAccessConditions = exported.BlobModifiedAccessConditions
+
 // CPKInfo contains a group of parameters for client provided encryption key.
 type CPKInfo = generated.CPKInfo
 
@@ -402,11 +404,13 @@ type SetTagsOptions struct {
 	TransactionalContentMD5 []byte
 
 	AccessConditions *AccessConditions
+
+	BlobModifiedAccessConditions *BlobModifiedAccessConditions
 }
 
-func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.BlobModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, nil
 	}
 
 	options := &generated.BlobClientSetTagsOptions{
@@ -416,7 +420,8 @@ func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *Modifie
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, modifiedAccessConditions, leaseAccessConditions
+	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions)
+	return options, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -430,11 +435,13 @@ type GetTagsOptions struct {
 	VersionID *string
 
 	BlobAccessConditions *AccessConditions
+
+	BlobModifiedAccessConditions *BlobModifiedAccessConditions
 }
 
-func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.BlobModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return nil, nil, nil, nil
 	}
 
 	options := &generated.BlobClientGetTagsOptions{
@@ -443,7 +450,8 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.BlobAccessConditions)
-	return options, modifiedAccessConditions, leaseAccessConditions
+	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions)
+	return options, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

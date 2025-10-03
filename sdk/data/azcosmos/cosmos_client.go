@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 
@@ -23,7 +24,9 @@ import (
 )
 
 const (
-	apiVersion = "2020-11-05"
+	apiVersion             = "2020-11-05"
+	envCosmosScopeOverride = "AZURE_COSMOS_AAD_SCOPE_OVERRIDE"
+	defaultCosmosScope     = "https://cosmos.azure.com/.default"
 )
 
 // Client is used to interact with the Azure Cosmos DB database service.
@@ -32,6 +35,12 @@ type Client struct {
 	internal    *azcore.Client
 	gem         *globalEndpointManager
 	endpointUrl *url.URL
+}
+
+type aadFallbackCredential struct {
+	inner         azcore.TokenCredential
+	primaryScope  string
+	fallbackScope string // empty => no fallback
 }
 
 // Endpoint used to create the client.
@@ -75,25 +84,62 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	scope, err := createScopeFromEndpoint(endpointUrl)
-	if err != nil {
-		return nil, err
+
+	var scopes []string
+	if v := strings.TrimSpace(os.Getenv(envCosmosScopeOverride)); v != "" {
+		scopes = []string{v}
+	} else {
+		scopes, err = createScopeFromEndpoint(endpointUrl)
+		if err != nil {
+			return nil, err
+		}
+		cred = &aadFallbackCredential{
+			inner:         cred,
+			primaryScope:  scopes[0],
+			fallbackScope: defaultCosmosScope,
+		}
 	}
+
+	// One shared auth policy instance
+	authPolicy := newCosmosBearerTokenPolicy(cred, scopes, nil)
+
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
-	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
+
+	// GEM uses the same policy
+	gem, err := newGlobalEndpointManager(
+		endpoint,
+		newInternalPipeline(authPolicy, o),
+		preferredRegions,
+		0,
+		enableCrossRegionRetries,
+	)
 	if err != nil {
 		return nil, err
 	}
 
-	internalClient, err := newClient(newCosmosBearerTokenPolicy(cred, scope, nil), gem, o)
+	// Client uses the same policy
+	internalClient, err := newClient(authPolicy, gem, o)
 	if err != nil {
 		return nil, err
 	}
+
 	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem}, nil
+}
+
+func (c *aadFallbackCredential) GetToken(ctx context.Context, _ policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	tok, err := c.inner.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{c.primaryScope}})
+	if err == nil || c.fallbackScope == "" {
+		return tok, err
+	}
+	e := strings.ToUpper(err.Error())
+	if strings.Contains(e, "AADSTS500011") {
+		return c.inner.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{c.fallbackScope}})
+	}
+	return tok, err
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.

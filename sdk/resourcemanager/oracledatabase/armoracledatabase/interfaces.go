@@ -13,3 +13,12 @@ type AutonomousDatabaseBasePropertiesClassification interface {
 	// GetAutonomousDatabaseBaseProperties returns the AutonomousDatabaseBaseProperties content of the underlying type.
 	GetAutonomousDatabaseBaseProperties() *AutonomousDatabaseBaseProperties
 }
+
+// DbSystemBasePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetDbSystemBaseProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DbSystemBaseProperties, *DbSystemProperties
+type DbSystemBasePropertiesClassification interface {
+	// GetDbSystemBaseProperties returns the DbSystemBaseProperties content of the underlying type.
+	GetDbSystemBaseProperties() *DbSystemBaseProperties
+}

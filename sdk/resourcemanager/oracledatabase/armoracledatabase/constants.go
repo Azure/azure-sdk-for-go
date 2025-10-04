@@ -88,6 +88,27 @@ func PossibleAutonomousDatabaseBackupTypeValues() []AutonomousDatabaseBackupType
 	}
 }
 
+// AutonomousDatabaseLifecycleActionEnum - Autonomous Database Action Enum
+type AutonomousDatabaseLifecycleActionEnum string
+
+const (
+	// AutonomousDatabaseLifecycleActionEnumRestart - Restart Autonomous Database
+	AutonomousDatabaseLifecycleActionEnumRestart AutonomousDatabaseLifecycleActionEnum = "Restart"
+	// AutonomousDatabaseLifecycleActionEnumStart - Start Autonomous Database
+	AutonomousDatabaseLifecycleActionEnumStart AutonomousDatabaseLifecycleActionEnum = "Start"
+	// AutonomousDatabaseLifecycleActionEnumStop - Stop Autonomous Database
+	AutonomousDatabaseLifecycleActionEnumStop AutonomousDatabaseLifecycleActionEnum = "Stop"
+)
+
+// PossibleAutonomousDatabaseLifecycleActionEnumValues returns the possible values for the AutonomousDatabaseLifecycleActionEnum const type.
+func PossibleAutonomousDatabaseLifecycleActionEnumValues() []AutonomousDatabaseLifecycleActionEnum {
+	return []AutonomousDatabaseLifecycleActionEnum{
+		AutonomousDatabaseLifecycleActionEnumRestart,
+		AutonomousDatabaseLifecycleActionEnumStart,
+		AutonomousDatabaseLifecycleActionEnumStop,
+	}
+}
+
 // AutonomousDatabaseLifecycleState - Autonomous database lifecycle state enum
 type AutonomousDatabaseLifecycleState string
 
@@ -202,6 +223,21 @@ func PossibleAzureResourceProvisioningStateValues() []AzureResourceProvisioningS
 		AzureResourceProvisioningStateFailed,
 		AzureResourceProvisioningStateProvisioning,
 		AzureResourceProvisioningStateSucceeded,
+	}
+}
+
+// BaseDbSystemShapes - Allowed values for BaseDb System Shapes
+type BaseDbSystemShapes string
+
+const (
+	// BaseDbSystemShapesVMStandardX86 - Vm Standard X86
+	BaseDbSystemShapesVMStandardX86 BaseDbSystemShapes = "VM.Standard.x86"
+)
+
+// PossibleBaseDbSystemShapesValues returns the possible values for the BaseDbSystemShapes const type.
+func PossibleBaseDbSystemShapesValues() []BaseDbSystemShapes {
+	return []BaseDbSystemShapes{
+		BaseDbSystemShapesVMStandardX86,
 	}
 }
 
@@ -665,6 +701,90 @@ func PossibleDbServerProvisioningStateValues() []DbServerProvisioningState {
 	}
 }
 
+// DbSystemDatabaseEditionType - Database edition type enum.
+type DbSystemDatabaseEditionType string
+
+const (
+	// DbSystemDatabaseEditionTypeEnterpriseEdition - Enterprise edition
+	DbSystemDatabaseEditionTypeEnterpriseEdition DbSystemDatabaseEditionType = "EnterpriseEdition"
+	// DbSystemDatabaseEditionTypeEnterpriseEditionDeveloper - Enterprise edition developer
+	DbSystemDatabaseEditionTypeEnterpriseEditionDeveloper DbSystemDatabaseEditionType = "EnterpriseEditionDeveloper"
+	// DbSystemDatabaseEditionTypeEnterpriseEditionExtreme - Enterprise edition extreme
+	DbSystemDatabaseEditionTypeEnterpriseEditionExtreme DbSystemDatabaseEditionType = "EnterpriseEditionExtreme"
+	// DbSystemDatabaseEditionTypeEnterpriseEditionHighPerformance - Enterprise edition high performance
+	DbSystemDatabaseEditionTypeEnterpriseEditionHighPerformance DbSystemDatabaseEditionType = "EnterpriseEditionHighPerformance"
+	// DbSystemDatabaseEditionTypeStandardEdition - Standard edition
+	DbSystemDatabaseEditionTypeStandardEdition DbSystemDatabaseEditionType = "StandardEdition"
+)
+
+// PossibleDbSystemDatabaseEditionTypeValues returns the possible values for the DbSystemDatabaseEditionType const type.
+func PossibleDbSystemDatabaseEditionTypeValues() []DbSystemDatabaseEditionType {
+	return []DbSystemDatabaseEditionType{
+		DbSystemDatabaseEditionTypeEnterpriseEdition,
+		DbSystemDatabaseEditionTypeEnterpriseEditionDeveloper,
+		DbSystemDatabaseEditionTypeEnterpriseEditionExtreme,
+		DbSystemDatabaseEditionTypeEnterpriseEditionHighPerformance,
+		DbSystemDatabaseEditionTypeStandardEdition,
+	}
+}
+
+// DbSystemLifecycleState - DB System lifecycle state enum
+type DbSystemLifecycleState string
+
+const (
+	// DbSystemLifecycleStateAvailable - Indicates that resource in Available state
+	DbSystemLifecycleStateAvailable DbSystemLifecycleState = "Available"
+	// DbSystemLifecycleStateFailed - Indicates that resource in Failed state
+	DbSystemLifecycleStateFailed DbSystemLifecycleState = "Failed"
+	// DbSystemLifecycleStateMaintenanceInProgress - Indicates that resource maintenance in progress state
+	DbSystemLifecycleStateMaintenanceInProgress DbSystemLifecycleState = "MaintenanceInProgress"
+	// DbSystemLifecycleStateMigrated - Indicates that resource is Migrated state
+	DbSystemLifecycleStateMigrated DbSystemLifecycleState = "Migrated"
+	// DbSystemLifecycleStateNeedsAttention - Indicates that resource needs attention state
+	DbSystemLifecycleStateNeedsAttention DbSystemLifecycleState = "NeedsAttention"
+	// DbSystemLifecycleStateProvisioning - Indicates that resource in Provisioning state
+	DbSystemLifecycleStateProvisioning DbSystemLifecycleState = "Provisioning"
+	// DbSystemLifecycleStateTerminated - Indicates that resource in Terminated state
+	DbSystemLifecycleStateTerminated DbSystemLifecycleState = "Terminated"
+	// DbSystemLifecycleStateTerminating - Indicates that resource in Terminating state
+	DbSystemLifecycleStateTerminating DbSystemLifecycleState = "Terminating"
+	// DbSystemLifecycleStateUpdating - Indicates that resource in Updating state
+	DbSystemLifecycleStateUpdating DbSystemLifecycleState = "Updating"
+	// DbSystemLifecycleStateUpgrading - Indicates that resource in Upgrading state
+	DbSystemLifecycleStateUpgrading DbSystemLifecycleState = "Upgrading"
+)
+
+// PossibleDbSystemLifecycleStateValues returns the possible values for the DbSystemLifecycleState const type.
+func PossibleDbSystemLifecycleStateValues() []DbSystemLifecycleState {
+	return []DbSystemLifecycleState{
+		DbSystemLifecycleStateAvailable,
+		DbSystemLifecycleStateFailed,
+		DbSystemLifecycleStateMaintenanceInProgress,
+		DbSystemLifecycleStateMigrated,
+		DbSystemLifecycleStateNeedsAttention,
+		DbSystemLifecycleStateProvisioning,
+		DbSystemLifecycleStateTerminated,
+		DbSystemLifecycleStateTerminating,
+		DbSystemLifecycleStateUpdating,
+		DbSystemLifecycleStateUpgrading,
+	}
+}
+
+// DbSystemSourceType - The DbSystem source type of the database.
+type DbSystemSourceType string
+
+const (
+	// DbSystemSourceTypeNone - for creating a new database.
+	DbSystemSourceTypeNone DbSystemSourceType = "None"
+)
+
+// PossibleDbSystemSourceTypeValues returns the possible values for the DbSystemSourceType const type.
+func PossibleDbSystemSourceTypeValues() []DbSystemSourceType {
+	return []DbSystemSourceType{
+		DbSystemSourceTypeNone,
+	}
+}
+
 // DisasterRecoveryType - Disaster recovery type enum.
 type DisasterRecoveryType string
 
@@ -698,6 +818,43 @@ func PossibleDiskRedundancyValues() []DiskRedundancy {
 	return []DiskRedundancy{
 		DiskRedundancyHigh,
 		DiskRedundancyNormal,
+	}
+}
+
+// DiskRedundancyType - Disk redundancy type enum.
+type DiskRedundancyType string
+
+const (
+	// DiskRedundancyTypeHigh - 3-way redundancy.
+	DiskRedundancyTypeHigh DiskRedundancyType = "High"
+	// DiskRedundancyTypeNormal - 2-way redundancy.
+	DiskRedundancyTypeNormal DiskRedundancyType = "Normal"
+)
+
+// PossibleDiskRedundancyTypeValues returns the possible values for the DiskRedundancyType const type.
+func PossibleDiskRedundancyTypeValues() []DiskRedundancyType {
+	return []DiskRedundancyType{
+		DiskRedundancyTypeHigh,
+		DiskRedundancyTypeNormal,
+	}
+}
+
+// ExadataVMClusterStorageManagementType - Specifies the type of storage management for the Cloud VM Cluster if its ASM or
+// Exascale.
+type ExadataVMClusterStorageManagementType string
+
+const (
+	// ExadataVMClusterStorageManagementTypeASM - Indicates that storage management for the Cloud VM Cluster is ASM
+	ExadataVMClusterStorageManagementTypeASM ExadataVMClusterStorageManagementType = "ASM"
+	// ExadataVMClusterStorageManagementTypeExascale - Indicates that storage management for the Cloud VM Cluster is Exascale
+	ExadataVMClusterStorageManagementTypeExascale ExadataVMClusterStorageManagementType = "Exascale"
+)
+
+// PossibleExadataVMClusterStorageManagementTypeValues returns the possible values for the ExadataVMClusterStorageManagementType const type.
+func PossibleExadataVMClusterStorageManagementTypeValues() []ExadataVMClusterStorageManagementType {
+	return []ExadataVMClusterStorageManagementType{
+		ExadataVMClusterStorageManagementTypeASM,
+		ExadataVMClusterStorageManagementTypeExascale,
 	}
 }
 
@@ -1263,6 +1420,25 @@ func PossibleSessionModeTypeValues() []SessionModeType {
 	}
 }
 
+// ShapeAttribute - The type of Exascale storage used for Exadata VM cluster. The default is SMART_STORAGE which supports
+// Oracle Database 23ai and later
+type ShapeAttribute string
+
+const (
+	// ShapeAttributeBLOCKSTORAGE - block storage
+	ShapeAttributeBLOCKSTORAGE ShapeAttribute = "BLOCK_STORAGE"
+	// ShapeAttributeSMARTSTORAGE - Smart storage
+	ShapeAttributeSMARTSTORAGE ShapeAttribute = "SMART_STORAGE"
+)
+
+// PossibleShapeAttributeValues returns the possible values for the ShapeAttribute const type.
+func PossibleShapeAttributeValues() []ShapeAttribute {
+	return []ShapeAttribute{
+		ShapeAttributeBLOCKSTORAGE,
+		ShapeAttributeSMARTSTORAGE,
+	}
+}
+
 // ShapeFamily - Allowed values for GI Minor Versions shapeFamily filter
 type ShapeFamily string
 
@@ -1278,6 +1454,30 @@ func PossibleShapeFamilyValues() []ShapeFamily {
 	return []ShapeFamily{
 		ShapeFamilyExadata,
 		ShapeFamilyExadbXs,
+	}
+}
+
+// ShapeFamilyType - Allowed values for shape family.
+type ShapeFamilyType string
+
+const (
+	// ShapeFamilyTypeExadata - Family value for Exadata Shape
+	ShapeFamilyTypeExadata ShapeFamilyType = "EXADATA"
+	// ShapeFamilyTypeExadbXs - Family value for Exadb XS Shape
+	ShapeFamilyTypeExadbXs ShapeFamilyType = "EXADB_XS"
+	// ShapeFamilyTypeSingleNode - Family value for Single Node Shape
+	ShapeFamilyTypeSingleNode ShapeFamilyType = "SINGLENODE"
+	// ShapeFamilyTypeVirtualMachine - Family value for Virtual Machine Shape
+	ShapeFamilyTypeVirtualMachine ShapeFamilyType = "VIRTUALMACHINE"
+)
+
+// PossibleShapeFamilyTypeValues returns the possible values for the ShapeFamilyType const type.
+func PossibleShapeFamilyTypeValues() []ShapeFamilyType {
+	return []ShapeFamilyType{
+		ShapeFamilyTypeExadata,
+		ShapeFamilyTypeExadbXs,
+		ShapeFamilyTypeSingleNode,
+		ShapeFamilyTypeVirtualMachine,
 	}
 }
 
@@ -1311,6 +1511,41 @@ func PossibleSourceTypeValues() []SourceType {
 		SourceTypeCrossRegionDisasterRecovery,
 		SourceTypeDatabase,
 		SourceTypeNone,
+	}
+}
+
+// StorageManagementType - Storage Management type enum.
+type StorageManagementType string
+
+const (
+	// StorageManagementTypeLVM - Logical Volume management
+	StorageManagementTypeLVM StorageManagementType = "LVM"
+)
+
+// PossibleStorageManagementTypeValues returns the possible values for the StorageManagementType const type.
+func PossibleStorageManagementTypeValues() []StorageManagementType {
+	return []StorageManagementType{
+		StorageManagementTypeLVM,
+	}
+}
+
+// StorageVolumePerformanceMode - Storage volume performance mode.
+type StorageVolumePerformanceMode string
+
+const (
+	// StorageVolumePerformanceModeBalanced - With this option, you are purchasing 10 VPUs per GB/month. For more information,
+	// including specific throughput and IOPS performance numbers for various volume sizes.
+	StorageVolumePerformanceModeBalanced StorageVolumePerformanceMode = "Balanced"
+	// StorageVolumePerformanceModeHighPerformance - With this option, you are purchasing 20 VPUs per GB/month. For more information,
+	// including specific throughput and IOPS performance numbers for various volume sizes.
+	StorageVolumePerformanceModeHighPerformance StorageVolumePerformanceMode = "HighPerformance"
+)
+
+// PossibleStorageVolumePerformanceModeValues returns the possible values for the StorageVolumePerformanceMode const type.
+func PossibleStorageVolumePerformanceModeValues() []StorageVolumePerformanceMode {
+	return []StorageVolumePerformanceMode{
+		StorageVolumePerformanceModeBalanced,
+		StorageVolumePerformanceModeHighPerformance,
 	}
 }
 

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,6 +23,10 @@ type CloudExadataInfrastructuresServer struct {
 	// BeginAddStorageCapacity is the fake for method CloudExadataInfrastructuresClient.BeginAddStorageCapacity
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginAddStorageCapacity func(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, options *armoracledatabase.CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions) (resp azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse], errResp azfake.ErrorResponder)
+
+	// BeginConfigureExascale is the fake for method CloudExadataInfrastructuresClient.BeginConfigureExascale
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginConfigureExascale func(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, body armoracledatabase.ConfigureExascaleCloudExadataInfrastructureDetails, options *armoracledatabase.CloudExadataInfrastructuresClientBeginConfigureExascaleOptions) (resp azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method CloudExadataInfrastructuresClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -56,6 +60,7 @@ func NewCloudExadataInfrastructuresServerTransport(srv *CloudExadataInfrastructu
 	return &CloudExadataInfrastructuresServerTransport{
 		srv:                         srv,
 		beginAddStorageCapacity:     newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse]](),
+		beginConfigureExascale:      newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.CloudExadataInfrastructuresClientListByResourceGroupResponse]](),
@@ -69,6 +74,7 @@ func NewCloudExadataInfrastructuresServerTransport(srv *CloudExadataInfrastructu
 type CloudExadataInfrastructuresServerTransport struct {
 	srv                         *CloudExadataInfrastructuresServer
 	beginAddStorageCapacity     *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientAddStorageCapacityResponse]]
+	beginConfigureExascale      *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.CloudExadataInfrastructuresClientListByResourceGroupResponse]]
@@ -101,6 +107,8 @@ func (c *CloudExadataInfrastructuresServerTransport) dispatchToMethodFake(req *h
 			switch method {
 			case "CloudExadataInfrastructuresClient.BeginAddStorageCapacity":
 				res.resp, res.err = c.dispatchBeginAddStorageCapacity(req)
+			case "CloudExadataInfrastructuresClient.BeginConfigureExascale":
+				res.resp, res.err = c.dispatchBeginConfigureExascale(req)
 			case "CloudExadataInfrastructuresClient.BeginCreateOrUpdate":
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CloudExadataInfrastructuresClient.BeginDelete":
@@ -171,6 +179,54 @@ func (c *CloudExadataInfrastructuresServerTransport) dispatchBeginAddStorageCapa
 	}
 	if !server.PollerResponderMore(beginAddStorageCapacity) {
 		c.beginAddStorageCapacity.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CloudExadataInfrastructuresServerTransport) dispatchBeginConfigureExascale(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginConfigureExascale == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginConfigureExascale not implemented")}
+	}
+	beginConfigureExascale := c.beginConfigureExascale.get(req)
+	if beginConfigureExascale == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Oracle\.Database/cloudExadataInfrastructures/(?P<cloudexadatainfrastructurename>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configureExascale`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.ConfigureExascaleCloudExadataInfrastructureDetails](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudexadatainfrastructurenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudexadatainfrastructurename")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginConfigureExascale(req.Context(), resourceGroupNameParam, cloudexadatainfrastructurenameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginConfigureExascale = &respr
+		c.beginConfigureExascale.add(req, beginConfigureExascale)
+	}
+
+	resp, err := server.PollerResponderNext(beginConfigureExascale, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginConfigureExascale.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginConfigureExascale) {
+		c.beginConfigureExascale.remove(req)
 	}
 
 	return resp, nil

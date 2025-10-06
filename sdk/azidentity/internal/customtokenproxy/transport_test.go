@@ -23,7 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestParseAndValidateCustomTokenProxy(t *testing.T) {
+func TestParseAndValidate(t *testing.T) {
 	cases := []struct {
 		name     string
 		endpoint string
@@ -93,7 +93,7 @@ func TestParseAndValidateCustomTokenProxy(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			u, err := parseAndValidateCustomTokenProxy(c.endpoint)
+			u, err := parseAndValidate(c.endpoint)
 			c.check(t, u, err)
 		})
 	}
@@ -242,7 +242,7 @@ func TestConfigure(t *testing.T) {
 			require.NoError(t, err)
 			if c.expectTransport {
 				require.NotNil(t, c.clientOptions.Transport)
-				require.IsType(t, &customTokenProxyTransport{}, c.clientOptions.Transport)
+				require.IsType(t, &transport{}, c.clientOptions.Transport)
 			} else {
 				require.Nil(t, c.clientOptions.Transport)
 			}
@@ -285,22 +285,22 @@ func createTestCAFile(t testing.TB) string {
 	return caFile
 }
 
-func TestCustomTokenProxyTransport_getTokenTransporter(t *testing.T) {
+func TestGetTokenTransporter(t *testing.T) {
 	cases := []struct {
 		name string
-		tr   *customTokenProxyTransport
+		tr   *transport
 
 		expectErr         bool
 		validateTransport func(t testing.TB, httpTr *http.Transport)
 	}{
 		{
 			name:      "no overrides",
-			tr:        &customTokenProxyTransport{},
+			tr:        &transport{},
 			expectErr: false,
 		},
 		{
 			name: "with custom CA",
-			tr: &customTokenProxyTransport{
+			tr: &transport{
 				caFile: createTestCAFile(t),
 			},
 			expectErr: false,
@@ -311,14 +311,14 @@ func TestCustomTokenProxyTransport_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "invalid CA",
-			tr: &customTokenProxyTransport{
+			tr: &transport{
 				caData: []byte("invalid-ca-data"),
 			},
 			expectErr: true,
 		},
 		{
 			name: "with SNI",
-			tr: &customTokenProxyTransport{
+			tr: &transport{
 				sniName: "example.com",
 			},
 			expectErr: false,
@@ -330,7 +330,7 @@ func TestCustomTokenProxyTransport_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "with CA + SNI",
-			tr: &customTokenProxyTransport{
+			tr: &transport{
 				sniName: "example.com",
 				caFile:  createTestCAFile(t),
 			},
@@ -364,9 +364,9 @@ func TestCustomTokenProxyTransport_getTokenTransporter(t *testing.T) {
 	}
 }
 
-func TestCustomTokenProxyTransport_getTokenTransporter_reentry(t *testing.T) {
+func TestGetTokenTransporter_reentry(t *testing.T) {
 	t.Run("no CA overrides", func(t *testing.T) {
-		tr := &customTokenProxyTransport{}
+		tr := &transport{}
 		transport, err := tr.getTokenTransporter()
 		require.NoError(t, err)
 		require.NotNil(t, transport)
@@ -378,7 +378,7 @@ func TestCustomTokenProxyTransport_getTokenTransporter_reentry(t *testing.T) {
 	})
 
 	t.Run("with CAData overrides", func(t *testing.T) {
-		tr := customTokenProxyTransport{
+		tr := transport{
 			caData: createTestCA(t),
 		}
 		transport, err := tr.getTokenTransporter()
@@ -393,7 +393,7 @@ func TestCustomTokenProxyTransport_getTokenTransporter_reentry(t *testing.T) {
 
 	t.Run("with CAFile overrides", func(t *testing.T) {
 		caFile := createTestCAFile(t)
-		tr := customTokenProxyTransport{
+		tr := transport{
 			caFile: caFile,
 		}
 		transport, err := tr.getTokenTransporter()
@@ -425,7 +425,7 @@ func TestCustomTokenProxyTransport_getTokenTransporter_reentry(t *testing.T) {
 		caFile := filepath.Join(t.TempDir(), "empty-ca-file.pem")
 		require.NoError(t, os.WriteFile(caFile, []byte{}, 0600))
 
-		tr := customTokenProxyTransport{
+		tr := transport{
 			caFile: caFile,
 		}
 		transport, err := tr.getTokenTransporter()
@@ -436,7 +436,7 @@ func TestCustomTokenProxyTransport_getTokenTransporter_reentry(t *testing.T) {
 
 // this provides a minimal behavior test on the transport.
 // The full coverage can be found in workload identity credential tests.
-func TestCustomTokenProxyTransport_Do(t *testing.T) {
+func TestTransport_Do(t *testing.T) {
 	mux := http.NewServeMux()
 	testServer := httptest.NewTLSServer(mux)
 
@@ -448,7 +448,7 @@ func TestCustomTokenProxyTransport_Do(t *testing.T) {
 	tokenProxyURL, err := url.Parse(testServer.URL + "/extra/root/path")
 	require.NoError(t, err)
 
-	transport := customTokenProxyTransport{
+	transport := transport{
 		caData:     ca,
 		sniName:    testSNIName,
 		tokenProxy: tokenProxyURL,

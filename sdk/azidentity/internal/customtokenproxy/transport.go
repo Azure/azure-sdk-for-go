@@ -111,7 +111,7 @@ func Configure(clientOptions *policy.ClientOptions) error {
 	}
 
 	// preload the transport
-	p := &customTokenProxyPolicy{
+	p := &customTokenProxyTransport{
 		caFile:     kubernetesCAFile,
 		caData:     []byte(kubernetesCAData),
 		sniName:    kubernetesSNIName,
@@ -121,14 +121,14 @@ func Configure(clientOptions *policy.ClientOptions) error {
 		return err
 	}
 
-	clientOptions.PerRetryPolicies = append(clientOptions.PerRetryPolicies, p)
+	clientOptions.Transport = p
 	return nil
 }
 
-// customTokenProxyPolicy redirects requests to the configured proxy.
+// customTokenProxyTransport redirects requests to the configured proxy.
 //
-// Lock is not needed for internal caData as this policy is called under confidentialClient's lock.
-type customTokenProxyPolicy struct {
+// Lock is not needed for internal caData as this transport is called under confidentialClient's lock.
+type customTokenProxyTransport struct {
 	caFile     string
 	caData     []byte
 	sniName    string
@@ -136,16 +136,15 @@ type customTokenProxyPolicy struct {
 	transport  *http.Transport
 }
 
-func (p *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (p *customTokenProxyTransport) Do(req *http.Request) (*http.Response, error) {
 	tr, err := p.getTokenTransporter()
 	if err != nil {
 		return nil, err
 	}
 
-	rawReq := req.Raw()
-	rewriteProxyRequestURL(rawReq, p.tokenProxy)
+	rewriteProxyRequestURL(req, p.tokenProxy)
 
-	resp, err := tr.RoundTrip(rawReq)
+	resp, err := tr.RoundTrip(req)
 	if err == nil && resp == nil {
 		// this policy is effectively a transport, so it must handle
 		// this rare case. Returning an error makes the retry policy
@@ -163,7 +162,7 @@ func (p *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error)
 //     This transport is fixed after set.
 //  3. CA file override is provided, use a transport with custom CA pool.
 //     This transport needs to be recreated if the CA file content changes.
-func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) {
+func (p *customTokenProxyTransport) getTokenTransporter() (*http.Transport, error) {
 	if len(p.caData) == 0 && p.caFile == "" {
 		// no custom CA overrides
 		if p.transport == nil {

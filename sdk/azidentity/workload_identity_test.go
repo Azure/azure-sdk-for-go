@@ -429,6 +429,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 		TokenFilePath: tempFile,
 	})
 	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
 
 	testGetTokenSuccess(t, cred)
 
@@ -491,6 +492,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 		TokenFilePath: tempFile,
 	})
 	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
 
 	testGetTokenSuccess(t, cred)
 
@@ -549,6 +551,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 		TokenFilePath: tempFile,
 	})
 	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
 
 	testGetTokenSuccess(t, cred)
 

@@ -20,7 +20,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
 )
 
@@ -113,12 +112,12 @@ func TestConfigure(t *testing.T) {
 
 		expectErr       bool
 		checkErr        func(t testing.TB, err error) // optional check on error
-		expectAddPolicy bool
+		expectTransport bool
 	}{
 		{
 			name:            "no custom endpoint",
 			expectErr:       false,
-			expectAddPolicy: false,
+			expectTransport: false,
 		},
 		{
 			name:      "custom endpoint enabled with minimal settings",
@@ -126,7 +125,7 @@ func TestConfigure(t *testing.T) {
 			envs: map[string]string{
 				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
 			},
-			expectAddPolicy: true,
+			expectTransport: true,
 		},
 		{
 			name:      "custom endpoint enabled with CA file + SNI",
@@ -136,7 +135,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesCAFile:     testCAFile,
 				AzureKubernetesSNIName:    "custom-sni.example.com",
 			},
-			expectAddPolicy: true,
+			expectTransport: true,
 		},
 		{
 			name:      "custom endpoint enabled with invalid CA file",
@@ -145,7 +144,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
 				AzureKubernetesCAFile:     "/non/existent/path/to/custom-ca-file.pem",
 			},
-			expectAddPolicy: false,
+			expectTransport: false,
 		},
 		{
 			name:      "custom endpoint enabled with CA file contains invalid CA data",
@@ -161,7 +160,7 @@ func TestConfigure(t *testing.T) {
 					return caFile
 				}(),
 			},
-			expectAddPolicy: false,
+			expectTransport: false,
 		},
 		{
 			name:      "custom endpoint enabled with CA data + SNI",
@@ -171,7 +170,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesCAData:     testCAData,
 				AzureKubernetesSNIName:    "custom-sni.example.com",
 			},
-			expectAddPolicy: true,
+			expectTransport: true,
 		},
 		{
 			name:      "custom endpoint enabled with invalid CA data",
@@ -180,7 +179,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
 				AzureKubernetesCAData:     string("invalid-ca-cert"),
 			},
-			expectAddPolicy: false,
+			expectTransport: false,
 		},
 		{
 			name:      "custom endpoint enabled with SNI",
@@ -189,7 +188,7 @@ func TestConfigure(t *testing.T) {
 				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
 				AzureKubernetesSNIName:    "custom-sni.example.com",
 			},
-			expectAddPolicy: true,
+			expectTransport: true,
 		},
 		{
 			name:      "custom endpoint disabled with extra environment variables",
@@ -241,10 +240,11 @@ func TestConfigure(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			if c.expectAddPolicy {
-				require.NotEmpty(t, c.clientOptions.PerRetryPolicies)
-				lastPolicy := c.clientOptions.PerRetryPolicies[len(c.clientOptions.PerRetryPolicies)-1]
-				require.IsType(t, &customTokenProxyPolicy{}, lastPolicy)
+			if c.expectTransport {
+				require.NotNil(t, c.clientOptions.Transport)
+				require.IsType(t, &customTokenProxyTransport{}, c.clientOptions.Transport)
+			} else {
+				require.Nil(t, c.clientOptions.Transport)
 			}
 		})
 	}
@@ -285,22 +285,22 @@ func createTestCAFile(t testing.TB) string {
 	return caFile
 }
 
-func TestCustomTokenProxyPolicy_getTokenTransporter(t *testing.T) {
+func TestCustomTokenProxyTransport_getTokenTransporter(t *testing.T) {
 	cases := []struct {
 		name string
-		tr   *customTokenProxyPolicy
+		tr   *customTokenProxyTransport
 
 		expectErr         bool
 		validateTransport func(t testing.TB, httpTr *http.Transport)
 	}{
 		{
 			name:      "no overrides",
-			tr:        &customTokenProxyPolicy{},
+			tr:        &customTokenProxyTransport{},
 			expectErr: false,
 		},
 		{
 			name: "with custom CA",
-			tr: &customTokenProxyPolicy{
+			tr: &customTokenProxyTransport{
 				caFile: createTestCAFile(t),
 			},
 			expectErr: false,
@@ -311,14 +311,14 @@ func TestCustomTokenProxyPolicy_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "invalid CA",
-			tr: &customTokenProxyPolicy{
+			tr: &customTokenProxyTransport{
 				caData: []byte("invalid-ca-data"),
 			},
 			expectErr: true,
 		},
 		{
 			name: "with SNI",
-			tr: &customTokenProxyPolicy{
+			tr: &customTokenProxyTransport{
 				sniName: "example.com",
 			},
 			expectErr: false,
@@ -330,7 +330,7 @@ func TestCustomTokenProxyPolicy_getTokenTransporter(t *testing.T) {
 		},
 		{
 			name: "with CA + SNI",
-			tr: &customTokenProxyPolicy{
+			tr: &customTokenProxyTransport{
 				sniName: "example.com",
 				caFile:  createTestCAFile(t),
 			},
@@ -364,9 +364,9 @@ func TestCustomTokenProxyPolicy_getTokenTransporter(t *testing.T) {
 	}
 }
 
-func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
+func TestCustomTokenProxyTransport_getTokenTransporter_reentry(t *testing.T) {
 	t.Run("no CA overrides", func(t *testing.T) {
-		tr := &customTokenProxyPolicy{}
+		tr := &customTokenProxyTransport{}
 		transport, err := tr.getTokenTransporter()
 		require.NoError(t, err)
 		require.NotNil(t, transport)
@@ -378,7 +378,7 @@ func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 	})
 
 	t.Run("with CAData overrides", func(t *testing.T) {
-		tr := customTokenProxyPolicy{
+		tr := customTokenProxyTransport{
 			caData: createTestCA(t),
 		}
 		transport, err := tr.getTokenTransporter()
@@ -393,7 +393,7 @@ func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 
 	t.Run("with CAFile overrides", func(t *testing.T) {
 		caFile := createTestCAFile(t)
-		tr := customTokenProxyPolicy{
+		tr := customTokenProxyTransport{
 			caFile: caFile,
 		}
 		transport, err := tr.getTokenTransporter()
@@ -425,7 +425,7 @@ func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 		caFile := filepath.Join(t.TempDir(), "empty-ca-file.pem")
 		require.NoError(t, os.WriteFile(caFile, []byte{}, 0600))
 
-		tr := customTokenProxyPolicy{
+		tr := customTokenProxyTransport{
 			caFile: caFile,
 		}
 		transport, err := tr.getTokenTransporter()
@@ -434,9 +434,9 @@ func TestCustomTokenProxyPolicy_getTokenTransporter_reentry(t *testing.T) {
 	})
 }
 
-// this provides a minimal behavior test on the policy.
+// this provides a minimal behavior test on the transport.
 // The full coverage can be found in workload identity credential tests.
-func TestCustomTokenProxyPolicy_Do(t *testing.T) {
+func TestCustomTokenProxyTransport_Do(t *testing.T) {
 	mux := http.NewServeMux()
 	testServer := httptest.NewTLSServer(mux)
 
@@ -448,16 +448,17 @@ func TestCustomTokenProxyPolicy_Do(t *testing.T) {
 	tokenProxyURL, err := url.Parse(testServer.URL + "/extra/root/path")
 	require.NoError(t, err)
 
-	policy := customTokenProxyPolicy{
+	transport := customTokenProxyTransport{
 		caData:     ca,
 		sniName:    testSNIName,
 		tokenProxy: tokenProxyURL,
 	}
 
-	req, err := runtime.NewRequest(
+	req, err := http.NewRequestWithContext(
 		context.Background(),
 		http.MethodGet,
 		"https://original-request.com/client-path?query=1",
+		nil,
 	)
 	require.NoError(t, err)
 
@@ -468,7 +469,7 @@ func TestCustomTokenProxyPolicy_Do(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 	})
 
-	resp, err := policy.Do(req)
+	resp, err := transport.Do(req)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 }

@@ -146,9 +146,8 @@ func (t *transport) Do(req *http.Request) (*http.Response, error) {
 
 	resp, err := tr.RoundTrip(req)
 	if err == nil && resp == nil {
-		// this policy is effectively a transport, so it must handle
-		// this rare case. Returning an error makes the retry policy
-		// try the request again
+		// transports must handle this rare case.
+		// Returning an error makes the retry policy try the request again
 		err = errors.New("received nil response")
 	}
 	return resp, err
@@ -204,7 +203,7 @@ func (t *transport) getTokenTransporter() (*http.Transport, error) {
 	}
 	if !bytes.Equal(b, t.caData) {
 		// CA has changed, rebuild the transport with new CA pool
-		// invariant: p.transport is nil when p.caData is nil (initial call)
+		// invariant: t.transport is nil when t.caData is nil (initial call)
 		caPool := x509.NewCertPool()
 		if !caPool.AppendCertsFromPEM([]byte(b)) {
 			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", t.caFile)

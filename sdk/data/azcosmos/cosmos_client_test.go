@@ -6,14 +6,17 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -729,6 +732,100 @@ func TestSpanResponseAttributes(t *testing.T) {
 	}
 }
 
+func TestAADScope_UsesCloudConfigAudience_WhenProvided(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	endpoint := srv.URL()
+	customAudience := "https://cosmos.azure.com/.default"
+
+	// Cloud configuration specifying an audience for this service.
+	clientOptions := &ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Cloud: cloud.Configuration{
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					ServiceName: {
+						Audience: customAudience,
+					},
+				},
+			},
+			Transport: srv,
+		},
+	}
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			if scope != customAudience {
+				t.Fatalf("expected scope %q from cloud config, got %q", customAudience, scope)
+			}
+			return tokenOK(), nil
+		},
+	}
+
+	client, err := NewClient(endpoint, cred, clientOptions)
+	if err != nil {
+		t.Fatalf("expected client creation to succeed, got: %v", err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	if _, err := client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if len(cred.calls) == 0 {
+		t.Fatalf("expected credential to be called")
+	}
+	for _, s := range cred.calls {
+		if s != customAudience {
+			t.Fatalf("expected only %q in calls, got %#v", customAudience, cred.calls)
+		}
+	}
+}
+
+func TestAADScope_UseAccountScope_WhenNoCloudConfig(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(200))
+
+	endpoint := srv.URL()
+	u, _ := url.Parse(endpoint)
+	accountScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
+
+	clientOptions := &ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: srv},
+	}
+
+	cred := &stubCred{
+		t: t,
+		onGet: func(scope string) (azcore.AccessToken, error) {
+			if scope != accountScope {
+				t.Fatalf("expected fallback account scope %q, got %q", accountScope, scope)
+			}
+			return tokenOK(), nil
+		},
+	}
+
+	client, err := NewClient(endpoint, cred, clientOptions)
+	if err != nil {
+		t.Fatalf("expected client creation to succeed, got: %v", err)
+	}
+
+	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
+	if _, err := client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if len(cred.calls) == 0 {
+		t.Fatalf("expected credential to be called")
+	}
+	for _, s := range cred.calls {
+		if s != accountScope {
+			t.Fatalf("expected only account scope %q in calls, got %#v", accountScope, cred.calls)
+		}
+	}
+}
+
 type pipelineVerifier struct {
 	requests []pipelineVerifierRequest
 }
@@ -755,4 +852,26 @@ func (p *pipelineVerifier) Do(req *policy.Request) (*http.Response, error) {
 	pr.isQuery = req.Raw().Method == http.MethodPost && req.Raw().Header.Get(cosmosHeaderQuery) == "True"
 	p.requests = append(p.requests, pr)
 	return req.Next()
+}
+
+type stubCred struct {
+	t     *testing.T
+	calls []string
+	onGet func(scope string) (azcore.AccessToken, error)
+}
+
+func (s *stubCred) GetToken(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if len(tro.Scopes) != 1 {
+		s.t.Fatalf("expected exactly 1 scope, got %d", len(tro.Scopes))
+	}
+	scope := tro.Scopes[0]
+	s.calls = append(s.calls, scope)
+	return s.onGet(scope)
+}
+
+func tokenOK() azcore.AccessToken {
+	return azcore.AccessToken{
+		Token:     "mock-token",
+		ExpiresOn: time.Now().Add(time.Hour),
+	}
 }

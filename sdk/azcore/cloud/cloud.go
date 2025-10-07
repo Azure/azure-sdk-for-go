@@ -17,7 +17,11 @@ var (
 	}
 	// AzurePublic contains configuration for Azure Public Cloud.
 	AzurePublic = Configuration{
-		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.com/", Services: map[ServiceName]ServiceConfiguration{},
+		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.com/", Services: map[ServiceName]ServiceConfiguration{
+			CosmosDB: {
+				Audience: "https://cosmos.azure.com/.default",
+			},
+		},
 	}
 )
 
@@ -26,6 +30,9 @@ type ServiceName string
 
 // ResourceManager is a global constant identifying Azure Resource Manager.
 const ResourceManager ServiceName = "resourceManager"
+
+// CosmosDB is a global constant identifying Azure Cosmos DB.
+const CosmosDB ServiceName = "cosmosDB"
 
 // ServiceConfiguration configures a specific cloud service such as Azure Resource Manager.
 type ServiceConfiguration struct {

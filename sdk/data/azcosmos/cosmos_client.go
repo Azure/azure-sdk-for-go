@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -25,6 +26,9 @@ import (
 const (
 	apiVersion = "2020-11-05"
 )
+
+// ServiceName is the cloud.ServiceName for Azure Cosmos DB, used to identify the respective cloud.ServiceConfiguration.
+const ServiceName cloud.ServiceName = "data/azcosmos"
 
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
@@ -75,10 +79,26 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	scope, err := createScopeFromEndpoint(endpointUrl)
-	if err != nil {
-		return nil, err
+
+	// Determine the scope for AAD authentication
+	var scope []string
+
+	// Check if client has set cloud configuration with Cosmos DB service
+	if o != nil && o.ClientOptions.Cloud.Services != nil {
+		if svcCfg, ok := o.ClientOptions.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
+			scope = []string{svcCfg.Audience}
+			log.Write(azlog.EventRequest, fmt.Sprintf("Using cloud configuration scope: %s", svcCfg.Audience))
+		}
 	}
+
+	// If no cloud scope was set, create scope from endpoint
+	if scope == nil {
+		scope, err = createScopeFromEndpoint(endpointUrl)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {

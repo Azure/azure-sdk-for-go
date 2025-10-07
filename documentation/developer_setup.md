@@ -111,7 +111,7 @@ Setting up your project involves a few steps:
 
 Generated code **must not** be edited, as any edits would be lost on future regeneration of content. To make customizations, update the TypeSpec project's `client.tsp` file then regenerate.
 
-### Using Autorest
+### Using Autorest **DEPRECATED**
 
 If your SDK doesn't require any Autorest-generated content, please skip this section. All new SDKs should be created using TypeSpec.
 

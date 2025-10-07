@@ -1,6 +1,6 @@
 # Guide to migrate from `azure-event-hubs-go` to `azeventhubs`
 
-This guide is intended to assist in the migration from the `azure-event-hubs-go` package to the latest beta releases (and eventual GA) of the `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs`.
+This guide is intended to assist in the migration from the `azure-event-hubs-go` package to the `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs`.
 
 Our goal with this newest package was to export components that can be easily integrated into multiple styles of application, while still mapping close to the underlying resources for AMQP. This includes making TCP connection sharing simple (a must when multiplexing across multiple partitions), making batching boundaries more explicit and also integrating with the `azidentity` package, opening up a large number of authentication methods.
 

@@ -1,5 +1,22 @@
 # Release History
 
+## 2.0.0-beta.1 (2025-10-07)
+### Breaking Changes
+
+- Struct `DomainListResult` has been removed
+- Field `DomainListResult` of struct `DomainListsClientListByResourceGroupResponse` has been removed
+- Field `DomainListResult` of struct `DomainListsClientListResponse` has been removed
+
+### Features Added
+
+- New enum type `ManagedDomainList` with values `ManagedDomainListAzureDNSThreatIntel`
+- New struct `DomainListListResult`
+- New field `ManagedDomainLists` in struct `DNSSecurityRulePatchProperties`
+- New field `ManagedDomainLists` in struct `DNSSecurityRuleProperties`
+- New anonymous field `DomainListListResult` in struct `DomainListsClientListByResourceGroupResponse`
+- New anonymous field `DomainListListResult` in struct `DomainListsClientListResponse`
+
+
 ## 1.3.0 (2025-06-12)
 ### Features Added
 

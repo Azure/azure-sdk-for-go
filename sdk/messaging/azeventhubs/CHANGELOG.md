@@ -1,14 +1,10 @@
 # Release History
 
-## 2.0.1-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.0.1 (2025-10-08)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed outdated documentation that incorrectly stated the library is in beta.
 
 ## 2.0.0 (2025-06-10)
 

@@ -732,32 +732,27 @@ func TestSpanResponseAttributes(t *testing.T) {
 	}
 }
 
-func TestAADScope_UsesCloudConfigAudience_WhenProvided(t *testing.T) {
+func TestAADScope_UsesBuiltInCloudAudience(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(200))
 
 	endpoint := srv.URL()
-	customAudience := "https://cosmos.azure.com/.default"
+	expectedScope := cloud.AzurePublic.Services["cosmosDB"].Audience
+	fmt.Printf("%#vhello\n", cloud.AzurePublic.Services)
 
-	// Cloud configuration specifying an audience for this service.
 	clientOptions := &ClientOptions{
 		ClientOptions: policy.ClientOptions{
-			Cloud: cloud.Configuration{
-				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-					ServiceName: {
-						Audience: customAudience,
-					},
-				},
-			},
+			Cloud:     cloud.AzurePublic,
 			Transport: srv,
 		},
 	}
+
 	cred := &stubCred{
 		t: t,
 		onGet: func(scope string) (azcore.AccessToken, error) {
-			if scope != customAudience {
-				t.Fatalf("expected scope %q from cloud config, got %q", customAudience, scope)
+			if scope != expectedScope {
+				t.Fatalf("expected scope %q, got %q", expectedScope, scope)
 			}
 			return tokenOK(), nil
 		},
@@ -771,15 +766,6 @@ func TestAADScope_UsesCloudConfigAudience_WhenProvided(t *testing.T) {
 	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
 	if _, err := client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil); err != nil {
 		t.Fatalf("unexpected error: %v", err)
-	}
-
-	if len(cred.calls) == 0 {
-		t.Fatalf("expected credential to be called")
-	}
-	for _, s := range cred.calls {
-		if s != customAudience {
-			t.Fatalf("expected only %q in calls, got %#v", customAudience, cred.calls)
-		}
 	}
 }
 

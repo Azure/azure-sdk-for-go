@@ -171,11 +171,11 @@ func (c *customTokenCredential) GetToken(ctx context.Context, tro policy.TokenRe
 	return token, nil
 }
 
-func TestAAD_Emulator_UsesCloudConfigAudience(t *testing.T) {
+func TestAAD_Emulator_UsesBuiltInCloudAudience(t *testing.T) {
 	em := newEmulatorTests(t)
 
 	keyClient := em.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
-	db := em.createDatabase(t, context.TODO(), keyClient, "aadAudienceTest")
+	db := em.createDatabase(t, context.TODO(), keyClient, "aadBuiltInAudienceTest")
 	defer em.deleteDatabase(t, context.TODO(), db)
 
 	props := ContainerProperties{
@@ -186,25 +186,18 @@ func TestAAD_Emulator_UsesCloudConfigAudience(t *testing.T) {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	//Custom cloud config audience
-	customAudience := "https://cosmos.azure.com/.default"
-
 	mockCred := &customTokenCredential{t: t}
 
 	aadClient, err := NewClient(em.host, mockCred, &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Cloud: cloud.Configuration{
-				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-					ServiceName: {Audience: customAudience},
-				},
-			},
+			Cloud: cloud.AzurePublic,
 		},
 	})
 	if err != nil {
 		t.Fatalf("Failed to create AAD client: %v", err)
 	}
 
-	container, err := aadClient.NewContainer("aadAudienceTest", "aContainer")
+	container, err := aadClient.NewContainer("aadBuiltInAudienceTest", "aContainer")
 	if err != nil {
 		t.Fatalf("NewContainer: %v", err)
 	}
@@ -225,15 +218,16 @@ func TestAAD_Emulator_UsesCloudConfigAudience(t *testing.T) {
 	}
 
 	// Verify the scope used
-	foundCustom := false
+	expectedAudience := cloud.AzurePublic.Services["cosmosDB"].Audience
+	found := false
 	for _, s := range mockCred.calls {
-		if s == customAudience {
-			foundCustom = true
+		if s == expectedAudience {
+			found = true
 			break
 		}
 	}
-	if !foundCustom {
-		t.Fatalf("expected token request with scope %q, got %#v", customAudience, mockCred.calls)
+	if !found {
+		t.Fatalf("expected token request with built-in scope %q, got %#v", expectedAudience, mockCred.calls)
 	}
 }
 

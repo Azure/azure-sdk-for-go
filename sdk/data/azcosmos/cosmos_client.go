@@ -27,9 +27,6 @@ const (
 	apiVersion = "2020-11-05"
 )
 
-// ServiceName is the cloud.ServiceName for Azure Cosmos DB, used to identify the respective cloud.ServiceConfiguration.
-const ServiceName cloud.ServiceName = "data/azcosmos"
-
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
 	endpoint    string
@@ -80,18 +77,20 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		return nil, err
 	}
 
-	// Determine the scope for AAD authentication
 	var scope []string
+	builtInAudience := cloud.AzurePublic.Services["cosmosDB"].Audience
 
-	// Check if client has set cloud configuration with Cosmos DB service
 	if o != nil && o.ClientOptions.Cloud.Services != nil {
-		if svcCfg, ok := o.ClientOptions.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
-			scope = []string{svcCfg.Audience}
-			log.Write(azlog.EventRequest, fmt.Sprintf("Using cloud configuration scope: %s", svcCfg.Audience))
+		if svcCfg, ok := o.ClientOptions.Cloud.Services[cloud.ServiceName("cosmosDB")]; ok && svcCfg.Audience != "" {
+			if svcCfg.Audience == builtInAudience {
+				scope = []string{builtInAudience}
+				log.Write(azlog.EventRequest, fmt.Sprintf("Using built-in Cosmos DB audience: %s", builtInAudience))
+			} else {
+				log.Write(azlog.EventRequest, fmt.Sprintf("WARNING: Ignoring custom audience %q, using account scope instead", svcCfg.Audience))
+			}
 		}
 	}
 
-	// If no cloud scope was set, create scope from endpoint
 	if scope == nil {
 		scope, err = createScopeFromEndpoint(endpointUrl)
 		if err != nil {

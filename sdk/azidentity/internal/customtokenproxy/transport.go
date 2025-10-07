@@ -25,7 +25,7 @@ const (
 	AzureKubernetesTokenProxy = "AZURE_KUBERNETES_TOKEN_PROXY"
 )
 
-func parseAndValidateCustomTokenProxy(endpoint string) (*url.URL, error) {
+func parseAndValidate(endpoint string) (*url.URL, error) {
 	tokenProxy, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse custom token proxy URL %q: %s", endpoint, err)
@@ -99,7 +99,7 @@ func Configure(clientOptions *policy.ClientOptions) error {
 
 		return nil
 	}
-	tokenProxy, err := parseAndValidateCustomTokenProxy(kubernetesTokenProxyStr)
+	tokenProxy, err := parseAndValidate(kubernetesTokenProxyStr)
 	if err != nil {
 		return err
 	}
@@ -111,24 +111,24 @@ func Configure(clientOptions *policy.ClientOptions) error {
 	}
 
 	// preload the transport
-	p := &customTokenProxyPolicy{
+	t := &transport{
 		caFile:     kubernetesCAFile,
 		caData:     []byte(kubernetesCAData),
 		sniName:    kubernetesSNIName,
 		tokenProxy: tokenProxy,
 	}
-	if _, err := p.getTokenTransporter(); err != nil {
+	if _, err := t.getTokenTransporter(); err != nil {
 		return err
 	}
 
-	clientOptions.PerRetryPolicies = append(clientOptions.PerRetryPolicies, p)
+	clientOptions.Transport = t
 	return nil
 }
 
-// customTokenProxyPolicy redirects requests to the configured proxy.
+// transport redirects requests to the configured proxy.
 //
-// Lock is not needed for internal caData as this policy is called under confidentialClient's lock.
-type customTokenProxyPolicy struct {
+// Lock is not needed for internal caData as this transport is called under confidentialClient's lock.
+type transport struct {
 	caFile     string
 	caData     []byte
 	sniName    string
@@ -136,20 +136,18 @@ type customTokenProxyPolicy struct {
 	transport  *http.Transport
 }
 
-func (p *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error) {
-	tr, err := p.getTokenTransporter()
+func (t *transport) Do(req *http.Request) (*http.Response, error) {
+	tr, err := t.getTokenTransporter()
 	if err != nil {
 		return nil, err
 	}
 
-	rawReq := req.Raw()
-	rewriteProxyRequestURL(rawReq, p.tokenProxy)
+	rewriteProxyRequestURL(req, t.tokenProxy)
 
-	resp, err := tr.RoundTrip(rawReq)
+	resp, err := tr.RoundTrip(req)
 	if err == nil && resp == nil {
-		// this policy is effectively a transport, so it must handle
-		// this rare case. Returning an error makes the retry policy
-		// try the request again
+		// transports must handle this rare case.
+		// Returning an error makes the retry policy try the request again
 		err = errors.New("received nil response")
 	}
 	return resp, err
@@ -163,67 +161,67 @@ func (p *customTokenProxyPolicy) Do(req *policy.Request) (*http.Response, error)
 //     This transport is fixed after set.
 //  3. CA file override is provided, use a transport with custom CA pool.
 //     This transport needs to be recreated if the CA file content changes.
-func (p *customTokenProxyPolicy) getTokenTransporter() (*http.Transport, error) {
-	if len(p.caData) == 0 && p.caFile == "" {
+func (t *transport) getTokenTransporter() (*http.Transport, error) {
+	if len(t.caData) == 0 && t.caFile == "" {
 		// no custom CA overrides
-		if p.transport == nil {
-			p.transport = createTransport(p.sniName, nil)
+		if t.transport == nil {
+			t.transport = createTransport(t.sniName, nil)
 		}
-		return p.transport, nil
+		return t.transport, nil
 	}
 
-	if p.caFile == "" {
+	if t.caFile == "" {
 		// host provided CA bytes in AZURE_KUBERNETES_CA_DATA and can't change
 		// them now, so we need to create a client only if we haven't done so yet
-		if p.transport != nil {
-			return p.transport, nil
+		if t.transport != nil {
+			return t.transport, nil
 		}
 
 		caPool := x509.NewCertPool()
-		if !caPool.AppendCertsFromPEM([]byte(p.caData)) {
+		if !caPool.AppendCertsFromPEM([]byte(t.caData)) {
 			return nil, fmt.Errorf("parse CA data: no valid certificates found")
 		}
 
-		p.transport = createTransport(p.sniName, caPool)
-		return p.transport, nil
+		t.transport = createTransport(t.sniName, caPool)
+		return t.transport, nil
 	}
 
 	// host provided the CA bytes in a file whose contents it can change,
 	// so we must read that file and maybe create a new client
-	b, err := os.ReadFile(p.caFile)
+	b, err := os.ReadFile(t.caFile)
 	if err != nil {
-		return nil, fmt.Errorf("read CA file %q: %s", p.caFile, err)
+		return nil, fmt.Errorf("read CA file %q: %s", t.caFile, err)
 	}
 	if len(b) == 0 {
 		// this can happen during the middle of CA rotation on the host.
-		if p.transport == nil {
+		if t.transport == nil {
 			// if the transport was never created, error out here to force retrying the call later
-			return nil, fmt.Errorf("CA file %q is empty", p.caFile)
+			return nil, fmt.Errorf("CA file %q is empty", t.caFile)
 		}
 		// if the transport was already created, just keep using it
-		return p.transport, nil
+		return t.transport, nil
 	}
-	if !bytes.Equal(b, p.caData) {
+	if !bytes.Equal(b, t.caData) {
 		// CA has changed, rebuild the transport with new CA pool
-		// invariant: p.transport is nil when p.caData is nil (initial call)
+		// invariant: t.transport is nil when t.caData is nil (initial call)
 		caPool := x509.NewCertPool()
 		if !caPool.AppendCertsFromPEM([]byte(b)) {
-			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", p.caFile)
+			return nil, fmt.Errorf("parse CA file %q: no valid certificates found", t.caFile)
 		}
-		if p.transport != nil {
-			p.transport.CloseIdleConnections()
+		if t.transport != nil {
+			t.transport.CloseIdleConnections()
 		}
-		p.transport = createTransport(p.sniName, caPool)
-		p.caData = b
+		t.transport = createTransport(t.sniName, caPool)
+		t.caData = b
 	}
 
-	return p.transport, nil
+	return t.transport, nil
 }
 
 // rewriteProxyRequestURL updates the request URL to target the specified URL.
 // Target is the token proxy URL in custom token endpoint mode.
 //
-// proxyURL should be parsed and validated by parseAndValidateCustomTokenProxy before.
+// proxyURL should be parsed and validated by parseAndValidate before calling.
 func rewriteProxyRequestURL(req *http.Request, proxyURL *url.URL) {
 	reqRawQuery := req.URL.RawQuery
 	// preserve the original path and append it to the proxy URL's path.

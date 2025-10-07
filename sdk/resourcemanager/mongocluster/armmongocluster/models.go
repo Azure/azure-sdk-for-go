@@ -70,10 +70,10 @@ type ConnectionString struct {
 
 // CustomerManagedKeyEncryptionProperties - Customer managed key encryption settings.
 type CustomerManagedKeyEncryptionProperties struct {
-	// REQUIRED; The identity used to access the key encryption key.
+	// The identity used to access the key encryption key.
 	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
 
-	// REQUIRED; The URI of the key vault key used for encryption.
+	// The URI of the key vault key used for encryption.
 	KeyEncryptionKeyURL *string
 }
 
@@ -177,10 +177,10 @@ func (i *IdentityProvider) GetIdentityProvider() *IdentityProvider { return i }
 
 // KeyEncryptionKeyIdentity - The identity used for key encryption key.
 type KeyEncryptionKeyIdentity struct {
-	// REQUIRED; The type of identity. Only 'UserAssignedIdentity' is supported.
+	// The type of identity. Only 'UserAssignedIdentity' is supported.
 	IdentityType *KeyEncryptionKeyIdentityType
 
-	// REQUIRED; The user assigned identity resource id.
+	// The user assigned identity resource id.
 	UserAssignedIdentityResourceID *string
 }
 
@@ -554,14 +554,8 @@ type ShardingProperties struct {
 // StorageProperties - The storage properties of the cluster. This includes the data storage size and scaling applied to servers
 // in the cluster.
 type StorageProperties struct {
-	// The IOPs of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-	Iops *int64
-
 	// The size of the data disk assigned to each server.
 	SizeGb *int64
-
-	// The throughput of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-	Throughput *int64
 
 	// The type of storage to provision the cluster servers with.
 	Type *StorageType
@@ -616,6 +610,9 @@ type UpdateProperties struct {
 
 	// The Data API properties of the mongo cluster.
 	DataAPI *DataAPIProperties
+
+	// The encryption configuration for the cluster. Depends on identity being configured.
+	Encryption *EncryptionProperties
 
 	// The high availability properties of the mongo cluster.
 	HighAvailability *HighAvailabilityProperties

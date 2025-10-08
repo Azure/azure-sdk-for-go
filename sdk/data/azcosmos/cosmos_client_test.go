@@ -745,7 +745,7 @@ func TestAADScope_UsesAudienceFromClientOptions(t *testing.T) {
 		ClientOptions: policy.ClientOptions{
 			Cloud: cloud.Configuration{
 				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-					"cosmosDB": {Audience: audience},
+					ServiceName: {Audience: audience},
 				},
 			},
 			Transport: srv,

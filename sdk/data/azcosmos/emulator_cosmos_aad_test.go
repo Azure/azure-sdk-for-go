@@ -195,7 +195,7 @@ func TestAAD_Emulator_UsesClientOptionsAudience(t *testing.T) {
 		ClientOptions: azcore.ClientOptions{
 			Cloud: cloud.Configuration{
 				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
-					"cosmosDB": {Audience: customAudience},
+					ServiceName: {Audience: customAudience},
 				},
 			},
 		},

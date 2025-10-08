@@ -81,11 +81,8 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if o != nil && o.ClientOptions.Cloud.Services != nil {
 		if svcCfg, ok := o.ClientOptions.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
 			audience := svcCfg.Audience
-			if !strings.HasSuffix(audience, "/.default") {
-				audience = strings.TrimSuffix(audience, "/") + "/.default"
-			}
-			scope = []string{audience}
-			log.Write(azlog.EventRequest, fmt.Sprintf("Using audience from client options: %s", audience))
+			scope = []string{audience + "/.default"}
+			log.Write(azlog.EventRequest, fmt.Sprintf("Using custom scope  for authentication: %s", scope[0]))
 		}
 	}
 
@@ -95,7 +92,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		if err != nil {
 			return nil, err
 		}
-		log.Write(azlog.EventRequest, fmt.Sprintf("Using account scope from endpoint: %s", scope[0]))
+		log.Write(azlog.EventRequest, fmt.Sprintf("Using account scope from endpoint for authentication: %s", scope[0]))
 	}
 
 	preferredRegions := []string{}

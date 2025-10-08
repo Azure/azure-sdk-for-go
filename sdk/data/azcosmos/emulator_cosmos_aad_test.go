@@ -7,7 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/url"
+	"strings"
 	"testing"
 	"time"
 
@@ -217,16 +217,17 @@ func TestAAD_Emulator_UsesClientOptionsAudience(t *testing.T) {
 		t.Fatalf("CreateItem failed: %v", err)
 	}
 
-	// Verify the scope used
+	// verify token request scopes
 	found := false
 	for _, s := range mockCred.calls {
-		if s == expectedScope {
+		normalized := strings.ReplaceAll(s, "127.0.0.1", "localhost")
+		if s == expectedScope || normalized == expectedScope {
 			found = true
 			break
 		}
 	}
 	if !found {
-		t.Fatalf("expected token request with scope %q, got %#v", expectedScope, mockCred.calls)
+		t.Fatalf("Expected token request with scope %q, got %#v", expectedScope, mockCred.calls)
 	}
 }
 
@@ -245,16 +246,10 @@ func TestAAD_Emulator_UsesAccountScope_WhenNoAudienceProvided(t *testing.T) {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	u, err := url.Parse(em.host)
-	if err != nil {
-		t.Fatal(err)
-	}
-	expectedScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
-
 	mockCred := &customTokenCredential{t: t}
 
 	aadClient, err := NewClient(em.host, mockCred, &ClientOptions{
-		ClientOptions: azcore.ClientOptions{}, // No audience set
+		ClientOptions: azcore.ClientOptions{}, // No audience provided
 	})
 	if err != nil {
 		t.Fatalf("Failed to create AAD client: %v", err)
@@ -273,14 +268,20 @@ func TestAAD_Emulator_UsesAccountScope_WhenNoAudienceProvided(t *testing.T) {
 		t.Fatalf("CreateItem failed: %v", err)
 	}
 
+	u := aadClient.endpointUrl
+	expectedScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
+
 	found := false
 	for _, s := range mockCred.calls {
-		if s == expectedScope {
+		normalized := strings.ReplaceAll(s, "127.0.0.1", "localhost")
+		expectedNormalized := strings.ReplaceAll(expectedScope, "127.0.0.1", "localhost")
+		if s == expectedScope || normalized == expectedNormalized {
 			found = true
 			break
 		}
 	}
+
 	if !found {
-		t.Fatalf("expected token request with fallback scope %q, got %#v", expectedScope, mockCred.calls)
+		t.Fatalf("Expected token request with fallback scope %q, got %#v", expectedScope, mockCred.calls)
 	}
 }

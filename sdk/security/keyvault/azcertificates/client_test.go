@@ -700,3 +700,61 @@ func TestAPIVersion(t *testing.T) {
 	_, err = client.GetCertificate(context.Background(), "name", "", nil)
 	require.NoError(t, err)
 }
+
+func TestSubjectAlternativeNames(t *testing.T) {
+	client := startTest(t)
+
+	// Test certificate with all SAN fields including new IPAddresses and Uris
+	certName := getName(t, "allsans")
+	policy := azcertificates.CertificatePolicy{
+		IssuerParameters: &azcertificates.IssuerParameters{Name: to.Ptr("self")},
+		X509CertificateProperties: &azcertificates.X509CertificateProperties{
+			Subject: to.Ptr("CN=SANTest"),
+			SubjectAlternativeNames: &azcertificates.SubjectAlternativeNames{
+				DNSNames:           []*string{to.Ptr("localhost"), to.Ptr("example.com")},
+				Emails:             []*string{to.Ptr("admin@example.com")},
+				IPAddresses:        []*string{to.Ptr("192.168.1.1"), to.Ptr("2001:0db8::1")}, // IPv4 and IPv6
+				Uris:               []*string{to.Ptr("https://example.com"), to.Ptr("https://test.com/path")},
+				UserPrincipalNames: []*string{to.Ptr("user@domain.com")},
+			},
+		},
+	}
+
+	// Test serialization
+	testSerde(t, &policy)
+	sans := policy.X509CertificateProperties.SubjectAlternativeNames
+	testSerde(t, sans)
+
+	// Verify JSON contains new fields
+	data, err := sans.MarshalJSON()
+	require.NoError(t, err)
+	jsonStr := string(data)
+	require.Contains(t, jsonStr, "ipAddresses")
+	require.Contains(t, jsonStr, "uris")
+
+	// Verify round-trip serialization preserves all fields
+	var unmarshaled azcertificates.SubjectAlternativeNames
+	err = unmarshaled.UnmarshalJSON(data)
+	require.NoError(t, err)
+	require.Equal(t, sans.DNSNames, unmarshaled.DNSNames)
+	require.Equal(t, sans.Emails, unmarshaled.Emails)
+	require.Equal(t, sans.IPAddresses, unmarshaled.IPAddresses)
+	require.Equal(t, sans.Uris, unmarshaled.Uris)
+	require.Equal(t, sans.UserPrincipalNames, unmarshaled.UserPrincipalNames)
+
+	// Create certificate and verify SANs are preserved
+	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
+	testSerde(t, &createParams)
+	_, err = client.CreateCertificate(ctx, certName, createParams, nil)
+	require.NoError(t, err)
+	pollCertOperation(t, client, certName)
+	defer cleanUpCert(t, client, certName)
+
+	// Verify all SANs are retrieved correctly
+	getResp, err := client.GetCertificate(ctx, certName, "", nil)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Policy)
+	require.NotNil(t, getResp.Policy.X509CertificateProperties)
+	require.NotNil(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
+	testSerde(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
+}

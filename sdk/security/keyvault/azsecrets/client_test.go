@@ -409,3 +409,92 @@ func TestAPIVersion(t *testing.T) {
 	_, err = client.GetSecret(context.Background(), "name", "", nil)
 	require.NoError(t, err)
 }
+
+func TestSecretPreviousVersion(t *testing.T) {
+    client := startTest(t)
+
+    name := createRandomName(t, "secretversion")
+    value1 := createRandomName(t, "value1")
+
+    // Create first version
+    setResp1, err := client.SetSecret(context.Background(), name, azsecrets.SetSecretParameters{Value: &value1}, nil)
+    require.NoError(t, err)
+    defer cleanUpSecret(t, client, name)
+    version1 := setResp1.ID.Version()
+    
+    // First version should have nil PreviousVersion (it's the first one)
+    require.Nil(t, setResp1.PreviousVersion, "First version should not have a PreviousVersion")
+    testSerde(t, &setResp1.Secret)
+
+    // Create second version
+    value2 := createRandomName(t, "value2")
+    setResp2, err := client.SetSecret(context.Background(), name, azsecrets.SetSecretParameters{Value: &value2}, nil)
+    require.NoError(t, err)
+    version2 := setResp2.ID.Version()
+    require.NotEqual(t, version1, version2, "Second version should have different ID than first")
+    
+    // Second version's PreviousVersion should point to version 1
+    if setResp2.PreviousVersion != nil {
+        prevID := azsecrets.ID(*setResp2.PreviousVersion)
+        require.Equal(t, name, prevID.Name(), "PreviousVersion should have same secret name")
+        require.Equal(t, version1, prevID.Version(), "Version 2's PreviousVersion should point to version 1")
+    }
+    testSerde(t, &setResp2.Secret)
+
+    // Get version 2 explicitly and verify PreviousVersion is still there
+    getResp2, err := client.GetSecret(context.Background(), name, version2, nil)
+    require.NoError(t, err)
+    require.Equal(t, *setResp2.Value, *getResp2.Value)
+    if getResp2.PreviousVersion != nil {
+        prevID := azsecrets.ID(*getResp2.PreviousVersion)
+        require.Equal(t, version1, prevID.Version(), "Retrieved version 2 should still point to version 1")
+    }
+    testSerde(t, &getResp2.Secret)
+
+    // Create third version
+    value3 := createRandomName(t, "value3")
+    setResp3, err := client.SetSecret(context.Background(), name, azsecrets.SetSecretParameters{Value: &value3}, nil)
+    require.NoError(t, err)
+    version3 := setResp3.ID.Version()
+    require.NotEqual(t, version2, version3, "Third version should have different ID than second")
+    require.NotEqual(t, version1, version3, "Third version should have different ID than first")
+    
+    // Third version's PreviousVersion should point to version 2
+    if setResp3.PreviousVersion != nil {
+        prevID := azsecrets.ID(*setResp3.PreviousVersion)
+        require.Equal(t, version2, prevID.Version(), "Version 3's PreviousVersion should point to version 2")
+    }
+    testSerde(t, &setResp3.Secret)
+
+    // Get version 3 and verify the chain
+    getResp3, err := client.GetSecret(context.Background(), name, version3, nil)
+    require.NoError(t, err)
+    if getResp3.PreviousVersion != nil {
+        prevID := azsecrets.ID(*getResp3.PreviousVersion)
+        require.Equal(t, version2, prevID.Version(), "Retrieved version 3 should point to version 2")
+    }
+    testSerde(t, &getResp3.Secret)
+    
+    // Verify that version 2 still points to version 1 (chain is immutable)
+    getResp2Again, err := client.GetSecret(context.Background(), name, version2, nil)
+    require.NoError(t, err)
+    if getResp2Again.PreviousVersion != nil {
+        prevID := azsecrets.ID(*getResp2Again.PreviousVersion)
+        require.Equal(t, version1, prevID.Version(), 
+            "Version 2 should still point to version 1 after version 3 is created")
+    }
+    
+    // Verify that version 1 still has no PreviousVersion
+    getResp1, err := client.GetSecret(context.Background(), name, version1, nil)
+    require.NoError(t, err)
+    require.Nil(t, getResp1.PreviousVersion, "Version 1 should never have a PreviousVersion")
+    
+    // Get latest version (should be version 3) and verify it points to version 2
+    getLatest, err := client.GetSecret(context.Background(), name, "", nil)
+    require.NoError(t, err)
+    require.Equal(t, version3, getLatest.ID.Version(), "Latest version should be version 3")
+    if getLatest.PreviousVersion != nil {
+        prevID := azsecrets.ID(*getLatest.PreviousVersion)
+        require.Equal(t, version2, prevID.Version(), "Latest version should point to version 2")
+    }
+}

@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -78,24 +77,25 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	}
 
 	var scope []string
-	builtInAudience := cloud.AzurePublic.Services["cosmosDB"].Audience
 
 	if o != nil && o.ClientOptions.Cloud.Services != nil {
-		if svcCfg, ok := o.ClientOptions.Cloud.Services[cloud.ServiceName("cosmosDB")]; ok && svcCfg.Audience != "" {
-			if svcCfg.Audience == builtInAudience {
-				scope = []string{builtInAudience}
-				log.Write(azlog.EventRequest, fmt.Sprintf("Using built-in Cosmos DB audience: %s", builtInAudience))
-			} else {
-				log.Write(azlog.EventRequest, fmt.Sprintf("WARNING: Ignoring custom audience %q, using account scope instead", svcCfg.Audience))
+		if svcCfg, ok := o.ClientOptions.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
+			audience := svcCfg.Audience
+			if !strings.HasSuffix(audience, "/.default") {
+				audience = strings.TrimSuffix(audience, "/") + "/.default"
 			}
+			scope = []string{audience}
+			log.Write(azlog.EventRequest, fmt.Sprintf("Using audience from client options: %s", audience))
 		}
 	}
 
 	if scope == nil {
+		// Fallback to account-scope
 		scope, err = createScopeFromEndpoint(endpointUrl)
 		if err != nil {
 			return nil, err
 		}
+		log.Write(azlog.EventRequest, fmt.Sprintf("Using account scope from endpoint: %s", scope[0]))
 	}
 
 	preferredRegions := []string{}

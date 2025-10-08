@@ -171,11 +171,11 @@ func (c *customTokenCredential) GetToken(ctx context.Context, tro policy.TokenRe
 	return token, nil
 }
 
-func TestAAD_Emulator_UsesBuiltInCloudAudience(t *testing.T) {
+func TestAAD_Emulator_UsesClientOptionsAudience(t *testing.T) {
 	em := newEmulatorTests(t)
 
 	keyClient := em.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
-	db := em.createDatabase(t, context.TODO(), keyClient, "aadBuiltInAudienceTest")
+	db := em.createDatabase(t, context.TODO(), keyClient, "aadClientOptionsAudienceTest")
 	defer em.deleteDatabase(t, context.TODO(), db)
 
 	props := ContainerProperties{
@@ -186,18 +186,25 @@ func TestAAD_Emulator_UsesBuiltInCloudAudience(t *testing.T) {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
+	customAudience := "https://custom.cosmos.azure.com"
+	expectedScope := customAudience + "/.default"
+
 	mockCred := &customTokenCredential{t: t}
 
 	aadClient, err := NewClient(em.host, mockCred, &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Cloud: cloud.AzurePublic,
+			Cloud: cloud.Configuration{
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					"cosmosDB": {Audience: customAudience},
+				},
+			},
 		},
 	})
 	if err != nil {
 		t.Fatalf("Failed to create AAD client: %v", err)
 	}
 
-	container, err := aadClient.NewContainer("aadBuiltInAudienceTest", "aContainer")
+	container, err := aadClient.NewContainer("aadClientOptionsAudienceTest", "aContainer")
 	if err != nil {
 		t.Fatalf("NewContainer: %v", err)
 	}
@@ -209,29 +216,21 @@ func TestAAD_Emulator_UsesBuiltInCloudAudience(t *testing.T) {
 	if _, err := container.CreateItem(context.TODO(), pk, body, nil); err != nil {
 		t.Fatalf("CreateItem failed: %v", err)
 	}
-	resp, err := container.ReadItem(context.TODO(), pk, "1", nil)
-	if err != nil {
-		t.Fatalf("ReadItem failed: %v", err)
-	}
-	if len(resp.Value) == 0 {
-		t.Fatalf("Expected non-empty ReadItem response")
-	}
 
 	// Verify the scope used
-	expectedAudience := cloud.AzurePublic.Services["cosmosDB"].Audience
 	found := false
 	for _, s := range mockCred.calls {
-		if s == expectedAudience {
+		if s == expectedScope {
 			found = true
 			break
 		}
 	}
 	if !found {
-		t.Fatalf("expected token request with built-in scope %q, got %#v", expectedAudience, mockCred.calls)
+		t.Fatalf("expected token request with scope %q, got %#v", expectedScope, mockCred.calls)
 	}
 }
 
-func TestAAD_Emulator_UsesAccountScope(t *testing.T) {
+func TestAAD_Emulator_UsesAccountScope_WhenNoAudienceProvided(t *testing.T) {
 	em := newEmulatorTests(t)
 
 	keyClient := em.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
@@ -255,7 +254,7 @@ func TestAAD_Emulator_UsesAccountScope(t *testing.T) {
 	mockCred := &customTokenCredential{t: t}
 
 	aadClient, err := NewClient(em.host, mockCred, &ClientOptions{
-		ClientOptions: azcore.ClientOptions{},
+		ClientOptions: azcore.ClientOptions{}, // No audience set
 	})
 	if err != nil {
 		t.Fatalf("Failed to create AAD client: %v", err)

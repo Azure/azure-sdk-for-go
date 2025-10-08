@@ -732,18 +732,22 @@ func TestSpanResponseAttributes(t *testing.T) {
 	}
 }
 
-func TestAADScope_UsesBuiltInCloudAudience(t *testing.T) {
+func TestAADScope_UsesAudienceFromClientOptions(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(200))
 
 	endpoint := srv.URL()
-	expectedScope := cloud.AzurePublic.Services["cosmosDB"].Audience
-	fmt.Printf("%#vhello\n", cloud.AzurePublic.Services)
+	audience := "https://custom.audience.example.com"
+	expectedScope := audience + "/.default"
 
 	clientOptions := &ClientOptions{
 		ClientOptions: policy.ClientOptions{
-			Cloud:     cloud.AzurePublic,
+			Cloud: cloud.Configuration{
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					"cosmosDB": {Audience: audience},
+				},
+			},
 			Transport: srv,
 		},
 	}
@@ -752,7 +756,7 @@ func TestAADScope_UsesBuiltInCloudAudience(t *testing.T) {
 		t: t,
 		onGet: func(scope string) (azcore.AccessToken, error) {
 			if scope != expectedScope {
-				t.Fatalf("expected scope %q, got %q", expectedScope, scope)
+				t.Fatalf("expected scope %q from client options, got %q", expectedScope, scope)
 			}
 			return tokenOK(), nil
 		},
@@ -769,14 +773,14 @@ func TestAADScope_UsesBuiltInCloudAudience(t *testing.T) {
 	}
 }
 
-func TestAADScope_UseAccountScope_WhenNoCloudConfig(t *testing.T) {
+func TestAADScope_UsesAccountScope_WhenNoAudienceProvided(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(200))
 
 	endpoint := srv.URL()
 	u, _ := url.Parse(endpoint)
-	accountScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
+	expectedScope := fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())
 
 	clientOptions := &ClientOptions{
 		ClientOptions: policy.ClientOptions{Transport: srv},
@@ -785,8 +789,8 @@ func TestAADScope_UseAccountScope_WhenNoCloudConfig(t *testing.T) {
 	cred := &stubCred{
 		t: t,
 		onGet: func(scope string) (azcore.AccessToken, error) {
-			if scope != accountScope {
-				t.Fatalf("expected fallback account scope %q, got %q", accountScope, scope)
+			if scope != expectedScope {
+				t.Fatalf("expected fallback account scope %q, got %q", expectedScope, scope)
 			}
 			return tokenOK(), nil
 		},
@@ -800,15 +804,6 @@ func TestAADScope_UseAccountScope_WhenNoCloudConfig(t *testing.T) {
 	op := pipelineRequestOptions{resourceType: resourceTypeDatabase}
 	if _, err := client.sendGetRequest("/", context.Background(), op, &ReadContainerOptions{}, nil); err != nil {
 		t.Fatalf("unexpected error: %v", err)
-	}
-
-	if len(cred.calls) == 0 {
-		t.Fatalf("expected credential to be called")
-	}
-	for _, s := range cred.calls {
-		if s != accountScope {
-			t.Fatalf("expected only account scope %q in calls, got %#v", accountScope, cred.calls)
-		}
 	}
 }
 

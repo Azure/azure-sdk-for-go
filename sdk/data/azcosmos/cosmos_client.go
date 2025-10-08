@@ -82,7 +82,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		if svcCfg, ok := o.ClientOptions.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
 			audience := svcCfg.Audience
 			scope = []string{audience + "/.default"}
-			log.Write(azlog.EventRequest, fmt.Sprintf("Using custom scope  for authentication: %s", scope[0]))
+			log.Write(azlog.EventRequest, fmt.Sprintf("Using custom scope for authentication: %s", scope[0]))
 		}
 	}
 

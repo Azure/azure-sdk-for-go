@@ -6,14 +6,11 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/url"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 func TestAAD(t *testing.T) {
@@ -148,27 +145,6 @@ func TestAAD(t *testing.T) {
 	if len(itemResponse.Value) != 0 {
 		t.Fatalf("Expected empty response, got %v", itemResponse.Value)
 	}
-}
-
-// customTokenCredential records scopes requested during GetToken calls.
-type customTokenCredential struct {
-	t      *testing.T
-	calls  []string
-	tokens []azcore.AccessToken
-}
-
-func (c *customTokenCredential) GetToken(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	if len(tro.Scopes) == 0 {
-		c.t.Fatalf("expected at least one scope, got 0")
-	}
-	scope := tro.Scopes[0]
-	c.calls = append(c.calls, scope)
-	token := azcore.AccessToken{
-		Token:     fmt.Sprintf("mock-token-for-%s", scope),
-		ExpiresOn: time.Now().Add(time.Hour),
-	}
-	c.tokens = append(c.tokens, token)
-	return token, nil
 }
 
 func TestAAD_Emulator_UsesClientOptionsAudience(t *testing.T) {

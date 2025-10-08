@@ -6,4 +6,4 @@ package azcosmos
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 // ServiceName is the [cloud.ServiceName] for Azure Cosmos DB, used to identify the respective [cloud.ServiceConfiguration].
-const ServiceName cloud.ServiceName = "cosmosdb"
+const ServiceName cloud.ServiceName = "data/cosmosdb"

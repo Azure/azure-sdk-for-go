@@ -141,9 +141,6 @@ func TestCRUD(t *testing.T) {
 				name += "_MHSM"
 			}
 			t.Run(name, func(t *testing.T) {
-				if mhsm {
-					t.Skip("Skipping MHSM CRUD until HSM adds support for 2025-07-01 API version")
-				}
 				client := startTest(t, mhsm)
 
 				keyName := createRandomName(t, "testcrud")
@@ -163,6 +160,8 @@ func TestCRUD(t *testing.T) {
 				testSerde(t, &getResp.KeyBundle)
 
 				if mhsm {
+					t.Skip("Skipping MHSM attestation until it supports 2025-07-01")
+
 					getAttResp, err := client.GetKeyAttestation(context.Background(), keyName, "", nil)
 					require.NoError(t, err)
 					require.Equal(t, createResp.Key.KID.Name(), getAttResp.Key.KID.Name())

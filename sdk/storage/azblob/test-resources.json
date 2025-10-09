@@ -99,7 +99,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -138,7 +139,8 @@
           "accessTier": "Hot",
           "immutableStorageWithVersioning": {
             "enabled": true
-          }
+          },
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -186,7 +188,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -203,7 +206,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -221,7 +225,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -252,7 +257,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -303,7 +309,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -320,7 +327,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       },
       {
@@ -337,7 +345,8 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "allowSharedKeyAccess": false
         }
       }
     ],

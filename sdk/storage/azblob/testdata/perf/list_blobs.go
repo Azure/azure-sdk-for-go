@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/perf"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
@@ -39,15 +40,38 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		containerName:   "listcontainer",
 		blobName:        "listblob",
 	}
+	var (
+		containerClient *container.Client
+		err             error
+	)
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	if ok {
+		containerClient, err = container.NewClientFromConnectionString(connStr, l.containerName, nil)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		storageSuffix, ok := os.LookupEnv("PRIMARY_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX")
+		if !ok {
+			return nil, fmt.Errorf("the environment variable 'PRIMARY_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX' could not be found")
+		}
+		accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+		if !ok {
+			return nil, fmt.Errorf("the environment variable 'BLOB_STORAGE_ACCOUNT_NAME' could not be found")
+		}
+		blobUrl := fmt.Sprintf("https://%s.%s/%s", accountName, storageSuffix, l.containerName)
+
+		credential, err := azidentity.NewDefaultAzureCredential(nil)
+		if err != nil {
+			return nil, err
+		}
+
+		containerClient, err = container.NewClient(blobUrl, credential, nil)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	containerClient, err := container.NewClientFromConnectionString(connStr, l.containerName, nil)
-	if err != nil {
-		return nil, err
-	}
 	_, err = containerClient.Create(context.Background(), nil)
 	if err != nil {
 		return nil, err
@@ -70,13 +94,36 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 
 func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
 	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
+	var (
+		containerClient *container.Client
+		err             error
+	)
 
-	containerClient, err := container.NewClientFromConnectionString(connStr, l.containerName, nil)
-	if err != nil {
-		return err
+	if ok {
+		containerClient, err = container.NewClientFromConnectionString(connStr, l.containerName, nil)
+		if err != nil {
+			return err
+		}
+	} else {
+		storageSuffix, ok := os.LookupEnv("PRIMARY_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX")
+		if !ok {
+			return fmt.Errorf("the environment variable 'PRIMARY_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX' could not be found")
+		}
+		accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+		if !ok {
+			return fmt.Errorf("the environment variable 'BLOB_STORAGE_ACCOUNT_NAME' could not be found")
+		}
+		blobUrl := fmt.Sprintf("https://%s.%s/%s", accountName, storageSuffix, l.containerName)
+
+		credential, err := azidentity.NewDefaultAzureCredential(nil)
+		if err != nil {
+			return err
+		}
+
+		containerClient, err = container.NewClient(blobUrl, credential, nil)
+		if err != nil {
+			return err
+		}
 	}
 
 	_, err = containerClient.Delete(context.Background(), nil)
@@ -96,23 +143,49 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 		PerfTestOptions: *options,
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
+	var (
+		containerClient *container.Client
+		err             error
+	)
 
-	containerClient, err := container.NewClientFromConnectionString(
-		connStr,
-		u.listTestGlobal.containerName,
-		&container.ClientOptions{
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+
+	if ok {
+		containerClient, err = container.NewClientFromConnectionString(connStr, u.listTestGlobal.containerName,
+			&container.ClientOptions{
+				ClientOptions: azcore.ClientOptions{
+					Transport: g.PerfTestOptions.Transporter,
+				},
+			})
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		storageSuffix, ok := os.LookupEnv("PRIMARY_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX")
+		if !ok {
+			return nil, fmt.Errorf("the environment variable 'PRIMARY_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX' could not be found")
+		}
+		accountName, ok := os.LookupEnv("BLOB_STORAGE_ACCOUNT_NAME")
+		if !ok {
+			return nil, fmt.Errorf("the environment variable 'BLOB_STORAGE_ACCOUNT_NAME' could not be found")
+		}
+		blobUrl := fmt.Sprintf("https://%s.%s/%s", accountName, storageSuffix, u.listTestGlobal.containerName)
+
+		credential, err := azidentity.NewDefaultAzureCredential(nil)
+		if err != nil {
+			return nil, err
+		}
+
+		containerClient, err = container.NewClient(blobUrl, credential, &container.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: g.PerfTestOptions.Transporter,
 			},
-		},
-	)
-	if err != nil {
-		return nil, err
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	u.containerClient = containerClient
 
 	return u, nil

@@ -159,7 +159,6 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 			ClientOptions:              options.ClientOptions,
 			DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 			TenantID:                   options.TenantID,
-			disableIdentityBindingMode: true,
 		})
 		if err == nil {
 			creds = append(creds, wic)

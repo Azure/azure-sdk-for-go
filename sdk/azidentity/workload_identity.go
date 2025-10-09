@@ -41,6 +41,10 @@ type WorkloadIdentityCredentialOptions struct {
 	// application is registered.
 	AdditionallyAllowedTenants []string
 
+	// AzureKubernetesTokenProxy determines whether the credential reads token proxy configuration from
+	// environment variables.
+	AzureKubernetesTokenProxy bool
+
 	// Cache is a persistent cache the credential will use to store the tokens it acquires, making
 	// them available to other processes and credential instances. The default, zero value means the
 	// credential will store tokens in memory and not share them with any other credential instance.
@@ -61,9 +65,6 @@ type WorkloadIdentityCredentialOptions struct {
 	// TokenFilePath is the path of a file containing a Kubernetes service account token. Defaults to the value of the
 	// environment variable AZURE_FEDERATED_TOKEN_FILE.
 	TokenFilePath string
-
-	// disableIdentityBindingMode allows DefaultAzureCredential to prevent WorkloadIdentityCredential using a proxy
-	disableIdentityBindingMode bool
 }
 
 // NewWorkloadIdentityCredential constructs a WorkloadIdentityCredential. Service principal configuration is read
@@ -100,9 +101,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	// configure identity binding mode if the application is using this specific credential type and environment
-	// variables are present. In identity binding mode, a custom transport sends token requests to a proxy
-	if !options.disableIdentityBindingMode {
+	if options.AzureKubernetesTokenProxy {
 		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
 			return nil, err
 		}

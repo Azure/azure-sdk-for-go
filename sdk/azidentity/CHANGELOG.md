@@ -7,8 +7,11 @@
 ### Breaking Changes
 
 > These changes affect only code written against a beta version such as v1.13.0-beta.1
+- `WorkloadIdentityCredential` identity binding mode is disabled by default. To enable it, set
+  `WorkloadIdentityCredentialOptions.AzureKubernetesTokenProxy` to `true`
 - Removed identity binding mode support from `DefaultAzureCredential`. To use this feature, use
-  `WorkloadIdentityCredential` directly instead.
+  `WorkloadIdentityCredential` directly instead and set
+  `WorkloadIdentityCredentialOptions.AzureKubernetesTokenProxy` to `true`
 
 ### Bugs Fixed
 

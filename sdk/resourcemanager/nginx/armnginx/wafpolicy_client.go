@@ -16,67 +16,67 @@ import (
 	"strings"
 )
 
-// CertificatesClient contains the methods for the Certificates group.
-// Don't use this type directly, use NewCertificatesClient() instead.
-type CertificatesClient struct {
+// WafPolicyClient contains the methods for the WafPolicy group.
+// Don't use this type directly, use NewWafPolicyClient() instead.
+type WafPolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
+// NewWafPolicyClient creates a new instance of WafPolicyClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
+func NewWafPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WafPolicyClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &CertificatesClient{
+	client := &WafPolicyClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update the NGINX certificates for given NGINX deployment
+// BeginCreate - Create or update the Nginx Waf Policy for given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
-//   - certificateName - The name of certificate
-//   - body - The certificate
-//   - options - CertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.BeginCreateOrUpdate
-//     method.
-func (client *CertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, body Certificate, options *CertificatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CertificatesClientCreateOrUpdateResponse], error) {
+//   - wafPolicyName - The name of Waf Policy
+//   - body - The Nginx Deployment Waf Policy
+//   - options - WafPolicyClientBeginCreateOptions contains the optional parameters for the WafPolicyClient.BeginCreate method.
+func (client *WafPolicyClient) BeginCreate(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, options *WafPolicyClientBeginCreateOptions) (*runtime.Poller[WafPolicyClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, deploymentName, certificateName, body, options)
+		resp, err := client.create(ctx, resourceGroupName, deploymentName, wafPolicyName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CertificatesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WafPolicyClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CertificatesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WafPolicyClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create or update the NGINX certificates for given NGINX deployment
+// Create - Create or update the Nginx Waf Policy for given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, body Certificate, options *CertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *WafPolicyClient) create(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, options *WafPolicyClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "CertificatesClient.BeginCreateOrUpdate"
+	const operationName = "WafPolicyClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, deploymentName, certificateName, body, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, deploymentName, wafPolicyName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -91,9 +91,9 @@ func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, body Certificate, _ *CertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}"
+// createCreateRequest creates the Create request.
+func (client *WafPolicyClient) createCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, _ *WafPolicyClientBeginCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -106,10 +106,10 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
+	if wafPolicyName == "" {
+		return nil, errors.New("parameter wafPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
+	urlPath = strings.ReplaceAll(urlPath, "{wafPolicyName}", url.PathEscape(wafPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -125,43 +125,42 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// BeginDelete - Deletes a certificate from the NGINX deployment
+// BeginDelete - Reset the Nginx Waf Policy of given Nginx deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
-//   - certificateName - The name of certificate
-//   - options - CertificatesClientBeginDeleteOptions contains the optional parameters for the CertificatesClient.BeginDelete
-//     method.
-func (client *CertificatesClient) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginDeleteOptions) (*runtime.Poller[CertificatesClientDeleteResponse], error) {
+//   - wafPolicyName - The name of Waf Policy
+//   - options - WafPolicyClientBeginDeleteOptions contains the optional parameters for the WafPolicyClient.BeginDelete method.
+func (client *WafPolicyClient) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientBeginDeleteOptions) (*runtime.Poller[WafPolicyClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, deploymentName, certificateName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, deploymentName, wafPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CertificatesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WafPolicyClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CertificatesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WafPolicyClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes a certificate from the NGINX deployment
+// Delete - Reset the Nginx Waf Policy of given Nginx deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-func (client *CertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *WafPolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "CertificatesClient.BeginDelete"
+	const operationName = "WafPolicyClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, deploymentName, certificateName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, deploymentName, wafPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -177,8 +176,8 @@ func (client *CertificatesClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, _ *CertificatesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}"
+func (client *WafPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, _ *WafPolicyClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -191,10 +190,10 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
+	if wafPolicyName == "" {
+		return nil, errors.New("parameter wafPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
+	urlPath = strings.ReplaceAll(urlPath, "{wafPolicyName}", url.PathEscape(wafPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -205,39 +204,39 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// Get - Get a certificate of given NGINX deployment
+// Get - Get the Nginx Waf Policy of given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
-//   - certificateName - The name of certificate
-//   - options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
-func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientGetOptions) (CertificatesClientGetResponse, error) {
+//   - wafPolicyName - The name of Waf Policy
+//   - options - WafPolicyClientGetOptions contains the optional parameters for the WafPolicyClient.Get method.
+func (client *WafPolicyClient) Get(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientGetOptions) (WafPolicyClientGetResponse, error) {
 	var err error
-	const operationName = "CertificatesClient.Get"
+	const operationName = "WafPolicyClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, deploymentName, certificateName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, deploymentName, wafPolicyName, options)
 	if err != nil {
-		return CertificatesClientGetResponse{}, err
+		return WafPolicyClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return CertificatesClientGetResponse{}, err
+		return WafPolicyClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return CertificatesClientGetResponse{}, err
+		return WafPolicyClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *CertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, _ *CertificatesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates/{certificateName}"
+func (client *WafPolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, _ *WafPolicyClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -250,10 +249,10 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
+	if wafPolicyName == "" {
+		return nil, errors.New("parameter wafPolicyName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
+	urlPath = strings.ReplaceAll(urlPath, "{wafPolicyName}", url.PathEscape(wafPolicyName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -266,27 +265,27 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificatesClient) getHandleResponse(resp *http.Response) (CertificatesClientGetResponse, error) {
-	result := CertificatesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
-		return CertificatesClientGetResponse{}, err
+func (client *WafPolicyClient) getHandleResponse(resp *http.Response) (WafPolicyClientGetResponse, error) {
+	result := WafPolicyClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentWafPolicy); err != nil {
+		return WafPolicyClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - List all certificates of given NGINX deployment
+// NewListPager - List Waf Policies of given Nginx deployment
 //
 // Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
-//   - options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
-func (client *CertificatesClient) NewListPager(resourceGroupName string, deploymentName string, options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[CertificatesClientListResponse]{
-		More: func(page CertificatesClientListResponse) bool {
+//   - options - WafPolicyClientListOptions contains the optional parameters for the WafPolicyClient.NewListPager method.
+func (client *WafPolicyClient) NewListPager(resourceGroupName string, deploymentName string, options *WafPolicyClientListOptions) *runtime.Pager[WafPolicyClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WafPolicyClientListResponse]{
+		More: func(page WafPolicyClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *CertificatesClientListResponse) (CertificatesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CertificatesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *WafPolicyClientListResponse) (WafPolicyClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WafPolicyClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -295,7 +294,7 @@ func (client *CertificatesClient) NewListPager(resourceGroupName string, deploym
 				return client.listCreateRequest(ctx, resourceGroupName, deploymentName, options)
 			}, nil)
 			if err != nil {
-				return CertificatesClientListResponse{}, err
+				return WafPolicyClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -304,8 +303,8 @@ func (client *CertificatesClient) NewListPager(resourceGroupName string, deploym
 }
 
 // listCreateRequest creates the List request.
-func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, _ *CertificatesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/certificates"
+func (client *WafPolicyClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, _ *WafPolicyClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -330,10 +329,10 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *CertificatesClient) listHandleResponse(resp *http.Response) (CertificatesClientListResponse, error) {
-	result := CertificatesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResponse); err != nil {
-		return CertificatesClientListResponse{}, err
+func (client *WafPolicyClient) listHandleResponse(resp *http.Response) (WafPolicyClientListResponse, error) {
+	result := WafPolicyClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentWafPolicyListResponse); err != nil {
+		return WafPolicyClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -141,6 +141,9 @@ func TestCRUD(t *testing.T) {
 				name += "_MHSM"
 			}
 			t.Run(name, func(t *testing.T) {
+				if mhsm {
+					t.Skip("Skipping MHSM CRUD until HSM adds support for 2025-07-01 API version")
+				}
 				client := startTest(t, mhsm)
 
 				keyName := createRandomName(t, "testcrud")

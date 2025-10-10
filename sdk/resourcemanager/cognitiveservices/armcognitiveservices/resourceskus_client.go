@@ -42,7 +42,7 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListPager - Gets the list of Microsoft.CognitiveServices SKUs available for your Subscription.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
 func (client *ResourceSKUsClient) NewListPager(options *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceSKUsClientListResponse]{
@@ -79,7 +79,7 @@ func (client *ResourceSKUsClient) listCreateRequest(ctx context.Context, _ *Reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListEncryptionScopes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListEncryptionScopes.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,6 +46,14 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		// 			Name: to.Ptr("encryptionScopeName"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/encryptionScopes"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/encryptionScopes/encryptionScopeName"),
+		// 			SystemData: &armcognitiveservices.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
+		// 				CreatedBy: to.Ptr("xxx@microsoft.com"),
+		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("xxx@microsoft.com"),
+		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
+		// 			},
 		// 			Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 		// 			Properties: &armcognitiveservices.EncryptionScopeProperties{
 		// 				KeySource: to.Ptr(armcognitiveservices.KeySourceMicrosoftKeyVault),
@@ -58,20 +66,12 @@ func ExampleEncryptionScopesClient_NewListPager() {
 		// 				ProvisioningState: to.Ptr(armcognitiveservices.EncryptionScopeProvisioningStateSucceeded),
 		// 				State: to.Ptr(armcognitiveservices.EncryptionScopeStateEnabled),
 		// 			},
-		// 			SystemData: &armcognitiveservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
-		// 				CreatedBy: to.Ptr("xxx@microsoft.com"),
-		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("xxx@microsoft.com"),
-		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetEncryptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/GetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,6 +93,14 @@ func ExampleEncryptionScopesClient_Get() {
 	// 	Name: to.Ptr("encryptionScopeName"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/encryptionScopes"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/encryptionScopes/encryptionScopeName"),
+	// 	SystemData: &armcognitiveservices.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
+	// 		CreatedBy: to.Ptr("xxx@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("xxx@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
+	// 	},
 	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armcognitiveservices.EncryptionScopeProperties{
 	// 		KeySource: to.Ptr(armcognitiveservices.KeySourceMicrosoftKeyVault),
@@ -105,18 +113,10 @@ func ExampleEncryptionScopesClient_Get() {
 	// 		ProvisioningState: to.Ptr(armcognitiveservices.EncryptionScopeProvisioningStateSucceeded),
 	// 		State: to.Ptr(armcognitiveservices.EncryptionScopeStateEnabled),
 	// 	},
-	// 	SystemData: &armcognitiveservices.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
-	// 		CreatedBy: to.Ptr("xxx@microsoft.com"),
-	// 		CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("xxx@microsoft.com"),
-	// 		LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/PutEncryptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/PutEncryptionScope.json
 func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,6 +149,14 @@ func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("encryptionScopeName"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/encryptionScopes"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/encryptionScopes/encryptionScopeName"),
+	// 	SystemData: &armcognitiveservices.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
+	// 		CreatedBy: to.Ptr("xxx@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("xxx@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
+	// 	},
 	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armcognitiveservices.EncryptionScopeProperties{
 	// 		KeySource: to.Ptr(armcognitiveservices.KeySourceMicrosoftKeyVault),
@@ -161,18 +169,10 @@ func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	// 		ProvisioningState: to.Ptr(armcognitiveservices.EncryptionScopeProvisioningStateSucceeded),
 	// 		State: to.Ptr(armcognitiveservices.EncryptionScopeStateEnabled),
 	// 	},
-	// 	SystemData: &armcognitiveservices.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
-	// 		CreatedBy: to.Ptr("xxx@microsoft.com"),
-	// 		CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-08T06:35:08.066Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("xxx@microsoft.com"),
-	// 		LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/DeleteEncryptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/DeleteEncryptionScope.json
 func ExampleEncryptionScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

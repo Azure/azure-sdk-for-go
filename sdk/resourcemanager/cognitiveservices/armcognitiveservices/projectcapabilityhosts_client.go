@@ -43,7 +43,7 @@ func NewProjectCapabilityHostsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -72,7 +72,7 @@ func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost CapabilityHost, options *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginCreateOrUpdate"
@@ -122,7 +122,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, capabilityHost); err != nil {
@@ -134,7 +134,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -162,7 +162,7 @@ func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, res
 // Delete - Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 func (client *ProjectCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginDelete"
@@ -212,7 +212,7 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 // Get - Get project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -278,7 +278,7 @@ func (client *ProjectCapabilityHostsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

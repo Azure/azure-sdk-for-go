@@ -253,6 +253,7 @@ func (s *ServerTransport) dispatchGetSecret(req *http.Request) (*http.Response, 
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	qp := req.URL.Query()
 	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("secret_name")])
 	if err != nil {
 		return nil, err
@@ -261,7 +262,18 @@ func (s *ServerTransport) dispatchGetSecret(req *http.Request) (*http.Response, 
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetSecret(req.Context(), nameParam, versionParam, nil)
+	outContentTypeUnescaped, err := url.QueryUnescape(qp.Get("outContentType"))
+	if err != nil {
+		return nil, err
+	}
+	outContentTypeParam := getOptional(azsecrets.ContentType(outContentTypeUnescaped))
+	var options *azsecrets.GetSecretOptions
+	if outContentTypeParam != nil {
+		options = &azsecrets.GetSecretOptions{
+			OutContentType: outContentTypeParam,
+		}
+	}
+	respr, errRespr := s.srv.GetSecret(req.Context(), nameParam, versionParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -27,7 +27,7 @@ type Client struct {
 // Retrieves the setting object of a specified setting name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-07-01
 //   - settingName - The name of the account setting. Must be a valid settings option.
 //   - options - GetSettingOptions contains the optional parameters for the Client.GetSetting method.
 func (client *Client) GetSetting(ctx context.Context, settingName string, options *GetSettingOptions) (GetSettingResponse, error) {
@@ -64,7 +64,7 @@ func (client *Client) getSettingCreateRequest(ctx context.Context, settingName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -84,7 +84,7 @@ func (client *Client) getSettingHandleResponse(resp *http.Response) (GetSettingR
 // Retrieves a list of all the available account settings that can be configured.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-07-01
 //   - options - GetSettingsOptions contains the optional parameters for the Client.GetSettings method.
 func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptions) (GetSettingsResponse, error) {
 	var err error
@@ -116,7 +116,7 @@ func (client *Client) getSettingsCreateRequest(ctx context.Context, _ *GetSettin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -136,7 +136,7 @@ func (client *Client) getSettingsHandleResponse(resp *http.Response) (GetSetting
 // Description of the pool setting to be updated
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6
+// Generated from API version 2025-07-01
 //   - settingName - The name of the account setting. Must be a valid settings option.
 //   - parameters - The parameters to update an account setting.
 //   - options - UpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
@@ -174,7 +174,7 @@ func (client *Client) updateSettingCreateRequest(ctx context.Context, settingNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

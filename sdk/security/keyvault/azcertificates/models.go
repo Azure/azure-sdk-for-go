@@ -477,6 +477,12 @@ type SubjectAlternativeNames struct {
 	// Email addresses.
 	Emails []*string
 
+	// IP addresses; supports IPv4 and IPv6.
+	IPAddresses []*string
+
+	// Uniform Resource Identifiers.
+	Uris []*string
+
 	// User Principal Names.
 	UserPrincipalNames []*string
 }

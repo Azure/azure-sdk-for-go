@@ -1,5 +1,32 @@
 # Release History
 
+## 2.3.0 (2025-10-09)
+### Features Added
+
+- New value `EndpointTypeAzureMultiCloudConnector`, `EndpointTypeAzureStorageNfsFileShare` added to enum type `EndpointType`
+- New enum type `JobType` with values `JobTypeCloudToCloud`, `JobTypeOnPremToCloud`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New function `*AzureMultiCloudConnectorEndpointProperties.GetEndpointBaseProperties() *EndpointBaseProperties`
+- New function `*AzureMultiCloudConnectorEndpointUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New function `*AzureStorageNfsFileShareEndpointProperties.GetEndpointBaseProperties() *EndpointBaseProperties`
+- New function `*AzureStorageNfsFileShareEndpointUpdateProperties.GetEndpointBaseUpdateProperties() *EndpointBaseUpdateProperties`
+- New struct `AzureMultiCloudConnectorEndpointProperties`
+- New struct `AzureMultiCloudConnectorEndpointUpdateProperties`
+- New struct `AzureStorageNfsFileShareEndpointProperties`
+- New struct `AzureStorageNfsFileShareEndpointUpdateProperties`
+- New struct `JobDefinitionPropertiesSourceTargetMap`
+- New struct `ManagedServiceIdentity`
+- New struct `SourceEndpoint`
+- New struct `SourceEndpointProperties`
+- New struct `SourceTargetMap`
+- New struct `TargetEndpoint`
+- New struct `TargetEndpointProperties`
+- New struct `UserAssignedIdentity`
+- New field `Identity` in struct `Endpoint`
+- New field `Identity` in struct `EndpointBaseUpdateParameters`
+- New field `JobType`, `SourceTargetMap` in struct `JobDefinitionProperties`
+
+
 ## 2.3.0 (2025-08-29)
 ### Features Added
 

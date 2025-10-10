@@ -69,6 +69,12 @@ type AutonomousDatabaseVersionsClientListByLocationResponse struct {
 	AutonomousDbVersionListResult
 }
 
+// AutonomousDatabasesClientActionResponse contains the response from method AutonomousDatabasesClient.BeginAction.
+type AutonomousDatabasesClientActionResponse struct {
+	// Autonomous Database resource model.
+	AutonomousDatabase
+}
+
 // AutonomousDatabasesClientChangeDisasterRecoveryConfigurationResponse contains the response from method AutonomousDatabasesClient.BeginChangeDisasterRecoveryConfiguration.
 type AutonomousDatabasesClientChangeDisasterRecoveryConfigurationResponse struct {
 	// Autonomous Database resource model.
@@ -142,6 +148,12 @@ type AutonomousDatabasesClientUpdateResponse struct {
 
 // CloudExadataInfrastructuresClientAddStorageCapacityResponse contains the response from method CloudExadataInfrastructuresClient.BeginAddStorageCapacity.
 type CloudExadataInfrastructuresClientAddStorageCapacityResponse struct {
+	// CloudExadataInfrastructure resource definition
+	CloudExadataInfrastructure
+}
+
+// CloudExadataInfrastructuresClientConfigureExascaleResponse contains the response from method CloudExadataInfrastructuresClient.BeginConfigureExascale.
+type CloudExadataInfrastructuresClientConfigureExascaleResponse struct {
 	// CloudExadataInfrastructure resource definition
 	CloudExadataInfrastructure
 }
@@ -299,6 +311,53 @@ type DbSystemShapesClientListByLocationResponse struct {
 	DbSystemShapeListResult
 }
 
+// DbSystemsClientCreateOrUpdateResponse contains the response from method DbSystemsClient.BeginCreateOrUpdate.
+type DbSystemsClientCreateOrUpdateResponse struct {
+	// DbSystem resource definition
+	DbSystem
+}
+
+// DbSystemsClientDeleteResponse contains the response from method DbSystemsClient.BeginDelete.
+type DbSystemsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DbSystemsClientGetResponse contains the response from method DbSystemsClient.Get.
+type DbSystemsClientGetResponse struct {
+	// DbSystem resource definition
+	DbSystem
+}
+
+// DbSystemsClientListByResourceGroupResponse contains the response from method DbSystemsClient.NewListByResourceGroupPager.
+type DbSystemsClientListByResourceGroupResponse struct {
+	// The response of a DbSystem list operation.
+	DbSystemListResult
+}
+
+// DbSystemsClientListBySubscriptionResponse contains the response from method DbSystemsClient.NewListBySubscriptionPager.
+type DbSystemsClientListBySubscriptionResponse struct {
+	// The response of a DbSystem list operation.
+	DbSystemListResult
+}
+
+// DbSystemsClientUpdateResponse contains the response from method DbSystemsClient.BeginUpdate.
+type DbSystemsClientUpdateResponse struct {
+	// DbSystem resource definition
+	DbSystem
+}
+
+// DbVersionsClientGetResponse contains the response from method DbVersionsClient.Get.
+type DbVersionsClientGetResponse struct {
+	// Oracle Database DbVersion resource definition
+	DbVersion
+}
+
+// DbVersionsClientListByLocationResponse contains the response from method DbVersionsClient.NewListByLocationPager.
+type DbVersionsClientListByLocationResponse struct {
+	// The response of a DbVersion list operation.
+	DbVersionListResult
+}
+
 // ExadbVMClustersClientCreateOrUpdateResponse contains the response from method ExadbVMClustersClient.BeginCreateOrUpdate.
 type ExadbVMClustersClientCreateOrUpdateResponse struct {
 	// ExadbVmCluster resource definition
@@ -429,6 +488,41 @@ type GiVersionsClientListByLocationResponse struct {
 	GiVersionListResult
 }
 
+// NetworkAnchorsClientCreateOrUpdateResponse contains the response from method NetworkAnchorsClient.BeginCreateOrUpdate.
+type NetworkAnchorsClientCreateOrUpdateResponse struct {
+	// Network Anchor resource model.
+	NetworkAnchor
+}
+
+// NetworkAnchorsClientDeleteResponse contains the response from method NetworkAnchorsClient.BeginDelete.
+type NetworkAnchorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NetworkAnchorsClientGetResponse contains the response from method NetworkAnchorsClient.Get.
+type NetworkAnchorsClientGetResponse struct {
+	// Network Anchor resource model.
+	NetworkAnchor
+}
+
+// NetworkAnchorsClientListByResourceGroupResponse contains the response from method NetworkAnchorsClient.NewListByResourceGroupPager.
+type NetworkAnchorsClientListByResourceGroupResponse struct {
+	// The response of a NetworkAnchor list operation.
+	NetworkAnchorListResult
+}
+
+// NetworkAnchorsClientListBySubscriptionResponse contains the response from method NetworkAnchorsClient.NewListBySubscriptionPager.
+type NetworkAnchorsClientListBySubscriptionResponse struct {
+	// The response of a NetworkAnchor list operation.
+	NetworkAnchorListResult
+}
+
+// NetworkAnchorsClientUpdateResponse contains the response from method NetworkAnchorsClient.BeginUpdate.
+type NetworkAnchorsClientUpdateResponse struct {
+	// Network Anchor resource model.
+	NetworkAnchor
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -485,6 +579,41 @@ type OracleSubscriptionsClientListSaasSubscriptionDetailsResponse struct {
 type OracleSubscriptionsClientUpdateResponse struct {
 	// OracleSubscription resource definition
 	OracleSubscription
+}
+
+// ResourceAnchorsClientCreateOrUpdateResponse contains the response from method ResourceAnchorsClient.BeginCreateOrUpdate.
+type ResourceAnchorsClientCreateOrUpdateResponse struct {
+	// Resource Anchor model.
+	ResourceAnchor
+}
+
+// ResourceAnchorsClientDeleteResponse contains the response from method ResourceAnchorsClient.BeginDelete.
+type ResourceAnchorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ResourceAnchorsClientGetResponse contains the response from method ResourceAnchorsClient.Get.
+type ResourceAnchorsClientGetResponse struct {
+	// Resource Anchor model.
+	ResourceAnchor
+}
+
+// ResourceAnchorsClientListByResourceGroupResponse contains the response from method ResourceAnchorsClient.NewListByResourceGroupPager.
+type ResourceAnchorsClientListByResourceGroupResponse struct {
+	// The response of a ResourceAnchor list operation.
+	ResourceAnchorListResult
+}
+
+// ResourceAnchorsClientListBySubscriptionResponse contains the response from method ResourceAnchorsClient.NewListBySubscriptionPager.
+type ResourceAnchorsClientListBySubscriptionResponse struct {
+	// The response of a ResourceAnchor list operation.
+	ResourceAnchorListResult
+}
+
+// ResourceAnchorsClientUpdateResponse contains the response from method ResourceAnchorsClient.BeginUpdate.
+type ResourceAnchorsClientUpdateResponse struct {
+	// Resource Anchor model.
+	ResourceAnchor
 }
 
 // SystemVersionsClientGetResponse contains the response from method SystemVersionsClient.Get.

@@ -1238,8 +1238,8 @@ func ExampleOrganizationsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOrganizationsClient().BeginUpdate(ctx, "rgneon", "contoso-org", armneonpostgres.OrganizationResource{
-		Properties: &armneonpostgres.OrganizationProperties{
+	poller, err := clientFactory.NewOrganizationsClient().BeginUpdate(ctx, "rgneon", "contoso-org", armneonpostgres.OrganizationResourceUpdate{
+		Properties: &armneonpostgres.OrganizationResourceUpdateProperties{
 			MarketplaceDetails: &armneonpostgres.MarketplaceDetails{
 				SubscriptionID:     to.Ptr("yxmkfivp"),
 				SubscriptionStatus: to.Ptr(armneonpostgres.MarketplaceSubscriptionStatusPendingFulfillmentStart),

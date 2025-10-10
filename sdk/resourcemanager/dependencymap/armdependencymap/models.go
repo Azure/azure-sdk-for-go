@@ -26,11 +26,11 @@ type DiscoverySourceResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; discovery source resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -72,13 +72,83 @@ type DiscoverySourceResourceTagsUpdate struct {
 	Tags map[string]*string
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ExportDependenciesAdditionalInfo - Additional information about the exported dependencies data.
+type ExportDependenciesAdditionalInfo struct {
+	// Number of days for which data was available in the exported results.
+	AvailableDaysCount *int32
+}
+
+// ExportDependenciesOperationResult - Model representing the result of the export dependencies asynchronous operation.
+type ExportDependenciesOperationResult struct {
+	// REQUIRED; The overall arm status of the operation. It has one of the terminal states - Succeeded/Failed/Canceled.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// Contains error details if status is Failed/Canceled.
+	Error *ErrorDetail
+
+	// The status URL of export dependencies operation.
+	ID *string
+
+	// The resource name of the operation status. It must match the last segment of 'id' field.
+	Name *string
+
+	// Properties for export dependencies. These should only be set if the status is Succeeded.
+	Properties *ExportDependenciesResultProperties
+
+	// The start time of the operation.
+	StartTime *time.Time
+}
+
 // ExportDependenciesRequest - ExportDependencies request model
 type ExportDependenciesRequest struct {
-	// REQUIRED; Machine arm id
-	FocusedMachineID *string
-
 	// Filters for ExportDependencies
 	Filters *VisualizationFilter
+
+	// Machine arm id
+	FocusedMachineID *string
+}
+
+// ExportDependenciesResultProperties - Model representing properties returned upon successful completion of the export dependencies
+// asynchronous operation.
+type ExportDependenciesResultProperties struct {
+	// Additional information about the exported data.
+	AdditionalInfo *ExportDependenciesAdditionalInfo
+
+	// The SAS URI of the blob containing the exported dependencies data.
+	ExportedDataSasURI *string
+
+	// A status code returned by the service with additional context about the export dependencies operation.
+	StatusCode *ExportDependenciesStatusCode
 }
 
 // GetConnectionsForProcessOnFocusedMachineRequest - GetConnectionsForProcessOnFocusedMachine request model
@@ -126,11 +196,11 @@ type MapsResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Maps resource name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -183,7 +253,9 @@ func (o *OffAzureDiscoverySourceResourceProperties) GetDiscoverySourceResourcePr
 	}
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay

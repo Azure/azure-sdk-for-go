@@ -11,6 +11,55 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-03-01/dbSystemShapes_get.json
+func ExampleDbSystemShapesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbSystemShapesClient().Get(ctx, "eastus", "EXADATA.X9M", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbSystemShapesClientGetResponse{
+	// 	DbSystemShape: &armoracledatabase.DbSystemShape{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemShapes/EXADATA.X9M"),
+	// 		Type: to.Ptr("Oracle.Database/locations/dbSystemShapes"),
+	// 		Properties: &armoracledatabase.DbSystemShapeProperties{
+	// 			ShapeFamily: to.Ptr("EXADATA"),
+	// 			ShapeName: to.Ptr("EXADATA.X9M"),
+	// 			AvailableCoreCount: to.Ptr[int32](100),
+	// 			MinimumCoreCount: to.Ptr[int32](1),
+	// 			RuntimeMinimumCoreCount: to.Ptr[int32](1),
+	// 			CoreCountIncrement: to.Ptr[int32](1),
+	// 			MinStorageCount: to.Ptr[int32](0),
+	// 			MaxStorageCount: to.Ptr[int32](100),
+	// 			AvailableDataStoragePerServerInTbs: to.Ptr[float64](100),
+	// 			AvailableMemoryPerNodeInGbs: to.Ptr[int32](10),
+	// 			AvailableDbNodePerNodeInGbs: to.Ptr[int32](10),
+	// 			MinCoreCountPerNode: to.Ptr[int32](0),
+	// 			AvailableMemoryInGbs: to.Ptr[int32](10),
+	// 			MinMemoryPerNodeInGbs: to.Ptr[int32](0),
+	// 			AvailableDbNodeStorageInGbs: to.Ptr[int32](10),
+	// 			MinDbNodeStoragePerNodeInGbs: to.Ptr[int32](0),
+	// 			AvailableDataStorageInTbs: to.Ptr[int32](10),
+	// 			MinDataStorageInTbs: to.Ptr[int32](0),
+	// 			MinimumNodeCount: to.Ptr[int32](0),
+	// 			MaximumNodeCount: to.Ptr[int32](1000),
+	// 			AvailableCoreCountPerNode: to.Ptr[int32](1000),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-03-01/dbSystemShapes_listByLocation.json
 func ExampleDbSystemShapesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)

@@ -95,6 +95,285 @@ func ExampleAutonomousDatabasesClient_BeginChangeDisasterRecoveryConfiguration()
 	// }
 }
 
+// Generated from example definition: 2025-03-01/autonomousDatabaseClone_create.json
+func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCreateOrUpdateClone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutonomousDatabasesClient().BeginCreateOrUpdate(ctx, "rg000", "databasedb1", armoracledatabase.AutonomousDatabase{
+		Properties: &armoracledatabase.AutonomousDatabaseCloneProperties{
+			DataBaseType:         to.Ptr(armoracledatabase.DataBaseTypeClone),
+			SourceID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+			CloneType:            to.Ptr(armoracledatabase.CloneTypeFull),
+			DisplayName:          to.Ptr("example_autonomous_databasedb1_clone"),
+			ComputeModel:         to.Ptr(armoracledatabase.ComputeModelECPU),
+			ComputeCount:         to.Ptr[float32](2),
+			DataStorageSizeInTbs: to.Ptr[int32](1),
+			CharacterSet:         to.Ptr("AL32UTF8"),
+			NcharacterSet:        to.Ptr("AL16UTF16"),
+			AdminPassword:        to.Ptr("********"),
+			SubnetID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+			VnetID:               to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		},
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"tagK1": to.Ptr("tagV1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse{
+	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.AutonomousDatabaseCloneProperties{
+	// 			AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1Clone"),
+	// 			AutonomousMaintenanceScheduleType: to.Ptr(armoracledatabase.AutonomousMaintenanceScheduleTypeRegular),
+	// 			CharacterSet: to.Ptr("AL32UTF8"),
+	// 			NcharacterSet: to.Ptr("AL16UTF16"),
+	// 			ComputeCount: to.Ptr[float32](2),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 			CPUCoreCount: to.Ptr[int32](1),
+	// 			CloneType: to.Ptr(armoracledatabase.CloneTypeFull),
+	// 			DataStorageSizeInGbs: to.Ptr[int32](1024),
+	// 			DataStorageSizeInTbs: to.Ptr[int32](1),
+	// 			DatabaseEdition: to.Ptr(armoracledatabase.DatabaseEditionTypeEnterpriseEdition),
+	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeClone),
+	// 			DbVersion: to.Ptr("18.4.0.0"),
+	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
+	// 			IsAutoScalingEnabled: to.Ptr(false),
+	// 			IsAutoScalingForStorageEnabled: to.Ptr(false),
+	// 			IsLocalDataGuardEnabled: to.Ptr(false),
+	// 			IsMtlsConnectionRequired: to.Ptr(true),
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelBringYourOwnLicense),
+	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseLifecycleState("Succeeded")),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			SourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T20:44:09.466Z"); return t}()),
+	// 			Ocid: to.Ptr("ocid1..aaaaa"),
+	// 			WhitelistedIPs: []*string{
+	// 				to.Ptr("1.1.1.1"),
+	// 				to.Ptr("1.1.1.0/24"),
+	// 				to.Ptr("1.1.2.25"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-03-01/autonomousDatabaseCrossRegionPeer_create.json
+func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCreateOrUpdateCrossRegionPeer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutonomousDatabasesClient().BeginCreateOrUpdate(ctx, "rg000", "databasedb1", armoracledatabase.AutonomousDatabase{
+		Properties: &armoracledatabase.AutonomousDatabaseCrossRegionDisasterRecoveryProperties{
+			DataBaseType:                to.Ptr(armoracledatabase.DataBaseTypeCrossRegionDisasterRecovery),
+			Source:                      to.Ptr(armoracledatabase.SourceTypeCrossRegionDisasterRecovery),
+			SourceID:                    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+			SourceOcid:                  to.Ptr("ocid1..aaaaa"),
+			SourceLocation:              to.Ptr("germanywestcentral"),
+			RemoteDisasterRecoveryType:  to.Ptr(armoracledatabase.DisasterRecoveryTypeAdg),
+			IsReplicateAutomaticBackups: to.Ptr(false),
+			SubnetID:                    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+			VnetID:                      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		},
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"tagK1": to.Ptr("tagV1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse{
+	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.AutonomousDatabaseCrossRegionDisasterRecoveryProperties{
+	// 			AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 			AutonomousMaintenanceScheduleType: to.Ptr(armoracledatabase.AutonomousMaintenanceScheduleTypeRegular),
+	// 			CharacterSet: to.Ptr("AL32UTF8"),
+	// 			NcharacterSet: to.Ptr("AL16UTF16"),
+	// 			ComputeCount: to.Ptr[float32](2),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 			CPUCoreCount: to.Ptr[int32](1),
+	// 			DataStorageSizeInGbs: to.Ptr[int32](1024),
+	// 			DataStorageSizeInTbs: to.Ptr[int32](1),
+	// 			DatabaseEdition: to.Ptr(armoracledatabase.DatabaseEditionTypeEnterpriseEdition),
+	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeCrossRegionDisasterRecovery),
+	// 			DbVersion: to.Ptr("19c"),
+	// 			IsAutoScalingEnabled: to.Ptr(false),
+	// 			IsAutoScalingForStorageEnabled: to.Ptr(false),
+	// 			IsLocalDataGuardEnabled: to.Ptr(false),
+	// 			IsMtlsConnectionRequired: to.Ptr(true),
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelBringYourOwnLicense),
+	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseLifecycleStateProvisioning),
+	// 			PrivateEndpointLabel: to.Ptr("r8dm9hhc"),
+	// 			RemoteDisasterRecoveryType: to.Ptr(armoracledatabase.DisasterRecoveryTypeAdg),
+	// 			IsReplicateAutomaticBackups: to.Ptr(false),
+	// 			SourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateProvisioning),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-12T18:06:08.810Z"); return t}()),
+	// 			Ocid: to.Ptr("ocid1..aaaaa"),
+	// 			WhitelistedIPs: []*string{
+	// 				to.Ptr("1.1.1.1"),
+	// 				to.Ptr("1.1.1.0/24"),
+	// 				to.Ptr("1.1.2.25"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-03-01/autonomousDatabase_create.json
+func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutonomousDatabasesClient().BeginCreateOrUpdate(ctx, "rg000", "databasedb1", armoracledatabase.AutonomousDatabase{
+		Properties: &armoracledatabase.AutonomousDatabaseProperties{
+			DataBaseType:         to.Ptr(armoracledatabase.DataBaseTypeRegular),
+			DisplayName:          to.Ptr("example_autonomous_databasedb1"),
+			ComputeModel:         to.Ptr(armoracledatabase.ComputeModelECPU),
+			ComputeCount:         to.Ptr[float32](2),
+			DataStorageSizeInTbs: to.Ptr[int32](1),
+			AdminPassword:        to.Ptr("********"),
+			DbVersion:            to.Ptr("18.4.0.0"),
+			CharacterSet:         to.Ptr("AL32UTF8"),
+			NcharacterSet:        to.Ptr("AL16UTF16"),
+			SubnetID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+			VnetID:               to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		},
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"tagK1": to.Ptr("tagV1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse{
+	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
+	// 			AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 			AutonomousMaintenanceScheduleType: to.Ptr(armoracledatabase.AutonomousMaintenanceScheduleTypeRegular),
+	// 			CharacterSet: to.Ptr("AL32UTF8"),
+	// 			NcharacterSet: to.Ptr("AL16UTF16"),
+	// 			ComputeCount: to.Ptr[float32](2),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 			CPUCoreCount: to.Ptr[int32](1),
+	// 			DataStorageSizeInGbs: to.Ptr[int32](1024),
+	// 			DataStorageSizeInTbs: to.Ptr[int32](1),
+	// 			DatabaseEdition: to.Ptr(armoracledatabase.DatabaseEditionTypeEnterpriseEdition),
+	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
+	// 			DbVersion: to.Ptr("18.4.0.0"),
+	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
+	// 			IsAutoScalingEnabled: to.Ptr(false),
+	// 			IsAutoScalingForStorageEnabled: to.Ptr(false),
+	// 			IsLocalDataGuardEnabled: to.Ptr(false),
+	// 			IsMtlsConnectionRequired: to.Ptr(true),
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelBringYourOwnLicense),
+	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseLifecycleState("Succeeded")),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T20:44:09.466Z"); return t}()),
+	// 			Ocid: to.Ptr("ocid1..aaaaa"),
+	// 			WhitelistedIPs: []*string{
+	// 				to.Ptr("1.1.1.1"),
+	// 				to.Ptr("1.1.1.0/24"),
+	// 				to.Ptr("1.1.2.25"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-03-01/autonomousDatabase_delete.json
+func ExampleAutonomousDatabasesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutonomousDatabasesClient().BeginDelete(ctx, "rg000", "databasedb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-03-01/autonomousDatabase_failover.json
 func ExampleAutonomousDatabasesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -199,6 +478,69 @@ func ExampleAutonomousDatabasesClient_GenerateWallet() {
 	// }
 }
 
+// Generated from example definition: 2025-03-01/autonomousDatabase_get.json
+func ExampleAutonomousDatabasesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAutonomousDatabasesClient().Get(ctx, "rg000", "databasedb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.AutonomousDatabasesClientGetResponse{
+	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"tagK1": to.Ptr("tagV1"),
+	// 		},
+	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
+	// 			AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+	// 			AutonomousMaintenanceScheduleType: to.Ptr(armoracledatabase.AutonomousMaintenanceScheduleTypeRegular),
+	// 			CharacterSet: to.Ptr("AL32UTF8"),
+	// 			NcharacterSet: to.Ptr("AL16UTF16"),
+	// 			ComputeCount: to.Ptr[float32](2),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 			CPUCoreCount: to.Ptr[int32](1),
+	// 			DataStorageSizeInGbs: to.Ptr[int32](1024),
+	// 			DataStorageSizeInTbs: to.Ptr[int32](1),
+	// 			DatabaseEdition: to.Ptr(armoracledatabase.DatabaseEditionTypeEnterpriseEdition),
+	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
+	// 			DbVersion: to.Ptr("18.4.0.0"),
+	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
+	// 			IsAutoScalingEnabled: to.Ptr(false),
+	// 			IsAutoScalingForStorageEnabled: to.Ptr(false),
+	// 			IsLocalDataGuardEnabled: to.Ptr(false),
+	// 			IsMtlsConnectionRequired: to.Ptr(true),
+	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelBringYourOwnLicense),
+	// 			LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseLifecycleState("Succeeded")),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			OciURL: to.Ptr("https://fake"),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T20:44:09.466Z"); return t}()),
+	// 			Ocid: to.Ptr("ocid1..aaaaa"),
+	// 			WhitelistedIPs: []*string{
+	// 				to.Ptr("1.1.1.1"),
+	// 				to.Ptr("1.1.1.0/24"),
+	// 				to.Ptr("1.1.2.25"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-03-01/autonomousDatabase_listByResourceGroup.json
 func ExampleAutonomousDatabasesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -222,6 +564,78 @@ func ExampleAutonomousDatabasesClient_NewListByResourceGroupPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armoracledatabase.AutonomousDatabasesClientListByResourceGroupResponse{
+		// 	AutonomousDatabaseListResult: armoracledatabase.AutonomousDatabaseListResult{
+		// 		Value: []*armoracledatabase.AutonomousDatabase{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+		// 				Type: to.Ptr("Oracle.Database/autonomousDatabases"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Tags: map[string]*string{
+		// 					"tagK1": to.Ptr("tagV1"),
+		// 				},
+		// 				Properties: &armoracledatabase.AutonomousDatabaseProperties{
+		// 					AutonomousDatabaseID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
+		// 					AutonomousMaintenanceScheduleType: to.Ptr(armoracledatabase.AutonomousMaintenanceScheduleTypeRegular),
+		// 					CharacterSet: to.Ptr("AL32UTF8"),
+		// 					NcharacterSet: to.Ptr("AL16UTF16"),
+		// 					ComputeCount: to.Ptr[float32](2),
+		// 					ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+		// 					CPUCoreCount: to.Ptr[int32](1),
+		// 					DataStorageSizeInGbs: to.Ptr[int32](1024),
+		// 					DataStorageSizeInTbs: to.Ptr[int32](1),
+		// 					DatabaseEdition: to.Ptr(armoracledatabase.DatabaseEditionTypeEnterpriseEdition),
+		// 					DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
+		// 					DbVersion: to.Ptr("18.4.0.0"),
+		// 					DisplayName: to.Ptr("example_autonomous_databasedb1"),
+		// 					IsAutoScalingEnabled: to.Ptr(false),
+		// 					IsAutoScalingForStorageEnabled: to.Ptr(false),
+		// 					IsLocalDataGuardEnabled: to.Ptr(false),
+		// 					IsMtlsConnectionRequired: to.Ptr(true),
+		// 					LicenseModel: to.Ptr(armoracledatabase.LicenseModelBringYourOwnLicense),
+		// 					LifecycleState: to.Ptr(armoracledatabase.AutonomousDatabaseLifecycleState("Succeeded")),
+		// 					LifecycleDetails: to.Ptr("success"),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					OciURL: to.Ptr("https://fake"),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T20:44:09.466Z"); return t}()),
+		// 					Ocid: to.Ptr("ocid1..aaaaa"),
+		// 					WhitelistedIPs: []*string{
+		// 						to.Ptr("1.1.1.1"),
+		// 						to.Ptr("1.1.1.0/24"),
+		// 						to.Ptr("1.1.2.25"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-03-01/autonomousDatabase_listBySubscription.json
+func ExampleAutonomousDatabasesClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAutonomousDatabasesClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.AutonomousDatabasesClientListBySubscriptionResponse{
 		// 	AutonomousDatabaseListResult: armoracledatabase.AutonomousDatabaseListResult{
 		// 		Value: []*armoracledatabase.AutonomousDatabase{
 		// 			{

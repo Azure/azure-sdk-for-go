@@ -109,7 +109,7 @@ func ExampleGrafanaClient_BeginCreate() {
 			},
 			GrafanaMajorVersion: to.Ptr("9"),
 			GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
-				"sample-plugin-id": {},
+				"sample-plugin-id": &armdashboard.GrafanaPlugin{},
 			},
 			PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
 			ZoneRedundancy:      to.Ptr(armdashboard.ZoneRedundancyEnabled),
@@ -619,7 +619,7 @@ func ExampleGrafanaClient_BeginUpdate() {
 			},
 			GrafanaMajorVersion: to.Ptr("9"),
 			GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
-				"sample-plugin-id": {},
+				"sample-plugin-id": &armdashboard.GrafanaPlugin{},
 			},
 		},
 		SKU: &armdashboard.ResourceSKU{

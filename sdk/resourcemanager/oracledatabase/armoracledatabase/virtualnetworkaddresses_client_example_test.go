@@ -6,10 +6,113 @@ package armoracledatabase_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
 	"log"
 )
+
+// Generated from example definition: 2025-03-01/virtualNetworkAddresses_create.json
+func ExampleVirtualNetworkAddressesClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkAddressesClient().BeginCreateOrUpdate(ctx, "rg000", "cluster1", "hostname1", armoracledatabase.VirtualNetworkAddress{
+		Properties: &armoracledatabase.VirtualNetworkAddressProperties{
+			IPAddress: to.Ptr("192.168.0.1"),
+			VMOcid:    to.Ptr("ocid1..aaaa"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.VirtualNetworkAddressesClientCreateOrUpdateResponse{
+	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/virtualNetworkAddresses"),
+	// 		Properties: &armoracledatabase.VirtualNetworkAddressProperties{
+	// 			IPAddress: to.Ptr("192.168.0.1"),
+	// 			VMOcid: to.Ptr("ocid1..aaaa"),
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.VirtualNetworkAddressLifecycleStateAvailable),
+	// 			TimeAssigned: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T00:27:02.119Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-03-01/virtualNetworkAddresses_delete.json
+func ExampleVirtualNetworkAddressesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkAddressesClient().BeginDelete(ctx, "rg000", "cluster1", "hostname1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-03-01/virtualNetworkAddresses_get.json
+func ExampleVirtualNetworkAddressesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworkAddressesClient().Get(ctx, "rg000", "cluster1", "hostname1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.VirtualNetworkAddressesClientGetResponse{
+	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/virtualNetworkAddresses"),
+	// 		Properties: &armoracledatabase.VirtualNetworkAddressProperties{
+	// 			IPAddress: to.Ptr("192.168.0.1"),
+	// 			VMOcid: to.Ptr("ocid1..aaaa"),
+	// 			Ocid: to.Ptr("ocid1..aaaaaa"),
+	// 			Domain: to.Ptr("domain1"),
+	// 			LifecycleDetails: to.Ptr("success"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			LifecycleState: to.Ptr(armoracledatabase.VirtualNetworkAddressLifecycleStateAvailable),
+	// 			TimeAssigned: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-22T00:27:02.119Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
 
 // Generated from example definition: 2025-03-01/virtualNetworkAddresses_listByParent.json
 func ExampleVirtualNetworkAddressesClient_NewListByCloudVMClusterPager() {

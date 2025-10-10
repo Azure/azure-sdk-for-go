@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v4
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection
 
 go 1.24.0
 

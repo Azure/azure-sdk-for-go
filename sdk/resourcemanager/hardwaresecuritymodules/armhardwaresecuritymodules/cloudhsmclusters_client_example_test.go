@@ -67,7 +67,7 @@ func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
 			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": {},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": &armhardwaresecuritymodules.UserAssignedIdentity{},
 			},
 		},
 		Location: to.Ptr("eastus2"),
@@ -482,7 +482,7 @@ func ExampleCloudHsmClustersClient_BeginUpdate() {
 		Identity: &armhardwaresecuritymodules.ManagedServiceIdentity{
 			Type: to.Ptr(armhardwaresecuritymodules.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armhardwaresecuritymodules.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": {},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1": &armhardwaresecuritymodules.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{

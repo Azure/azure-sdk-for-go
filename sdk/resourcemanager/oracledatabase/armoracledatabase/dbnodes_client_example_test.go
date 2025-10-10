@@ -69,6 +69,54 @@ func ExampleDbNodesClient_BeginAction() {
 	// }
 }
 
+// Generated from example definition: 2025-03-01/dbNodes_get.json
+func ExampleDbNodesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbNodesClient().Get(ctx, "rg000", "cluster1", "ocid1....aaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbNodesClientGetResponse{
+	// 	DbNode: &armoracledatabase.DbNode{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/dbNodes/ocid1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/dbNodes"),
+	// 		Properties: &armoracledatabase.DbNodeProperties{
+	// 			Ocid: to.Ptr("ocid.dbNodes.1"),
+	// 			BackupIPID: to.Ptr("id1"),
+	// 			BackupVnic2ID: to.Ptr("id1"),
+	// 			BackupVnicID: to.Ptr("id1"),
+	// 			CPUCoreCount: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](500),
+	// 			DbServerID: to.Ptr("dbserver1"),
+	// 			DbSystemID: to.Ptr("db1"),
+	// 			FaultDomain: to.Ptr("domain1"),
+	// 			HostIPID: to.Ptr("10.0.0.0"),
+	// 			Hostname: to.Ptr("host1"),
+	// 			LifecycleState: to.Ptr(armoracledatabase.DbNodeProvisioningStateAvailable),
+	// 			MaintenanceType: to.Ptr(armoracledatabase.DbNodeMaintenanceTypeVmdbRebootMigration),
+	// 			MemorySizeInGbs: to.Ptr[int32](100),
+	// 			SoftwareStorageSizeInGb: to.Ptr[int32](1000),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+	// 			TimeMaintenanceWindowEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+	// 			TimeMaintenanceWindowStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-21T13:44:04.924Z"); return t}()),
+	// 			Vnic2ID: to.Ptr("ocid.vnic.id2"),
+	// 			VnicID: to.Ptr("ocid.vnic.id1"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-03-01/dbNodes_listByParent.json
 func ExampleDbNodesClient_NewListByCloudVMClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)

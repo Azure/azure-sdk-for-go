@@ -1,0 +1,9 @@
+directory: specification/compute/Combine.Management
+commit: 2dcd4a921481eaed63f7da9a67f27dd882223ce4
+repo: i-specs
+additionalDirectories: 
+- specification/compute/Common.Management
+- specification/compute/Compute.Management
+- specification/compute/Disk.Management
+- specification/compute/Gallery.Management
+- specification/compute/Sku.Management

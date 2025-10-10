@@ -1,5 +1,370 @@
 # Release History
 
+## 8.0.0 (2025-10-10)
+### Breaking Changes
+
+- Type of `AdditionalUnattendContent.ComponentName` has been changed from `*string` to `*ComponentNames`
+- Type of `AdditionalUnattendContent.PassName` has been changed from `*string` to `*PassNames`
+- Type of `OperationListResult.Value` has been changed from `[]*OperationValue` to `[]*Operation`
+- Type of `VirtualMachineScaleSetStorageProfile.DiskControllerType` has been changed from `*string` to `*DiskControllerTypes`
+- Type of `VirtualMachineScaleSetUpdateStorageProfile.DiskControllerType` has been changed from `*string` to `*DiskControllerTypes`
+- `DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey` from enum `DiskSecurityTypes` has been removed
+- `NetworkAPIVersionTwoThousandTwenty1101`, `NetworkAPIVersionTwoThousandTwentyTwo1101` from enum `NetworkAPIVersion` has been removed
+- `VirtualMachineSizeTypesStandardB1Ms`, `VirtualMachineSizeTypesStandardB2Ms`, `VirtualMachineSizeTypesStandardB4Ms`, `VirtualMachineSizeTypesStandardB8Ms`, `VirtualMachineSizeTypesStandardM12832Ms`, `VirtualMachineSizeTypesStandardM12864Ms`, `VirtualMachineSizeTypesStandardM128Ms`, `VirtualMachineSizeTypesStandardM6416Ms`, `VirtualMachineSizeTypesStandardM6432Ms`, `VirtualMachineSizeTypesStandardM64Ms` from enum `VirtualMachineSizeTypes` has been removed
+- Enum `CloudServiceSlotType` has been removed
+- Enum `CloudServiceUpgradeMode` has been removed
+- Function `*ClientFactory.NewCloudServiceOperatingSystemsClient` has been removed
+- Function `*ClientFactory.NewCloudServiceRoleInstancesClient` has been removed
+- Function `*ClientFactory.NewCloudServiceRolesClient` has been removed
+- Function `*ClientFactory.NewCloudServicesClient` has been removed
+- Function `*ClientFactory.NewCloudServicesUpdateDomainClient` has been removed
+- Function `*ClientFactory.NewDiskRestorePointClient` has been removed
+- Function `*ClientFactory.NewGallerySharingProfileClient` has been removed
+- Function `*ClientFactory.NewLogAnalyticsClient` has been removed
+- Function `*ClientFactory.NewSSHPublicKeysClient` has been removed
+- Function `*ClientFactory.NewSoftDeletedResourceClient` has been removed
+- Function `*ClientFactory.NewUsageClient` has been removed
+- Function `*ClientFactory.NewVirtualMachineImagesClient` has been removed
+- Function `*ClientFactory.NewVirtualMachineImagesEdgeZoneClient` has been removed
+- Function `*ClientFactory.NewVirtualMachineScaleSetRollingUpgradesClient` has been removed
+- Function `*ClientFactory.NewVirtualMachineScaleSetVMsClient` has been removed
+- Function `*ClientFactory.NewVirtualMachineSizesClient` has been removed
+- Function `NewCloudServiceOperatingSystemsClient` has been removed
+- Function `*CloudServiceOperatingSystemsClient.GetOSFamily` has been removed
+- Function `*CloudServiceOperatingSystemsClient.GetOSVersion` has been removed
+- Function `*CloudServiceOperatingSystemsClient.NewListOSFamiliesPager` has been removed
+- Function `*CloudServiceOperatingSystemsClient.NewListOSVersionsPager` has been removed
+- Function `NewCloudServiceRoleInstancesClient` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginDelete` has been removed
+- Function `*CloudServiceRoleInstancesClient.Get` has been removed
+- Function `*CloudServiceRoleInstancesClient.GetInstanceView` has been removed
+- Function `*CloudServiceRoleInstancesClient.GetRemoteDesktopFile` has been removed
+- Function `*CloudServiceRoleInstancesClient.NewListPager` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginRebuild` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginReimage` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginRestart` has been removed
+- Function `NewCloudServiceRolesClient` has been removed
+- Function `*CloudServiceRolesClient.Get` has been removed
+- Function `*CloudServiceRolesClient.NewListPager` has been removed
+- Function `NewCloudServicesClient` has been removed
+- Function `*CloudServicesClient.BeginCreateOrUpdate` has been removed
+- Function `*CloudServicesClient.BeginDelete` has been removed
+- Function `*CloudServicesClient.BeginDeleteInstances` has been removed
+- Function `*CloudServicesClient.Get` has been removed
+- Function `*CloudServicesClient.GetInstanceView` has been removed
+- Function `*CloudServicesClient.NewListAllPager` has been removed
+- Function `*CloudServicesClient.NewListPager` has been removed
+- Function `*CloudServicesClient.BeginPowerOff` has been removed
+- Function `*CloudServicesClient.BeginRebuild` has been removed
+- Function `*CloudServicesClient.BeginReimage` has been removed
+- Function `*CloudServicesClient.BeginRestart` has been removed
+- Function `*CloudServicesClient.BeginStart` has been removed
+- Function `*CloudServicesClient.BeginUpdate` has been removed
+- Function `NewCloudServicesUpdateDomainClient` has been removed
+- Function `*CloudServicesUpdateDomainClient.GetUpdateDomain` has been removed
+- Function `*CloudServicesUpdateDomainClient.NewListUpdateDomainsPager` has been removed
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` has been removed
+- Function `*DiskAccessesClient.BeginDeleteAPrivateEndpointConnection` has been removed
+- Function `*DiskAccessesClient.GetAPrivateEndpointConnection` has been removed
+- Function `*DiskAccessesClient.NewListPrivateEndpointConnectionsPager` has been removed
+- Function `*DiskAccessesClient.BeginUpdateAPrivateEndpointConnection` has been removed
+- Function `NewDiskRestorePointClient` has been removed
+- Function `*DiskRestorePointClient.Get` has been removed
+- Function `*DiskRestorePointClient.BeginGrantAccess` has been removed
+- Function `*DiskRestorePointClient.NewListByRestorePointPager` has been removed
+- Function `*DiskRestorePointClient.BeginRevokeAccess` has been removed
+- Function `NewGallerySharingProfileClient` has been removed
+- Function `*GallerySharingProfileClient.BeginUpdate` has been removed
+- Function `NewLogAnalyticsClient` has been removed
+- Function `*LogAnalyticsClient.BeginExportRequestRateByInterval` has been removed
+- Function `*LogAnalyticsClient.BeginExportThrottledRequests` has been removed
+- Function `NewSSHPublicKeysClient` has been removed
+- Function `*SSHPublicKeysClient.Create` has been removed
+- Function `*SSHPublicKeysClient.Delete` has been removed
+- Function `*SSHPublicKeysClient.GenerateKeyPair` has been removed
+- Function `*SSHPublicKeysClient.Get` has been removed
+- Function `*SSHPublicKeysClient.NewListByResourceGroupPager` has been removed
+- Function `*SSHPublicKeysClient.NewListBySubscriptionPager` has been removed
+- Function `*SSHPublicKeysClient.Update` has been removed
+- Function `NewSoftDeletedResourceClient` has been removed
+- Function `*SoftDeletedResourceClient.NewListByArtifactNamePager` has been removed
+- Function `NewUsageClient` has been removed
+- Function `*UsageClient.NewListPager` has been removed
+- Function `NewVirtualMachineImagesClient` has been removed
+- Function `*VirtualMachineImagesClient.Get` has been removed
+- Function `*VirtualMachineImagesClient.List` has been removed
+- Function `*VirtualMachineImagesClient.ListByEdgeZone` has been removed
+- Function `*VirtualMachineImagesClient.ListOffers` has been removed
+- Function `*VirtualMachineImagesClient.ListPublishers` has been removed
+- Function `*VirtualMachineImagesClient.ListSKUs` has been removed
+- Function `*VirtualMachineImagesClient.ListWithProperties` has been removed
+- Function `NewVirtualMachineImagesEdgeZoneClient` has been removed
+- Function `*VirtualMachineImagesEdgeZoneClient.Get` has been removed
+- Function `*VirtualMachineImagesEdgeZoneClient.List` has been removed
+- Function `*VirtualMachineImagesEdgeZoneClient.ListOffers` has been removed
+- Function `*VirtualMachineImagesEdgeZoneClient.ListPublishers` has been removed
+- Function `*VirtualMachineImagesEdgeZoneClient.ListSKUs` has been removed
+- Function `*VirtualMachineRunCommandsClient.Get` has been removed
+- Function `*VirtualMachineRunCommandsClient.NewListPager` has been removed
+- Function `NewVirtualMachineScaleSetRollingUpgradesClient` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginCancel` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.GetLatest` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade` has been removed
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade` has been removed
+- Function `NewVirtualMachineScaleSetVMsClient` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginDeallocate` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginDelete` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.Get` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.GetInstanceView` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.NewListPager` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginPerformMaintenance` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginPowerOff` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginRedeploy` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimage` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimageAll` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginRestart` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.RetrieveBootDiagnosticsData` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginRunCommand` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.SimulateEviction` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginStart` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginUpdate` has been removed
+- Function `*VirtualMachineScaleSetsClient.NewListByLocationPager` has been removed
+- Function `NewVirtualMachineSizesClient` has been removed
+- Function `*VirtualMachineSizesClient.NewListPager` has been removed
+- Function `*VirtualMachinesClient.NewListByLocationPager` has been removed
+- Operation `*VirtualMachineExtensionsClient.List` has supported pagination, use `*VirtualMachineExtensionsClient.NewListPager` instead.
+- Operation `*VirtualMachineScaleSetVMExtensionsClient.List` has supported pagination, use `*VirtualMachineScaleSetVMExtensionsClient.NewListPager` instead.
+- Struct `CloudService` has been removed
+- Struct `CloudServiceExtensionProfile` has been removed
+- Struct `CloudServiceExtensionProperties` has been removed
+- Struct `CloudServiceInstanceView` has been removed
+- Struct `CloudServiceListResult` has been removed
+- Struct `CloudServiceNetworkProfile` has been removed
+- Struct `CloudServiceOsProfile` has been removed
+- Struct `CloudServiceProperties` has been removed
+- Struct `CloudServiceRole` has been removed
+- Struct `CloudServiceRoleListResult` has been removed
+- Struct `CloudServiceRoleProfile` has been removed
+- Struct `CloudServiceRoleProfileProperties` has been removed
+- Struct `CloudServiceRoleProperties` has been removed
+- Struct `CloudServiceRoleSKU` has been removed
+- Struct `CloudServiceUpdate` has been removed
+- Struct `CloudServiceVaultAndSecretReference` has been removed
+- Struct `CloudServiceVaultCertificate` has been removed
+- Struct `CloudServiceVaultSecretGroup` has been removed
+- Struct `Extension` has been removed
+- Struct `InstanceSKU` has been removed
+- Struct `InstanceViewStatusesSummary` has been removed
+- Struct `LoadBalancerConfiguration` has been removed
+- Struct `LoadBalancerConfigurationProperties` has been removed
+- Struct `LoadBalancerFrontendIPConfiguration` has been removed
+- Struct `LoadBalancerFrontendIPConfigurationProperties` has been removed
+- Struct `LogAnalyticsOperationResult` has been removed
+- Struct `LogAnalyticsOutput` has been removed
+- Struct `OSFamily` has been removed
+- Struct `OSFamilyListResult` has been removed
+- Struct `OSFamilyProperties` has been removed
+- Struct `OSVersion` has been removed
+- Struct `OSVersionListResult` has been removed
+- Struct `OSVersionProperties` has been removed
+- Struct `OSVersionPropertiesBase` has been removed
+- Struct `OperationValue` has been removed
+- Struct `ResourceInstanceViewStatus` has been removed
+- Struct `RoleInstance` has been removed
+- Struct `RoleInstanceListResult` has been removed
+- Struct `RoleInstanceNetworkProfile` has been removed
+- Struct `RoleInstanceProperties` has been removed
+- Struct `RoleInstanceView` has been removed
+- Struct `RoleInstances` has been removed
+- Struct `StatusCodeCount` has been removed
+- Struct `UpdateDomain` has been removed
+- Struct `UpdateDomainListResult` has been removed
+- Field `CapacityReservation` of struct `CapacityReservationsClientCreateOrUpdateResponse` has been removed
+- Field `CapacityReservation` of struct `CapacityReservationsClientUpdateResponse` has been removed
+- Field `DedicatedHost` of struct `DedicatedHostsClientCreateOrUpdateResponse` has been removed
+- Field `DedicatedHost` of struct `DedicatedHostsClientUpdateResponse` has been removed
+- Field `DiskAccess` of struct `DiskAccessesClientCreateOrUpdateResponse` has been removed
+- Field `DiskAccess` of struct `DiskAccessesClientUpdateResponse` has been removed
+- Field `DiskEncryptionSet` of struct `DiskEncryptionSetsClientCreateOrUpdateResponse` has been removed
+- Field `DiskEncryptionSet` of struct `DiskEncryptionSetsClientUpdateResponse` has been removed
+- Field `Disk` of struct `DisksClientCreateOrUpdateResponse` has been removed
+- Field `Disk` of struct `DisksClientUpdateResponse` has been removed
+- Field `Gallery` of struct `GalleriesClientCreateOrUpdateResponse` has been removed
+- Field `Gallery` of struct `GalleriesClientUpdateResponse` has been removed
+- Field `GalleryApplicationVersion` of struct `GalleryApplicationVersionsClientCreateOrUpdateResponse` has been removed
+- Field `GalleryApplicationVersion` of struct `GalleryApplicationVersionsClientUpdateResponse` has been removed
+- Field `GalleryApplication` of struct `GalleryApplicationsClientCreateOrUpdateResponse` has been removed
+- Field `GalleryApplication` of struct `GalleryApplicationsClientUpdateResponse` has been removed
+- Field `GalleryImageVersion` of struct `GalleryImageVersionsClientCreateOrUpdateResponse` has been removed
+- Field `GalleryImageVersion` of struct `GalleryImageVersionsClientUpdateResponse` has been removed
+- Field `GalleryImage` of struct `GalleryImagesClientCreateOrUpdateResponse` has been removed
+- Field `GalleryImage` of struct `GalleryImagesClientUpdateResponse` has been removed
+- Field `GalleryInVMAccessControlProfileVersion` of struct `GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse` has been removed
+- Field `GalleryInVMAccessControlProfileVersion` of struct `GalleryInVMAccessControlProfileVersionsClientUpdateResponse` has been removed
+- Field `GalleryInVMAccessControlProfile` of struct `GalleryInVMAccessControlProfilesClientCreateOrUpdateResponse` has been removed
+- Field `GalleryInVMAccessControlProfile` of struct `GalleryInVMAccessControlProfilesClientUpdateResponse` has been removed
+- Field `Image` of struct `ImagesClientCreateOrUpdateResponse` has been removed
+- Field `Image` of struct `ImagesClientUpdateResponse` has been removed
+- Field `RestorePoint` of struct `RestorePointsClientCreateResponse` has been removed
+- Field `Snapshot` of struct `SnapshotsClientCreateOrUpdateResponse` has been removed
+- Field `Snapshot` of struct `SnapshotsClientUpdateResponse` has been removed
+- Field `VirtualMachineExtension` of struct `VirtualMachineExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineExtension` of struct `VirtualMachineExtensionsClientUpdateResponse` has been removed
+- Field `VirtualMachineRunCommand` of struct `VirtualMachineRunCommandsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineRunCommand` of struct `VirtualMachineRunCommandsClientUpdateResponse` has been removed
+- Field `Type` of struct `VirtualMachineScaleSetExtension` has been removed
+- Field `VirtualMachineScaleSetExtension` of struct `VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetExtension` of struct `VirtualMachineScaleSetExtensionsClientUpdateResponse` has been removed
+- Field `Type` of struct `VirtualMachineScaleSetVMExtension` has been removed
+- Field `VirtualMachineScaleSetVMExtension` of struct `VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineScaleSetVMExtension` of struct `VirtualMachineScaleSetVMExtensionsClientUpdateResponse` has been removed
+- Field `VirtualMachineRunCommand` of struct `VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineRunCommand` of struct `VirtualMachineScaleSetVMRunCommandsClientUpdateResponse` has been removed
+- Field `VirtualMachineScaleSet` of struct `VirtualMachineScaleSetsClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachineScaleSet` of struct `VirtualMachineScaleSetsClientUpdateResponse` has been removed
+- Field `VirtualMachine` of struct `VirtualMachinesClientCreateOrUpdateResponse` has been removed
+- Field `VirtualMachine` of struct `VirtualMachinesClientUpdateResponse` has been removed
+
+### Features Added
+
+- New value `DiskSecurityTypesConfidentialVMVMGuestStateOnlyEncryptedWithPlatformKey` added to enum type `DiskSecurityTypes`
+- New value `NetworkAPIVersion20201101`, `NetworkAPIVersion20221101` added to enum type `NetworkAPIVersion`
+- New value `VirtualMachineSizeTypesStandardB1MS`, `VirtualMachineSizeTypesStandardB2MS`, `VirtualMachineSizeTypesStandardB4MS`, `VirtualMachineSizeTypesStandardB8MS`, `VirtualMachineSizeTypesStandardM12832MS`, `VirtualMachineSizeTypesStandardM12864MS`, `VirtualMachineSizeTypesStandardM128MS`, `VirtualMachineSizeTypesStandardM6416MS`, `VirtualMachineSizeTypesStandardM6432MS`, `VirtualMachineSizeTypesStandardM64MS` added to enum type `VirtualMachineSizeTypes`
+- New enum type `ComponentNames` with values `ComponentNamesMicrosoftWindowsShellSetup`
+- New enum type `GetResponseContentType` with values `GetResponseContentTypeApplicationJSON`, `GetResponseContentTypeTextJSON`
+- New enum type `ListResponseContentType` with values `ListResponseContentTypeApplicationJSON`, `ListResponseContentTypeTextJSON`
+- New enum type `PassNames` with values `PassNamesOobeSystem`
+- New function `*ClientFactory.NewDiskRestorePointsClient() *DiskRestorePointsClient`
+- New function `*ClientFactory.NewLogAnalyticsOperationGroupClient() *LogAnalyticsOperationGroupClient`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewRollingUpgradeStatusInfosClient() *RollingUpgradeStatusInfosClient`
+- New function `*ClientFactory.NewSSHPublicKeyResourcesClient() *SSHPublicKeyResourcesClient`
+- New function `*ClientFactory.NewUsageOperationGroupClient() *UsageOperationGroupClient`
+- New function `*ClientFactory.NewVirtualMachineImagesEdgeZoneOperationGroupClient() *VirtualMachineImagesEdgeZoneOperationGroupClient`
+- New function `*ClientFactory.NewVirtualMachineImagesOperationGroupClient() *VirtualMachineImagesOperationGroupClient`
+- New function `*ClientFactory.NewVirtualMachineRunCommandsOperationGroupClient() *VirtualMachineRunCommandsOperationGroupClient`
+- New function `*ClientFactory.NewVirtualMachineScaleSetVMSClient() *VirtualMachineScaleSetVMSClient`
+- New function `*ClientFactory.NewVirtualMachineScaleSetsOperationGroupClient() *VirtualMachineScaleSetsOperationGroupClient`
+- New function `*ClientFactory.NewVirtualMachineSizesOperationGroupClient() *VirtualMachineSizesOperationGroupClient`
+- New function `*ClientFactory.NewVirtualMachinesOperationGroupClient() *VirtualMachinesOperationGroupClient`
+- New function `NewDiskRestorePointsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DiskRestorePointsClient, error)`
+- New function `*DiskRestorePointsClient.Get(context.Context, string, string, string, string, *DiskRestorePointsClientGetOptions) (DiskRestorePointsClientGetResponse, error)`
+- New function `*DiskRestorePointsClient.BeginGrantAccess(context.Context, string, string, string, string, GrantAccessData, *DiskRestorePointsClientBeginGrantAccessOptions) (*runtime.Poller[DiskRestorePointsClientGrantAccessResponse], error)`
+- New function `*DiskRestorePointsClient.NewListByRestorePointPager(string, string, string, *DiskRestorePointsClientListByRestorePointOptions) *runtime.Pager[DiskRestorePointsClientListByRestorePointResponse]`
+- New function `*DiskRestorePointsClient.BeginRevokeAccess(context.Context, string, string, string, string, *DiskRestorePointsClientBeginRevokeAccessOptions) (*runtime.Poller[DiskRestorePointsClientRevokeAccessResponse], error)`
+- New function `*GalleriesClient.BeginGallerySharingProfileUpdate(context.Context, string, string, SharingUpdate, *GalleriesClientBeginGallerySharingProfileUpdateOptions) (*runtime.Poller[GalleriesClientGallerySharingProfileUpdateResponse], error)`
+- New function `*GalleriesClient.NewListByArtifactNamePager(string, string, string, string, *GalleriesClientListByArtifactNameOptions) *runtime.Pager[GalleriesClientListByArtifactNameResponse]`
+- New function `NewLogAnalyticsOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LogAnalyticsOperationGroupClient, error)`
+- New function `*LogAnalyticsOperationGroupClient.BeginExportRequestRateByInterval(context.Context, string, RequestRateByIntervalInput, *LogAnalyticsOperationGroupClientBeginExportRequestRateByIntervalOptions) (*runtime.Poller[LogAnalyticsOperationGroupClientExportRequestRateByIntervalResponse], error)`
+- New function `*LogAnalyticsOperationGroupClient.BeginExportThrottledRequests(context.Context, string, ThrottledRequestsInput, *LogAnalyticsOperationGroupClientBeginExportThrottledRequestsOptions) (*runtime.Poller[LogAnalyticsOperationGroupClientExportThrottledRequestsResponse], error)`
+- New function `NewPrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginDeleteAPrivateEndpointConnection(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteAPrivateEndpointConnectionOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteAPrivateEndpointConnectionResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.GetAPrivateEndpointConnection(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetAPrivateEndpointConnectionOptions) (PrivateEndpointConnectionsClientGetAPrivateEndpointConnectionResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.NewListPrivateEndpointConnectionsPager(string, string, *PrivateEndpointConnectionsClientListPrivateEndpointConnectionsOptions) *runtime.Pager[PrivateEndpointConnectionsClientListPrivateEndpointConnectionsResponse]`
+- New function `*PrivateEndpointConnectionsClient.BeginUpdateAPrivateEndpointConnection(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginUpdateAPrivateEndpointConnectionOptions) (*runtime.Poller[PrivateEndpointConnectionsClientUpdateAPrivateEndpointConnectionResponse], error)`
+- New function `NewRollingUpgradeStatusInfosClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RollingUpgradeStatusInfosClient, error)`
+- New function `*RollingUpgradeStatusInfosClient.GetLatest(context.Context, string, string, *RollingUpgradeStatusInfosClientGetLatestOptions) (RollingUpgradeStatusInfosClientGetLatestResponse, error)`
+- New function `NewSSHPublicKeyResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SSHPublicKeyResourcesClient, error)`
+- New function `*SSHPublicKeyResourcesClient.Create(context.Context, string, string, SSHPublicKeyResource, *SSHPublicKeyResourcesClientCreateOptions) (SSHPublicKeyResourcesClientCreateResponse, error)`
+- New function `*SSHPublicKeyResourcesClient.Delete(context.Context, string, string, *SSHPublicKeyResourcesClientDeleteOptions) (SSHPublicKeyResourcesClientDeleteResponse, error)`
+- New function `*SSHPublicKeyResourcesClient.GenerateKeyPair(context.Context, string, string, *SSHPublicKeyResourcesClientGenerateKeyPairOptions) (SSHPublicKeyResourcesClientGenerateKeyPairResponse, error)`
+- New function `*SSHPublicKeyResourcesClient.Get(context.Context, string, string, *SSHPublicKeyResourcesClientGetOptions) (SSHPublicKeyResourcesClientGetResponse, error)`
+- New function `*SSHPublicKeyResourcesClient.NewListByResourceGroupPager(string, *SSHPublicKeyResourcesClientListByResourceGroupOptions) *runtime.Pager[SSHPublicKeyResourcesClientListByResourceGroupResponse]`
+- New function `*SSHPublicKeyResourcesClient.NewListBySubscriptionPager(*SSHPublicKeyResourcesClientListBySubscriptionOptions) *runtime.Pager[SSHPublicKeyResourcesClientListBySubscriptionResponse]`
+- New function `*SSHPublicKeyResourcesClient.Update(context.Context, string, string, SSHPublicKeyUpdateResource, *SSHPublicKeyResourcesClientUpdateOptions) (SSHPublicKeyResourcesClientUpdateResponse, error)`
+- New function `NewUsageOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsageOperationGroupClient, error)`
+- New function `*UsageOperationGroupClient.NewListPager(string, *UsageOperationGroupClientListOptions) *runtime.Pager[UsageOperationGroupClientListResponse]`
+- New function `NewVirtualMachineImagesEdgeZoneOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualMachineImagesEdgeZoneOperationGroupClient, error)`
+- New function `*VirtualMachineImagesEdgeZoneOperationGroupClient.Get(context.Context, string, string, string, string, string, string, *VirtualMachineImagesEdgeZoneOperationGroupClientGetOptions) (VirtualMachineImagesEdgeZoneOperationGroupClientGetResponse, error)`
+- New function `*VirtualMachineImagesEdgeZoneOperationGroupClient.List(context.Context, string, string, string, string, string, *VirtualMachineImagesEdgeZoneOperationGroupClientListOptions) (VirtualMachineImagesEdgeZoneOperationGroupClientListResponse, error)`
+- New function `*VirtualMachineImagesEdgeZoneOperationGroupClient.ListOffers(context.Context, string, string, string, *VirtualMachineImagesEdgeZoneOperationGroupClientListOffersOptions) (VirtualMachineImagesEdgeZoneOperationGroupClientListOffersResponse, error)`
+- New function `*VirtualMachineImagesEdgeZoneOperationGroupClient.ListPublishers(context.Context, string, string, *VirtualMachineImagesEdgeZoneOperationGroupClientListPublishersOptions) (VirtualMachineImagesEdgeZoneOperationGroupClientListPublishersResponse, error)`
+- New function `*VirtualMachineImagesEdgeZoneOperationGroupClient.ListSKUs(context.Context, string, string, string, string, *VirtualMachineImagesEdgeZoneOperationGroupClientListSKUsOptions) (VirtualMachineImagesEdgeZoneOperationGroupClientListSKUsResponse, error)`
+- New function `NewVirtualMachineImagesOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualMachineImagesOperationGroupClient, error)`
+- New function `*VirtualMachineImagesOperationGroupClient.Get(context.Context, string, string, string, string, string, *VirtualMachineImagesOperationGroupClientGetOptions) (VirtualMachineImagesOperationGroupClientGetResponse, error)`
+- New function `*VirtualMachineImagesOperationGroupClient.List(context.Context, string, string, string, string, *VirtualMachineImagesOperationGroupClientListOptions) (VirtualMachineImagesOperationGroupClientListResponse, error)`
+- New function `*VirtualMachineImagesOperationGroupClient.ListByEdgeZone(context.Context, string, string, *VirtualMachineImagesOperationGroupClientListByEdgeZoneOptions) (VirtualMachineImagesOperationGroupClientListByEdgeZoneResponse, error)`
+- New function `*VirtualMachineImagesOperationGroupClient.ListOffers(context.Context, string, string, *VirtualMachineImagesOperationGroupClientListOffersOptions) (VirtualMachineImagesOperationGroupClientListOffersResponse, error)`
+- New function `*VirtualMachineImagesOperationGroupClient.ListPublishers(context.Context, string, *VirtualMachineImagesOperationGroupClientListPublishersOptions) (VirtualMachineImagesOperationGroupClientListPublishersResponse, error)`
+- New function `*VirtualMachineImagesOperationGroupClient.ListSKUs(context.Context, string, string, string, *VirtualMachineImagesOperationGroupClientListSKUsOptions) (VirtualMachineImagesOperationGroupClientListSKUsResponse, error)`
+- New function `*VirtualMachineImagesOperationGroupClient.ListWithProperties(context.Context, string, string, string, string, string, *VirtualMachineImagesOperationGroupClientListWithPropertiesOptions) (VirtualMachineImagesOperationGroupClientListWithPropertiesResponse, error)`
+- New function `NewVirtualMachineRunCommandsOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualMachineRunCommandsOperationGroupClient, error)`
+- New function `*VirtualMachineRunCommandsOperationGroupClient.Get(context.Context, string, string, string, *VirtualMachineRunCommandsOperationGroupClientGetOptions) (VirtualMachineRunCommandsOperationGroupClientGetResponse, error)`
+- New function `*VirtualMachineRunCommandsOperationGroupClient.NewListPager(string, string, *VirtualMachineRunCommandsOperationGroupClientListOptions) *runtime.Pager[VirtualMachineRunCommandsOperationGroupClientListResponse]`
+- New function `NewVirtualMachineScaleSetVMSClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualMachineScaleSetVMSClient, error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginApproveRollingUpgrade(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginApproveRollingUpgradeOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientApproveRollingUpgradeResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginAttachDetachDataDisks(context.Context, string, string, string, AttachDetachDataDisksRequest, *VirtualMachineScaleSetVMSClientBeginAttachDetachDataDisksOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientAttachDetachDataDisksResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginDeallocate(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginDeallocateOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientDeallocateResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginDelete(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginDeleteOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientDeleteResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.Get(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientGetOptions) (VirtualMachineScaleSetVMSClientGetResponse, error)`
+- New function `*VirtualMachineScaleSetVMSClient.GetInstanceView(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientGetInstanceViewOptions) (VirtualMachineScaleSetVMSClientGetInstanceViewResponse, error)`
+- New function `*VirtualMachineScaleSetVMSClient.NewListPager(string, string, *VirtualMachineScaleSetVMSClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMSClientListResponse]`
+- New function `*VirtualMachineScaleSetVMSClient.BeginPerformMaintenance(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginPerformMaintenanceOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientPerformMaintenanceResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginPowerOff(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginPowerOffOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientPowerOffResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginRedeploy(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginRedeployOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientRedeployResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginReimage(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginReimageOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientReimageResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginReimageAll(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginReimageAllOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientReimageAllResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginRestart(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginRestartOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientRestartResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.RetrieveBootDiagnosticsData(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientRetrieveBootDiagnosticsDataOptions) (VirtualMachineScaleSetVMSClientRetrieveBootDiagnosticsDataResponse, error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginRunCommand(context.Context, string, string, string, RunCommandInput, *VirtualMachineScaleSetVMSClientBeginRunCommandOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientRunCommandResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.SimulateEviction(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientSimulateEvictionOptions) (VirtualMachineScaleSetVMSClientSimulateEvictionResponse, error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginStart(context.Context, string, string, string, *VirtualMachineScaleSetVMSClientBeginStartOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientStartResponse], error)`
+- New function `*VirtualMachineScaleSetVMSClient.BeginUpdate(context.Context, string, string, string, VirtualMachineScaleSetVM, *VirtualMachineScaleSetVMSClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineScaleSetVMSClientUpdateResponse], error)`
+- New function `*VirtualMachineScaleSetsClient.BeginCancel(context.Context, string, string, *VirtualMachineScaleSetsClientBeginCancelOptions) (*runtime.Poller[VirtualMachineScaleSetsClientCancelResponse], error)`
+- New function `*VirtualMachineScaleSetsClient.BeginStartExtensionUpgrade(context.Context, string, string, *VirtualMachineScaleSetsClientBeginStartExtensionUpgradeOptions) (*runtime.Poller[VirtualMachineScaleSetsClientStartExtensionUpgradeResponse], error)`
+- New function `*VirtualMachineScaleSetsClient.BeginStartOSUpgrade(context.Context, string, string, *VirtualMachineScaleSetsClientBeginStartOSUpgradeOptions) (*runtime.Poller[VirtualMachineScaleSetsClientStartOSUpgradeResponse], error)`
+- New function `NewVirtualMachineScaleSetsOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualMachineScaleSetsOperationGroupClient, error)`
+- New function `*VirtualMachineScaleSetsOperationGroupClient.NewListByLocationPager(string, *VirtualMachineScaleSetsOperationGroupClientListByLocationOptions) *runtime.Pager[VirtualMachineScaleSetsOperationGroupClientListByLocationResponse]`
+- New function `NewVirtualMachineSizesOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualMachineSizesOperationGroupClient, error)`
+- New function `*VirtualMachineSizesOperationGroupClient.NewListPager(string, *VirtualMachineSizesOperationGroupClientListOptions) *runtime.Pager[VirtualMachineSizesOperationGroupClientListResponse]`
+- New function `NewVirtualMachinesOperationGroupClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualMachinesOperationGroupClient, error)`
+- New function `*VirtualMachinesOperationGroupClient.NewListByLocationPager(string, *VirtualMachinesOperationGroupClientListByLocationOptions) *runtime.Pager[VirtualMachinesOperationGroupClientListByLocationResponse]`
+- New struct `ApproveRollingUpgradeParameterBody`
+- New struct `ConvertToVirtualMachineScaleSetParameterBody`
+- New struct `DeallocateParameterBody`
+- New struct `GenerateKeyPairParameterBody`
+- New struct `MigrateToVMScaleSetParameterBody`
+- New struct `OkResponse`
+- New struct `Operation`
+- New struct `PerformMaintenanceParameterBody`
+- New struct `PowerOffParameterBody`
+- New struct `RedeployParameterBody`
+- New struct `ReimageAllParameterBody`
+- New struct `ReimageParameterBody`
+- New struct `ReimageParameterBody1`
+- New struct `ReimageParameterBody2`
+- New struct `RestartParameterBody`
+- New struct `StartParameterBody`
+- New anonymous field `OkResponse` in struct `DisksClientRevokeAccessResponse`
+- New anonymous field `OkResponse` in struct `SnapshotsClientRevokeAccessResponse`
+- New field `VMType` in struct `VirtualMachineScaleSetExtension`
+- New field `VMType` in struct `VirtualMachineScaleSetVMExtension`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientDeallocateResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientDeleteInstancesResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientPerformMaintenanceResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientPowerOffResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientReapplyResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientRedeployResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientReimageAllResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientReimageResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientRestartResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientScaleOutResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientStartResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachineScaleSetsClientUpdateInstancesResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientConvertToManagedDisksResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientDeallocateResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientPerformMaintenanceResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientPowerOffResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientReapplyResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientRedeployResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientReimageResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientRestartResponse`
+- New anonymous field `OkResponse` in struct `VirtualMachinesClientStartResponse`
+
+
 ## 7.0.0 (2025-07-23)
 ### Breaking Changes
 

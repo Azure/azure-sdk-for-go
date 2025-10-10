@@ -1353,10 +1353,8 @@ func TestTagsFilterMultipleAndNilValues(t *testing.T) {
 		require.NotContains(t, foundKeys, "setting-mixed-tags") // has env=staging
 	})
 
-	// Test 2: Filter by tag key regardless of value (including nil/empty)
+	// Test 2: Filter by exact tag key-value match
 	t.Run("TagKeyExistsFilter", func(t *testing.T) {
-		// Note: This test depends on how the backend handles tag key existence
-		// Some implementations might not return nil-valued tags
 		selector := azappconfig.SettingSelector{
 			TagsFilter: []string{"service=api"},
 		}
@@ -1375,6 +1373,7 @@ func TestTagsFilterMultipleAndNilValues(t *testing.T) {
 		}
 
 		// Should find only the setting with service=api
+		require.Len(t, foundKeys, 1)
 		require.Contains(t, foundKeys, "setting-with-normal-tags")
 		require.NotContains(t, foundKeys, "setting-with-nil-tag-value")   // service is nil
 		require.NotContains(t, foundKeys, "setting-with-empty-tag-value") // service is empty
@@ -1455,7 +1454,7 @@ func TestTagsFilterMultipleAndNilValues(t *testing.T) {
 	// Test 7: Filter by tag key that exists with nil values
 	t.Run("TagKeyExistsWithNilValuesFilter", func(t *testing.T) {
 		selector := azappconfig.SettingSelector{
-			TagsFilter: []string{"tag1=\x00"}, // tag1 exists with nil or empty values in some settings
+			TagsFilter: []string{"tag1=\x00"}, // tag1 exists with nil value
 		}
 		var foundKeys []string
 		pager := client.NewListSettingsPager(selector, nil)

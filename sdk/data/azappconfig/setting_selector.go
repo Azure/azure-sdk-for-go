@@ -31,7 +31,7 @@ type SettingSelector struct {
 	LabelFilter *string
 
 	// Tags filter that will be used to select a set of configuration setting entities.
-	// This is a list of tag filters in the format {tagName=tagValue}. For more information about filtering by tags, see::
+	// This is a list of tag filters in the format {tagName=tagValue}. For more information about filtering by tags, see:
 	// https://aka.ms/azconfig/docs/keyvaluefiltering
 	TagsFilter []string
 

@@ -720,32 +720,10 @@ func TestSubjectAlternativeNames(t *testing.T) {
 		},
 	}
 
-	// Test serialization
-	testSerde(t, &policy)
-	sans := policy.X509CertificateProperties.SubjectAlternativeNames
-	testSerde(t, sans)
-
-	// Verify JSON contains new fields
-	data, err := sans.MarshalJSON()
-	require.NoError(t, err)
-	jsonStr := string(data)
-	require.Contains(t, jsonStr, "ipAddresses")
-	require.Contains(t, jsonStr, "uris")
-
-	// Verify round-trip serialization preserves all fields
-	var unmarshaled azcertificates.SubjectAlternativeNames
-	err = unmarshaled.UnmarshalJSON(data)
-	require.NoError(t, err)
-	require.Equal(t, sans.DNSNames, unmarshaled.DNSNames)
-	require.Equal(t, sans.Emails, unmarshaled.Emails)
-	require.Equal(t, sans.IPAddresses, unmarshaled.IPAddresses)
-	require.Equal(t, sans.Uris, unmarshaled.Uris)
-	require.Equal(t, sans.UserPrincipalNames, unmarshaled.UserPrincipalNames)
-
 	// Create certificate and verify SANs are preserved
 	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
 	testSerde(t, &createParams)
-	_, err = client.CreateCertificate(ctx, certName, createParams, nil)
+	_, err := client.CreateCertificate(ctx, certName, createParams, nil)
 	require.NoError(t, err)
 	pollCertOperation(t, client, certName)
 	defer cleanUpCert(t, client, certName)

@@ -41,6 +41,10 @@ type WorkloadIdentityCredentialOptions struct {
 	// application is registered.
 	AdditionallyAllowedTenants []string
 
+	// AzureKubernetesTokenProxy determines whether the credential reads token proxy configuration from
+	// environment variables.
+	AzureKubernetesTokenProxy bool
+
 	// Cache is a persistent cache the credential will use to store the tokens it acquires, making
 	// them available to other processes and credential instances. The default, zero value means the
 	// credential will store tokens in memory and not share them with any other credential instance.
@@ -97,10 +101,10 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	// configure custom token proxy if environment variables are present.
-	// In custom token proxy mode, a dedicated transport will be used for proxying token requests to a dedicated proxy endpoint.
-	if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
-		return nil, err
+	if options.AzureKubernetesTokenProxy {
+		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
+			return nil, err
+		}
 	}
 
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, caco)

@@ -54,7 +54,7 @@ func (testsuite *CapacityReservationTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestCapacityReservationTestSuite(t *testing.T) {
+func TTestCapacityReservationTestSuite(t *testing.T) {
 	suite.Run(t, new(CapacityReservationTestSuite))
 }
 

@@ -33,14 +33,9 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
     # Tests were actually run create a coverage report
     $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
-    gocov convert ./coverage.txt > ./coverage.json
-
-    # gocov converts rely on standard input
-    Get-Content ./coverage.json | gocov-xml > ./coverage.xml
-    Get-Content ./coverage.json | gocov-html > ./coverage.html
+    Get-Content ./coverage.txt |  gocover-cobertura > ./coverage.xml
 
     Move-Item -Force ./coverage.xml $repoRoot
-    Move-Item -Force ./coverage.html $repoRoot
 
     # use internal tool to fail if coverage is too low
     Pop-Location

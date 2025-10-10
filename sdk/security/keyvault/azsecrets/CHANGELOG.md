@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.1-beta.1 (Unreleased)
+## 1.5.0 (Unreleased)
 
 ### Features Added
 * Added `PreviousVersion` field to `Secret` and `DeletedSecret` models for certificate version tracking

@@ -43,7 +43,7 @@ func NewManagedDashboardsClient(subscriptionID string, credential azcore.TokenCr
 // dashboard or update an existing dashboard.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dashboardName - The name of the Azure Managed Dashboard.
 //   - options - ManagedDashboardsClientBeginCreateOptions contains the optional parameters for the ManagedDashboardsClient.BeginCreate
@@ -69,7 +69,7 @@ func (client *ManagedDashboardsClient) BeginCreate(ctx context.Context, resource
 // or update an existing dashboard.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 func (client *ManagedDashboardsClient) create(ctx context.Context, resourceGroupName string, dashboardName string, requestBodyParameters ManagedDashboard, options *ManagedDashboardsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDashboardsClient.BeginCreate"
@@ -111,7 +111,7 @@ func (client *ManagedDashboardsClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -124,7 +124,7 @@ func (client *ManagedDashboardsClient) createCreateRequest(ctx context.Context, 
 // Delete - Delete a dashboard for Grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dashboardName - The name of the Azure Managed Dashboard.
 //   - options - ManagedDashboardsClientDeleteOptions contains the optional parameters for the ManagedDashboardsClient.Delete
@@ -170,7 +170,7 @@ func (client *ManagedDashboardsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -178,7 +178,7 @@ func (client *ManagedDashboardsClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get the properties of a specific dashboard for grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dashboardName - The name of the Azure Managed Dashboard.
 //   - options - ManagedDashboardsClientGetOptions contains the optional parameters for the ManagedDashboardsClient.Get method.
@@ -224,7 +224,7 @@ func (client *ManagedDashboardsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *ManagedDashboardsClient) getHandleResponse(resp *http.Response) (M
 
 // NewListPager - List all resources of dashboards under the specified resource group.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedDashboardsClientListOptions contains the optional parameters for the ManagedDashboardsClient.NewListPager
 //     method.
@@ -284,7 +284,7 @@ func (client *ManagedDashboardsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +301,7 @@ func (client *ManagedDashboardsClient) listHandleResponse(resp *http.Response) (
 
 // NewListBySubscriptionPager - List all resources of dashboards under the specified subscription.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - options - ManagedDashboardsClientListBySubscriptionOptions contains the optional parameters for the ManagedDashboardsClient.NewListBySubscriptionPager
 //     method.
 func (client *ManagedDashboardsClient) NewListBySubscriptionPager(options *ManagedDashboardsClientListBySubscriptionOptions) *runtime.Pager[ManagedDashboardsClientListBySubscriptionResponse] {
@@ -339,7 +339,7 @@ func (client *ManagedDashboardsClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -357,7 +357,7 @@ func (client *ManagedDashboardsClient) listBySubscriptionHandleResponse(resp *ht
 // Update - Update a dashboard for Grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dashboardName - The name of the Azure Managed Dashboard.
 //   - options - ManagedDashboardsClientUpdateOptions contains the optional parameters for the ManagedDashboardsClient.Update
@@ -404,7 +404,7 @@ func (client *ManagedDashboardsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

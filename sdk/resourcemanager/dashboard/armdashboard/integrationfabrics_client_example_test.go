@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01-preview/IntegrationFabrics_Create.json
+// Generated from example definition: 2025-08-01/IntegrationFabrics_Create.json
 func ExampleIntegrationFabricsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleIntegrationFabricsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/IntegrationFabrics_Delete.json
+// Generated from example definition: 2025-08-01/IntegrationFabrics_Delete.json
 func ExampleIntegrationFabricsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleIntegrationFabricsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/IntegrationFabrics_Get.json
+// Generated from example definition: 2025-08-01/IntegrationFabrics_Get.json
 func ExampleIntegrationFabricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleIntegrationFabricsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/IntegrationFabrics_List.json
+// Generated from example definition: 2025-08-01/IntegrationFabrics_List.json
 func ExampleIntegrationFabricsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleIntegrationFabricsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/IntegrationFabrics_Update.json
+// Generated from example definition: 2025-08-01/IntegrationFabrics_Update.json
 func ExampleIntegrationFabricsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

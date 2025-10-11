@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Revisions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Revisions_List.json
 func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Revisions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Revisions_Get.json
 func ExampleContainerAppsRevisionsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,41 +108,39 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// 		Active: to.Ptr(true),
 	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
 	// 		Fqdn: to.Ptr("testcontainerApp0-pjxhsye.politehill-ab123456.eastus.azurecontainerapps.io"),
-	// 		Labels: []*string{
-	// 			to.Ptr("production")},
-	// 			LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
-	// 			Replicas: to.Ptr[int32](1),
-	// 			RunningState: to.Ptr(armappcontainers.RevisionRunningStateRunning),
-	// 			Template: &armappcontainers.Template{
-	// 				Containers: []*armappcontainers.Container{
+	// 		LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
+	// 		Replicas: to.Ptr[int32](1),
+	// 		RunningState: to.Ptr(armappcontainers.RevisionRunningStateRunning),
+	// 		Template: &armappcontainers.Template{
+	// 			Containers: []*armappcontainers.Container{
+	// 				{
+	// 					Name: to.Ptr("testcontainerApp0"),
+	// 					Image: to.Ptr("repo/testcontainerApp0:v2"),
+	// 					Resources: &armappcontainers.ContainerResources{
+	// 						CPU: to.Ptr[float64](0.2),
+	// 						Memory: to.Ptr("100Mi"),
+	// 					},
+	// 			}},
+	// 			Scale: &armappcontainers.Scale{
+	// 				MaxReplicas: to.Ptr[int32](5),
+	// 				MinReplicas: to.Ptr[int32](1),
+	// 				Rules: []*armappcontainers.ScaleRule{
 	// 					{
-	// 						Name: to.Ptr("testcontainerApp0"),
-	// 						Image: to.Ptr("repo/testcontainerApp0:v2"),
-	// 						Resources: &armappcontainers.ContainerResources{
-	// 							CPU: to.Ptr[float64](0.2),
-	// 							Memory: to.Ptr("100Mi"),
+	// 						Name: to.Ptr("httpscalingrule"),
+	// 						HTTP: &armappcontainers.HTTPScaleRule{
+	// 							Metadata: map[string]*string{
+	// 								"concurrentRequests": to.Ptr("50"),
+	// 							},
 	// 						},
 	// 				}},
-	// 				Scale: &armappcontainers.Scale{
-	// 					MaxReplicas: to.Ptr[int32](5),
-	// 					MinReplicas: to.Ptr[int32](1),
-	// 					Rules: []*armappcontainers.ScaleRule{
-	// 						{
-	// 							Name: to.Ptr("httpscalingrule"),
-	// 							HTTP: &armappcontainers.HTTPScaleRule{
-	// 								Metadata: map[string]*string{
-	// 									"concurrentRequests": to.Ptr("50"),
-	// 								},
-	// 							},
-	// 					}},
-	// 				},
 	// 			},
-	// 			TrafficWeight: to.Ptr[int32](80),
 	// 		},
-	// 	}
+	// 		TrafficWeight: to.Ptr[int32](80),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Revisions_Activate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Revisions_Activate.json
 func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +157,7 @@ func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Revisions_Deactivate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Revisions_Deactivate.json
 func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +174,7 @@ func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Revisions_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Revisions_Restart.json
 func ExampleContainerAppsRevisionsClient_RestartRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

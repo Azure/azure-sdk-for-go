@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/SourceControls_ListByContainer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/SourceControls_ListByContainer.json
 func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,17 +49,7 @@ func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 		// 			Properties: &armappcontainers.SourceControlProperties{
 		// 				Branch: to.Ptr("master"),
 		// 				GithubActionConfiguration: &armappcontainers.GithubActionConfiguration{
-		// 					BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
-		// 						{
-		// 							Name: to.Ptr("foo1"),
-		// 							Value: to.Ptr("bar1"),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("foo2"),
-		// 							Value: to.Ptr("bar2"),
-		// 					}},
 		// 					ContextPath: to.Ptr("./"),
-		// 					DockerfilePath: to.Ptr("./Dockerfile"),
 		// 					Image: to.Ptr("image/tag"),
 		// 					RegistryInfo: &armappcontainers.RegistryInfo{
 		// 						RegistryURL: to.Ptr("xwang971reg.azurecr.io"),
@@ -73,7 +63,7 @@ func ExampleContainerAppsSourceControlsClient_NewListByContainerAppPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/SourceControls_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/SourceControls_Get.json
 func ExampleContainerAppsSourceControlsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,17 +88,7 @@ func ExampleContainerAppsSourceControlsClient_Get() {
 	// 	Properties: &armappcontainers.SourceControlProperties{
 	// 		Branch: to.Ptr("master"),
 	// 		GithubActionConfiguration: &armappcontainers.GithubActionConfiguration{
-	// 			BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
-	// 				{
-	// 					Name: to.Ptr("foo1"),
-	// 					Value: to.Ptr("bar1"),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("foo2"),
-	// 					Value: to.Ptr("bar2"),
-	// 			}},
 	// 			ContextPath: to.Ptr("./"),
-	// 			DockerfilePath: to.Ptr("./Dockerfile"),
 	// 			Image: to.Ptr("image/tag"),
 	// 			RegistryInfo: &armappcontainers.RegistryInfo{
 	// 				RegistryURL: to.Ptr("xwang971reg.azurecr.io"),
@@ -120,7 +100,7 @@ func ExampleContainerAppsSourceControlsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/SourceControls_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/SourceControls_CreateOrUpdate.json
 func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,17 +121,7 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 					Kind:         to.Ptr("feaderated"),
 					TenantID:     to.Ptr("<tenantid>"),
 				},
-				BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
-					{
-						Name:  to.Ptr("foo1"),
-						Value: to.Ptr("bar1"),
-					},
-					{
-						Name:  to.Ptr("foo2"),
-						Value: to.Ptr("bar2"),
-					}},
 				ContextPath:               to.Ptr("./"),
-				DockerfilePath:            to.Ptr("./Dockerfile"),
 				GithubPersonalAccessToken: to.Ptr("test"),
 				Image:                     to.Ptr("image/tag"),
 				RegistryInfo: &armappcontainers.RegistryInfo{
@@ -162,7 +132,7 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 			},
 			RepoURL: to.Ptr("https://github.com/xwang971/ghatest"),
 		},
-	}, &armappcontainers.ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions{XMSGithubAuxiliary: to.Ptr("githubaccesstoken")})
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -180,15 +150,6 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	// 	Properties: &armappcontainers.SourceControlProperties{
 	// 		Branch: to.Ptr("master"),
 	// 		GithubActionConfiguration: &armappcontainers.GithubActionConfiguration{
-	// 			BuildEnvironmentVariables: []*armappcontainers.EnvironmentVariable{
-	// 				{
-	// 					Name: to.Ptr("foo1"),
-	// 					Value: to.Ptr("bar1"),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("foo2"),
-	// 					Value: to.Ptr("bar2"),
-	// 			}},
 	// 			ContextPath: to.Ptr("./"),
 	// 			Image: to.Ptr("image/tag"),
 	// 			RegistryInfo: &armappcontainers.RegistryInfo{
@@ -202,7 +163,7 @@ func ExampleContainerAppsSourceControlsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/SourceControls_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/SourceControls_Delete.json
 func ExampleContainerAppsSourceControlsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,10 +174,7 @@ func ExampleContainerAppsSourceControlsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContainerAppsSourceControlsClient().BeginDelete(ctx, "workerapps-rg-xj", "testcanadacentral", "current", &armappcontainers.ContainerAppsSourceControlsClientBeginDeleteOptions{XMSGithubAuxiliary: to.Ptr("githubaccesstoken"),
-		IgnoreWorkflowDeletionFailure: to.Ptr(false),
-		DeleteWorkflow:                to.Ptr(false),
-	})
+	poller, err := clientFactory.NewContainerAppsSourceControlsClient().BeginDelete(ctx, "workerapps-rg-xj", "testcanadacentral", "current", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

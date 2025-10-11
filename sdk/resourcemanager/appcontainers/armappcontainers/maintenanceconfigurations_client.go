@@ -25,7 +25,7 @@ type MaintenanceConfigurationsClient struct {
 }
 
 // NewMaintenanceConfigurationsClient creates a new instance of MaintenanceConfigurationsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceConfigurationsClient, error) {
@@ -43,7 +43,7 @@ func NewMaintenanceConfigurationsClient(subscriptionID string, credential azcore
 // CreateOrUpdate - Create or update the maintenance configuration for Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - The name of the Managed Environment.
 //   - configName - The name of the maintenance configuration.
@@ -96,7 +96,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, maintenanceConfigurationEnvelope); err != nil {
@@ -117,7 +117,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateHandleResponse(resp
 // Delete - Deletes the maintenance configuration of a ManagedEnvironment .
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - The name of the Managed Environment.
 //   - configName - The name of the maintenance configuration.
@@ -168,7 +168,7 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -177,7 +177,7 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 // Get - Gets the maintenance configuration of a ManagedEnvironment .
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - The name of the Managed Environment.
 //   - configName - The name of the maintenance configuration.
@@ -229,7 +229,7 @@ func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Gets all maintenance configurations in the specified Managed Environment.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - The name of the Managed Environment.
 //   - options - MaintenanceConfigurationsClientListOptions contains the optional parameters for the MaintenanceConfigurationsClient.NewListPager
@@ -294,7 +294,7 @@ func (client *MaintenanceConfigurationsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

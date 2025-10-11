@@ -76,6 +76,9 @@ type ServerFactory struct {
 	// ProjectsServer contains the fakes for client ProjectsClient
 	ProjectsServer ProjectsServer
 
+	// QuotaTiersServer contains the fakes for client QuotaTiersClient
+	QuotaTiersServer QuotaTiersServer
+
 	// RaiBlocklistItemsServer contains the fakes for client RaiBlocklistItemsClient
 	RaiBlocklistItemsServer RaiBlocklistItemsServer
 
@@ -87,6 +90,9 @@ type ServerFactory struct {
 
 	// RaiPoliciesServer contains the fakes for client RaiPoliciesClient
 	RaiPoliciesServer RaiPoliciesServer
+
+	// RaiTopicsServer contains the fakes for client RaiTopicsClient
+	RaiTopicsServer RaiTopicsServer
 
 	// ResourceSKUsServer contains the fakes for client ResourceSKUsClient
 	ResourceSKUsServer ResourceSKUsServer
@@ -129,10 +135,12 @@ type ServerFactoryTransport struct {
 	trProjectCapabilityHostsServer                 *ProjectCapabilityHostsServerTransport
 	trProjectConnectionsServer                     *ProjectConnectionsServerTransport
 	trProjectsServer                               *ProjectsServerTransport
+	trQuotaTiersServer                             *QuotaTiersServerTransport
 	trRaiBlocklistItemsServer                      *RaiBlocklistItemsServerTransport
 	trRaiBlocklistsServer                          *RaiBlocklistsServerTransport
 	trRaiContentFiltersServer                      *RaiContentFiltersServerTransport
 	trRaiPoliciesServer                            *RaiPoliciesServerTransport
+	trRaiTopicsServer                              *RaiTopicsServerTransport
 	trResourceSKUsServer                           *ResourceSKUsServerTransport
 	trUsagesServer                                 *UsagesServerTransport
 }
@@ -238,6 +246,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ProjectsClient":
 		initServer(s, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)
+	case "QuotaTiersClient":
+		initServer(s, &s.trQuotaTiersServer, func() *QuotaTiersServerTransport { return NewQuotaTiersServerTransport(&s.srv.QuotaTiersServer) })
+		resp, err = s.trQuotaTiersServer.Do(req)
 	case "RaiBlocklistItemsClient":
 		initServer(s, &s.trRaiBlocklistItemsServer, func() *RaiBlocklistItemsServerTransport {
 			return NewRaiBlocklistItemsServerTransport(&s.srv.RaiBlocklistItemsServer)
@@ -256,6 +267,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "RaiPoliciesClient":
 		initServer(s, &s.trRaiPoliciesServer, func() *RaiPoliciesServerTransport { return NewRaiPoliciesServerTransport(&s.srv.RaiPoliciesServer) })
 		resp, err = s.trRaiPoliciesServer.Do(req)
+	case "RaiTopicsClient":
+		initServer(s, &s.trRaiTopicsServer, func() *RaiTopicsServerTransport { return NewRaiTopicsServerTransport(&s.srv.RaiTopicsServer) })
+		resp, err = s.trRaiTopicsServer.Do(req)
 	case "ResourceSKUsClient":
 		initServer(s, &s.trResourceSKUsServer, func() *ResourceSKUsServerTransport { return NewResourceSKUsServerTransport(&s.srv.ResourceSKUsServer) })
 		resp, err = s.trResourceSKUsServer.Do(req)

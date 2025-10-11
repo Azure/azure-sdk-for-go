@@ -28,15 +28,15 @@ type DpsCertificateServer struct {
 
 	// Delete is the fake for method DpsCertificateClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, options *armdeviceprovisioningservices.DpsCertificateClientDeleteOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string, options *armdeviceprovisioningservices.DpsCertificateClientDeleteOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// GenerateVerificationCode is the fake for method DpsCertificateClient.GenerateVerificationCode
 	// HTTP status codes to indicate success: http.StatusOK
-	GenerateVerificationCode func(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, options *armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeResponse], errResp azfake.ErrorResponder)
+	GenerateVerificationCode func(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DpsCertificateClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, options *armdeviceprovisioningservices.DpsCertificateClientGetOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, certificateName string, resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.DpsCertificateClientGetOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DpsCertificateClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,7 +44,7 @@ type DpsCertificateServer struct {
 
 	// VerifyCertificate is the fake for method DpsCertificateClient.VerifyCertificate
 	// HTTP status codes to indicate success: http.StatusOK
-	VerifyCertificate func(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, request armdeviceprovisioningservices.VerificationCodeRequest, options *armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateResponse], errResp azfake.ErrorResponder)
+	VerifyCertificate func(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, request armdeviceprovisioningservices.VerificationCodeRequest, options *armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDpsCertificateServerTransport creates a new instance of DpsCertificateServerTransport with the provided implementation.
@@ -257,7 +257,7 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 			CertificateNonce:         certificateNonceParam,
 		}
 	}
-	respr, errRespr := d.srv.Delete(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, certificateNameParam, getHeaderValue(req.Header, "If-Match"), options)
+	respr, errRespr := d.srv.Delete(req.Context(), resourceGroupNameParam, getHeaderValue(req.Header, "If-Match"), provisioningServiceNameParam, certificateNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -283,15 +283,15 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
+	certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
 	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
 	if err != nil {
 		return nil, err
 	}
@@ -363,7 +363,7 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 			CertificateNonce:         certificateNonceParam,
 		}
 	}
-	respr, errRespr := d.srv.GenerateVerificationCode(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, certificateNameParam, getHeaderValue(req.Header, "If-Match"), options)
+	respr, errRespr := d.srv.GenerateVerificationCode(req.Context(), certificateNameParam, getHeaderValue(req.Header, "If-Match"), resourceGroupNameParam, provisioningServiceNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -388,15 +388,15 @@ func (d *DpsCertificateServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
 	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +407,7 @@ func (d *DpsCertificateServerTransport) dispatchGet(req *http.Request) (*http.Re
 			IfMatch: ifMatchParam,
 		}
 	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, certificateNameParam, options)
+	respr, errRespr := d.srv.Get(req.Context(), certificateNameParam, resourceGroupNameParam, provisioningServiceNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -475,15 +475,15 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
+	certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
 	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	certificateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("certificateName")])
 	if err != nil {
 		return nil, err
 	}
@@ -555,7 +555,7 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 			CertificateNonce:         certificateNonceParam,
 		}
 	}
-	respr, errRespr := d.srv.VerifyCertificate(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, certificateNameParam, getHeaderValue(req.Header, "If-Match"), body, options)
+	respr, errRespr := d.srv.VerifyCertificate(req.Context(), certificateNameParam, getHeaderValue(req.Header, "If-Match"), resourceGroupNameParam, provisioningServiceNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

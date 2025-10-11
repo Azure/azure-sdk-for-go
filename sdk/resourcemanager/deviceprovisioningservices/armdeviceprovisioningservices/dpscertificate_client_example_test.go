@@ -64,7 +64,7 @@ func ExampleDpsCertificateClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDpsCertificateClient().Delete(ctx, "myResourceGroup", "myFirstProvisioningService", "cert", "AAAAAAAADGk=", nil)
+	res, err := clientFactory.NewDpsCertificateClient().Delete(ctx, "myResourceGroup", "AAAAAAAADGk=", "myFirstProvisioningService", "cert", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -86,7 +86,7 @@ func ExampleDpsCertificateClient_GenerateVerificationCode() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDpsCertificateClient().GenerateVerificationCode(ctx, "myResourceGroup", "myFirstProvisioningService", "cert", "AAAAAAAADGk=", nil)
+	res, err := clientFactory.NewDpsCertificateClient().GenerateVerificationCode(ctx, "cert", "AAAAAAAADGk=", "myResourceGroup", "myFirstProvisioningService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -121,7 +121,7 @@ func ExampleDpsCertificateClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDpsCertificateClient().Get(ctx, "myResourceGroup", "myFirstProvisioningService", "cert", nil)
+	res, err := clientFactory.NewDpsCertificateClient().Get(ctx, "cert", "myResourceGroup", "myFirstProvisioningService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -204,7 +204,7 @@ func ExampleDpsCertificateClient_VerifyCertificate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDpsCertificateClient().VerifyCertificate(ctx, "myResourceGroup", "myFirstProvisioningService", "cert", "AAAAAAAADGk=", armdeviceprovisioningservices.VerificationCodeRequest{
+	res, err := clientFactory.NewDpsCertificateClient().VerifyCertificate(ctx, "cert", "AAAAAAAADGk=", "myResourceGroup", "myFirstProvisioningService", armdeviceprovisioningservices.VerificationCodeRequest{
 		Certificate: to.Ptr("#####################################"),
 	}, nil)
 	if err != nil {

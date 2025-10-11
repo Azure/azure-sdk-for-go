@@ -1,5 +1,25 @@
 # Release History
 
+## 1.3.0-beta.2 (2025-10-11)
+### Breaking Changes
+
+- Operation `*DpsCertificateClient.List` has supported pagination, use `*DpsCertificateClient.NewListPager` instead.
+- Operation `*IotDpsResourceClient.ListPrivateLinkResources` has supported pagination, use `*IotDpsResourceClient.NewListPrivateLinkResourcesPager` instead.
+- Field `CertificateName1` of struct `DpsCertificateClientDeleteOptions` has been removed
+- Field `CertificateName1` of struct `DpsCertificateClientGenerateVerificationCodeOptions` has been removed
+- Field `CertificateName1` of struct `DpsCertificateClientVerifyCertificateOptions` has been removed
+
+### Features Added
+
+- New enum type `DeviceRegistryNamespaceAuthenticationType` with values `DeviceRegistryNamespaceAuthenticationTypeSystemAssigned`, `DeviceRegistryNamespaceAuthenticationTypeUserAssigned`
+- New struct `DeviceRegistryNamespaceDescription`
+- New field `CertificateName` in struct `DpsCertificateClientDeleteOptions`
+- New field `CertificateName` in struct `DpsCertificateClientGenerateVerificationCodeOptions`
+- New field `CertificateName` in struct `DpsCertificateClientVerifyCertificateOptions`
+- New field `SystemData` in struct `GroupIDInformation`
+- New field `DeviceRegistryNamespace` in struct `IotDpsPropertiesDescription`
+
+
 ## 1.3.0-beta.2 (2025-10-06)
 ### Breaking Changes
 

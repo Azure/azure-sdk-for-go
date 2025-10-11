@@ -320,7 +320,7 @@ func ExampleIotDpsResourceClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIotDpsResourceClient().BeginDelete(ctx, "myResourceGroup", "myFirstProvisioningService", nil)
+	poller, err := clientFactory.NewIotDpsResourceClient().BeginDelete(ctx, "myFirstProvisioningService", "myResourceGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -387,7 +387,7 @@ func ExampleIotDpsResourceClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewIotDpsResourceClient().Get(ctx, "myResourceGroup", "myFirstProvisioningService", nil)
+	res, err := clientFactory.NewIotDpsResourceClient().Get(ctx, "myFirstProvisioningService", "myResourceGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -446,7 +446,7 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewIotDpsResourceClient().GetOperationResult(ctx, "myResourceGroup", "myFirstProvisioningService", "MTY5OTNmZDctODI5Yy00N2E2LTkxNDQtMDU1NGIyYzY1ZjRl", "1508265712453", nil)
+	res, err := clientFactory.NewIotDpsResourceClient().GetOperationResult(ctx, "MTY5OTNmZDctODI5Yy00N2E2LTkxNDQtMDU1NGIyYzY1ZjRl", "myResourceGroup", "myFirstProvisioningService", "1508265712453", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -746,7 +746,7 @@ func ExampleIotDpsResourceClient_NewListKeysPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewIotDpsResourceClient().NewListKeysPager("myResourceGroup", "myFirstProvisioningService", nil)
+	pager := clientFactory.NewIotDpsResourceClient().NewListKeysPager("myFirstProvisioningService", "myResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -789,7 +789,7 @@ func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewIotDpsResourceClient().ListKeysForKeyName(ctx, "myResourceGroup", "myFirstProvisioningService", "testKey", nil)
+	res, err := clientFactory.NewIotDpsResourceClient().ListKeysForKeyName(ctx, "myFirstProvisioningService", "testKey", "myResourceGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -901,7 +901,7 @@ func ExampleIotDpsResourceClient_NewListValidSKUsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewIotDpsResourceClient().NewListValidSKUsPager("myResourceGroup", "myFirstProvisioningService", nil)
+	pager := clientFactory.NewIotDpsResourceClient().NewListValidSKUsPager("myFirstProvisioningService", "myResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

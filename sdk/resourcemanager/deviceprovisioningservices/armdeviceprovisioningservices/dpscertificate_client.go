@@ -125,17 +125,14 @@ func (client *DpsCertificateClient) createOrUpdateHandleResponse(resp *http.Resp
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - certificateName - Name of the certificate to retrieve.
-//   - ifMatch - ETag of the certificate
 //   - options - DpsCertificateClientDeleteOptions contains the optional parameters for the DpsCertificateClient.Delete method.
-func (client *DpsCertificateClient) Delete(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, options *DpsCertificateClientDeleteOptions) (DpsCertificateClientDeleteResponse, error) {
+func (client *DpsCertificateClient) Delete(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string, options *DpsCertificateClientDeleteOptions) (DpsCertificateClientDeleteResponse, error) {
 	var err error
 	const operationName = "DpsCertificateClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, provisioningServiceName, certificateName, ifMatch, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ifMatch, provisioningServiceName, certificateName, options)
 	if err != nil {
 		return DpsCertificateClientDeleteResponse{}, err
 	}
@@ -151,7 +148,7 @@ func (client *DpsCertificateClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, options *DpsCertificateClientDeleteOptions) (*policy.Request, error) {
+func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string, options *DpsCertificateClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -209,19 +206,15 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - certificateName - Name of the certificate to retrieve.
-//   - ifMatch - ETag of the certificate. This is required to update an existing certificate, and ignored while creating a brand
-//     new certificate.
 //   - options - DpsCertificateClientGenerateVerificationCodeOptions contains the optional parameters for the DpsCertificateClient.GenerateVerificationCode
 //     method.
-func (client *DpsCertificateClient) GenerateVerificationCode(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, options *DpsCertificateClientGenerateVerificationCodeOptions) (DpsCertificateClientGenerateVerificationCodeResponse, error) {
+func (client *DpsCertificateClient) GenerateVerificationCode(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientGenerateVerificationCodeOptions) (DpsCertificateClientGenerateVerificationCodeResponse, error) {
 	var err error
 	const operationName = "DpsCertificateClient.GenerateVerificationCode"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.generateVerificationCodeCreateRequest(ctx, resourceGroupName, provisioningServiceName, certificateName, ifMatch, options)
+	req, err := client.generateVerificationCodeCreateRequest(ctx, certificateName, ifMatch, resourceGroupName, provisioningServiceName, options)
 	if err != nil {
 		return DpsCertificateClientGenerateVerificationCodeResponse{}, err
 	}
@@ -238,12 +231,16 @@ func (client *DpsCertificateClient) GenerateVerificationCode(ctx context.Context
 }
 
 // generateVerificationCodeCreateRequest creates the GenerateVerificationCode request.
-func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, options *DpsCertificateClientGenerateVerificationCodeOptions) (*policy.Request, error) {
+func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientGenerateVerificationCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}/generateVerificationCode"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if certificateName == "" {
+		return nil, errors.New("parameter certificateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -252,10 +249,6 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -306,16 +299,14 @@ func (client *DpsCertificateClient) generateVerificationCodeHandleResponse(resp 
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - certificateName - Name of the certificate to retrieve.
 //   - options - DpsCertificateClientGetOptions contains the optional parameters for the DpsCertificateClient.Get method.
-func (client *DpsCertificateClient) Get(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, options *DpsCertificateClientGetOptions) (DpsCertificateClientGetResponse, error) {
+func (client *DpsCertificateClient) Get(ctx context.Context, certificateName string, resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientGetOptions) (DpsCertificateClientGetResponse, error) {
 	var err error
 	const operationName = "DpsCertificateClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, provisioningServiceName, certificateName, options)
+	req, err := client.getCreateRequest(ctx, certificateName, resourceGroupName, provisioningServiceName, options)
 	if err != nil {
 		return DpsCertificateClientGetResponse{}, err
 	}
@@ -332,12 +323,16 @@ func (client *DpsCertificateClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, options *DpsCertificateClientGetOptions) (*policy.Request, error) {
+func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, certificateName string, resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if certificateName == "" {
+		return nil, errors.New("parameter certificateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -346,10 +341,6 @@ func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -444,19 +435,15 @@ func (client *DpsCertificateClient) listHandleResponse(resp *http.Response) (Dps
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - certificateName - Name of the certificate to retrieve.
-//   - ifMatch - ETag of the certificate.
-//   - request - The name of the certificate
 //   - options - DpsCertificateClientVerifyCertificateOptions contains the optional parameters for the DpsCertificateClient.VerifyCertificate
 //     method.
-func (client *DpsCertificateClient) VerifyCertificate(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, request VerificationCodeRequest, options *DpsCertificateClientVerifyCertificateOptions) (DpsCertificateClientVerifyCertificateResponse, error) {
+func (client *DpsCertificateClient) VerifyCertificate(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, request VerificationCodeRequest, options *DpsCertificateClientVerifyCertificateOptions) (DpsCertificateClientVerifyCertificateResponse, error) {
 	var err error
 	const operationName = "DpsCertificateClient.VerifyCertificate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.verifyCertificateCreateRequest(ctx, resourceGroupName, provisioningServiceName, certificateName, ifMatch, request, options)
+	req, err := client.verifyCertificateCreateRequest(ctx, certificateName, ifMatch, resourceGroupName, provisioningServiceName, request, options)
 	if err != nil {
 		return DpsCertificateClientVerifyCertificateResponse{}, err
 	}
@@ -473,12 +460,16 @@ func (client *DpsCertificateClient) VerifyCertificate(ctx context.Context, resou
 }
 
 // verifyCertificateCreateRequest creates the VerifyCertificate request.
-func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, ifMatch string, request VerificationCodeRequest, options *DpsCertificateClientVerifyCertificateOptions) (*policy.Request, error) {
+func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, request VerificationCodeRequest, options *DpsCertificateClientVerifyCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}/verify"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if certificateName == "" {
+		return nil, errors.New("parameter certificateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -487,10 +478,6 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

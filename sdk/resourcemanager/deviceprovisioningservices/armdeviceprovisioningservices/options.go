@@ -16,27 +16,17 @@ type DpsCertificateClientCreateOrUpdateOptions struct {
 // DpsCertificateClientDeleteOptions contains the optional parameters for the DpsCertificateClient.Delete method.
 type DpsCertificateClientDeleteOptions struct {
 	// Time the certificate is created.
-	CertificateCreated *time.Time
-
-	// Indicates if the certificate contains a private key.
+	CertificateCreated       *time.Time
 	CertificateHasPrivateKey *bool
-
-	// Indicates if certificate has been verified by owner of the private key.
-	CertificateIsVerified *bool
+	CertificateIsVerified    *bool
 
 	// Certificate last updated time.
 	CertificateLastUpdated *time.Time
 
 	// This is optional, and it is the Common Name of the certificate.
-	CertificateName *string
-
-	// Random number generated to indicate Proof of Possession.
-	CertificateNonce *string
-
-	// A description that mentions the purpose of the certificate.
-	CertificatePurpose *CertificatePurpose
-
-	// Raw data within the certificate.
+	CertificateName     *string
+	CertificateNonce    *string
+	CertificatePurpose  *CertificatePurpose
 	CertificateRawBytes []byte
 }
 

@@ -280,12 +280,11 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
 //   - options - IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete
 //     method.
-func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, resourceGroupName string, provisioningServiceName string, options *IotDpsResourceClientBeginDeleteOptions) (*runtime.Poller[IotDpsResourceClientDeleteResponse], error) {
+func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*runtime.Poller[IotDpsResourceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, provisioningServiceName, options)
+		resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -304,13 +303,13 @@ func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, resourceGro
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-02-01-preview
-func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, resourceGroupName string, provisioningServiceName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotDpsResourceClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, provisioningServiceName, options)
+	req, err := client.deleteCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -326,20 +325,20 @@ func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, resourc
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, _ *IotDpsResourceClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -436,15 +435,14 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
 //   - options - IotDpsResourceClientGetOptions contains the optional parameters for the IotDpsResourceClient.Get method.
-func (client *IotDpsResourceClient) Get(ctx context.Context, resourceGroupName string, provisioningServiceName string, options *IotDpsResourceClientGetOptions) (IotDpsResourceClientGetResponse, error) {
+func (client *IotDpsResourceClient) Get(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientGetOptions) (IotDpsResourceClientGetResponse, error) {
 	var err error
 	const operationName = "IotDpsResourceClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, provisioningServiceName, options)
+	req, err := client.getCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 	if err != nil {
 		return IotDpsResourceClientGetResponse{}, err
 	}
@@ -461,20 +459,20 @@ func (client *IotDpsResourceClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, _ *IotDpsResourceClientGetOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -500,18 +498,16 @@ func (client *IotDpsResourceClient) getHandleResponse(resp *http.Response) (IotD
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - operationID - Operation id corresponding to long running operation. Use this to poll for the status.
 //   - asyncinfo - Async header used to poll on the status of the operation, obtained while creating the long running operation.
 //   - options - IotDpsResourceClientGetOperationResultOptions contains the optional parameters for the IotDpsResourceClient.GetOperationResult
 //     method.
-func (client *IotDpsResourceClient) GetOperationResult(ctx context.Context, resourceGroupName string, provisioningServiceName string, operationID string, asyncinfo string, options *IotDpsResourceClientGetOperationResultOptions) (IotDpsResourceClientGetOperationResultResponse, error) {
+func (client *IotDpsResourceClient) GetOperationResult(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, options *IotDpsResourceClientGetOperationResultOptions) (IotDpsResourceClientGetOperationResultResponse, error) {
 	var err error
 	const operationName = "IotDpsResourceClient.GetOperationResult"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getOperationResultCreateRequest(ctx, resourceGroupName, provisioningServiceName, operationID, asyncinfo, options)
+	req, err := client.getOperationResultCreateRequest(ctx, operationID, resourceGroupName, provisioningServiceName, asyncinfo, options)
 	if err != nil {
 		return IotDpsResourceClientGetOperationResultResponse{}, err
 	}
@@ -528,12 +524,16 @@ func (client *IotDpsResourceClient) GetOperationResult(ctx context.Context, reso
 }
 
 // getOperationResultCreateRequest creates the GetOperationResult request.
-func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, operationID string, asyncinfo string, _ *IotDpsResourceClientGetOperationResultOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, _ *IotDpsResourceClientGetOperationResultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/operationresults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -542,10 +542,6 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
-	if operationID == "" {
-		return nil, errors.New("parameter operationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -826,10 +822,9 @@ func (client *IotDpsResourceClient) listBySubscriptionHandleResponse(resp *http.
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
 //   - options - IotDpsResourceClientListKeysOptions contains the optional parameters for the IotDpsResourceClient.NewListKeysPager
 //     method.
-func (client *IotDpsResourceClient) NewListKeysPager(resourceGroupName string, provisioningServiceName string, options *IotDpsResourceClientListKeysOptions) *runtime.Pager[IotDpsResourceClientListKeysResponse] {
+func (client *IotDpsResourceClient) NewListKeysPager(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) *runtime.Pager[IotDpsResourceClientListKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IotDpsResourceClientListKeysResponse]{
 		More: func(page IotDpsResourceClientListKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -841,7 +836,7 @@ func (client *IotDpsResourceClient) NewListKeysPager(resourceGroupName string, p
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listKeysCreateRequest(ctx, resourceGroupName, provisioningServiceName, options)
+				return client.listKeysCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 			}, nil)
 			if err != nil {
 				return IotDpsResourceClientListKeysResponse{}, err
@@ -853,20 +848,20 @@ func (client *IotDpsResourceClient) NewListKeysPager(resourceGroupName string, p
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, _ *IotDpsResourceClientListKeysOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/listkeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -892,17 +887,15 @@ func (client *IotDpsResourceClient) listKeysHandleResponse(resp *http.Response) 
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - keyName - Logical key name to get key-values for.
 //   - options - IotDpsResourceClientListKeysForKeyNameOptions contains the optional parameters for the IotDpsResourceClient.ListKeysForKeyName
 //     method.
-func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, resourceGroupName string, provisioningServiceName string, keyName string, options *IotDpsResourceClientListKeysForKeyNameOptions) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
+func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *IotDpsResourceClientListKeysForKeyNameOptions) (IotDpsResourceClientListKeysForKeyNameResponse, error) {
 	var err error
 	const operationName = "IotDpsResourceClient.ListKeysForKeyName"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.listKeysForKeyNameCreateRequest(ctx, resourceGroupName, provisioningServiceName, keyName, options)
+	req, err := client.listKeysForKeyNameCreateRequest(ctx, provisioningServiceName, keyName, resourceGroupName, options)
 	if err != nil {
 		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
 	}
@@ -919,16 +912,12 @@ func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, reso
 }
 
 // listKeysForKeyNameCreateRequest creates the ListKeysForKeyName request.
-func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, keyName string, _ *IotDpsResourceClientListKeysForKeyNameOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, _ *IotDpsResourceClientListKeysForKeyNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/keys/{keyName}/listkeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
@@ -937,6 +926,10 @@ func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -1092,10 +1085,9 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp 
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - provisioningServiceName - Name of the provisioning service to retrieve.
 //   - options - IotDpsResourceClientListValidSKUsOptions contains the optional parameters for the IotDpsResourceClient.NewListValidSKUsPager
 //     method.
-func (client *IotDpsResourceClient) NewListValidSKUsPager(resourceGroupName string, provisioningServiceName string, options *IotDpsResourceClientListValidSKUsOptions) *runtime.Pager[IotDpsResourceClientListValidSKUsResponse] {
+func (client *IotDpsResourceClient) NewListValidSKUsPager(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) *runtime.Pager[IotDpsResourceClientListValidSKUsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IotDpsResourceClientListValidSKUsResponse]{
 		More: func(page IotDpsResourceClientListValidSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1107,7 +1099,7 @@ func (client *IotDpsResourceClient) NewListValidSKUsPager(resourceGroupName stri
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listValidSKUsCreateRequest(ctx, resourceGroupName, provisioningServiceName, options)
+				return client.listValidSKUsCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 			}, nil)
 			if err != nil {
 				return IotDpsResourceClientListValidSKUsResponse{}, err
@@ -1119,20 +1111,20 @@ func (client *IotDpsResourceClient) NewListValidSKUsPager(resourceGroupName stri
 }
 
 // listValidSKUsCreateRequest creates the ListValidSKUs request.
-func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, _ *IotDpsResourceClientListValidSKUsOptions) (*policy.Request, error) {
+func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientListValidSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if provisioningServiceName == "" {
 		return nil, errors.New("parameter provisioningServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{provisioningServiceName}", url.PathEscape(provisioningServiceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

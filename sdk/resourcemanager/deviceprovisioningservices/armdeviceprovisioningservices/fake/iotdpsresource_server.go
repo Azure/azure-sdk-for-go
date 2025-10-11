@@ -34,7 +34,7 @@ type IotDpsResourceServer struct {
 
 	// BeginDelete is the fake for method IotDpsResourceClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound
-	BeginDelete func(ctx context.Context, resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.IotDpsResourceClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeletePrivateEndpointConnection is the fake for method IotDpsResourceClient.BeginDeletePrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -42,11 +42,11 @@ type IotDpsResourceServer struct {
 
 	// Get is the fake for method IotDpsResourceClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.IotDpsResourceClientGetOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientGetOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetOperationResult is the fake for method IotDpsResourceClient.GetOperationResult
 	// HTTP status codes to indicate success: http.StatusOK
-	GetOperationResult func(ctx context.Context, resourceGroupName string, provisioningServiceName string, operationID string, asyncinfo string, options *armdeviceprovisioningservices.IotDpsResourceClientGetOperationResultOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientGetOperationResultResponse], errResp azfake.ErrorResponder)
+	GetOperationResult func(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, options *armdeviceprovisioningservices.IotDpsResourceClientGetOperationResultOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientGetOperationResultResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateEndpointConnection is the fake for method IotDpsResourceClient.GetPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK
@@ -66,11 +66,11 @@ type IotDpsResourceServer struct {
 
 	// NewListKeysPager is the fake for method IotDpsResourceClient.NewListKeysPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListKeysPager func(resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.IotDpsResourceClientListKeysOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse])
+	NewListKeysPager func(provisioningServiceName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListKeysOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse])
 
 	// ListKeysForKeyName is the fake for method IotDpsResourceClient.ListKeysForKeyName
 	// HTTP status codes to indicate success: http.StatusOK
-	ListKeysForKeyName func(ctx context.Context, resourceGroupName string, provisioningServiceName string, keyName string, options *armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameResponse], errResp azfake.ErrorResponder)
+	ListKeysForKeyName func(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameResponse], errResp azfake.ErrorResponder)
 
 	// ListPrivateEndpointConnections is the fake for method IotDpsResourceClient.ListPrivateEndpointConnections
 	// HTTP status codes to indicate success: http.StatusOK
@@ -82,7 +82,7 @@ type IotDpsResourceServer struct {
 
 	// NewListValidSKUsPager is the fake for method IotDpsResourceClient.NewListValidSKUsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListValidSKUsPager func(resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse])
+	NewListValidSKUsPager func(provisioningServiceName string, resourceGroupName string, options *armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse])
 
 	// BeginUpdate is the fake for method IotDpsResourceClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -341,15 +341,15 @@ func (i *IotDpsResourceServerTransport) dispatchBeginDelete(req *http.Request) (
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
 		provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := i.srv.BeginDelete(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, nil)
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginDelete(req.Context(), provisioningServiceNameParam, resourceGroupNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -431,15 +431,15 @@ func (i *IotDpsResourceServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
 	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.Get(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, nil)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.Get(req.Context(), provisioningServiceNameParam, resourceGroupNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -465,6 +465,10 @@ func (i *IotDpsResourceServerTransport) dispatchGetOperationResult(req *http.Req
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
+	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -473,15 +477,11 @@ func (i *IotDpsResourceServerTransport) dispatchGetOperationResult(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
-	if err != nil {
-		return nil, err
-	}
 	asyncinfoParam, err := url.QueryUnescape(qp.Get("asyncinfo"))
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.GetOperationResult(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, operationIDParam, asyncinfoParam, nil)
+	respr, errRespr := i.srv.GetOperationResult(req.Context(), operationIDParam, resourceGroupNameParam, provisioningServiceNameParam, asyncinfoParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -652,15 +652,15 @@ func (i *IotDpsResourceServerTransport) dispatchNewListKeysPager(req *http.Reque
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
 		provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListKeysPager(resourceGroupNameParam, provisioningServiceNameParam, nil)
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListKeysPager(provisioningServiceNameParam, resourceGroupNameParam, nil)
 		newListKeysPager = &resp
 		i.newListKeysPager.add(req, newListKeysPager)
 		server.PagerResponderInjectNextLinks(newListKeysPager, req, func(page *armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse, createLink func() string) {
@@ -691,10 +691,6 @@ func (i *IotDpsResourceServerTransport) dispatchListKeysForKeyName(req *http.Req
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
 	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
 	if err != nil {
 		return nil, err
@@ -703,7 +699,11 @@ func (i *IotDpsResourceServerTransport) dispatchListKeysForKeyName(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.ListKeysForKeyName(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, keyNameParam, nil)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ListKeysForKeyName(req.Context(), provisioningServiceNameParam, keyNameParam, resourceGroupNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -801,15 +801,15 @@ func (i *IotDpsResourceServerTransport) dispatchNewListValidSKUsPager(req *http.
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
 		provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := i.srv.NewListValidSKUsPager(resourceGroupNameParam, provisioningServiceNameParam, nil)
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := i.srv.NewListValidSKUsPager(provisioningServiceNameParam, resourceGroupNameParam, nil)
 		newListValidSKUsPager = &resp
 		i.newListValidSKUsPager.add(req, newListValidSKUsPager)
 		server.PagerResponderInjectNextLinks(newListValidSKUsPager, req, func(page *armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse, createLink func() string) {

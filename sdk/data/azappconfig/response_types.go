@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/exported"
 )
 
 // SyncToken contains data used in the Sync-Token header.

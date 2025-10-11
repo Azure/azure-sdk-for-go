@@ -7,7 +7,7 @@
 package azappconfig
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
 )
 
 // SettingFields are fields to retrieve from a configuration setting.

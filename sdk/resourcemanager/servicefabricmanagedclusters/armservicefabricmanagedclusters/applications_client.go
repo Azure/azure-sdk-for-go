@@ -664,3 +664,88 @@ func (client *ApplicationsClient) updateHandleResponse(resp *http.Response) (App
 	}
 	return result, nil
 }
+
+// BeginUpdateUpgrade - Send a request to update the current application upgrade.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - applicationName - The name of the application resource.
+//   - parameters - The parameters for updating an application upgrade.
+//   - options - ApplicationsClientBeginUpdateUpgradeOptions contains the optional parameters for the ApplicationsClient.BeginUpdateUpgrade
+//     method.
+func (client *ApplicationsClient) BeginUpdateUpgrade(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeUpdateApplicationUpgradeParameters, options *ApplicationsClientBeginUpdateUpgradeOptions) (*runtime.Poller[ApplicationsClientUpdateUpgradeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateUpgrade(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// UpdateUpgrade - Send a request to update the current application upgrade.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
+func (client *ApplicationsClient) updateUpgrade(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeUpdateApplicationUpgradeParameters, options *ApplicationsClientBeginUpdateUpgradeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ApplicationsClient.BeginUpdateUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateUpgradeCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateUpgradeCreateRequest creates the UpdateUpgrade request.
+func (client *ApplicationsClient) updateUpgradeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeUpdateApplicationUpgradeParameters, _ *ApplicationsClientBeginUpdateUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/updateUpgrade"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if applicationName == "" {
+		return nil, errors.New("parameter applicationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}

@@ -44,7 +44,7 @@ func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, op
 //
 // Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - resource - Resource create parameters.
 //   - options - SitesClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesClient.BeginCreateOrUpdate
 //     method.
@@ -125,7 +125,7 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 //
 // Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - options - SitesClientDeleteOptions contains the optional parameters for the SitesClient.Delete method.
 func (client *SitesClient) Delete(ctx context.Context, resourceGroupName string, siteName string, options *SitesClientDeleteOptions) (SitesClientDeleteResponse, error) {
 	var err error
@@ -178,7 +178,7 @@ func (client *SitesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //
 // Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - options - SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
 func (client *SitesClient) Get(ctx context.Context, resourceGroupName string, siteName string, options *SitesClientGetOptions) (SitesClientGetResponse, error) {
 	var err error
@@ -237,7 +237,7 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List Site resources by resource group
+// NewListByResourceGroupPager - List a Site
 //
 // Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -302,8 +302,8 @@ func (client *SitesClient) listByResourceGroupHandleResponse(resp *http.Response
 //
 // Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - siteName - Name of Site resource
-//   - properties - The resource properties to be updated.
+//   - siteName - The name of the Site
+//   - properties - Resource create parameters.
 //   - options - SitesClientUpdateOptions contains the optional parameters for the SitesClient.Update method.
 func (client *SitesClient) Update(ctx context.Context, resourceGroupName string, siteName string, properties SiteUpdate, options *SitesClientUpdateOptions) (SitesClientUpdateResponse, error) {
 	var err error

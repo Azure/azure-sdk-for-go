@@ -35,7 +35,7 @@ func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCre
 								to.Ptr("humidity-sensor"),
 							},
 							Attributes: []map[string]*string{
-								{
+								map[string]*string{
 									"building":     to.Ptr("17"),
 									"organization": to.Ptr("contoso"),
 								},
@@ -211,7 +211,7 @@ func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCre
 						},
 						Principals: &armiotoperations.PrincipalDefinition{
 							Attributes: []map[string]*string{
-								{
+								map[string]*string{
 									"key5526": to.Ptr("nydhzdhbldygqcn"),
 								},
 							},
@@ -336,7 +336,7 @@ func ExampleBrokerAuthorizationClient_BeginCreateOrUpdate_brokerAuthorizationCre
 								to.Ptr("my-client-id"),
 							},
 							Attributes: []map[string]*string{
-								{
+								map[string]*string{
 									"floor": to.Ptr("floor1"),
 									"site":  to.Ptr("site1"),
 								},

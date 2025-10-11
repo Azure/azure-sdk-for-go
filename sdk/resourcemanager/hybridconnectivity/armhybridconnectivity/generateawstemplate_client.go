@@ -93,7 +93,7 @@ func (client *GenerateAwsTemplateClient) postCreateRequest(ctx context.Context, 
 // postHandleResponse handles the Post response.
 func (client *GenerateAwsTemplateClient) postHandleResponse(resp *http.Response) (GenerateAwsTemplateClientPostResponse, error) {
 	result := GenerateAwsTemplateClientPostResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PostResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateAwsTemplateResponse); err != nil {
 		return GenerateAwsTemplateClientPostResponse{}, err
 	}
 	return result, nil

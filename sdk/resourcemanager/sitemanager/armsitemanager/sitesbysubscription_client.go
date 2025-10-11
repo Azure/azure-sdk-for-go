@@ -43,7 +43,7 @@ func NewSitesBySubscriptionClient(subscriptionID string, credential azcore.Token
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - resource - Resource create parameters.
 //   - options - SitesBySubscriptionClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesBySubscriptionClient.BeginCreateOrUpdate
 //     method.
@@ -119,7 +119,7 @@ func (client *SitesBySubscriptionClient) createOrUpdateCreateRequest(ctx context
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - options - SitesBySubscriptionClientDeleteOptions contains the optional parameters for the SitesBySubscriptionClient.Delete
 //     method.
 func (client *SitesBySubscriptionClient) Delete(ctx context.Context, siteName string, options *SitesBySubscriptionClientDeleteOptions) (SitesBySubscriptionClientDeleteResponse, error) {
@@ -168,7 +168,7 @@ func (client *SitesBySubscriptionClient) deleteCreateRequest(ctx context.Context
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-//   - siteName - Name of Site resource
+//   - siteName - The name of the Site
 //   - options - SitesBySubscriptionClientGetOptions contains the optional parameters for the SitesBySubscriptionClient.Get method.
 func (client *SitesBySubscriptionClient) Get(ctx context.Context, siteName string, options *SitesBySubscriptionClientGetOptions) (SitesBySubscriptionClientGetResponse, error) {
 	var err error
@@ -282,8 +282,8 @@ func (client *SitesBySubscriptionClient) listHandleResponse(resp *http.Response)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
-//   - siteName - Name of Site resource
-//   - properties - The resource properties to be updated.
+//   - siteName - The name of the Site
+//   - properties - Resource create parameters.
 //   - options - SitesBySubscriptionClientUpdateOptions contains the optional parameters for the SitesBySubscriptionClient.Update
 //     method.
 func (client *SitesBySubscriptionClient) Update(ctx context.Context, siteName string, properties SiteUpdate, options *SitesBySubscriptionClientUpdateOptions) (SitesBySubscriptionClientUpdateResponse, error) {

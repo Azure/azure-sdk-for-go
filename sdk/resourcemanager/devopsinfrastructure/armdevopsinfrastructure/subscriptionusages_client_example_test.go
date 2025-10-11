@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-19/SubscriptionUsages_Usages.json
+// Generated from example definition: 2025-09-20/SubscriptionUsages_Usages.json
 func ExampleSubscriptionUsagesClient_NewUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleSubscriptionUsagesClient_NewUsagesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSubscriptionUsagesClient().NewUsagesPager("eastus", nil)
+	pager := clientFactory.NewSubscriptionUsagesClient().NewUsagesPager("eastus", "2025-09-20", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

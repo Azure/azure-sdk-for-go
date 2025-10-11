@@ -106,6 +106,11 @@ type ApplicationsClientUpdateResponse struct {
 	ApplicationResource
 }
 
+// ApplicationsClientUpdateUpgradeResponse contains the response from method ApplicationsClient.BeginUpdateUpgrade.
+type ApplicationsClientUpdateUpgradeResponse struct {
+	// placeholder for future response values
+}
+
 // ManagedApplyMaintenanceWindowClientPostResponse contains the response from method ManagedApplyMaintenanceWindowClient.Post.
 type ManagedApplyMaintenanceWindowClientPostResponse struct {
 	// placeholder for future response values

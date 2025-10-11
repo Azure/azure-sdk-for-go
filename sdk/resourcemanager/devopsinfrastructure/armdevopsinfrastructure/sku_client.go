@@ -40,11 +40,10 @@ func NewSKUClient(subscriptionID string, credential azcore.TokenCredential, opti
 }
 
 // NewListByLocationPager - List ResourceSku resources by subscription ID
-//
-// Generated from API version 2024-10-19
+//   - apiVersion - The API version to use for this operation.
 //   - locationName - Name of the location.
 //   - options - SKUClientListByLocationOptions contains the optional parameters for the SKUClient.NewListByLocationPager method.
-func (client *SKUClient) NewListByLocationPager(locationName string, options *SKUClientListByLocationOptions) *runtime.Pager[SKUClientListByLocationResponse] {
+func (client *SKUClient) NewListByLocationPager(apiVersion string, locationName string, options *SKUClientListByLocationOptions) *runtime.Pager[SKUClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SKUClientListByLocationResponse]{
 		More: func(page SKUClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -56,7 +55,7 @@ func (client *SKUClient) NewListByLocationPager(locationName string, options *SK
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocationCreateRequest(ctx, locationName, options)
+				return client.listByLocationCreateRequest(ctx, apiVersion, locationName, options)
 			}, nil)
 			if err != nil {
 				return SKUClientListByLocationResponse{}, err
@@ -68,7 +67,7 @@ func (client *SKUClient) NewListByLocationPager(locationName string, options *SK
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *SKUClient) listByLocationCreateRequest(ctx context.Context, locationName string, _ *SKUClientListByLocationOptions) (*policy.Request, error) {
+func (client *SKUClient) listByLocationCreateRequest(ctx context.Context, apiVersion string, locationName string, _ *SKUClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/locations/{locationName}/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -83,7 +82,7 @@ func (client *SKUClient) listByLocationCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
+	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -21,7 +21,7 @@ import (
 type SKUServer struct {
 	// NewListByLocationPager is the fake for method SKUClient.NewListByLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByLocationPager func(locationName string, options *armdevopsinfrastructure.SKUClientListByLocationOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.SKUClientListByLocationResponse])
+	NewListByLocationPager func(apiVersion string, locationName string, options *armdevopsinfrastructure.SKUClientListByLocationOptions) (resp azfake.PagerResponder[armdevopsinfrastructure.SKUClientListByLocationResponse])
 }
 
 // NewSKUServerTransport creates a new instance of SKUServerTransport with the provided implementation.
@@ -94,14 +94,19 @@ func (s *SKUServerTransport) dispatchNewListByLocationPager(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		apiVersionParam, err := url.QueryUnescape(qp.Get("api-version"))
+		if err != nil {
+			return nil, err
 		}
 		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := s.srv.NewListByLocationPager(locationNameParam, nil)
+		resp := s.srv.NewListByLocationPager(apiVersionParam, locationNameParam, nil)
 		newListByLocationPager = &resp
 		s.newListByLocationPager.add(req, newListByLocationPager)
 		server.PagerResponderInjectNextLinks(newListByLocationPager, req, func(page *armdevopsinfrastructure.SKUClientListByLocationResponse, createLink func() string) {

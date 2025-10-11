@@ -91,9 +91,6 @@ func (client *StorageClassClient) createOrUpdate(ctx context.Context, resourceUR
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *StorageClassClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, storageClassName string, resource StorageClassResource, _ *StorageClassClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")
@@ -167,9 +164,6 @@ func (client *StorageClassClient) deleteOperation(ctx context.Context, resourceU
 // deleteCreateRequest creates the Delete request.
 func (client *StorageClassClient) deleteCreateRequest(ctx context.Context, resourceURI string, storageClassName string, _ *StorageClassClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")
@@ -217,9 +211,6 @@ func (client *StorageClassClient) Get(ctx context.Context, resourceURI string, s
 // getCreateRequest creates the Get request.
 func (client *StorageClassClient) getCreateRequest(ctx context.Context, resourceURI string, storageClassName string, _ *StorageClassClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")
@@ -276,9 +267,6 @@ func (client *StorageClassClient) NewListPager(resourceURI string, options *Stor
 // listCreateRequest creates the List request.
 func (client *StorageClassClient) listCreateRequest(ctx context.Context, resourceURI string, _ *StorageClassClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -354,9 +342,6 @@ func (client *StorageClassClient) update(ctx context.Context, resourceURI string
 // updateCreateRequest creates the Update request.
 func (client *StorageClassClient) updateCreateRequest(ctx context.Context, resourceURI string, storageClassName string, properties StorageClassResourceUpdate, _ *StorageClassClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/storageClasses/{storageClassName}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if storageClassName == "" {
 		return nil, errors.New("parameter storageClassName cannot be empty")

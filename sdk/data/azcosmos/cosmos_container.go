@@ -25,6 +25,20 @@ type ContainerClient struct {
 	link string
 }
 
+// ItemIdentity represents the identity of an item (its id plus its partition key value).
+// This is useful for bulk/read-many style operations that need to address multiple
+// items under (potentially) different partition key values.
+//
+// ID must match the 'id' property of the stored item. PartitionKey is the value (or
+// composite/hierarchical set of values) the item was written with. For hierarchical
+// partition keys create the PartitionKey with NewPartitionKey* helpers (e.g.
+// NewPartitionKeyString, NewPartitionKeyInt, or NewPartitionKeyArray) following the
+// order defined in the container.
+type ItemIdentity struct {
+	ID           string       // Item id
+	PartitionKey PartitionKey // Partition key value for the item
+}
+
 func newContainer(id string, database *DatabaseClient) (*ContainerClient, error) {
 	return &ContainerClient{
 		id:       id,
@@ -432,6 +446,21 @@ func (c *ContainerClient) ReadItem(
 
 	response, err := newItemResponse(azResponse)
 	return response, err
+}
+
+// ReadManyItems reads multiple items in a Cosmos container.
+// ctx - The context for the request.
+// itemIdentities - The identities of the items to read.
+// o - Options for the operation.
+func (c *ContainerClient) ReadManyItems(
+	ctx context.Context,
+	partitionKey PartitionKey,
+	itemIdentities []ItemIdentity,
+	o *ItemOptions) (ItemResponse, error) {
+	// Placeholder implementation: not yet implemented in the Go SDK.
+	// This method signature is present to allow future support for a bulk read-many API.
+	// For now, return a clear error so callers know the operation is unavailable.
+	return ItemResponse{}, errors.New("ReadManyItems is not implemented")
 }
 
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.

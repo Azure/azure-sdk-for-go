@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package workloads
 
 import (
@@ -6,34 +9,11 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"math/rand"
 	"sync"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
-
-func createRandomItem(i int) map[string]interface{} {
-	return map[string]interface{}{
-		"type":      "testItem",
-		"createdAt": time.Now().UTC().Format(time.RFC3339Nano),
-		"seq":       i,
-		"value":     rand.Int63(), // pseudo-random payload
-	}
-}
-
-func createClient(cfg workloadConfig) (*azcosmos.Client, error) {
-	cred, err := azcosmos.NewKeyCredential(cfg.Key)
-	if err != nil {
-		return nil, err
-	}
-	opts := &azcosmos.ClientOptions{
-		PreferredRegions: cfg.PreferredLocations,
-		// Add EnableContentResponseOnWrite: true if you want full responses
-	}
-	return azcosmos.NewClientWithKey(cfg.Endpoint, cred, opts)
-}
 
 // createDatabaseIfNotExists attempts to create the database, tolerating conflicts.
 func createDatabaseIfNotExists(ctx context.Context, client *azcosmos.Client, dbID string) (*azcosmos.DatabaseClient, error) {
@@ -55,7 +35,7 @@ func createDatabaseIfNotExists(ctx context.Context, client *azcosmos.Client, dbI
 	return dbClient, nil
 }
 
-func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient, containerID, pkField string) (*azcosmos.ContainerClient, error) {
+func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient, containerID, pkField string, desiredThroughput int32) (*azcosmos.ContainerClient, error) {
 	containerClient, err := db.NewContainer(containerID)
 	if err != nil {
 		return nil, err
@@ -70,8 +50,11 @@ func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient
 		},
 	}
 
+	throughput := azcosmos.NewManualThroughputProperties(desiredThroughput)
 	// Try create
-	_, err = db.CreateContainer(ctx, props, nil)
+	_, err = db.CreateContainer(ctx, props, &azcosmos.CreateContainerOptions{
+		ThroughputProperties: &throughput,
+	})
 	if err != nil {
 		var azErr *azcore.ResponseError
 		if errors.As(err, &azErr) {
@@ -85,7 +68,6 @@ func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient
 	return containerClient, nil
 }
 
-// upsertItemsConcurrently performs count upserts concurrently.
 func upsertItemsConcurrently(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
 	// Use a bounded worker pool to avoid oversaturating resources
 	workers := 32
@@ -149,14 +131,13 @@ sendLoop:
 	return firstErr
 }
 
-// RunWorkload creates the database/container and performs the concurrent upserts.
-func RunWorkload(ctx context.Context) error {
+// RunSetup creates the database/container and performs the concurrent upserts.
+func RunSetup(ctx context.Context) error {
 	cfg, err := loadConfig()
 	if err != nil {
 		return err
 	}
 
-	println("Creating client...")
 	client, err := createClient(cfg)
 	if err != nil {
 		return fmt.Errorf("creating client: %w", err)
@@ -167,17 +148,13 @@ func RunWorkload(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("ensure database: %w", err)
 	}
-	println("Creating container...")
 
-	container, err := createContainerIfNotExists(ctx, dbClient, cfg.ContainerID, cfg.PartitionKeyFieldName)
+	container, err := createContainerIfNotExists(ctx, dbClient, cfg.ContainerID, cfg.PartitionKeyFieldName, int32(cfg.Throughput))
 	if err != nil {
 		return fmt.Errorf("ensure container: %w", err)
 	}
 
-	// NUMBER_OF_LOGICAL_PARTITIONS + 1
-	var count = cfg.LogicalPartitions + 1
-
-	println("Starting workload...")
+	var count = cfg.LogicalPartitions
 
 	log.Printf("Starting %d concurrent upserts...", count)
 
@@ -187,14 +164,4 @@ func RunWorkload(ctx context.Context) error {
 
 	log.Printf("Completed %d upserts.", count)
 	return nil
-}
-
-// main-style entry (optional if you want a standalone runnable).
-// If you prefer a standalone executable place this in package main instead.
-func Run() {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
-	defer cancel()
-	if err := RunWorkload(ctx); err != nil {
-		log.Fatalf("workload failed: %v", err)
-	}
 }

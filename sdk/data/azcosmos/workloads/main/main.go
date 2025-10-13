@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package main
 
 import (
@@ -9,8 +12,13 @@ import (
 )
 
 func main() {
-	_, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
-	workloads.Run() // or workloads.RunWorkload(ctx) if you make RunWorkload public
-	log.Println("done")
+	if err := workloads.RunSetup(ctx); err != nil {
+		log.Fatalf("setup failed: %v", err)
+	}
+	log.Println("setup completed")
+	if err := workloads.RunWorkload(ctx); err != nil {
+		log.Fatalf("workload failed: %v", err)
+	}
 }

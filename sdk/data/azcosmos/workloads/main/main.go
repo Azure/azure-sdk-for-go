@@ -12,7 +12,8 @@ import (
 )
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	// max run the workload for 12 hours
+	ctx, cancel := context.WithTimeout(context.Background(), 12*60*time.Minute)
 	defer cancel()
 	if err := workloads.RunSetup(ctx); err != nil {
 		log.Fatalf("setup failed: %v", err)

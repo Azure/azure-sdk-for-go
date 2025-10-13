@@ -103,7 +103,6 @@ func upsertItemsConcurrently(ctx context.Context, container *azcosmos.ContainerC
 					errs <- err
 					continue
 				}
-				println("writing an item")
 			}
 		}()
 	}

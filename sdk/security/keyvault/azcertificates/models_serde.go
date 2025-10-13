@@ -1237,7 +1237,7 @@ func (s SubjectAlternativeNames) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dns_names", s.DNSNames)
 	populate(objectMap, "emails", s.Emails)
 	populate(objectMap, "ipAddresses", s.IPAddresses)
-	populate(objectMap, "uris", s.Uris)
+	populate(objectMap, "uris", s.URIs)
 	populate(objectMap, "upns", s.UserPrincipalNames)
 	return json.Marshal(objectMap)
 }
@@ -1261,7 +1261,7 @@ func (s *SubjectAlternativeNames) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "IPAddresses", &s.IPAddresses)
 			delete(rawMsg, key)
 		case "uris":
-			err = unpopulate(val, "Uris", &s.Uris)
+			err = unpopulate(val, "URIs", &s.URIs)
 			delete(rawMsg, key)
 		case "upns":
 			err = unpopulate(val, "UserPrincipalNames", &s.UserPrincipalNames)

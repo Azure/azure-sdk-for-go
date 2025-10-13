@@ -714,7 +714,7 @@ func TestSubjectAlternativeNames(t *testing.T) {
 				DNSNames:           []*string{to.Ptr("localhost"), to.Ptr("example.com")},
 				Emails:             []*string{to.Ptr("admin@example.com")},
 				IPAddresses:        []*string{to.Ptr("192.168.1.1"), to.Ptr("2001:0db8::1")}, // IPv4 and IPv6
-				Uris:               []*string{to.Ptr("https://example.com"), to.Ptr("https://test.com/path")},
+				URIs:               []*string{to.Ptr("https://example.com"), to.Ptr("https://test.com/path")},
 				UserPrincipalNames: []*string{to.Ptr("user@domain.com")},
 			},
 		},

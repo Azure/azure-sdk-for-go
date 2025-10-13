@@ -481,7 +481,7 @@ type SubjectAlternativeNames struct {
 	IPAddresses []*string
 
 	// Uniform Resource Identifiers.
-	Uris []*string
+	URIs []*string
 
 	// User Principal Names.
 	UserPrincipalNames []*string

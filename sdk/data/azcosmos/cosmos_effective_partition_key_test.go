@@ -7,8 +7,7 @@ import (
 )
 
 // mockEffectivePartitionKeyComputer is a mock implementation of the CosmosEffectivePartitionKey interface
-// similar in spirit to the mock query engine used in query tests. It lets us verify that higher level
-// code (once added) can depend on the interface without needing a real hashing engine.
+// It lets us verify that higher level code (once added) can depend on the interface without needing a real hashing engine.
 type mockEffectivePartitionKeyComputer struct {
 	mu     sync.Mutex
 	Calls  []mockEPKCall
@@ -45,7 +44,6 @@ func (m *mockEffectivePartitionKeyComputer) ComputeEffectivePartitionKey(partiti
 
 var _ CosmosEffectivePartitionKey = (*mockEffectivePartitionKeyComputer)(nil)
 
-// TestMockEffectivePartitionKeyComputer_Basic ensures that the mock records calls and returns the expected result.
 func TestMockEffectivePartitionKeyComputer_Basic(t *testing.T) {
 	mock := &mockEffectivePartitionKeyComputer{Result: "epk_stub_1234"}
 	res, err := mock.ComputeEffectivePartitionKey("\"abc\"", 2, PartitionKeyKindHash)
@@ -95,7 +93,6 @@ func TestMockEffectivePartitionKeyComputer_PerInput(t *testing.T) {
 	}
 }
 
-// TestMockEffectivePartitionKeyComputer_Error ensures configured error is surfaced.
 func TestMockEffectivePartitionKeyComputer_Error(t *testing.T) {
 	injectedErr := fmt.Errorf("boom")
 	mock := &mockEffectivePartitionKeyComputer{Err: injectedErr}
@@ -105,7 +102,6 @@ func TestMockEffectivePartitionKeyComputer_Error(t *testing.T) {
 	}
 }
 
-// TestMockEffectivePartitionKeyComputer_Concurrency ensures the mock is safe for concurrent use.
 func TestMockEffectivePartitionKeyComputer_Concurrency(t *testing.T) {
 	mock := &mockEffectivePartitionKeyComputer{}
 	const workers = 16

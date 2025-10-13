@@ -18,6 +18,9 @@ type workloadConfig struct {
 	Throughput            int // optional (unused if not supported)
 }
 
+const defaultLogicalPartitions = 10000
+const defaultThroughput = 100000
+
 func loadConfig() (workloadConfig, error) {
 	get := func(name string) (string, error) {
 		v := os.Getenv(name)
@@ -55,7 +58,7 @@ func loadConfig() (workloadConfig, error) {
 		}
 		cfg.LogicalPartitions = n
 	} else {
-		cfg.LogicalPartitions = 10000
+		cfg.LogicalPartitions = defaultLogicalPartitions
 	}
 
 	if tp := os.Getenv("THROUGHPUT"); tp != "" {
@@ -65,7 +68,7 @@ func loadConfig() (workloadConfig, error) {
 		}
 		cfg.Throughput = n
 	} else {
-		cfg.Throughput = 10000
+		cfg.Throughput = defaultThroughput
 	}
 
 	// Comma-separated preferred locations (optional)

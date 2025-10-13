@@ -5,11 +5,9 @@ package workloads
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
-	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
@@ -66,68 +64,6 @@ func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient
 	}
 
 	return containerClient, nil
-}
-
-func upsertItemsConcurrently(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
-	// Use a bounded worker pool to avoid oversaturating resources
-	workers := 32
-	if count < workers {
-		workers = count
-	}
-	type job struct {
-		i int
-	}
-	jobs := make(chan job, workers)
-	errs := make(chan error, count)
-	wg := &sync.WaitGroup{}
-
-	for w := 0; w < workers; w++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for j := range jobs {
-				item := createRandomItem(j.i)
-				item["id"] = fmt.Sprintf("test-%d", j.i)
-				item[pkField] = fmt.Sprintf("pk-%d", j.i)
-
-				// Marshal item to bytes; UpsertItem often takes []byte + partition key value
-				body, err := json.Marshal(item)
-				if err != nil {
-					errs <- err
-					continue
-				}
-
-				pk := azcosmos.NewPartitionKeyString(item[pkField].(string))
-				_, err = container.UpsertItem(ctx, pk, body, nil)
-				if err != nil {
-					errs <- err
-					continue
-				}
-			}
-		}()
-	}
-
-sendLoop:
-	for i := 0; i < count; i++ {
-		select {
-		case <-ctx.Done():
-			break sendLoop
-		default:
-			jobs <- job{i: i}
-		}
-	}
-	close(jobs)
-	wg.Wait()
-	close(errs)
-
-	// Aggregate errors if any
-	var firstErr error
-	for e := range errs {
-		if firstErr == nil {
-			firstErr = e
-		}
-	}
-	return firstErr
 }
 
 // RunSetup creates the database/container and performs the concurrent upserts.

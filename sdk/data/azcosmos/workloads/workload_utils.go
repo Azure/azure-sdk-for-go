@@ -6,6 +6,7 @@ package workloads
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -13,6 +14,18 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+)
+
+const defaultConcurrency = 32
+
+// rwOperation enumerates random read/write/query operations.
+type rwOperation int
+
+const (
+	opUpsert rwOperation = iota
+	opRead
+	opQuery
+	opOpCount // sentinel for number of operations
 )
 
 func createRandomItem(i int) map[string]interface{} {
@@ -24,74 +37,42 @@ func createRandomItem(i int) map[string]interface{} {
 	}
 }
 
-func randomReadWriteQueries(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
-	// Use a bounded worker pool to avoid oversaturating resources
-	workers := 32
+// runConcurrent executes count indexed jobs across at most workers goroutines.
+// jf should be idempotent per index; it receives a per-worker RNG (not safe to share across workers).
+func runConcurrent(ctx context.Context, count, workers int, jf func(ctx context.Context, index int, rng *rand.Rand) error) error {
+	if count <= 0 {
+		return errors.New("count must be > 0")
+	}
+	if workers <= 0 {
+		workers = 1
+	}
 	if count < workers {
 		workers = count
 	}
-	type job struct {
-		i int
-	}
+
+	type job struct{ i int }
 	jobs := make(chan job, workers)
 	errs := make(chan error, count)
 	wg := &sync.WaitGroup{}
 
 	for w := 0; w < workers; w++ {
 		wg.Add(1)
-		go func() {
+		go func(workerID int) {
 			defer wg.Done()
+			// Seed rng per worker (unique-ish seed)
+			rng := rand.New(rand.NewSource(time.Now().UnixNano() + int64(workerID)<<32))
 			for j := range jobs {
-				rng := rand.New(rand.NewSource(time.Now().UnixNano()))
-				// re-upsert/read/query a document (some may not exist yet which can surface 404s)
-				num := rng.Intn(count) + 1
-				item := createRandomItem(j.i)
-				id := fmt.Sprintf("test-%d", num)
-				pkVal := fmt.Sprintf("pk-%d", num)
-				item["id"] = id
-				item[pkField] = pkVal
-
-				body, err := json.Marshal(item)
-				if err != nil {
-					log.Printf("randomRW marshal error id=%s pk=%s: %v", id, pkVal, err)
-					errs <- err
-					continue
+				if ctx.Err() != nil {
+					return
 				}
-
-				pk := azcosmos.NewPartitionKeyString(pkVal)
-				// Include query op (0=upsert,1=read,2=query)
-				operationNum := rng.Intn(3)
-				switch operationNum {
-				case 0: // Upsert
-					if _, err = container.UpsertItem(ctx, pk, body, nil); err != nil {
-						log.Printf("upsert error id=%s pk=%s: %v", id, pkVal, err)
-						errs <- err
-						continue
-					}
-				case 1: // Read
-					if _, err = container.ReadItem(ctx, pk, id, nil); err != nil {
-						log.Printf("read error id=%s pk=%s: %v", id, pkVal, err)
-						errs <- err
-						continue
-					}
-				case 2: // Query by id
-					pager := container.NewQueryItemsPager(
-						"SELECT * FROM c WHERE c.id = @id",
-						azcosmos.NewPartitionKeyString(pkVal),
-						&azcosmos.QueryOptions{
-							QueryParameters: []azcosmos.QueryParameter{{Name: "@id", Value: id}},
-						},
-					)
-					for pager.More() {
-						if _, err = pager.NextPage(ctx); err != nil {
-							log.Printf("query error id=%s pk=%s: %v", id, pkVal, err)
-							errs <- err
-							break
-						}
+				if err := jf(ctx, j.i, rng); err != nil {
+					select {
+					case errs <- err:
+					default: // channel full; drop to avoid blocking
 					}
 				}
 			}
-		}()
+		}(w)
 	}
 
 sendLoop:
@@ -107,7 +88,6 @@ sendLoop:
 	wg.Wait()
 	close(errs)
 
-	// Aggregate errors if any
 	var firstErr error
 	for e := range errs {
 		if firstErr == nil {
@@ -115,6 +95,68 @@ sendLoop:
 		}
 	}
 	return firstErr
+}
+
+func upsertItemsConcurrently(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
+	return runConcurrent(ctx, count, defaultConcurrency, func(ctx context.Context, i int, rng *rand.Rand) error {
+		item := createRandomItem(i)
+		id := fmt.Sprintf("test-%d", i)
+		pkVal := fmt.Sprintf("pk-%d", i)
+		item["id"] = id
+		item[pkField] = pkVal
+		body, err := json.Marshal(item)
+		if err != nil {
+			return err
+		}
+		pk := azcosmos.NewPartitionKeyString(pkVal)
+		_, err = container.UpsertItem(ctx, pk, body, nil)
+		return err
+	})
+}
+
+func randomReadWriteQueries(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
+	return runConcurrent(ctx, count, defaultConcurrency, func(ctx context.Context, i int, rng *rand.Rand) error {
+		// pick a random existing (or future) document index to operate on
+		num := rng.Intn(count) + 1
+		id := fmt.Sprintf("test-%d", num)
+		pkVal := fmt.Sprintf("pk-%d", num)
+		pk := azcosmos.NewPartitionKeyString(pkVal)
+
+		op := rwOperation(rng.Intn(int(opOpCount)))
+		switch op {
+		case opUpsert:
+			item := createRandomItem(i)
+			item["id"] = id
+			item[pkField] = pkVal
+			body, err := json.Marshal(item)
+			if err != nil {
+				log.Printf("randomRW marshal error id=%s pk=%s: %v", id, pkVal, err)
+				return err
+			}
+			if _, err := container.UpsertItem(ctx, pk, body, nil); err != nil {
+				log.Printf("upsert error id=%s pk=%s: %v", id, pkVal, err)
+				return err
+			}
+		case opRead:
+			if _, err := container.ReadItem(ctx, pk, id, nil); err != nil {
+				log.Printf("read error id=%s pk=%s: %v", id, pkVal, err)
+				return err
+			}
+		case opQuery:
+			pager := container.NewQueryItemsPager(
+				"SELECT * FROM c WHERE c.id = @id",
+				azcosmos.NewPartitionKeyString(pkVal),
+				&azcosmos.QueryOptions{QueryParameters: []azcosmos.QueryParameter{{Name: "@id", Value: id}}},
+			)
+			for pager.More() {
+				if _, err := pager.NextPage(ctx); err != nil {
+					log.Printf("query error id=%s pk=%s: %v", id, pkVal, err)
+					return err
+				}
+			}
+		}
+		return nil
+	})
 }
 
 func createClient(cfg workloadConfig) (*azcosmos.Client, error) {

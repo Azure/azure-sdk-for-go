@@ -32,13 +32,12 @@ func RunWorkload(ctx context.Context) error {
 
 	var count = cfg.LogicalPartitions
 
-	log.Printf("Starting %d concurrent upserts...", count)
+	log.Printf("Starting %d concurrent read/write/queries ...", count)
 
-	if err := randomUpserts(ctx, container, count, cfg.PartitionKeyFieldName); err != nil {
-		return fmt.Errorf("upserts failed: %w", err)
+	for {
+		if err := randomReadWriteQueries(ctx, container, count, cfg.PartitionKeyFieldName); err != nil {
+			return fmt.Errorf("read/write queries failed: %w", err)
+		}
 	}
-
-	log.Printf("Completed %d upserts.", count)
-	return nil
 
 }

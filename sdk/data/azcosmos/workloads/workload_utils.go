@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"sync"
 	"time"
@@ -23,7 +24,7 @@ func createRandomItem(i int) map[string]interface{} {
 	}
 }
 
-func randomUpserts(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
+func randomReadWriteQueries(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
 	// Use a bounded worker pool to avoid oversaturating resources
 	workers := 32
 	if count < workers {
@@ -41,28 +42,54 @@ func randomUpserts(ctx context.Context, container *azcosmos.ContainerClient, cou
 		go func() {
 			defer wg.Done()
 			for j := range jobs {
-
-				var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
-				// re-upsert a document already written
-				var num = rng.Intn(count) + 1
+				rng := rand.New(rand.NewSource(time.Now().UnixNano()))
+				// re-upsert/read/query a document (some may not exist yet which can surface 404s)
+				num := rng.Intn(count) + 1
 				item := createRandomItem(j.i)
-				item["id"] = fmt.Sprintf("test-%d", num)
-				item[pkField] = fmt.Sprintf("pk-%d", num)
+				id := fmt.Sprintf("test-%d", num)
+				pkVal := fmt.Sprintf("pk-%d", num)
+				item["id"] = id
+				item[pkField] = pkVal
 
-				// Marshal item to bytes; UpsertItem often takes []byte + partition key value
 				body, err := json.Marshal(item)
 				if err != nil {
+					log.Printf("randomRW marshal error id=%s pk=%s: %v", id, pkVal, err)
 					errs <- err
 					continue
 				}
 
-				pk := azcosmos.NewPartitionKeyString(item[pkField].(string))
-				_, err = container.UpsertItem(ctx, pk, body, nil)
-				if err != nil {
-					errs <- err
-					continue
+				pk := azcosmos.NewPartitionKeyString(pkVal)
+				// Include query op (0=upsert,1=read,2=query)
+				operationNum := rng.Intn(3)
+				switch operationNum {
+				case 0: // Upsert
+					if _, err = container.UpsertItem(ctx, pk, body, nil); err != nil {
+						log.Printf("upsert error id=%s pk=%s: %v", id, pkVal, err)
+						errs <- err
+						continue
+					}
+				case 1: // Read
+					if _, err = container.ReadItem(ctx, pk, id, nil); err != nil {
+						log.Printf("read error id=%s pk=%s: %v", id, pkVal, err)
+						errs <- err
+						continue
+					}
+				case 2: // Query by id
+					pager := container.NewQueryItemsPager(
+						"SELECT * FROM c WHERE c.id = @id",
+						azcosmos.NewPartitionKeyString(pkVal),
+						&azcosmos.QueryOptions{
+							QueryParameters: []azcosmos.QueryParameter{{Name: "@id", Value: id}},
+						},
+					)
+					for pager.More() {
+						if _, err = pager.NextPage(ctx); err != nil {
+							log.Printf("query error id=%s pk=%s: %v", id, pkVal, err)
+							errs <- err
+							break
+						}
+					}
 				}
-				println("writing an item")
 			}
 		}()
 	}

@@ -12,7 +12,7 @@ It allows you to create and manage application configuration settings and retrie
 Install `azappconfig` with `go get`:
 
 ```Bash
-go get github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig
+go get github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2
 ```
 
 ### Prerequisites
@@ -34,6 +34,8 @@ A [Setting][azappconfig_setting] is the fundamental resource within a Configurat
 The [Label][label_concept] property of a Setting provides a way to separate Settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions.
 
 For example, MaxRequests may be 100 in "NorthAmerica" and 200 in "WestEurope". By creating a Setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, with a "WestEurope" label, an application can seamlessly retrieve Settings as it runs in these two dimensions.
+
+**Tags** provide additional metadata for configuration settings and enable powerful filtering capabilities. Tags are key-value pairs that can be used to categorize and query settings. For example, you can tag settings with `environment=production` or `version=1.2.3` and then use the `TagsFilter` in `SettingSelector` to retrieve only settings that match specific tag criteria.
 
 ## Examples
 

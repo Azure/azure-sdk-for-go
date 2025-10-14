@@ -1,5 +1,11 @@
 # Release History
 
+## 0.2.2 (2025-10-14)
+
+### Other Changes
+
+- Fixed Go version and prevented toolchain upgrade in `go get` commands by adding `toolchain@none go@1.23.0` parameters.
+
 ## 0.2.1 (2025-09-25)
 
 ### Other Changes

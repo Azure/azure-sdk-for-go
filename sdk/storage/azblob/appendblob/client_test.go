@@ -22,7 +22,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	afservice "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -492,11 +491,16 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithRequestIntentHeader() {
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLWithRequestIntentHeader() {
 	_require := require.New(s.T())
 	ctx := context.Background()
 
 	blobSvcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSecondary, nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+	accessToken, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
 	_require.NoError(err)
 
 	containerName := "testcontainer"
@@ -511,11 +515,9 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithRequestIntent
 	_, sourceData := testcommon.GenerateData(contentSize)
 	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountSecondary)
 
-	sharedKey, err := file.NewSharedKeyCredential(accountName, accountKey)
-	_require.NoError(err)
-
 	fileSvcURL := "https://" + accountName + ".file.core.windows.net/"
-	fileSvcClient, err := afservice.NewClientWithSharedKeyCredential(fileSvcURL, sharedKey, nil)
+	sharedKeyCred, err := afservice.NewSharedKeyCredential(accountName, accountKey)
+	fileSvcClient, err := afservice.NewClientWithSharedKeyCredential(fileSvcURL, sharedKeyCred, nil)
 	_require.NoError(err)
 
 	shareName := "testshare"
@@ -532,13 +534,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithRequestIntent
 	_, err = srcFile.Create(ctx, fileSize, nil)
 	_require.NoError(err)
 	_, err = srcFile.UploadRange(ctx, 0, streaming.NopCloser(bytes.NewReader(sourceData)), nil)
-	_require.NoError(err)
-
-	cred, err := testcommon.GetGenericTokenCredential()
-	_require.NoError(err)
-	accessToken, err := cred.GetToken(ctx, policy.TokenRequestOptions{
-		Scopes: []string{"https://storage.azure.com/.default"},
-	})
 	_require.NoError(err)
 
 	// Append block from file source via OAuth with request intent header

@@ -491,7 +491,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLWithRequestIntentHeader() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithRequestIntentHeader() {
 	_require := require.New(s.T())
 	ctx := context.Background()
 
@@ -536,7 +536,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLWithRequestIntentHe
 	_, err = srcFile.UploadRange(ctx, 0, streaming.NopCloser(bytes.NewReader(sourceData)), nil)
 	_require.NoError(err)
 
-	// Append block from file source via OAuth with request intent header
+	// Append block from file source via OAuth with file request intent header
 	requestIntent := blob.FileRequestIntentTypeBackup
 	_, err = destBlob.AppendBlockFromURL(ctx, srcFile.URL(), &appendblob.AppendBlockFromURLOptions{
 		CopySourceAuthorization: to.Ptr("Bearer " + accessToken.Token),

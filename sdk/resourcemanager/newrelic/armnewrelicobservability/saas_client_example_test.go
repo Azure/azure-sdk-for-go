@@ -13,12 +13,13 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/BillingInfo_Get.json
-func ExampleBillingInfoClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/ActivateSaaS.json
+func ExampleSaaSClient_ActivateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,26 +29,17 @@ func ExampleBillingInfoClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBillingInfoClient().Get(ctx, "myResourceGroup", "myMonitor", nil)
+	res, err := clientFactory.NewSaaSClient().ActivateResource(ctx, armnewrelicobservability.ActivateSaaSParameterRequest{
+		PublisherID: to.Ptr("publisherId"),
+		SaasGUID:    to.Ptr("00000000-0000-0000-0000-000005430000"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.BillingInfoResponse = armnewrelicobservability.BillingInfoResponse{
-	// 	MarketplaceSaasInfo: &armnewrelicobservability.MarketplaceSaaSInfo{
-	// 		BilledAzureSubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		MarketplaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/AzNewRelic_b1190c8f"),
-	// 		MarketplaceStatus: to.Ptr("Active"),
-	// 		MarketplaceSubscriptionID: to.Ptr("12345678-1234-1234-1234-123456789012"),
-	// 		MarketplaceSubscriptionName: to.Ptr("AzNewRelic_b1190c8f"),
-	// 		OfferID: to.Ptr("offerId"),
-	// 		PublisherID: to.Ptr("publisherId"),
-	// 	},
-	// 	PartnerBillingEntity: &armnewrelicobservability.PartnerBillingEntity{
-	// 		OrganizationID: to.Ptr("1234567890"),
-	// 		OrganizationName: to.Ptr("NROrganizationName"),
-	// 	},
+	// res.SaaSResourceDetailsResponse = armnewrelicobservability.SaaSResourceDetailsResponse{
+	// 	SaasID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// }
 }

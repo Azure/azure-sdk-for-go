@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,10 +49,11 @@ func NewDetachTrafficFilterClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// BeginUpdate - Detach traffic filter for the given deployment.
+// BeginUpdate - Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
+// capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - DetachTrafficFilterClientBeginUpdateOptions contains the optional parameters for the DetachTrafficFilterClient.BeginUpdate
@@ -78,10 +76,10 @@ func (client *DetachTrafficFilterClient) BeginUpdate(ctx context.Context, resour
 	}
 }
 
-// Update - Detach traffic filter for the given deployment.
+// Update - Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 func (client *DetachTrafficFilterClient) update(ctx context.Context, resourceGroupName string, monitorName string, options *DetachTrafficFilterClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DetachTrafficFilterClient.BeginUpdate"
@@ -123,7 +121,7 @@ func (client *DetachTrafficFilterClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

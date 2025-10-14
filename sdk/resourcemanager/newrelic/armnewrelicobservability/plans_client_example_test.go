@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Plans_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/Plans_List_MaximumSet_Gen.json
 func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 		// 				AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
 		// 				OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
 		// 				PlanData: &armnewrelicobservability.PlanData{
-		// 					BillingCycle: to.Ptr(armnewrelicobservability.BillingCycleYEARLY),
+		// 					BillingCycle: to.Ptr("Yearly"),
 		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t}()),
 		// 					PlanDetails: to.Ptr("tbbiaga"),
 		// 					UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
@@ -61,7 +61,7 @@ func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/Plans_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/Plans_List_MinimumSet_Gen.json
 func ExamplePlansClient_NewListPager_plansListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

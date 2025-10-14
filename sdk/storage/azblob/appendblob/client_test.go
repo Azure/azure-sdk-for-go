@@ -491,7 +491,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 	_require.Equal(destBuffer, sourceData)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLWithRequestIntentHeader() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithRequestIntentHeader() {
 	_require := require.New(s.T())
 	ctx := context.Background()
 

@@ -1,5 +1,21 @@
 # Release History
 
+## 3.0.0 (2025-10-15)
+### Breaking Changes
+
+- Field `Maxpagesize` of struct `TaskAssignmentsClientListOptions` has been removed
+
+### Features Added
+
+- New struct `GeoPriorityReplicationStatus`
+- New struct `ObjectReplicationPolicyPropertiesPriorityReplication`
+- New field `GeoPriorityReplicationStatus` in struct `AccountProperties`
+- New field `GeoPriorityReplicationStatus` in struct `AccountPropertiesCreateParameters`
+- New field `GeoPriorityReplicationStatus` in struct `AccountPropertiesUpdateParameters`
+- New field `PriorityReplication` in struct `ObjectReplicationPolicyProperties`
+- New field `Top` in struct `TaskAssignmentsClientListOptions`
+
+
 ## 2.0.0 (2025-09-25)
 ### Breaking Changes
 

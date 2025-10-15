@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/NetworkSecurityPerimeterConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/260ed6a52537921f53a18ffaf4020e3b4d510367/specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/NetworkSecurityPerimeterConfigurationReconcile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/NetworkSecurityPerimeterConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

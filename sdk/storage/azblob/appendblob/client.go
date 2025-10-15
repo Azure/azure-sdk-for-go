@@ -168,7 +168,7 @@ func (ab *Client) Create(ctx context.Context, o *CreateOptions) (CreateResponse,
 func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *AppendBlockOptions) (AppendBlockResponse, error) {
 	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
-		return AppendBlockResponse{}, nil
+		return AppendBlockResponse{}, err
 	}
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
@@ -176,7 +176,7 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 	if o != nil && o.TransactionalValidation != nil {
 		body, err = o.TransactionalValidation.Apply(body, appendOptions)
 		if err != nil {
-			return AppendBlockResponse{}, nil
+			return AppendBlockResponse{}, err
 		}
 	}
 

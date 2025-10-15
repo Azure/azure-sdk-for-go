@@ -41,6 +41,28 @@ func TestNewChangeFeedRangeBasic(t *testing.T) {
 	}
 }
 
+func TestOverlappingChangeFeedRanges(t *testing.T) {
+	// Arrange
+	range1 := newChangeFeedRange("00", "80", nil)
+	range2 := newChangeFeedRange("40", "FF", nil)
+
+	// Assert - verify ranges overlap
+	if !(range1.MinInclusive < range2.MaxExclusive) {
+		t.Errorf("Range1.MinInclusive (%s) should be less than Range2.MaxExclusive (%s)", range1.MinInclusive, range2.MaxExclusive)
+	}
+	if !(range2.MinInclusive < range1.MaxExclusive) {
+		t.Errorf("Range2.MinInclusive (%s) should be less than Range1.MaxExclusive (%s)", range2.MinInclusive, range1.MaxExclusive)
+	}
+
+	// Assert - verify the full range they cover
+	if range1.MinInclusive != "00" {
+		t.Errorf("Expected Range1.MinInclusive to be '00', got %s", range1.MinInclusive)
+	}
+	if range2.MaxExclusive != "FF" {
+		t.Errorf("Expected Range2.MaxExclusive to be 'FF', got %s", range2.MaxExclusive)
+	}
+}
+
 func TestNewChangeFeedRangeNilOptions(t *testing.T) {
 	min := "A"
 	max := "Z"

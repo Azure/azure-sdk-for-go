@@ -23,8 +23,11 @@ type ChangeFeedResponse struct {
 	// ContinuationToken is the token used to continue reading the change feed.
 	ContinuationToken string
 
-	// Store the feed range if it was used in the request.
+	// Store the feed range if it was used in the request, if any.
 	FeedRange *FeedRange
+
+	// PartitionKey is the partition key used in the request, if any.
+	PartitionKey *PartitionKey
 
 	Response
 }
@@ -102,6 +105,47 @@ func (c ChangeFeedResponse) GetCompositeContinuationToken() (string, error) {
 	compositeToken := newCompositeContinuationToken(c.ResourceID, []changeFeedRange{cfRange})
 
 	tokenBytes, err := json.Marshal(compositeToken)
+	if err != nil {
+		return "", err
+	}
+
+	return string(tokenBytes), nil
+}
+
+// PopulateContinuationTokenForPartitionKey generates and sets the continuation token for a specific partition key
+func (response *ChangeFeedResponse) PopulateContinuationTokenForPartitionKey() {
+	if response.PartitionKey != nil && response.ETag != "" {
+		token, err := response.GetContinuationTokenForPartitionKey()
+		if err == nil && token != "" {
+			response.ContinuationToken = token
+		}
+	}
+}
+
+// GetPartitionKey returns the partition key used in the request, if any.
+func (c ChangeFeedResponse) GetPartitionKey() (partitionKey *PartitionKey, ok bool) {
+	if c.PartitionKey != nil {
+		return c.PartitionKey, true
+	}
+	return nil, false
+}
+
+// GetContinuationTokenForPartitionKey creates a continuation token for a specific partition key.
+func (c ChangeFeedResponse) GetContinuationTokenForPartitionKey() (string, error) {
+	partitionKey, ok := c.GetPartitionKey()
+	if !ok {
+		return "", nil
+	}
+
+	etag := c.GetContinuation()
+	if etag == "" {
+		return "", nil
+	}
+	etagValue := azcore.ETag(etag)
+
+	continuationToken := newContinuationTokenForPartitionKey(c.ResourceID, partitionKey, &etagValue)
+
+	tokenBytes, err := json.Marshal(continuationToken)
 	if err != nil {
 		return "", err
 	}

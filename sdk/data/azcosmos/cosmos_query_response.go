@@ -130,3 +130,14 @@ func newDatabasesQueryResponse(resp *http.Response) (QueryDatabasesResponse, err
 type queryDatabasesServiceResponse struct {
 	Databases []DatabaseProperties `json:"Databases,omitempty"`
 }
+
+// ReadManyItemsResponse contains response from the item query operation.
+type ReadManyItemsResponse struct {
+	Response
+	// Contains the query metrics related to the query execution
+	QueryMetrics *string
+	// IndexMetrics contains the index utilization metrics if QueryOptions.PopulateIndexMetrics = true
+	IndexMetrics *string
+	// List of items.
+	Items [][]byte
+}

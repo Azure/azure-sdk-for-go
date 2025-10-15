@@ -456,11 +456,26 @@ func (c *ContainerClient) ReadManyItems(
 	ctx context.Context,
 	partitionKey PartitionKey,
 	itemIdentities []ItemIdentity,
-	o *ItemOptions) (ItemResponse, error) {
-	// Placeholder implementation: not yet implemented in the Go SDK.
-	// This method signature is present to allow future support for a bulk read-many API.
-	// For now, return a clear error so callers know the operation is unavailable.
-	return ItemResponse{}, errors.New("ReadManyItems is not implemented")
+	o *ReadManyOptions) ([]ItemResponse, error) {
+	correlatedActivityId, _ := uuid.New()
+	h := headerOptionsOverride{
+		partitionKey:         &partitionKey,
+		correlatedActivityId: &correlatedActivityId,
+	}
+
+	readManyOptions := &ReadManyOptions{}
+	if o != nil {
+		originalOptions := *o
+		readManyOptions = &originalOptions
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		headerOptionsOverride: &h,
+	}
+
+	return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext)
 }
 
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.

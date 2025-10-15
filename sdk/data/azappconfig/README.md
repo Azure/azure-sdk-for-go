@@ -9,14 +9,14 @@ Use `azappconfig` (this package) to:
 - Manage configuration settings and snapshots in Azure App Configuration
 - Perform granular reads that operate outside the realm of normal configuration consumption
 
-Most applications should start with the [azureappconfiguration](https://pkg.go.dev/github.com/Azure/AppConfiguration-GoProvider/azureappconfiguration), which builds on this low-level client library and is the recommended way to consume configuration at runtime. It adds:
+Most applications should start with the [azureappconfiguration](https://pkg.go.dev/github.com/Azure/AppConfiguration-GoProvider/azureappconfiguration) package, which builds on this low-level client library and is the recommended way to consume configuration at runtime. It adds:
 
 - Strongly-typed struct data binding
-- Returning key-values as raw json bytes
+- Returning key-values as raw JSON bytes
 - Configuration refresh during runtime
 - High reliability with caching, replica discovery, failover, and load balancing
 - Key vault reference resolution and auto-refresh
-- Feature flag integration for [featuremanagement](https://pkg.go.dev/github.com/microsoft/Featuremanagement-Go/featuremanagement) library
+- Feature flag integration for the [featuremanagement](https://pkg.go.dev/github.com/microsoft/Featuremanagement-Go/featuremanagement) library
 
 For more information, please go to [configuration provider](https://learn.microsoft.com/azure/azure-app-configuration/configuration-provider-overview).
 

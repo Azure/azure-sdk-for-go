@@ -517,6 +517,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithRequestIntent
 
 	fileSvcURL := "https://" + accountName + ".file.core.windows.net/"
 	sharedKeyCred, err := afservice.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
 	fileSvcClient, err := afservice.NewClientWithSharedKeyCredential(fileSvcURL, sharedKeyCred, nil)
 	_require.NoError(err)
 

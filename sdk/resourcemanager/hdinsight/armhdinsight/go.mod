@@ -2,7 +2,6 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsi
 
 go 1.24.0
 
-toolchain go1.24.7
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.19.1

@@ -34,12 +34,17 @@ func createRandomItem(i int) map[string]interface{} {
 		"createdAt": time.Now().UTC().Format(time.RFC3339Nano),
 		"seq":       i,
 		"value":     rand.Int63(), // pseudo-random payload
+		"embedding": createRandomEmbedding(),
 	}
+}
+
+func createRandomEmbedding() []float64 {
+	return []float64{rand.Float64(), rand.Float64(), rand.Float64(), rand.Float64(), rand.Float64(), rand.Float64(), rand.Float64(), rand.Float64(), rand.Float64(), rand.Float64()}
 }
 
 // runConcurrent executes count indexed jobs across at most workers goroutines.
 // jf should be idempotent per index; it receives a per-worker RNG (not safe to share across workers).
-func runConcurrent(ctx context.Context, count, workers int, jf func(ctx context.Context, index int, rng *rand.Rand) error) error {
+func runConcurrent(ctx context.Context, count, workers int, jobFunction func(ctx context.Context, index int, rng *rand.Rand) error) error {
 	if count <= 0 {
 		return errors.New("count must be > 0")
 	}
@@ -65,7 +70,7 @@ func runConcurrent(ctx context.Context, count, workers int, jf func(ctx context.
 				if ctx.Err() != nil {
 					return
 				}
-				if err := jf(ctx, j.i, rng); err != nil {
+				if err := jobFunction(ctx, j.i, rng); err != nil {
 					select {
 					case errs <- err:
 					default: // channel full; drop to avoid blocking
@@ -153,6 +158,25 @@ func randomReadWriteQueries(ctx context.Context, container *azcosmos.ContainerCl
 					log.Printf("query error id=%s pk=%s: %v", id, pkVal, err)
 					return err
 				}
+			}
+		}
+		return nil
+	})
+}
+
+func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
+	return runConcurrent(ctx, count, defaultConcurrency, func(ctx context.Context, i int, rng *rand.Rand) error {
+		embedding := createRandomEmbedding()
+
+		pager := container.NewQueryItemsPager(
+			"SELECT TOP 10 c.id FROM c ORDER BY VectorDistance(c.embedding, @embedding)",
+			azcosmos.NewPartitionKey(),
+			&azcosmos.QueryOptions{QueryParameters: []azcosmos.QueryParameter{{Name: "@embedding", Value: embedding}}},
+		)
+		for pager.More() {
+			if _, err := pager.NextPage(ctx); err != nil {
+				log.Printf("vs query error: %v", err)
+				return err
 			}
 		}
 		return nil

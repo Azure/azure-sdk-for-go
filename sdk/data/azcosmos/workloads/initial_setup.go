@@ -39,12 +39,30 @@ func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient
 		return nil, err
 	}
 
-	// Build container properties
+	// Build container properties with vector indexing policy
 	props := azcosmos.ContainerProperties{
 		ID: containerID,
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/" + pkField},
 			Kind:  azcosmos.PartitionKeyKindHash,
+		},
+		IndexingPolicy: &azcosmos.IndexingPolicy{
+			Automatic:    true,
+			IndexingMode: azcosmos.IndexingModeConsistent,
+			IncludedPaths: []azcosmos.IncludedPath{
+				{Path: "/*"},
+			},
+			ExcludedPaths: []azcosmos.ExcludedPath{
+				{Path: "/\"_etag\"/?"},
+				{Path: "/embedding/*"},     // Exclude vector path from standard indexing
+				{Path: "/textEmbedding/*"}, // Exclude vector path from standard indexing
+			},
+			VectorIndexes: []azcosmos.VectorIndex{
+				{
+					Path: "/embedding",
+					Type: azcosmos.VectorIndexTypeDiskANN,
+				},
+			},
 		},
 	}
 

@@ -5,6 +5,7 @@ package delta
 
 import (
 	"sort"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 )
@@ -243,15 +244,25 @@ func GetFuncSigChanges(lhs, rhs exports.Content) map[string]FuncSig {
 			continue
 		}
 		sig := FuncSig{}
-		if !safeStrCmp(lhs.Funcs[rhsKey].Params, rhsValue.Params) {
+		lhsFunc := lhs.Funcs[rhsKey]
+		
+		// Check for parameter order change
+		if hasParamOrderChange(lhsFunc.Params, rhsValue.Params, lhsFunc.ParamNames, rhsValue.ParamNames) {
 			sig.Params = &Signature{
-				From: safeFuncSig(lhs.Funcs[rhsKey].Params),
+				From: safeFuncSig(lhsFunc.Params),
+				To:   safeFuncSig(rhsValue.Params),
+			}
+		} else if !safeStrCmp(lhsFunc.Params, rhsValue.Params) {
+			// Regular parameter change (type/count change, not just order)
+			sig.Params = &Signature{
+				From: safeFuncSig(lhsFunc.Params),
 				To:   safeFuncSig(rhsValue.Params),
 			}
 		}
-		if !safeStrCmp(lhs.Funcs[rhsKey].Returns, rhsValue.Returns) {
+		
+		if !safeStrCmp(lhsFunc.Returns, rhsValue.Returns) {
 			sig.Returns = &Signature{
-				From: safeFuncSig(lhs.Funcs[rhsKey].Returns),
+				From: safeFuncSig(lhsFunc.Returns),
 				To:   safeFuncSig(rhsValue.Returns),
 			}
 		}
@@ -367,4 +378,112 @@ func safeStrCmp(lhs, rhs *string) bool {
 		return false
 	}
 	return *lhs == *rhs
+}
+
+// hasParamOrderChange checks if parameters have changed order.
+// It returns true only when:
+// 1. Both have the same parameter types (possibly in different order)
+// 2. Both have the same parameter names (but in different order)
+// 3. The names order is actually different
+// This ensures we don't get false positives from simple renames.
+func hasParamOrderChange(lhsParams, rhsParams, lhsNames, rhsNames *string) bool {
+	// If any is nil, can't determine order change
+	if lhsParams == nil || rhsParams == nil || lhsNames == nil || rhsNames == nil {
+		return false
+	}
+	
+	// Split into lists
+	lhsParamsList := splitAndTrim(*lhsParams)
+	rhsParamsList := splitAndTrim(*rhsParams)
+	lhsNamesList := splitAndTrim(*lhsNames)
+	rhsNamesList := splitAndTrim(*rhsNames)
+	
+	// Must have same number of params
+	if len(lhsParamsList) != len(rhsParamsList) {
+		return false
+	}
+	
+	// Must have same number of names
+	if len(lhsNamesList) != len(rhsNamesList) {
+		return false
+	}
+	
+	// Must have same length
+	if len(lhsParamsList) != len(lhsNamesList) {
+		return false
+	}
+	
+	// If names are in the same order, no change
+	if *lhsNames == *rhsNames {
+		return false
+	}
+	
+	// Check if we have the same set of parameter types (order-independent)
+	lhsTypesSet := make(map[string]int)
+	rhsTypesSet := make(map[string]int)
+	for _, t := range lhsParamsList {
+		lhsTypesSet[t]++
+	}
+	for _, t := range rhsParamsList {
+		rhsTypesSet[t]++
+	}
+	
+	// Check if type sets are the same
+	if len(lhsTypesSet) != len(rhsTypesSet) {
+		return false
+	}
+	for k, v := range lhsTypesSet {
+		if rhsTypesSet[k] != v {
+			return false
+		}
+	}
+	
+	// Check if we have the same set of parameter names (order-independent)
+	lhsNamesSet := make(map[string]int)
+	rhsNamesSet := make(map[string]int)
+	for _, n := range lhsNamesList {
+		if n != "" { // Skip unnamed params
+			lhsNamesSet[n]++
+		}
+	}
+	for _, n := range rhsNamesList {
+		if n != "" { // Skip unnamed params
+			rhsNamesSet[n]++
+		}
+	}
+	
+	// Must have actual names to compare
+	if len(lhsNamesSet) == 0 || len(rhsNamesSet) == 0 {
+		return false
+	}
+	
+	// Check if name sets are the same
+	if len(lhsNamesSet) != len(rhsNamesSet) {
+		return false
+	}
+	for k, v := range lhsNamesSet {
+		if rhsNamesSet[k] != v {
+			return false
+		}
+	}
+	
+	// At this point we know:
+	// - Same types (possibly in different order)
+	// - Same names (but in different order)
+	// - The names order is different
+	// This means the order changed
+	return true
+}
+
+// splitAndTrim splits a comma-separated string and trims whitespace
+func splitAndTrim(s string) []string {
+	if s == "" {
+		return nil
+	}
+	parts := strings.Split(s, ",")
+	result := make([]string, len(parts))
+	for i, p := range parts {
+		result[i] = strings.TrimSpace(p)
+	}
+	return result
 }

@@ -58,6 +58,33 @@ func TestFuncParameterChange(t *testing.T) {
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
+func TestFuncParameterOrderChange(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/paramorder")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/paramorder")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	FilterChangelog(changelog, FuncFilter)
+
+	// Expected: Only functions with actual parameter order changes should be detected
+	// - NewListByServicePager: serviceName and resourceGroupName swapped
+	// - OrderChanged: resourceGroupName, serviceName, subscriptionID -> serviceName, subscriptionID, resourceGroupName
+	// - NoChange: should not appear (no changes)
+	// - DifferentNames: should not appear as order change (names changed, not just order)
+	excepted := "### Breaking Changes\n\n- Function `*AllPoliciesClient.NewListByServicePager` parameter(s) have been changed from `(string, string, *AllPoliciesClientListByServiceOptions)` to `(string, string, *AllPoliciesClientListByServiceOptions)`\n- Function `*AllPoliciesClient.OrderChanged` parameter(s) have been changed from `(string, string, string)` to `(string, string, string)`\n"
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
 func TestGetAllVersionTags(t *testing.T) {
 	cwd, err := os.Getwd()
 	if err != nil {

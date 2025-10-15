@@ -20,6 +20,9 @@ type workloadConfig struct {
 
 const defaultLogicalPartitions = 10000
 const defaultThroughput = 100000
+const defaultContainerName = "scale_cont"
+const defaultDatabaseName = "scale_db"
+const defaultPKField = "pk"
 
 func loadConfig() (workloadConfig, error) {
 	get := func(name string) (string, error) {
@@ -39,16 +42,20 @@ func loadConfig() (workloadConfig, error) {
 	if cfg.Key, err = get("COSMOS_KEY"); err != nil {
 		return cfg, err
 	}
-	if cfg.DatabaseID, err = get("COSMOS_DATABASE"); err != nil {
-		return cfg, err
+	if cosmosDatabase := os.Getenv("COSMOS_DATABASE"); cosmosDatabase != "" {
+		cfg.DatabaseID = cosmosDatabase
+	} else {
+		cfg.DatabaseID = defaultDatabaseName
 	}
-	if cfg.ContainerID, err = get("COSMOS_CONTAINER"); err != nil {
-		return cfg, err
+	if cosmosContainer := os.Getenv("COSMOS_CONTAINER"); cosmosContainer != "" {
+		cfg.ContainerID = cosmosContainer
+	} else {
+		cfg.ContainerID = defaultContainerName
 	}
 	if pk := os.Getenv("PARTITION_KEY"); pk != "" {
 		cfg.PartitionKeyFieldName = pk
 	} else {
-		cfg.PartitionKeyFieldName = "pk"
+		cfg.PartitionKeyFieldName = defaultPKField
 	}
 
 	if lp := os.Getenv("NUMBER_OF_LOGICAL_PARTITIONS"); lp != "" {

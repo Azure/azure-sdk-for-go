@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesListByCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesListByCluster.json
 func ExampleDatabasesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,8 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 		// 			Name: to.Ptr("cache1/default"),
 		// 			Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 		// 			ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-		// 			Properties: &armredisenterprise.DatabaseProperties{
+		// 			Properties: &armredisenterprise.DatabaseCreateProperties{
+		// 				AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationDisabled),
 		// 				ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 		// 				ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 		// 				DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
@@ -71,7 +72,7 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +84,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
-		Properties: &armredisenterprise.DatabaseProperties{
+		Properties: &armredisenterprise.DatabaseCreateProperties{
 			AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 			ClientProtocol:           to.Ptr(armredisenterprise.ProtocolEncrypted),
 			ClusteringPolicy:         to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
@@ -122,7 +123,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	// 	Name: to.Ptr("cache1/default"),
 	// 	Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 	ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-	// 	Properties: &armredisenterprise.DatabaseProperties{
+	// 	Properties: &armredisenterprise.DatabaseCreateProperties{
 	// 		AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 	// 		ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 	// 		ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
@@ -156,7 +157,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesNoClusterCacheCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesNoClusterCacheCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +169,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
-		Properties: &armredisenterprise.DatabaseProperties{
+		Properties: &armredisenterprise.DatabaseCreateProperties{
 			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
 			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
@@ -189,7 +190,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	// 	Name: to.Ptr("cache1/default"),
 	// 	Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 	ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-	// 	Properties: &armredisenterprise.DatabaseProperties{
+	// 	Properties: &armredisenterprise.DatabaseCreateProperties{
 	// 		AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 	// 		ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 	// 		ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
@@ -203,7 +204,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesCreateWithGeoReplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesCreateWithGeoReplication.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActiveGeoReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,12 +216,12 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
-		Properties: &armredisenterprise.DatabaseProperties{
+		Properties: &armredisenterprise.DatabaseCreateProperties{
 			AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 			ClientProtocol:           to.Ptr(armredisenterprise.ProtocolEncrypted),
 			ClusteringPolicy:         to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 			EvictionPolicy:           to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
-			GeoReplication: &armredisenterprise.DatabasePropertiesGeoReplication{
+			GeoReplication: &armredisenterprise.DatabaseCommonPropertiesGeoReplication{
 				GroupNickname: to.Ptr("groupName"),
 				LinkedDatabases: []*armredisenterprise.LinkedDatabase{
 					{
@@ -247,13 +248,13 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	// 	Name: to.Ptr("cache1/default"),
 	// 	Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 	ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-	// 	Properties: &armredisenterprise.DatabaseProperties{
+	// 	Properties: &armredisenterprise.DatabaseCreateProperties{
 	// 		AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 	// 		ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 	// 		ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 	// 		DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 		EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
-	// 		GeoReplication: &armredisenterprise.DatabasePropertiesGeoReplication{
+	// 		GeoReplication: &armredisenterprise.DatabaseCommonPropertiesGeoReplication{
 	// 			GroupNickname: to.Ptr("groupName"),
 	// 			LinkedDatabases: []*armredisenterprise.LinkedDatabase{
 	// 				{
@@ -273,7 +274,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesUpdate.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +286,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "rg1", "cache1", "default", armredisenterprise.DatabaseUpdate{
-		Properties: &armredisenterprise.DatabaseProperties{
+		Properties: &armredisenterprise.DatabaseUpdateProperties{
 			AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 			ClientProtocol:           to.Ptr(armredisenterprise.ProtocolEncrypted),
 			EvictionPolicy:           to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
@@ -309,7 +310,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	// 	Name: to.Ptr("cache1/default"),
 	// 	Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 	ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-	// 	Properties: &armredisenterprise.DatabaseProperties{
+	// 	Properties: &armredisenterprise.DatabaseCreateProperties{
 	// 		AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 	// 		ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 	// 		ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
@@ -333,7 +334,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClusteringOnNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +346,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "rg1", "cache1", "default", armredisenterprise.DatabaseUpdate{
-		Properties: &armredisenterprise.DatabaseProperties{
+		Properties: &armredisenterprise.DatabaseUpdateProperties{
 			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
@@ -366,7 +367,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	// 	Name: to.Ptr("cache1/default"),
 	// 	Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 	ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-	// 	Properties: &armredisenterprise.DatabaseProperties{
+	// 	Properties: &armredisenterprise.DatabaseCreateProperties{
 	// 		AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 	// 		ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 	// 		ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
@@ -380,7 +381,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -402,7 +403,7 @@ func ExampleDatabasesClient_Get() {
 	// 	Name: to.Ptr("cache1/default"),
 	// 	Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 	ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-	// 	Properties: &armredisenterprise.DatabaseProperties{
+	// 	Properties: &armredisenterprise.DatabaseCreateProperties{
 	// 		AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 	// 		ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
 	// 		ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
@@ -426,7 +427,7 @@ func ExampleDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +448,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesListKeys.json
 func ExampleDatabasesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +472,7 @@ func ExampleDatabasesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesRegenerateKey.json
 func ExampleDatabasesClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +502,7 @@ func ExampleDatabasesClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesImport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesImport.json
 func ExampleDatabasesClient_BeginImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,7 +527,7 @@ func ExampleDatabasesClient_BeginImport() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesExport.json
 func ExampleDatabasesClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,7 +550,7 @@ func ExampleDatabasesClient_BeginExport() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesForceUnlink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesForceUnlink.json
 func ExampleDatabasesClient_BeginForceUnlink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +574,7 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesForceLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesForceLink.json
 func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,7 +606,7 @@ func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesFlush.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesFlush.json
 func ExampleDatabasesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -630,7 +631,7 @@ func ExampleDatabasesClient_BeginFlush() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ad9b489baef1d982f7641f6c47a00794c9a1a5be/specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/536bd5fe0f54ff503a02f666ddde17bd7c43429f/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
 func ExampleDatabasesClient_BeginUpgradeDBRedisVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

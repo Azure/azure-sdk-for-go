@@ -22,6 +22,7 @@
 
 ### Other Changes
 * Updated `azidentity` version to `1.10.1`
+* Upgraded service version to `2025-07-05`
 
 ## 1.5.2-beta.1 (2025-05-08)
 

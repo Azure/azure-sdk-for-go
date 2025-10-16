@@ -25,11 +25,11 @@ type mockJsonTestOptions struct {
 	count uint
 }
 
-var mockJsonOpts mockJsonTestOptions = mockJsonTestOptions{count: 25}
+var mockJsonOpts mockJsonTestOptions = mockJsonTestOptions{count: defaultItemCount}
 
 // sleepTestRegister is called once per process
 func mockJsonTestRegister() {
-	flag.UintVar(&mockJsonOpts.count, "count", 25, "Number of items per page")
+	flag.UintVar(&mockJsonOpts.count, "count", defaultItemCount, "Number of items per page")
 }
 
 type globalMockJsonTest struct {
@@ -99,7 +99,7 @@ func (g *mockJsonTest) Run(ctx context.Context) error {
 	}
 	resp, err := g.pipeline.Do(req)
 	if err != nil {
-		return nil
+		return err
 	}
 	// Make sure we deserialize the response.
 	result := List{}

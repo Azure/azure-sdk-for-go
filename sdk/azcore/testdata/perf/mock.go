@@ -13,6 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
+const defaultItemCount = 25
+
 // Types below are meant to reflect Storage Blob, which is XML but JSON is supported for comparison.
 
 type List struct {

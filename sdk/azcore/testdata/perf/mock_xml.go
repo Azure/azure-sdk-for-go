@@ -25,11 +25,11 @@ type mockXmlTestOptions struct {
 	count uint
 }
 
-var mockXmlOpts mockXmlTestOptions = mockXmlTestOptions{count: 25}
+var mockXmlOpts mockXmlTestOptions = mockXmlTestOptions{count: defaultItemCount}
 
 // sleepTestRegister is called once per process
 func mockXmlTestRegister() {
-	flag.UintVar(&mockXmlOpts.count, "count", 25, "Number of items per page")
+	flag.UintVar(&mockXmlOpts.count, "count", defaultItemCount, "Number of items per page")
 }
 
 type globalMockXmlTest struct {
@@ -46,7 +46,7 @@ func NewMockXmlTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glo
 	}
 	now := time.Now()
 	for i := range mockXmlOpts.count {
-		name := fmt.Sprintf("testBlob%d", i)
+		name := fmt.Sprintf("testItem%d", i)
 		hash := md5.Sum([]byte(name))
 		list.Container.Items[i] = &ListItems{
 			Name: to.Ptr(name),
@@ -99,7 +99,7 @@ func (g *mockXmlTest) Run(ctx context.Context) error {
 	}
 	resp, err := g.pipeline.Do(req)
 	if err != nil {
-		return nil
+		return err
 	}
 	// Make sure we deserialize the response.
 	result := List{}

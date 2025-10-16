@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/ScriptCmdlets_Get.json
+// Generated from example definition: 2025-09-01/ScriptCmdlets_Get.json
 func ExampleScriptCmdletsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleScriptCmdletsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ScriptCmdlets_List.json
+// Generated from example definition: 2025-09-01/ScriptCmdlets_List.json
 func ExampleScriptCmdletsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

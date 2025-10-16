@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/VirtualMachines_Get.json
+// Generated from example definition: 2025-09-01/VirtualMachines_Get.json
 func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleVirtualMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/VirtualMachines_List.json
+// Generated from example definition: 2025-09-01/VirtualMachines_List.json
 func ExampleVirtualMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleVirtualMachinesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/VirtualMachines_RestrictMovement.json
+// Generated from example definition: 2025-09-01/VirtualMachines_RestrictMovement.json
 func ExampleVirtualMachinesClient_BeginRestrictMovement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

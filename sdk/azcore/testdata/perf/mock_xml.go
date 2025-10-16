@@ -25,6 +25,7 @@ type mockXmlTestOptions struct {
 	count uint
 }
 
+var globalXmlName any
 var mockXmlOpts mockXmlTestOptions = mockXmlTestOptions{count: defaultItemCount}
 
 // sleepTestRegister is called once per process
@@ -103,7 +104,12 @@ func (g *mockXmlTest) Run(ctx context.Context) error {
 	}
 	// Make sure we deserialize the response.
 	result := List{}
-	return runtime.UnmarshalAsXML(resp, &result)
+	if err = runtime.UnmarshalAsXML(resp, &result); err != nil {
+		return err
+	}
+	// Make sure code is not elided.
+	globalXmlName = result.Name
+	return nil
 }
 
 func (s *mockXmlTest) Cleanup(ctx context.Context) error {

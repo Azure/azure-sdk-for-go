@@ -25,6 +25,7 @@ type mockJsonTestOptions struct {
 	count uint
 }
 
+var globalJsonName any
 var mockJsonOpts mockJsonTestOptions = mockJsonTestOptions{count: defaultItemCount}
 
 // sleepTestRegister is called once per process
@@ -103,7 +104,12 @@ func (g *mockJsonTest) Run(ctx context.Context) error {
 	}
 	// Make sure we deserialize the response.
 	result := List{}
-	return runtime.UnmarshalAsJSON(resp, &result)
+	if err = runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return err
+	}
+	// Make sure code is not elided.
+	globalJsonName = result.Name
+	return nil
 }
 
 func (s *mockJsonTest) Cleanup(ctx context.Context) error {

@@ -17,30 +17,30 @@ const defaultItemCount = 25
 
 // Types below are meant to reflect Storage Blob, which is XML but JSON is supported for comparison.
 
-type List struct {
+type list struct {
 	Name      *string             `json:"name" xml:"Name"`
-	Container *ListItemsContainer `json:"items" xml:"Items"`
+	Container *listItemsContainer `json:"items" xml:"Items"`
 	Next      *string             `json:"next" xml:"Next"`
 }
 
-type ListItemsContainer struct {
-	Items []*ListItems `json:"items" xml:"Item"`
+type listItemsContainer struct {
+	Items []*listItems `json:"items" xml:"Item"`
 }
 
-type ListItems struct {
+type listItems struct {
 	Name       *string             `json:"name" xml:"Name"`
-	Properties *ListItemProperties `json:"properties" xml:"Properties"`
+	Properties *listItemProperties `json:"properties" xml:"Properties"`
 }
 
-type ListItemProperties struct {
+type listItemProperties struct {
 	ETag         *azcore.ETag `json:"etag" xml:"Etag"`
 	CreationTime *time.Time   `json:"creationTime" xml:"Creation-Time"`
 	LastModified *time.Time   `json:"lastModified" xml:"Last-Modified"`
 	ContentMD5   []byte       `json:"contentMD5" xml:"Content-MD5"`
 }
 
-func (l ListItemProperties) MarshalJSON() ([]byte, error) {
-	type alias ListItemProperties
+func (l listItemProperties) MarshalJSON() ([]byte, error) {
+	type alias listItemProperties
 	aux := &struct {
 		*alias
 		ContentMD5   *string          `xml:"Content-MD5"`
@@ -58,8 +58,8 @@ func (l ListItemProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(aux)
 }
 
-func (l *ListItemProperties) UnmarshalJSON(b []byte) error {
-	type alias ListItemProperties
+func (l *listItemProperties) UnmarshalJSON(b []byte) error {
+	type alias listItemProperties
 	aux := &struct {
 		*alias
 		ContentMD5   *string          `xml:"Content-MD5"`
@@ -85,8 +85,8 @@ func (l *ListItemProperties) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-func (l ListItemProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	type alias ListItemProperties
+func (l listItemProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias listItemProperties
 	aux := &struct {
 		*alias
 		ContentMD5   *string          `xml:"Content-MD5"`
@@ -104,8 +104,8 @@ func (l ListItemProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement)
 	return enc.EncodeElement(aux, start)
 }
 
-func (l *ListItemProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
-	type alias ListItemProperties
+func (l *listItemProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias listItemProperties
 	aux := &struct {
 		*alias
 		ContentMD5   *string          `xml:"Content-MD5"`

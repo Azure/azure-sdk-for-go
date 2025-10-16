@@ -38,20 +38,20 @@ type globalMockXmlTest struct {
 	body []byte
 }
 
-func NewMockXmlTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
-	list := List{
+func newMockXmlTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+	list := list{
 		Name: to.Ptr("t0123456789abcdef"),
-		Container: &ListItemsContainer{
-			Items: make([]*ListItems, mockXmlOpts.count),
+		Container: &listItemsContainer{
+			Items: make([]*listItems, mockXmlOpts.count),
 		},
 	}
 	now := time.Now()
 	for i := range mockXmlOpts.count {
 		name := fmt.Sprintf("testItem%d", i)
 		hash := md5.Sum([]byte(name))
-		list.Container.Items[i] = &ListItems{
+		list.Container.Items[i] = &listItems{
 			Name: to.Ptr(name),
-			Properties: &ListItemProperties{
+			Properties: &listItemProperties{
 				ETag:         to.Ptr(azcore.ETag(fmt.Sprint(i))),
 				CreationTime: to.Ptr(now),
 				LastModified: to.Ptr(now),
@@ -103,7 +103,7 @@ func (g *mockXmlTest) Run(ctx context.Context) error {
 		return err
 	}
 	// Make sure we deserialize the response.
-	result := List{}
+	result := list{}
 	if err = runtime.UnmarshalAsXML(resp, &result); err != nil {
 		return err
 	}

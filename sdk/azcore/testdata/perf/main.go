@@ -10,7 +10,7 @@ import (
 func main() {
 	perf.Run(map[string]perf.PerfMethods{
 		"ClientGET": {Register: clientTestRegister, New: newClientGETTest},
-		"MockJson":  {Register: mockJsonTestRegister, New: NewMockJsonTest},
-		"MockXml":   {Register: mockXmlTestRegister, New: NewMockXmlTest},
+		"MockJson":  {Register: mockJsonTestRegister, New: newMockJsonTest},
+		"MockXml":   {Register: mockXmlTestRegister, New: newMockXmlTest},
 	})
 }

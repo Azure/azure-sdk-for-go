@@ -2,8 +2,6 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashbo
 
 go 1.24.0
 
-toolchain go1.24.7
-
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.19.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.0

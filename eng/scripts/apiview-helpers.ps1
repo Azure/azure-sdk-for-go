@@ -18,7 +18,7 @@ function New-APIViewArtifacts {
         [Parameter(Mandatory=$True)]
         [string] $OutputDirectory,
         [Parameter(Mandatory=$True)]
-        [string] $DirectoryToPublish
+        [string] $DirectoryToPublish       
     )
 
     foreach ($sdk in (Get-AllPackageInfoFromRepo $ServiceDirectory))
@@ -32,7 +32,7 @@ function New-APIViewArtifacts {
         Rename-Item $compressedArchivePath -NewName "$fileName.gosource"
 
         $artifactParentDirectory = $sdk.Name -Split "/" | Select-Object -First 1
-        Copy-Item -Force "$OutputDirectory/$artifactParentDirectory" -Destination "$DirectoryToPublish/$artifactParentDirectory" -Recurse
+        Copy-Item "$OutputDirectory/$artifactParentDirectory" -Destination "$DirectoryToPublish/$artifactParentDirectory" -Recurse
     }
 }
 
@@ -77,8 +77,8 @@ function New-APIViewFromCI {
         [bool] $MarkPackageAsShipped = $false
     )
     $artifactList = @()
-
-    Get-AllPackageInfoFromRepo $ServiceDirectory | ForEach-Object {
+    
+    Get-AllPackageInfoFromRepo $ServiceDirectory | ForEach-Object { 
         $artifactList += [PSCustomObject]@{
             name = $_.Name
         }

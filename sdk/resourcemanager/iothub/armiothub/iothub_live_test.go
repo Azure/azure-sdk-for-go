@@ -73,11 +73,11 @@ func (testsuite *IothubTestSuite) Prepare() {
 		Etag:     to.Ptr("AAAAAAFD6M4="),
 		Properties: &armiothub.Properties{
 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-				DefaultTTLAsIso8601: to.Ptr("PT1H"),
+				DefaultTTLAsISO8601: to.Ptr("PT1H"),
 				Feedback: &armiothub.FeedbackProperties{
-					LockDurationAsIso8601: to.Ptr("PT1M"),
+					LockDurationAsISO8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsIso8601:          to.Ptr("PT1H"),
+					TTLAsISO8601:          to.Ptr("PT1H"),
 				},
 				MaxDeliveryCount: to.Ptr[int32](10),
 			},

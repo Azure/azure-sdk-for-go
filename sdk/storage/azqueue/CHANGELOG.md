@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.0.0-beta.2 (Unreleased)
+### 2.0.0 (2025-11-11)
 
 #### Other Changes
 * Updated service version to `2025-11-05`

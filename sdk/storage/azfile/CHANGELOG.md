@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.3-beta.1 (Unreleased)
+## 1.5.3 (2025-10-16)
 
 ### Other Changes
 * Updated service version to `2025-11-05`

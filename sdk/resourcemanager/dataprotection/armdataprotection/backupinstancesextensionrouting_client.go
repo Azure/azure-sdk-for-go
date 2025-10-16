@@ -6,6 +6,7 @@ package armdataprotection
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -22,7 +23,7 @@ type BackupInstancesExtensionRoutingClient struct {
 
 // NewBackupInstancesExtensionRoutingClient creates a new instance of BackupInstancesExtensionRoutingClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupInstancesExtensionRoutingClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesExtensionRoutingClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -66,6 +67,9 @@ func (client *BackupInstancesExtensionRoutingClient) NewListPager(resourceID str
 // listCreateRequest creates the List request.
 func (client *BackupInstancesExtensionRoutingClient) listCreateRequest(ctx context.Context, resourceID string, _ *BackupInstancesExtensionRoutingClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.DataProtection/backupInstances"
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

@@ -273,6 +273,19 @@ type JobsClientListByTargetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SchemaReferencesClientBeginCreateOrUpdateOptions contains the optional parameters for the SchemaReferencesClient.BeginCreateOrUpdate
+// method.
+type SchemaReferencesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SchemaReferencesClientBeginDeleteOptions contains the optional parameters for the SchemaReferencesClient.BeginDelete method.
+type SchemaReferencesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // SchemaReferencesClientGetOptions contains the optional parameters for the SchemaReferencesClient.Get method.
 type SchemaReferencesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -281,6 +294,11 @@ type SchemaReferencesClientGetOptions struct {
 // SchemaReferencesClientListByResourceGroupOptions contains the optional parameters for the SchemaReferencesClient.NewListByResourceGroupPager
 // method.
 type SchemaReferencesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaReferencesClientUpdateOptions contains the optional parameters for the SchemaReferencesClient.Update method.
+type SchemaReferencesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

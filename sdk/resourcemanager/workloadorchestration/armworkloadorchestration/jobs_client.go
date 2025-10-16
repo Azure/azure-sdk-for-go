@@ -24,7 +24,7 @@ type JobsClient struct {
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJobsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -68,6 +68,9 @@ func (client *JobsClient) Get(ctx context.Context, resourceURI string, jobName s
 // getCreateRequest creates the Get request.
 func (client *JobsClient) getCreateRequest(ctx context.Context, resourceURI string, jobName string, _ *JobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/jobs/{jobName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if jobName == "" {
 		return nil, errors.New("parameter jobName cannot be empty")
@@ -124,6 +127,9 @@ func (client *JobsClient) NewListByTargetPager(resourceURI string, options *Jobs
 // listByTargetCreateRequest creates the ListByTarget request.
 func (client *JobsClient) listByTargetCreateRequest(ctx context.Context, resourceURI string, _ *JobsClientListByTargetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/jobs"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

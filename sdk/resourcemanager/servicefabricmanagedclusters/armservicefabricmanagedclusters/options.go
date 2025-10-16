@@ -96,6 +96,13 @@ type ApplicationsClientBeginStartRollbackOptions struct {
 	ResumeToken string
 }
 
+// ApplicationsClientBeginUpdateUpgradeOptions contains the optional parameters for the ApplicationsClient.BeginUpdateUpgrade
+// method.
+type ApplicationsClientBeginUpdateUpgradeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
 type ApplicationsClientGetOptions struct {
 	// placeholder for future optional parameters

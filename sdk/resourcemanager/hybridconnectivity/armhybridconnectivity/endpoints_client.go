@@ -6,6 +6,7 @@ package armhybridconnectivity
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -23,7 +24,7 @@ type EndpointsClient struct {
 
 // NewEndpointsClient creates a new instance of EndpointsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEndpointsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +70,13 @@ func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceURI s
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, _ *EndpointsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -126,7 +133,13 @@ func (client *EndpointsClient) Delete(ctx context.Context, resourceURI string, e
 // deleteCreateRequest creates the Delete request.
 func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resourceURI string, endpointName string, _ *EndpointsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -135,7 +148,6 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -171,7 +183,13 @@ func (client *EndpointsClient) Get(ctx context.Context, resourceURI string, endp
 // getCreateRequest creates the Get request.
 func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI string, endpointName string, _ *EndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -224,6 +242,9 @@ func (client *EndpointsClient) NewListPager(resourceURI string, options *Endpoin
 // listCreateRequest creates the List request.
 func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceURI string, _ *EndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -278,7 +299,13 @@ func (client *EndpointsClient) ListCredentials(ctx context.Context, resourceURI 
 // listCredentialsCreateRequest creates the ListCredentials request.
 func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -343,7 +370,13 @@ func (client *EndpointsClient) ListIngressGatewayCredentials(ctx context.Context
 // listIngressGatewayCredentialsCreateRequest creates the ListIngressGatewayCredentials request.
 func (client *EndpointsClient) listIngressGatewayCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListIngressGatewayCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -409,7 +442,13 @@ func (client *EndpointsClient) ListManagedProxyDetails(ctx context.Context, reso
 // listManagedProxyDetailsCreateRequest creates the ListManagedProxyDetails request.
 func (client *EndpointsClient) listManagedProxyDetailsCreateRequest(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, _ *EndpointsClientListManagedProxyDetailsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -468,7 +507,13 @@ func (client *EndpointsClient) Update(ctx context.Context, resourceURI string, e
 // updateCreateRequest creates the Update request.
 func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, _ *EndpointsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

@@ -489,6 +489,33 @@ type OrganizationResourceListResult struct {
 	NextLink *string
 }
 
+// OrganizationResourceUpdate - The type used for update operations of the OrganizationResource.
+type OrganizationResourceUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *OrganizationResourceUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// OrganizationResourceUpdateProperties - The updatable properties of the OrganizationResource.
+type OrganizationResourceUpdateProperties struct {
+	// Details of the company.
+	CompanyDetails *CompanyDetails
+
+	// Marketplace details of the resource.
+	MarketplaceDetails *MarketplaceDetails
+
+	// Neon Organization properties
+	PartnerOrganizationProperties *PartnerOrganizationProperties
+
+	// Neon Project Properties
+	ProjectProperties *ProjectProperties
+
+	// Details of the user.
+	UserDetails *UserDetails
+}
+
 // PartnerOrganizationProperties - Properties specific to Partner's organization
 type PartnerOrganizationProperties struct {
 	// REQUIRED; Organization name in partner's system

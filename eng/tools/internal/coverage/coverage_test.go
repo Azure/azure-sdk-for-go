@@ -4,7 +4,6 @@
 package main
 
 import (
-	"strconv"
 	"testing"
 )
 
@@ -17,7 +16,7 @@ func Test_ParseCoverageNoMatch(t *testing.T) {
 }
 
 func Test_ParseCoverageMaximum(t *testing.T) {
-	coverageLine := "<coverage line-rate=\"1\" branch-rate=\"0\" lines-covered=\"3\" lines-valid=\"3\" branches-covered=\"0\" branches-valid=\"0\" complexity=\"0\" version=\"\" timestamp=\"1633558939111\">"
+	coverageLine := "total:                                                          (statements)    100.0%"
 
 	coveragePercent, err := parseCoveragePercent([]byte(coverageLine))
 	if err != nil {
@@ -29,15 +28,15 @@ func Test_ParseCoverageMaximum(t *testing.T) {
 }
 
 func Test_ParseCoverageFloat(t *testing.T) {
-	coverageLine := "<coverage line-rate=\"0.23893805\" branch-rate=\"0\" lines-covered=\"216\" lines-valid=\"904\" branches-covered=\"0\" branches-valid=\"0\" complexity=\"0\" version=\"\" timestamp=\"1633570973824\">"
+	coverageLine := "total:                                                                                          (statements)                                      80.5%"
 
 	coveragePercent, err := parseCoveragePercent([]byte(coverageLine))
 	if err != nil {
 		t.Error(err)
 	}
 
-	expected, _ := strconv.ParseFloat("0.23893805", 32)
+	expected := .805
 	if coveragePercent != expected {
-		t.Errorf("Expected coverage percent of .23893805 to be parsed as %f, found %f", expected, coveragePercent)
+		t.Errorf("Expected coverage percent of .805 to be parsed as %f, found %f", expected, coveragePercent)
 	}
 }

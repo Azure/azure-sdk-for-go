@@ -16,21 +16,10 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PoolsClientCheckNameAvailabilityResponse contains the response from method PoolsClient.CheckNameAvailability.
-type PoolsClientCheckNameAvailabilityResponse struct {
-	// The CheckNameAvailability operation response.
-	CheckNameAvailabilityResult
-}
-
 // PoolsClientCreateOrUpdateResponse contains the response from method PoolsClient.BeginCreateOrUpdate.
 type PoolsClientCreateOrUpdateResponse struct {
 	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
 	Pool
-}
-
-// PoolsClientDeleteResourcesResponse contains the response from method PoolsClient.DeleteResources.
-type PoolsClientDeleteResourcesResponse struct {
-	// placeholder for future response values
 }
 
 // PoolsClientDeleteResponse contains the response from method PoolsClient.BeginDelete.

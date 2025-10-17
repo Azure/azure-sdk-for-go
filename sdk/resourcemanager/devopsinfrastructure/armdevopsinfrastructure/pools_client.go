@@ -26,7 +26,7 @@ type PoolsClient struct {
 // NewPoolsClient creates a new instance of PoolsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - Contains optional client configuration. Pass nil to accept the default values.
+//   - options - pass nil to accept the default values.
 func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoolsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -39,70 +39,10 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// CheckNameAvailability - Checks that the pool name is valid and is not already in use.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-20
-//   - body - The CheckAvailability request
-//   - options - PoolsClientCheckNameAvailabilityOptions contains the optional parameters for the PoolsClient.CheckNameAvailability
-//     method.
-func (client *PoolsClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailability, options *PoolsClientCheckNameAvailabilityOptions) (PoolsClientCheckNameAvailabilityResponse, error) {
-	var err error
-	const operationName = "PoolsClient.CheckNameAvailability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.checkNameAvailabilityCreateRequest(ctx, body, options)
-	if err != nil {
-		return PoolsClientCheckNameAvailabilityResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return PoolsClientCheckNameAvailabilityResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolsClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
-}
-
-// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *PoolsClient) checkNameAvailabilityCreateRequest(ctx context.Context, body CheckNameAvailability, _ *PoolsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *PoolsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (PoolsClientCheckNameAvailabilityResponse, error) {
-	result := PoolsClientCheckNameAvailabilityResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return PoolsClientCheckNameAvailabilityResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginCreateOrUpdate - Create a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - resource - Resource create parameters.
@@ -129,7 +69,7 @@ func (client *PoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 // CreateOrUpdate - Create a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, poolName string, resource Pool, options *PoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolsClient.BeginCreateOrUpdate"
@@ -171,7 +111,7 @@ func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
+	reqQP.Set("api-version", "2024-10-19")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -184,7 +124,7 @@ func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // BeginDelete - Delete a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - options - PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
@@ -208,7 +148,7 @@ func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName st
 // Delete - Delete a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, poolName string, options *PoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolsClient.BeginDelete"
@@ -250,73 +190,16 @@ func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
+	reqQP.Set("api-version", "2024-10-19")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	return req, nil
-}
-
-// DeleteResources - A synchronous resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-20
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - poolName - Name of the pool. It needs to be globally unique.
-//   - body - The content of the action request
-//   - options - PoolsClientDeleteResourcesOptions contains the optional parameters for the PoolsClient.DeleteResources method.
-func (client *PoolsClient) DeleteResources(ctx context.Context, resourceGroupName string, poolName string, body DeleteResourcesDetails, options *PoolsClientDeleteResourcesOptions) (PoolsClientDeleteResourcesResponse, error) {
-	var err error
-	const operationName = "PoolsClient.DeleteResources"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteResourcesCreateRequest(ctx, resourceGroupName, poolName, body, options)
-	if err != nil {
-		return PoolsClientDeleteResourcesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return PoolsClientDeleteResourcesResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolsClientDeleteResourcesResponse{}, err
-	}
-	return PoolsClientDeleteResourcesResponse{}, nil
-}
-
-// deleteResourcesCreateRequest creates the DeleteResources request.
-func (client *PoolsClient) deleteResourcesCreateRequest(ctx context.Context, resourceGroupName string, poolName string, body DeleteResourcesDetails, _ *PoolsClientDeleteResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}/resources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - options - PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
@@ -362,7 +245,7 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
+	reqQP.Set("api-version", "2024-10-19")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,7 +262,7 @@ func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGe
 
 // NewListByResourceGroupPager - List Pool resources by resource group
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PoolsClientListByResourceGroupOptions contains the optional parameters for the PoolsClient.NewListByResourceGroupPager
 //     method.
@@ -422,7 +305,7 @@ func (client *PoolsClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
+	reqQP.Set("api-version", "2024-10-19")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -439,7 +322,7 @@ func (client *PoolsClient) listByResourceGroupHandleResponse(resp *http.Response
 
 // NewListBySubscriptionPager - List Pool resources by subscription ID
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 //   - options - PoolsClientListBySubscriptionOptions contains the optional parameters for the PoolsClient.NewListBySubscriptionPager
 //     method.
 func (client *PoolsClient) NewListBySubscriptionPager(options *PoolsClientListBySubscriptionOptions) *runtime.Pager[PoolsClientListBySubscriptionResponse] {
@@ -477,7 +360,7 @@ func (client *PoolsClient) listBySubscriptionCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
+	reqQP.Set("api-version", "2024-10-19")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -495,7 +378,7 @@ func (client *PoolsClient) listBySubscriptionHandleResponse(resp *http.Response)
 // BeginUpdate - Update a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - poolName - Name of the pool. It needs to be globally unique.
 //   - properties - The resource properties to be updated.
@@ -520,7 +403,7 @@ func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName st
 // Update - Update a Pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 func (client *PoolsClient) update(ctx context.Context, resourceGroupName string, poolName string, properties PoolUpdate, options *PoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolsClient.BeginUpdate"
@@ -562,7 +445,7 @@ func (client *PoolsClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
+	reqQP.Set("api-version", "2024-10-19")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

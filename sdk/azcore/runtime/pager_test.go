@@ -364,3 +364,58 @@ func TestFetcherForNextLinkWithStatusCodes(t *testing.T) {
 	require.NotNil(t, resp)
 	require.EqualValues(t, http.StatusNotModified, resp.StatusCode)
 }
+
+func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	pl := exported.NewPipeline(srv)
+
+	// Test default GET method (when HTTPMethod is not specified)
+	srv.AppendResponse()
+	resp, err := FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+
+	// Test explicit GET method
+	srv.AppendResponse()
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, &FetcherForNextLinkOptions{
+		HTTPMethod: http.MethodGet,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+
+	// Test POST method
+	srv.AppendResponse()
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		return NewRequest(ctx, http.MethodPost, srv.URL())
+	}, &FetcherForNextLinkOptions{
+		HTTPMethod: http.MethodPost,
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+
+	// Test that HTTPMethod is not used when NextReq is specified
+	srv.AppendResponse()
+	nextReqCalled := false
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
+		return NewRequest(ctx, http.MethodGet, srv.URL())
+	}, &FetcherForNextLinkOptions{
+		HTTPMethod: http.MethodPost,
+		NextReq: func(ctx context.Context, s string) (*policy.Request, error) {
+			nextReqCalled = true
+			// This should use GET even though HTTPMethod is POST
+			return NewRequest(ctx, http.MethodGet, srv.URL())
+		},
+	})
+	require.NoError(t, err)
+	require.True(t, nextReqCalled)
+	require.NotNil(t, resp)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+}

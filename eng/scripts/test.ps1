@@ -49,6 +49,10 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
         -config $repoRoot/eng/config.json `
         -serviceDirectory $targetDirectory `
         -searchDirectory $repoRoot
+
+    if ($LASTEXITCODE -gt 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 if ($GOTESTEXITCODE) {

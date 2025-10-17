@@ -1,5 +1,33 @@
 # Release History
 
+## 2.0.0-beta.1 (2025-10-15)
+### Breaking Changes
+
+- Field `DefaultTTLAsIso8601` of struct `CloudToDeviceProperties` has been removed
+- Field `LockDurationAsIso8601`, `TTLAsIso8601` of struct `FeedbackProperties` has been removed
+- Field `LockDurationAsIso8601`, `TTLAsIso8601` of struct `MessagingEndpointProperties` has been removed
+- Field `SasTTLAsIso8601` of struct `StorageEndpointProperties` has been removed
+
+### Features Added
+
+- New value `IotHubSKUGEN2` added to enum type `IotHubSKU`
+- New value `IotHubSKUTierGeneration2` added to enum type `IotHubSKUTier`
+- New value `RoutingSourceDigitalTwinChangeEvents`, `RoutingSourceMqttBrokerMessages` added to enum type `RoutingSource`
+- New enum type `IPVersion` with values `IPVersionIPv4`, `IPVersionIPv4IPv6`, `IPVersionIPv6`
+- New struct `DeviceRegistry`
+- New struct `EncryptionPropertiesDescription`
+- New struct `KeyVaultKeyProperties`
+- New struct `PropertiesDeviceStreams`
+- New struct `RootCertificateProperties`
+- New field `PolicyResourceID` in struct `CertificateProperties`
+- New field `PolicyResourceID` in struct `CertificatePropertiesWithNonce`
+- New field `DefaultTTLAsISO8601` in struct `CloudToDeviceProperties`
+- New field `LockDurationAsISO8601`, `TTLAsISO8601` in struct `FeedbackProperties`
+- New field `LockDurationAsISO8601`, `TTLAsISO8601` in struct `MessagingEndpointProperties`
+- New field `DeviceRegistry`, `DeviceStreams`, `Encryption`, `IPVersion`, `RootCertificate` in struct `Properties`
+- New field `SasTTLAsISO8601` in struct `StorageEndpointProperties`
+
+
 ## 1.3.0 (2023-11-24)
 ### Features Added
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Locations_CheckQuotaAvailability.json
+// Generated from example definition: 2025-09-01/Locations_CheckQuotaAvailability.json
 func ExampleLocationsClient_CheckQuotaAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleLocationsClient_CheckQuotaAvailability() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Locations_CheckTrialAvailability.json
+// Generated from example definition: 2025-09-01/Locations_CheckTrialAvailability.json
 func ExampleLocationsClient_CheckTrialAvailability_locationsCheckTrialAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleLocationsClient_CheckTrialAvailability_locationsCheckTrialAvailabili
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Locations_CheckTrialAvailabilityWithSku.json
+// Generated from example definition: 2025-09-01/Locations_CheckTrialAvailabilityWithSku.json
 func ExampleLocationsClient_CheckTrialAvailability_locationsCheckTrialAvailabilityWithSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -22,6 +22,24 @@ type HostPropertiesClassification interface {
 	GetHostProperties() *HostProperties
 }
 
+// LicensePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetLicenseProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *LicenseProperties, *VmwareFirewallLicenseProperties
+type LicensePropertiesClassification interface {
+	// GetLicenseProperties returns the LicenseProperties content of the underlying type.
+	GetLicenseProperties() *LicenseProperties
+}
+
+// MaintenanceManagementOperationClassification provides polymorphic access to related types.
+// Call the interface's GetMaintenanceManagementOperation() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *MaintenanceManagementOperation, *MaintenanceReadinessRefreshOperation, *RescheduleOperation, *ScheduleOperation
+type MaintenanceManagementOperationClassification interface {
+	// GetMaintenanceManagementOperation returns the MaintenanceManagementOperation content of the underlying type.
+	GetMaintenanceManagementOperation() *MaintenanceManagementOperation
+}
+
 // PlacementPolicyPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetPlacementPolicyProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -31,6 +49,24 @@ type PlacementPolicyPropertiesClassification interface {
 	GetPlacementPolicyProperties() *PlacementPolicyProperties
 }
 
+// RescheduleOperationConstraintClassification provides polymorphic access to related types.
+// Call the interface's GetRescheduleOperationConstraint() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AvailableWindowForMaintenanceWhileRescheduleOperation, *BlockedWhileRescheduleOperation, *RescheduleOperationConstraint
+type RescheduleOperationConstraintClassification interface {
+	// GetRescheduleOperationConstraint returns the RescheduleOperationConstraint content of the underlying type.
+	GetRescheduleOperationConstraint() *RescheduleOperationConstraint
+}
+
+// ScheduleOperationConstraintClassification provides polymorphic access to related types.
+// Call the interface's GetScheduleOperationConstraint() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AvailableWindowForMaintenanceWhileScheduleOperation, *BlockedWhileScheduleOperation, *ScheduleOperationConstraint, *SchedulingWindow
+type ScheduleOperationConstraintClassification interface {
+	// GetScheduleOperationConstraint returns the ScheduleOperationConstraint content of the underlying type.
+	GetScheduleOperationConstraint() *ScheduleOperationConstraint
+}
+
 // ScriptExecutionParameterClassification provides polymorphic access to related types.
 // Call the interface's GetScriptExecutionParameter() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -38,6 +74,15 @@ type PlacementPolicyPropertiesClassification interface {
 type ScriptExecutionParameterClassification interface {
 	// GetScriptExecutionParameter returns the ScriptExecutionParameter content of the underlying type.
 	GetScriptExecutionParameter() *ScriptExecutionParameter
+}
+
+// VcfLicenseClassification provides polymorphic access to related types.
+// Call the interface's GetVcfLicense() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *Vcf5License, *VcfLicense
+type VcfLicenseClassification interface {
+	// GetVcfLicense returns the VcfLicense content of the underlying type.
+	GetVcfLicense() *VcfLicense
 }
 
 // WorkloadNetworkDhcpEntityClassification provides polymorphic access to related types.

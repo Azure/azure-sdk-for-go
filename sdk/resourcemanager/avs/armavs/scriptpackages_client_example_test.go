@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/ScriptPackages_Get.json
+// Generated from example definition: 2025-09-01/ScriptPackages_Get.json
 func ExampleScriptPackagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleScriptPackagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ScriptPackages_List.json
+// Generated from example definition: 2025-09-01/ScriptPackages_List.json
 func ExampleScriptPackagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

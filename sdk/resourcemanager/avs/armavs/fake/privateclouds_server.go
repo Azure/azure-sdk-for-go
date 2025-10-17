@@ -32,6 +32,10 @@ type PrivateCloudsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientGetOptions) (resp azfake.Responder[armavs.PrivateCloudsClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetVcfLicense is the fake for method PrivateCloudsClient.GetVcfLicense
+	// HTTP status codes to indicate success: http.StatusOK
+	GetVcfLicense func(ctx context.Context, resourceGroupName string, privateCloudName string, options *armavs.PrivateCloudsClientGetVcfLicenseOptions) (resp azfake.Responder[armavs.PrivateCloudsClientGetVcfLicenseResponse], errResp azfake.ErrorResponder)
+
 	// NewListPager is the fake for method PrivateCloudsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, options *armavs.PrivateCloudsClientListOptions) (resp azfake.PagerResponder[armavs.PrivateCloudsClientListResponse])
@@ -115,6 +119,8 @@ func (p *PrivateCloudsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PrivateCloudsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
+			case "PrivateCloudsClient.GetVcfLicense":
+				res.resp, res.err = p.dispatchGetVcfLicense(req)
 			case "PrivateCloudsClient.NewListPager":
 				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateCloudsClient.ListAdminCredentials":
@@ -265,6 +271,39 @@ func (p *PrivateCloudsServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateCloud, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PrivateCloudsServerTransport) dispatchGetVcfLicense(req *http.Request) (*http.Response, error) {
+	if p.srv.GetVcfLicense == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetVcfLicense not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AVS/privateClouds/(?P<privateCloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getVcfLicense`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	privateCloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateCloudName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.GetVcfLicense(req.Context(), resourceGroupNameParam, privateCloudNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VcfLicenseClassification, req)
 	if err != nil {
 		return nil, err
 	}

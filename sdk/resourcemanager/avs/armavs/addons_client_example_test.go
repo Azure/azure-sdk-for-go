@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Addons_CreateOrUpdate_ArcReg.json
+// Generated from example definition: 2025-09-01/Addons_CreateOrUpdate_ArcReg.json
 func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateArcReg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateArcReg() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_CreateOrUpdate_HCX.json
+// Generated from example definition: 2025-09-01/Addons_CreateOrUpdate_HCX.json
 func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateHcx() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateHcx() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_CreateOrUpdate_HCX_With_Networks.json
+// Generated from example definition: 2025-09-01/Addons_CreateOrUpdate_HCX_With_Networks.json
 func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateHcxWithNetworks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateHcxWithNetworks
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_CreateOrUpdate_SRM.json
+// Generated from example definition: 2025-09-01/Addons_CreateOrUpdate_SRM.json
 func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateSrm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateSrm() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_CreateOrUpdate_VR.json
+// Generated from example definition: 2025-09-01/Addons_CreateOrUpdate_VR.json
 func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateVr() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleAddonsClient_BeginCreateOrUpdate_addonsCreateOrUpdateVr() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_Delete.json
+// Generated from example definition: 2025-09-01/Addons_Delete.json
 func ExampleAddonsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleAddonsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_Get_ArcReg.json
+// Generated from example definition: 2025-09-01/Addons_Get_ArcReg.json
 func ExampleAddonsClient_Get_addonsGetArcReg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleAddonsClient_Get_addonsGetArcReg() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_Get_HCX.json
+// Generated from example definition: 2025-09-01/Addons_Get_HCX.json
 func ExampleAddonsClient_Get_addonsGetHcx() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleAddonsClient_Get_addonsGetHcx() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_Get_HCX_With_Networks.json
+// Generated from example definition: 2025-09-01/Addons_Get_HCX_With_Networks.json
 func ExampleAddonsClient_Get_addonsGetHcxWithNetworks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleAddonsClient_Get_addonsGetHcxWithNetworks() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_Get_SRM.json
+// Generated from example definition: 2025-09-01/Addons_Get_SRM.json
 func ExampleAddonsClient_Get_addonsGetSrm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,7 +377,7 @@ func ExampleAddonsClient_Get_addonsGetSrm() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_Get_VR.json
+// Generated from example definition: 2025-09-01/Addons_Get_VR.json
 func ExampleAddonsClient_Get_addonsGetVr() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleAddonsClient_Get_addonsGetVr() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Addons_List.json
+// Generated from example definition: 2025-09-01/Addons_List.json
 func ExampleAddonsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

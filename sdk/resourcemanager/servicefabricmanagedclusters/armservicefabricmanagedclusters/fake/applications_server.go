@@ -51,6 +51,10 @@ type ApplicationsServer struct {
 	// Update is the fake for method ApplicationsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters armservicefabricmanagedclusters.ApplicationUpdateParameters, options *armservicefabricmanagedclusters.ApplicationsClientUpdateOptions) (resp azfake.Responder[armservicefabricmanagedclusters.ApplicationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateUpgrade is the fake for method ApplicationsClient.BeginUpdateUpgrade
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUpdateUpgrade func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters armservicefabricmanagedclusters.RuntimeUpdateApplicationUpgradeParameters, options *armservicefabricmanagedclusters.ApplicationsClientBeginUpdateUpgradeOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateUpgradeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewApplicationsServerTransport creates a new instance of ApplicationsServerTransport with the provided implementation.
@@ -65,6 +69,7 @@ func NewApplicationsServerTransport(srv *ApplicationsServer) *ApplicationsServer
 		beginReadUpgrade:    newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientReadUpgradeResponse]](),
 		beginResumeUpgrade:  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientResumeUpgradeResponse]](),
 		beginStartRollback:  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientStartRollbackResponse]](),
+		beginUpdateUpgrade:  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateUpgradeResponse]](),
 	}
 }
 
@@ -78,6 +83,7 @@ type ApplicationsServerTransport struct {
 	beginReadUpgrade    *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientReadUpgradeResponse]]
 	beginResumeUpgrade  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientResumeUpgradeResponse]]
 	beginStartRollback  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientStartRollbackResponse]]
+	beginUpdateUpgrade  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateUpgradeResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApplicationsServerTransport.
@@ -119,6 +125,8 @@ func (a *ApplicationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = a.dispatchBeginStartRollback(req)
 			case "ApplicationsClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
+			case "ApplicationsClient.BeginUpdateUpgrade":
+				res.resp, res.err = a.dispatchBeginUpdateUpgrade(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -502,6 +510,58 @@ func (a *ApplicationsServerTransport) dispatchUpdate(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (a *ApplicationsServerTransport) dispatchBeginUpdateUpgrade(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdateUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateUpgrade not implemented")}
+	}
+	beginUpdateUpgrade := a.beginUpdateUpgrade.get(req)
+	if beginUpdateUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateUpgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.RuntimeUpdateApplicationUpgradeParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		applicationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdateUpgrade(req.Context(), resourceGroupNameParam, clusterNameParam, applicationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateUpgrade = &respr
+		a.beginUpdateUpgrade.add(req, beginUpdateUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginUpdateUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateUpgrade) {
+		a.beginUpdateUpgrade.remove(req)
+	}
+
 	return resp, nil
 }
 

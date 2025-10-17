@@ -109,6 +109,9 @@ type CertificateProfileProperties struct {
 type CheckNameAvailability struct {
 	// REQUIRED; Trusted signing account name.
 	Name *string
+
+	// REQUIRED; The type of the resource, "Microsoft.CodeSigning/codeSigningAccounts".
+	Type *string
 }
 
 // CheckNameAvailabilityResult - The CheckNameAvailability operation response.

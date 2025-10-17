@@ -6,10 +6,218 @@ package armpurestorageblock_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purestorageblock/armpurestorageblock"
 	"log"
 )
+
+// Generated from example definition: 2024-11-01/Reservations_Create_MaximumSet_Gen.json
+func ExampleReservationsClient_BeginCreate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReservationsClient().BeginCreate(ctx, "rgpurestorage", "storagePoolname", armpurestorageblock.Reservation{
+		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+			Marketplace: &armpurestorageblock.MarketplaceDetails{
+				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+				OfferDetails: &armpurestorageblock.OfferDetails{
+					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+					OfferID:     to.Ptr("efojrbphbimq"),
+					PlanID:      to.Ptr("caj"),
+					PlanName:    to.Ptr("lvvzchm"),
+					TermUnit:    to.Ptr("ose"),
+					TermID:      to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
+				},
+			},
+			User: &armpurestorageblock.UserDetails{
+				FirstName:    to.Ptr("bucysqbbclhwxrzig"),
+				LastName:     to.Ptr("fnsvxlop"),
+				EmailAddress: to.Ptr("abc@example.com"),
+				Upn:          to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+				PhoneNumber:  to.Ptr("jglihtgsacdxocc"),
+				CompanyDetails: &armpurestorageblock.CompanyDetails{
+					CompanyName: to.Ptr("nrndfzmrakk"),
+					Address: &armpurestorageblock.Address{
+						AddressLine1: to.Ptr("f"),
+						AddressLine2: to.Ptr("gycfosmknj"),
+						City:         to.Ptr("qxzhxjoatyuajoljfkd"),
+						State:        to.Ptr("dnusygshfvmebpmcjsd"),
+						Country:      to.Ptr("nuexbknolfphlfguyzq"),
+						PostalCode:   to.Ptr("yjzqichkfffbdtcswzolmrl"),
+					},
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"key1110": to.Ptr("euhfdmtfpucwurtu"),
+		},
+		Location: to.Ptr("jynnbjysbc"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientCreateResponse{
+	// 	Reservation: &armpurestorageblock.Reservation{
+	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
+	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("zrzt"),
+	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+	// 				OfferDetails: &armpurestorageblock.OfferDetails{
+	// 					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+	// 					OfferID: to.Ptr("efojrbphbimq"),
+	// 					PlanID: to.Ptr("caj"),
+	// 					PlanName: to.Ptr("lvvzchm"),
+	// 					TermUnit: to.Ptr("ose"),
+	// 					TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
+	// 				},
+	// 			},
+	// 			User: &armpurestorageblock.UserDetails{
+	// 				FirstName: to.Ptr("bucysqbbclhwxrzig"),
+	// 				LastName: to.Ptr("fnsvxlop"),
+	// 				EmailAddress: to.Ptr("abc@example.com"),
+	// 				Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+	// 				PhoneNumber: to.Ptr("jglihtgsacdxocc"),
+	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
+	// 					CompanyName: to.Ptr("nrndfzmrakk"),
+	// 					Address: &armpurestorageblock.Address{
+	// 						AddressLine1: to.Ptr("f"),
+	// 						AddressLine2: to.Ptr("gycfosmknj"),
+	// 						City: to.Ptr("qxzhxjoatyuajoljfkd"),
+	// 						State: to.Ptr("dnusygshfvmebpmcjsd"),
+	// 						Country: to.Ptr("nuexbknolfphlfguyzq"),
+	// 						PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1110": to.Ptr("euhfdmtfpucwurtu"),
+	// 		},
+	// 		Location: to.Ptr("jynnbjysbc"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("dwbwzcf"),
+	// 		Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-11-01/Reservations_Delete_MaximumSet_Gen.json
+func ExampleReservationsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReservationsClient().BeginDelete(ctx, "rgpurestorage", "storagePoolname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2024-11-01/Reservations_Get_MaximumSet_Gen.json
+func ExampleReservationsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().Get(ctx, "rgpurestorage", "storagePoolname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientGetResponse{
+	// 	Reservation: &armpurestorageblock.Reservation{
+	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
+	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("zrzt"),
+	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+	// 				OfferDetails: &armpurestorageblock.OfferDetails{
+	// 					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+	// 					OfferID: to.Ptr("efojrbphbimq"),
+	// 					PlanID: to.Ptr("caj"),
+	// 					PlanName: to.Ptr("lvvzchm"),
+	// 					TermUnit: to.Ptr("ose"),
+	// 					TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
+	// 				},
+	// 			},
+	// 			User: &armpurestorageblock.UserDetails{
+	// 				FirstName: to.Ptr("bucysqbbclhwxrzig"),
+	// 				LastName: to.Ptr("fnsvxlop"),
+	// 				EmailAddress: to.Ptr("abc@example.com"),
+	// 				Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+	// 				PhoneNumber: to.Ptr("jglihtgsacdxocc"),
+	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
+	// 					CompanyName: to.Ptr("nrndfzmrakk"),
+	// 					Address: &armpurestorageblock.Address{
+	// 						AddressLine1: to.Ptr("f"),
+	// 						AddressLine2: to.Ptr("gycfosmknj"),
+	// 						City: to.Ptr("qxzhxjoatyuajoljfkd"),
+	// 						State: to.Ptr("dnusygshfvmebpmcjsd"),
+	// 						Country: to.Ptr("nuexbknolfphlfguyzq"),
+	// 						PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1110": to.Ptr("euhfdmtfpucwurtu"),
+	// 		},
+	// 		Location: to.Ptr("jynnbjysbc"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("dwbwzcf"),
+	// 		Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
 
 // Generated from example definition: 2024-11-01/Reservations_GetBillingReport_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingReport() {
@@ -145,6 +353,273 @@ func ExampleReservationsClient_GetResourceLimits() {
 	// 				Min: to.Ptr[int64](26),
 	// 				Max: to.Ptr[int64](2),
 	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-11-01/Reservations_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleReservationsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsClient().NewListByResourceGroupPager("rgpurestorage", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpurestorageblock.ReservationsClientListByResourceGroupResponse{
+		// 	ReservationListResult: armpurestorageblock.ReservationListResult{
+		// 		Value: []*armpurestorageblock.Reservation{
+		// 			{
+		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+		// 					ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
+		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
+		// 						SubscriptionID: to.Ptr("zrzt"),
+		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+		// 						OfferDetails: &armpurestorageblock.OfferDetails{
+		// 							PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+		// 							OfferID: to.Ptr("efojrbphbimq"),
+		// 							PlanID: to.Ptr("caj"),
+		// 							PlanName: to.Ptr("lvvzchm"),
+		// 							TermUnit: to.Ptr("ose"),
+		// 							TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
+		// 						},
+		// 					},
+		// 					User: &armpurestorageblock.UserDetails{
+		// 						FirstName: to.Ptr("bucysqbbclhwxrzig"),
+		// 						LastName: to.Ptr("fnsvxlop"),
+		// 						EmailAddress: to.Ptr("abc@example.com"),
+		// 						Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+		// 						PhoneNumber: to.Ptr("jglihtgsacdxocc"),
+		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
+		// 							CompanyName: to.Ptr("nrndfzmrakk"),
+		// 							Address: &armpurestorageblock.Address{
+		// 								AddressLine1: to.Ptr("f"),
+		// 								AddressLine2: to.Ptr("gycfosmknj"),
+		// 								City: to.Ptr("qxzhxjoatyuajoljfkd"),
+		// 								State: to.Ptr("dnusygshfvmebpmcjsd"),
+		// 								Country: to.Ptr("nuexbknolfphlfguyzq"),
+		// 								PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1110": to.Ptr("euhfdmtfpucwurtu"),
+		// 				},
+		// 				Location: to.Ptr("jynnbjysbc"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+		// 				Name: to.Ptr("dwbwzcf"),
+		// 				Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
+		// 				SystemData: &armpurestorageblock.SystemData{
+		// 					CreatedBy: to.Ptr("ruoitchmuomrbscg"),
+		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
+		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2024-11-01/Reservations_ListBySubscription_MaximumSet_Gen.json
+func ExampleReservationsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpurestorageblock.ReservationsClientListBySubscriptionResponse{
+		// 	ReservationListResult: armpurestorageblock.ReservationListResult{
+		// 		Value: []*armpurestorageblock.Reservation{
+		// 			{
+		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+		// 					ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
+		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
+		// 						SubscriptionID: to.Ptr("zrzt"),
+		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+		// 						OfferDetails: &armpurestorageblock.OfferDetails{
+		// 							PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+		// 							OfferID: to.Ptr("efojrbphbimq"),
+		// 							PlanID: to.Ptr("caj"),
+		// 							PlanName: to.Ptr("lvvzchm"),
+		// 							TermUnit: to.Ptr("ose"),
+		// 							TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
+		// 						},
+		// 					},
+		// 					User: &armpurestorageblock.UserDetails{
+		// 						FirstName: to.Ptr("bucysqbbclhwxrzig"),
+		// 						LastName: to.Ptr("fnsvxlop"),
+		// 						EmailAddress: to.Ptr("abc@example.com"),
+		// 						Upn: to.Ptr("ekqbqgpdylggddusuiifrnjcwiefay"),
+		// 						PhoneNumber: to.Ptr("jglihtgsacdxocc"),
+		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
+		// 							CompanyName: to.Ptr("nrndfzmrakk"),
+		// 							Address: &armpurestorageblock.Address{
+		// 								AddressLine1: to.Ptr("f"),
+		// 								AddressLine2: to.Ptr("gycfosmknj"),
+		// 								City: to.Ptr("qxzhxjoatyuajoljfkd"),
+		// 								State: to.Ptr("dnusygshfvmebpmcjsd"),
+		// 								Country: to.Ptr("nuexbknolfphlfguyzq"),
+		// 								PostalCode: to.Ptr("yjzqichkfffbdtcswzolmrl"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1110": to.Ptr("euhfdmtfpucwurtu"),
+		// 				},
+		// 				Location: to.Ptr("jynnbjysbc"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+		// 				Name: to.Ptr("dwbwzcf"),
+		// 				Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
+		// 				SystemData: &armpurestorageblock.SystemData{
+		// 					CreatedBy: to.Ptr("ruoitchmuomrbscg"),
+		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
+		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2024-11-01/Reservations_Update_MaximumSet_Gen.json
+func ExampleReservationsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("BC47D6CC-AA80-4374-86F8-19D94EC70666", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReservationsClient().BeginUpdate(ctx, "rgpurestorage", "storagePoolname", armpurestorageblock.ReservationUpdate{
+		Tags: map[string]*string{
+			"key8751": to.Ptr("oikntqrti"),
+		},
+		Properties: &armpurestorageblock.ReservationUpdateProperties{
+			User: &armpurestorageblock.UserDetails{
+				FirstName:    to.Ptr("sjzquetrvxcrajxdfwfeuro"),
+				LastName:     to.Ptr("qimvqxnlbclfouwzfk"),
+				EmailAddress: to.Ptr("abc@example.com"),
+				Upn:          to.Ptr("pvafwnbigmhuigxfu"),
+				PhoneNumber:  to.Ptr("jfljnoxsfsplwczwgvmlurfnorimvl"),
+				CompanyDetails: &armpurestorageblock.CompanyDetails{
+					CompanyName: to.Ptr("uleytbkckdhaiykwjjcjqmnlik"),
+					Address: &armpurestorageblock.Address{
+						AddressLine1: to.Ptr("ryaasdffnhwialrgmukpiwtcjgbb"),
+						AddressLine2: to.Ptr("cvyuuqnvuqfrpkoplfzmhnwrqsbsgn"),
+						City:         to.Ptr("kdpzfxfbgozxwunkkhjthqdsnmce"),
+						State:        to.Ptr("fygrbnektar"),
+						Country:      to.Ptr("trmpjpxsfmxprlnv"),
+						PostalCode:   to.Ptr("yjttfktdxdzhsgomefhcn"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientUpdateResponse{
+	// 	Reservation: &armpurestorageblock.Reservation{
+	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+	// 			ReservationInternalID: to.Ptr("vfmdhludlokvqpqovitnivdf"),
+	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("zrzt"),
+	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+	// 				OfferDetails: &armpurestorageblock.OfferDetails{
+	// 					PublisherID: to.Ptr("vejockfhoavaqjvhtwvctdnaefvw"),
+	// 					OfferID: to.Ptr("efojrbphbimq"),
+	// 					PlanID: to.Ptr("caj"),
+	// 					PlanName: to.Ptr("lvvzchm"),
+	// 					TermUnit: to.Ptr("ose"),
+	// 					TermID: to.Ptr("ucyvzkedohfjazifxweylhnbcmeza"),
+	// 				},
+	// 			},
+	// 			User: &armpurestorageblock.UserDetails{
+	// 				FirstName: to.Ptr("sjzquetrvxcrajxdfwfeuro"),
+	// 				LastName: to.Ptr("qimvqxnlbclfouwzfk"),
+	// 				EmailAddress: to.Ptr("abc@example.com"),
+	// 				Upn: to.Ptr("pvafwnbigmhuigxfu"),
+	// 				PhoneNumber: to.Ptr("jfljnoxsfsplwczwgvmlurfnorimvl"),
+	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
+	// 					CompanyName: to.Ptr("uleytbkckdhaiykwjjcjqmnlik"),
+	// 					Address: &armpurestorageblock.Address{
+	// 						AddressLine1: to.Ptr("ryaasdffnhwialrgmukpiwtcjgbb"),
+	// 						AddressLine2: to.Ptr("cvyuuqnvuqfrpkoplfzmhnwrqsbsgn"),
+	// 						City: to.Ptr("kdpzfxfbgozxwunkkhjthqdsnmce"),
+	// 						State: to.Ptr("fygrbnektar"),
+	// 						Country: to.Ptr("trmpjpxsfmxprlnv"),
+	// 						PostalCode: to.Ptr("yjttfktdxdzhsgomefhcn"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1110": to.Ptr("euhfdmtfpucwurtu"),
+	// 		},
+	// 		Location: to.Ptr("jynnbjysbc"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("dwbwzcf"),
+	// 		Type: to.Ptr("dvtbulwbtrepgowutyqcmvbyojcs"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("ruoitchmuomrbscg"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.341Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("thfyhokbrldzmghuylqbwpbublj"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-04T05:29:25.345Z"); return t}()),
 	// 		},
 	// 	},
 	// }

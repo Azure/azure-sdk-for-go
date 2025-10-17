@@ -35,6 +35,10 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
 
     gocov convert ./coverage.txt > ./coverage.json
 
+    if ($LASTEXITCODE -gt 0) {
+        exit $LASTEXITCODE
+    }
+
     # gocov converts rely on standard input
     Get-Content ./coverage.json | gocov-xml > ./coverage.xml
     Get-Content ./coverage.json | gocov-html > ./coverage.html

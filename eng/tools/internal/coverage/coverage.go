@@ -28,7 +28,7 @@ type coveragePackage struct {
 }
 
 const (
-	coverageXmlFile = "coverage.xml"
+	coverageFile = "coveragefunc.txt"
 )
 
 func check(e error) {
@@ -44,7 +44,7 @@ func findCoverageFiles(root string) []string {
 		if err != nil {
 			return err
 		}
-		if !d.IsDir() && d.Name() == coverageXmlFile {
+		if !d.IsDir() && d.Name() == coverageFile {
 			coverageFiles = append(coverageFiles, path)
 		}
 
@@ -92,12 +92,12 @@ func findCoverageGoal(covFiles []string, configData *codeCoverage) float64 {
 	return 0.95
 }
 
-func parseCoveragePercent(xmlContents []byte) (float64, error) {
-	re := regexp.MustCompile(`<coverage line-rate=\"(\d(?:\.\d+)?)\"`)
-	matches := re.FindStringSubmatch(string(xmlContents[:]))
+func parseCoveragePercent(contents []byte) (float64, error) {
+	re := regexp.MustCompile(`total:.*?(\d+\.\d+)%`)
+	matches := re.FindStringSubmatch(string(contents))
 
 	if len(matches) < 2 {
-		return 0, errors.New("could not match regexp to coverage.xml file")
+		return 0, errors.New("could not match regexp to coveragefunc.txt file")
 	}
 
 	coverageFloat, err := strconv.ParseFloat(matches[1], 32)
@@ -105,7 +105,7 @@ func parseCoveragePercent(xmlContents []byte) (float64, error) {
 		return 0, err
 	}
 
-	return coverageFloat, nil
+	return coverageFloat / 100, nil
 }
 
 func parseCoverageFiles(coverageFiles []string) []float64 {
@@ -113,11 +113,11 @@ func parseCoverageFiles(coverageFiles []string) []float64 {
 
 	for _, coverageFile := range coverageFiles {
 		fmt.Println(coverageFile)
-		xmlFile, err := os.Open(coverageFile)
+		file, err := os.Open(coverageFile)
 		check(err)
-		defer xmlFile.Close()
+		defer file.Close()
 
-		byteValue, err := io.ReadAll(xmlFile)
+		byteValue, err := io.ReadAll(file)
 		check(err)
 
 		coveragePercent, err := parseCoveragePercent(byteValue)

@@ -332,11 +332,8 @@ function GetSwaggerInfo()
 function TestAndGenerateReport($dir)
 {
     Set-Location $dir
-    # dependencies for go coverage report generation
+    # dependencies for report generation
     go install github.com/jstemmer/go-junit-report/v2@v2.1.0
-    go install github.com/axw/gocov/gocov@v1.2.1
-    go install github.com/AlekSi/gocov-xml@v1.1.0
-    go install github.com/matm/gocov-html/cmd/gocov-html@v1.4.0
 
     # set azidentity env for mock test
     $Env:AZURE_TENANT_ID = "mock-test"
@@ -344,17 +341,10 @@ function TestAndGenerateReport($dir)
     $Env:AZURE_USERNAME = "mock-test"
     $Env:AZURE_PASSWORD = "mock-test"
 
-    # do test with corage report and convert to cobertura format
     Write-Host "go cmd: go test -v -coverprofile coverage.txt | Tee-Object -FilePath outfile.txt"
     go test -v -coverprofile coverage.txt -run TestMockTest | Tee-Object -FilePath outfile.txt
     Write-Host "report.xml: Get-Content outfile.txt | go-junit-report > report.xml"
     Get-Content outfile.txt | go-junit-report > report.xml
-    Write-Host "coverage.json: gocov convert ./coverage.txt > ./coverage.json"
-    gocov convert ./coverage.txt > ./coverage.json
-    Write-Host "coverage.xml: Get-Content ./coverage.json | gocov-xml > ./coverage.xml"
-    Get-Content ./coverage.json | gocov-xml > ./coverage.xml
-    Write-Host "coverage.html: Get-Content ./coverage.json | gocov-html > ./coverage.html"
-    Get-Content ./coverage.json | gocov-html > ./coverage.html
 }
 
 function JudgeExitCode($errorMsg = "execution error")

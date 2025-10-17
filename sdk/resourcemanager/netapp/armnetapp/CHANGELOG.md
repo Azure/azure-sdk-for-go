@@ -1,5 +1,27 @@
 # Release History
 
+## 8.0.0-beta.2 (2025-10-24)
+### Breaking Changes
+
+- Type of `BucketPatchProperties.ProvisioningState` has been changed from `*NetappProvisioningState` to `*NetAppProvisioningState`
+- Type of `BucketProperties.ProvisioningState` has been changed from `*NetappProvisioningState` to `*NetAppProvisioningState`
+- Type of `VolumeQuotaRulesProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetAppProvisioningState`
+- `RelationshipStatusFailed`, `RelationshipStatusUnknown` from enum `RelationshipStatus` has been removed
+- Enum `NetappProvisioningState` has been removed
+- Enum `ProvisioningState` has been removed
+- Field `NextLink` of struct `ListQuotaReportResponse` has been removed
+
+### Features Added
+
+- New enum type `BucketPatchPermissions` with values `BucketPatchPermissionsReadOnly`, `BucketPatchPermissionsReadWrite`
+- New enum type `BucketPermissions` with values `BucketPermissionsReadOnly`, `BucketPermissionsReadWrite`
+- New enum type `NetAppProvisioningState` with values `NetAppProvisioningStateAccepted`, `NetAppProvisioningStateCanceled`, `NetAppProvisioningStateDeleting`, `NetAppProvisioningStateFailed`, `NetAppProvisioningStateMoving`, `NetAppProvisioningStateProvisioning`, `NetAppProvisioningStateSucceeded`, `NetAppProvisioningStateUpdating`
+- New field `Permissions` in struct `BucketPatchProperties`
+- New field `Permissions` in struct `BucketProperties`
+- New field `MirrorState`, `RelationshipStatus` in struct `ReplicationObject`
+- New anonymous field `Volume` in struct `VolumesClientSplitCloneFromParentResponse`
+
+
 ## 7.7.0 (2025-08-13)
 ### Features Added
 

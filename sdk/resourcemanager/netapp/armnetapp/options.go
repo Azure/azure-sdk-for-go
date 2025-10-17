@@ -191,6 +191,39 @@ type BackupsUnderVolumeClientBeginMigrateBackupsOptions struct {
 	ResumeToken string
 }
 
+// BucketsClientBeginCreateOrUpdateOptions contains the optional parameters for the BucketsClient.BeginCreateOrUpdate method.
+type BucketsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginDeleteOptions contains the optional parameters for the BucketsClient.BeginDelete method.
+type BucketsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginUpdateOptions contains the optional parameters for the BucketsClient.BeginUpdate method.
+type BucketsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientGenerateCredentialsOptions contains the optional parameters for the BucketsClient.GenerateCredentials method.
+type BucketsClientGenerateCredentialsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BucketsClientGetOptions contains the optional parameters for the BucketsClient.Get method.
+type BucketsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BucketsClientListOptions contains the optional parameters for the BucketsClient.NewListPager method.
+type BucketsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -257,6 +290,18 @@ type ResourceClientQueryNetworkSiblingSetOptions struct {
 
 // ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo method.
 type ResourceClientQueryRegionInfoOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceQuotaLimitsAccountClientGetOptions contains the optional parameters for the ResourceQuotaLimitsAccountClient.Get
+// method.
+type ResourceQuotaLimitsAccountClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceQuotaLimitsAccountClientListOptions contains the optional parameters for the ResourceQuotaLimitsAccountClient.NewListPager
+// method.
+type ResourceQuotaLimitsAccountClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -514,6 +559,12 @@ type VolumesClientBeginFinalizeRelocationOptions struct {
 // VolumesClientBeginListGetGroupIDListForLdapUserOptions contains the optional parameters for the VolumesClient.BeginListGetGroupIDListForLdapUser
 // method.
 type VolumesClientBeginListGetGroupIDListForLdapUserOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginListQuotaReportOptions contains the optional parameters for the VolumesClient.BeginListQuotaReport method.
+type VolumesClientBeginListQuotaReportOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

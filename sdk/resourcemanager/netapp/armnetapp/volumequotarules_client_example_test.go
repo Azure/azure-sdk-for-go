@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/VolumeQuotaRules_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/VolumeQuotaRules_List.json
 func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 		// 			ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armnetapp.VolumeQuotaRulesProperties{
-		// 				ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 				ProvisioningState: to.Ptr(armnetapp.NetAppProvisioningStateSucceeded),
 		// 				QuotaSizeInKiBs: to.Ptr[int64](100005),
 		// 				QuotaTarget: to.Ptr("1821"),
 		// 				QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
@@ -58,7 +58,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/VolumeQuotaRules_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/VolumeQuotaRules_Get.json
 func ExampleVolumeQuotaRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armnetapp.VolumeQuotaRulesProperties{
-	// 		ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armnetapp.NetAppProvisioningStateSucceeded),
 	// 		QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 		QuotaTarget: to.Ptr("1821"),
 	// 		QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
@@ -90,7 +90,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/VolumeQuotaRules_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/VolumeQuotaRules_Create.json
 func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// 	ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armnetapp.VolumeQuotaRulesProperties{
-	// 		ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armnetapp.NetAppProvisioningStateSucceeded),
 	// 		QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 		QuotaTarget: to.Ptr("1821"),
 	// 		QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
@@ -133,7 +133,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/VolumeQuotaRules_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/VolumeQuotaRules_Update.json
 func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	// 	ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armnetapp.VolumeQuotaRulesProperties{
-	// 		ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armnetapp.NetAppProvisioningStateSucceeded),
 	// 		QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 		QuotaTarget: to.Ptr("1821"),
 	// 		QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
@@ -173,7 +173,7 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ba99beec358a40ee08dae7f12f6a989aad6ce6d1/specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/VolumeQuotaRules_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/VolumeQuotaRules_Delete.json
 func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

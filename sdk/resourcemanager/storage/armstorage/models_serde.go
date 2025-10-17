@@ -619,6 +619,7 @@ func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isNfsV3Enabled", a.EnableNfsV3)
 	populate(objectMap, "encryption", a.Encryption)
 	populate(objectMap, "failoverInProgress", a.FailoverInProgress)
+	populate(objectMap, "geoPriorityReplicationStatus", a.GeoPriorityReplicationStatus)
 	populate(objectMap, "geoReplicationStats", a.GeoReplicationStats)
 	populate(objectMap, "immutableStorageWithVersioning", a.ImmutableStorageWithVersioning)
 	populate(objectMap, "isHnsEnabled", a.IsHnsEnabled)
@@ -708,6 +709,9 @@ func (a *AccountProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "failoverInProgress":
 			err = unpopulate(val, "FailoverInProgress", &a.FailoverInProgress)
+			delete(rawMsg, key)
+		case "geoPriorityReplicationStatus":
+			err = unpopulate(val, "GeoPriorityReplicationStatus", &a.GeoPriorityReplicationStatus)
 			delete(rawMsg, key)
 		case "geoReplicationStats":
 			err = unpopulate(val, "GeoReplicationStats", &a.GeoReplicationStats)
@@ -806,6 +810,7 @@ func (a AccountPropertiesCreateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "supportsHttpsTrafficOnly", a.EnableHTTPSTrafficOnly)
 	populate(objectMap, "isNfsV3Enabled", a.EnableNfsV3)
 	populate(objectMap, "encryption", a.Encryption)
+	populate(objectMap, "geoPriorityReplicationStatus", a.GeoPriorityReplicationStatus)
 	populate(objectMap, "immutableStorageWithVersioning", a.ImmutableStorageWithVersioning)
 	populate(objectMap, "isHnsEnabled", a.IsHnsEnabled)
 	populate(objectMap, "isLocalUserEnabled", a.IsLocalUserEnabled)
@@ -871,6 +876,9 @@ func (a *AccountPropertiesCreateParameters) UnmarshalJSON(data []byte) error {
 		case "encryption":
 			err = unpopulate(val, "Encryption", &a.Encryption)
 			delete(rawMsg, key)
+		case "geoPriorityReplicationStatus":
+			err = unpopulate(val, "GeoPriorityReplicationStatus", &a.GeoPriorityReplicationStatus)
+			delete(rawMsg, key)
 		case "immutableStorageWithVersioning":
 			err = unpopulate(val, "ImmutableStorageWithVersioning", &a.ImmutableStorageWithVersioning)
 			delete(rawMsg, key)
@@ -928,6 +936,7 @@ func (a AccountPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enableExtendedGroups", a.EnableExtendedGroups)
 	populate(objectMap, "supportsHttpsTrafficOnly", a.EnableHTTPSTrafficOnly)
 	populate(objectMap, "encryption", a.Encryption)
+	populate(objectMap, "geoPriorityReplicationStatus", a.GeoPriorityReplicationStatus)
 	populate(objectMap, "immutableStorageWithVersioning", a.ImmutableStorageWithVersioning)
 	populate(objectMap, "isLocalUserEnabled", a.IsLocalUserEnabled)
 	populate(objectMap, "isSftpEnabled", a.IsSftpEnabled)
@@ -988,6 +997,9 @@ func (a *AccountPropertiesUpdateParameters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "encryption":
 			err = unpopulate(val, "Encryption", &a.Encryption)
+			delete(rawMsg, key)
+		case "geoPriorityReplicationStatus":
+			err = unpopulate(val, "GeoPriorityReplicationStatus", &a.GeoPriorityReplicationStatus)
 			delete(rawMsg, key)
 		case "immutableStorageWithVersioning":
 			err = unpopulate(val, "ImmutableStorageWithVersioning", &a.ImmutableStorageWithVersioning)
@@ -3808,6 +3820,33 @@ func (f *FileShareRecommendations) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type GeoPriorityReplicationStatus.
+func (g GeoPriorityReplicationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "isBlobEnabled", g.IsBlobEnabled)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GeoPriorityReplicationStatus.
+func (g *GeoPriorityReplicationStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", g, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "isBlobEnabled":
+			err = unpopulate(val, "IsBlobEnabled", &g.IsBlobEnabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", g, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type GeoReplicationStats.
 func (g GeoReplicationStats) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -5971,6 +6010,7 @@ func (o ObjectReplicationPolicyProperties) MarshalJSON() ([]byte, error) {
 	populateDateTimeRFC3339(objectMap, "enabledTime", o.EnabledTime)
 	populate(objectMap, "metrics", o.Metrics)
 	populate(objectMap, "policyId", o.PolicyID)
+	populate(objectMap, "priorityReplication", o.PriorityReplication)
 	populate(objectMap, "rules", o.Rules)
 	populate(objectMap, "sourceAccount", o.SourceAccount)
 	return json.Marshal(objectMap)
@@ -5997,6 +6037,9 @@ func (o *ObjectReplicationPolicyProperties) UnmarshalJSON(data []byte) error {
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &o.PolicyID)
 			delete(rawMsg, key)
+		case "priorityReplication":
+			err = unpopulate(val, "PriorityReplication", &o.PriorityReplication)
+			delete(rawMsg, key)
 		case "rules":
 			err = unpopulate(val, "Rules", &o.Rules)
 			delete(rawMsg, key)
@@ -6020,6 +6063,33 @@ func (o ObjectReplicationPolicyPropertiesMetrics) MarshalJSON() ([]byte, error) 
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ObjectReplicationPolicyPropertiesMetrics.
 func (o *ObjectReplicationPolicyPropertiesMetrics) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enabled":
+			err = unpopulate(val, "Enabled", &o.Enabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ObjectReplicationPolicyPropertiesPriorityReplication.
+func (o ObjectReplicationPolicyPropertiesPriorityReplication) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enabled", o.Enabled)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ObjectReplicationPolicyPropertiesPriorityReplication.
+func (o *ObjectReplicationPolicyPropertiesPriorityReplication) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", o, err)

@@ -52,6 +52,7 @@ func (d DeletedSecret) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", d.ID)
 	populate(objectMap, "kid", d.KID)
 	populate(objectMap, "managed", d.Managed)
+	populate(objectMap, "previousVersion", d.PreviousVersion)
 	populate(objectMap, "recoveryId", d.RecoveryID)
 	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
 	populate(objectMap, "tags", d.Tags)
@@ -85,6 +86,9 @@ func (d *DeletedSecret) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "managed":
 			err = unpopulate(val, "Managed", &d.Managed)
+			delete(rawMsg, key)
+		case "previousVersion":
+			err = unpopulate(val, "PreviousVersion", &d.PreviousVersion)
 			delete(rawMsg, key)
 		case "recoveryId":
 			err = unpopulate(val, "RecoveryID", &d.RecoveryID)
@@ -231,6 +235,7 @@ func (s Secret) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "kid", s.KID)
 	populate(objectMap, "managed", s.Managed)
+	populate(objectMap, "previousVersion", s.PreviousVersion)
 	populate(objectMap, "tags", s.Tags)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
@@ -259,6 +264,9 @@ func (s *Secret) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "managed":
 			err = unpopulate(val, "Managed", &s.Managed)
+			delete(rawMsg, key)
+		case "previousVersion":
+			err = unpopulate(val, "PreviousVersion", &s.PreviousVersion)
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, "Tags", &s.Tags)

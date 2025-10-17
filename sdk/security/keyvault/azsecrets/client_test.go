@@ -5,6 +5,7 @@ package azsecrets_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -383,7 +384,7 @@ func TestRecover(t *testing.T) {
 }
 
 func TestAPIVersion(t *testing.T) {
-	apiVersion := "7.3"
+	apiVersion := "2025-07-01"
 	var requireVersion = func(req *http.Request) bool {
 		version := req.URL.Query().Get("api-version")
 		require.Equal(t, version, apiVersion)
@@ -408,4 +409,39 @@ func TestAPIVersion(t *testing.T) {
 
 	_, err = client.GetSecret(context.Background(), "name", "", nil)
 	require.NoError(t, err)
+}
+
+func TestPreviousVersion(t *testing.T) {
+	tests := []struct {
+		name     string
+		jsonBody string
+		expected *string
+	}{
+		{name: "no previousVersion", jsonBody: `{"kid":"https://vault/secret/secret-name"}`, expected: nil},
+		{name: "with previousVersion", jsonBody: `{"kid":"https://vault/secret/secret-name","previousVersion":"dummyVersion"}`, expected: to.Ptr("dummyVersion")},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			var s azsecrets.Secret
+			err := json.Unmarshal([]byte(tc.jsonBody), &s)
+			require.NoError(t, err)
+			if tc.expected == nil {
+				require.Nil(t, s.PreviousVersion)
+			} else {
+				require.NotNil(t, s.PreviousVersion)
+				require.Equal(t, *tc.expected, *s.PreviousVersion)
+			}
+
+			var ds azsecrets.DeletedSecret
+			err = json.Unmarshal([]byte(tc.jsonBody), &ds)
+			require.NoError(t, err)
+			if tc.expected == nil {
+				require.Nil(t, ds.PreviousVersion)
+			} else {
+				require.NotNil(t, ds.PreviousVersion)
+				require.Equal(t, *tc.expected, *ds.PreviousVersion)
+			}
+		})
+	}
 }

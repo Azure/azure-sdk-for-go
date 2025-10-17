@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,9 +49,10 @@ func NewVersionsClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// NewListPager - Get a list of available versions for a region.
+// NewListPager - Retrieve a list of all available Elastic versions for a specified region, helping you choose the best version
+// for your deployment.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - region - Region where elastic deployment will take place.
 //   - options - VersionsClientListOptions contains the optional parameters for the VersionsClient.NewListPager method.
 func (client *VersionsClient) NewListPager(region string, options *VersionsClientListOptions) *runtime.Pager[VersionsClientListResponse] {
@@ -81,7 +79,7 @@ func (client *VersionsClient) NewListPager(region string, options *VersionsClien
 }
 
 // listCreateRequest creates the List request.
-func (client *VersionsClient) listCreateRequest(ctx context.Context, region string, options *VersionsClientListOptions) (*policy.Request, error) {
+func (client *VersionsClient) listCreateRequest(ctx context.Context, region string, _ *VersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/elasticVersions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -92,7 +90,7 @@ func (client *VersionsClient) listCreateRequest(ctx context.Context, region stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	reqQP.Set("region", region)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

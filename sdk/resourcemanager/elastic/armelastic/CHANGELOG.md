@@ -1,5 +1,39 @@
 # Release History
 
+## 2.0.0 (2025-11-20)
+### Breaking Changes
+
+- Operation `*MonitorsClient.Update` has been changed to LRO, use `*MonitorsClient.BeginUpdate` instead.
+
+### Features Added
+
+- New enum type `ConfigurationType` with values `ConfigurationTypeGeneralPurpose`, `ConfigurationTypeNotApplicable`, `ConfigurationTypeTimeSeries`, `ConfigurationTypeVector`
+- New enum type `HostingType` with values `HostingTypeHosted`, `HostingTypeServerless`
+- New enum type `Operation` with values `OperationActive`, `OperationAddBegin`, `OperationAddComplete`, `OperationDeleteBegin`, `OperationDeleteComplete`
+- New enum type `ProjectType` with values `ProjectTypeElasticsearch`, `ProjectTypeNotApplicable`, `ProjectTypeObservability`, `ProjectTypeSecurity`
+- New enum type `Status` with values `StatusActive`, `StatusDeleting`, `StatusFailed`, `StatusInProgress`
+- New function `*ClientFactory.NewMonitoredSubscriptionsClient() *MonitoredSubscriptionsClient`
+- New function `NewMonitoredSubscriptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MonitoredSubscriptionsClient, error)`
+- New function `*MonitoredSubscriptionsClient.BeginCreateorUpdate(context.Context, string, string, string, *MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientCreateorUpdateResponse], error)`
+- New function `*MonitoredSubscriptionsClient.BeginDelete(context.Context, string, string, string, *MonitoredSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[MonitoredSubscriptionsClientDeleteResponse], error)`
+- New function `*MonitoredSubscriptionsClient.Get(context.Context, string, string, string, *MonitoredSubscriptionsClientGetOptions) (MonitoredSubscriptionsClientGetResponse, error)`
+- New function `*MonitoredSubscriptionsClient.NewListPager(string, string, *MonitoredSubscriptionsClientListOptions) *runtime.Pager[MonitoredSubscriptionsClientListResponse]`
+- New function `*MonitoredSubscriptionsClient.BeginUpdate(context.Context, string, string, string, *MonitoredSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientUpdateResponse], error)`
+- New function `*OrganizationsClient.BeginResubscribe(context.Context, string, string, *OrganizationsClientBeginResubscribeOptions) (*runtime.Poller[OrganizationsClientResubscribeResponse], error)`
+- New struct `MonitoredSubscription`
+- New struct `MonitoredSubscriptionProperties`
+- New struct `MonitoredSubscriptionPropertiesList`
+- New struct `ProjectDetails`
+- New struct `ResubscribeProperties`
+- New struct `SubscriptionList`
+- New field `Type` in struct `ConnectedPartnerResourceProperties`
+- New field `ConfigurationType`, `ProjectType` in struct `DeploymentInfoResponse`
+- New field `OfferID`, `PublisherID` in struct `MarketplaceSaaSInfoMarketplaceSubscription`
+- New field `HostingType`, `ProjectDetails` in struct `MonitorProperties`
+- New field `Kind` in struct `MonitorResource`
+- New field `OpenAIConnectorID` in struct `OpenAIIntegrationProperties`
+
+
 ## 1.0.0 (2024-10-24)
 ### Features Added
 

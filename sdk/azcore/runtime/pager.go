@@ -99,6 +99,11 @@ type FetcherForNextLinkOptions struct {
 	// StatusCodes contains additional HTTP status codes indicating success.
 	// The default value is http.StatusOK.
 	StatusCodes []int
+
+	// HTTPMethod specifies the HTTP method to use when fetching the next page.
+	// The default value is http.MethodGet.
+	// This field is only used when NextReq is not specified.
+	HTTPMethod string
 }
 
 // FetcherForNextLink is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher from a next link URL.
@@ -119,7 +124,11 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 		if options.NextReq != nil {
 			req, err = options.NextReq(ctx, nextLink)
 		} else {
-			req, err = NewRequest(ctx, http.MethodGet, nextLink)
+			method := options.HTTPMethod
+			if method == "" {
+				method = http.MethodGet
+			}
+			req, err = NewRequest(ctx, method, nextLink)
 		}
 	}
 	if err != nil {

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallDelete.json
 func ExampleAzureFirewallsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleAzureFirewallsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallGet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallGetWithAdditionalProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallGetWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +373,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallGetWithIpGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallGetWithIpGroups.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +548,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallGetWithZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallGetWithZones.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -715,7 +715,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// 																			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallGetWithMgmtSubnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallGetWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -892,7 +892,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPut.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1191,7 +1191,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallPutWithAdditionalProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPutWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1495,7 +1495,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallPutWithIpGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPutWithIpGroups.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1792,7 +1792,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallPutWithZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPutWithZones.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2096,7 +2096,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// 																			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallPutWithMgmtSubnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPutWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2404,7 +2404,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// 																		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallPutInHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPutInHub.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2491,7 +2491,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtua
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallUpdateTags.json
 func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2534,7 +2534,7 @@ func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallListByResourceGroup.json
 func ExampleAzureFirewallsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2719,7 +2719,7 @@ func ExampleAzureFirewallsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallListBySubscription.json
 func ExampleAzureFirewallsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2904,7 +2904,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallListLearnedIPPrefixes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallListLearnedIPPrefixes.json
 func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2933,7 +2933,7 @@ func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c58fa033619b12c7cfa8a0ec5a9bf03bb18869ab/specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/AzureFirewallPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPacketCapture.json
 func ExampleAzureFirewallsClient_BeginPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2984,4 +2984,65 @@ func ExampleAzureFirewallsClient_BeginPacketCapture() {
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/AzureFirewallPacketCaptureOperation.json
+func ExampleAzureFirewallsClient_BeginPacketCaptureOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginPacketCaptureOperation(ctx, "rg1", "azureFirewall1", armnetwork.FirewallPacketCaptureParameters{
+		DurationInSeconds: to.Ptr[int32](300),
+		FileName:          to.Ptr("azureFirewallPacketCapture"),
+		Filters: []*armnetwork.AzureFirewallPacketCaptureRule{
+			{
+				DestinationPorts: []*string{
+					to.Ptr("4500")},
+				Destinations: []*string{
+					to.Ptr("20.1.2.0")},
+				Sources: []*string{
+					to.Ptr("20.1.1.0")},
+			},
+			{
+				DestinationPorts: []*string{
+					to.Ptr("123"),
+					to.Ptr("80")},
+				Destinations: []*string{
+					to.Ptr("10.1.2.0")},
+				Sources: []*string{
+					to.Ptr("10.1.1.0"),
+					to.Ptr("10.1.1.1")},
+			}},
+		Flags: []*armnetwork.AzureFirewallPacketCaptureFlags{
+			{
+				Type: to.Ptr(armnetwork.AzureFirewallPacketCaptureFlagsTypeSyn),
+			},
+			{
+				Type: to.Ptr(armnetwork.AzureFirewallPacketCaptureFlagsTypeFin),
+			}},
+		NumberOfPacketsToCapture: to.Ptr[int32](5000),
+		Operation:                to.Ptr(armnetwork.AzureFirewallPacketCaptureOperationTypeStatus),
+		SasURL:                   to.Ptr("someSASURL"),
+		Protocol:                 to.Ptr(armnetwork.AzureFirewallNetworkRuleProtocolAny),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AzureFirewallPacketCaptureResponse = armnetwork.AzureFirewallPacketCaptureResponse{
+	// 	Message: to.Ptr("Packet capture in progress. Please wait till it is finished or stop the current capture before starting another."),
+	// 	StatusCode: to.Ptr(armnetwork.AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureInProgress),
+	// }
 }

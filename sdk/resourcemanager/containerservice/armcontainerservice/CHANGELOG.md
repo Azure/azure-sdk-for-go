@@ -1,5 +1,22 @@
 # Release History
 
+## 8.0.0 (2025-10-23)
+### Breaking Changes
+
+- Type of `AgentPoolStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
+- Type of `ManagedClusterStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
+- Struct `CloudErrorBody` has been removed
+
+### Features Added
+
+- New enum type `AdvancedNetworkPolicies` with values `AdvancedNetworkPoliciesFQDN`, `AdvancedNetworkPoliciesL7`, `AdvancedNetworkPoliciesNone`
+- New enum type `AgentPoolSSHAccess` with values `AgentPoolSSHAccessDisabled`, `AgentPoolSSHAccessLocalUser`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New field `AdvancedNetworkPolicies` in struct `AdvancedNetworkingSecurity`
+- New field `SSHAccess` in struct `AgentPoolSecurityProfile`
+
+
 ## 8.0.0-beta.1 (2025-09-25)
 ### Breaking Changes
 

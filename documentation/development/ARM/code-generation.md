@@ -1,8 +1,5 @@
-# Generate code
+# Generate Go Mgmt SDK from Typespec
 
-## Generate SDK packages
-
-## Generate Go Mgmt SDK from Typespec
 ### Prerequisites
 - [Node.js 18.x LTS](https://nodejs.org/en/download) or later
 - [Go 1.23.x](https://go.dev/doc/install) or later

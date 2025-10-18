@@ -192,6 +192,14 @@ func (c *ClientFactory) NewProjectsClient() *ProjectsClient {
 	}
 }
 
+// NewQuotaTiersClient creates a new instance of QuotaTiersClient.
+func (c *ClientFactory) NewQuotaTiersClient() *QuotaTiersClient {
+	return &QuotaTiersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewRaiBlocklistItemsClient creates a new instance of RaiBlocklistItemsClient.
 func (c *ClientFactory) NewRaiBlocklistItemsClient() *RaiBlocklistItemsClient {
 	return &RaiBlocklistItemsClient{
@@ -219,6 +227,14 @@ func (c *ClientFactory) NewRaiContentFiltersClient() *RaiContentFiltersClient {
 // NewRaiPoliciesClient creates a new instance of RaiPoliciesClient.
 func (c *ClientFactory) NewRaiPoliciesClient() *RaiPoliciesClient {
 	return &RaiPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRaiTopicsClient creates a new instance of RaiTopicsClient.
+func (c *ClientFactory) NewRaiTopicsClient() *RaiTopicsClient {
+	return &RaiTopicsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

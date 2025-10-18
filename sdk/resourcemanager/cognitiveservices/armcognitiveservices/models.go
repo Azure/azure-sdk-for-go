@@ -263,7 +263,7 @@ type Account struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -361,11 +361,17 @@ type AccountModel struct {
 	// The max capacity.
 	MaxCapacity *int32
 
+	// Asset identifier for the model in the model catalog.
+	ModelCatalogAssetID *string
+
 	// Deployment model name.
 	Name *string
 
 	// Deployment model publisher.
 	Publisher *string
+
+	// Configuration for model replacement.
+	ReplacementConfig *ReplacementConfig
 
 	// The list of Model Sku.
 	SKUs []*ModelSKU
@@ -444,6 +450,9 @@ type AccountProperties struct {
 	Restore                       *bool
 	RestrictOutboundNetworkAccess *bool
 
+	// The flag to disable stored completions.
+	StoredCompletionsDisabled *bool
+
 	// The storage accounts for this resource.
 	UserOwnedStorage []*UserOwnedStorage
 
@@ -520,6 +529,9 @@ type AzureEntityResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
@@ -578,6 +590,9 @@ type CapabilityHost struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -707,7 +722,7 @@ type CommitmentPlan struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -731,7 +746,7 @@ type CommitmentPlanAccountAssociation struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -944,6 +959,9 @@ type ConnectionPropertiesV2BasicResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
@@ -1052,6 +1070,18 @@ func (c *CustomKeysConnectionProperties) GetConnectionPropertiesV2() *Connection
 	}
 }
 
+// CustomTopicConfig - Gets or sets the source to which filter applies.
+type CustomTopicConfig struct {
+	// If blocking would occur.
+	Blocking *bool
+
+	// Content source to apply the Content Filters.
+	Source *RaiPolicyContentSource
+
+	// Name of RAI topic.
+	TopicName *string
+}
+
 // DefenderForAISetting - The Defender for AI resource.
 type DefenderForAISetting struct {
 	// The Defender for AI resource properties.
@@ -1069,7 +1099,7 @@ type DefenderForAISetting struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1111,7 +1141,7 @@ type Deployment struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1271,7 +1301,7 @@ type EncryptionScope struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1329,11 +1359,36 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// ErrorDetailAutoGenerated - The error detail.
+type ErrorDetailAutoGenerated struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetailAutoGenerated
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail
+}
+
+// ErrorResponseAutoGenerated - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated struct {
+	// The error object.
+	Error *ErrorDetailAutoGenerated
 }
 
 // IPRule - A rule governing the accessibility from a specific ip address or ip range.
@@ -1491,12 +1546,20 @@ type ModelCapacityListResultValueItem struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // ModelDeprecationInfo - Cognitive Services account ModelDeprecationInfo.
 type ModelDeprecationInfo struct {
+	// Indicates whether the deprecation date is a confirmed planned end-of-life date or an estimated deprecation date. When 'Planned',
+	// the deprecation date represents a confirmed and communicated model
+	// end-of-life date. When 'Tentative', the deprecation date is an estimated timeline that may be subject to change.
+	DeprecationStatus *DeprecationStatus
+
 	// The datetime of deprecation of the fineTune Model.
 	FineTune *string
 
@@ -1641,6 +1704,9 @@ type NetworkSecurityPerimeterConfiguration struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -1946,7 +2012,7 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1984,6 +2050,9 @@ type PrivateLinkResource struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -2047,7 +2116,7 @@ type Project struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -2116,6 +2185,9 @@ type ProxyResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
@@ -2124,6 +2196,64 @@ type QuotaLimit struct {
 	Count         *float32
 	RenewalPeriod *float32
 	Rules         []*ThrottlingRule
+}
+
+// QuotaTier - The quota tier information for the subscription
+type QuotaTier struct {
+	// Properties of quota tier resource.
+	Properties *QuotaTierProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// QuotaTierListResult - The list of Quota Tiers response.
+type QuotaTierListResult struct {
+	// The link used to get the next page of quota tiers.
+	NextLink *string
+
+	// READ-ONLY; Gets the list of Quota Tiers and their properties.
+	Value []*QuotaTier
+}
+
+// QuotaTierProperties - Properties of Quota Tier resource'.
+type QuotaTierProperties struct {
+	// Gets the tier upgrade policy for the subscription.
+	TierUpgradePolicy *TierUpgradePolicy
+
+	// READ-ONLY; The date on which the current tier was assigned to the subscription (UTC).
+	AssignmentDate *time.Time
+
+	// READ-ONLY; Name of the current quota tier for the subscription.
+	CurrentTierName *string
+
+	// READ-ONLY; Information about the quota tier upgrade eligibility for the subscription.
+	TierUpgradeEligibilityInfo *QuotaTierUpgradeEligibilityInfo
+}
+
+// QuotaTierUpgradeEligibilityInfo - Information about the quota tier upgrade eligibility for the subscription.
+type QuotaTierUpgradeEligibilityInfo struct {
+	// Name of the next quota tier for the subscription.
+	NextTierName *string
+
+	// The date after which the current tier will be upgraded to the next tier if the TierUpgradePolicy is "OnceUpgradeIsAvailable"
+	// (UTC).
+	UpgradeApplicableDate *time.Time
+
+	// Specifies whether an upgrade to the next quota tier is available.
+	UpgradeAvailabilityStatus *UpgradeAvailabilityStatus
+
+	// Reason in case the subscription is not eligible for upgrade to the next tier.
+	UpgradeUnavailabilityReason *string
 }
 
 // RaiBlockListItemsResult - The list of cognitive services RAI Blocklist Items.
@@ -2161,7 +2291,7 @@ type RaiBlocklist struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -2194,7 +2324,7 @@ type RaiBlocklistItem struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -2234,6 +2364,9 @@ type RaiContentFilter struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -2286,7 +2419,7 @@ type RaiPolicy struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -2331,6 +2464,9 @@ type RaiPolicyProperties struct {
 	// The list of custom Blocklist.
 	CustomBlocklists []*CustomBlocklistConfig
 
+	// The list of custom rai topics.
+	CustomTopics []*CustomTopicConfig
+
 	// Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronousfilter =3. Please
 	// use 'Asynchronousfilter' after 2025-06-01. It is the same as 'Deferred' in
 	// previous version.
@@ -2338,6 +2474,75 @@ type RaiPolicyProperties struct {
 
 	// READ-ONLY; Content Filters policy type.
 	Type *RaiPolicyType
+}
+
+// RaiTopic - Cognitive Services Rai Topic.
+type RaiTopic struct {
+	// Properties of Cognitive Services Rai Topic.
+	Properties *RaiTopicProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RaiTopicConfig - Azure OpenAI RAI topic config.
+type RaiTopicConfig struct {
+	// If blocking would occur.
+	Blocking *bool
+
+	// Name of RAI topic.
+	TopicName *string
+}
+
+// RaiTopicProperties - RAI Custom Topic properties.
+type RaiTopicProperties struct {
+	// Creation time of the custom topic.
+	CreatedAt *time.Time
+
+	// Description of the custom topic.
+	Description *string
+
+	// Failed reason if the status is Failed.
+	FailedReason *string
+
+	// Last modified time of the custom topic.
+	LastModifiedAt *time.Time
+
+	// Sample blob url for the custom topic.
+	SampleBlobURL *string
+
+	// Status of the custom topic.
+	Status *string
+
+	// The unique identifier of the custom topic.
+	TopicID *string
+
+	// The name of the custom topic.
+	TopicName *string
+}
+
+// RaiTopicResult - The list of cognitive services RAI Topics.
+type RaiTopicResult struct {
+	// The link used to get the next page of RaiTopics.
+	NextLink *string
+
+	// The list of RaiTopic.
+	Value []*RaiTopic
 }
 
 // RegenerateKeyParameters - Regenerate key parameters.
@@ -2358,6 +2563,23 @@ type RegionSetting struct {
 	Value *float32
 }
 
+// ReplacementConfig - Configuration for model replacement.
+type ReplacementConfig struct {
+	// The date when automatic upgrade should start. This applies to deployments with the OnceNewDefaultVersionAvailable upgrade
+	// option.
+	AutoUpgradeStartDate *time.Time
+
+	// The name of the replacement model.
+	TargetModelName *string
+
+	// The version of the replacement model.
+	TargetModelVersion *string
+
+	// The number of days before deprecation date to trigger upgrade. This applies to deployments with the OnceCurrentVersionExpired
+	// upgrade option.
+	UpgradeOnExpiryLeadTimeDays *int32
+}
+
 type RequestMatchPattern struct {
 	Method *string
 	Path   *string
@@ -2370,6 +2592,9 @@ type Resource struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string

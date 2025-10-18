@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/BillingMeters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/BillingMeters_Get.json
 func ExampleBillingMetersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleBillingMetersClient_Get() {
 	// 		{
 	// 			Name: to.Ptr("GeneralPurposeDseriesCPU"),
 	// 			Type: to.Ptr("Microsoft.App/billingMeters"),
-	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/GeneralPurposeDseriesCPU"),
+	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/billingMeters/GeneralPurposeDseriesCPU"),
 	// 			Location: to.Ptr("East US"),
 	// 			Properties: &armappcontainers.BillingMeterProperties{
 	// 				Category: to.Ptr("General purpose D-series"),
@@ -51,7 +51,7 @@ func ExampleBillingMetersClient_Get() {
 	// 		{
 	// 			Name: to.Ptr("GeneralPurposeDseriesMemory"),
 	// 			Type: to.Ptr("Microsoft.App/billingMeters"),
-	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/GeneralPurposeDseriesMemory"),
+	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/billingMeters/GeneralPurposeDseriesMemory"),
 	// 			Location: to.Ptr("East US"),
 	// 			Properties: &armappcontainers.BillingMeterProperties{
 	// 				Category: to.Ptr("General purpose D-series"),
@@ -62,7 +62,7 @@ func ExampleBillingMetersClient_Get() {
 	// 		{
 	// 			Name: to.Ptr("MemoryOptimizedEseriesCPU"),
 	// 			Type: to.Ptr("Microsoft.App/billingMeters"),
-	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/MemoryOptimizedEseriesCPU"),
+	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/billingMeters/MemoryOptimizedEseriesCPU"),
 	// 			Location: to.Ptr("East US"),
 	// 			Properties: &armappcontainers.BillingMeterProperties{
 	// 				Category: to.Ptr("Memory optimized E-series"),
@@ -73,7 +73,7 @@ func ExampleBillingMetersClient_Get() {
 	// 		{
 	// 			Name: to.Ptr("MemoryOptimizedEseriesMemory"),
 	// 			Type: to.Ptr("Microsoft.App/billingMeters"),
-	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/MemoryOptimizedEseriesMemory"),
+	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/billingMeters/MemoryOptimizedEseriesMemory"),
 	// 			Location: to.Ptr("East US"),
 	// 			Properties: &armappcontainers.BillingMeterProperties{
 	// 				Category: to.Ptr("Memory optimized E-series"),
@@ -84,7 +84,7 @@ func ExampleBillingMetersClient_Get() {
 	// 		{
 	// 			Name: to.Ptr("ComputeOptimizedFseriesCPU"),
 	// 			Type: to.Ptr("Microsoft.App/billingMeters"),
-	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/ComputeOptimizedFseriesCPU"),
+	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/billingMeters/ComputeOptimizedFseriesCPU"),
 	// 			Location: to.Ptr("East US"),
 	// 			Properties: &armappcontainers.BillingMeterProperties{
 	// 				Category: to.Ptr("Compute optimized F-series"),
@@ -95,7 +95,7 @@ func ExampleBillingMetersClient_Get() {
 	// 		{
 	// 			Name: to.Ptr("GeneralComputeMemory"),
 	// 			Type: to.Ptr("Microsoft.App/billingMeters"),
-	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/GeneralComputeMemory"),
+	// 			ID: to.Ptr("/subscriptions/55f240e3-3d66-44f6-8358-4e4f3d7a2e51/providers/Microsoft.App/billingMeters/GeneralComputeMemory"),
 	// 			Location: to.Ptr("East US"),
 	// 			Properties: &armappcontainers.BillingMeterProperties{
 	// 				Category: to.Ptr("Compute optimized F-series"),

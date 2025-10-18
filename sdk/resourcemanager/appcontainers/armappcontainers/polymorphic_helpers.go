@@ -17,16 +17,12 @@ func unmarshalJavaComponentPropertiesClassification(rawMsg json.RawMessage) (Jav
 	}
 	var b JavaComponentPropertiesClassification
 	switch m["componentType"] {
-	case string(JavaComponentTypeNacos):
-		b = &NacosComponent{}
 	case string(JavaComponentTypeSpringBootAdmin):
 		b = &SpringBootAdminComponent{}
 	case string(JavaComponentTypeSpringCloudConfig):
 		b = &SpringCloudConfigComponent{}
 	case string(JavaComponentTypeSpringCloudEureka):
 		b = &SpringCloudEurekaComponent{}
-	case string(JavaComponentTypeSpringCloudGateway):
-		b = &SpringCloudGatewayComponent{}
 	default:
 		b = &JavaComponentProperties{}
 	}

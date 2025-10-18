@@ -25,7 +25,7 @@ type ManagedEnvironmentPrivateLinkResourcesClient struct {
 }
 
 // NewManagedEnvironmentPrivateLinkResourcesClient creates a new instance of ManagedEnvironmentPrivateLinkResourcesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedEnvironmentPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentPrivateLinkResourcesClient, error) {
@@ -42,7 +42,7 @@ func NewManagedEnvironmentPrivateLinkResourcesClient(subscriptionID string, cred
 
 // NewListPager - List private link resources for a given managed environment.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - options - ManagedEnvironmentPrivateLinkResourcesClientListOptions contains the optional parameters for the ManagedEnvironmentPrivateLinkResourcesClient.NewListPager
@@ -90,7 +90,7 @@ func (client *ManagedEnvironmentPrivateLinkResourcesClient) listCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -25,7 +25,7 @@ type HTTPRouteConfigClient struct {
 }
 
 // NewHTTPRouteConfigClient creates a new instance of HTTPRouteConfigClient with the specified values.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHTTPRouteConfigClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HTTPRouteConfigClient, error) {
@@ -43,7 +43,7 @@ func NewHTTPRouteConfigClient(subscriptionID string, credential azcore.TokenCred
 // CreateOrUpdate - Create or Update a Http Route Config.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - httpRouteName - Name of the Http Route Config Resource.
@@ -95,7 +95,7 @@ func (client *HTTPRouteConfigClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.HTTPRouteConfigEnvelope != nil {
@@ -116,37 +116,59 @@ func (client *HTTPRouteConfigClient) createOrUpdateHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// Delete - Deletes the specified Managed Http Route.
+// BeginDelete - Deletes the specified Http Route Config.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - httpRouteName - Name of the Http Route Config Resource.
-//   - options - HTTPRouteConfigClientDeleteOptions contains the optional parameters for the HTTPRouteConfigClient.Delete method.
-func (client *HTTPRouteConfigClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientDeleteOptions) (HTTPRouteConfigClientDeleteResponse, error) {
+//   - options - HTTPRouteConfigClientBeginDeleteOptions contains the optional parameters for the HTTPRouteConfigClient.BeginDelete
+//     method.
+func (client *HTTPRouteConfigClient) BeginDelete(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientBeginDeleteOptions) (*runtime.Poller[HTTPRouteConfigClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, environmentName, httpRouteName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HTTPRouteConfigClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HTTPRouteConfigClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Deletes the specified Http Route Config.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+func (client *HTTPRouteConfigClient) deleteOperation(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "HTTPRouteConfigClient.Delete"
+	const operationName = "HTTPRouteConfigClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, httpRouteName, options)
 	if err != nil {
-		return HTTPRouteConfigClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return HTTPRouteConfigClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return HTTPRouteConfigClientDeleteResponse{}, err
+		return nil, err
 	}
-	return HTTPRouteConfigClientDeleteResponse{}, nil
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientDeleteOptions) (*policy.Request, error) {
+func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -169,16 +191,16 @@ func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get the specified Managed Http Route Config.
+// Get - Get the specified Http Route Config.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - httpRouteName - Name of the Http Route Config Resource.
@@ -229,7 +251,7 @@ func (client *HTTPRouteConfigClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -244,9 +266,9 @@ func (client *HTTPRouteConfigClient) getHandleResponse(resp *http.Response) (HTT
 	return result, nil
 }
 
-// NewListPager - Get the Managed Http Routes in a given managed environment.
+// NewListPager - List the Http Route Configs in a given managed environment.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - options - HTTPRouteConfigClientListOptions contains the optional parameters for the HTTPRouteConfigClient.NewListPager
@@ -294,7 +316,7 @@ func (client *HTTPRouteConfigClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -309,10 +331,10 @@ func (client *HTTPRouteConfigClient) listHandleResponse(resp *http.Response) (HT
 	return result, nil
 }
 
-// Update - Patches an http route config resource. Only patching of tags is supported
+// Update - Patches a Http Route Config resource. Only patching of tags is supported
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - httpRouteName - Name of the Http Route Config Resource.
@@ -364,7 +386,7 @@ func (client *HTTPRouteConfigClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, httpRouteConfigEnvelope); err != nil {

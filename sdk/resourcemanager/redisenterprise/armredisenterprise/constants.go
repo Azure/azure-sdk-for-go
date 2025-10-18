@@ -5,11 +5,6 @@
 
 package armredisenterprise
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
-	moduleVersion = "v2.1.0-beta.3"
-)
-
 // AccessKeyType - Which access key to regenerate.
 type AccessKeyType string
 
@@ -349,6 +344,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
+	}
+}
+
+// PublicNetworkAccess - Whether or not public network traffic can access the Redis cluster. Only 'Enabled' or 'Disabled'
+// can be set. null is returned only for clusters created using an old API version which do not have this
+// property and cannot be set.
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
 	}
 }
 

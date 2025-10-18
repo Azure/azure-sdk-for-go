@@ -52,6 +52,9 @@ type Func struct {
 	// a comma-delimited list of the param types
 	Params *string `json:"params,omitempty"`
 
+	// a comma-delimited list of param names (same order as Params)
+	ParamNames *string `json:"paramNames,omitempty"`
+
 	// a comma-delimited list of the return types
 	Returns *string `json:"returns,omitempty"`
 

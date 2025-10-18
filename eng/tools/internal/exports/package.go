@@ -178,13 +178,20 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 		return s
 	}
 
-	// build the params type list
+	// build the params type list and names list
 	if ft.Params.List != nil {
 		p := ""
+		pn := ""
 		pkg.translateFieldList(ft.Params.List, func(n *string, t string, f *ast.Field) {
 			p = appendString(p, t)
+			if n != nil {
+				pn = appendString(pn, *n)
+			} else {
+				pn = appendString(pn, "")
+			}
 		})
 		f.Params = &p
+		f.ParamNames = &pn
 	}
 
 	// build the return types list

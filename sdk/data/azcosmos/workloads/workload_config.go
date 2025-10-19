@@ -24,7 +24,7 @@ const defaultContainerName = "scale_cont"
 const defaultDatabaseName = "scale_db"
 const defaultPKField = "pk"
 
-func loadConfig() (workloadConfig, error) {
+func LoadConfig() (workloadConfig, error) {
 	get := func(name string) (string, error) {
 		v := os.Getenv(name)
 		if v == "" {

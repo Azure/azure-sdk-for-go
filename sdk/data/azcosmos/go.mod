@@ -1,6 +1,8 @@
 module github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
 
-go 1.23.0
+go 1.23.3
+
+toolchain go1.24.4
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1
@@ -10,6 +12,7 @@ require (
 )
 
 require (
+	github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx v0.0.6
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.4.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect

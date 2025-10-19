@@ -1,3 +1,5 @@
+github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx v0.0.6 h1:MlHT6JQ3/fia3o0vlJ3+9v4Ir2WBEGrG9dTPwE+acAY=
+github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx v0.0.6/go.mod h1:WeN45W+Vf3Q8XN6mpJnLizqTpcdAd0GaJ8ngTG829l4=
 github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1 h1:Wc1ml6QlJs2BHQ/9Bqu1jiyggbsSjramq2oUmp5WeIo=
 github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1/go.mod h1:Ot/6aikWnKWi4l9QB7qVSwa8iMphQNqkWALMoNT3rzM=
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.10.1 h1:B+blDbyVIG3WaikNxPnhPiJ1MThR03b3vKGtER95TP4=

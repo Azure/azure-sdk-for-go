@@ -7,18 +7,11 @@ import (
 	"context"
 	"fmt"
 	"log"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
 
-func RunWorkload(ctx context.Context) error {
-	cfg, err := loadConfig()
-	if err != nil {
-		return err
-	}
-
-	client, err := createClient(cfg)
-	if err != nil {
-		return fmt.Errorf("creating client: %w", err)
-	}
+func RunWorkload(ctx context.Context, client *azcosmos.Client, cfg workloadConfig) error {
 
 	dbClient, err := client.NewDatabase(cfg.DatabaseID)
 	if err != nil {

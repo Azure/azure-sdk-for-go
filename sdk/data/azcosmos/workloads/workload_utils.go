@@ -13,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
 
@@ -171,7 +172,10 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 		pager := container.NewQueryItemsPager(
 			"SELECT TOP 10 c.id FROM c ORDER BY VectorDistance(c.embedding, @embedding)",
 			azcosmos.NewPartitionKey(),
-			&azcosmos.QueryOptions{QueryParameters: []azcosmos.QueryParameter{{Name: "@embedding", Value: embedding}}},
+			&azcosmos.QueryOptions{
+				QueryParameters: []azcosmos.QueryParameter{{Name: "@embedding", Value: embedding}},
+				QueryEngine:     azcosmoscx.NewQueryEngine(),
+			},
 		)
 		for pager.More() {
 			if _, err := pager.NextPage(ctx); err != nil {
@@ -183,7 +187,7 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 	})
 }
 
-func createClient(cfg workloadConfig) (*azcosmos.Client, error) {
+func CreateClient(cfg workloadConfig) (*azcosmos.Client, error) {
 	cred, err := azcosmos.NewKeyCredential(cfg.Key)
 	if err != nil {
 		return nil, err

@@ -124,9 +124,9 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 		if options.NextReq != nil {
 			req, err = options.NextReq(ctx, nextLink)
 		} else {
-			verb := options.HTTPVerb
-			if verb == "" {
-				verb = http.MethodGet
+			verb := http.MethodGet
+			if options.HTTPVerb != "" {
+				verb = options.HTTPVerb
 			}
 			req, err = NewRequest(ctx, verb, nextLink)
 		}

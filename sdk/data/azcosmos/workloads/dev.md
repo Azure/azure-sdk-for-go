@@ -11,10 +11,8 @@ and scalability of the SDK under various conditions.
 1. Give the VM necessary [permissions](https://learn.microsoft.com/azure/cosmos-db/nosql/how-to-grant-data-plane-access?tabs=built-in-definition%2Ccsharp&pivots=azure-interface-cli) to access the Cosmos DB account if using AAD (Optional). 
 1. Fork and clone this repository
 1. Go to azcosmos folder
-   - `cd azure-sdk-for-go/sdk/data/azcosmos`
+   - `cd azure-sdk-for-go/sdk/data/azcosmos/workloads`
 1. Checkout the branch with the changes to test. 
-1. Go to workloads folder
-    - `cd workloads`
 1. Fill out relevant configs in `workload_configs.go`: key, host, etc using env variables
 1. Run the setup workload to create the database and containers and insert test data
     - `python3 initial-setup.py`

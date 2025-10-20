@@ -46,6 +46,16 @@ func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient
 			Paths: []string{"/" + pkField},
 			Kind:  azcosmos.PartitionKeyKindHash,
 		},
+		VectorEmbeddingPolicy: &azcosmos.VectorEmbeddingPolicy{
+			VectorEmbeddings: []azcosmos.VectorEmbedding{
+				{
+					Path:             "/embedding",
+					DataType:         azcosmos.VectorDataTypeFloat32,
+					DistanceFunction: azcosmos.VectorDistanceFunctionCosine,
+					Dimensions:       10,
+				},
+			},
+		},
 		IndexingPolicy: &azcosmos.IndexingPolicy{
 			Automatic:    true,
 			IndexingMode: azcosmos.IndexingModeConsistent,

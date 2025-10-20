@@ -192,9 +192,9 @@ func CreateClient(cfg workloadConfig) (*azcosmos.Client, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("Creating client for endpoint %s with preferred regions: %v", cfg.Endpoint, cfg.PreferredLocations)
 	opts := &azcosmos.ClientOptions{
 		PreferredRegions: cfg.PreferredLocations,
-		// Add EnableContentResponseOnWrite: true if you want full responses
 	}
 	return azcosmos.NewClientWithKey(cfg.Endpoint, cred, opts)
 }

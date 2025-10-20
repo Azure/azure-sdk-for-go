@@ -9,15 +9,16 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices"
 	"net/http"
 	"net/url"
 	"regexp"
 	"strconv"
 	"time"
+
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices"
 )
 
 // DpsCertificateServer is a fake server for instances of the armdeviceprovisioningservices.DpsCertificateClient type.
@@ -193,7 +194,7 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	certificateNameParam := getOptional(certificateNameUnescaped)
+	certificateNameQueryParam := getOptional(certificateNameUnescaped)
 	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
@@ -245,9 +246,9 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 	}
 	certificateNonceParam := getOptional(certificateNonceUnescaped)
 	var options *armdeviceprovisioningservices.DpsCertificateClientDeleteOptions
-	if certificateNameParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
+	if certificateNameQueryParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientDeleteOptions{
-			CertificateName:          certificateNameParam,
+			CertificateName:          certificateNameQueryParam,
 			CertificateRawBytes:      certificateRawBytesParam,
 			CertificateIsVerified:    certificateIsVerifiedParam,
 			CertificatePurpose:       certificatePurposeParam,
@@ -299,7 +300,7 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 	if err != nil {
 		return nil, err
 	}
-	certificateNameParam := getOptional(certificateNameUnescaped)
+	certificateNameQueryParam := getOptional(certificateNameUnescaped)
 	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
@@ -351,9 +352,9 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 	}
 	certificateNonceParam := getOptional(certificateNonceUnescaped)
 	var options *armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions
-	if certificateNameParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
+	if certificateNameQueryParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions{
-			CertificateName:          certificateNameParam,
+			CertificateName:          certificateNameQueryParam,
 			CertificateRawBytes:      certificateRawBytesParam,
 			CertificateIsVerified:    certificateIsVerifiedParam,
 			CertificatePurpose:       certificatePurposeParam,
@@ -491,7 +492,7 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	certificateNameParam := getOptional(certificateNameUnescaped)
+	certificateNameQueryParam := getOptional(certificateNameUnescaped)
 	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
@@ -543,9 +544,9 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 	}
 	certificateNonceParam := getOptional(certificateNonceUnescaped)
 	var options *armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions
-	if certificateNameParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
+	if certificateNameQueryParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions{
-			CertificateName:          certificateNameParam,
+			CertificateName:          certificateNameQueryParam,
 			CertificateRawBytes:      certificateRawBytesParam,
 			CertificateIsVerified:    certificateIsVerifiedParam,
 			CertificatePurpose:       certificatePurposeParam,

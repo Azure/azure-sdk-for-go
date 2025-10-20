@@ -54,8 +54,7 @@ func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient
 			},
 			ExcludedPaths: []azcosmos.ExcludedPath{
 				{Path: "/\"_etag\"/?"},
-				{Path: "/embedding/*"},     // Exclude vector path from standard indexing
-				{Path: "/textEmbedding/*"}, // Exclude vector path from standard indexing
+				{Path: "/embedding/*"}, // Exclude vector path from standard indexing
 			},
 			VectorIndexes: []azcosmos.VectorIndex{
 				{

@@ -370,8 +370,13 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 	defer close()
 	pl := exported.NewPipeline(srv)
 
-	// Test default GET method (when HTTPMethod is not specified)
-	srv.AppendResponse()
+	// Test default GET method (when HTTPVerb is not specified)
+	srv.AppendResponse(mock.WithPredicate(func(req *http.Request) bool {
+		// Validate that the request uses GET method
+		require.Equal(t, http.MethodGet, req.Method)
+		return true
+	}))
+	srv.AppendResponse() // Response returned after predicate matches
 	resp, err := FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	}, nil)
@@ -380,37 +385,52 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 
 	// Test explicit GET method
-	srv.AppendResponse()
+	srv.AppendResponse(mock.WithPredicate(func(req *http.Request) bool {
+		// Validate that the request uses GET method
+		require.Equal(t, http.MethodGet, req.Method)
+		return true
+	}))
+	srv.AppendResponse() // Response returned after predicate matches
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	}, &FetcherForNextLinkOptions{
-		HTTPMethod: http.MethodGet,
+		HTTPVerb: http.MethodGet,
 	})
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 
 	// Test POST method
-	srv.AppendResponse()
+	srv.AppendResponse(mock.WithPredicate(func(req *http.Request) bool {
+		// Validate that the request uses POST method
+		require.Equal(t, http.MethodPost, req.Method)
+		return true
+	}))
+	srv.AppendResponse() // Response returned after predicate matches
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodPost, srv.URL())
 	}, &FetcherForNextLinkOptions{
-		HTTPMethod: http.MethodPost,
+		HTTPVerb: http.MethodPost,
 	})
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 
-	// Test that HTTPMethod is not used when NextReq is specified
-	srv.AppendResponse()
+	// Test that HTTPVerb is not used when NextReq is specified
+	srv.AppendResponse(mock.WithPredicate(func(req *http.Request) bool {
+		// Validate that the request uses GET method (from NextReq, not HTTPVerb)
+		require.Equal(t, http.MethodGet, req.Method)
+		return true
+	}))
+	srv.AppendResponse() // Response returned after predicate matches
 	nextReqCalled := false
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	}, &FetcherForNextLinkOptions{
-		HTTPMethod: http.MethodPost,
+		HTTPVerb: http.MethodPost,
 		NextReq: func(ctx context.Context, s string) (*policy.Request, error) {
 			nextReqCalled = true
-			// This should use GET even though HTTPMethod is POST
+			// This should use GET even though HTTPVerb is POST
 			return NewRequest(ctx, http.MethodGet, srv.URL())
 		},
 	})

@@ -100,10 +100,10 @@ type FetcherForNextLinkOptions struct {
 	// The default value is http.StatusOK.
 	StatusCodes []int
 
-	// HTTPMethod specifies the HTTP method to use when fetching the next page.
+	// HTTPVerb specifies the HTTP verb to use when fetching the next page.
 	// The default value is http.MethodGet.
 	// This field is only used when NextReq is not specified.
-	HTTPMethod string
+	HTTPVerb string
 }
 
 // FetcherForNextLink is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher from a next link URL.
@@ -124,11 +124,11 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 		if options.NextReq != nil {
 			req, err = options.NextReq(ctx, nextLink)
 		} else {
-			method := options.HTTPMethod
-			if method == "" {
-				method = http.MethodGet
+			verb := options.HTTPVerb
+			if verb == "" {
+				verb = http.MethodGet
 			}
-			req, err = NewRequest(ctx, method, nextLink)
+			req, err = NewRequest(ctx, verb, nextLink)
 		}
 	}
 	if err != nil {

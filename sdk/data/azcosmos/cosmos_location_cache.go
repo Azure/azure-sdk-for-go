@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 	"sync"
 	"time"
@@ -124,8 +125,10 @@ func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType 
 	}
 
 	endpoints := lc.locationInfo.readEndpoints
+	log.Printf("Read endpoints: %v", endpoints)
 	if isWriteOperation {
 		endpoints = lc.locationInfo.writeEndpoints
+		log.Printf("Write endpoints: %v", endpoints)
 	}
 	return endpoints[locationIndex%len(endpoints)]
 }
@@ -245,6 +248,8 @@ func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
 			unavailEndpoints := make([]url.URL, 0)
 			unavailEndpoints = append(unavailEndpoints, fallbackEndpoint)
+			log.Printf("Unavailable endpoints: %v", unavailEndpoints)
+			log.Printf("Pref location: %v", lc.locationInfo.prefLocations)
 			for _, loc := range lc.locationInfo.prefLocations {
 				if endpoint, ok := endpointsByLoc[loc]; ok && endpoint != fallbackEndpoint {
 					if lc.isEndpointUnavailable(endpoint, availOps) {
@@ -256,11 +261,13 @@ func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url
 			}
 			endpoints = append(endpoints, unavailEndpoints...)
 		} else {
+			log.Printf("Pref location: %v", lc.locationInfo.prefLocations)
 			for _, loc := range locs {
 				if endpoint, ok := endpointsByLoc[loc]; ok && loc != "" {
 					endpoints = append(endpoints, endpoint)
 				}
 			}
+			log.Printf("Endpoints %v", endpoints)
 		}
 	}
 	if len(endpoints) == 0 {

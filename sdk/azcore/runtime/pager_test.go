@@ -375,8 +375,8 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		// Validate that the request uses GET method
 		require.Equal(t, http.MethodGet, req.Method)
 		return true
-	}))
-	srv.AppendResponse() // Response returned after predicate matches
+	}), mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
 	resp, err := FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	}, nil)
@@ -389,8 +389,8 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		// Validate that the request uses GET method
 		require.Equal(t, http.MethodGet, req.Method)
 		return true
-	}))
-	srv.AppendResponse() // Response returned after predicate matches
+	}), mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	}, &FetcherForNextLinkOptions{
@@ -405,8 +405,8 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		// Validate that the request uses POST method
 		require.Equal(t, http.MethodPost, req.Method)
 		return true
-	}))
-	srv.AppendResponse() // Response returned after predicate matches
+	}), mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodPost, srv.URL())
 	}, &FetcherForNextLinkOptions{
@@ -421,8 +421,8 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		// Validate that the request uses GET method (from NextReq, not HTTPVerb)
 		require.Equal(t, http.MethodGet, req.Method)
 		return true
-	}))
-	srv.AppendResponse() // Response returned after predicate matches
+	}), mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
 	nextReqCalled := false
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())

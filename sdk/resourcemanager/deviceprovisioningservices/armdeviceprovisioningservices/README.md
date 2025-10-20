@@ -55,7 +55,7 @@ clientFactory, err := armdeviceprovisioningservices.NewClientFactory(<subscripti
 A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewIotDpsResourceClient()
+client := clientFactory.NewDpsCertificateClient()
 ```
 
 ## Fakes

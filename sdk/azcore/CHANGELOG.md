@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `runtime.FetcherForNextLinkOptions.HTTPVerb` to specify the HTTP verb when fetching the next page via next link. Defaults to `http.MethodGet`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

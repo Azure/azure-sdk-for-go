@@ -376,7 +376,7 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		require.Equal(t, http.MethodGet, req.Method)
 		return true
 	}), mock.WithStatusCode(http.StatusOK))
-	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // Predicate failure response
 	resp, err := FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	}, nil)
@@ -390,7 +390,7 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		require.Equal(t, http.MethodGet, req.Method)
 		return true
 	}), mock.WithStatusCode(http.StatusOK))
-	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // Predicate failure response
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())
 	}, &FetcherForNextLinkOptions{
@@ -406,7 +406,7 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		require.Equal(t, http.MethodPost, req.Method)
 		return true
 	}), mock.WithStatusCode(http.StatusOK))
-	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // Predicate failure response
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodPost, srv.URL())
 	}, &FetcherForNextLinkOptions{
@@ -422,7 +422,7 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 		require.Equal(t, http.MethodGet, req.Method)
 		return true
 	}), mock.WithStatusCode(http.StatusOK))
-	srv.AppendResponse() // Dummy response that gets consumed when predicate is true
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // Predicate failure response
 	nextReqCalled := false
 	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL(), func(ctx context.Context) (*policy.Request, error) {
 		return NewRequest(ctx, http.MethodGet, srv.URL())

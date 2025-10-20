@@ -24,7 +24,7 @@ type SolutionConfigurationsClient struct {
 
 // NewSolutionConfigurationsClient creates a new instance of SolutionConfigurationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSolutionConfigurationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,6 +70,9 @@ func (client *SolutionConfigurationsClient) CreateOrUpdate(ctx context.Context, 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SolutionConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, resource SolutionConfiguration, _ *SolutionConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {
 		return nil, errors.New("parameter solutionConfiguration cannot be empty")
@@ -131,6 +134,9 @@ func (client *SolutionConfigurationsClient) Delete(ctx context.Context, resource
 // deleteCreateRequest creates the Delete request.
 func (client *SolutionConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, _ *SolutionConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {
 		return nil, errors.New("parameter solutionConfiguration cannot be empty")
@@ -143,7 +149,6 @@ func (client *SolutionConfigurationsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -180,6 +185,9 @@ func (client *SolutionConfigurationsClient) Get(ctx context.Context, resourceURI
 // getCreateRequest creates the Get request.
 func (client *SolutionConfigurationsClient) getCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, _ *SolutionConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {
 		return nil, errors.New("parameter solutionConfiguration cannot be empty")
@@ -237,6 +245,9 @@ func (client *SolutionConfigurationsClient) NewListPager(resourceURI string, opt
 // listCreateRequest creates the List request.
 func (client *SolutionConfigurationsClient) listCreateRequest(ctx context.Context, resourceURI string, _ *SolutionConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -311,6 +322,9 @@ func (client *SolutionConfigurationsClient) syncNow(ctx context.Context, resourc
 // syncNowCreateRequest creates the SyncNow request.
 func (client *SolutionConfigurationsClient) syncNowCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, _ *SolutionConfigurationsClientBeginSyncNowOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}/syncNow"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {
 		return nil, errors.New("parameter solutionConfiguration cannot be empty")
@@ -336,7 +350,7 @@ func (client *SolutionConfigurationsClient) syncNowCreateRequest(ctx context.Con
 //   - properties - The resource properties to be updated.
 //   - options - SolutionConfigurationsClientUpdateOptions contains the optional parameters for the SolutionConfigurationsClient.Update
 //     method.
-func (client *SolutionConfigurationsClient) Update(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfiguration, options *SolutionConfigurationsClientUpdateOptions) (SolutionConfigurationsClientUpdateResponse, error) {
+func (client *SolutionConfigurationsClient) Update(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfigurationUpdate, options *SolutionConfigurationsClientUpdateOptions) (SolutionConfigurationsClientUpdateResponse, error) {
 	var err error
 	const operationName = "SolutionConfigurationsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -359,8 +373,11 @@ func (client *SolutionConfigurationsClient) Update(ctx context.Context, resource
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SolutionConfigurationsClient) updateCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfiguration, _ *SolutionConfigurationsClientUpdateOptions) (*policy.Request, error) {
+func (client *SolutionConfigurationsClient) updateCreateRequest(ctx context.Context, resourceURI string, solutionConfiguration string, properties SolutionConfigurationUpdate, _ *SolutionConfigurationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if solutionConfiguration == "" {
 		return nil, errors.New("parameter solutionConfiguration cannot be empty")

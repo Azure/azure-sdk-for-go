@@ -8,9 +8,144 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
 	"log"
 )
+
+// Generated from example definition: 2025-09-01/DbSystemShapes_Get_MaximumSet_Gen.json
+func ExampleDbSystemShapesClient_Get_getADbSystemShapeByNameGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbSystemShapesClient().Get(ctx, "eastus", "dbsystemshape1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbSystemShapesClientGetResponse{
+	// 	DbSystemShape: &armoracledatabase.DbSystemShape{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemShapes/EXADATA.X9M"),
+	// 		Type: to.Ptr("Oracle.Database/locations/dbSystemShapes"),
+	// 		Properties: &armoracledatabase.DbSystemShapeProperties{
+	// 			ShapeFamily: to.Ptr("EXADATA"),
+	// 			ShapeName: to.Ptr("EXADATA.X9M"),
+	// 			AvailableCoreCount: to.Ptr[int32](100),
+	// 			MinimumCoreCount: to.Ptr[int32](1),
+	// 			RuntimeMinimumCoreCount: to.Ptr[int32](1),
+	// 			CoreCountIncrement: to.Ptr[int32](1),
+	// 			MinStorageCount: to.Ptr[int32](27),
+	// 			MaxStorageCount: to.Ptr[int32](100),
+	// 			AvailableDataStoragePerServerInTbs: to.Ptr[float64](100),
+	// 			AvailableMemoryPerNodeInGbs: to.Ptr[int32](10),
+	// 			AvailableDbNodePerNodeInGbs: to.Ptr[int32](10),
+	// 			MinCoreCountPerNode: to.Ptr[int32](16),
+	// 			AvailableMemoryInGbs: to.Ptr[int32](10),
+	// 			MinMemoryPerNodeInGbs: to.Ptr[int32](4),
+	// 			AvailableDbNodeStorageInGbs: to.Ptr[int32](10),
+	// 			MinDbNodeStoragePerNodeInGbs: to.Ptr[int32](19),
+	// 			AvailableDataStorageInTbs: to.Ptr[int32](10),
+	// 			MinDataStorageInTbs: to.Ptr[int32](15),
+	// 			MinimumNodeCount: to.Ptr[int32](7),
+	// 			MaximumNodeCount: to.Ptr[int32](1000),
+	// 			AvailableCoreCountPerNode: to.Ptr[int32](1000),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 			AreServerTypesSupported: to.Ptr(true),
+	// 			DisplayName: to.Ptr("oshwuayydikwiddbttnjmfwg"),
+	// 		},
+	// 		Name: to.Ptr("ehlzhtrawzuelldozbveczhw"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/DbSystemShapes_Get_MinimumSet_Gen.json
+func ExampleDbSystemShapesClient_Get_getADbSystemShapeByNameGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbSystemShapesClient().Get(ctx, "eastus", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbSystemShapesClientGetResponse{
+	// 	DbSystemShape: &armoracledatabase.DbSystemShape{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemShapes/EXADATA.X9M"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/dbSystemShapes_get.json
+func ExampleDbSystemShapesClient_Get_dbSystemShapesGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbSystemShapesClient().Get(ctx, "eastus", "EXADATA.X9M", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbSystemShapesClientGetResponse{
+	// 	DbSystemShape: &armoracledatabase.DbSystemShape{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemShapes/EXADATA.X9M"),
+	// 		Type: to.Ptr("Oracle.Database/locations/dbSystemShapes"),
+	// 		Properties: &armoracledatabase.DbSystemShapeProperties{
+	// 			ShapeFamily: to.Ptr("EXADATA"),
+	// 			ShapeName: to.Ptr("EXADATA.X9M"),
+	// 			AvailableCoreCount: to.Ptr[int32](100),
+	// 			MinimumCoreCount: to.Ptr[int32](1),
+	// 			RuntimeMinimumCoreCount: to.Ptr[int32](1),
+	// 			CoreCountIncrement: to.Ptr[int32](1),
+	// 			MinStorageCount: to.Ptr[int32](0),
+	// 			MaxStorageCount: to.Ptr[int32](100),
+	// 			AvailableDataStoragePerServerInTbs: to.Ptr[float64](100),
+	// 			AvailableMemoryPerNodeInGbs: to.Ptr[int32](10),
+	// 			AvailableDbNodePerNodeInGbs: to.Ptr[int32](10),
+	// 			MinCoreCountPerNode: to.Ptr[int32](0),
+	// 			AvailableMemoryInGbs: to.Ptr[int32](10),
+	// 			MinMemoryPerNodeInGbs: to.Ptr[int32](0),
+	// 			AvailableDbNodeStorageInGbs: to.Ptr[int32](10),
+	// 			MinDbNodeStoragePerNodeInGbs: to.Ptr[int32](0),
+	// 			AvailableDataStorageInTbs: to.Ptr[int32](10),
+	// 			MinDataStorageInTbs: to.Ptr[int32](0),
+	// 			MinimumNodeCount: to.Ptr[int32](0),
+	// 			MaximumNodeCount: to.Ptr[int32](1000),
+	// 			AvailableCoreCountPerNode: to.Ptr[int32](1000),
+	// 		},
+	// 	},
+	// }
+}
 
 // Generated from example definition: 2025-09-01/DbSystemShapes_ListByLocation_MaximumSet_Gen.json
 func ExampleDbSystemShapesClient_NewListByLocationPager_listDbSystemShapesByLocationGeneratedByMaximumSetRule() {

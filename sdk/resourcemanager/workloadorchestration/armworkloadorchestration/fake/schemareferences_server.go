@@ -20,6 +20,14 @@ import (
 
 // SchemaReferencesServer is a fake server for instances of the armworkloadorchestration.SchemaReferencesClient type.
 type SchemaReferencesServer struct {
+	// BeginCreateOrUpdate is the fake for method SchemaReferencesClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdate func(ctx context.Context, resourceURI string, schemaReferenceName string, resource armworkloadorchestration.SchemaReference, options *armworkloadorchestration.SchemaReferencesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.SchemaReferencesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method SchemaReferencesClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceURI string, schemaReferenceName string, options *armworkloadorchestration.SchemaReferencesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.SchemaReferencesClientDeleteResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SchemaReferencesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceURI string, schemaReferenceName string, options *armworkloadorchestration.SchemaReferencesClientGetOptions) (resp azfake.Responder[armworkloadorchestration.SchemaReferencesClientGetResponse], errResp azfake.ErrorResponder)
@@ -27,6 +35,10 @@ type SchemaReferencesServer struct {
 	// NewListByResourceGroupPager is the fake for method SchemaReferencesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceURI string, options *armworkloadorchestration.SchemaReferencesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armworkloadorchestration.SchemaReferencesClientListByResourceGroupResponse])
+
+	// Update is the fake for method SchemaReferencesClient.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, resourceURI string, schemaReferenceName string, properties armworkloadorchestration.SchemaReference, options *armworkloadorchestration.SchemaReferencesClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.SchemaReferencesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSchemaReferencesServerTransport creates a new instance of SchemaReferencesServerTransport with the provided implementation.
@@ -35,6 +47,8 @@ type SchemaReferencesServer struct {
 func NewSchemaReferencesServerTransport(srv *SchemaReferencesServer) *SchemaReferencesServerTransport {
 	return &SchemaReferencesServerTransport{
 		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armworkloadorchestration.SchemaReferencesClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armworkloadorchestration.SchemaReferencesClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armworkloadorchestration.SchemaReferencesClientListByResourceGroupResponse]](),
 	}
 }
@@ -43,6 +57,8 @@ func NewSchemaReferencesServerTransport(srv *SchemaReferencesServer) *SchemaRefe
 // Don't use this type directly, use NewSchemaReferencesServerTransport instead.
 type SchemaReferencesServerTransport struct {
 	srv                         *SchemaReferencesServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armworkloadorchestration.SchemaReferencesClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armworkloadorchestration.SchemaReferencesClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armworkloadorchestration.SchemaReferencesClientListByResourceGroupResponse]]
 }
 
@@ -69,10 +85,16 @@ func (s *SchemaReferencesServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
+			case "SchemaReferencesClient.BeginCreateOrUpdate":
+				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
+			case "SchemaReferencesClient.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "SchemaReferencesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SchemaReferencesClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "SchemaReferencesClient.Update":
+				res.resp, res.err = s.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -90,6 +112,98 @@ func (s *SchemaReferencesServerTransport) dispatchToMethodFake(req *http.Request
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (s *SchemaReferencesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+	}
+	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemaReferences/(?P<schemaReferenceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SchemaReference](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		schemaReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaReferenceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceURIParam, schemaReferenceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		s.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		s.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		s.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SchemaReferencesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := s.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemaReferences/(?P<schemaReferenceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		if err != nil {
+			return nil, err
+		}
+		schemaReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaReferenceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginDelete(req.Context(), resourceURIParam, schemaReferenceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		s.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		s.beginDelete.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (s *SchemaReferencesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -158,6 +272,43 @@ func (s *SchemaReferencesServerTransport) dispatchNewListByResourceGroupPager(re
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SchemaReferencesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+	}
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/schemaReferences/(?P<schemaReferenceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SchemaReference](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+	schemaReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schemaReferenceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Update(req.Context(), resourceURIParam, schemaReferenceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SchemaReference, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

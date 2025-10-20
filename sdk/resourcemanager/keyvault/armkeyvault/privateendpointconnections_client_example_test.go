@@ -6,11 +6,11 @@ package armkeyvault_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
-	"log"
 )
 
 // Generated from example definition: 2025-05-01/deletePrivateEndpointConnection.json
@@ -163,7 +163,7 @@ func ExamplePrivateEndpointConnectionsClient_Put() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Put(ctx, "sample-group", "sample-vault", "sample-pec", armkeyvault.PrivateEndpointConnection{
-		Etag: &azcore.ETag(""),
+		Etag: nil,
 		Properties: &armkeyvault.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armkeyvault.PrivateLinkServiceConnectionState{
 				Description: to.Ptr("My name is Joe and I'm approving this."),

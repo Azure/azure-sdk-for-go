@@ -90,6 +90,7 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 	lc.refreshStaleEndpoints()
 	if readLocations != nil {
 		availReadEndpointsByLocation, availReadLocations, err := getEndpointsByLocation(readLocations)
+		log.Printf("Available read endpoints by location: %v", availReadEndpointsByLocation)
 		if err != nil {
 			return err
 		}
@@ -99,6 +100,7 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 
 	if writeLocations != nil {
 		availWriteEndpointsByLocation, availWriteLocations, err := getEndpointsByLocation(writeLocations)
+		log.Printf("Available write endpoints by location: %v", availWriteEndpointsByLocation)
 		if err != nil {
 			return err
 		}

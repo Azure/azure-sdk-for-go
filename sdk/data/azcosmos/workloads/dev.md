@@ -13,18 +13,20 @@ and scalability of the SDK under various conditions.
 1. Go to azcosmos folder
    - `cd azure-sdk-for-go/sdk/data/azcosmos/workloads`
 1. Checkout the branch with the changes to test. 
+1. Run `./setup_env.sh`
 1. Fill out relevant configs in `workload_configs.go`: key, host, etc using env variables
-1. Run the setup workload to create the database and containers and insert test data
-    - `python3 initial-setup.py`
+   - `COSMOS_URI` - required
+   - `COSMOS_KEY` - required
+   - `COSMOS_DATABASE` 
+   - `COSMOS_CONTAINER` 
+   - `PARTITION_KEY`
+   - `NUMBER_OF_LOGICAL_PARTITIONS`
+   - `THROUGHPUT`
+   - `PREFERRED_LOCATIONS`
 1. Run the scale workload
     - `go run ./main/main.go`
 
 ### Monitor Run
 - `ps -eaf | grep "go"` to see the running processes
-- `tail -f <log_file>` to see the logs in real time 
 
-### Close Workloads
-- If you want to keep the logs and stop the scripts,  
-   `./shutdown_workloads.sh --do-not-remove-logs` 
-- If you want to remove the logs and stop the scripts,        
-   `./shutdown_workloads.sh`
+`

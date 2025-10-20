@@ -642,11 +642,11 @@
 # ServiceOwners:                                                   @armleads-azure
 
 # PRLabel: %Mgmt
-/sdk/resourcemanager/                                              @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
+/sdk/resourcemanager/                                              @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # ServiceLabel: %Mgmt
 # AzureSdkOwners:                                                  @lirenhe
-# ServiceOwners:                                                   @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
+# ServiceOwners:                                                   @lirenhe @tadelesh @JiaqiZhang-Dev
 
 ###########
 # Eng Sys
@@ -659,12 +659,12 @@
 /.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
 
 # Add owners for go sdk tool
-/eng/tools/generator          @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
-/eng/tools/internal           @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/generator          @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/internal           @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
-/eng/emitter-package-lock.json  @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
-/eng/emitter-package.json       @ArcturusZhang @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
 
 
 # Add owners for notifications for specific pipelines

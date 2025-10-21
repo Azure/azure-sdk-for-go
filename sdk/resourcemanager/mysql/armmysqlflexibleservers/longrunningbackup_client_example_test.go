@@ -22,7 +22,7 @@ func ExampleLongRunningBackupClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewLongRunningBackupClient().BeginCreate(ctx, "TestGroup", "mysqltestserver", "testback", nil)
+	poller, err := clientFactory.NewLongRunningBackupClient().BeginCreate(ctx, "TestGroup", "mysqltestserver", "testback", armmysqlflexibleservers.ServerBackupV2, *armmysqlflexibleservers.LongRunningBackupClientBeginCreateOptions)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

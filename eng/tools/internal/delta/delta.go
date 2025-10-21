@@ -396,15 +396,19 @@ func paramsEqual(lhs, rhs []exports.Param) bool {
 	return true
 }
 
-// paramsToString converts a parameter list to a comma-delimited string of types.
+// paramsToString converts a parameter list to a comma-delimited string with names and types.
 func paramsToString(params []exports.Param) string {
 	if len(params) == 0 {
 		return None
 	}
 	
-	var types []string
+	var parts []string
 	for _, p := range params {
-		types = append(types, p.Type)
+		if p.Name != "" {
+			parts = append(parts, p.Name+" "+p.Type)
+		} else {
+			parts = append(parts, p.Type)
+		}
 	}
-	return strings.Join(types, ", ")
+	return strings.Join(parts, ", ")
 }

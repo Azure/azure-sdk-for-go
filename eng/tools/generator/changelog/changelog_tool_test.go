@@ -54,7 +54,7 @@ func TestFuncParameterChange(t *testing.T) {
 
 	FilterChangelog(changelog, FuncFilter)
 
-	excepted := "### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, string, any, Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, any, any, ClientOption)`\n"
+	excepted := "### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, value interface{}, option ClientOption)` to `(ctx context.Context, resourceGroupName string, serviceName string, value any, option Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, value interface{}, option ClientOption)` to `(ctx context.Context, resourceGroupName string, serviceName any, value any, option ClientOption)`\n- Function `*Client.OnlyToAny` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, value interface{}, option ClientOption)` to `(ctx context.Context, resourceGroupName string, serviceName string, value any, option ClientOption)`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -77,11 +77,12 @@ func TestFuncParameterOrderChange(t *testing.T) {
 	FilterChangelog(changelog, FuncFilter)
 
 	// Expected: Functions with parameter changes (type, name, or order) should be detected
+	// Now the output includes parameter names to make it clear what changed
 	// - NewListByServicePager: serviceName and resourceGroupName swapped (order change)
 	// - OrderChanged: resourceGroupName, serviceName, subscriptionID -> serviceName, subscriptionID, resourceGroupName (order change)
 	// - DifferentNames: oldName, newName -> firstName, lastName (name change)
 	// - NoChange: should not appear (no change)
-	excepted := "### Breaking Changes\n\n- Function `*AllPoliciesClient.DifferentNames` parameter(s) have been changed from `(string, string)` to `(string, string)`\n- Function `*AllPoliciesClient.NewListByServicePager` parameter(s) have been changed from `(string, string, *AllPoliciesClientListByServiceOptions)` to `(string, string, *AllPoliciesClientListByServiceOptions)`\n- Function `*AllPoliciesClient.OrderChanged` parameter(s) have been changed from `(string, string, string)` to `(string, string, string)`\n"
+	excepted := "### Breaking Changes\n\n- Function `*AllPoliciesClient.DifferentNames` parameter(s) have been changed from `(oldName string, newName string)` to `(firstName string, lastName string)`\n- Function `*AllPoliciesClient.NewListByServicePager` parameter(s) have been changed from `(resourceGroupName string, serviceName string, options *AllPoliciesClientListByServiceOptions)` to `(serviceName string, resourceGroupName string, options *AllPoliciesClientListByServiceOptions)`\n- Function `*AllPoliciesClient.OrderChanged` parameter(s) have been changed from `(resourceGroupName string, serviceName string, subscriptionID string)` to `(serviceName string, subscriptionID string, resourceGroupName string)`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 

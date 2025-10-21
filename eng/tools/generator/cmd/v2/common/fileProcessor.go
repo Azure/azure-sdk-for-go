@@ -56,17 +56,35 @@ var (
 	packageConfigRegex              = regexp.MustCompile(`\$\((package-.+)\)`)
 )
 
-// paramsToString converts a parameter list to a comma-delimited string of types
+// paramsToString converts a parameter list to a comma-delimited string with names and types
 func paramsToString(params []exports.Param) string {
 	if len(params) == 0 {
 		return ""
 	}
 	
-	var types []string
+	var parts []string
 	for _, p := range params {
-		types = append(types, p.Type)
+		if p.Name != "" {
+			parts = append(parts, p.Name+" "+p.Type)
+		} else {
+			parts = append(parts, p.Type)
+		}
 	}
-	return strings.Join(types, ", ")
+	return strings.Join(parts, ", ")
+}
+
+// hasExpectedClientParams checks if params match the expected ARM client constructor signature
+func hasExpectedClientParams(params []exports.Param) bool {
+	expectedTypes := []string{"string", "azcore.TokenCredential", "*arm.ClientOptions"}
+	if len(params) != len(expectedTypes) {
+		return false
+	}
+	for i, p := range params {
+		if p.Type != expectedTypes[i] {
+			return false
+		}
+	}
+	return true
 }
 
 type PackageInfo struct {
@@ -415,7 +433,7 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 	var clientName string
 	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
-		if newClientMethodNameRegex.MatchString(k) && paramsToString(v.Params) == "string, azcore.TokenCredential, *arm.ClientOptions" {
+		if newClientMethodNameRegex.MatchString(k) && hasExpectedClientParams(v.Params) {
 			clientName = k
 			break
 		}
@@ -600,7 +618,7 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 	var clientName string
 	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
-		if newClientMethodNameRegex.MatchString(k) && paramsToString(v.Params) == "string, azcore.TokenCredential, *arm.ClientOptions" {
+		if newClientMethodNameRegex.MatchString(k) && hasExpectedClientParams(v.Params) {
 			clientName = k
 			break
 		}

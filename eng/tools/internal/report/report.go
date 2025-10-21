@@ -315,17 +315,21 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *markdown.Wr
 	}
 }
 
-// formatParams converts a parameter list to a comma-delimited string of types
+// formatParams converts a parameter list to a comma-delimited string with names and types
 func formatParams(params []exports.Param) string {
 	if len(params) == 0 {
 		return ""
 	}
 	
-	var types []string
+	var parts []string
 	for _, p := range params {
-		types = append(types, p.Type)
+		if p.Name != "" {
+			parts = append(parts, p.Name+" "+p.Type)
+		} else {
+			parts = append(parts, p.Type)
+		}
 	}
-	return strings.Join(types, ", ")
+	return strings.Join(parts, ", ")
 }
 
 // writes out struct information

@@ -404,11 +404,15 @@ func formatParams(params []exports.Param) string {
 		return ""
 	}
 	
-	var types []string
+	var parts []string
 	for _, p := range params {
-		types = append(types, p.Type)
+		if p.Name != "" {
+			parts = append(parts, p.Name+" "+p.Type)
+		} else {
+			parts = append(parts, p.Type)
+		}
 	}
-	return strings.Join(types, ", ")
+	return strings.Join(parts, ", ")
 }
 
 func sortChangeItem[T sortItem](change map[string]T) []string {

@@ -704,7 +704,7 @@ func TestAPIVersion(t *testing.T) {
 func TestSubjectAlternativeNames(t *testing.T) {
 	client := startTest(t)
 
-	// Test certificate with all SAN fields including new IPAddresses and Uris
+	// Test certificate with all SAN fields including new IPAddresses and URIs
 	certName := getName(t, "allsans")
 	policy := azcertificates.CertificatePolicy{
 		IssuerParameters: &azcertificates.IssuerParameters{Name: to.Ptr("self")},

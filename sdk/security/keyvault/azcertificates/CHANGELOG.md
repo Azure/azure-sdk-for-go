@@ -3,7 +3,7 @@
 ## 1.5.0 (Unreleased)
 
 ### Features Added
-* Added support for IP addresses and URIs in `SubjectAlternativeNames` through new `IPAddresses` and `Uris` fields
+* Added support for IP addresses and URIs in `SubjectAlternativeNames` through new `IPAddresses` and `URIs` fields
 
 ### Breaking Changes
 

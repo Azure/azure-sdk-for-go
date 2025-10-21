@@ -24,7 +24,7 @@ type DpsCertificateClientDeleteOptions struct {
 	CertificateLastUpdated *time.Time
 
 	// This is optional, and it is the Common Name of the certificate.
-	CertificateName     *string
+	CertificateName1    *string
 	CertificateNonce    *string
 	CertificatePurpose  *CertificatePurpose
 	CertificateRawBytes []byte
@@ -46,7 +46,7 @@ type DpsCertificateClientGenerateVerificationCodeOptions struct {
 	CertificateLastUpdated *time.Time
 
 	// Common Name for the certificate.
-	CertificateName *string
+	CertificateName1 *string
 
 	// Random number generated to indicate Proof of Possession.
 	CertificateNonce *string
@@ -64,7 +64,7 @@ type DpsCertificateClientGetOptions struct {
 	IfMatch *string
 }
 
-// DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.NewListPager method.
+// DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.List method.
 type DpsCertificateClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -85,7 +85,7 @@ type DpsCertificateClientVerifyCertificateOptions struct {
 	CertificateLastUpdated *time.Time
 
 	// Common Name for the certificate.
-	CertificateName *string
+	CertificateName1 *string
 
 	// Random number generated to indicate Proof of Possession.
 	CertificateNonce *string
@@ -188,7 +188,7 @@ type IotDpsResourceClientListPrivateEndpointConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.NewListPrivateLinkResourcesPager
+// IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
 // method.
 type IotDpsResourceClientListPrivateLinkResourcesOptions struct {
 	// placeholder for future optional parameters

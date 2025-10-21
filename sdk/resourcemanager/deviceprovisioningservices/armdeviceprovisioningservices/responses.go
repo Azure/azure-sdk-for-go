@@ -27,7 +27,7 @@ type DpsCertificateClientGetResponse struct {
 	CertificateResponse
 }
 
-// DpsCertificateClientListResponse contains the response from method DpsCertificateClient.NewListPager.
+// DpsCertificateClientListResponse contains the response from method DpsCertificateClient.List.
 type DpsCertificateClientListResponse struct {
 	// The JSON-serialized array of Certificate objects.
 	CertificateListDescription
@@ -121,7 +121,7 @@ type IotDpsResourceClientListPrivateEndpointConnectionsResponse struct {
 	PrivateEndpointConnectionArray []*PrivateEndpointConnection
 }
 
-// IotDpsResourceClientListPrivateLinkResourcesResponse contains the response from method IotDpsResourceClient.NewListPrivateLinkResourcesPager.
+// IotDpsResourceClientListPrivateLinkResourcesResponse contains the response from method IotDpsResourceClient.ListPrivateLinkResources.
 type IotDpsResourceClientListPrivateLinkResourcesResponse struct {
 	// The available private link resources for a provisioning service
 	PrivateLinkResources

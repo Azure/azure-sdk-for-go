@@ -1015,35 +1015,34 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleResponse
 	return result, nil
 }
 
-// NewListPrivateLinkResourcesPager - List private link resources for the given provisioning service
+// ListPrivateLinkResources - List private link resources for the given provisioning service
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Name of the provisioning service to retrieve.
-//   - options - IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.NewListPrivateLinkResourcesPager
+//   - options - IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
 //     method.
-func (client *IotDpsResourceClient) NewListPrivateLinkResourcesPager(resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateLinkResourcesOptions) *runtime.Pager[IotDpsResourceClientListPrivateLinkResourcesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[IotDpsResourceClientListPrivateLinkResourcesResponse]{
-		More: func(page IotDpsResourceClientListPrivateLinkResourcesResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *IotDpsResourceClientListPrivateLinkResourcesResponse) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IotDpsResourceClient.NewListPrivateLinkResourcesPager")
-			req, err := client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, resourceName, options)
-			if err != nil {
-				return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return IotDpsResourceClientListPrivateLinkResourcesResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listPrivateLinkResourcesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *IotDpsResourceClient) ListPrivateLinkResources(ctx context.Context, resourceGroupName string, resourceName string, options *IotDpsResourceClientListPrivateLinkResourcesOptions) (IotDpsResourceClientListPrivateLinkResourcesResponse, error) {
+	var err error
+	const operationName = "IotDpsResourceClient.ListPrivateLinkResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
+	}
+	resp, err := client.listPrivateLinkResourcesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.

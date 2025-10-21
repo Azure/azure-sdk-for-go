@@ -184,8 +184,8 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 	if options != nil && options.CertificateLastUpdated != nil {
 		reqQP.Set("certificate.lastUpdated", options.CertificateLastUpdated.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.CertificateName != nil {
-		reqQP.Set("certificate.name", *options.CertificateName)
+	if options != nil && options.CertificateName1 != nil {
+		reqQP.Set("certificate.name", *options.CertificateName1)
 	}
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
@@ -267,8 +267,8 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 	if options != nil && options.CertificateLastUpdated != nil {
 		reqQP.Set("certificate.lastUpdated", options.CertificateLastUpdated.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.CertificateName != nil {
-		reqQP.Set("certificate.name", *options.CertificateName)
+	if options != nil && options.CertificateName1 != nil {
+		reqQP.Set("certificate.name", *options.CertificateName1)
 	}
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
@@ -364,34 +364,33 @@ func (client *DpsCertificateClient) getHandleResponse(resp *http.Response) (DpsC
 	return result, nil
 }
 
-// NewListPager - Get all the certificates tied to the provisioning service.
+// List - Get all the certificates tied to the provisioning service.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - provisioningServiceName - Name of the provisioning service to retrieve.
-//   - options - DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.NewListPager method.
-func (client *DpsCertificateClient) NewListPager(resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientListOptions) *runtime.Pager[DpsCertificateClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DpsCertificateClientListResponse]{
-		More: func(page DpsCertificateClientListResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *DpsCertificateClientListResponse) (DpsCertificateClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DpsCertificateClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, resourceGroupName, provisioningServiceName, options)
-			if err != nil {
-				return DpsCertificateClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DpsCertificateClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DpsCertificateClientListResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//   - options - DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.List method.
+func (client *DpsCertificateClient) List(ctx context.Context, resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientListOptions) (DpsCertificateClientListResponse, error) {
+	var err error
+	const operationName = "DpsCertificateClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCreateRequest(ctx, resourceGroupName, provisioningServiceName, options)
+	if err != nil {
+		return DpsCertificateClientListResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DpsCertificateClientListResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return DpsCertificateClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -496,8 +495,8 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 	if options != nil && options.CertificateLastUpdated != nil {
 		reqQP.Set("certificate.lastUpdated", options.CertificateLastUpdated.Format(time.RFC3339Nano))
 	}
-	if options != nil && options.CertificateName != nil {
-		reqQP.Set("certificate.name", *options.CertificateName)
+	if options != nil && options.CertificateName1 != nil {
+		reqQP.Set("certificate.name", *options.CertificateName1)
 	}
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)

@@ -9,16 +9,15 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices"
 	"net/http"
 	"net/url"
 	"regexp"
 	"strconv"
 	"time"
-
-	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceprovisioningservices/armdeviceprovisioningservices"
 )
 
 // DpsCertificateServer is a fake server for instances of the armdeviceprovisioningservices.DpsCertificateClient type.
@@ -39,9 +38,9 @@ type DpsCertificateServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, certificateName string, resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.DpsCertificateClientGetOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DpsCertificateClient.NewListPager
+	// List is the fake for method DpsCertificateClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.DpsCertificateClientListOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.DpsCertificateClientListResponse])
+	List func(ctx context.Context, resourceGroupName string, provisioningServiceName string, options *armdeviceprovisioningservices.DpsCertificateClientListOptions) (resp azfake.Responder[armdeviceprovisioningservices.DpsCertificateClientListResponse], errResp azfake.ErrorResponder)
 
 	// VerifyCertificate is the fake for method DpsCertificateClient.VerifyCertificate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,17 +51,13 @@ type DpsCertificateServer struct {
 // The returned DpsCertificateServerTransport instance is connected to an instance of armdeviceprovisioningservices.DpsCertificateClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDpsCertificateServerTransport(srv *DpsCertificateServer) *DpsCertificateServerTransport {
-	return &DpsCertificateServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armdeviceprovisioningservices.DpsCertificateClientListResponse]](),
-	}
+	return &DpsCertificateServerTransport{srv: srv}
 }
 
 // DpsCertificateServerTransport connects instances of armdeviceprovisioningservices.DpsCertificateClient to instances of DpsCertificateServer.
 // Don't use this type directly, use NewDpsCertificateServerTransport instead.
 type DpsCertificateServerTransport struct {
-	srv          *DpsCertificateServer
-	newListPager *tracker[azfake.PagerResponder[armdeviceprovisioningservices.DpsCertificateClientListResponse]]
+	srv *DpsCertificateServer
 }
 
 // Do implements the policy.Transporter interface for DpsCertificateServerTransport.
@@ -96,8 +91,8 @@ func (d *DpsCertificateServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = d.dispatchGenerateVerificationCode(req)
 			case "DpsCertificateClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DpsCertificateClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
+			case "DpsCertificateClient.List":
+				res.resp, res.err = d.dispatchList(req)
 			case "DpsCertificateClient.VerifyCertificate":
 				res.resp, res.err = d.dispatchVerifyCertificate(req)
 			default:
@@ -190,11 +185,11 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	certificateNameUnescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
+	certificateName1Unescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
 	if err != nil {
 		return nil, err
 	}
-	certificateNameQueryParam := getOptional(certificateNameUnescaped)
+	certificateName1Param := getOptional(certificateName1Unescaped)
 	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
@@ -246,9 +241,9 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 	}
 	certificateNonceParam := getOptional(certificateNonceUnescaped)
 	var options *armdeviceprovisioningservices.DpsCertificateClientDeleteOptions
-	if certificateNameQueryParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
+	if certificateName1Param != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientDeleteOptions{
-			CertificateName:          certificateNameQueryParam,
+			CertificateName1:         certificateName1Param,
 			CertificateRawBytes:      certificateRawBytesParam,
 			CertificateIsVerified:    certificateIsVerifiedParam,
 			CertificatePurpose:       certificatePurposeParam,
@@ -296,11 +291,11 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 	if err != nil {
 		return nil, err
 	}
-	certificateNameUnescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
+	certificateName1Unescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
 	if err != nil {
 		return nil, err
 	}
-	certificateNameQueryParam := getOptional(certificateNameUnescaped)
+	certificateName1Param := getOptional(certificateName1Unescaped)
 	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
@@ -352,9 +347,9 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 	}
 	certificateNonceParam := getOptional(certificateNonceUnescaped)
 	var options *armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions
-	if certificateNameQueryParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
+	if certificateName1Param != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions{
-			CertificateName:          certificateNameQueryParam,
+			CertificateName1:         certificateName1Param,
 			CertificateRawBytes:      certificateRawBytesParam,
 			CertificateIsVerified:    certificateIsVerifiedParam,
 			CertificatePurpose:       certificatePurposeParam,
@@ -423,40 +418,35 @@ func (d *DpsCertificateServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (d *DpsCertificateServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (d *DpsCertificateServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if d.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListPager(resourceGroupNameParam, provisioningServiceNameParam, nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<provisioningServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	provisioningServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("provisioningServiceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
+	respr, errRespr := d.srv.List(req.Context(), resourceGroupNameParam, provisioningServiceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CertificateListDescription, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -488,11 +478,11 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	certificateNameUnescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
+	certificateName1Unescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
 	if err != nil {
 		return nil, err
 	}
-	certificateNameQueryParam := getOptional(certificateNameUnescaped)
+	certificateName1Param := getOptional(certificateName1Unescaped)
 	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
@@ -544,9 +534,9 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 	}
 	certificateNonceParam := getOptional(certificateNonceUnescaped)
 	var options *armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions
-	if certificateNameQueryParam != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
+	if certificateName1Param != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions{
-			CertificateName:          certificateNameQueryParam,
+			CertificateName1:         certificateName1Param,
 			CertificateRawBytes:      certificateRawBytesParam,
 			CertificateIsVerified:    certificateIsVerifiedParam,
 			CertificatePurpose:       certificatePurposeParam,

@@ -76,9 +76,9 @@ type IotDpsResourceServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListPrivateEndpointConnections func(ctx context.Context, resourceGroupName string, resourceName string, options *armdeviceprovisioningservices.IotDpsResourceClientListPrivateEndpointConnectionsOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientListPrivateEndpointConnectionsResponse], errResp azfake.ErrorResponder)
 
-	// NewListPrivateLinkResourcesPager is the fake for method IotDpsResourceClient.NewListPrivateLinkResourcesPager
+	// ListPrivateLinkResources is the fake for method IotDpsResourceClient.ListPrivateLinkResources
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPrivateLinkResourcesPager func(resourceGroupName string, resourceName string, options *armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesOptions) (resp azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse])
+	ListPrivateLinkResources func(ctx context.Context, resourceGroupName string, resourceName string, options *armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesOptions) (resp azfake.Responder[armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
 
 	// NewListValidSKUsPager is the fake for method IotDpsResourceClient.NewListValidSKUsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -102,7 +102,6 @@ func NewIotDpsResourceServerTransport(srv *IotDpsResourceServer) *IotDpsResource
 		newListByResourceGroupPager:          newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:           newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionResponse]](),
 		newListKeysPager:                     newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse]](),
-		newListPrivateLinkResourcesPager:     newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse]](),
 		newListValidSKUsPager:                newTracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse]](),
 		beginUpdate:                          newTracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse]](),
 	}
@@ -119,7 +118,6 @@ type IotDpsResourceServerTransport struct {
 	newListByResourceGroupPager                  *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListByResourceGroupResponse]]
 	newListBySubscriptionPager                   *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListBySubscriptionResponse]]
 	newListKeysPager                             *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListKeysResponse]]
-	newListPrivateLinkResourcesPager             *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse]]
 	newListValidSKUsPager                        *tracker[azfake.PagerResponder[armdeviceprovisioningservices.IotDpsResourceClientListValidSKUsResponse]]
 	beginUpdate                                  *tracker[azfake.PollerResponder[armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse]]
 }
@@ -175,8 +173,8 @@ func (i *IotDpsResourceServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = i.dispatchListKeysForKeyName(req)
 			case "IotDpsResourceClient.ListPrivateEndpointConnections":
 				res.resp, res.err = i.dispatchListPrivateEndpointConnections(req)
-			case "IotDpsResourceClient.NewListPrivateLinkResourcesPager":
-				res.resp, res.err = i.dispatchNewListPrivateLinkResourcesPager(req)
+			case "IotDpsResourceClient.ListPrivateLinkResources":
+				res.resp, res.err = i.dispatchListPrivateLinkResources(req)
 			case "IotDpsResourceClient.NewListValidSKUsPager":
 				res.resp, res.err = i.dispatchNewListValidSKUsPager(req)
 			case "IotDpsResourceClient.BeginUpdate":
@@ -751,40 +749,35 @@ func (i *IotDpsResourceServerTransport) dispatchListPrivateEndpointConnections(r
 	return resp, nil
 }
 
-func (i *IotDpsResourceServerTransport) dispatchNewListPrivateLinkResourcesPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPrivateLinkResourcesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPrivateLinkResourcesPager not implemented")}
+func (i *IotDpsResourceServerTransport) dispatchListPrivateLinkResources(req *http.Request) (*http.Response, error) {
+	if i.srv.ListPrivateLinkResources == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPrivateLinkResources not implemented")}
 	}
-	newListPrivateLinkResourcesPager := i.newListPrivateLinkResourcesPager.get(req)
-	if newListPrivateLinkResourcesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := i.srv.NewListPrivateLinkResourcesPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListPrivateLinkResourcesPager = &resp
-		i.newListPrivateLinkResourcesPager.add(req, newListPrivateLinkResourcesPager)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/provisioningServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPrivateLinkResourcesPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPrivateLinkResourcesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPrivateLinkResourcesPager) {
-		i.newListPrivateLinkResourcesPager.remove(req)
+	respr, errRespr := i.srv.ListPrivateLinkResources(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResources, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

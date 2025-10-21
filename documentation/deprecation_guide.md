@@ -124,4 +124,4 @@ Here is an example [PR](https://github.com/Azure/azure-sdk-for-go/pull/22587/fil
 If you have questions about deprecating a module or need assistance with the process:
 - File an issue in this repository
 - Contact the Azure SDK team via the established support channels
-- Refer to the [Azure SDK communication guidelines](https://azure.github.io/azure-sdk/general_contributing.html)
+- Refer to the [Azure SDK communication guidelines](https://azure.github.io/azure-sdk/policies_opensource.html)

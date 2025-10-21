@@ -22,7 +22,7 @@ func ExampleLongRunningBackupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewLongRunningBackupsClient().Get(ctx, "TestGroup", "mysqltestserver", "daily_20210615T160516", nil)
+	res, err := clientFactory.NewLongRunningBackupsClient().Get(ctx, "TestGroup", "mysqltestserver", "daily_20210615T160516", armmysqlflexibleservers.ServerBackupV2, &armmysqlflexibleservers.LongRunningBackupClientBeginCreateOptions{})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

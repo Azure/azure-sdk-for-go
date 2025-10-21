@@ -135,10 +135,9 @@ func funcOperation(content *delta.Content) {
 			clientFunc := strings.Split(funcName, ".")
 			if len(clientFunc) == 2 {
 				// the last parameter
-				if funcValue.Params != nil {
-					ps := strings.Split(*funcValue.Params, ",")
-					clientFuncOptions := ps[len(ps)-1]
-					clientFuncOptions = strings.TrimLeft(strings.TrimSpace(clientFuncOptions), "*")
+				if len(funcValue.Params) > 0 {
+					lastParam := funcValue.Params[len(funcValue.Params)-1]
+					clientFuncOptions := strings.TrimLeft(lastParam.Type, "*")
 					if clientFuncOptions != "" && content.CompleteStructs != nil {
 						delete(content.Structs, clientFuncOptions)
 						for i, v := range content.CompleteStructs {

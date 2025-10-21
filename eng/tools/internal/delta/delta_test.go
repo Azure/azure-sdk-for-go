@@ -1,62 +1,103 @@
 package delta
 
 import (
-"testing"
+	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 )
 
-func TestHasParamOrderChange(t *testing.T) {
-tests := []struct {
-name        string
-lhsParams   string
-rhsParams   string
-lhsNames    string
-rhsNames    string
-expected    bool
-}{
-{
-name:      "Simple order change",
-lhsParams: "string, string, *Options",
-rhsParams: "string, string, *Options",
-lhsNames:  "resourceGroupName, serviceName, options",
-rhsNames:  "serviceName, resourceGroupName, options",
-expected:  true,
-},
-{
-name:      "Three params order change",
-lhsParams: "string, string, string",
-rhsParams: "string, string, string",
-lhsNames:  "resourceGroupName, serviceName, subscriptionID",
-rhsNames:  "serviceName, subscriptionID, resourceGroupName",
-expected:  true,
-},
-{
-name:      "No change",
-lhsParams: "context.Context, string, int",
-rhsParams: "context.Context, string, int",
-lhsNames:  "ctx, name, value",
-rhsNames:  "ctx, name, value",
-expected:  false,
-},
-{
-name:      "Name change only",
-lhsParams: "string, string",
-rhsParams: "string, string",
-lhsNames:  "oldName, newName",
-rhsNames:  "firstName, lastName",
-expected:  false,
-},
-}
+func TestParamsEqual(t *testing.T) {
+	tests := []struct {
+		name     string
+		lhs      []exports.Param
+		rhs      []exports.Param
+		expected bool
+	}{
+		{
+			name: "Simple order change",
+			lhs: []exports.Param{
+				{Name: "resourceGroupName", Type: "string"},
+				{Name: "serviceName", Type: "string"},
+				{Name: "options", Type: "*Options"},
+			},
+			rhs: []exports.Param{
+				{Name: "serviceName", Type: "string"},
+				{Name: "resourceGroupName", Type: "string"},
+				{Name: "options", Type: "*Options"},
+			},
+			expected: false,
+		},
+		{
+			name: "Three params order change",
+			lhs: []exports.Param{
+				{Name: "resourceGroupName", Type: "string"},
+				{Name: "serviceName", Type: "string"},
+				{Name: "subscriptionID", Type: "string"},
+			},
+			rhs: []exports.Param{
+				{Name: "serviceName", Type: "string"},
+				{Name: "subscriptionID", Type: "string"},
+				{Name: "resourceGroupName", Type: "string"},
+			},
+			expected: false,
+		},
+		{
+			name: "No change",
+			lhs: []exports.Param{
+				{Name: "ctx", Type: "context.Context"},
+				{Name: "name", Type: "string"},
+				{Name: "value", Type: "int"},
+			},
+			rhs: []exports.Param{
+				{Name: "ctx", Type: "context.Context"},
+				{Name: "name", Type: "string"},
+				{Name: "value", Type: "int"},
+			},
+			expected: true,
+		},
+		{
+			name: "Name change only",
+			lhs: []exports.Param{
+				{Name: "oldName", Type: "string"},
+				{Name: "newName", Type: "string"},
+			},
+			rhs: []exports.Param{
+				{Name: "firstName", Type: "string"},
+				{Name: "lastName", Type: "string"},
+			},
+			expected: false,
+		},
+		{
+			name: "Type change",
+			lhs: []exports.Param{
+				{Name: "value", Type: "int"},
+			},
+			rhs: []exports.Param{
+				{Name: "value", Type: "string"},
+			},
+			expected: false,
+		},
+		{
+			name: "Different number of params",
+			lhs: []exports.Param{
+				{Name: "a", Type: "string"},
+				{Name: "b", Type: "string"},
+			},
+			rhs: []exports.Param{
+				{Name: "a", Type: "string"},
+			},
+			expected: false,
+		},
+	}
 
-for _, tt := range tests {
-t.Run(tt.name, func(t *testing.T) {
-result := hasParamOrderChange(&tt.lhsParams, &tt.rhsParams, &tt.lhsNames, &tt.rhsNames)
-if result != tt.expected {
-t.Errorf("hasParamOrderChange() = %v, expected %v", result, tt.expected)
-t.Logf("lhsParams: %s", tt.lhsParams)
-t.Logf("rhsParams: %s", tt.rhsParams)
-t.Logf("lhsNames: %s", tt.lhsNames)
-t.Logf("rhsNames: %s", tt.rhsNames)
-}
-})
-}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := paramsEqual(tt.lhs, tt.rhs)
+			if result != tt.expected {
+				t.Errorf("paramsEqual() = %v, expected %v", result, tt.expected)
+				t.Logf("lhs: %+v", tt.lhs)
+				t.Logf("rhs: %+v", tt.rhs)
+			}
+		})
+	}
 }

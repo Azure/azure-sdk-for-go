@@ -169,10 +169,7 @@ func getNewContents(c *delta.Content) []string {
 	if len(c.Funcs) > 0 {
 		for _, k := range SortFuncItem(c.Funcs) {
 			v := c.Funcs[k]
-			params := ""
-			if v.Params != nil {
-				params = *v.Params
-			}
+			params := formatParams(v.Params)
 			returns := ""
 			if v.Returns != nil {
 				returns = *v.Returns
@@ -400,6 +397,18 @@ func getRemovedContent(removed *delta.Content) []string {
 
 type sortItem interface {
 	delta.Signature | delta.StructDef | exports.Const | exports.TypeAlias | exports.Struct | string | []string
+}
+
+func formatParams(params []exports.Param) string {
+	if len(params) == 0 {
+		return ""
+	}
+	
+	var types []string
+	for _, p := range params {
+		types = append(types, p.Type)
+	}
+	return strings.Join(types, ", ")
 }
 
 func sortChangeItem[T sortItem](change map[string]T) []string {

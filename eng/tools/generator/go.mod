@@ -43,4 +43,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
+// replace directive is used for local development to use local internal module changes
 replace github.com/Azure/azure-sdk-for-go/eng/tools/internal => ../internal

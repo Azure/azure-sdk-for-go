@@ -56,6 +56,19 @@ var (
 	packageConfigRegex              = regexp.MustCompile(`\$\((package-.+)\)`)
 )
 
+// paramsToString converts a parameter list to a comma-delimited string of types
+func paramsToString(params []exports.Param) string {
+	if len(params) == 0 {
+		return ""
+	}
+	
+	var types []string
+	for _, p := range params {
+		types = append(types, p.Type)
+	}
+	return strings.Join(types, ", ")
+}
+
 type PackageInfo struct {
 	Name        string
 	Config      string
@@ -402,7 +415,7 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 	var clientName string
 	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
+		if newClientMethodNameRegex.MatchString(k) && paramsToString(v.Params) == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
 			break
 		}
@@ -587,7 +600,7 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 	var clientName string
 	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
+		if newClientMethodNameRegex.MatchString(k) && paramsToString(v.Params) == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
 			break
 		}

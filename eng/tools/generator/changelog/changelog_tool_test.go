@@ -76,12 +76,12 @@ func TestFuncParameterOrderChange(t *testing.T) {
 
 	FilterChangelog(changelog, FuncFilter)
 
-	// Expected: Only functions with actual parameter order changes should be detected
-	// - NewListByServicePager: serviceName and resourceGroupName swapped
-	// - OrderChanged: resourceGroupName, serviceName, subscriptionID -> serviceName, subscriptionID, resourceGroupName
-	// - NoChange: should not appear (no changes)
-	// - DifferentNames: should not appear as order change (names changed, not just order)
-	excepted := "### Breaking Changes\n\n- Function `*AllPoliciesClient.NewListByServicePager` parameter(s) have been changed from `(string, string, *AllPoliciesClientListByServiceOptions)` to `(string, string, *AllPoliciesClientListByServiceOptions)`\n- Function `*AllPoliciesClient.OrderChanged` parameter(s) have been changed from `(string, string, string)` to `(string, string, string)`\n"
+	// Expected: Functions with parameter changes (type, name, or order) should be detected
+	// - NewListByServicePager: serviceName and resourceGroupName swapped (order change)
+	// - OrderChanged: resourceGroupName, serviceName, subscriptionID -> serviceName, subscriptionID, resourceGroupName (order change)
+	// - DifferentNames: oldName, newName -> firstName, lastName (name change)
+	// - NoChange: should not appear (no change)
+	excepted := "### Breaking Changes\n\n- Function `*AllPoliciesClient.DifferentNames` parameter(s) have been changed from `(string, string)` to `(string, string)`\n- Function `*AllPoliciesClient.NewListByServicePager` parameter(s) have been changed from `(string, string, *AllPoliciesClientListByServiceOptions)` to `(string, string, *AllPoliciesClientListByServiceOptions)`\n- Function `*AllPoliciesClient.OrderChanged` parameter(s) have been changed from `(string, string, string)` to `(string, string, string)`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 

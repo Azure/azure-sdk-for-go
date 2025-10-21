@@ -13,4 +13,5 @@ require (
 	github.com/spf13/pflag v1.0.6 // indirect
 )
 
+// replace directive is used for local development to use local internal module changes
 replace github.com/Azure/azure-sdk-for-go/eng/tools/internal => ../internal

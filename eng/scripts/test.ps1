@@ -21,7 +21,7 @@ $GOTESTEXITCODE = $LASTEXITCODE
 
 Get-Content -Raw outfile.txt | go-junit-report > report.xml
 
-# if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
+# if no tests were actually run (e.g. examples), delete the coverage file so it's omitted from the coverage report
 if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
     Write-Host "##[command]Deleting empty coverage file"
     Remove-Item coverage.txt
@@ -30,21 +30,17 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
 
     Pop-Location
 } else {
-    # Tests were actually run create a coverage report
+    # Tests were actually run, create a coverage report
     $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
-    gocov convert ./coverage.txt > ./coverage.json
-
-    # gocov converts rely on standard input
-    Get-Content ./coverage.json | gocov-xml > ./coverage.xml
-    Get-Content ./coverage.json | gocov-html > ./coverage.html
-
-    Move-Item -Force ./coverage.xml $repoRoot
-    Move-Item -Force ./coverage.html $repoRoot
+    go tool cover -func coverage.txt | Out-File -FilePath coveragefunc.txt
+    if ($LASTEXITCODE -gt 0) {
+        exit $LASTEXITCODE
+    }
+    Move-Item -Force ./coveragefunc.txt $repoRoot
 
     # use internal tool to fail if coverage is too low
     Pop-Location
-
     go run $repoRoot/eng/tools/internal/coverage/coverage.go `
         -config $repoRoot/eng/config.json `
         -serviceDirectory $targetDirectory `

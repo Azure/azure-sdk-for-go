@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionPut.json
+// Generated from example definition: 2025-09-01/MongoClusters_PrivateEndpointConnectionPut.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionDelete.json
+// Generated from example definition: 2025-09-01/MongoClusters_PrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionGet.json
+// Generated from example definition: 2025-09-01/MongoClusters_PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionList.json
+// Generated from example definition: 2025-09-01/MongoClusters_PrivateEndpointConnectionList.json
 func ExamplePrivateEndpointConnectionsClient_NewListByMongoClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

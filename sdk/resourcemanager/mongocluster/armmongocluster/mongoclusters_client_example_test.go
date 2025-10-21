@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_NameAvailability.json
+// Generated from example definition: 2025-09-01/MongoClusters_NameAvailability.json
 func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoClusterNameIsAvailabilityForUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoC
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
+// Generated from example definition: 2025-09-01/MongoClusters_NameAvailability_AlreadyExists.json
 func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMon
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_Create.json
+// Generated from example definition: 2025-09-01/MongoClusters_Create.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_CreateGeoReplica.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreateGeoReplica.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,7 +259,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_CreateGeoReplica_CMK.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreateGeoReplica_CMK.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,7 +387,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_CreatePITR.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreatePITR.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +471,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_CreatePITR_CMK.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreatePITR_CMK.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +595,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_CreatePITR_EntraAuth.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreatePITR_EntraAuth.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIdAuthenticationModeEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -677,7 +677,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_Create_CMK.json
+// Generated from example definition: 2025-09-01/MongoClusters_Create_CMK.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithCustomerManagedKeyEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -814,7 +814,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_Create_SSDv2.json
+// Generated from example definition: 2025-09-01/MongoClusters_Create_SSDv2.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithPremiumSsDv2Storage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -920,7 +920,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_Delete.json
+// Generated from example definition: 2025-09-01/MongoClusters_Delete.json
 func ExampleMongoClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -941,7 +941,7 @@ func ExampleMongoClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_Get.json
+// Generated from example definition: 2025-09-01/MongoClusters_Get.json
 func ExampleMongoClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1022,7 +1022,7 @@ func ExampleMongoClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_List.json
+// Generated from example definition: 2025-09-01/MongoClusters_List.json
 func ExampleMongoClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1169,7 +1169,7 @@ func ExampleMongoClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/MongoClusters_ListByResourceGroup.json
 func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1316,7 +1316,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_ListConnectionStrings.json
+// Generated from example definition: 2025-09-01/MongoClusters_ListConnectionStrings.json
 func ExampleMongoClustersClient_ListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1346,7 +1346,7 @@ func ExampleMongoClustersClient_ListConnectionStrings() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_ForcePromoteReplica.json
+// Generated from example definition: 2025-09-01/MongoClusters_ForcePromoteReplica.json
 func ExampleMongoClustersClient_BeginPromote() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1370,7 +1370,7 @@ func ExampleMongoClustersClient_BeginPromote() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PatchCMK.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchCMK.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionKeyOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1512,7 +1512,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionK
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PatchDataApi.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchDataApi.json
 func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1623,7 +1623,7 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PatchDisableNativeAuth.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchDisableNativeAuth.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1710,7 +1710,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PatchDiskSize.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchDiskSize.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1795,7 +1795,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchEnableEntraIDAuth.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIdAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1884,7 +1884,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchPrivateNetworkAccess.json
 func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1993,7 +1993,7 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_PatchSSDv2.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchSSDv2.json
 func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2079,7 +2079,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnAMongoCl
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_ResetPassword.json
+// Generated from example definition: 2025-09-01/MongoClusters_ResetPassword.json
 func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2165,7 +2165,7 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/MongoClusters_Update.json
+// Generated from example definition: 2025-09-01/MongoClusters_Update.json
 func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

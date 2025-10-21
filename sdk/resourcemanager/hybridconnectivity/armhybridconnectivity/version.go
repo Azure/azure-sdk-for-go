@@ -6,5 +6,5 @@ package armhybridconnectivity
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.2.0-beta.1"
 )

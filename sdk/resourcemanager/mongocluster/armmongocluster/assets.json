@@ -1,6 +1,0 @@
-{
-  "AssetsRepo": "Azure/azure-sdk-assets",
-  "AssetsRepoPrefixPath": "go",
-  "TagPrefix": "go/resourcemanager/mongocluster/armmongocluster",
-  "Tag": "go/resourcemanager/mongocluster/armmongocluster_3e196ae0b8"
-}

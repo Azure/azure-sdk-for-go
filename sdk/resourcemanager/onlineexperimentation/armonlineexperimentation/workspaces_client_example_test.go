@@ -36,8 +36,8 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
 			Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armonlineexperimentation.UserAssignedIdentity{
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armonlineexperimentation.UserAssignedIdentity{},
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": &armonlineexperimentation.UserAssignedIdentity{},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
 			},
 		},
 		SKU: &armonlineexperimentation.WorkspaceSKU{
@@ -125,8 +125,8 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
 			Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armonlineexperimentation.UserAssignedIdentity{
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armonlineexperimentation.UserAssignedIdentity{},
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": &armonlineexperimentation.UserAssignedIdentity{},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
 			},
 		},
 		SKU: &armonlineexperimentation.WorkspaceSKU{
@@ -530,8 +530,8 @@ func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspace(
 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
 			Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armonlineexperimentation.UserAssignedIdentity{
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armonlineexperimentation.UserAssignedIdentity{},
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": &armonlineexperimentation.UserAssignedIdentity{},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
 			},
 		},
 	}, nil)
@@ -602,8 +602,8 @@ func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspaceW
 		Identity: &armonlineexperimentation.ManagedServiceIdentity{
 			Type: to.Ptr(armonlineexperimentation.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armonlineexperimentation.UserAssignedIdentity{
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armonlineexperimentation.UserAssignedIdentity{},
-				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": &armonlineexperimentation.UserAssignedIdentity{},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
 			},
 		},
 		Properties: &armonlineexperimentation.WorkspacePatchProperties{

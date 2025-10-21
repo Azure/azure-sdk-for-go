@@ -1168,7 +1168,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 				"computeApiVersion": "2024-07-01",
 			},
 			ResourceOverrides: []map[string]any{
-				map[string]any{
+				{
 					"name":     "myFleet_523",
 					"location": "LocalDev",
 					"properties": map[string]any{
@@ -1199,7 +1199,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 						"1",
 					},
 				},
-				map[string]any{
+				{
 					"name":     "myFleet_524",
 					"location": "LocalDev",
 					"properties": map[string]any{
@@ -1334,7 +1334,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 				"computeApiVersion": "2024-07-01",
 			},
 			ResourceOverrides: []map[string]any{
-				map[string]any{
+				{
 					"name":     "myFleet_523",
 					"location": "LocalDev",
 					"properties": map[string]any{
@@ -1365,7 +1365,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 						"1",
 					},
 				},
-				map[string]any{
+				{
 					"name":     "myFleet_524",
 					"location": "LocalDev",
 					"properties": map[string]any{

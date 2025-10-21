@@ -47,7 +47,7 @@ func ExampleAgriServiceClient_BeginCreateOrUpdate() {
 		Identity: &armagricultureplatform.ManagedServiceIdentity{
 			Type: to.Ptr(armagricultureplatform.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armagricultureplatform.UserAssignedIdentity{
-				"key4955": &armagricultureplatform.UserAssignedIdentity{},
+				"key4955": {},
 			},
 		},
 		SKU: &armagricultureplatform.SKU{
@@ -520,7 +520,7 @@ func ExampleAgriServiceClient_BeginUpdate() {
 		Identity: &armagricultureplatform.ManagedServiceIdentity{
 			Type: to.Ptr(armagricultureplatform.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armagricultureplatform.UserAssignedIdentity{
-				"key4771": &armagricultureplatform.UserAssignedIdentity{},
+				"key4771": {},
 			},
 		},
 		SKU: &armagricultureplatform.SKU{

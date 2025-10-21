@@ -793,7 +793,7 @@ func ExampleStorageTasksClient_BeginUpdate() {
 		Identity: &armstorageactions.ManagedServiceIdentity{
 			Type: to.Ptr(armstorageactions.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armstorageactions.UserAssignedIdentity{
-				"/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": &armstorageactions.UserAssignedIdentity{},
+				"/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": {},
 			},
 		},
 		Properties: &armstorageactions.StorageTaskUpdateProperties{

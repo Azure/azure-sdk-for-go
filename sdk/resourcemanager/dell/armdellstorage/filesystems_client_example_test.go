@@ -54,7 +54,7 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaxim
 		Identity: &armdellstorage.ManagedServiceIdentity{
 			Type: to.Ptr(armdellstorage.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armdellstorage.UserAssignedIdentity{
-				"key7644": &armdellstorage.UserAssignedIdentity{},
+				"key7644": {},
 			},
 		},
 		Tags: map[string]*string{
@@ -711,7 +711,7 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
 		Identity: &armdellstorage.ManagedServiceIdentityUpdate{
 			Type: to.Ptr(armdellstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armdellstorage.UserAssignedIdentity{
-				"key7645": &armdellstorage.UserAssignedIdentity{},
+				"key7645": {},
 			},
 		},
 		Tags: map[string]*string{

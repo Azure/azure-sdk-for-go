@@ -39,7 +39,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumPa
 					},
 					MaxPercentUnhealthyDeployedApplications: to.Ptr[int32](0),
 					ServiceTypeHealthPolicyMap: map[string]*armservicefabricmanagedclusters.ServiceTypeHealthPolicy{
-						"service1": &armservicefabricmanagedclusters.ServiceTypeHealthPolicy{
+						"service1": {
 							MaxPercentUnhealthyPartitionsPerService: to.Ptr[int32](30),
 							MaxPercentUnhealthyReplicasPerPartition: to.Ptr[int32](30),
 							MaxPercentUnhealthyServices:             to.Ptr[int32](30),
@@ -503,7 +503,7 @@ func ExampleApplicationsClient_BeginUpdateUpgrade() {
 				MaxPercentUnhealthyServices:             to.Ptr[int32](12),
 			},
 			ServiceTypeHealthPolicyMap: map[string]*armservicefabricmanagedclusters.RuntimeServiceTypeHealthPolicy{
-				"VotingWeb": &armservicefabricmanagedclusters.RuntimeServiceTypeHealthPolicy{
+				"VotingWeb": {
 					MaxPercentUnhealthyPartitionsPerService: to.Ptr[int32](13),
 					MaxPercentUnhealthyReplicasPerPartition: to.Ptr[int32](14),
 					MaxPercentUnhealthyServices:             to.Ptr[int32](15),

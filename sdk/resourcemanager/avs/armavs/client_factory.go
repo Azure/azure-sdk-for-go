@@ -199,14 +199,6 @@ func (c *ClientFactory) NewScriptPackagesClient() *ScriptPackagesClient {
 	}
 }
 
-// NewServiceComponentsClient creates a new instance of ServiceComponentsClient.
-func (c *ClientFactory) NewServiceComponentsClient() *ServiceComponentsClient {
-	return &ServiceComponentsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient.
 func (c *ClientFactory) NewVirtualMachinesClient() *VirtualMachinesClient {
 	return &VirtualMachinesClient{

@@ -738,10 +738,3 @@ type WorkloadNetworksClientListVMGroupsOptions struct {
 type WorkloadNetworksClientListVirtualMachinesOptions struct {
 	// placeholder for future optional parameters
 }
-
-// serviceComponentsClientBegincheckAvailabilityOptions contains the optional parameters for the ServiceComponentsClient.BegincheckAvailability
-// method.
-type serviceComponentsClientBegincheckAvailabilityOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}

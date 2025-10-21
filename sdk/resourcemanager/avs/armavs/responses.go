@@ -718,8 +718,3 @@ type WorkloadNetworksClientUpdateVMGroupResponse struct {
 	// NSX VM Group
 	WorkloadNetworkVMGroup
 }
-
-// serviceComponentsClientcheckAvailabilityResponse contains the response from method ServiceComponentsClient.BegincheckAvailability.
-type serviceComponentsClientcheckAvailabilityResponse struct {
-	// placeholder for future response values
-}

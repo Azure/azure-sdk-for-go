@@ -22,5 +22,5 @@ variables:
   GOEXPERIMENT: nocoverageredesign
 
   # Supported versions for testing. These variables are referenced in test matrix files.
-  GO_VERSION_LATEST: 1.24
-  GO_VERSION_PREVIOUS: 1.23
+  GO_VERSION_LATEST: 1.24.7
+  GO_VERSION_PREVIOUS: 1.23.12

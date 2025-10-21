@@ -261,7 +261,7 @@ func listResourceGroups(ctx context.Context) ([]*armresources.ResourceGroup, err
     return resourceGroups, nil
 }
 ```
-You could see there is a pattern for pageable operation here. With `NewListPager` you will get an pager helper for fetching pages and determining if there are more pages to fetch. For more details, you could refer to [Azure Go Management SDK Guideline](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/new-version-guideline.md#pageable-operations).
+You could see there is a pattern for pageable operation here. With `NewListPager` you will get an pager helper for fetching pages and determining if there are more pages to fetch. For more details, you could refer to [Azure Go Management SDK Guideline](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/ARM/new-version-guideline.md#pageable-operations).
 
 ***Delete a resource group***
 
@@ -276,7 +276,7 @@ func deleteResourceGroup(ctx context.Context) error {
     return err
 }
 ```
-You could see there is a pattern for LRO (long-running operations) here. With `BeginDelete` the LRO has started and you will get an poller helper for fetching operation result. For more details, you could refer to [Azure Go Management SDK Guideline](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/new-version-guideline.md#long-running-operations).
+You could see there is a pattern for LRO (long-running operations) here. With `BeginDelete` the LRO has started and you will get an poller helper for fetching operation result. For more details, you could refer to [Azure Go Management SDK Guideline](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/ARM/new-version-guideline.md#long-running-operations).
 
 ***Invoking the update, list and delete of resource group in the main function***
 ```go
@@ -331,7 +331,7 @@ More code samples for using the management library for Go SDK can be found in th
 
 ## Further Infomation
 
-For further infomation about the new SDK including advanced API usage and trouble shooting, you could refer to [Azure Go Management SDK Guideline](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/new-version-guideline.md).
+For further infomation about the new SDK including advanced API usage and trouble shooting, you could refer to [Azure Go Management SDK Guideline](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/ARM/new-version-guideline.md).
 
 ## Need help?
 

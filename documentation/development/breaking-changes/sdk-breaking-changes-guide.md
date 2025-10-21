@@ -1,6 +1,6 @@
 # Azure Go SDK Breaking Changes Review and Resolution Guide
 
-The Azure Go SDK generally prohibits breaking changes unless they result from service behavior modifications. This guide helps you identify, review, and resolve breaking changes that may occur in new SDK versions due to service's TypeSpec specification update. For migration of service specifications from Swagger to TypeSpec, refer this [doc](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/sdk-breaking-changes-guide-migration.md).
+The Azure Go SDK generally prohibits breaking changes unless they result from service behavior modifications. This guide helps you identify, review, and resolve breaking changes that may occur in new SDK versions due to service's TypeSpec specification update. For migration of service specifications from Swagger to TypeSpec, refer this [doc](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/breaking-changes/sdk-breaking-changes-guide-migration.md).
 
 Breaking changes can be resolved by client Customizations:
 

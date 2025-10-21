@@ -40,7 +40,7 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 
 ### 1. Release Request
 - Release requests are initiated by the service team and should be submitted monthly.
-- A request is created as an issue at: [Release Request Issues](https://github.com/Azure/sdk-release-request/issues).
+- A request is created as an issue at: Azure's private `sdk-release-request` repo
 - To process the request, use the following query: 
 `is:issue state:open label:Go -label:HoldOn created:2024-09-27..2024-10-15`
 

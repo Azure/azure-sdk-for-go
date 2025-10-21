@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/ExascaleDbStorageVaults_Create_MaximumSet_Gen.json
-func ExampleExascaleDbStorageVaultsClient_BeginCreate() {
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Create_MaximumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_BeginCreate_exascaleDbStorageVaultsCreateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,29 +23,29 @@ func ExampleExascaleDbStorageVaultsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginCreate(ctx, "rgopenapi", "vmClusterName", armoracledatabase.ExascaleDbStorageVault{
+	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginCreate(ctx, "rgopenapi", "storagevault1", armoracledatabase.ExascaleDbStorageVault{
 		Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 			AdditionalFlashCacheInPercent: to.Ptr[int32](0),
-			Description:                   to.Ptr("dmnvnnduldfmrmkkvvsdtuvmsmruxzzpsfdydgytlckutfozephjygjetrauvbdfcwmti"),
-			DisplayName:                   to.Ptr("hbsybtelyvhpalemszcvartlhwvskrnpiveqfblvkdihoytqaotdgsgauvgivzaftfgeiwlyeqzssicwrrnlxtsmeakbcsxabjlt"),
+			Description:                   to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
+			DisplayName:                   to.Ptr("storagevault1"),
 			HighCapacityDatabaseStorageInput: &armoracledatabase.ExascaleDbStorageInputDetails{
-				TotalSizeInGbs: to.Ptr[int32](21),
+				TotalSizeInGbs: to.Ptr[int32](1),
 			},
 			HighCapacityDatabaseStorage: &armoracledatabase.ExascaleDbStorageDetails{
-				AvailableSizeInGbs: to.Ptr[int32](28),
-				TotalSizeInGbs:     to.Ptr[int32](16),
+				AvailableSizeInGbs: to.Ptr[int32](4),
+				TotalSizeInGbs:     to.Ptr[int32](12),
 			},
-			TimeZone:       to.Ptr("ltrbozwxjunncicrtzjrpqnqrcjgghohztrdlbfjrbkpenopyldwolslwgrgumjfkyovvkzcuxjujuxtjjzubvqvnhrswnbdgcbslopeofmtepbrrlymqwwszvsglmyuvlcuejshtpokirwklnwpcykhyinjmlqvxtyixlthtdishhmtipbygsayvgqzfrprgppylydlcskbmvwctxifdltippfvsxiughqbojqpqrekxsotnqsk"),
+			TimeZone:       to.Ptr("hyjcftlal"),
 			LifecycleState: to.Ptr(armoracledatabase.ExascaleDbStorageVaultLifecycleStateProvisioning),
 			Ocid:           to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 		},
 		Zones: []*string{
-			to.Ptr("qk"),
+			to.Ptr("npqjhyekyumfybqas"),
 		},
 		Tags: map[string]*string{
-			"key7827": to.Ptr("xqi"),
+			"key4521": to.Ptr("rrgotvwzckepkhgkbz"),
 		},
-		Location: to.Ptr("ltguhzffucaytqg"),
+		Location: to.Ptr("zuoudqbvlxerpjtlfooyqlb"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -61,47 +61,47 @@ func ExampleExascaleDbStorageVaultsClient_BeginCreate() {
 	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
 	// 		Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 	// 			AdditionalFlashCacheInPercent: to.Ptr[int32](0),
-	// 			Description: to.Ptr("dmnvnnduldfmrmkkvvsdtuvmsmruxzzpsfdydgytlckutfozephjygjetrauvbdfcwmti"),
-	// 			DisplayName: to.Ptr("hbsybtelyvhpalemszcvartlhwvskrnpiveqfblvkdihoytqaotdgsgauvgivzaftfgeiwlyeqzssicwrrnlxtsmeakbcsxabjlt"),
+	// 			Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
+	// 			DisplayName: to.Ptr("coevprhfvcpvurmjimhckcmeqevmajcaqzvbolctckzpzsupocamqvemnhiobcuqzdbvulqhddiinxvskardatinqhnxzjtilargwmzbnyxmnthrzxacjpxnqtpicabeyaxwaycdlneujetwefzaqjqwihzq"),
 	// 			HighCapacityDatabaseStorageInput: &armoracledatabase.ExascaleDbStorageInputDetails{
-	// 				TotalSizeInGbs: to.Ptr[int32](21),
+	// 				TotalSizeInGbs: to.Ptr[int32](1),
 	// 			},
 	// 			HighCapacityDatabaseStorage: &armoracledatabase.ExascaleDbStorageDetails{
-	// 				AvailableSizeInGbs: to.Ptr[int32](28),
-	// 				TotalSizeInGbs: to.Ptr[int32](16),
+	// 				AvailableSizeInGbs: to.Ptr[int32](4),
+	// 				TotalSizeInGbs: to.Ptr[int32](12),
 	// 			},
-	// 			TimeZone: to.Ptr("ltrbozwxjunncicrtzjrpqnqrcjgghohztrdlbfjrbkpenopyldwolslwgrgumjfkyovvkzcuxjujuxtjjzubvqvnhrswnbdgcbslopeofmtepbrrlymqwwszvsglmyuvlcuejshtpokirwklnwpcykhyinjmlqvxtyixlthtdishhmtipbygsayvgqzfrprgppylydlcskbmvwctxifdltippfvsxiughqbojqpqrekxsotnqsk"),
+	// 			TimeZone: to.Ptr("hyjcftlal"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.ExascaleDbStorageVaultLifecycleStateProvisioning),
-	// 			LifecycleDetails: to.Ptr("iiav"),
-	// 			VMClusterCount: to.Ptr[int32](26),
+	// 			LifecycleDetails: to.Ptr("mvikacxnfgannekl"),
+	// 			VMClusterCount: to.Ptr[int32](10),
 	// 			Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			OciURL: to.Ptr("https://microsoft.com/a"),
 	// 		},
 	// 		Zones: []*string{
-	// 			to.Ptr("qk"),
+	// 			to.Ptr("zone1"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key7827": to.Ptr("xqi"),
+	// 			"key4521": to.Ptr("rrgotvwzckepkhgkbz"),
 	// 		},
-	// 		Location: to.Ptr("ltguhzffucaytqg"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storageVaultName"),
-	// 		Name: to.Ptr("s"),
-	// 		Type: to.Ptr("efxpfdvhkaiqveccmdmaghlxxnmpwb"),
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+	// 		Name: to.Ptr("storagevault1"),
+	// 		Type: to.Ptr("pnac"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("ilrpjodjmvzhybazxipoplnql"),
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("lhjbxchqkaia"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExascaleDbStorageVaults_Delete_MaximumSet_Gen.json
-func ExampleExascaleDbStorageVaultsClient_BeginDelete() {
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Create_MinimumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_BeginCreate_exascaleDbStorageVaultsCreateMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -111,7 +111,39 @@ func ExampleExascaleDbStorageVaultsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginDelete(ctx, "rgopenapi", "vmClusterName", nil)
+	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginCreate(ctx, "rgopenapi", "storagevault1", armoracledatabase.ExascaleDbStorageVault{
+		Location: to.Ptr("odxgtv"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.ExascaleDbStorageVaultsClientCreateResponse{
+	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Delete_MaximumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_BeginDelete_exascaleDbStorageVaultsDeleteMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginDelete(ctx, "rgopenapi", "storagevault1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -121,8 +153,8 @@ func ExampleExascaleDbStorageVaultsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/ExascaleDbStorageVaults_Get_MaximumSet_Gen.json
-func ExampleExascaleDbStorageVaultsClient_Get() {
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Delete_MinimumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_BeginDelete_exascaleDbStorageVaultsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -132,7 +164,28 @@ func ExampleExascaleDbStorageVaultsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExascaleDbStorageVaultsClient().Get(ctx, "rgopenapi", "vmClusterName", nil)
+	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginDelete(ctx, "rgopenapi", "storagevault1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Get_MaximumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_Get_exascaleDbStorageVaultsGetMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExascaleDbStorageVaultsClient().Get(ctx, "rgopenapi", "storagevault1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -143,47 +196,73 @@ func ExampleExascaleDbStorageVaultsClient_Get() {
 	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
 	// 		Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 	// 			AdditionalFlashCacheInPercent: to.Ptr[int32](0),
-	// 			Description: to.Ptr("dmnvnnduldfmrmkkvvsdtuvmsmruxzzpsfdydgytlckutfozephjygjetrauvbdfcwmti"),
-	// 			DisplayName: to.Ptr("hbsybtelyvhpalemszcvartlhwvskrnpiveqfblvkdihoytqaotdgsgauvgivzaftfgeiwlyeqzssicwrrnlxtsmeakbcsxabjlt"),
+	// 			Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
+	// 			DisplayName: to.Ptr("storagevault1"),
 	// 			HighCapacityDatabaseStorageInput: &armoracledatabase.ExascaleDbStorageInputDetails{
-	// 				TotalSizeInGbs: to.Ptr[int32](21),
+	// 				TotalSizeInGbs: to.Ptr[int32](1),
 	// 			},
 	// 			HighCapacityDatabaseStorage: &armoracledatabase.ExascaleDbStorageDetails{
-	// 				AvailableSizeInGbs: to.Ptr[int32](28),
-	// 				TotalSizeInGbs: to.Ptr[int32](16),
+	// 				AvailableSizeInGbs: to.Ptr[int32](4),
+	// 				TotalSizeInGbs: to.Ptr[int32](12),
 	// 			},
-	// 			TimeZone: to.Ptr("ltrbozwxjunncicrtzjrpqnqrcjgghohztrdlbfjrbkpenopyldwolslwgrgumjfkyovvkzcuxjujuxtjjzubvqvnhrswnbdgcbslopeofmtepbrrlymqwwszvsglmyuvlcuejshtpokirwklnwpcykhyinjmlqvxtyixlthtdishhmtipbygsayvgqzfrprgppylydlcskbmvwctxifdltippfvsxiughqbojqpqrekxsotnqsk"),
+	// 			TimeZone: to.Ptr("hyjcftlal"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.ExascaleDbStorageVaultLifecycleStateProvisioning),
-	// 			LifecycleDetails: to.Ptr("iiav"),
-	// 			VMClusterCount: to.Ptr[int32](26),
+	// 			LifecycleDetails: to.Ptr("mvikacxnfgannekl"),
+	// 			VMClusterCount: to.Ptr[int32](10),
 	// 			Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			OciURL: to.Ptr("https://microsoft.com/a"),
 	// 		},
 	// 		Zones: []*string{
-	// 			to.Ptr("qk"),
+	// 			to.Ptr("zone1"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key7827": to.Ptr("xqi"),
+	// 			"key4521": to.Ptr("rrgotvwzckepkhgkbz"),
 	// 		},
-	// 		Location: to.Ptr("ltguhzffucaytqg"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storageVaultName"),
-	// 		Name: to.Ptr("s"),
-	// 		Type: to.Ptr("efxpfdvhkaiqveccmdmaghlxxnmpwb"),
+	// 		Location: to.Ptr("zuoudqbvlxerpjtlfooyqlb"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+	// 		Name: to.Ptr("storagevault1"),
+	// 		Type: to.Ptr("pnac"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("ilrpjodjmvzhybazxipoplnql"),
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("lhjbxchqkaia"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExascaleDbStorageVaults_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleExascaleDbStorageVaultsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Get_MinimumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_Get_exascaleDbStorageVaultsGetMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExascaleDbStorageVaultsClient().Get(ctx, "rgopenapi", "storagevault1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.ExascaleDbStorageVaultsClientGetResponse{
+	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_NewListByResourceGroupPager_exascaleDbStorageVaultsListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -210,40 +289,40 @@ func ExampleExascaleDbStorageVaultsClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 		// 					AdditionalFlashCacheInPercent: to.Ptr[int32](0),
-		// 					Description: to.Ptr("dmnvnnduldfmrmkkvvsdtuvmsmruxzzpsfdydgytlckutfozephjygjetrauvbdfcwmti"),
-		// 					DisplayName: to.Ptr("hbsybtelyvhpalemszcvartlhwvskrnpiveqfblvkdihoytqaotdgsgauvgivzaftfgeiwlyeqzssicwrrnlxtsmeakbcsxabjlt"),
+		// 					Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
+		// 					DisplayName: to.Ptr("storagevault1"),
 		// 					HighCapacityDatabaseStorageInput: &armoracledatabase.ExascaleDbStorageInputDetails{
-		// 						TotalSizeInGbs: to.Ptr[int32](21),
+		// 						TotalSizeInGbs: to.Ptr[int32](1),
 		// 					},
 		// 					HighCapacityDatabaseStorage: &armoracledatabase.ExascaleDbStorageDetails{
-		// 						AvailableSizeInGbs: to.Ptr[int32](28),
-		// 						TotalSizeInGbs: to.Ptr[int32](16),
+		// 						AvailableSizeInGbs: to.Ptr[int32](4),
+		// 						TotalSizeInGbs: to.Ptr[int32](12),
 		// 					},
-		// 					TimeZone: to.Ptr("ltrbozwxjunncicrtzjrpqnqrcjgghohztrdlbfjrbkpenopyldwolslwgrgumjfkyovvkzcuxjujuxtjjzubvqvnhrswnbdgcbslopeofmtepbrrlymqwwszvsglmyuvlcuejshtpokirwklnwpcykhyinjmlqvxtyixlthtdishhmtipbygsayvgqzfrprgppylydlcskbmvwctxifdltippfvsxiughqbojqpqrekxsotnqsk"),
+		// 					TimeZone: to.Ptr("hyjcftlal"),
 		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 		// 					LifecycleState: to.Ptr(armoracledatabase.ExascaleDbStorageVaultLifecycleStateProvisioning),
-		// 					LifecycleDetails: to.Ptr("iiav"),
-		// 					VMClusterCount: to.Ptr[int32](26),
+		// 					LifecycleDetails: to.Ptr("mvikacxnfgannekl"),
+		// 					VMClusterCount: to.Ptr[int32](10),
 		// 					Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 		// 					OciURL: to.Ptr("https://microsoft.com/a"),
 		// 				},
 		// 				Zones: []*string{
-		// 					to.Ptr("qk"),
+		// 					to.Ptr("zone1"),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key7827": to.Ptr("xqi"),
+		// 					"key4521": to.Ptr("rrgotvwzckepkhgkbz"),
 		// 				},
-		// 				Location: to.Ptr("ltguhzffucaytqg"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storageVaultName"),
-		// 				Name: to.Ptr("s"),
-		// 				Type: to.Ptr("efxpfdvhkaiqveccmdmaghlxxnmpwb"),
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+		// 				Name: to.Ptr("storagevault1"),
+		// 				Type: to.Ptr("pnac"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("ilrpjodjmvzhybazxipoplnql"),
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("lhjbxchqkaia"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -253,8 +332,43 @@ func ExampleExascaleDbStorageVaultsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/ExascaleDbStorageVaults_ListBySubscription_MaximumSet_Gen.json
-func ExampleExascaleDbStorageVaultsClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_NewListByResourceGroupPager_exascaleDbStorageVaultsListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExascaleDbStorageVaultsClient().NewListByResourceGroupPager("rgopenapi", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.ExascaleDbStorageVaultsClientListByResourceGroupResponse{
+		// 	ExascaleDbStorageVaultListResult: armoracledatabase.ExascaleDbStorageVaultListResult{
+		// 		Value: []*armoracledatabase.ExascaleDbStorageVault{
+		// 			{
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_ListBySubscription_MaximumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_NewListBySubscriptionPager_exascaleDbStorageVaultsListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -281,40 +395,40 @@ func ExampleExascaleDbStorageVaultsClient_NewListBySubscriptionPager() {
 		// 			{
 		// 				Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 		// 					AdditionalFlashCacheInPercent: to.Ptr[int32](0),
-		// 					Description: to.Ptr("dmnvnnduldfmrmkkvvsdtuvmsmruxzzpsfdydgytlckutfozephjygjetrauvbdfcwmti"),
-		// 					DisplayName: to.Ptr("hbsybtelyvhpalemszcvartlhwvskrnpiveqfblvkdihoytqaotdgsgauvgivzaftfgeiwlyeqzssicwrrnlxtsmeakbcsxabjlt"),
+		// 					Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
+		// 					DisplayName: to.Ptr("storagevault1"),
 		// 					HighCapacityDatabaseStorageInput: &armoracledatabase.ExascaleDbStorageInputDetails{
-		// 						TotalSizeInGbs: to.Ptr[int32](21),
+		// 						TotalSizeInGbs: to.Ptr[int32](1),
 		// 					},
 		// 					HighCapacityDatabaseStorage: &armoracledatabase.ExascaleDbStorageDetails{
-		// 						AvailableSizeInGbs: to.Ptr[int32](28),
-		// 						TotalSizeInGbs: to.Ptr[int32](16),
+		// 						AvailableSizeInGbs: to.Ptr[int32](4),
+		// 						TotalSizeInGbs: to.Ptr[int32](12),
 		// 					},
-		// 					TimeZone: to.Ptr("ltrbozwxjunncicrtzjrpqnqrcjgghohztrdlbfjrbkpenopyldwolslwgrgumjfkyovvkzcuxjujuxtjjzubvqvnhrswnbdgcbslopeofmtepbrrlymqwwszvsglmyuvlcuejshtpokirwklnwpcykhyinjmlqvxtyixlthtdishhmtipbygsayvgqzfrprgppylydlcskbmvwctxifdltippfvsxiughqbojqpqrekxsotnqsk"),
+		// 					TimeZone: to.Ptr("hyjcftlal"),
 		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 		// 					LifecycleState: to.Ptr(armoracledatabase.ExascaleDbStorageVaultLifecycleStateProvisioning),
-		// 					LifecycleDetails: to.Ptr("iiav"),
-		// 					VMClusterCount: to.Ptr[int32](26),
+		// 					LifecycleDetails: to.Ptr("mvikacxnfgannekl"),
+		// 					VMClusterCount: to.Ptr[int32](10),
 		// 					Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 		// 					OciURL: to.Ptr("https://microsoft.com/a"),
 		// 				},
 		// 				Zones: []*string{
-		// 					to.Ptr("qk"),
+		// 					to.Ptr("zone1"),
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key7827": to.Ptr("xqi"),
+		// 					"key4521": to.Ptr("rrgotvwzckepkhgkbz"),
 		// 				},
-		// 				Location: to.Ptr("ltguhzffucaytqg"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storageVaultName"),
-		// 				Name: to.Ptr("s"),
-		// 				Type: to.Ptr("efxpfdvhkaiqveccmdmaghlxxnmpwb"),
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+		// 				Name: to.Ptr("storagevault1"),
+		// 				Type: to.Ptr("pnac"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("ilrpjodjmvzhybazxipoplnql"),
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("lhjbxchqkaia"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -324,8 +438,8 @@ func ExampleExascaleDbStorageVaultsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/ExascaleDbStorageVaults_Update_MaximumSet_Gen.json
-func ExampleExascaleDbStorageVaultsClient_BeginUpdate() {
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_ListBySubscription_MinimumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_NewListBySubscriptionPager_exascaleDbStorageVaultsListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -335,9 +449,44 @@ func ExampleExascaleDbStorageVaultsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginUpdate(ctx, "rgopenapi", "vmClusterName", armoracledatabase.ExascaleDbStorageVaultTagsUpdate{
+	pager := clientFactory.NewExascaleDbStorageVaultsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoracledatabase.ExascaleDbStorageVaultsClientListBySubscriptionResponse{
+		// 	ExascaleDbStorageVaultListResult: armoracledatabase.ExascaleDbStorageVaultListResult{
+		// 		Value: []*armoracledatabase.ExascaleDbStorageVault{
+		// 			{
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Update_MaximumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_BeginUpdate_exascaleDbStorageVaultsUpdateMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginUpdate(ctx, "rgopenapi", "storagevault1", armoracledatabase.ExascaleDbStorageVaultTagsUpdate{
 		Tags: map[string]*string{
-			"key6179": to.Ptr("ouj"),
+			"key6486": to.Ptr("fxbuboilsiapodppdtfls"),
 		},
 	}, nil)
 	if err != nil {
@@ -354,41 +503,71 @@ func ExampleExascaleDbStorageVaultsClient_BeginUpdate() {
 	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
 	// 		Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 	// 			AdditionalFlashCacheInPercent: to.Ptr[int32](0),
-	// 			Description: to.Ptr("dmnvnnduldfmrmkkvvsdtuvmsmruxzzpsfdydgytlckutfozephjygjetrauvbdfcwmti"),
-	// 			DisplayName: to.Ptr("hbsybtelyvhpalemszcvartlhwvskrnpiveqfblvkdihoytqaotdgsgauvgivzaftfgeiwlyeqzssicwrrnlxtsmeakbcsxabjlt"),
+	// 			Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
+	// 			DisplayName: to.Ptr("storagevault1"),
 	// 			HighCapacityDatabaseStorageInput: &armoracledatabase.ExascaleDbStorageInputDetails{
-	// 				TotalSizeInGbs: to.Ptr[int32](21),
+	// 				TotalSizeInGbs: to.Ptr[int32](1),
 	// 			},
 	// 			HighCapacityDatabaseStorage: &armoracledatabase.ExascaleDbStorageDetails{
-	// 				AvailableSizeInGbs: to.Ptr[int32](28),
-	// 				TotalSizeInGbs: to.Ptr[int32](16),
+	// 				AvailableSizeInGbs: to.Ptr[int32](4),
+	// 				TotalSizeInGbs: to.Ptr[int32](12),
 	// 			},
-	// 			TimeZone: to.Ptr("ltrbozwxjunncicrtzjrpqnqrcjgghohztrdlbfjrbkpenopyldwolslwgrgumjfkyovvkzcuxjujuxtjjzubvqvnhrswnbdgcbslopeofmtepbrrlymqwwszvsglmyuvlcuejshtpokirwklnwpcykhyinjmlqvxtyixlthtdishhmtipbygsayvgqzfrprgppylydlcskbmvwctxifdltippfvsxiughqbojqpqrekxsotnqsk"),
+	// 			TimeZone: to.Ptr("hyjcftlal"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.ExascaleDbStorageVaultLifecycleStateProvisioning),
-	// 			LifecycleDetails: to.Ptr("iiav"),
-	// 			VMClusterCount: to.Ptr[int32](26),
+	// 			LifecycleDetails: to.Ptr("mvikacxnfgannekl"),
+	// 			VMClusterCount: to.Ptr[int32](10),
 	// 			Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			OciURL: to.Ptr("https://microsoft.com/a"),
 	// 		},
 	// 		Zones: []*string{
-	// 			to.Ptr("qk"),
+	// 			to.Ptr("zone1"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key7827": to.Ptr("xqi"),
+	// 			"key4521": to.Ptr("rrgotvwzckepkhgkbz"),
 	// 		},
-	// 		Location: to.Ptr("ltguhzffucaytqg"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storageVaultName"),
-	// 		Name: to.Ptr("s"),
-	// 		Type: to.Ptr("efxpfdvhkaiqveccmdmaghlxxnmpwb"),
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+	// 		Name: to.Ptr("storagevault1"),
+	// 		Type: to.Ptr("pnac"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("ilrpjodjmvzhybazxipoplnql"),
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("lhjbxchqkaia"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExascaleDbStorageVaults_Update_MinimumSet_Gen.json
+func ExampleExascaleDbStorageVaultsClient_BeginUpdate_exascaleDbStorageVaultsUpdateMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExascaleDbStorageVaultsClient().BeginUpdate(ctx, "rgopenapi", "storagevault1", armoracledatabase.ExascaleDbStorageVaultTagsUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.ExascaleDbStorageVaultsClientUpdateResponse{
+	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
+	// 		Location: to.Ptr("eastus"),
 	// 	},
 	// }
 }

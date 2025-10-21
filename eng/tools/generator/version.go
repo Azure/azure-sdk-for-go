@@ -5,5 +5,5 @@ package main
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/eng/tools/generator"
-	moduleVersion = "v0.2.1"
+	moduleVersion = "v0.2.2"
 )

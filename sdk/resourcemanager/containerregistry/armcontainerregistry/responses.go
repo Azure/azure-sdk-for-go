@@ -5,44 +5,6 @@
 
 package armcontainerregistry
 
-// AgentPoolsClientCreateResponse contains the response from method AgentPoolsClient.BeginCreate.
-type AgentPoolsClientCreateResponse struct {
-	// The agentpool that has the ARM resource and properties.
-	// The agentpool will have all information to create an agent pool.
-	AgentPool
-}
-
-// AgentPoolsClientDeleteResponse contains the response from method AgentPoolsClient.BeginDelete.
-type AgentPoolsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AgentPoolsClientGetQueueStatusResponse contains the response from method AgentPoolsClient.GetQueueStatus.
-type AgentPoolsClientGetQueueStatusResponse struct {
-	// The QueueStatus of Agent Pool
-	AgentPoolQueueStatus
-}
-
-// AgentPoolsClientGetResponse contains the response from method AgentPoolsClient.Get.
-type AgentPoolsClientGetResponse struct {
-	// The agentpool that has the ARM resource and properties.
-	// The agentpool will have all information to create an agent pool.
-	AgentPool
-}
-
-// AgentPoolsClientListResponse contains the response from method AgentPoolsClient.NewListPager.
-type AgentPoolsClientListResponse struct {
-	// The collection of agent pools.
-	AgentPoolListResult
-}
-
-// AgentPoolsClientUpdateResponse contains the response from method AgentPoolsClient.BeginUpdate.
-type AgentPoolsClientUpdateResponse struct {
-	// The agentpool that has the ARM resource and properties.
-	// The agentpool will have all information to create an agent pool.
-	AgentPool
-}
-
 // ArchiveVersionsClientCreateResponse contains the response from method ArchiveVersionsClient.BeginCreate.
 type ArchiveVersionsClientCreateResponse struct {
 	// An object that represents an export pipeline for a container registry.
@@ -308,12 +270,6 @@ type RegistriesClientGenerateCredentialsResponse struct {
 	GenerateCredentialsResult
 }
 
-// RegistriesClientGetBuildSourceUploadURLResponse contains the response from method RegistriesClient.GetBuildSourceUploadURL.
-type RegistriesClientGetBuildSourceUploadURLResponse struct {
-	// The properties of a response to source upload request.
-	SourceUploadDefinition
-}
-
 // RegistriesClientGetPrivateLinkResourceResponse contains the response from method RegistriesClient.GetPrivateLinkResource.
 type RegistriesClientGetPrivateLinkResourceResponse struct {
 	// A resource that supports private link capabilities.
@@ -367,12 +323,6 @@ type RegistriesClientRegenerateCredentialResponse struct {
 	RegistryListCredentialsResult
 }
 
-// RegistriesClientScheduleRunResponse contains the response from method RegistriesClient.ScheduleRun.
-type RegistriesClientScheduleRunResponse struct {
-	// Run resource properties
-	Run
-}
-
 // RegistriesClientUpdateResponse contains the response from method RegistriesClient.BeginUpdate.
 type RegistriesClientUpdateResponse struct {
 	// An object that represents a container registry.
@@ -408,35 +358,6 @@ type ReplicationsClientUpdateResponse struct {
 	Replication
 }
 
-// RunsClientCancelResponse contains the response from method RunsClient.Cancel.
-type RunsClientCancelResponse struct {
-	// placeholder for future response values
-}
-
-// RunsClientGetLogSasURLResponse contains the response from method RunsClient.GetLogSasURL.
-type RunsClientGetLogSasURLResponse struct {
-	// The result of get log link operation.
-	RunGetLogResult
-}
-
-// RunsClientGetResponse contains the response from method RunsClient.Get.
-type RunsClientGetResponse struct {
-	// Run resource properties
-	Run
-}
-
-// RunsClientListResponse contains the response from method RunsClient.NewListPager.
-type RunsClientListResponse struct {
-	// Collection of runs.
-	RunListResult
-}
-
-// RunsClientUpdateResponse contains the response from method RunsClient.Update.
-type RunsClientUpdateResponse struct {
-	// Run resource properties
-	Run
-}
-
 // ScopeMapsClientCreateResponse contains the response from method ScopeMapsClient.BeginCreate.
 type ScopeMapsClientCreateResponse struct {
 	// An object that represents a scope map for a container registry.
@@ -464,84 +385,6 @@ type ScopeMapsClientListResponse struct {
 type ScopeMapsClientUpdateResponse struct {
 	// An object that represents a scope map for a container registry.
 	ScopeMap
-}
-
-// TaskRunsClientCreateResponse contains the response from method TaskRunsClient.BeginCreate.
-type TaskRunsClientCreateResponse struct {
-	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
-	TaskRun
-}
-
-// TaskRunsClientDeleteResponse contains the response from method TaskRunsClient.Delete.
-type TaskRunsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// TaskRunsClientGetDetailsResponse contains the response from method TaskRunsClient.GetDetails.
-type TaskRunsClientGetDetailsResponse struct {
-	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
-	TaskRun
-}
-
-// TaskRunsClientGetResponse contains the response from method TaskRunsClient.Get.
-type TaskRunsClientGetResponse struct {
-	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
-	TaskRun
-}
-
-// TaskRunsClientListResponse contains the response from method TaskRunsClient.NewListPager.
-type TaskRunsClientListResponse struct {
-	// The collection of task runs.
-	TaskRunListResult
-}
-
-// TaskRunsClientUpdateResponse contains the response from method TaskRunsClient.BeginUpdate.
-type TaskRunsClientUpdateResponse struct {
-	// The task run that has the ARM resource and properties.
-	// The task run will have the information of request and result of a run.
-	TaskRun
-}
-
-// TasksClientCreateResponse contains the response from method TasksClient.Create.
-type TasksClientCreateResponse struct {
-	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
-	Task
-}
-
-// TasksClientDeleteResponse contains the response from method TasksClient.Delete.
-type TasksClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// TasksClientGetDetailsResponse contains the response from method TasksClient.GetDetails.
-type TasksClientGetDetailsResponse struct {
-	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
-	Task
-}
-
-// TasksClientGetResponse contains the response from method TasksClient.Get.
-type TasksClientGetResponse struct {
-	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
-	Task
-}
-
-// TasksClientListResponse contains the response from method TasksClient.NewListPager.
-type TasksClientListResponse struct {
-	// The collection of tasks.
-	TaskListResult
-}
-
-// TasksClientUpdateResponse contains the response from method TasksClient.Update.
-type TasksClientUpdateResponse struct {
-	// The task that has the ARM resource and task properties.
-	// The task will have all information to schedule a run against it.
-	Task
 }
 
 // TokensClientCreateResponse contains the response from method TokensClient.BeginCreate.

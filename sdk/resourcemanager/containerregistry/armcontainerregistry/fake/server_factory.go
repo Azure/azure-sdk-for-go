@@ -16,9 +16,6 @@ import (
 
 // ServerFactory is a fake server for instances of the armcontainerregistry.ClientFactory type.
 type ServerFactory struct {
-	// AgentPoolsServer contains the fakes for client AgentPoolsClient
-	AgentPoolsServer AgentPoolsServer
-
 	// ArchiveVersionsServer contains the fakes for client ArchiveVersionsClient
 	ArchiveVersionsServer ArchiveVersionsServer
 
@@ -55,17 +52,8 @@ type ServerFactory struct {
 	// ReplicationsServer contains the fakes for client ReplicationsClient
 	ReplicationsServer ReplicationsServer
 
-	// RunsServer contains the fakes for client RunsClient
-	RunsServer RunsServer
-
 	// ScopeMapsServer contains the fakes for client ScopeMapsClient
 	ScopeMapsServer ScopeMapsServer
-
-	// TaskRunsServer contains the fakes for client TaskRunsClient
-	TaskRunsServer TaskRunsServer
-
-	// TasksServer contains the fakes for client TasksClient
-	TasksServer TasksServer
 
 	// TokensServer contains the fakes for client TokensClient
 	TokensServer TokensServer
@@ -88,7 +76,6 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                *ServerFactory
 	trMu                               sync.Mutex
-	trAgentPoolsServer                 *AgentPoolsServerTransport
 	trArchiveVersionsServer            *ArchiveVersionsServerTransport
 	trArchivesServer                   *ArchivesServerTransport
 	trCacheRulesServer                 *CacheRulesServerTransport
@@ -101,10 +88,7 @@ type ServerFactoryTransport struct {
 	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
 	trRegistriesServer                 *RegistriesServerTransport
 	trReplicationsServer               *ReplicationsServerTransport
-	trRunsServer                       *RunsServerTransport
 	trScopeMapsServer                  *ScopeMapsServerTransport
-	trTaskRunsServer                   *TaskRunsServerTransport
-	trTasksServer                      *TasksServerTransport
 	trTokensServer                     *TokensServerTransport
 	trWebhooksServer                   *WebhooksServerTransport
 }
@@ -122,9 +106,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AgentPoolsClient":
-		initServer(s, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
-		resp, err = s.trAgentPoolsServer.Do(req)
 	case "ArchiveVersionsClient":
 		initServer(s, &s.trArchiveVersionsServer, func() *ArchiveVersionsServerTransport {
 			return NewArchiveVersionsServerTransport(&s.srv.ArchiveVersionsServer)
@@ -173,18 +154,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ReplicationsClient":
 		initServer(s, &s.trReplicationsServer, func() *ReplicationsServerTransport { return NewReplicationsServerTransport(&s.srv.ReplicationsServer) })
 		resp, err = s.trReplicationsServer.Do(req)
-	case "RunsClient":
-		initServer(s, &s.trRunsServer, func() *RunsServerTransport { return NewRunsServerTransport(&s.srv.RunsServer) })
-		resp, err = s.trRunsServer.Do(req)
 	case "ScopeMapsClient":
 		initServer(s, &s.trScopeMapsServer, func() *ScopeMapsServerTransport { return NewScopeMapsServerTransport(&s.srv.ScopeMapsServer) })
 		resp, err = s.trScopeMapsServer.Do(req)
-	case "TaskRunsClient":
-		initServer(s, &s.trTaskRunsServer, func() *TaskRunsServerTransport { return NewTaskRunsServerTransport(&s.srv.TaskRunsServer) })
-		resp, err = s.trTaskRunsServer.Do(req)
-	case "TasksClient":
-		initServer(s, &s.trTasksServer, func() *TasksServerTransport { return NewTasksServerTransport(&s.srv.TasksServer) })
-		resp, err = s.trTasksServer.Do(req)
 	case "TokensClient":
 		initServer(s, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
 		resp, err = s.trTokensServer.Do(req)

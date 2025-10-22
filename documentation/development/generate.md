@@ -11,7 +11,7 @@
 
 Follow the environment set up instructions in [setup.md]. If generating a brand-new module, follow the prerequisite instructions for new SDKs, also in [setup.md].
 
-If you a re-generating an existing module, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<prefix-path>/Azure/azure-sdk-for-go`.
+If you are re-generating an existing module, fork the `azure-sdk-for-go` repository and clone it to a directory that looks like: `<prefix-path>/Azure/azure-sdk-for-go`.
 We use the `OneFlow` branching/workflow strategy with some minor variations.  See [repo branching][repo_branching] for further info.
 
 Please refer to the Azure [Go SDK API design guidelines][api_design] for detailed information on how to structure clients, their APIs, and more.

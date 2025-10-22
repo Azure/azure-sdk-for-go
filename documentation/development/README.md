@@ -1,6 +1,6 @@
 # Development Documentation
 
-This folder contains details on how to generate an Go SDK using the TypeSpec code generator.
+This folder contains details on how to generate a Go SDK using the TypeSpec code generator.
 
 Development Flow:
 * [Set Up](https://github.com/Azure/azure-sdk-for-go/tree/main/documentation/development/setup.md)

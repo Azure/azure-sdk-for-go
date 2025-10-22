@@ -16,30 +16,31 @@ import (
 	"strings"
 )
 
-// SubvolumesClient contains the methods for the Subvolumes group.
-// Don't use this type directly, use NewSubvolumesClient() instead.
-type SubvolumesClient struct {
+// BucketsClient contains the methods for the Buckets group.
+// Don't use this type directly, use NewBucketsClient() instead.
+type BucketsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSubvolumesClient creates a new instance of SubvolumesClient with the specified values.
+// NewBucketsClient creates a new instance of BucketsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewSubvolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubvolumesClient, error) {
+func NewBucketsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BucketsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SubvolumesClient{
+	client := &BucketsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreate - Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+// BeginCreateOrUpdate - Creates or updates a bucket for a volume. A bucket allows additional services, such as AI services,
+// connect to the volume data contained in those buckets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01-preview
@@ -47,38 +48,39 @@ func NewSubvolumesClient(subscriptionID string, credential azcore.TokenCredentia
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
 //   - volumeName - The name of the volume
-//   - subvolumeName - The name of the subvolume.
-//   - body - Subvolume object supplied in the body of the operation.
-//   - options - SubvolumesClientBeginCreateOptions contains the optional parameters for the SubvolumesClient.BeginCreate method.
-func (client *SubvolumesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumeInfo, options *SubvolumesClientBeginCreateOptions) (*runtime.Poller[SubvolumesClientCreateResponse], error) {
+//   - bucketName - The name of the bucket
+//   - body - The bucket details including user details, and the volume path that should be mounted inside the bucket.
+//   - options - BucketsClientBeginCreateOrUpdateOptions contains the optional parameters for the BucketsClient.BeginCreateOrUpdate
+//     method.
+func (client *BucketsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body Bucket, options *BucketsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BucketsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientCreateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BucketsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientCreateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BucketsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Create - Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+// CreateOrUpdate - Creates or updates a bucket for a volume. A bucket allows additional services, such as AI services, connect
+// to the volume data contained in those buckets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01-preview
-func (client *SubvolumesClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumeInfo, options *SubvolumesClientBeginCreateOptions) (*http.Response, error) {
+func (client *BucketsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body Bucket, options *BucketsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SubvolumesClient.BeginCreate"
+	const operationName = "BucketsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -86,16 +88,16 @@ func (client *SubvolumesClient) create(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
-func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumeInfo, _ *SubvolumesClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *BucketsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body Bucket, _ *BucketsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -116,10 +118,10 @@ func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	if subvolumeName == "" {
-		return nil, errors.New("parameter subvolumeName cannot be empty")
+	if bucketName == "" {
+		return nil, errors.New("parameter bucketName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
+	urlPath = strings.ReplaceAll(urlPath, "{bucketName}", url.PathEscape(bucketName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -135,7 +137,7 @@ func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// BeginDelete - Delete subvolume
+// BeginDelete - Delete a volume's bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01-preview
@@ -143,36 +145,36 @@ func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourc
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
 //   - volumeName - The name of the volume
-//   - subvolumeName - The name of the subvolume.
-//   - options - SubvolumesClientBeginDeleteOptions contains the optional parameters for the SubvolumesClient.BeginDelete method.
-func (client *SubvolumesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginDeleteOptions) (*runtime.Poller[SubvolumesClientDeleteResponse], error) {
+//   - bucketName - The name of the bucket
+//   - options - BucketsClientBeginDeleteOptions contains the optional parameters for the BucketsClient.BeginDelete method.
+func (client *BucketsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *BucketsClientBeginDeleteOptions) (*runtime.Poller[BucketsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BucketsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BucketsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete subvolume
+// Delete - Delete a volume's bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01-preview
-func (client *SubvolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *BucketsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *BucketsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SubvolumesClient.BeginDelete"
+	const operationName = "BucketsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +182,7 @@ func (client *SubvolumesClient) deleteOperation(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -188,8 +190,8 @@ func (client *SubvolumesClient) deleteOperation(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, _ *SubvolumesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
+func (client *BucketsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, _ *BucketsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -210,10 +212,10 @@ func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	if subvolumeName == "" {
-		return nil, errors.New("parameter subvolumeName cannot be empty")
+	if bucketName == "" {
+		return nil, errors.New("parameter bucketName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
+	urlPath = strings.ReplaceAll(urlPath, "{bucketName}", url.PathEscape(bucketName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -224,7 +226,8 @@ func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// Get - Returns the path associated with the subvolumeName provided
+// GenerateCredentials - Generate the access key and secret key used for accessing the specified volume bucket. Also return
+// expiry date and time of key pair (in UTC).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01-preview
@@ -232,33 +235,35 @@ func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourc
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
 //   - volumeName - The name of the volume
-//   - subvolumeName - The name of the subvolume.
-//   - options - SubvolumesClientGetOptions contains the optional parameters for the SubvolumesClient.Get method.
-func (client *SubvolumesClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientGetOptions) (SubvolumesClientGetResponse, error) {
+//   - bucketName - The name of the bucket
+//   - body - The bucket's Access and Secret key pair expiry time expressed as the number of days from now.
+//   - options - BucketsClientGenerateCredentialsOptions contains the optional parameters for the BucketsClient.GenerateCredentials
+//     method.
+func (client *BucketsClient) GenerateCredentials(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketCredentialsExpiry, options *BucketsClientGenerateCredentialsOptions) (BucketsClientGenerateCredentialsResponse, error) {
 	var err error
-	const operationName = "SubvolumesClient.Get"
+	const operationName = "BucketsClient.GenerateCredentials"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
+	req, err := client.generateCredentialsCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, body, options)
 	if err != nil {
-		return SubvolumesClientGetResponse{}, err
+		return BucketsClientGenerateCredentialsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SubvolumesClientGetResponse{}, err
+		return BucketsClientGenerateCredentialsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SubvolumesClientGetResponse{}, err
+		return BucketsClientGenerateCredentialsResponse{}, err
 	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.generateCredentialsHandleResponse(httpResp)
 	return resp, err
 }
 
-// getCreateRequest creates the Get request.
-func (client *SubvolumesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, _ *SubvolumesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
+// generateCredentialsCreateRequest creates the GenerateCredentials request.
+func (client *BucketsClient) generateCredentialsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketCredentialsExpiry, _ *BucketsClientGenerateCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}/generateCredentials"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -279,10 +284,94 @@ func (client *SubvolumesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	if subvolumeName == "" {
-		return nil, errors.New("parameter subvolumeName cannot be empty")
+	if bucketName == "" {
+		return nil, errors.New("parameter bucketName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
+	urlPath = strings.ReplaceAll(urlPath, "{bucketName}", url.PathEscape(bucketName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// generateCredentialsHandleResponse handles the GenerateCredentials response.
+func (client *BucketsClient) generateCredentialsHandleResponse(resp *http.Response) (BucketsClientGenerateCredentialsResponse, error) {
+	result := BucketsClientGenerateCredentialsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BucketGenerateCredentials); err != nil {
+		return BucketsClientGenerateCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
+// Get - Get the details of the specified volume's bucket. A bucket allows additional services, such as AI services, connect
+// to the volume data contained in those buckets.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - bucketName - The name of the bucket
+//   - options - BucketsClientGetOptions contains the optional parameters for the BucketsClient.Get method.
+func (client *BucketsClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *BucketsClientGetOptions) (BucketsClientGetResponse, error) {
+	var err error
+	const operationName = "BucketsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, options)
+	if err != nil {
+		return BucketsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BucketsClientGetResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return BucketsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *BucketsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, _ *BucketsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	if bucketName == "" {
+		return nil, errors.New("parameter bucketName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bucketName}", url.PathEscape(bucketName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -295,140 +384,49 @@ func (client *SubvolumesClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubvolumesClient) getHandleResponse(resp *http.Response) (SubvolumesClientGetResponse, error) {
-	result := SubvolumesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SubvolumeInfo); err != nil {
-		return SubvolumesClientGetResponse{}, err
+func (client *BucketsClient) getHandleResponse(resp *http.Response) (BucketsClientGetResponse, error) {
+	result := BucketsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Bucket); err != nil {
+		return BucketsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginGetMetadata - Get details of the specified subvolume
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Describes all buckets belonging to a volume. Buckets allow additional services, such as AI services, connect
+// to the volume data contained in those buckets.
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
 //   - volumeName - The name of the volume
-//   - subvolumeName - The name of the subvolume.
-//   - options - SubvolumesClientBeginGetMetadataOptions contains the optional parameters for the SubvolumesClient.BeginGetMetadata
-//     method.
-func (client *SubvolumesClient) BeginGetMetadata(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginGetMetadataOptions) (*runtime.Poller[SubvolumesClientGetMetadataResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getMetadata(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientGetMetadataResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientGetMetadataResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetMetadata - Get details of the specified subvolume
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
-func (client *SubvolumesClient) getMetadata(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginGetMetadataOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SubvolumesClient.BeginGetMetadata"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getMetadataCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// getMetadataCreateRequest creates the GetMetadata request.
-func (client *SubvolumesClient) getMetadataCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, _ *SubvolumesClientBeginGetMetadataOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}/getMetadata"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	if subvolumeName == "" {
-		return nil, errors.New("parameter subvolumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// NewListByVolumePager - Returns a list of the subvolumes in the volume
-//
-// Generated from API version 2025-07-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - volumeName - The name of the volume
-//   - options - SubvolumesClientListByVolumeOptions contains the optional parameters for the SubvolumesClient.NewListByVolumePager
-//     method.
-func (client *SubvolumesClient) NewListByVolumePager(resourceGroupName string, accountName string, poolName string, volumeName string, options *SubvolumesClientListByVolumeOptions) *runtime.Pager[SubvolumesClientListByVolumeResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SubvolumesClientListByVolumeResponse]{
-		More: func(page SubvolumesClientListByVolumeResponse) bool {
+//   - options - BucketsClientListOptions contains the optional parameters for the BucketsClient.NewListPager method.
+func (client *BucketsClient) NewListPager(resourceGroupName string, accountName string, poolName string, volumeName string, options *BucketsClientListOptions) *runtime.Pager[BucketsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BucketsClientListResponse]{
+		More: func(page BucketsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SubvolumesClientListByVolumeResponse) (SubvolumesClientListByVolumeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubvolumesClient.NewListByVolumePager")
+		Fetcher: func(ctx context.Context, page *BucketsClientListResponse) (BucketsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BucketsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByVolumeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 			}, nil)
 			if err != nil {
-				return SubvolumesClientListByVolumeResponse{}, err
+				return BucketsClientListResponse{}, err
 			}
-			return client.listByVolumeHandleResponse(resp)
+			return client.listHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByVolumeCreateRequest creates the ListByVolume request.
-func (client *SubvolumesClient) listByVolumeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *SubvolumesClientListByVolumeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes"
+// listCreateRequest creates the List request.
+func (client *BucketsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *BucketsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -460,16 +458,16 @@ func (client *SubvolumesClient) listByVolumeCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// listByVolumeHandleResponse handles the ListByVolume response.
-func (client *SubvolumesClient) listByVolumeHandleResponse(resp *http.Response) (SubvolumesClientListByVolumeResponse, error) {
-	result := SubvolumesClientListByVolumeResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SubvolumesList); err != nil {
-		return SubvolumesClientListByVolumeResponse{}, err
+// listHandleResponse handles the List response.
+func (client *BucketsClient) listHandleResponse(resp *http.Response) (BucketsClientListResponse, error) {
+	result := BucketsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BucketList); err != nil {
+		return BucketsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Patch a subvolume
+// BeginUpdate - Updates the details of a volume bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01-preview
@@ -477,37 +475,38 @@ func (client *SubvolumesClient) listByVolumeHandleResponse(resp *http.Response) 
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
 //   - volumeName - The name of the volume
-//   - subvolumeName - The name of the subvolume.
-//   - body - Subvolume object supplied in the body of the operation.
-//   - options - SubvolumesClientBeginUpdateOptions contains the optional parameters for the SubvolumesClient.BeginUpdate method.
-func (client *SubvolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, options *SubvolumesClientBeginUpdateOptions) (*runtime.Poller[SubvolumesClientUpdateResponse], error) {
+//   - bucketName - The name of the bucket
+//   - body - The bucket details including user details, and the volume path that should be mounted inside the bucket.
+//   - options - BucketsClientBeginUpdateOptions contains the optional parameters for the BucketsClient.BeginUpdate method.
+func (client *BucketsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketPatch, options *BucketsClientBeginUpdateOptions) (*runtime.Poller[BucketsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
+		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BucketsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BucketsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Patch a subvolume
+// Update - Updates the details of a volume bucket.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01-preview
-func (client *SubvolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, options *SubvolumesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *BucketsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketPatch, options *BucketsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SubvolumesClient.BeginUpdate"
+	const operationName = "BucketsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -523,8 +522,8 @@ func (client *SubvolumesClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SubvolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, _ *SubvolumesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}"
+func (client *BucketsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketPatch, _ *BucketsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -545,10 +544,10 @@ func (client *SubvolumesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter volumeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	if subvolumeName == "" {
-		return nil, errors.New("parameter subvolumeName cannot be empty")
+	if bucketName == "" {
+		return nil, errors.New("parameter bucketName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subvolumeName}", url.PathEscape(subvolumeName))
+	urlPath = strings.ReplaceAll(urlPath, "{bucketName}", url.PathEscape(bucketName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

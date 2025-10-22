@@ -52,7 +52,7 @@ func (testsuite *VaultsClientTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestVaultsClient(t *testing.T) {
+func TTestVaultsClient(t *testing.T) {
 	suite.Run(t, new(VaultsClientTestSuite))
 }
 

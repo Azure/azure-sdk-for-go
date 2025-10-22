@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -276,11 +276,11 @@ func (t *TaskAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		maxpagesizeUnescaped, err := url.QueryUnescape(qp.Get("$maxpagesize"))
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
 		if err != nil {
 			return nil, err
 		}
-		maxpagesizeParam, err := parseOptional(maxpagesizeUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -291,9 +291,9 @@ func (t *TaskAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 			return nil, err
 		}
 		var options *armstorage.TaskAssignmentsClientListOptions
-		if maxpagesizeParam != nil {
+		if topParam != nil {
 			options = &armstorage.TaskAssignmentsClientListOptions{
-				Maxpagesize: maxpagesizeParam,
+				Top: topParam,
 			}
 		}
 		resp := t.srv.NewListPager(resourceGroupNameParam, accountNameParam, options)

@@ -4,5 +4,5 @@ This folder contains documentation for the Azure SDK for Go repository. For docu
 
 The folder structure is as follows:
 
-* [development][]- advanced documentation for SDK *developers* (not SDK consumers)
-* [legacy][]- information on previous SDK versions
+* [development](https://github.com/Azure/azure-sdk-for-go/tree/main/documentation/development)- advanced documentation for SDK *developers* (not SDK consumers)
+* [legacy](https://github.com/Azure/azure-sdk-for-go/tree/main/documentation/legacy)- information on previous SDK versions

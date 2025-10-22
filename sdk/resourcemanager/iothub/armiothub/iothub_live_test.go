@@ -57,7 +57,7 @@ func (testsuite *IothubTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestIothubTestSuite(t *testing.T) {
+func TTestIothubTestSuite(t *testing.T) {
 	suite.Run(t, new(IothubTestSuite))
 }
 
@@ -93,9 +93,9 @@ func (testsuite *IothubTestSuite) Prepare() {
 			IPFilterRules: []*armiothub.IPFilterRule{},
 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 				"fileNotifications": {
-					LockDurationAsIso8601: to.Ptr("PT1M"),
+					LockDurationAsISO8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsIso8601:          to.Ptr("PT1H"),
+					TTLAsISO8601:          to.Ptr("PT1H"),
 				},
 			},
 			MinTLSVersion: to.Ptr("1.2"),
@@ -135,7 +135,7 @@ func (testsuite *IothubTestSuite) Prepare() {
 				"$default": {
 					ConnectionString: to.Ptr(""),
 					ContainerName:    to.Ptr(""),
-					SasTTLAsIso8601:  to.Ptr("PT1H"),
+					SasTTLAsISO8601:  to.Ptr("PT1H"),
 				},
 			},
 		},

@@ -13,7 +13,7 @@ If you are an existing user of the older version of Azure management library for
 
 ## Prerequisites
 
-You will need [supported](../README.md#go-version-support) version of Go and latest version of resource management modules.
+You will need [supported](https://github.com/Azure/azure-sdk-for-go/blob/main/README.md#go-version-support) version of Go and latest version of resource management modules.
 
 You will need to authenticate to Azure either by using Azure CLI to sign in or setting environment variables.
 

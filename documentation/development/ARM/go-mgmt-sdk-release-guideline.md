@@ -40,13 +40,13 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 
 ### 1. Release Request
 - Release requests are initiated by the service team and should be submitted monthly.
-- A request is created as an issue at: Azure's private `sdk-release-request` repo
+- A request is created as an issue at: [Release Request Issues](https://github.com/Azure/sdk-release-request/issues).
 - To process the request, use the following query: 
 `is:issue state:open label:Go -label:HoldOn created:2024-09-27..2024-10-15`
 
 ### 2. General Release Guidelines
 - All requests should be completed before the 4th Friday of the month.
-- The issue may be labeled "ReadyForApiTest," or the live test about the service is ok indicating readiness.It appears in specs repo PR,[like](Azure/azure-rest-api-specs#33035)
+- The issue may be labeled "ReadyForApiTest," or the live test about the service is ok indicating readiness.It appears in specs repo PR,[like](https://github.com/Azure/azure-rest-api-specs/pull/33035)
 - Ensure the "API Availability Check" passes for all services before releasing.
 
 ### 3. Update Existing RP

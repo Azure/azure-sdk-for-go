@@ -6,7 +6,7 @@ This document is intended for users that are familiar with the previous versions
 
 - [Prerequisites](#prerequisites)
 - [Package mapping](#package-mapping)
-- [API changes](#API-changes)
+- [API changes](#api-changes)
 
 ## Prerequisites
 

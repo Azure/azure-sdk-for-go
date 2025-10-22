@@ -14,7 +14,10 @@ import (
 	"time"
 
 	"github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+	"github.com/google/uuid"
 )
 
 const defaultConcurrency = 32
@@ -94,13 +97,13 @@ sendLoop:
 	wg.Wait()
 	close(errs)
 
-	var firstErr error
+	var collected []error
 	for e := range errs {
-		if firstErr == nil {
-			firstErr = e
+		if e != nil {
+			collected = append(collected, e)
 		}
 	}
-	return firstErr
+	return errors.Join(collected...)
 }
 
 func upsertItemsConcurrently(ctx context.Context, container *azcosmos.ContainerClient, count int, pkField string) error {
@@ -193,7 +196,16 @@ func CreateClient(cfg workloadConfig) (*azcosmos.Client, error) {
 		return nil, err
 	}
 	log.Printf("Creating client for endpoint %s with preferred regions: %v", cfg.Endpoint, cfg.PreferredLocations)
+	telemetryOpts := policy.TelemetryOptions{
+		// create a random guid for the application ID to distinguish this workload's telemetry
+		ApplicationID: uuid.New().String(),
+	}
+	// log application ID for correlating requests in service
+	log.Printf("Using ApplicationID: %s", telemetryOpts.ApplicationID)
 	opts := &azcosmos.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Telemetry: telemetryOpts,
+		},
 		PreferredRegions: cfg.PreferredLocations,
 	}
 	return azcosmos.NewClientWithKey(cfg.Endpoint, cred, opts)

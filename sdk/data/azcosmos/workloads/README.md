@@ -23,10 +23,10 @@ and scalability of the SDK under various conditions.
    - `NUMBER_OF_LOGICAL_PARTITIONS`
    - `THROUGHPUT`
    - `PREFERRED_LOCATIONS`
+1. Set `AZURE_SDK_GO_LOGGING` env variable to "all" for detailed logs
 1. Run the scale workload
     - `go run ./main/main.go`
 
 ### Monitor Run
 - `ps -eaf | grep "go"` to see the running processes
 
-`

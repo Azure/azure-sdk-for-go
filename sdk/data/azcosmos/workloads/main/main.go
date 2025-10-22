@@ -25,8 +25,8 @@ func main() {
 	// Optional: set flags to include date/time/file info
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.Lshortfile)
 
-	// max run the workload for 12 hours
-	ctx, cancel := context.WithTimeout(context.Background(), 12*60*time.Minute)
+	// max run the workload for 36 hours
+	ctx, cancel := context.WithTimeout(context.Background(), 36*60*time.Minute)
 	defer cancel()
 
 	cfg, err := workloads.LoadConfig()

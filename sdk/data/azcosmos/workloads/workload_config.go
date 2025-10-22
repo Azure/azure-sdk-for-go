@@ -1,9 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package workloads
 
 import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // Configuration loaded from environment (mirrors the Python version)
@@ -80,30 +84,8 @@ func LoadConfig() (workloadConfig, error) {
 
 	// Comma-separated preferred locations (optional)
 	if pl := os.Getenv("PREFERRED_LOCATIONS"); pl != "" {
-		// Simple split on comma; whitespace trimming omitted for brevity
-		cfg.PreferredLocations = splitAndTrim(pl, ',')
+		// Simple split on comma;
+		cfg.PreferredLocations = strings.Split(pl, ",")
 	}
 	return cfg, nil
-}
-
-func splitAndTrim(s string, sep rune) []string {
-	if s == "" {
-		return nil
-	}
-	out := []string{}
-	cur := ""
-	for _, r := range s {
-		if r == sep {
-			if cur != "" {
-				out = append(out, cur)
-				cur = ""
-			}
-			continue
-		}
-		cur += string(r)
-	}
-	if cur != "" {
-		out = append(out, cur)
-	}
-	return out
 }

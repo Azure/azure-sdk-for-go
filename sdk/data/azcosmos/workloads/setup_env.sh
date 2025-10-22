@@ -7,7 +7,7 @@ set -e
 
 # 1. System update and install dependencies
 echo "[Step 1] System update and install dependencies: started."
-sudo apt-get update
+sudo apt update
 sudo apt  install golang-go
 sudo apt install neovim
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash

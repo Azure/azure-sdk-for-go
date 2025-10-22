@@ -4,6 +4,11 @@
 
 package armdependencymap
 
+const (
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dependencymap/armdependencymap"
+	moduleVersion = "v0.1.0"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -40,27 +45,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// ExportDependenciesStatusCode - Status codes for export dependencies operation
-type ExportDependenciesStatusCode string
-
-const (
-	// ExportDependenciesStatusCodeCompleteMatch - Operation completed with data found for the entire requested time range
-	ExportDependenciesStatusCodeCompleteMatch ExportDependenciesStatusCode = "CompleteMatch"
-	// ExportDependenciesStatusCodeNoMatch - Operation completed but no data was found for the requested time range
-	ExportDependenciesStatusCodeNoMatch ExportDependenciesStatusCode = "NoMatch"
-	// ExportDependenciesStatusCodePartialMatch - Operation completed with data found for a portion of the requested time range
-	ExportDependenciesStatusCodePartialMatch ExportDependenciesStatusCode = "PartialMatch"
-)
-
-// PossibleExportDependenciesStatusCodeValues returns the possible values for the ExportDependenciesStatusCode const type.
-func PossibleExportDependenciesStatusCodeValues() []ExportDependenciesStatusCode {
-	return []ExportDependenciesStatusCode{
-		ExportDependenciesStatusCodeCompleteMatch,
-		ExportDependenciesStatusCodeNoMatch,
-		ExportDependenciesStatusCodePartialMatch,
 	}
 }
 

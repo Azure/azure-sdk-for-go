@@ -29,7 +29,7 @@ type MapsServer struct {
 	BeginDelete func(ctx context.Context, resourceGroupName string, mapName string, options *armdependencymap.MapsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdependencymap.MapsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginExportDependencies is the fake for method MapsClient.BeginExportDependencies
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginExportDependencies func(ctx context.Context, resourceGroupName string, mapName string, body armdependencymap.ExportDependenciesRequest, options *armdependencymap.MapsClientBeginExportDependenciesOptions) (resp azfake.PollerResponder[armdependencymap.MapsClientExportDependenciesResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MapsClient.Get
@@ -165,7 +165,7 @@ func (m *MapsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdependencymap.MapsResource](req)
@@ -213,7 +213,7 @@ func (m *MapsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Resp
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -257,7 +257,7 @@ func (m *MapsServerTransport) dispatchBeginExportDependencies(req *http.Request)
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportDependencies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdependencymap.ExportDependenciesRequest](req)
@@ -285,9 +285,9 @@ func (m *MapsServerTransport) dispatchBeginExportDependencies(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		m.beginExportDependencies.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginExportDependencies) {
 		m.beginExportDependencies.remove(req)
@@ -303,7 +303,7 @@ func (m *MapsServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
+	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -338,7 +338,7 @@ func (m *MapsServerTransport) dispatchBeginGetConnectionsForProcessOnFocusedMach
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getConnectionsForProcessOnFocusedMachine`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdependencymap.GetConnectionsForProcessOnFocusedMachineRequest](req)
@@ -386,7 +386,7 @@ func (m *MapsServerTransport) dispatchBeginGetConnectionsWithConnectedMachineFor
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getConnectionsWithConnectedMachineForFocusedMachine`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdependencymap.GetConnectionsWithConnectedMachineForFocusedMachineRequest](req)
@@ -434,7 +434,7 @@ func (m *MapsServerTransport) dispatchBeginGetDependencyViewForFocusedMachine(re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getDependencyViewForFocusedMachine`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdependencymap.GetDependencyViewForFocusedMachineRequest](req)
@@ -482,7 +482,7 @@ func (m *MapsServerTransport) dispatchNewListByResourceGroupPager(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
+		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -519,7 +519,7 @@ func (m *MapsServerTransport) dispatchNewListBySubscriptionPager(req *http.Reque
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
+		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := m.srv.NewListBySubscriptionPager(nil)
@@ -552,7 +552,7 @@ func (m *MapsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Resp
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DependencyMap/maps/(?P<mapName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdependencymap.MapsResourceTagsUpdate](req)

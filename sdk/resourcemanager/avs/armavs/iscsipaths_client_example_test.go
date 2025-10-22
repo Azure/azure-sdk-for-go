@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/IscsiPaths_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/IscsiPaths_CreateOrUpdate.json
 func ExampleIscsiPathsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleIscsiPathsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/IscsiPaths_Delete.json
+// Generated from example definition: 2025-09-01/IscsiPaths_Delete.json
 func ExampleIscsiPathsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleIscsiPathsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/IscsiPaths_Get.json
+// Generated from example definition: 2025-09-01/IscsiPaths_Get.json
 func ExampleIscsiPathsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleIscsiPathsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/IscsiPaths_List.json
+// Generated from example definition: 2025-09-01/IscsiPaths_List.json
 func ExampleIscsiPathsClient_NewListByPrivateCloudPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

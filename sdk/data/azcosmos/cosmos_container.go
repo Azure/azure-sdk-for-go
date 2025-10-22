@@ -456,7 +456,7 @@ func (c *ContainerClient) ReadManyItems(
 	ctx context.Context,
 	partitionKey PartitionKey,
 	itemIdentities []ItemIdentity,
-	o *ReadManyOptions) ([]ItemResponse, error) {
+	o *ReadManyOptions) ([]ReadManyItemsResponse, error) {
 	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{
 		partitionKey:         &partitionKey,

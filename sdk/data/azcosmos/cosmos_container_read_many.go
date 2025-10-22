@@ -11,7 +11,7 @@ import (
 )
 
 // Executes a query using the provided query engine.
-func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, queryOptions *QueryOptions, operationContext pipelineRequestOptions) []ReadManyItemsResponse {
+func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions) ([]ReadManyItemsResponse, error) {
 	// NOTE: The current interface for runtime.Pager means we're probably going to risk leaking the pipeline, if it's provided by a native query engine.
 	// There's no "Close" method, which means we can't call `queryengine.QueryPipeline.Close()` when we're done.
 	// We _do_ close the pipeline if the user iterates the entire pager, but if they don't we don't have a way to clean up.
@@ -20,11 +20,11 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 
 	// if empty list of items, return empty list
 	if len(items) == 0 {
-		return []ReadManyItemsResponse{}
+		return []ReadManyItemsResponse{}, nil
 	}
 
 	// get the partition key ranges for the container
-	rawPartitionKeyRanges, err := c.getPartitionKeyRangesRaw(context.Background(), nil)
+	rawPartitionKeyRanges, err := c.getPartitionKeyRangesRaw(context.Background(), operationContext)
 	if err != nil {
 		// if we can't get the partition key ranges, return empty map
 		return nil, errors.New("failed to get partition key ranges: " + err.Error())
@@ -38,7 +38,7 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 
 	// call client engine here to group the partition key ranges
 	// create query chunks for each physical partition
-	queries := queryEngine.createQueryChunks(rawPartitionKeyRanges, items, containeRsp.ContainerProperties.PartitionKeyDefinition.Kind, containeRsp.ContainerProperties.PartitionKeyDefinition.Version)
+	queries := queryEngine.CreateReadManyPipeline(rawPartitionKeyRanges, items, containeRsp.ContainerProperties.PartitionKeyDefinition.Kind, containeRsp.ContainerProperties.PartitionKeyDefinition.Version)
 
 	// execute queries concurrently
 

@@ -6,6 +6,7 @@ package queryengine
 // QueryEngine is an interface that defines the methods for a query engine.
 type QueryEngine interface {
 	CreateQueryPipeline(query string, plan string, pkranges string) (QueryPipeline, error)
+	CreateReadManyPipeline(partitionKeyRangesData []byte, items []ItemIdentity, pkKind PartitionKeyKind, pkVersion int32) (ReadManyPipeline, error)
 	SupportedFeatures() string
 }
 
@@ -52,6 +53,20 @@ type PipelineResult struct {
 
 // QueryPipeline is an interface that defines the methods for a query pipeline.
 type QueryPipeline interface {
+	// Query returns the query text, possibly rewritten by the gateway, which will be used for per-partition queries.
+	Query() string
+	// IsComplete gets a boolean indicating if the pipeline has concluded
+	IsComplete() bool
+	// Run executes a single turn of the pipeline, yielding a PipelineResult containing the items and requests for more data.
+	Run() (*PipelineResult, error)
+	// ProvideData provides more data for a given partition key range ID, using data retrieved from the server in response to making a DataRequest.
+	ProvideData(data QueryResult) error
+	// Close frees the resources associated with the pipeline.
+	Close()
+}
+
+// QueryPipeline is an interface that defines the methods for a query pipeline.
+type ReadManyPipeline interface {
 	// Query returns the query text, possibly rewritten by the gateway, which will be used for per-partition queries.
 	Query() string
 	// IsComplete gets a boolean indicating if the pipeline has concluded

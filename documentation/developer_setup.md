@@ -35,33 +35,12 @@ All directory structures **MUST** be approved by the Go SDK team (contact azsdkg
 
 For more information, please consult the Azure Go SDK design guidelines on [directory structure][directory_structure].
 
-If your SDK won't be generated from OpenAPI (aka swagger) files, skip to the [next section](#create-module-skeleton).
-
-Once the directory structure has been created, you must decide if your SDK will directly export generated types (commonly referred to as a code generated client).
-The alternative is to make the generated content internal and export hand-written types, possibly along with generated types via type aliasing.
-
-### Code Generated Clients
-
-An SDK that uses code generated clients directly exposes the Autorest-generated code to consumers of the module and is the preferred approach.
-The [azkeys][azkeys_directory] module is an example of a code generated client (CGC).
-
-Note that for data-plane CGCs, client constructors must be hand-written as there's no consistent form of authentication across data-plane services.
-
-### Internally Generated Clients
-
-Internally generated clients are used when the Autorest-generated code isn't fit for direct, public consumption.
-In this design, the generated code is placed under an `/internal` directory, prohibiting it from being directly imported by module consumers,
-and all publicly exposed content is either hand-written or a type alias of internal types (see `Alias declarations` in the [Go language specification][type_declarations] for more info on creating type aliases).
-
-The [aztables][aztables_directory] modules is an example that uses internally generated clients.
-
 ## Create Module Skeleton
 
 There are several files required to be in the root directory of your module.
 
 - CHANGELOG.md for tracking released changes
 - LICENSE.txt is the MIT license file
-- NOTICE.txt for legal attributions
 - README.md for getting started
 - ci.yml for PR and release pipelines
 - go.mod defines the Go module
@@ -100,33 +79,41 @@ tsp-client bundles up the client generation process into a single program, makin
 
 Setting up your project involves a few steps:
 
-1. Add the typespec-go emitter for your TypeSpec project to the `tspconfig.yaml` in azure-rest-api-specs: ([example](https://github.com/Azure/azure-rest-api-specs/blob/2bde125befabb21807a2021765901f20e3e74ec8/specification/eventgrid/Azure.Messaging.EventGrid/tspconfig.yaml#L55)).
+1. Add the go configuration to your TypeSpec project in the `tspconfig.yaml` file in azure-rest-api-specs: ([example](https://github.com/Azure/azure-rest-api-specs/blob/bd235f0c4ef6b3887dae6658a0a3a766a6fa4887/specification/eventgrid/Azure.Messaging.EventGrid/tspconfig.yaml#L57)).
 
 	```yaml
 	# other YAML elided
 	options:
 	  # other emitters elided
 	  "@azure-tools/typespec-go":
-        module: "github.com/Azure/azure-sdk-for-go/sdk/<path to your 'az' package goes here>"
-        module-version: "0.0.1"
-        emitter-output-dir: "{project-root}"
+		module: "github.com/Azure/azure-sdk-for-go/{service-dir}/aznamespaces"
+		service-dir: "sdk/messaging/eventgrid"
+		emitter-output-dir: "{output-dir}/{service-dir}/aznamespaces"
 	```
 2. Create a tsp-location.yaml file at the root of your module directory. This file gives the location and commit that should be used to generate your code: ([example](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/eventgrid/aznamespaces/tsp-location.yaml)).
-
-3. Install `tsp-client`: [(instructions)](https://github.com/Azure/azure-sdk-tools/blob/main/tools/tsp-client/README.md)
-4. Create a `build.go` file, and add `go generate` commands to run tsp-client: ([example](https://github.com/Azure/azure-sdk-for-go/blob/656c879ce93a0bc011d60df1f7b300620be08f82/sdk/messaging/eventgrid/aznamespaces/build.go#L4)).
-    
-	NOTE: the formatting here is _very_ important:
-	```go
-    //go:generate tsp-client update
-    //go:generate goimports -w .
+	``` yaml
+	directory: specification/eventgrid/Azure.Messaging.EventGrid
+	commit: 8d6deb81acb126a071f6f7dbf18d87a49a82e7e2
+	repo: Azure/azure-rest-api-specs
 	```
 
-4. In a terminal, `cd` into your package folder and type `go generate`. This should run without error and will create a client, along with code needed to serialize and deserialize models.
+3. Install [`tsp-client`](https://github.com/Azure/azure-sdk-tools/blob/main/tools/tsp-client/README.md). If already installed, be sure to update to the latest version.
+4. In a terminal, `cd` into your package folder and type `tsp-client update`. This should run without error and will create a client, along with code needed to serialize and deserialize models.
 
-### Using Autorest
+	```shell
+	azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces$ tsp-client update
+	```
 
-If your SDK doesn't require any Autorest-generated content, please skip this section.
+	To generate using a local TypeSpec project,
+	```shell
+	azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces$ tsp-client update --local-spec-repo <path to TypeSpec project>
+	```
+
+Generated code **must not** be edited, as any edits would be lost on future regeneration of content. To make customizations, update the TypeSpec project's `client.tsp` file then regenerate.
+
+### Using Autorest **DEPRECATED**
+
+If your SDK doesn't require any Autorest-generated content, please skip this section. All new SDKs should be created using TypeSpec.
 
 When using [Autorest][autorest_intro] to generate code, it's best to create a configuration file that contains all of the parameters.
 This ensures that the build is repeatable and any changes are documented.
@@ -168,7 +155,7 @@ Testing is built into the Go toolchain as well with the `testing` library. The t
 | playback | `$ENV:AZURE_RECORD_MODE="playback"` | Running tests against recording HTTP interactiosn |
 | live | `$ENV:AZURE_RECORD_MODE="live"` | Bypassing test proxy, running against live service, and not recording HTTP interactions (used by live pipelines) |
 
-By default the [recording](recording_package) package will automatically install and run the test proxy server. If there are issues with auto-install or the proxy needs to be run standalone, it can be run manually instead. To get started first [install test-proxy][test_proxy_install] via the standalone executable, then to start the proxy, from the root of the repository, run the command `test-proxy start`. When invoking tests, set the environment variable `PROXY_MANUAL_START` to `true`.
+By default the recording package will automatically install and run the test proxy server. If there are issues with auto-install or the proxy needs to be run standalone, it can be run manually instead. To get started first [install test-proxy][test_proxy_install] via the standalone executable, then to start the proxy, from the root of the repository, run the command `test-proxy start`. When invoking tests, set the environment variable `PROXY_MANUAL_START` to `true`.
 
 ### Test Mode Options
 
@@ -411,11 +398,11 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [test_proxy_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy
 [test_proxy_install]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10
-[directory_structure]: https://azure.github.io/azure-sdk/golang_introduction.html
+[directory_structure]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
 [module_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
 [type_declarations]: https://go.dev/ref/spec#Type_declarations
 [azkeys_directory]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/security/keyvault/azkeys
-[aztables_directory]: https://github.com/Azure/azure-sdk-for-go/tree/sdk/data/aztables/v1.0.1/sdk/data/aztables
+[aztables_directory]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/data/aztables
 [aztemplate]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/template/aztemplate
 [api_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
 [vscode_go]: https://code.visualstudio.com/docs/languages/go
@@ -424,5 +411,4 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [autorest_intro]: https://github.com/Azure/autorest/blob/main/docs/readme.md
 [autorest_directives]: https://github.com/Azure/autorest/blob/main/docs/generate/directives.md
 [test_resources]: https://github.com/Azure/azure-sdk-tools/tree/main/eng/common/TestResources
-[recording_package]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/internal/recording
 [testable_examples]: https://go.dev/blog/examples

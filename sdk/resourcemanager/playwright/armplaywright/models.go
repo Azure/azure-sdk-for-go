@@ -27,12 +27,12 @@ type CheckNameAvailabilityResponse struct {
 	Reason *CheckNameAvailabilityReason
 }
 
-// FreeTrialProperties - Subscription-level location-based Playwright quota resource free-trial properties.
+// FreeTrialProperties - Subscription-level location-based Playwright quota free trial properties.
 type FreeTrialProperties struct {
-	// READ-ONLY; The free-trial state.
+	// READ-ONLY; The free trial state.
 	State *FreeTrialState
 
-	// READ-ONLY; Playwright workspace-id that has free-trial in the subscription.
+	// READ-ONLY; The workspace ID in GUID format that has free trial enabled in the subscription.
 	WorkspaceID *string
 }
 
@@ -92,11 +92,11 @@ type Quota struct {
 	// The resource-specific properties for this resource.
 	Properties *QuotaProperties
 
-	// READ-ONLY; The name of the PlaywrightQuota
-	Name *QuotaName
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -116,7 +116,7 @@ type QuotaListResult struct {
 
 // QuotaProperties - Subscription-level location-based Playwright quota resource properties.
 type QuotaProperties struct {
-	// READ-ONLY; The subscription-level location-based Playwright quota resource free-trial properties.
+	// READ-ONLY; The subscription-level location-based Playwright quota free trial properties.
 	FreeTrial *FreeTrialProperties
 
 	// READ-ONLY; The status of the last resource operation.
@@ -155,11 +155,11 @@ type Workspace struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the PlaywrightWorkspace
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -168,21 +168,21 @@ type Workspace struct {
 	Type *string
 }
 
-// WorkspaceFreeTrialProperties - Playwright workspace quota resource resource free-trial properties.
+// WorkspaceFreeTrialProperties - Playwright workspace quota free trial properties.
 type WorkspaceFreeTrialProperties struct {
-	// READ-ONLY; The free-trial allocated limit value eg. allocated free execution minutes.
+	// READ-ONLY; The allocated limit value (e.g., allocated free execution minutes).
 	AllocatedValue *int32
 
-	// READ-ONLY; The free-trial createdAt utcDateTime.
+	// READ-ONLY; The free trial creation timestamp in UTC.
 	CreatedAt *time.Time
 
-	// READ-ONLY; The free-trial expiryAt utcDateTime.
+	// READ-ONLY; The free trial expiration timestamp in UTC.
 	ExpiryAt *time.Time
 
-	// READ-ONLY; The free-trial percentage used.
+	// READ-ONLY; The percentage of the free trial quota used.
 	PercentageUsed *float32
 
-	// READ-ONLY; The free-trial used value eg. used free execution minutes.
+	// READ-ONLY; The used value (e.g., used free execution minutes).
 	UsedValue *float32
 }
 
@@ -197,19 +197,22 @@ type WorkspaceListResult struct {
 
 // WorkspaceProperties - Playwright workspace resource properties.
 type WorkspaceProperties struct {
-	// When enabled, this feature allows the workspace to use local auth (through service access token) for executing operations.
+	// Enables the workspace to use local authentication through service access tokens for operations.
 	LocalAuth *EnablementStatus
 
-	// This property sets the connection region for client workers to cloud-hosted browsers. If enabled, workers connect to browsers
-	// in the closest Azure region, ensuring lower latency. If disabled, workers connect to browsers in the Azure region in which
-	// the workspace was initially created.
+	// Controls the connection region for client workers to cloud-hosted browsers. When enabled, workers connect to browsers in
+	// the closest Azure region for lower latency. When disabled, workers connect to browsers in the Azure region where the workspace
+	// was created.
 	RegionalAffinity *EnablementStatus
 
-	// READ-ONLY; The workspace data plane URI.
+	// READ-ONLY; The workspace data plane service API URI.
 	DataplaneURI *string
 
 	// READ-ONLY; The status of the last resource operation.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The workspace ID in GUID format.
+	WorkspaceID *string
 }
 
 // WorkspaceQuota - Playwright workspace quota resource.
@@ -217,11 +220,11 @@ type WorkspaceQuota struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkspaceQuotaProperties
 
-	// READ-ONLY; The name of the PlaywrightWorkspaceQuota
-	Name *QuotaName
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -241,7 +244,7 @@ type WorkspaceQuotaListResult struct {
 
 // WorkspaceQuotaProperties - Playwright workspace quota resource properties.
 type WorkspaceQuotaProperties struct {
-	// READ-ONLY; The Playwright workspace quota resource free-trial properties.
+	// READ-ONLY; The Playwright workspace quota free trial properties.
 	FreeTrial *WorkspaceFreeTrialProperties
 
 	// READ-ONLY; The status of the last resource operation.
@@ -259,11 +262,11 @@ type WorkspaceUpdate struct {
 
 // WorkspaceUpdateProperties - The updatable properties of the PlaywrightWorkspace.
 type WorkspaceUpdateProperties struct {
-	// When enabled, this feature allows the workspace to use local auth (through service access token) for executing operations.
+	// Enables the workspace to use local authentication through service access tokens for operations.
 	LocalAuth *EnablementStatus
 
-	// This property sets the connection region for client workers to cloud-hosted browsers. If enabled, workers connect to browsers
-	// in the closest Azure region, ensuring lower latency. If disabled, workers connect to browsers in the Azure region in which
-	// the workspace was initially created.
+	// Controls the connection region for client workers to cloud-hosted browsers. When enabled, workers connect to browsers in
+	// the closest Azure region for lower latency. When disabled, workers connect to browsers in the Azure region where the workspace
+	// was created.
 	RegionalAffinity *EnablementStatus
 }

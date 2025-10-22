@@ -228,13 +228,15 @@ type CacheNodeDriveConfiguration struct {
 
 // CacheNodeEntity - Model representing Cache Node for ConnectedCache resource
 type CacheNodeEntity struct {
-	// Customer requested day of week for mcc install of auto update cycle
+	// Customer requested day of week for mcc install of auto update cycle. 0 is default no selection. 1-7 are days of week, 1
+	// is Sunday, 2 is Monday, etc.
 	AutoUpdateRequestedDay *int32
 
 	// Customer requested time of the day for mcc install of auto update cycle, should be hh:mm
 	AutoUpdateRequestedTime *string
 
-	// Customer requested week of month for mcc install of auto update cycle
+	// Customer requested week of month for mcc install of auto update cycle. 0 is default no selection. 1-5 are valid weeks of
+	// month, 1 is first week, 2 is second week, etc.
 	AutoUpdateRequestedWeek *int32
 
 	// Auto Update Ring Type which is slow or fast etc.
@@ -436,11 +438,11 @@ type CacheNodePreviewResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the Customer resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -580,11 +582,11 @@ type EnterpriseMccCacheNodeResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the ConnectedCache resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -613,11 +615,11 @@ type EnterpriseMccCustomerResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the Customer resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -647,11 +649,11 @@ type EnterprisePreviewResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the Customer resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -672,13 +674,10 @@ type EnterprisePreviewResourceListResult struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info *ErrorAdditionalInfoInfo
+	Info any
 
 	// READ-ONLY; The additional info type.
 	Type *string
-}
-
-type ErrorAdditionalInfoInfo struct {
 }
 
 // ErrorDetail - The error detail.
@@ -710,11 +709,11 @@ type IspCacheNodeResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the ConnectedCache resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -743,11 +742,11 @@ type IspCustomerResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the Customer resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -813,13 +812,15 @@ type MccCacheNodeInstallDetails struct {
 	Type *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.

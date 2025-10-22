@@ -70,10 +70,10 @@ type ConnectionString struct {
 
 // CustomerManagedKeyEncryptionProperties - Customer managed key encryption settings.
 type CustomerManagedKeyEncryptionProperties struct {
-	// REQUIRED; The identity used to access the key encryption key.
+	// The identity used to access the key encryption key.
 	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
 
-	// REQUIRED; The URI of the key vault key used for encryption.
+	// The URI of the key vault key used for encryption.
 	KeyEncryptionKeyURL *string
 }
 
@@ -126,11 +126,11 @@ type FirewallRule struct {
 	// The resource-specific properties for this resource.
 	Properties *FirewallRuleProperties
 
-	// READ-ONLY; The name of the mongo cluster firewall rule.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -177,10 +177,10 @@ func (i *IdentityProvider) GetIdentityProvider() *IdentityProvider { return i }
 
 // KeyEncryptionKeyIdentity - The identity used for key encryption key.
 type KeyEncryptionKeyIdentity struct {
-	// REQUIRED; The type of identity. Only 'UserAssignedIdentity' is supported.
+	// The type of identity. Only 'UserAssignedIdentity' is supported.
 	IdentityType *KeyEncryptionKeyIdentityType
 
-	// REQUIRED; The user assigned identity resource id.
+	// The user assigned identity resource id.
 	UserAssignedIdentityResourceID *string
 }
 
@@ -220,9 +220,6 @@ type MongoCluster struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; The name of the mongo cluster.
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -234,6 +231,9 @@ type MongoCluster struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -338,11 +338,11 @@ type PrivateEndpointConnectionResource struct {
 	// The resource-specific properties for this resource.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; The name of the private endpoint connection associated with the Azure resource.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -365,11 +365,11 @@ type PrivateLinkResource struct {
 	// The resource-specific properties for this resource.
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; The name of the private link associated with the Azure resource.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -492,11 +492,11 @@ type Replica struct {
 	// The resource-specific properties for this resource.
 	Properties *Properties
 
-	// READ-ONLY; The name of the mongo cluster firewall rule.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -554,14 +554,8 @@ type ShardingProperties struct {
 // StorageProperties - The storage properties of the cluster. This includes the data storage size and scaling applied to servers
 // in the cluster.
 type StorageProperties struct {
-	// The IOPs of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-	Iops *int64
-
 	// The size of the data disk assigned to each server.
 	SizeGb *int64
-
-	// The throughput of the storage assigned to each server. Only applicable if the type is 'PremiumSSDv2'.
-	Throughput *int64
 
 	// The type of storage to provision the cluster servers with.
 	Type *StorageType
@@ -617,6 +611,9 @@ type UpdateProperties struct {
 	// The Data API properties of the mongo cluster.
 	DataAPI *DataAPIProperties
 
+	// The encryption configuration for the cluster. Depends on identity being configured.
+	Encryption *EncryptionProperties
+
 	// The high availability properties of the mongo cluster.
 	HighAvailability *HighAvailabilityProperties
 
@@ -641,11 +638,11 @@ type User struct {
 	// The resource-specific properties for this resource.
 	Properties *UserProperties
 
-	// READ-ONLY; The name of the mongo cluster user.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

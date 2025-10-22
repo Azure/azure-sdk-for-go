@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/ExadbVmClusters_RemoveVms_MaximumSet_Gen.json
-func ExampleExadbVMClustersClient_BeginRemoveVMs() {
+// Generated from example definition: 2025-09-01/ExadbVmClusters_RemoveVms_MaximumSet_Gen.json
+func ExampleExadbVMClustersClient_BeginRemoveVMs_exadbVMClustersRemoveVmsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleExadbVMClustersClient_BeginRemoveVMs() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewExadbVMClustersClient().BeginRemoveVMs(ctx, "rgopenapi", "vmClusterName", armoracledatabase.RemoveVirtualMachineFromExadbVMClusterDetails{
+	poller, err := clientFactory.NewExadbVMClustersClient().BeginRemoveVMs(ctx, "rgopenapi", "exadbVmClusterName1", armoracledatabase.RemoveVirtualMachineFromExadbVMClusterDetails{
 		DbNodes: []*armoracledatabase.DbNodeDetails{
 			{
 				DbNodeID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/dbNodeName"),
@@ -44,8 +44,8 @@ func ExampleExadbVMClustersClient_BeginRemoveVMs() {
 	// 	ExadbVMCluster: &armoracledatabase.ExadbVMCluster{
 	// 		Properties: &armoracledatabase.ExadbVMClusterProperties{
 	// 			Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
-	// 			ClusterName: to.Ptr("hssswln"),
-	// 			BackupSubnetCidr: to.Ptr("fr"),
+	// 			ClusterName: to.Ptr("p"),
+	// 			BackupSubnetCidr: to.Ptr("ca"),
 	// 			NsgURL: to.Ptr("https://microsoft.com/a"),
 	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 			LifecycleState: to.Ptr(armoracledatabase.ExadbVMClusterLifecycleStateProvisioning),
@@ -56,17 +56,17 @@ func ExampleExadbVMClustersClient_BeginRemoveVMs() {
 	// 				IsHealthMonitoringEnabled: to.Ptr(true),
 	// 				IsIncidentLogsEnabled: to.Ptr(true),
 	// 			},
-	// 			DisplayName: to.Ptr("dyhkncxzzgcwlfkfygvqlvqbxekvkbhjprmuxtaukewjnfrrnfqgrqsjfgsayrezkspqplrduuomuvtpkqurcoqjdnadlvedgfngglcgafbxtcewxlgckvehhqgfwkokbjoqftunjsgfjwbdaftxoytsphydwogtlnfxxuzzjvqcrin"),
-	// 			Domain: to.Ptr("vzfak"),
+	// 			DisplayName: to.Ptr("displayname"),
+	// 			Domain: to.Ptr("akltvmctvumwfuqi"),
 	// 			EnabledEcpuCount: to.Ptr[int32](0),
 	// 			ExascaleDbStorageVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storageVaultName"),
-	// 			GridImageOcid: to.Ptr("ocid1.dbpatch.oc1..aaaaa3klq"),
+	// 			GridImageOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			GridImageType: to.Ptr(armoracledatabase.GridImageTypeReleaseUpdate),
-	// 			GiVersion: to.Ptr("mwuazccgbujljfeqjpttmwqmppliba"),
-	// 			Hostname: to.Ptr("tdn"),
+	// 			GiVersion: to.Ptr("caoxuvjqgvmmuiarwkfuyncdjmimamcxjworuduyaoqibdjqpkcngenvqvczysxxslqmcxwxpokgzcrwomnxstmqrxzvzfhgzfhnejtfsdqfbzozozjhsorbnapudixojbbp"),
+	// 			Hostname: to.Ptr("uwrzwwhrr"),
 	// 			LicenseModel: to.Ptr(armoracledatabase.LicenseModelLicenseIncluded),
-	// 			MemorySizeInGbs: to.Ptr[int32](6),
-	// 			NodeCount: to.Ptr[int32](8),
+	// 			MemorySizeInGbs: to.Ptr[int32](17),
+	// 			NodeCount: to.Ptr[int32](30),
 	// 			NsgCidrs: []*armoracledatabase.NsgCidr{
 	// 				{
 	// 					Source: to.Ptr("10.0.0.0/16"),
@@ -76,36 +76,36 @@ func ExampleExadbVMClustersClient_BeginRemoveVMs() {
 	// 					},
 	// 				},
 	// 			},
+	// 			ZoneOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			PrivateZoneOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
-	// 			ScanListenerPortTCP: to.Ptr[int32](9),
-	// 			ScanListenerPortTCPSSL: to.Ptr[int32](18),
-	// 			ListenerPort: to.Ptr[int32](20),
-	// 			Shape: to.Ptr("evenjblxxfsztdxlcr"),
+	// 			ScanListenerPortTCP: to.Ptr[int32](30),
+	// 			ScanListenerPortTCPSSL: to.Ptr[int32](14),
+	// 			ListenerPort: to.Ptr[int32](21),
+	// 			Shape: to.Ptr("pzfyfjznebdsakeira"),
 	// 			SSHPublicKeys: []*string{
-	// 				to.Ptr("wiseakllkohemfmnoyteg"),
+	// 				to.Ptr("wzzayf"),
 	// 			},
-	// 			SystemVersion: to.Ptr("udwsykstqawwjrvzebfyyccnjzhxtijvywlgnrkqxnboibyppistnbvqqsnsxmjnzeumgnatmarzfnjhglmtrknszthrxtwewwqjbkwytbhtjbgondtktkpvjmxdcuyjupr"),
-	// 			TimeZone: to.Ptr("ayuqnpfkasdzmxlfnkjzrenyogbvcysdbkstjhyjdgxygitlykihtwdiktilukyplgxovaonrqcqaviyaqgyrqfrklqvqyobnxgmzpqbgjhdtjdquhyqnvhavnqpfupaqhdedgdvfomeueeuwjjfiqiyxspybpyj"),
-	// 			TotalEcpuCount: to.Ptr[int32](56),
+	// 			SystemVersion: to.Ptr("ssqzevdtjtcnxpdspcyqzgdtmonqjj"),
+	// 			TimeZone: to.Ptr("lkqvpvoczhoytxmeukzepgqgpdvdnigwxfojzfanqhracxsvgchwahzcifrkxlknixdrsopatguwccnejgyehnwfrvfedlefgneiudaqxbqnjkjedmcjocfvjdabwlyridcjvhzmlomgotwvnqqsrdjufsmebedckwwurmdoddknnfsm"),
+	// 			TotalEcpuCount: to.Ptr[int32](10),
 	// 			VMFileSystemStorage: &armoracledatabase.ExadbVMClusterStorageDetails{
-	// 				TotalSizeInGbs: to.Ptr[int32](10),
+	// 				TotalSizeInGbs: to.Ptr[int32](18),
 	// 			},
-	// 			LifecycleDetails: to.Ptr("tl"),
-	// 			ScanDNSName: to.Ptr("ya"),
+	// 			LifecycleDetails: to.Ptr("pdxj"),
+	// 			ScanDNSName: to.Ptr("flhzkpubjcbmxuqhrvcmnqkrkgdchofgiemwxipjdsgmlwsccoirfvqeenhfnfkuzsw"),
 	// 			ScanIPIDs: []*string{
-	// 				to.Ptr("hdjuwrxrykhbuhtehlwm"),
+	// 				to.Ptr("n"),
 	// 			},
 	// 			ScanDNSRecordID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			SnapshotFileSystemStorage: &armoracledatabase.ExadbVMClusterStorageDetails{
-	// 				TotalSizeInGbs: to.Ptr[int32](10),
+	// 				TotalSizeInGbs: to.Ptr[int32](18),
 	// 			},
 	// 			TotalFileSystemStorage: &armoracledatabase.ExadbVMClusterStorageDetails{
-	// 				TotalSizeInGbs: to.Ptr[int32](10),
+	// 				TotalSizeInGbs: to.Ptr[int32](18),
 	// 			},
 	// 			VipIDs: []*string{
-	// 				to.Ptr("fleeucwejtkaxnquq"),
+	// 				to.Ptr("xpehfwvvh"),
 	// 			},
-	// 			ZoneOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			OciURL: to.Ptr("https://microsoft.com/a"),
 	// 			IormConfigCache: &armoracledatabase.ExadataIormConfig{
 	// 				DbPlans: []*armoracledatabase.DbIormConfig{
@@ -123,23 +123,59 @@ func ExampleExadbVMClustersClient_BeginRemoveVMs() {
 	// 			SubnetOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 		},
 	// 		Zones: []*string{
-	// 			to.Ptr("iupjvcfsbvfhrebwf"),
+	// 			to.Ptr("ozwhowofqaq"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key9683": to.Ptr("umnfswbmhxzsomcluslxhnxxika"),
+	// 			"key8577": to.Ptr("xkdpkp"),
 	// 		},
-	// 		Location: to.Ptr("xojp"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster"),
-	// 		Name: to.Ptr("joekjadzkdyqh"),
-	// 		Type: to.Ptr("ugekszbnqazqsofdniamlclolkcsi"),
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/exadbVmClusterName1"),
+	// 		Name: to.Ptr("exadbVmClusterName1"),
+	// 		Type: to.Ptr("qgezrxpcxrzx"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("ilrpjodjmvzhybazxipoplnql"),
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("lhjbxchqkaia"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-09T21:02:12.592Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/ExadbVmClusters_RemoveVms_MinimumSet_Gen.json
+func ExampleExadbVMClustersClient_BeginRemoveVMs_exadbVMClustersRemoveVmsMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExadbVMClustersClient().BeginRemoveVMs(ctx, "rgopenapi", "vmCluster1", armoracledatabase.RemoveVirtualMachineFromExadbVMClusterDetails{
+		DbNodes: []*armoracledatabase.DbNodeDetails{
+			{
+				DbNodeID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/dbNodeName"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.ExadbVMClustersClientRemoveVMsResponse{
+	// 	ExadbVMCluster: &armoracledatabase.ExadbVMCluster{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster1"),
+	// 		Location: to.Ptr("eastus"),
 	// 	},
 	// }
 }

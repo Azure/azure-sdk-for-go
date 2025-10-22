@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
+// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_CheckNameAvailability.json
 func ExampleWorkspacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleWorkspacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/PlaywrightWorkspaces_Delete.json
+// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_Delete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/PlaywrightWorkspaces_Update.json
+// Generated from example definition: 2025-09-01/PlaywrightWorkspaces_Update.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,6 +95,7 @@ func ExampleWorkspacesClient_Update() {
 	// 			DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
 	// 			RegionalAffinity: to.Ptr(armplaywright.EnablementStatusDisabled),
 	// 			LocalAuth: to.Ptr(armplaywright.EnablementStatusEnabled),
+	// 			WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),

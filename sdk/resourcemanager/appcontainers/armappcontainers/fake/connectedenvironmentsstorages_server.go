@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -20,13 +20,13 @@ import (
 
 // ConnectedEnvironmentsStoragesServer is a fake server for instances of the armappcontainers.ConnectedEnvironmentsStoragesClient type.
 type ConnectedEnvironmentsStoragesServer struct {
-	// CreateOrUpdate is the fake for method ConnectedEnvironmentsStoragesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, storageEnvelope armappcontainers.ConnectedEnvironmentStorage, options *armappcontainers.ConnectedEnvironmentsStoragesClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	// BeginCreateOrUpdate is the fake for method ConnectedEnvironmentsStoragesClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, storageEnvelope armappcontainers.ConnectedEnvironmentStorage, options *armappcontainers.ConnectedEnvironmentsStoragesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method ConnectedEnvironmentsStoragesClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, options *armappcontainers.ConnectedEnvironmentsStoragesClientDeleteOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsStoragesClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method ConnectedEnvironmentsStoragesClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, options *armappcontainers.ConnectedEnvironmentsStoragesClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsStoragesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ConnectedEnvironmentsStoragesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -41,13 +41,19 @@ type ConnectedEnvironmentsStoragesServer struct {
 // The returned ConnectedEnvironmentsStoragesServerTransport instance is connected to an instance of armappcontainers.ConnectedEnvironmentsStoragesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewConnectedEnvironmentsStoragesServerTransport(srv *ConnectedEnvironmentsStoragesServer) *ConnectedEnvironmentsStoragesServerTransport {
-	return &ConnectedEnvironmentsStoragesServerTransport{srv: srv}
+	return &ConnectedEnvironmentsStoragesServerTransport{
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsStoragesClientDeleteResponse]](),
+	}
 }
 
 // ConnectedEnvironmentsStoragesServerTransport connects instances of armappcontainers.ConnectedEnvironmentsStoragesClient to instances of ConnectedEnvironmentsStoragesServer.
 // Don't use this type directly, use NewConnectedEnvironmentsStoragesServerTransport instead.
 type ConnectedEnvironmentsStoragesServerTransport struct {
-	srv *ConnectedEnvironmentsStoragesServer
+	srv                 *ConnectedEnvironmentsStoragesServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsStoragesClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConnectedEnvironmentsStoragesServerTransport.
@@ -73,10 +79,10 @@ func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchToMethodFake(req 
 		}
 		if !intercepted {
 			switch method {
-			case "ConnectedEnvironmentsStoragesClient.CreateOrUpdate":
-				res.resp, res.err = c.dispatchCreateOrUpdate(req)
-			case "ConnectedEnvironmentsStoragesClient.Delete":
-				res.resp, res.err = c.dispatchDelete(req)
+			case "ConnectedEnvironmentsStoragesClient.BeginCreateOrUpdate":
+				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "ConnectedEnvironmentsStoragesClient.BeginDelete":
+				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "ConnectedEnvironmentsStoragesClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConnectedEnvironmentsStoragesClient.List":
@@ -100,81 +106,103 @@ func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchToMethodFake(req 
 	}
 }
 
-func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storages/(?P<storageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storages/(?P<storageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappcontainers.ConnectedEnvironmentStorage](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
+		if err != nil {
+			return nil, err
+		}
+		storageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, storageNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armappcontainers.ConnectedEnvironmentStorage](req)
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		c.beginCreateOrUpdate.remove(req)
 	}
-	storageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, storageNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectedEnvironmentStorage, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if c.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storages/(?P<storageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storages/(?P<storageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
+		if err != nil {
+			return nil, err
+		}
+		storageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, storageNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	connectedEnvironmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedEnvironmentName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	storageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
 	}
-	respr, errRespr := c.srv.Delete(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, storageNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
@@ -185,7 +213,7 @@ func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchGet(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storages/(?P<storageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -222,7 +250,7 @@ func (c *ConnectedEnvironmentsStoragesServerTransport) dispatchList(req *http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/connectedEnvironments/(?P<connectedEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storages`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])

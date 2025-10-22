@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/Cves_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Cves_ListByFirmware_MaximumSet_Gen.json
 func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("5C707B5F-6130-4F71-819E-953A28942E88", cred, nil)
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -38,37 +38,46 @@ func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMaximumSetGenGen
 		// 		Value: []*armiotfirmwaredefense.CveResource{
 		// 			{
 		// 				Properties: &armiotfirmwaredefense.CveResult{
-		// 					CveID: to.Ptr("guwxblqm"),
-		// 					ComponentID: to.Ptr("qlblnh"),
-		// 					ComponentVersion: to.Ptr("disgoptdyr"),
-		// 					ComponentName: to.Ptr("zwjxalfuzzphsocczpvxlizcz"),
-		// 					Severity: to.Ptr("vcgunbikcfuoo"),
+		// 					CveID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ComponentID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ComponentVersion: to.Ptr("1.0.0"),
+		// 					ComponentName: to.Ptr("apache"),
+		// 					Severity: to.Ptr("Medium"),
 		// 					Links: []*armiotfirmwaredefense.CveLink{
 		// 						{
-		// 							Href: to.Ptr("https://microsoft.com/a"),
-		// 							Label: to.Ptr("hdsddxexkzktpuirzqnzoeaaeorr"),
+		// 							Href: to.Ptr("https://httpd.apache.org/security/vulnerabilities_24.html"),
+		// 							Label: to.Ptr("https://httpd.apache.org/security/vulnerabilities_24.html"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
-		// 					CveName: to.Ptr("uitgwfpbjxrir"),
-		// 					EffectiveCvssScore: to.Ptr[float32](24),
+		// 					CveName: to.Ptr("CVE-2000-00001"),
+		// 					EffectiveCvssScore: to.Ptr[float32](7.4),
 		// 					EffectiveCvssVersion: to.Ptr[int32](3),
 		// 					CvssScores: []*armiotfirmwaredefense.CvssScore{
 		// 						{
-		// 							Version: to.Ptr[int32](23),
-		// 							Score: to.Ptr[float32](11),
+		// 							Version: to.Ptr[int32](3),
+		// 							Score: to.Ptr[float32](7.4),
 		// 						},
 		// 					},
-		// 					Description: to.Ptr("amkqkisdsbwtutktdabcolgzurwoou"),
+		// 					Component: &armiotfirmwaredefense.CveComponent{
+		// 						ComponentID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						Name: to.Ptr("apache"),
+		// 						Version: to.Ptr("1.0.0"),
+		// 					},
+		// 					CvssScore: to.Ptr("7.4"),
+		// 					CvssV2Score: to.Ptr("7.2"),
+		// 					CvssV3Score: to.Ptr("7.4"),
+		// 					CvssVersion: to.Ptr("3"),
+		// 					Description: to.Ptr("This is a sample description of the vulnerability."),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/07aed47b-60ad-4d6e-a07a-000000000000/resourceGroups/FirmwareAnalysisRG/providers/Microsoft.IoTFirmwareDefense/workspaces/default/firmwares/109a9886-50bf-85a8-9d75-000000000000/summaries/firmware"),
-		// 				Name: to.Ptr("espjqjxwjliweourxadzyauqxdscd"),
-		// 				Type: to.Ptr("rxytdtkxzbbkuovebnvjxtl"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ResourceGroupName/providers/Microsoft.IoTFirmwareDefense/workspaces/WorkspaceName/firmwares/00000000-0000-0000-0000-000000000000/cves/00000000-0000-0000-0000-000000000000"),
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				Type: to.Ptr("Microsoft.IoTFirmwareDefense/workspaces/firmwares/cves"),
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
-		// 					CreatedBy: to.Ptr("nqisshvdzqcxzbujvacin"),
+		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("of"),
+		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
 		// 				},
@@ -80,7 +89,7 @@ func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMaximumSetGenGen
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Cves_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Cves_ListByFirmware_MinimumSet_Gen.json
 func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +100,7 @@ func ExampleCvesClient_NewListByFirmwarePager_cvesListByFirmwareMinimumSetGen() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCvesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000", nil)
+	pager := clientFactory.NewCvesClient().NewListByFirmwarePager("FirmwareAnalysisRG", "default", "00000000-0000-0000-0000-000000000000", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

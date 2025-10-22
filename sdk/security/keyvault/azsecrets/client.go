@@ -7,13 +7,12 @@ package azsecrets
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
@@ -56,14 +55,12 @@ func (client *Client) BackupSecret(ctx context.Context, name string, options *Ba
 
 // backupSecretCreateRequest creates the BackupSecret request.
 func (client *Client) backupSecretCreateRequest(ctx context.Context, name string, _ *BackupSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/backup"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,14 +113,12 @@ func (client *Client) DeleteSecret(ctx context.Context, name string, options *De
 
 // deleteSecretCreateRequest creates the DeleteSecret request.
 func (client *Client) deleteSecretCreateRequest(ctx context.Context, name string, _ *DeleteSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -176,14 +171,12 @@ func (client *Client) GetDeletedSecret(ctx context.Context, name string, options
 
 // getDeletedSecretCreateRequest creates the GetDeletedSecret request.
 func (client *Client) getDeletedSecretCreateRequest(ctx context.Context, name string, _ *GetDeletedSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -237,15 +230,13 @@ func (client *Client) GetSecret(ctx context.Context, name string, version string
 
 // getSecretCreateRequest creates the GetSecret request.
 func (client *Client) getSecretCreateRequest(ctx context.Context, name string, version string, _ *GetSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/{secret-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{secret-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -298,10 +289,8 @@ func (client *Client) NewListDeletedSecretPropertiesPager(options *ListDeletedSe
 
 // listDeletedSecretPropertiesCreateRequest creates the ListDeletedSecretProperties request.
 func (client *Client) listDeletedSecretPropertiesCreateRequest(ctx context.Context, _ *ListDeletedSecretPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -354,10 +343,8 @@ func (client *Client) NewListSecretPropertiesPager(options *ListSecretProperties
 
 // listSecretPropertiesCreateRequest creates the ListSecretProperties request.
 func (client *Client) listSecretPropertiesCreateRequest(ctx context.Context, _ *ListSecretPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -411,14 +398,12 @@ func (client *Client) NewListSecretPropertiesVersionsPager(name string, options 
 
 // listSecretPropertiesVersionsCreateRequest creates the ListSecretPropertiesVersions request.
 func (client *Client) listSecretPropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListSecretPropertiesVersionsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/versions"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -470,21 +455,18 @@ func (client *Client) PurgeDeletedSecret(ctx context.Context, name string, optio
 
 // purgeDeletedSecretCreateRequest creates the PurgeDeletedSecret request.
 func (client *Client) purgeDeletedSecretCreateRequest(ctx context.Context, name string, _ *PurgeDeletedSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.6")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -521,14 +503,12 @@ func (client *Client) RecoverDeletedSecret(ctx context.Context, name string, opt
 
 // recoverDeletedSecretCreateRequest creates the RecoverDeletedSecret request.
 func (client *Client) recoverDeletedSecretCreateRequest(ctx context.Context, name string, _ *RecoverDeletedSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/deletedsecrets/{secret-name}/recover"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -580,10 +560,8 @@ func (client *Client) RestoreSecret(ctx context.Context, parameters RestoreSecre
 
 // restoreSecretCreateRequest creates the RestoreSecret request.
 func (client *Client) restoreSecretCreateRequest(ctx context.Context, parameters RestoreSecretParameters, _ *RestoreSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/restore"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -642,14 +620,12 @@ func (client *Client) SetSecret(ctx context.Context, name string, parameters Set
 
 // setSecretCreateRequest creates the SetSecret request.
 func (client *Client) setSecretCreateRequest(ctx context.Context, name string, parameters SetSecretParameters, _ *SetSecretOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -708,15 +684,13 @@ func (client *Client) UpdateSecretProperties(ctx context.Context, name string, v
 
 // updateSecretPropertiesCreateRequest creates the UpdateSecretProperties request.
 func (client *Client) updateSecretPropertiesCreateRequest(ctx context.Context, name string, version string, parameters UpdateSecretPropertiesParameters, _ *UpdateSecretPropertiesOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/secrets/{secret-name}/{secret-version}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(name))
 	urlPath = strings.ReplaceAll(urlPath, "{secret-version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}

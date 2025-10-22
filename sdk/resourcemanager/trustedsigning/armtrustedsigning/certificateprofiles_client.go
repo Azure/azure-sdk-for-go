@@ -42,7 +42,7 @@ func NewCertificateProfilesClient(subscriptionID string, credential azcore.Token
 // BeginCreate - Create a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - profileName - Certificate profile name.
@@ -70,7 +70,7 @@ func (client *CertificateProfilesClient) BeginCreate(ctx context.Context, resour
 // Create - Create a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 func (client *CertificateProfilesClient) create(ctx context.Context, resourceGroupName string, accountName string, profileName string, resource CertificateProfile, options *CertificateProfilesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificateProfilesClient.BeginCreate"
@@ -116,7 +116,7 @@ func (client *CertificateProfilesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,7 +129,7 @@ func (client *CertificateProfilesClient) createCreateRequest(ctx context.Context
 // BeginDelete - Delete a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - profileName - Certificate profile name.
@@ -155,7 +155,7 @@ func (client *CertificateProfilesClient) BeginDelete(ctx context.Context, resour
 // Delete - Delete a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 func (client *CertificateProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, profileName string, options *CertificateProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificateProfilesClient.BeginDelete"
@@ -201,16 +201,15 @@ func (client *CertificateProfilesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get details of a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - profileName - Certificate profile name.
@@ -261,7 +260,7 @@ func (client *CertificateProfilesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +277,7 @@ func (client *CertificateProfilesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByCodeSigningAccountPager - List certificate profiles under a trusted signing account.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - options - CertificateProfilesClientListByCodeSigningAccountOptions contains the optional parameters for the CertificateProfilesClient.NewListByCodeSigningAccountPager
@@ -326,7 +325,7 @@ func (client *CertificateProfilesClient) listByCodeSigningAccountCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,7 +343,7 @@ func (client *CertificateProfilesClient) listByCodeSigningAccountHandleResponse(
 // RevokeCertificate - Revoke a certificate under a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - profileName - Certificate profile name.
@@ -396,9 +395,8 @@ func (client *CertificateProfilesClient) revokeCertificateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err

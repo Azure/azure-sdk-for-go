@@ -47,11 +47,11 @@ type Capability struct {
 	// The properties of a capability resource.
 	Properties *CapabilityProperties
 
-	// READ-ONLY; String that represents a Capability resource name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -92,11 +92,11 @@ type CapabilityType struct {
 	// The properties of the capability type resource.
 	Properties *CapabilityTypeProperties
 
-	// READ-ONLY; String that represents a Capability Type resource name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -263,9 +263,6 @@ type Experiment struct {
 	// REQUIRED; The properties of the experiment resource.
 	Properties *ExperimentProperties
 
-	// READ-ONLY; String that represents a Experiment resource name.
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -274,6 +271,9 @@ type Experiment struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -308,11 +308,11 @@ type ExperimentExecution struct {
 	// The properties of experiment execution status.
 	Properties *ExperimentExecutionProperties
 
-	// READ-ONLY; GUID that represents a Experiment execution detail.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -598,14 +598,14 @@ type Target struct {
 	// REQUIRED; The properties of the target resource.
 	Properties map[string]any
 
-	// READ-ONLY; String that represents a Target resource name.
-	Name *string
-
 	// Azure resource location.
 	Location *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -737,11 +737,11 @@ type TargetType struct {
 	// REQUIRED; The properties of the target type resource.
 	Properties *TargetTypeProperties
 
-	// READ-ONLY; String that represents a Target Type resource name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

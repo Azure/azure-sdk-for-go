@@ -12,10 +12,19 @@ type AccountSKU struct {
 	Name *SKUName
 }
 
+// AccountSKUPatch - SKU of the trusted signing account.
+type AccountSKUPatch struct {
+	// Name of the SKU.
+	Name *SKUName
+}
+
 // Certificate - Properties of the certificate.
 type Certificate struct {
 	// Certificate created date.
 	CreatedDate *string
+
+	// Enhanced key usage of the certificate.
+	EnhancedKeyUsage *string
 
 	// Certificate expiry date.
 	ExpiryDate *string
@@ -41,11 +50,11 @@ type CertificateProfile struct {
 	// The resource-specific properties for this resource.
 	Properties *CertificateProfileProperties
 
-	// READ-ONLY; Certificate profile name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -65,11 +74,11 @@ type CertificateProfileListResult struct {
 
 // CertificateProfileProperties - Properties of the certificate profile.
 type CertificateProfileProperties struct {
+	// REQUIRED; Identity validation id used for the certificate subject name.
+	IdentityValidationID *string
+
 	// REQUIRED; Profile type of the certificate.
 	ProfileType *ProfileType
-
-	// Identity validation id used for the certificate subject name.
-	IdentityValidationID *string
 
 	// Whether to include L in the certificate subject name. Applicable only for private trust, private trust ci profile types
 	IncludeCity *bool
@@ -89,38 +98,11 @@ type CertificateProfileProperties struct {
 	// READ-ONLY; List of renewed certificates.
 	Certificates []*Certificate
 
-	// READ-ONLY; Used as L in the certificate subject name.
-	City *string
-
-	// READ-ONLY; Used as CN in the certificate subject name.
-	CommonName *string
-
-	// READ-ONLY; Used as C in the certificate subject name.
-	Country *string
-
-	// READ-ONLY; Enhanced key usage of the certificate.
-	EnhancedKeyUsage *string
-
-	// READ-ONLY; Used as O in the certificate subject name.
-	Organization *string
-
-	// READ-ONLY; Used as OU in the private trust certificate subject name.
-	OrganizationUnit *string
-
-	// READ-ONLY; Used as PC in the certificate subject name.
-	PostalCode *string
-
 	// READ-ONLY; Status of the current operation on certificate profile.
 	ProvisioningState *ProvisioningState
 
-	// READ-ONLY; Used as S in the certificate subject name.
-	State *string
-
 	// READ-ONLY; Status of the certificate profile.
 	Status *CertificateProfileStatus
-
-	// READ-ONLY; Used as STREET in the certificate subject name.
-	StreetAddress *string
 }
 
 // CheckNameAvailability - The parameters used to check the availability of the trusted signing account name.
@@ -154,11 +136,11 @@ type CodeSigningAccount struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Trusted Signing account name.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -188,7 +170,7 @@ type CodeSigningAccountPatch struct {
 // CodeSigningAccountPatchProperties - Properties of the trusted signing account.
 type CodeSigningAccountPatchProperties struct {
 	// SKU of the trusted signing account.
-	SKU *AccountSKU
+	SKU *AccountSKUPatch
 }
 
 // CodeSigningAccountProperties - Properties of the trusted signing account.
@@ -203,13 +185,15 @@ type CodeSigningAccountProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.

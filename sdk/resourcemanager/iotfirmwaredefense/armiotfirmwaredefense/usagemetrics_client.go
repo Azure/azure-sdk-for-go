@@ -42,7 +42,7 @@ func NewUsageMetricsClient(subscriptionID string, credential azcore.TokenCredent
 // Get - Gets monthly usage information for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - name - The Firmware analysis summary name describing the type of summary.
@@ -93,7 +93,7 @@ func (client *UsageMetricsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *UsageMetricsClient) getHandleResponse(resp *http.Response) (UsageM
 
 // NewListByWorkspacePager - Lists monthly usage information for a workspace.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - options - UsageMetricsClientListByWorkspaceOptions contains the optional parameters for the UsageMetricsClient.NewListByWorkspacePager
@@ -158,7 +158,7 @@ func (client *UsageMetricsClient) listByWorkspaceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -42,7 +42,7 @@ func NewVirtualNetworkAddressesClient(subscriptionID string, credential azcore.T
 // BeginCreateOrUpdate - Create a VirtualNetworkAddress
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - virtualnetworkaddressname - Virtual IP address hostname.
@@ -69,7 +69,7 @@ func (client *VirtualNetworkAddressesClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Create a VirtualNetworkAddress
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *VirtualNetworkAddressesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudvmclustername string, virtualnetworkaddressname string, resource VirtualNetworkAddress, options *VirtualNetworkAddressesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkAddressesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *VirtualNetworkAddressesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *VirtualNetworkAddressesClient) createOrUpdateCreateRequest(ctx con
 // BeginDelete - Delete a VirtualNetworkAddress
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - virtualnetworkaddressname - Virtual IP address hostname.
@@ -154,7 +154,7 @@ func (client *VirtualNetworkAddressesClient) BeginDelete(ctx context.Context, re
 // Delete - Delete a VirtualNetworkAddress
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *VirtualNetworkAddressesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudvmclustername string, virtualnetworkaddressname string, options *VirtualNetworkAddressesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkAddressesClient.BeginDelete"
@@ -200,16 +200,15 @@ func (client *VirtualNetworkAddressesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a VirtualNetworkAddress
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - virtualnetworkaddressname - Virtual IP address hostname.
@@ -261,7 +260,7 @@ func (client *VirtualNetworkAddressesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +277,7 @@ func (client *VirtualNetworkAddressesClient) getHandleResponse(resp *http.Respon
 
 // NewListByCloudVMClusterPager - List VirtualNetworkAddress resources by CloudVmCluster
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudvmclustername - CloudVmCluster name
 //   - options - VirtualNetworkAddressesClientListByCloudVMClusterOptions contains the optional parameters for the VirtualNetworkAddressesClient.NewListByCloudVMClusterPager
@@ -326,7 +325,7 @@ func (client *VirtualNetworkAddressesClient) listByCloudVMClusterCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

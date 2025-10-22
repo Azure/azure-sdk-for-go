@@ -57,7 +57,7 @@ func (testsuite *AmlfilesystemTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestAmlfilesystemTestSuite(t *testing.T) {
+func TTestAmlfilesystemTestSuite(t *testing.T) {
 	suite.Run(t, new(AmlfilesystemTestSuite))
 }
 

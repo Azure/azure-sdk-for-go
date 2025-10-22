@@ -43,7 +43,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // NewListPager - This method returns region-specific quotas and resource usage information for the Azure Database Migration
 // Service (classic).
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - location - The Azure region of the operation
 //   - options - UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 func (client *UsagesClient) NewListPager(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
@@ -85,7 +85,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

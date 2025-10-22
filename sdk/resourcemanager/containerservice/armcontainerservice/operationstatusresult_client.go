@@ -43,7 +43,7 @@ func NewOperationStatusResultClient(subscriptionID string, credential azcore.Tok
 // Get - Get the status of a specific operation in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-07-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - operationID - The ID of an ongoing async operation.
@@ -95,7 +95,7 @@ func (client *OperationStatusResultClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-07-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +113,7 @@ func (client *OperationStatusResultClient) getHandleResponse(resp *http.Response
 // GetByAgentPool - Get the status of a specific operation in the specified agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-07-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - agentPoolName - The name of the agent pool.
@@ -170,7 +170,7 @@ func (client *OperationStatusResultClient) getByAgentPoolCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-07-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -187,7 +187,7 @@ func (client *OperationStatusResultClient) getByAgentPoolHandleResponse(resp *ht
 
 // NewListPager - Gets a list of operations in the specified managedCluster
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-07-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - OperationStatusResultClientListOptions contains the optional parameters for the OperationStatusResultClient.NewListPager
@@ -235,7 +235,7 @@ func (client *OperationStatusResultClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-07-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

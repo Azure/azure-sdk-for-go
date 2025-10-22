@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
 )
 
 // Setting is a setting, defined by a unique combination of a Key and Label.
@@ -36,7 +36,7 @@ type Setting struct {
 
 	// A dictionary of tags used to assign additional properties to a configuration setting.
 	// These can be used to indicate how a configuration setting may be applied.
-	Tags map[string]string
+	Tags map[string]*string
 
 	// The last time a modifying operation was performed on the given configuration setting.
 	LastModified *time.Time
@@ -47,20 +47,13 @@ type Setting struct {
 }
 
 func settingFromGenerated(kv generated.KeyValue) Setting {
-	tags := make(map[string]string)
-	for k, v := range kv.Tags {
-		if v != nil {
-			tags[k] = *v
-		}
-	}
-
 	return Setting{
 		Key:          kv.Key,
 		Value:        kv.Value,
 		Label:        kv.Label,
 		ContentType:  kv.ContentType,
 		ETag:         (*azcore.ETag)(kv.Etag),
-		Tags:         tags,
+		Tags:         kv.Tags,
 		LastModified: kv.LastModified,
 		IsReadOnly:   kv.Locked,
 	}
@@ -76,11 +69,6 @@ func toGeneratedETagString(etag *azcore.ETag) *string {
 }
 
 func (cs Setting) toGenerated() generated.KeyValue {
-	tags := make(map[string]*string)
-	for k, v := range cs.Tags {
-		tags[k] = &v
-	}
-
 	return generated.KeyValue{
 		ContentType:  cs.ContentType,
 		Etag:         (*string)(cs.ETag),
@@ -88,7 +76,7 @@ func (cs Setting) toGenerated() generated.KeyValue {
 		Label:        cs.Label,
 		LastModified: cs.LastModified,
 		Locked:       cs.IsReadOnly,
-		Tags:         tags,
+		Tags:         cs.Tags,
 		Value:        cs.Value,
 	}
 }

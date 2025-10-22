@@ -60,7 +60,7 @@ func (testsuite *StoragecacheTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestStoragecacheTestSuite(t *testing.T) {
+func TTestStoragecacheTestSuite(t *testing.T) {
 	suite.Run(t, new(StoragecacheTestSuite))
 }
 

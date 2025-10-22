@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -43,7 +44,7 @@ func NewDatabaseMigrationsSQLMiClient(subscriptionID string, credential azcore.T
 // BeginCancel - Stop in-progress database migration to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -70,7 +71,7 @@ func (client *DatabaseMigrationsSQLMiClient) BeginCancel(ctx context.Context, re
 // Cancel - Stop in-progress database migration to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *DatabaseMigrationsSQLMiClient) cancel(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLMiClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLMiClient.BeginCancel"
@@ -116,7 +117,7 @@ func (client *DatabaseMigrationsSQLMiClient) cancelCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -127,7 +128,7 @@ func (client *DatabaseMigrationsSQLMiClient) cancelCreateRequest(ctx context.Con
 // BeginCreateOrUpdate - Create a new database migration to a given SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -154,7 +155,7 @@ func (client *DatabaseMigrationsSQLMiClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - Create a new database migration to a given SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *DatabaseMigrationsSQLMiClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters DatabaseMigrationSQLMi, options *DatabaseMigrationsSQLMiClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLMiClient.BeginCreateOrUpdate"
@@ -200,7 +201,7 @@ func (client *DatabaseMigrationsSQLMiClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -212,7 +213,7 @@ func (client *DatabaseMigrationsSQLMiClient) createOrUpdateCreateRequest(ctx con
 // BeginCutover - Initiate cutover for in-progress online database migration to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -239,7 +240,7 @@ func (client *DatabaseMigrationsSQLMiClient) BeginCutover(ctx context.Context, r
 // Cutover - Initiate cutover for in-progress online database migration to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 func (client *DatabaseMigrationsSQLMiClient) cutover(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLMiClientBeginCutoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabaseMigrationsSQLMiClient.BeginCutover"
@@ -285,7 +286,7 @@ func (client *DatabaseMigrationsSQLMiClient) cutoverCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -293,10 +294,94 @@ func (client *DatabaseMigrationsSQLMiClient) cutoverCreateRequest(ctx context.Co
 	return req, nil
 }
 
+// BeginDelete - Delete Database Migration resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-30
+//   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+//     Manager API or the portal.
+//   - targetDbName - The name of the target database.
+//   - options - DatabaseMigrationsSQLMiClientBeginDeleteOptions contains the optional parameters for the DatabaseMigrationsSQLMiClient.BeginDelete
+//     method.
+func (client *DatabaseMigrationsSQLMiClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, options *DatabaseMigrationsSQLMiClientBeginDeleteOptions) (*runtime.Poller[DatabaseMigrationsSQLMiClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, targetDbName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabaseMigrationsSQLMiClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabaseMigrationsSQLMiClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete Database Migration resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-30
+func (client *DatabaseMigrationsSQLMiClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, options *DatabaseMigrationsSQLMiClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabaseMigrationsSQLMiClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, targetDbName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *DatabaseMigrationsSQLMiClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, options *DatabaseMigrationsSQLMiClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedInstanceName == "" {
+		return nil, errors.New("parameter managedInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if targetDbName == "" {
+		return nil, errors.New("parameter targetDbName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetDbName}", url.PathEscape(targetDbName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-06-30")
+	if options != nil && options.Force != nil {
+		reqQP.Set("force", strconv.FormatBool(*options.Force))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Retrieve the specified database migration for a given SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-15-preview
+// Generated from API version 2025-06-30
 //   - resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 //     Manager API or the portal.
 //   - targetDbName - The name of the target database.
@@ -351,7 +436,7 @@ func (client *DatabaseMigrationsSQLMiClient) getCreateRequest(ctx context.Contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-03-15-preview")
+	reqQP.Set("api-version", "2025-06-30")
 	if options != nil && options.MigrationOperationID != nil {
 		reqQP.Set("migrationOperationId", *options.MigrationOperationID)
 	}

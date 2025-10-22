@@ -10,6 +10,11 @@ type AgentPoolsClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
 }
 
+// AgentPoolsClientCompleteUpgradeResponse contains the response from method AgentPoolsClient.BeginCompleteUpgrade.
+type AgentPoolsClientCompleteUpgradeResponse struct {
+	// placeholder for future response values
+}
+
 // AgentPoolsClientCreateOrUpdateResponse contains the response from method AgentPoolsClient.BeginCreateOrUpdate.
 type AgentPoolsClientCreateOrUpdateResponse struct {
 	// Agent Pool.
@@ -60,6 +65,52 @@ type AgentPoolsClientUpgradeNodeImageVersionResponse struct {
 type ClientListNodeImageVersionsResponse struct {
 	// Holds an array NodeImageVersions
 	NodeImageVersionsListResult
+}
+
+// IdentityBindingsClientCreateOrUpdateResponse contains the response from method IdentityBindingsClient.BeginCreateOrUpdate.
+type IdentityBindingsClientCreateOrUpdateResponse struct {
+	// The IdentityBinding resource.
+	IdentityBinding
+}
+
+// IdentityBindingsClientDeleteResponse contains the response from method IdentityBindingsClient.BeginDelete.
+type IdentityBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// IdentityBindingsClientGetResponse contains the response from method IdentityBindingsClient.Get.
+type IdentityBindingsClientGetResponse struct {
+	// The IdentityBinding resource.
+	IdentityBinding
+}
+
+// IdentityBindingsClientListByManagedClusterResponse contains the response from method IdentityBindingsClient.NewListByManagedClusterPager.
+type IdentityBindingsClientListByManagedClusterResponse struct {
+	// The response of a IdentityBinding list operation.
+	IdentityBindingListResult
+}
+
+// JWTAuthenticatorsClientCreateOrUpdateResponse contains the response from method JWTAuthenticatorsClient.BeginCreateOrUpdate.
+type JWTAuthenticatorsClientCreateOrUpdateResponse struct {
+	// Configuration for JWT authenticator in the managed cluster.
+	JWTAuthenticator
+}
+
+// JWTAuthenticatorsClientDeleteResponse contains the response from method JWTAuthenticatorsClient.BeginDelete.
+type JWTAuthenticatorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// JWTAuthenticatorsClientGetResponse contains the response from method JWTAuthenticatorsClient.Get.
+type JWTAuthenticatorsClientGetResponse struct {
+	// Configuration for JWT authenticator in the managed cluster.
+	JWTAuthenticator
+}
+
+// JWTAuthenticatorsClientListByManagedClusterResponse contains the response from method JWTAuthenticatorsClient.NewListByManagedClusterPager.
+type JWTAuthenticatorsClientListByManagedClusterResponse struct {
+	// The response from the List JWT authenticator operation.
+	JWTAuthenticatorListResult
 }
 
 // LoadBalancersClientCreateOrUpdateResponse contains the response from method LoadBalancersClient.CreateOrUpdate.

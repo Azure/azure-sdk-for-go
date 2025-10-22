@@ -1,5 +1,26 @@
 # Release History
 
+## 2.0.0-beta.1 (2025-08-21)
+### Breaking Changes
+
+- `ManagedServiceIdentityTypeSystemAndUserAssigned` from enum `ManagedServiceIdentityType` has been removed
+
+### Features Added
+
+- New value `ManagedServiceIdentityTypeSystemAssignedUserAssigned` added to enum type `ManagedServiceIdentityType`
+- New enum type `CapacityType` with values `CapacityTypeVCPU`, `CapacityTypeVM`
+- New enum type `FleetMode` with values `FleetModeInstance`, `FleetModeManaged`
+- New enum type `VMOperationStatus` with values `VMOperationStatusCancelFailedStatusUnknown`, `VMOperationStatusCanceled`, `VMOperationStatusCreating`, `VMOperationStatusFailed`, `VMOperationStatusSucceeded`
+- New enum type `ZoneDistributionStrategy` with values `ZoneDistributionStrategyBestEffortSingleZone`, `ZoneDistributionStrategyPrioritized`
+- New function `*FleetsClient.BeginCancel(context.Context, string, string, *FleetsClientBeginCancelOptions) (*runtime.Poller[FleetsClientCancelResponse], error)`
+- New function `*FleetsClient.NewListVirtualMachinesPager(string, string, *FleetsClientListVirtualMachinesOptions) *runtime.Pager[FleetsClientListVirtualMachinesResponse]`
+- New struct `VirtualMachine`
+- New struct `VirtualMachineListResult`
+- New struct `ZoneAllocationPolicy`
+- New struct `ZonePreference`
+- New field `CapacityType`, `Mode`, `ZoneAllocationPolicy` in struct `FleetProperties`
+
+
 ## 1.0.0 (2024-10-22)
 ### Breaking Changes
 

@@ -1,5 +1,105 @@
 # Release History
 
+## 8.0.0 (2025-10-21)
+### Breaking Changes
+
+- Enum `CloudServiceSlotType` has been removed
+- Enum `CloudServiceUpgradeMode` has been removed
+- Function `*ClientFactory.NewCloudServiceOperatingSystemsClient` has been removed
+- Function `*ClientFactory.NewCloudServiceRoleInstancesClient` has been removed
+- Function `*ClientFactory.NewCloudServiceRolesClient` has been removed
+- Function `*ClientFactory.NewCloudServicesClient` has been removed
+- Function `*ClientFactory.NewCloudServicesUpdateDomainClient` has been removed
+- Function `NewCloudServiceOperatingSystemsClient` has been removed
+- Function `*CloudServiceOperatingSystemsClient.GetOSFamily` has been removed
+- Function `*CloudServiceOperatingSystemsClient.GetOSVersion` has been removed
+- Function `*CloudServiceOperatingSystemsClient.NewListOSFamiliesPager` has been removed
+- Function `*CloudServiceOperatingSystemsClient.NewListOSVersionsPager` has been removed
+- Function `NewCloudServiceRoleInstancesClient` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginDelete` has been removed
+- Function `*CloudServiceRoleInstancesClient.Get` has been removed
+- Function `*CloudServiceRoleInstancesClient.GetInstanceView` has been removed
+- Function `*CloudServiceRoleInstancesClient.GetRemoteDesktopFile` has been removed
+- Function `*CloudServiceRoleInstancesClient.NewListPager` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginRebuild` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginReimage` has been removed
+- Function `*CloudServiceRoleInstancesClient.BeginRestart` has been removed
+- Function `NewCloudServiceRolesClient` has been removed
+- Function `*CloudServiceRolesClient.Get` has been removed
+- Function `*CloudServiceRolesClient.NewListPager` has been removed
+- Function `NewCloudServicesClient` has been removed
+- Function `*CloudServicesClient.BeginCreateOrUpdate` has been removed
+- Function `*CloudServicesClient.BeginDelete` has been removed
+- Function `*CloudServicesClient.BeginDeleteInstances` has been removed
+- Function `*CloudServicesClient.Get` has been removed
+- Function `*CloudServicesClient.GetInstanceView` has been removed
+- Function `*CloudServicesClient.NewListAllPager` has been removed
+- Function `*CloudServicesClient.NewListPager` has been removed
+- Function `*CloudServicesClient.BeginPowerOff` has been removed
+- Function `*CloudServicesClient.BeginRebuild` has been removed
+- Function `*CloudServicesClient.BeginReimage` has been removed
+- Function `*CloudServicesClient.BeginRestart` has been removed
+- Function `*CloudServicesClient.BeginStart` has been removed
+- Function `*CloudServicesClient.BeginUpdate` has been removed
+- Function `NewCloudServicesUpdateDomainClient` has been removed
+- Function `*CloudServicesUpdateDomainClient.GetUpdateDomain` has been removed
+- Function `*CloudServicesUpdateDomainClient.NewListUpdateDomainsPager` has been removed
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` has been removed
+- Struct `CloudService` has been removed
+- Struct `CloudServiceExtensionProfile` has been removed
+- Struct `CloudServiceExtensionProperties` has been removed
+- Struct `CloudServiceInstanceView` has been removed
+- Struct `CloudServiceListResult` has been removed
+- Struct `CloudServiceNetworkProfile` has been removed
+- Struct `CloudServiceOsProfile` has been removed
+- Struct `CloudServiceProperties` has been removed
+- Struct `CloudServiceRole` has been removed
+- Struct `CloudServiceRoleListResult` has been removed
+- Struct `CloudServiceRoleProfile` has been removed
+- Struct `CloudServiceRoleProfileProperties` has been removed
+- Struct `CloudServiceRoleProperties` has been removed
+- Struct `CloudServiceRoleSKU` has been removed
+- Struct `CloudServiceUpdate` has been removed
+- Struct `CloudServiceVaultAndSecretReference` has been removed
+- Struct `CloudServiceVaultCertificate` has been removed
+- Struct `CloudServiceVaultSecretGroup` has been removed
+- Struct `Extension` has been removed
+- Struct `InstanceSKU` has been removed
+- Struct `InstanceViewStatusesSummary` has been removed
+- Struct `LoadBalancerConfiguration` has been removed
+- Struct `LoadBalancerConfigurationProperties` has been removed
+- Struct `LoadBalancerFrontendIPConfiguration` has been removed
+- Struct `LoadBalancerFrontendIPConfigurationProperties` has been removed
+- Struct `OSFamily` has been removed
+- Struct `OSFamilyListResult` has been removed
+- Struct `OSFamilyProperties` has been removed
+- Struct `OSVersion` has been removed
+- Struct `OSVersionListResult` has been removed
+- Struct `OSVersionProperties` has been removed
+- Struct `OSVersionPropertiesBase` has been removed
+- Struct `ResourceInstanceViewStatus` has been removed
+- Struct `RoleInstance` has been removed
+- Struct `RoleInstanceListResult` has been removed
+- Struct `RoleInstanceNetworkProfile` has been removed
+- Struct `RoleInstanceProperties` has been removed
+- Struct `RoleInstanceView` has been removed
+- Struct `RoleInstances` has been removed
+- Struct `StatusCodeCount` has been removed
+- Struct `UpdateDomain` has been removed
+- Struct `UpdateDomainListResult` has been removed
+- Field `Parameters` of struct `AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions` has been removed
+- Field `Parameters` of struct `VirtualMachinesClientBeginMigrateToVMScaleSetOptions` has been removed
+
+### Features Added
+
+- New field `EnableFips1403Encryption` in struct `AdditionalCapabilities`
+- New field `Body` in struct `AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions`
+- New field `SnapshotAccessState` in struct `DiskRestorePointInstanceView`
+- New field `InstantAccess` in struct `RestorePointCollectionProperties`
+- New field `InstantAccessDurationMinutes` in struct `RestorePointProperties`
+- New field `Body` in struct `VirtualMachinesClientBeginMigrateToVMScaleSetOptions`
+
+
 ## 7.0.0 (2025-07-23)
 ### Breaking Changes
 

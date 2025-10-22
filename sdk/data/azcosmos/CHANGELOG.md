@@ -3,6 +3,7 @@
 ## 1.5.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added `ReadManyItems` API to read documents across partitions. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
 
 ### Breaking Changes
 
@@ -19,7 +20,6 @@
 * Added support for specifying Vector Search indexing policies when creating a container. See [PR 24833](https://github.com/Azure/azure-sdk-for-go/pull/24833)
 * Added support for reading Feed Ranges from a container. See [PR 24889](https://github.com/Azure/azure-sdk-for-go/pull/24889)
 * Added support for reading Change Feed through Feed Ranges from a container. See [PR 24898](https://github.com/Azure/azure-sdk-for-go/pull/24898)
-* Added `ReadManyItems` API to read documents across partitions. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
 * Additional logging in the query engine integration code. See [PR 25444](https://github.com/Azure/azure-sdk-for-go/pull/25444)
 
 ## 1.4.1 (2025-08-27)

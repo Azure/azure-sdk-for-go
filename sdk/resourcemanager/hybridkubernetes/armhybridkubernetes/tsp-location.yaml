@@ -1,0 +1,4 @@
+directory: specification/hybridkubernetes/HybridKubernetes.Management
+commit: e0c76eb626b09be37dae7245937f427ebb64f66e
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

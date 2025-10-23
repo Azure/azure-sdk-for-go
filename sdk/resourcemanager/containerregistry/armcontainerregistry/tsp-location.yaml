@@ -1,0 +1,6 @@
+directory: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Combine
+commit: 70cd1361c1c9621b6e5c75e2900a63bb7228de31
+repo: i-specs
+additionalDirectories: 
+- specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry
+- specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks

@@ -72,20 +72,26 @@ func readConfigData(coverageConfig string) *codeCoverage {
 
 // This supports doing a single package at a time. If this needs to be expanded in the future
 // this method will have to return a []*float64 for each packages goal
+//
+// Packages are identified in configData (parsed from /eng/config.json) by segments of their
+// module paths, for example "keyvault/azkeys", whereas covFile may be a disk path like
+// "/vss/1/sdk/security/keyvault/azkeys". So, this function searches for the configData entry
+// whose Name is the longest substring of covFile.
 func findCoverageGoal(covFiles []string, configData *codeCoverage) float64 {
 	for _, covFile := range covFiles {
-
-		// check for an exact match _first_, then go to fuzzy matching
-		for _, p := range configData.Packages {
-			if covFile == p.Name {
-				return p.CoverageGoal
+		covFile = strings.ReplaceAll(covFile, `\`, "/")
+		var bestMatch *coveragePackage
+		for i := range configData.Packages {
+			p := &configData.Packages[i]
+			prx := regexp.MustCompile(`(^|/)` + regexp.QuoteMeta(p.Name) + `($|/)`)
+			if prx.MatchString(covFile) {
+				if bestMatch == nil || len(p.Name) > len(bestMatch.Name) {
+					bestMatch = p
+				}
 			}
 		}
-
-		for _, p := range configData.Packages {
-			if strings.Contains(covFile, p.Name) {
-				return p.CoverageGoal
-			}
+		if bestMatch != nil {
+			return bestMatch.CoverageGoal
 		}
 	}
 	fmt.Println("WARNING: Could not find a coverage goal, defaulting to 95%.")

@@ -1,5 +1,34 @@
 # Release History
 
+## 2.0.0 (2025-10-20)
+### Breaking Changes
+
+- Type of `MHSMPrivateEndpointConnection.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `MHSMPrivateEndpointConnectionItem.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `PrivateEndpointConnection.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `PrivateEndpointConnectionItem.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `ResourceListResult.Value` has been changed from `[]*Resource` to `[]*TrackedResource`
+- Type of `SystemData.CreatedByType` has been changed from `*IdentityType` to `*CreatedByType`
+- Type of `SystemData.LastModifiedByType` has been changed from `*IdentityType` to `*CreatedByType`
+- Enum `IdentityType` has been removed
+- Struct `Resource` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New struct `MHSMServiceTagRule`
+- New struct `TrackedResource`
+- New field `SystemData` in struct `DeletedManagedHsm`
+- New field `SystemData` in struct `DeletedVault`
+- New field `SystemData` in struct `Key`
+- New field `ServiceTags` in struct `MHSMNetworkRuleSet`
+- New field `SystemData` in struct `ManagedHsmKey`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `Secret`
+- New field `RetryAfter` in struct `SecretsClientCreateOrUpdateResponse`
+
+
 ## 1.5.0 (2025-03-28)
 ### Features Added
 

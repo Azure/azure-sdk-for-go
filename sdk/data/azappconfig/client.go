@@ -15,9 +15,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/synctoken"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/synctoken"
 )
 
 const timeFormat = time.RFC3339Nano
@@ -98,7 +98,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 		options = &AddSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
 
 	etagAny := azcore.ETagAny
 	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
@@ -209,7 +209,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 		options = &SetSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
 
 	kv, opts := setting.toGeneratedPutOptions(options.OnlyIfUnchanged, nil)
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)

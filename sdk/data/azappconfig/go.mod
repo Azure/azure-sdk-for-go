@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig
+module github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2
 
 go 1.23.0
 

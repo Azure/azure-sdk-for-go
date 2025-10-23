@@ -343,6 +343,9 @@ type ServerFactory struct {
 	// SecurityPerimeterProfilesServer contains the fakes for client SecurityPerimeterProfilesClient
 	SecurityPerimeterProfilesServer SecurityPerimeterProfilesServer
 
+	// SecurityPerimeterServiceTagsServer contains the fakes for client SecurityPerimeterServiceTagsClient
+	SecurityPerimeterServiceTagsServer SecurityPerimeterServiceTagsServer
+
 	// SecurityPerimetersServer contains the fakes for client SecurityPerimetersClient
 	SecurityPerimetersServer SecurityPerimetersServer
 
@@ -608,6 +611,7 @@ type ServerFactoryTransport struct {
 	trSecurityPerimeterLoggingConfigurationsServer          *SecurityPerimeterLoggingConfigurationsServerTransport
 	trSecurityPerimeterOperationStatusesServer              *SecurityPerimeterOperationStatusesServerTransport
 	trSecurityPerimeterProfilesServer                       *SecurityPerimeterProfilesServerTransport
+	trSecurityPerimeterServiceTagsServer                    *SecurityPerimeterServiceTagsServerTransport
 	trSecurityPerimetersServer                              *SecurityPerimetersServerTransport
 	trSecurityRulesServer                                   *SecurityRulesServerTransport
 	trSecurityUserConfigurationsServer                      *SecurityUserConfigurationsServerTransport
@@ -1179,6 +1183,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSecurityPerimeterProfilesServerTransport(&s.srv.SecurityPerimeterProfilesServer)
 		})
 		resp, err = s.trSecurityPerimeterProfilesServer.Do(req)
+	case "SecurityPerimeterServiceTagsClient":
+		initServer(s, &s.trSecurityPerimeterServiceTagsServer, func() *SecurityPerimeterServiceTagsServerTransport {
+			return NewSecurityPerimeterServiceTagsServerTransport(&s.srv.SecurityPerimeterServiceTagsServer)
+		})
+		resp, err = s.trSecurityPerimeterServiceTagsServer.Do(req)
 	case "SecurityPerimetersClient":
 		initServer(s, &s.trSecurityPerimetersServer, func() *SecurityPerimetersServerTransport {
 			return NewSecurityPerimetersServerTransport(&s.srv.SecurityPerimetersServer)

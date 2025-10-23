@@ -654,10 +654,9 @@ type RollingUpgradeMode string
 
 const (
 	// RollingUpgradeModeMonitored - The upgrade will stop after completing each upgrade domain and automatically monitor health
-	// before proceeding. The value is 0.
+	// before proceeding.
 	RollingUpgradeModeMonitored RollingUpgradeMode = "Monitored"
-	// RollingUpgradeModeUnmonitoredAuto - The upgrade will proceed automatically without performing any health monitoring. The
-	// value is 1.
+	// RollingUpgradeModeUnmonitoredAuto - The upgrade will proceed automatically without performing any health monitoring.
 	RollingUpgradeModeUnmonitoredAuto RollingUpgradeMode = "UnmonitoredAuto"
 )
 
@@ -666,6 +665,65 @@ func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
 	return []RollingUpgradeMode{
 		RollingUpgradeModeMonitored,
 		RollingUpgradeModeUnmonitoredAuto,
+	}
+}
+
+// RuntimeFailureAction - Cluster level definition for the compensating action to perform when a Monitored upgrade encounters
+// monitoring policy or health policy violations.
+type RuntimeFailureAction string
+
+const (
+	// RuntimeFailureActionManual - Indicates that a manual repair will need to be performed by the administrator if the upgrade
+	// fails. Service Fabric will not proceed to the next upgrade domain automatically.
+	RuntimeFailureActionManual RuntimeFailureAction = "Manual"
+	// RuntimeFailureActionRollback - Indicates that a rollback of the upgrade will be performed by Service Fabric if the upgrade
+	// fails.
+	RuntimeFailureActionRollback RuntimeFailureAction = "Rollback"
+)
+
+// PossibleRuntimeFailureActionValues returns the possible values for the RuntimeFailureAction const type.
+func PossibleRuntimeFailureActionValues() []RuntimeFailureAction {
+	return []RuntimeFailureAction{
+		RuntimeFailureActionManual,
+		RuntimeFailureActionRollback,
+	}
+}
+
+// RuntimeRollingUpgradeMode - Cluster level definition for the mode used to monitor health during a rolling upgrade.
+type RuntimeRollingUpgradeMode string
+
+const (
+	// RuntimeRollingUpgradeModeMonitored - The upgrade will stop after completing each upgrade domain and automatically monitor
+	// health before proceeding.
+	RuntimeRollingUpgradeModeMonitored RuntimeRollingUpgradeMode = "Monitored"
+	// RuntimeRollingUpgradeModeUnmonitoredAuto - The upgrade will proceed automatically without performing any health monitoring.
+	RuntimeRollingUpgradeModeUnmonitoredAuto RuntimeRollingUpgradeMode = "UnmonitoredAuto"
+	// RuntimeRollingUpgradeModeUnmonitoredManual - The upgrade will stop after completing each upgrade domain, giving the opportunity
+	// to manually monitor health before proceeding.
+	RuntimeRollingUpgradeModeUnmonitoredManual RuntimeRollingUpgradeMode = "UnmonitoredManual"
+)
+
+// PossibleRuntimeRollingUpgradeModeValues returns the possible values for the RuntimeRollingUpgradeMode const type.
+func PossibleRuntimeRollingUpgradeModeValues() []RuntimeRollingUpgradeMode {
+	return []RuntimeRollingUpgradeMode{
+		RuntimeRollingUpgradeModeMonitored,
+		RuntimeRollingUpgradeModeUnmonitoredAuto,
+		RuntimeRollingUpgradeModeUnmonitoredManual,
+	}
+}
+
+// RuntimeUpgradeKind - Cluster level definition for the kind of upgrade.
+type RuntimeUpgradeKind string
+
+const (
+	// RuntimeUpgradeKindRolling - The upgrade progresses one upgrade domain at a time.
+	RuntimeUpgradeKindRolling RuntimeUpgradeKind = "Rolling"
+)
+
+// PossibleRuntimeUpgradeKindValues returns the possible values for the RuntimeUpgradeKind const type.
+func PossibleRuntimeUpgradeKindValues() []RuntimeUpgradeKind {
+	return []RuntimeUpgradeKind{
+		RuntimeUpgradeKindRolling,
 	}
 }
 

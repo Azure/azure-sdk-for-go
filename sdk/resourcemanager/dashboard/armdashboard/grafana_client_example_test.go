@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01-preview/EnterpriseDetails_Post.json
+// Generated from example definition: 2025-08-01/EnterpriseDetails_Post.json
 func ExampleGrafanaClient_CheckEnterpriseDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleGrafanaClient_CheckEnterpriseDetails() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Grafana_Create.json
+// Generated from example definition: 2025-08-01/Grafana_Create.json
 func ExampleGrafanaClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleGrafanaClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Grafana_Delete.json
+// Generated from example definition: 2025-08-01/Grafana_Delete.json
 func ExampleGrafanaClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleGrafanaClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Grafana_FetchAvailablePlugins.json
+// Generated from example definition: 2025-08-01/Grafana_FetchAvailablePlugins.json
 func ExampleGrafanaClient_FetchAvailablePlugins() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleGrafanaClient_FetchAvailablePlugins() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Grafana_Get.json
+// Generated from example definition: 2025-08-01/Grafana_Get.json
 func ExampleGrafanaClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleGrafanaClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/Grafana_List.json
+// Generated from example definition: 2025-08-01/Grafana_List.json
 func ExampleGrafanaClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +468,7 @@ func ExampleGrafanaClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/Grafana_ListByResourceGroup.json
+// Generated from example definition: 2025-08-01/Grafana_ListByResourceGroup.json
 func ExampleGrafanaClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -566,7 +566,7 @@ func ExampleGrafanaClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/Grafana_Update.json
+// Generated from example definition: 2025-08-01/Grafana_Update.json
 func ExampleGrafanaClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

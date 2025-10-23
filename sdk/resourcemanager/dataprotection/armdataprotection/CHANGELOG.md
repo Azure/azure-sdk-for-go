@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0 (2025-09-23)
+## 4.0.0 (2025-10-13)
 ### Breaking Changes
 
 - Struct `AzureBackupFindRestorableTimeRangesRequestResource` has been removed

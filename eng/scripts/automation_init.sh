@@ -24,7 +24,7 @@ if ! command -v semver &> /dev/null; then
 fi
 current_version=$(go version | awk '{print $3}' | sed 's/go//')
 if ! semver -r ">=1.24.7" "$current_version"; then
-  wget -q https://golang.org/dl/go1.24.7.linux-amd64.tar.gz
+  wget -q https://go.dev/dl/go1.24.7.linux-amd64.tar.gz
   tar -C $TMPDIR -xzf go1.24.7.linux-amd64.tar.gz
   export GOROOT=$TMPDIR/go
   export PATH=$GOROOT/bin:$PATH

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerConnectionSubscriptionPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerConnectionSubscriptionPut.json
 func ExampleSubscriptionNetworkManagerConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSubscriptionNetworkManagerConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerConnectionSubscriptionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerConnectionSubscriptionGet.json
 func ExampleSubscriptionNetworkManagerConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleSubscriptionNetworkManagerConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerConnectionSubscriptionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerConnectionSubscriptionDelete.json
 func ExampleSubscriptionNetworkManagerConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleSubscriptionNetworkManagerConnectionsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerConnectionSubscriptionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerConnectionSubscriptionList.json
 func ExampleSubscriptionNetworkManagerConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

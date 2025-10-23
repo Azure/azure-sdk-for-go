@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/CloudServicePublicIpListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/CloudServicePublicIpListAll.json
 func ExamplePublicIPAddressesClient_NewListCloudServicePublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExamplePublicIPAddressesClient_NewListCloudServicePublicIPAddressesPager() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/CloudServiceRoleInstancePublicIpList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/CloudServiceRoleInstancePublicIpList.json
 func ExamplePublicIPAddressesClient_NewListCloudServiceRoleInstancePublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExamplePublicIPAddressesClient_NewListCloudServiceRoleInstancePublicIPAddre
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/CloudServicePublicIpGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/CloudServicePublicIpGet.json
 func ExamplePublicIPAddressesClient_GetCloudServicePublicIPAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExamplePublicIPAddressesClient_GetCloudServicePublicIPAddress() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressDelete.json
 func ExamplePublicIPAddressesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExamplePublicIPAddressesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressGet.json
 func ExamplePublicIPAddressesClient_Get_getPublicIpAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExamplePublicIPAddressesClient_Get_getPublicIpAddress() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressGetStandardV2Sku.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressGetStandardV2Sku.json
 func ExamplePublicIPAddressesClient_Get_getPublicIpAddressWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExamplePublicIPAddressesClient_Get_getPublicIpAddressWithStandardV2Sku() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressCreateDns.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressCreateDns.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDns() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDns
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDnsWithDomainNameLabelScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,7 +392,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDns
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressCreateCustomizedValues.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressCreateCustomizedValues.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressAllocationMethod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -451,7 +451,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressAll
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressCreateDefaults.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressCreateDefaults.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDefaults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +495,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDef
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressCreateDefaultsStandardV2Sku.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressCreateDefaultsStandardV2Sku.json
 func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDefaultsWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,7 +539,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDef
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressUpdateTags.json
 func ExamplePublicIPAddressesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,7 +586,7 @@ func ExamplePublicIPAddressesClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressListAll.json
 func ExamplePublicIPAddressesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -679,7 +679,7 @@ func ExamplePublicIPAddressesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressList.json
 func ExamplePublicIPAddressesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -781,7 +781,7 @@ func ExamplePublicIPAddressesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressGetDdosProtectionStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PublicIpAddressGetDdosProtectionStatus.json
 func ExamplePublicIPAddressesClient_BeginDdosProtectionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -811,7 +811,7 @@ func ExamplePublicIPAddressesClient_BeginDdosProtectionStatus() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VmssPublicIpListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VmssPublicIpListAll.json
 func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetPublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -875,7 +875,7 @@ func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetPublicIPAddress
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VmssVmPublicIpList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VmssVmPublicIpList.json
 func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetVMPublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -921,7 +921,7 @@ func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetVMPublicIPAddre
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VmssPublicIpGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VmssPublicIpGet.json
 func ExamplePublicIPAddressesClient_GetVirtualMachineScaleSetPublicIPAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

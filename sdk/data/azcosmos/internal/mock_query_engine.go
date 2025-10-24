@@ -37,12 +37,19 @@ type MockItem struct {
 	MergeOrder int `json:"mergeOrder"`
 }
 
+// QueryRequestConfig controls what QueryRequest values the pipeline should return.
+type QueryRequestConfig struct {
+	// Optional query override to return in the per-partition QueryRequest
+	Query             *string
+	IncludeParameters bool
+}
+
 // MockQueryEngine is a mock implementation of the QueryEngine interface.
-// This is a VERY rudimentary implementation that emulates the handling of the following query:
-// `SELECT * FROM c ORDER BY c.mergeOrder`
-// The intent here is to test how the Go SDK interacts with the query engine, not to test the query engine itself.
+// It holds optional configuration (protected by a mutex) and an optional create error
+// that will be returned once when CreateQueryPipeline is called (and then cleared).
 type MockQueryEngine struct {
-	CreateError error
+	CreateError        error
+	QueryRequestConfig *QueryRequestConfig
 }
 
 // NewMockQueryEngine creates a new MockQueryEngine.
@@ -50,17 +57,25 @@ func NewMockQueryEngine() *MockQueryEngine {
 	return &MockQueryEngine{}
 }
 
+// WithQueryRequestConfig returns an engine preconfigured to return the specified query request override.
+func WithQueryRequestConfig(cfg *QueryRequestConfig) *MockQueryEngine {
+	return &MockQueryEngine{QueryRequestConfig: cfg}
+}
+
 // CreateQueryPipeline creates a new query pipeline for the specified query and partition topology.
 func (m *MockQueryEngine) CreateQueryPipeline(query string, plan string, pkranges string) (queryengine.QueryPipeline, error) {
-	if m.CreateError != nil {
-		return nil, m.CreateError
+	// capture config for this pipeline
+	var cfg *QueryRequestConfig
+	if m.QueryRequestConfig != nil {
+		c := *m.QueryRequestConfig
+		cfg = &c
 	}
 
 	var ranges pkRanges
 	if err := json.Unmarshal([]byte(pkranges), &ranges); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal partition key ranges: %w", err)
 	}
-	return newMockQueryPipeline(query, ranges.PartitionKeyRanges), nil
+	return newMockQueryPipeline(query, ranges.PartitionKeyRanges, cfg), nil
 }
 
 func (m *MockQueryEngine) SupportedFeatures() string {
@@ -73,6 +88,7 @@ type partitionState struct {
 	started          bool
 	queue            []MockItem
 	nextContinuation string
+	nextIndex        uint
 }
 
 // IsExhausted returns true if the partition is exhausted.
@@ -106,13 +122,14 @@ func (p *partitionState) PopItem() ([]byte, error) {
 }
 
 type MockQueryPipeline struct {
-	query          string
-	completed      bool
-	IsClosed       bool
-	partitionState []partitionState
+	query              string
+	completed          bool
+	IsClosed           bool
+	partitionState     []partitionState
+	queryRequestConfig *QueryRequestConfig
 }
 
-func newMockQueryPipeline(query string, partitions []PartitionKeyRange) *MockQueryPipeline {
+func newMockQueryPipeline(query string, partitions []PartitionKeyRange, cfg *QueryRequestConfig) *MockQueryPipeline {
 	partState := make([]partitionState, 0, len(partitions))
 	for _, partition := range partitions {
 		partState = append(partState, partitionState{
@@ -120,13 +137,15 @@ func newMockQueryPipeline(query string, partitions []PartitionKeyRange) *MockQue
 			started:           false,
 			queue:             nil,
 			nextContinuation:  "",
+			nextIndex:         0,
 		})
 	}
 
 	return &MockQueryPipeline{
-		query:          query,
-		IsClosed:       false,
-		partitionState: partState,
+		query:              query,
+		IsClosed:           false,
+		partitionState:     partState,
+		queryRequestConfig: cfg,
 	}
 }
 
@@ -215,9 +234,23 @@ func (m *MockQueryPipeline) getRequests() []queryengine.QueryRequest {
 			continuation = m.partitionState[i].nextContinuation
 		}
 
+		// Respect any per-pipeline override for the query and include-parameters flag.
+		q := ""
+		includeParams := false
+		if m.queryRequestConfig != nil {
+			if m.queryRequestConfig.Query != nil {
+				q = *m.queryRequestConfig.Query
+			}
+			includeParams = m.queryRequestConfig.IncludeParameters
+		}
+
 		requests = append(requests, queryengine.QueryRequest{
 			PartitionKeyRangeID: m.partitionState[i].ID,
+			Index:               m.partitionState[i].nextIndex,
 			Continuation:        continuation,
+			Query:               q,
+			IncludeParameters:   includeParams,
+			Drain:               false,
 		})
 	}
 	return requests
@@ -239,6 +272,12 @@ func (m *MockQueryPipeline) ProvideData(data queryengine.QueryResult) error {
 	// Find the partition state for the given partition key range ID and insert the items.
 	for i := range m.partitionState {
 		if m.partitionState[i].ID == data.PartitionKeyRangeID {
+			// Validate request ordering: the provided result must match the expected nextIndex.
+			if m.partitionState[i].nextIndex != data.RequestIndex {
+				return fmt.Errorf("out of order data provided for partition key range %s: expected index %d, got %d", data.PartitionKeyRangeID, m.partitionState[i].nextIndex, data.RequestIndex)
+			}
+			// advance expected index for next request
+			m.partitionState[i].nextIndex++
 			m.partitionState[i].ProvideData(payload.Documents, data.NextContinuation)
 			return nil
 		}

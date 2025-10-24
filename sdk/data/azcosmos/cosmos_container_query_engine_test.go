@@ -28,7 +28,28 @@ const (
 
 var partitionKeys = [...]string{partition1Key, partition2Key, partition3Key}
 
-func createTestItems(t *testing.T, database *DatabaseClient) (*ContainerClient, error) {
+func generateMockItem(partitionIndex int, itemIndex int) azcosmosinternal.MockItem {
+	// Reuse the partitionKeys defined above so generated items match the test partition names.
+	pk := partitionKeys[partitionIndex]
+	return azcosmosinternal.MockItem{
+		ID:           strconv.Itoa(partitionIndex*itemsPerPartition + itemIndex),
+		PartitionKey: pk,
+		// The merge order should alternate between partitions
+		MergeOrder: partitionIndex + itemIndex*partitionCount,
+	}
+}
+
+func generateMockItems(partitions int, itemsPerPartition int) []azcosmosinternal.MockItem {
+	items := make([]azcosmosinternal.MockItem, 0, partitions*itemsPerPartition)
+	for i := 0; i < partitions; i++ {
+		for j := 0; j < itemsPerPartition; j++ {
+			items = append(items, generateMockItem(i, j))
+		}
+	}
+	return items
+}
+
+func createTestItems(t *testing.T, database *DatabaseClient, items []azcosmosinternal.MockItem) (*ContainerClient, error) {
 	properties := ContainerProperties{
 		ID: "TestContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
@@ -49,24 +70,14 @@ func createTestItems(t *testing.T, database *DatabaseClient) (*ContainerClient, 
 	if err != nil {
 		t.Fatalf("failed to create container client: %v", err)
 	}
-
-	for i := 0; i < partitionCount; i++ {
-		for j := 0; j < itemsPerPartition; j++ {
-			item := azcosmosinternal.MockItem{
-				ID:           strconv.Itoa(i*itemsPerPartition + j),
-				PartitionKey: partitionKeys[i],
-
-				// The merge order should alternate between partitions
-				MergeOrder: i + j*partitionCount,
-			}
-			serializedItem, err := json.Marshal(item)
-			if err != nil {
-				return nil, err
-			}
-			_, err = container.UpsertItem(context.TODO(), NewPartitionKeyString(item.PartitionKey), serializedItem, nil)
-			if err != nil {
-				return nil, err
-			}
+	for _, item := range items {
+		serializedItem, err := json.Marshal(item)
+		if err != nil {
+			return nil, err
+		}
+		_, err = container.UpsertItem(context.TODO(), NewPartitionKeyString(item.PartitionKey), serializedItem, nil)
+		if err != nil {
+			return nil, err
 		}
 	}
 
@@ -78,7 +89,9 @@ func TestQueryViaQueryEngine(t *testing.T) {
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{}))
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "TestQueryViaQueryEngine")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	container, err := createTestItems(t, database)
+	// generate items and create the container with them
+	items := generateMockItems(3, 10)
+	container, err := createTestItems(t, database, items)
 	if err != nil {
 		t.Fatalf("Failed to create test items: %v", err)
 	}
@@ -118,5 +131,139 @@ func TestQueryViaQueryEngine(t *testing.T) {
 
 	if itemCount != partitionCount*itemsPerPartition {
 		t.Fatalf("Expected %d items, got %d", partitionCount*itemsPerPartition, itemCount)
+	}
+}
+
+func TestQueryOverrideWithoutParameters(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{}))
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "TestQueryOverrideWithoutParameters")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	items := generateMockItems(3, 5)
+	container, err := createTestItems(t, database, items)
+	if err != nil {
+		t.Fatalf("Failed to create test items: %v", err)
+	}
+
+	override := "SELECT * FROM c WHERE c.id = 'override'"
+	cfg := &azcosmosinternal.QueryRequestConfig{Query: &override, IncludeParameters: false}
+	engine := azcosmosinternal.WithQueryRequestConfig(cfg)
+
+	options := &QueryOptions{QueryEngine: engine}
+	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE c.id = @param1", NewPartitionKey(), options)
+
+	resultItems := make([]azcosmosinternal.MockItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("failed to get next page: %v", err)
+		}
+		for _, it := range resp.Items {
+			var mi azcosmosinternal.MockItem
+			if err := json.Unmarshal(it, &mi); err != nil {
+				t.Fatalf("failed to unmarshal item: %v", err)
+			}
+			resultItems = append(resultItems, mi)
+		}
+	}
+
+	if len(resultItems) != 0 {
+		t.Fatalf("expected 0 results for override query without parameters, got %d", len(resultItems))
+	}
+}
+
+func TestQueryOverrideWithParameters(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{}))
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "TestQueryOverrideWithParameters")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	items := generateMockItems(3, 5)
+	container, err := createTestItems(t, database, items)
+	if err != nil {
+		t.Fatalf("Failed to create test items: %v", err)
+	}
+
+	override := "SELECT * FROM c WHERE c.mergeOrder = @targetOrder"
+	cfg := &azcosmosinternal.QueryRequestConfig{Query: &override, IncludeParameters: true}
+	engine := azcosmosinternal.WithQueryRequestConfig(cfg)
+
+	// choose a target merge order present in the test data: use the first item's merge order (0)
+	target := items[0].MergeOrder
+
+	// Build original query that uses a parameter which should be forwarded to the override when includeParameters=true
+	options := &QueryOptions{QueryEngine: engine, QueryParameters: []QueryParameter{{Name: "@targetOrder", Value: target}}}
+	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE c.id = @targetOrder", NewPartitionKey(), options)
+
+	resultItems := make([]azcosmosinternal.MockItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("failed to get next page: %v", err)
+		}
+		for _, it := range resp.Items {
+			var mi azcosmosinternal.MockItem
+			if err := json.Unmarshal(it, &mi); err != nil {
+				t.Fatalf("failed to unmarshal item: %v", err)
+			}
+			resultItems = append(resultItems, mi)
+		}
+	}
+
+	// Expect items whose MergeOrder == target
+	expected := 0
+	for _, it := range resultItems {
+		if it.MergeOrder == target {
+			expected++
+		}
+	}
+	if expected == 0 {
+		t.Fatalf("expected at least one matching item for target merge order %d", target)
+	}
+}
+
+func TestNoQueryOverrideUsesOriginal(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{}))
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "TestNoQueryOverrideUsesOriginal")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	items := generateMockItems(3, 5)
+	container, err := createTestItems(t, database, items)
+	if err != nil {
+		t.Fatalf("Failed to create test items: %v", err)
+	}
+
+	// No override: Query = nil
+	cfg := &azcosmosinternal.QueryRequestConfig{Query: nil, IncludeParameters: false}
+	engine := azcosmosinternal.WithQueryRequestConfig(cfg)
+
+	// We will query by mergeOrder using a parameter
+	target := 0
+	options := &QueryOptions{QueryEngine: engine, QueryParameters: []QueryParameter{{Name: "@targetOrder", Value: target}}}
+	pager := container.NewQueryItemsPager("SELECT * FROM c WHERE c.mergeOrder = @targetOrder", NewPartitionKey(), options)
+
+	resultItems := make([]azcosmosinternal.MockItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			t.Fatalf("failed to get next page: %v", err)
+		}
+		for _, it := range resp.Items {
+			var mi azcosmosinternal.MockItem
+			if err := json.Unmarshal(it, &mi); err != nil {
+				t.Fatalf("failed to unmarshal item: %v", err)
+			}
+			resultItems = append(resultItems, mi)
+		}
+	}
+
+	// Expect items whose MergeOrder == target
+	expected := 0
+	for _, it := range resultItems {
+		if it.MergeOrder == target {
+			expected++
+		}
+	}
+	if expected == 0 {
+		t.Fatalf("expected at least one matching item for target merge order %d", target)
 	}
 }

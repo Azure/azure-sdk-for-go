@@ -46,7 +46,7 @@ Generate and release Azure SDK for Go package from Swagger or TypeSpec.
 
 ### 2. General Release Guidelines
 - All requests should be completed before the 4th Friday of the month.
-- The issue may be labeled "ReadyForApiTest," or the live test about the service is ok indicating readiness.It appears in specs repo PR,[like](Azure/azure-rest-api-specs#33035)
+- The issue may be labeled "ReadyForApiTest," or the live test about the service is ok indicating readiness.It appears in specs repo PR,[like](https://github.com/Azure/azure-rest-api-specs/pull/33035)
 - Ensure the "API Availability Check" passes for all services before releasing.
 
 ### 3. Update Existing RP

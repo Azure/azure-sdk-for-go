@@ -6,5 +6,5 @@ package armimpactreporting
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/impactreporting/armimpactreporting"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.2.1"
 )

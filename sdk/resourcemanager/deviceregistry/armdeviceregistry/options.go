@@ -88,6 +88,174 @@ type BillingContainersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NamespaceAssetsClientBeginCreateOrReplaceOptions contains the optional parameters for the NamespaceAssetsClient.BeginCreateOrReplace
+// method.
+type NamespaceAssetsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceAssetsClientBeginDeleteOptions contains the optional parameters for the NamespaceAssetsClient.BeginDelete method.
+type NamespaceAssetsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceAssetsClientBeginUpdateOptions contains the optional parameters for the NamespaceAssetsClient.BeginUpdate method.
+type NamespaceAssetsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceAssetsClientGetOptions contains the optional parameters for the NamespaceAssetsClient.Get method.
+type NamespaceAssetsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceAssetsClientListByResourceGroupOptions contains the optional parameters for the NamespaceAssetsClient.NewListByResourceGroupPager
+// method.
+type NamespaceAssetsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceDevicesClientBeginCreateOrReplaceOptions contains the optional parameters for the NamespaceDevicesClient.BeginCreateOrReplace
+// method.
+type NamespaceDevicesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDevicesClientBeginDeleteOptions contains the optional parameters for the NamespaceDevicesClient.BeginDelete method.
+type NamespaceDevicesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDevicesClientBeginUpdateOptions contains the optional parameters for the NamespaceDevicesClient.BeginUpdate method.
+type NamespaceDevicesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDevicesClientGetOptions contains the optional parameters for the NamespaceDevicesClient.Get method.
+type NamespaceDevicesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceDevicesClientListByResourceGroupOptions contains the optional parameters for the NamespaceDevicesClient.NewListByResourceGroupPager
+// method.
+type NamespaceDevicesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceDiscoveredAssetsClientBeginCreateOrReplaceOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.BeginCreateOrReplace
+// method.
+type NamespaceDiscoveredAssetsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDiscoveredAssetsClientBeginDeleteOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.BeginDelete
+// method.
+type NamespaceDiscoveredAssetsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDiscoveredAssetsClientBeginUpdateOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.BeginUpdate
+// method.
+type NamespaceDiscoveredAssetsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDiscoveredAssetsClientGetOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.Get
+// method.
+type NamespaceDiscoveredAssetsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceDiscoveredAssetsClientListByResourceGroupOptions contains the optional parameters for the NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager
+// method.
+type NamespaceDiscoveredAssetsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceDiscoveredDevicesClientBeginCreateOrReplaceOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.BeginCreateOrReplace
+// method.
+type NamespaceDiscoveredDevicesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDiscoveredDevicesClientBeginDeleteOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.BeginDelete
+// method.
+type NamespaceDiscoveredDevicesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDiscoveredDevicesClientBeginUpdateOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.BeginUpdate
+// method.
+type NamespaceDiscoveredDevicesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespaceDiscoveredDevicesClientGetOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.Get
+// method.
+type NamespaceDiscoveredDevicesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceDiscoveredDevicesClientListByResourceGroupOptions contains the optional parameters for the NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager
+// method.
+type NamespaceDiscoveredDevicesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientBeginCreateOrReplaceOptions contains the optional parameters for the NamespacesClient.BeginCreateOrReplace
+// method.
+type NamespacesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
+type NamespacesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginMigrateOptions contains the optional parameters for the NamespacesClient.BeginMigrate method.
+type NamespacesClientBeginMigrateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginUpdateOptions contains the optional parameters for the NamespacesClient.BeginUpdate method.
+type NamespacesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
+type NamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.NewListByResourceGroupPager
+// method.
+type NamespacesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientListBySubscriptionOptions contains the optional parameters for the NamespacesClient.NewListBySubscriptionPager
+// method.
+type NamespacesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
 type OperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -95,5 +263,86 @@ type OperationStatusClientGetOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaRegistriesClientBeginCreateOrReplaceOptions contains the optional parameters for the SchemaRegistriesClient.BeginCreateOrReplace
+// method.
+type SchemaRegistriesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SchemaRegistriesClientBeginDeleteOptions contains the optional parameters for the SchemaRegistriesClient.BeginDelete method.
+type SchemaRegistriesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SchemaRegistriesClientBeginUpdateOptions contains the optional parameters for the SchemaRegistriesClient.BeginUpdate method.
+type SchemaRegistriesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SchemaRegistriesClientGetOptions contains the optional parameters for the SchemaRegistriesClient.Get method.
+type SchemaRegistriesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaRegistriesClientListByResourceGroupOptions contains the optional parameters for the SchemaRegistriesClient.NewListByResourceGroupPager
+// method.
+type SchemaRegistriesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaRegistriesClientListBySubscriptionOptions contains the optional parameters for the SchemaRegistriesClient.NewListBySubscriptionPager
+// method.
+type SchemaRegistriesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaVersionsClientBeginDeleteOptions contains the optional parameters for the SchemaVersionsClient.BeginDelete method.
+type SchemaVersionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SchemaVersionsClientCreateOrReplaceOptions contains the optional parameters for the SchemaVersionsClient.CreateOrReplace
+// method.
+type SchemaVersionsClientCreateOrReplaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaVersionsClientGetOptions contains the optional parameters for the SchemaVersionsClient.Get method.
+type SchemaVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemaVersionsClientListBySchemaOptions contains the optional parameters for the SchemaVersionsClient.NewListBySchemaPager
+// method.
+type SchemaVersionsClientListBySchemaOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemasClientBeginDeleteOptions contains the optional parameters for the SchemasClient.BeginDelete method.
+type SchemasClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SchemasClientCreateOrReplaceOptions contains the optional parameters for the SchemasClient.CreateOrReplace method.
+type SchemasClientCreateOrReplaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemasClientGetOptions contains the optional parameters for the SchemasClient.Get method.
+type SchemasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SchemasClientListBySchemaRegistryOptions contains the optional parameters for the SchemasClient.NewListBySchemaRegistryPager
+// method.
+type SchemasClientListBySchemaRegistryOptions struct {
 	// placeholder for future optional parameters
 }

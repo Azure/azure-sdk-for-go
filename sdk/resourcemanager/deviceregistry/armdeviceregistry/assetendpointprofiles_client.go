@@ -42,7 +42,7 @@ func NewAssetEndpointProfilesClient(subscriptionID string, credential azcore.Tok
 // BeginCreateOrReplace - Create a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetEndpointProfileName - Asset Endpoint Profile name parameter.
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *AssetEndpointProfilesClient) BeginCreateOrReplace(ctx context.Cont
 // CreateOrReplace - Create a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 func (client *AssetEndpointProfilesClient) createOrReplace(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, resource AssetEndpointProfile, options *AssetEndpointProfilesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssetEndpointProfilesClient.BeginCreateOrReplace"
@@ -110,7 +110,7 @@ func (client *AssetEndpointProfilesClient) createOrReplaceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *AssetEndpointProfilesClient) createOrReplaceCreateRequest(ctx cont
 // BeginDelete - Delete a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetEndpointProfileName - Asset Endpoint Profile name parameter.
 //   - options - AssetEndpointProfilesClientBeginDeleteOptions contains the optional parameters for the AssetEndpointProfilesClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *AssetEndpointProfilesClient) BeginDelete(ctx context.Context, reso
 // Delete - Delete a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 func (client *AssetEndpointProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, options *AssetEndpointProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssetEndpointProfilesClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *AssetEndpointProfilesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -198,7 +198,7 @@ func (client *AssetEndpointProfilesClient) deleteCreateRequest(ctx context.Conte
 // Get - Get a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetEndpointProfileName - Asset Endpoint Profile name parameter.
 //   - options - AssetEndpointProfilesClientGetOptions contains the optional parameters for the AssetEndpointProfilesClient.Get
@@ -245,7 +245,7 @@ func (client *AssetEndpointProfilesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *AssetEndpointProfilesClient) getHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - List AssetEndpointProfile resources by resource group
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AssetEndpointProfilesClientListByResourceGroupOptions contains the optional parameters for the AssetEndpointProfilesClient.NewListByResourceGroupPager
 //     method.
@@ -305,7 +305,7 @@ func (client *AssetEndpointProfilesClient) listByResourceGroupCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +322,7 @@ func (client *AssetEndpointProfilesClient) listByResourceGroupHandleResponse(res
 
 // NewListBySubscriptionPager - List AssetEndpointProfile resources by subscription ID
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - options - AssetEndpointProfilesClientListBySubscriptionOptions contains the optional parameters for the AssetEndpointProfilesClient.NewListBySubscriptionPager
 //     method.
 func (client *AssetEndpointProfilesClient) NewListBySubscriptionPager(options *AssetEndpointProfilesClientListBySubscriptionOptions) *runtime.Pager[AssetEndpointProfilesClientListBySubscriptionResponse] {
@@ -360,7 +360,7 @@ func (client *AssetEndpointProfilesClient) listBySubscriptionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +378,7 @@ func (client *AssetEndpointProfilesClient) listBySubscriptionHandleResponse(resp
 // BeginUpdate - Update a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetEndpointProfileName - Asset Endpoint Profile name parameter.
 //   - properties - The resource properties to be updated.
@@ -404,7 +404,7 @@ func (client *AssetEndpointProfilesClient) BeginUpdate(ctx context.Context, reso
 // Update - Update a AssetEndpointProfile
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 func (client *AssetEndpointProfilesClient) update(ctx context.Context, resourceGroupName string, assetEndpointProfileName string, properties AssetEndpointProfileUpdate, options *AssetEndpointProfilesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssetEndpointProfilesClient.BeginUpdate"
@@ -446,7 +446,7 @@ func (client *AssetEndpointProfilesClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

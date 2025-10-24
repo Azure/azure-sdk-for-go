@@ -16,66 +16,66 @@ import (
 	"strings"
 )
 
-// AssetsClient contains the methods for the Assets group.
-// Don't use this type directly, use NewAssetsClient() instead.
-type AssetsClient struct {
+// SchemaRegistriesClient contains the methods for the SchemaRegistries group.
+// Don't use this type directly, use NewSchemaRegistriesClient() instead.
+type SchemaRegistriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAssetsClient creates a new instance of AssetsClient with the specified values.
+// NewSchemaRegistriesClient creates a new instance of SchemaRegistriesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewAssetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssetsClient, error) {
+func NewSchemaRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchemaRegistriesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &AssetsClient{
+	client := &SchemaRegistriesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrReplace - Create a Asset
+// BeginCreateOrReplace - Create a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - assetName - Asset name parameter.
+//   - schemaRegistryName - Schema registry name parameter.
 //   - resource - Resource create parameters.
-//   - options - AssetsClientBeginCreateOrReplaceOptions contains the optional parameters for the AssetsClient.BeginCreateOrReplace
+//   - options - SchemaRegistriesClientBeginCreateOrReplaceOptions contains the optional parameters for the SchemaRegistriesClient.BeginCreateOrReplace
 //     method.
-func (client *AssetsClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, assetName string, resource Asset, options *AssetsClientBeginCreateOrReplaceOptions) (*runtime.Poller[AssetsClientCreateOrReplaceResponse], error) {
+func (client *SchemaRegistriesClient) BeginCreateOrReplace(ctx context.Context, resourceGroupName string, schemaRegistryName string, resource SchemaRegistry, options *SchemaRegistriesClientBeginCreateOrReplaceOptions) (*runtime.Poller[SchemaRegistriesClientCreateOrReplaceResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrReplace(ctx, resourceGroupName, assetName, resource, options)
+		resp, err := client.createOrReplace(ctx, resourceGroupName, schemaRegistryName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssetsClientCreateOrReplaceResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchemaRegistriesClientCreateOrReplaceResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AssetsClientCreateOrReplaceResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchemaRegistriesClientCreateOrReplaceResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrReplace - Create a Asset
+// CreateOrReplace - Create a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01
-func (client *AssetsClient) createOrReplace(ctx context.Context, resourceGroupName string, assetName string, resource Asset, options *AssetsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
+func (client *SchemaRegistriesClient) createOrReplace(ctx context.Context, resourceGroupName string, schemaRegistryName string, resource SchemaRegistry, options *SchemaRegistriesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AssetsClient.BeginCreateOrReplace"
+	const operationName = "SchemaRegistriesClient.BeginCreateOrReplace"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, assetName, resource, options)
+	req, err := client.createOrReplaceCreateRequest(ctx, resourceGroupName, schemaRegistryName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -91,8 +91,8 @@ func (client *AssetsClient) createOrReplace(ctx context.Context, resourceGroupNa
 }
 
 // createOrReplaceCreateRequest creates the CreateOrReplace request.
-func (client *AssetsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, assetName string, resource Asset, _ *AssetsClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets/{assetName}"
+func (client *SchemaRegistriesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, resource SchemaRegistry, _ *SchemaRegistriesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -101,10 +101,10 @@ func (client *AssetsClient) createOrReplaceCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if assetName == "" {
-		return nil, errors.New("parameter assetName cannot be empty")
+	if schemaRegistryName == "" {
+		return nil, errors.New("parameter schemaRegistryName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
+	urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -120,41 +120,42 @@ func (client *AssetsClient) createOrReplaceCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// BeginDelete - Delete a Asset
+// BeginDelete - Delete a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - assetName - Asset name parameter.
-//   - options - AssetsClientBeginDeleteOptions contains the optional parameters for the AssetsClient.BeginDelete method.
-func (client *AssetsClient) BeginDelete(ctx context.Context, resourceGroupName string, assetName string, options *AssetsClientBeginDeleteOptions) (*runtime.Poller[AssetsClientDeleteResponse], error) {
+//   - schemaRegistryName - Schema registry name parameter.
+//   - options - SchemaRegistriesClientBeginDeleteOptions contains the optional parameters for the SchemaRegistriesClient.BeginDelete
+//     method.
+func (client *SchemaRegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, schemaRegistryName string, options *SchemaRegistriesClientBeginDeleteOptions) (*runtime.Poller[SchemaRegistriesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, assetName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, schemaRegistryName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssetsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchemaRegistriesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AssetsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchemaRegistriesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a Asset
+// Delete - Delete a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01
-func (client *AssetsClient) deleteOperation(ctx context.Context, resourceGroupName string, assetName string, options *AssetsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SchemaRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaRegistryName string, options *SchemaRegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AssetsClient.BeginDelete"
+	const operationName = "SchemaRegistriesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, assetName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, schemaRegistryName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -170,8 +171,8 @@ func (client *AssetsClient) deleteOperation(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, assetName string, _ *AssetsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets/{assetName}"
+func (client *SchemaRegistriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, _ *SchemaRegistriesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -180,10 +181,10 @@ func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if assetName == "" {
-		return nil, errors.New("parameter assetName cannot be empty")
+	if schemaRegistryName == "" {
+		return nil, errors.New("parameter schemaRegistryName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
+	urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -194,38 +195,38 @@ func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// Get - Get a Asset
+// Get - Get a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - assetName - Asset name parameter.
-//   - options - AssetsClientGetOptions contains the optional parameters for the AssetsClient.Get method.
-func (client *AssetsClient) Get(ctx context.Context, resourceGroupName string, assetName string, options *AssetsClientGetOptions) (AssetsClientGetResponse, error) {
+//   - schemaRegistryName - Schema registry name parameter.
+//   - options - SchemaRegistriesClientGetOptions contains the optional parameters for the SchemaRegistriesClient.Get method.
+func (client *SchemaRegistriesClient) Get(ctx context.Context, resourceGroupName string, schemaRegistryName string, options *SchemaRegistriesClientGetOptions) (SchemaRegistriesClientGetResponse, error) {
 	var err error
-	const operationName = "AssetsClient.Get"
+	const operationName = "SchemaRegistriesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, assetName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, schemaRegistryName, options)
 	if err != nil {
-		return AssetsClientGetResponse{}, err
+		return SchemaRegistriesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AssetsClientGetResponse{}, err
+		return SchemaRegistriesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return AssetsClientGetResponse{}, err
+		return SchemaRegistriesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, assetName string, _ *AssetsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets/{assetName}"
+func (client *SchemaRegistriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, _ *SchemaRegistriesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -234,10 +235,10 @@ func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if assetName == "" {
-		return nil, errors.New("parameter assetName cannot be empty")
+	if schemaRegistryName == "" {
+		return nil, errors.New("parameter schemaRegistryName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
+	urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -250,27 +251,27 @@ func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssetsClient) getHandleResponse(resp *http.Response) (AssetsClientGetResponse, error) {
-	result := AssetsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Asset); err != nil {
-		return AssetsClientGetResponse{}, err
+func (client *SchemaRegistriesClient) getHandleResponse(resp *http.Response) (SchemaRegistriesClientGetResponse, error) {
+	result := SchemaRegistriesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaRegistry); err != nil {
+		return SchemaRegistriesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List Asset resources by resource group
+// NewListByResourceGroupPager - List SchemaRegistry resources by resource group
 //
 // Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - AssetsClientListByResourceGroupOptions contains the optional parameters for the AssetsClient.NewListByResourceGroupPager
+//   - options - SchemaRegistriesClientListByResourceGroupOptions contains the optional parameters for the SchemaRegistriesClient.NewListByResourceGroupPager
 //     method.
-func (client *AssetsClient) NewListByResourceGroupPager(resourceGroupName string, options *AssetsClientListByResourceGroupOptions) *runtime.Pager[AssetsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AssetsClientListByResourceGroupResponse]{
-		More: func(page AssetsClientListByResourceGroupResponse) bool {
+func (client *SchemaRegistriesClient) NewListByResourceGroupPager(resourceGroupName string, options *SchemaRegistriesClientListByResourceGroupOptions) *runtime.Pager[SchemaRegistriesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SchemaRegistriesClientListByResourceGroupResponse]{
+		More: func(page SchemaRegistriesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AssetsClientListByResourceGroupResponse) (AssetsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssetsClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *SchemaRegistriesClientListByResourceGroupResponse) (SchemaRegistriesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SchemaRegistriesClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -279,7 +280,7 @@ func (client *AssetsClient) NewListByResourceGroupPager(resourceGroupName string
 				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			}, nil)
 			if err != nil {
-				return AssetsClientListByResourceGroupResponse{}, err
+				return SchemaRegistriesClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -288,8 +289,8 @@ func (client *AssetsClient) NewListByResourceGroupPager(resourceGroupName string
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AssetsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AssetsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets"
+func (client *SchemaRegistriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *SchemaRegistriesClientListByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -310,26 +311,26 @@ func (client *AssetsClient) listByResourceGroupCreateRequest(ctx context.Context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AssetsClient) listByResourceGroupHandleResponse(resp *http.Response) (AssetsClientListByResourceGroupResponse, error) {
-	result := AssetsClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssetListResult); err != nil {
-		return AssetsClientListByResourceGroupResponse{}, err
+func (client *SchemaRegistriesClient) listByResourceGroupHandleResponse(resp *http.Response) (SchemaRegistriesClientListByResourceGroupResponse, error) {
+	result := SchemaRegistriesClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaRegistryListResult); err != nil {
+		return SchemaRegistriesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List Asset resources by subscription ID
+// NewListBySubscriptionPager - List SchemaRegistry resources by subscription ID
 //
 // Generated from API version 2025-10-01
-//   - options - AssetsClientListBySubscriptionOptions contains the optional parameters for the AssetsClient.NewListBySubscriptionPager
+//   - options - SchemaRegistriesClientListBySubscriptionOptions contains the optional parameters for the SchemaRegistriesClient.NewListBySubscriptionPager
 //     method.
-func (client *AssetsClient) NewListBySubscriptionPager(options *AssetsClientListBySubscriptionOptions) *runtime.Pager[AssetsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AssetsClientListBySubscriptionResponse]{
-		More: func(page AssetsClientListBySubscriptionResponse) bool {
+func (client *SchemaRegistriesClient) NewListBySubscriptionPager(options *SchemaRegistriesClientListBySubscriptionOptions) *runtime.Pager[SchemaRegistriesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SchemaRegistriesClientListBySubscriptionResponse]{
+		More: func(page SchemaRegistriesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AssetsClientListBySubscriptionResponse) (AssetsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssetsClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *SchemaRegistriesClientListBySubscriptionResponse) (SchemaRegistriesClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SchemaRegistriesClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -338,7 +339,7 @@ func (client *AssetsClient) NewListBySubscriptionPager(options *AssetsClientList
 				return client.listBySubscriptionCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
-				return AssetsClientListBySubscriptionResponse{}, err
+				return SchemaRegistriesClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
@@ -347,8 +348,8 @@ func (client *AssetsClient) NewListBySubscriptionPager(options *AssetsClientList
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AssetsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *AssetsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/assets"
+func (client *SchemaRegistriesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *SchemaRegistriesClientListBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/schemaRegistries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -365,50 +366,51 @@ func (client *AssetsClient) listBySubscriptionCreateRequest(ctx context.Context,
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AssetsClient) listBySubscriptionHandleResponse(resp *http.Response) (AssetsClientListBySubscriptionResponse, error) {
-	result := AssetsClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssetListResult); err != nil {
-		return AssetsClientListBySubscriptionResponse{}, err
+func (client *SchemaRegistriesClient) listBySubscriptionHandleResponse(resp *http.Response) (SchemaRegistriesClientListBySubscriptionResponse, error) {
+	result := SchemaRegistriesClientListBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaRegistryListResult); err != nil {
+		return SchemaRegistriesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Update a Asset
+// BeginUpdate - Update a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - assetName - Asset name parameter.
+//   - schemaRegistryName - Schema registry name parameter.
 //   - properties - The resource properties to be updated.
-//   - options - AssetsClientBeginUpdateOptions contains the optional parameters for the AssetsClient.BeginUpdate method.
-func (client *AssetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, assetName string, properties AssetUpdate, options *AssetsClientBeginUpdateOptions) (*runtime.Poller[AssetsClientUpdateResponse], error) {
+//   - options - SchemaRegistriesClientBeginUpdateOptions contains the optional parameters for the SchemaRegistriesClient.BeginUpdate
+//     method.
+func (client *SchemaRegistriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, schemaRegistryName string, properties SchemaRegistryUpdate, options *SchemaRegistriesClientBeginUpdateOptions) (*runtime.Poller[SchemaRegistriesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, assetName, properties, options)
+		resp, err := client.update(ctx, resourceGroupName, schemaRegistryName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AssetsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchemaRegistriesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AssetsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchemaRegistriesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Update a Asset
+// Update - Update a SchemaRegistry
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01
-func (client *AssetsClient) update(ctx context.Context, resourceGroupName string, assetName string, properties AssetUpdate, options *AssetsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *SchemaRegistriesClient) update(ctx context.Context, resourceGroupName string, schemaRegistryName string, properties SchemaRegistryUpdate, options *SchemaRegistriesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AssetsClient.BeginUpdate"
+	const operationName = "SchemaRegistriesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, assetName, properties, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, schemaRegistryName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -424,8 +426,8 @@ func (client *AssetsClient) update(ctx context.Context, resourceGroupName string
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, assetName string, properties AssetUpdate, _ *AssetsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assets/{assetName}"
+func (client *SchemaRegistriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, properties SchemaRegistryUpdate, _ *SchemaRegistriesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -434,10 +436,10 @@ func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if assetName == "" {
-		return nil, errors.New("parameter assetName cannot be empty")
+	if schemaRegistryName == "" {
+		return nil, errors.New("parameter schemaRegistryName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
+	urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

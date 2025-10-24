@@ -91,6 +91,45 @@ func PossibleDataPointObservabilityModeValues() []DataPointObservabilityMode {
 	}
 }
 
+// DatasetDestinationTarget - The set of supported dataset destinations for an asset.
+type DatasetDestinationTarget string
+
+const (
+	// DatasetDestinationTargetBrokerStateStore - Broker State Store target.
+	DatasetDestinationTargetBrokerStateStore DatasetDestinationTarget = "BrokerStateStore"
+	// DatasetDestinationTargetMqtt - MQTT target.
+	DatasetDestinationTargetMqtt DatasetDestinationTarget = "Mqtt"
+	// DatasetDestinationTargetStorage - Storage target.
+	DatasetDestinationTargetStorage DatasetDestinationTarget = "Storage"
+)
+
+// PossibleDatasetDestinationTargetValues returns the possible values for the DatasetDestinationTarget const type.
+func PossibleDatasetDestinationTargetValues() []DatasetDestinationTarget {
+	return []DatasetDestinationTarget{
+		DatasetDestinationTargetBrokerStateStore,
+		DatasetDestinationTargetMqtt,
+		DatasetDestinationTargetStorage,
+	}
+}
+
+// EventDestinationTarget - The set of supported event destinations for an asset.
+type EventDestinationTarget string
+
+const (
+	// EventDestinationTargetMqtt - MQTT target.
+	EventDestinationTargetMqtt EventDestinationTarget = "Mqtt"
+	// EventDestinationTargetStorage - Storage target.
+	EventDestinationTargetStorage EventDestinationTarget = "Storage"
+)
+
+// PossibleEventDestinationTargetValues returns the possible values for the EventDestinationTarget const type.
+func PossibleEventDestinationTargetValues() []EventDestinationTarget {
+	return []EventDestinationTarget{
+		EventDestinationTargetMqtt,
+		EventDestinationTargetStorage,
+	}
+}
+
 // EventObservabilityMode - Defines the event observability mode.
 type EventObservabilityMode string
 
@@ -106,6 +145,84 @@ func PossibleEventObservabilityModeValues() []EventObservabilityMode {
 	return []EventObservabilityMode{
 		EventObservabilityModeLog,
 		EventObservabilityModeNone,
+	}
+}
+
+// Format - Defines the schema format.
+type Format string
+
+const (
+	// FormatDelta10 - Delta format
+	FormatDelta10 Format = "Delta/1.0"
+	// FormatJSONSchemaDraft7 - JSON Schema version draft 7 format
+	FormatJSONSchemaDraft7 Format = "JsonSchema/draft-07"
+)
+
+// PossibleFormatValues returns the possible values for the Format const type.
+func PossibleFormatValues() []Format {
+	return []Format{
+		FormatDelta10,
+		FormatJSONSchemaDraft7,
+	}
+}
+
+// ManagementActionType - Defines the ManagementAction's type.
+type ManagementActionType string
+
+const (
+	// ManagementActionTypeCall - Call action type.
+	ManagementActionTypeCall ManagementActionType = "Call"
+	// ManagementActionTypeRead - Read action type.
+	ManagementActionTypeRead ManagementActionType = "Read"
+	// ManagementActionTypeWrite - Write action type.
+	ManagementActionTypeWrite ManagementActionType = "Write"
+)
+
+// PossibleManagementActionTypeValues returns the possible values for the ManagementActionType const type.
+func PossibleManagementActionTypeValues() []ManagementActionType {
+	return []ManagementActionType{
+		ManagementActionTypeCall,
+		ManagementActionTypeRead,
+		ManagementActionTypeWrite,
+	}
+}
+
+// MqttDestinationQos - The set of supported QoS types for a MQTT destination.
+type MqttDestinationQos string
+
+const (
+	// MqttDestinationQosQos0 - QoS 0.
+	MqttDestinationQosQos0 MqttDestinationQos = "Qos0"
+	// MqttDestinationQosQos1 - QoS 1.
+	MqttDestinationQosQos1 MqttDestinationQos = "Qos1"
+)
+
+// PossibleMqttDestinationQosValues returns the possible values for the MqttDestinationQos const type.
+func PossibleMqttDestinationQosValues() []MqttDestinationQos {
+	return []MqttDestinationQos{
+		MqttDestinationQosQos0,
+		MqttDestinationQosQos1,
+	}
+}
+
+// NamespaceDiscoveredManagementActionType - Defines the ManagementAction's type.
+type NamespaceDiscoveredManagementActionType string
+
+const (
+	// NamespaceDiscoveredManagementActionTypeCall - Call action type.
+	NamespaceDiscoveredManagementActionTypeCall NamespaceDiscoveredManagementActionType = "Call"
+	// NamespaceDiscoveredManagementActionTypeRead - Read action type.
+	NamespaceDiscoveredManagementActionTypeRead NamespaceDiscoveredManagementActionType = "Read"
+	// NamespaceDiscoveredManagementActionTypeWrite - Write action type.
+	NamespaceDiscoveredManagementActionTypeWrite NamespaceDiscoveredManagementActionType = "Write"
+)
+
+// PossibleNamespaceDiscoveredManagementActionTypeValues returns the possible values for the NamespaceDiscoveredManagementActionType const type.
+func PossibleNamespaceDiscoveredManagementActionTypeValues() []NamespaceDiscoveredManagementActionType {
+	return []NamespaceDiscoveredManagementActionType{
+		NamespaceDiscoveredManagementActionTypeCall,
+		NamespaceDiscoveredManagementActionTypeRead,
+		NamespaceDiscoveredManagementActionTypeWrite,
 	}
 }
 
@@ -155,6 +272,72 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// SchemaType - Defines the schema type.
+type SchemaType string
+
+const (
+	// SchemaTypeMessageSchema - Message Schema schema type
+	SchemaTypeMessageSchema SchemaType = "MessageSchema"
+)
+
+// PossibleSchemaTypeValues returns the possible values for the SchemaType const type.
+func PossibleSchemaTypeValues() []SchemaType {
+	return []SchemaType{
+		SchemaTypeMessageSchema,
+	}
+}
+
+// Scope - Scope of the migrate resources operation.
+type Scope string
+
+const (
+	// ScopeResources - Scoping the migration to resourceIds provided
+	ScopeResources Scope = "Resources"
+)
+
+// PossibleScopeValues returns the possible values for the Scope const type.
+func PossibleScopeValues() []Scope {
+	return []Scope{
+		ScopeResources,
+	}
+}
+
+// StreamDestinationTarget - The set of supported stream destinations for an asset.
+type StreamDestinationTarget string
+
+const (
+	// StreamDestinationTargetMqtt - MQTT target.
+	StreamDestinationTargetMqtt StreamDestinationTarget = "Mqtt"
+	// StreamDestinationTargetStorage - Storage target.
+	StreamDestinationTargetStorage StreamDestinationTarget = "Storage"
+)
+
+// PossibleStreamDestinationTargetValues returns the possible values for the StreamDestinationTarget const type.
+func PossibleStreamDestinationTargetValues() []StreamDestinationTarget {
+	return []StreamDestinationTarget{
+		StreamDestinationTargetMqtt,
+		StreamDestinationTargetStorage,
+	}
+}
+
+// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
+type SystemAssignedServiceIdentityType string
+
+const (
+	// SystemAssignedServiceIdentityTypeNone - No managed system identity.
+	SystemAssignedServiceIdentityTypeNone SystemAssignedServiceIdentityType = "None"
+	// SystemAssignedServiceIdentityTypeSystemAssigned - System assigned managed system identity.
+	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
+)
+
+// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
+func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
+	return []SystemAssignedServiceIdentityType{
+		SystemAssignedServiceIdentityTypeNone,
+		SystemAssignedServiceIdentityTypeSystemAssigned,
 	}
 }
 

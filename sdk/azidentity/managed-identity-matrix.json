@@ -3,7 +3,6 @@
         {
             "Agent": {
                 "msi_image": {
-                    "ArmTemplateParameters": "@{deployResources = $true}",
                     "OSVmImage": "env:LINUXVMIMAGE",
                     "Pool": "env:LINUXPOOL"
                 }

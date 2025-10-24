@@ -41,6 +41,8 @@ if ($CI) {
   az account set --subscription $SubscriptionId
 }
 
+return
+
 Write-Host "##[group]Building container"
 $image = "$($DeploymentOutputs['AZIDENTITY_ACR_LOGIN_SERVER'])/azidentity-managed-id-test"
 Set-Content -Path "$PSScriptRoot/Dockerfile" -Value @"

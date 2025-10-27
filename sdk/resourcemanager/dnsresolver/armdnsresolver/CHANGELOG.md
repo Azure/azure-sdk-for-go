@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2025-10-07)
+## 2.0.0-beta.1 (2025-10-27)
 ### Breaking Changes
 
 - Struct `DomainListResult` has been removed

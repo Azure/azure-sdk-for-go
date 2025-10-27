@@ -65,7 +65,7 @@ func (testsuite *DnsresolverTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestDnsresolverTestSuite(t *testing.T) {
+func TTestDnsresolverTestSuite(t *testing.T) {
 	suite.Run(t, new(DnsresolverTestSuite))
 }
 

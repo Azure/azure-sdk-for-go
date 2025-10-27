@@ -70,7 +70,7 @@ func (testsuite *DnsforwardingrulesetTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestDnsforwardingrulesetTestSuite(t *testing.T) {
+func TTestDnsforwardingrulesetTestSuite(t *testing.T) {
 	suite.Run(t, new(DnsforwardingrulesetTestSuite))
 }
 

@@ -41,10 +41,6 @@ type WorkloadIdentityCredentialOptions struct {
 	// application is registered.
 	AdditionallyAllowedTenants []string
 
-	// AzureKubernetesTokenProxy determines whether the credential reads token proxy configuration from
-	// environment variables.
-	AzureKubernetesTokenProxy bool
-
 	// Cache is a persistent cache the credential will use to store the tokens it acquires, making
 	// them available to other processes and credential instances. The default, zero value means the
 	// credential will store tokens in memory and not share them with any other credential instance.
@@ -58,6 +54,11 @@ type WorkloadIdentityCredentialOptions struct {
 	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
+
+	// EnableAzureKubernetesTokenProxy determines whether the credential reads token proxy configuration from
+	// environment variables. When this value is true and proxy configuration isn't present or this value is
+	// false, the credential will request tokens directly from Entra ID.
+	EnableAzureKubernetesTokenProxy bool
 
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
@@ -101,7 +102,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	if options.AzureKubernetesTokenProxy {
+	if options.EnableAzureKubernetesTokenProxy {
 		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
 			return nil, err
 		}

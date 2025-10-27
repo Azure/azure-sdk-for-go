@@ -1,8 +1,12 @@
 # Release History
 
-## 2.0.1-beta.1 (Unreleased)
+## 2.1.0 (Unreleased)
 
 ### Features Added
+
+* Added internal pipeline policy to normalize query parameters for deterministic request URLs
+  * Query parameter names are converted to lowercase
+  * Parameters are sorted in case-insensitive alphabetical order
 
 ### Breaking Changes
 

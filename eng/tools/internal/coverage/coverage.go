@@ -28,7 +28,7 @@ type coveragePackage struct {
 }
 
 const (
-	coverageXmlFile = "coverage.xml"
+	coverageFile = "coveragefunc.txt"
 )
 
 func check(e error) {
@@ -44,7 +44,7 @@ func findCoverageFiles(root string) []string {
 		if err != nil {
 			return err
 		}
-		if !d.IsDir() && d.Name() == coverageXmlFile {
+		if !d.IsDir() && d.Name() == coverageFile {
 			coverageFiles = append(coverageFiles, path)
 		}
 
@@ -72,32 +72,38 @@ func readConfigData(coverageConfig string) *codeCoverage {
 
 // This supports doing a single package at a time. If this needs to be expanded in the future
 // this method will have to return a []*float64 for each packages goal
+//
+// Packages are identified in configData (parsed from /eng/config.json) by segments of their
+// module paths, for example "keyvault/azkeys", whereas covFile may be a disk path like
+// "/vss/1/sdk/security/keyvault/azkeys". So, this function searches for the configData entry
+// whose Name is the longest substring of covFile.
 func findCoverageGoal(covFiles []string, configData *codeCoverage) float64 {
 	for _, covFile := range covFiles {
-
-		// check for an exact match _first_, then go to fuzzy matching
-		for _, p := range configData.Packages {
-			if covFile == p.Name {
-				return p.CoverageGoal
+		covFile = strings.ReplaceAll(covFile, `\`, "/")
+		var bestMatch *coveragePackage
+		for i := range configData.Packages {
+			p := &configData.Packages[i]
+			prx := regexp.MustCompile(`(^|/)` + regexp.QuoteMeta(p.Name) + `($|/)`)
+			if prx.MatchString(covFile) {
+				if bestMatch == nil || len(p.Name) > len(bestMatch.Name) {
+					bestMatch = p
+				}
 			}
 		}
-
-		for _, p := range configData.Packages {
-			if strings.Contains(covFile, p.Name) {
-				return p.CoverageGoal
-			}
+		if bestMatch != nil {
+			return bestMatch.CoverageGoal
 		}
 	}
 	fmt.Println("WARNING: Could not find a coverage goal, defaulting to 95%.")
 	return 0.95
 }
 
-func parseCoveragePercent(xmlContents []byte) (float64, error) {
-	re := regexp.MustCompile(`<coverage line-rate=\"(\d(?:\.\d+)?)\"`)
-	matches := re.FindStringSubmatch(string(xmlContents[:]))
+func parseCoveragePercent(contents []byte) (float64, error) {
+	re := regexp.MustCompile(`total:.*?(\d+\.\d+)%`)
+	matches := re.FindStringSubmatch(string(contents))
 
 	if len(matches) < 2 {
-		return 0, errors.New("could not match regexp to coverage.xml file")
+		return 0, errors.New("could not match regexp to coveragefunc.txt file")
 	}
 
 	coverageFloat, err := strconv.ParseFloat(matches[1], 32)
@@ -105,7 +111,7 @@ func parseCoveragePercent(xmlContents []byte) (float64, error) {
 		return 0, err
 	}
 
-	return coverageFloat, nil
+	return coverageFloat / 100, nil
 }
 
 func parseCoverageFiles(coverageFiles []string) []float64 {
@@ -113,11 +119,11 @@ func parseCoverageFiles(coverageFiles []string) []float64 {
 
 	for _, coverageFile := range coverageFiles {
 		fmt.Println(coverageFile)
-		xmlFile, err := os.Open(coverageFile)
+		file, err := os.Open(coverageFile)
 		check(err)
-		defer xmlFile.Close()
+		defer file.Close()
 
-		byteValue, err := io.ReadAll(xmlFile)
+		byteValue, err := io.ReadAll(file)
 		check(err)
 
 		coveragePercent, err := parseCoveragePercent(byteValue)

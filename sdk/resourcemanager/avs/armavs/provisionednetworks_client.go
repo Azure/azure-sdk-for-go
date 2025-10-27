@@ -26,7 +26,7 @@ type ProvisionedNetworksClient struct {
 // NewProvisionedNetworksClient creates a new instance of ProvisionedNetworksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProvisionedNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProvisionedNetworksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

@@ -6,5 +6,5 @@ package armmongocluster
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster"
-	moduleVersion = "v1.1.0-beta.1"
+	moduleVersion = "v1.1.0"
 )

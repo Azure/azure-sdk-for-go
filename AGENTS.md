@@ -48,7 +48,7 @@ AI agents should **NOT** perform the following actions without human approval:
 - **Approving releases**: Release stage approvals in pipelines must be done by authorized personnel
 
 #### Code Generation
-- **Regenerating SDK code**: Packages under `services/` are generated from [Azure API specs](https://github.com/Azure/azure-rest-api-specs) and should not be manually modified
+- **Regenerating SDK code**: Most packages in `sdk/` are generated from [Azure API specs](https://github.com/Azure/azure-rest-api-specs) using AutoRest or TypeSpec and should not be manually modified
 - **AutoRest/TypeSpec changes**: SDK generation from specifications requires specific tools and workflows (see [code generation docs](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/code-generation.md))
 
 #### Security and Compliance

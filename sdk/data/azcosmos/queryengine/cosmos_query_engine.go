@@ -37,7 +37,7 @@ type QueryRequest struct {
 type QueryResult struct {
 	// The ID of the partition key range that was queried.
 	PartitionKeyRangeID string
-	// The index of the [`QueryRequest`] that generated this result.
+	// The index of the QueryRequest that generated this result.
 	RequestIndex uint
 	// The continuation token to be used for the next request, if any.
 	NextContinuation string

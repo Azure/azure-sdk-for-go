@@ -45,8 +45,9 @@ type QueryRequestConfig struct {
 }
 
 // MockQueryEngine is a mock implementation of the QueryEngine interface.
-// It holds optional configuration (protected by a mutex) and an optional create error
-// that will be returned once when CreateQueryPipeline is called (and then cleared).
+// This is a VERY rudimentary implementation that emulates the handling of the following query:
+// `SELECT * FROM c ORDER BY c.mergeOrder`
+// The intent here is to test how the Go SDK interacts with the query engine, not to test the query engine itself.
 type MockQueryEngine struct {
 	CreateError        error
 	QueryRequestConfig *QueryRequestConfig

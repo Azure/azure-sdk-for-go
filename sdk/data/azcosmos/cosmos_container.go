@@ -456,7 +456,7 @@ func (c *ContainerClient) ReadManyItems(
 	ctx context.Context,
 	partitionKey PartitionKey,
 	itemIdentities []ItemIdentity,
-	o *ReadManyOptions) ([]ReadManyItemsResponse, error) {
+	o *ReadManyOptions) (ReadManyItemsResponse, error) {
 	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{
 		partitionKey:         &partitionKey,
@@ -475,7 +475,7 @@ func (c *ContainerClient) ReadManyItems(
 		headerOptionsOverride: &h,
 	}
 
-	return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext)
+	return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
 }
 
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.

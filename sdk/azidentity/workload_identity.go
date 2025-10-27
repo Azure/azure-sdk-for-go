@@ -55,10 +55,10 @@ type WorkloadIdentityCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// EnableAzureKubernetesTokenProxy determines whether the credential reads token proxy configuration from
-	// environment variables. When this value is true and proxy configuration isn't present or this value is
-	// false, the credential will request tokens directly from Entra ID.
-	EnableAzureKubernetesTokenProxy bool
+	// EnableAzureTokenProxy determines whether the credential reads token proxy configuration from environment variables.
+	// When this value is true and proxy configuration isn't present or this value is false, the credential will request
+	// tokens directly from Entra ID.
+	EnableAzureTokenProxy bool
 
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
@@ -102,7 +102,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	if options.EnableAzureKubernetesTokenProxy {
+	if options.EnableAzureTokenProxy {
 		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
 			return nil, err
 		}

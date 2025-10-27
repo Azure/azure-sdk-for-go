@@ -156,6 +156,11 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					log.Writef(azlog.EventRequest, "Query pipeline requested data for PKRange: %s", request.PartitionKeyRangeID)
 					// Make the single-partition query request
 					qryRequest := queryRequest(request) // Cast to our type, which has toHeaders defined on it.
+					// if the query request has an override query, use it
+					if qryRequest.Query != "" {
+						query = qryRequest.Query
+					}
+
 					fetchMorePages := true
 					for fetchMorePages {
 

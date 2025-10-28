@@ -728,3 +728,113 @@ func verifyEncodingScenarioResponse(t *testing.T, name string, itemResponse Item
 		t.Fatalf("[%s] Expected status code %d, got %d", name, expectedStatus, itemResponse.RawResponse.StatusCode)
 	}
 }
+
+func TestReadMany(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+		ExpectedSpans: []string{},
+	}))
+
+	database := emulatorTests.createDatabase(t, context.TODO(), client, "readMany")
+	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
+	properties := ContainerProperties{
+		ID: "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	if err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	container, _ := database.NewContainer("aContainer")
+
+	item1 := map[string]interface{}{
+		"id":    "1",
+		"pk":    "pk1",
+		"value": "first",
+	}
+
+	item2 := map[string]interface{}{
+		"id":    "2",
+		"pk":    "pk2",
+		"value": "second",
+	}
+
+	item3 := map[string]interface{}{
+		"id":    "3",
+		"pk":    "pk3",
+		"value": "third",
+	}
+
+	pk1 := NewPartitionKeyString("pk1")
+	pk2 := NewPartitionKeyString("pk2")
+	pk3 := NewPartitionKeyString("pk3")
+
+	marshalled1, _ := json.Marshal(item1)
+	marshalled2, _ := json.Marshal(item2)
+	marshalled3, _ := json.Marshal(item3)
+
+	_, err = container.CreateItem(context.TODO(), pk1, marshalled1, nil)
+	if err != nil {
+		t.Fatalf("Failed to create item1: %v", err)
+	}
+
+	_, err = container.CreateItem(context.TODO(), pk2, marshalled2, nil)
+	if err != nil {
+		t.Fatalf("Failed to create item2: %v", err)
+	}
+
+	_, err = container.CreateItem(context.TODO(), pk3, marshalled3, nil)
+	if err != nil {
+		t.Fatalf("Failed to create item3: %v", err)
+	}
+
+	coordinates := []ItemCoordinate{
+		{ID: "1", PartitionKey: "pk1"},
+		{ID: "2", PartitionKey: "pk2"},
+		{ID: "3", PartitionKey: "pk3"},
+	}
+
+	response, err := container.ReadMany(context.TODO(), coordinates, nil)
+	if err != nil {
+		t.Fatalf("Failed to read many items: %v", err)
+	}
+
+	if len(response.Items) != 3 {
+		t.Fatalf("Expected 3 items, got %d", len(response.Items))
+	}
+
+	if response.TotalRequestCharge <= 0 {
+		t.Fatalf("Expected positive request charge, got %f", response.TotalRequestCharge)
+	}
+
+	var result1 map[string]interface{}
+	err = json.Unmarshal(response.Items[0], &result1)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal item 1: %v", err)
+	}
+	if result1["id"] != "1" || result1["value"] != "first" {
+		t.Fatalf("Item 1 mismatch: %v", result1)
+	}
+
+	var result2 map[string]interface{}
+	err = json.Unmarshal(response.Items[1], &result2)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal item 2: %v", err)
+	}
+	if result2["id"] != "2" || result2["value"] != "second" {
+		t.Fatalf("Item 2 mismatch: %v", result2)
+	}
+
+	var result3 map[string]interface{}
+	err = json.Unmarshal(response.Items[2], &result3)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal item 3: %v", err)
+	}
+	if result3["id"] != "3" || result3["value"] != "third" {
+		t.Fatalf("Item 3 mismatch: %v", result3)
+	}
+}

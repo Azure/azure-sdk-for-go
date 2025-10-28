@@ -434,6 +434,53 @@ func (c *ContainerClient) ReadItem(
 	return response, err
 }
 
+// ItemCoordinate represents the coordinates (ID and partition key) of an item.
+type ItemCoordinate struct {
+	ID           string
+	PartitionKey string
+}
+
+// ReadManyOptions contains options for ReadMany operations.
+type ReadManyOptions struct {
+}
+
+// ReadManyResponse represents the response from a ReadMany operation.
+type ReadManyResponse struct {
+	Items              [][]byte
+	TotalRequestCharge float32
+}
+
+// ReadMany reads multiple items from a Cosmos container.
+// ctx - The context for the request.
+// itemCoordinates - The coordinates (ID and partition key) of the items to read.
+// options - Options for the operation.
+func (c *ContainerClient) ReadMany(
+	ctx context.Context,
+	itemCoordinates []ItemCoordinate,
+	options *ReadManyOptions) (ReadManyResponse, error) {
+	if options == nil {
+		options = &ReadManyOptions{}
+	}
+
+	items := make([][]byte, 0, len(itemCoordinates))
+	var totalCharge float32
+
+	for _, coord := range itemCoordinates {
+		pk := NewPartitionKeyString(coord.PartitionKey)
+		response, err := c.ReadItem(ctx, pk, coord.ID, nil)
+		if err != nil {
+			return ReadManyResponse{}, err
+		}
+		items = append(items, response.Value)
+		totalCharge += response.RequestCharge
+	}
+
+	return ReadManyResponse{
+		Items:              items,
+		TotalRequestCharge: totalCharge,
+	}, nil
+}
+
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.
 // ctx - The context for the request.
 func (c *ContainerClient) GetFeedRanges(ctx context.Context) ([]FeedRange, error) {

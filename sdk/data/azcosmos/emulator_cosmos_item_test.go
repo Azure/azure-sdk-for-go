@@ -769,9 +769,16 @@ func TestReadMany(t *testing.T) {
 		"value": "third",
 	}
 
+	item4 := map[string]interface{}{
+		"id":    "4",
+		"pk":    "pk4",
+		"value": "fourth",
+	}
+
 	pk1 := NewPartitionKeyString("pk1")
 	pk2 := NewPartitionKeyString("pk2")
 	pk3 := NewPartitionKeyString("pk3")
+	pk4 := NewPartitionKeyString("pk4")
 
 	marshalled1, err := json.Marshal(item1)
 	if err != nil {
@@ -782,6 +789,10 @@ func TestReadMany(t *testing.T) {
 		t.Fatal(err)
 	}
 	marshalled3, err := json.Marshal(item3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	marshalled4, err := json.Marshal(item4)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -801,13 +812,19 @@ func TestReadMany(t *testing.T) {
 		t.Fatalf("Failed to create item3: %v", err)
 	}
 
-	coordinates := []ItemCoordinate{
-		{ID: "1", PartitionKey: "pk1"},
-		{ID: "2", PartitionKey: "pk2"},
-		{ID: "3", PartitionKey: "pk3"},
+	_, err = container.CreateItem(context.TODO(), pk4, marshalled4, nil)
+	if err != nil {
+		t.Fatalf("Failed to create item4: %v", err)
 	}
 
-	response, err := container.ReadMany(context.TODO(), coordinates, nil)
+	identities := []ItemIdentity{
+		{ID: "1", PartitionKey: pk1},
+		{ID: "2", PartitionKey: pk2},
+		{ID: "3", PartitionKey: pk3},
+		{ID: "nonexistent", PartitionKey: NewPartitionKeyString("pkNonExistent")},
+	}
+
+	response, err := container.ReadMany(context.TODO(), identities, nil)
 	if err != nil {
 		t.Fatalf("Failed to read many items: %v", err)
 	}

@@ -773,9 +773,18 @@ func TestReadMany(t *testing.T) {
 	pk2 := NewPartitionKeyString("pk2")
 	pk3 := NewPartitionKeyString("pk3")
 
-	marshalled1, _ := json.Marshal(item1)
-	marshalled2, _ := json.Marshal(item2)
-	marshalled3, _ := json.Marshal(item3)
+	marshalled1, err := json.Marshal(item1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	marshalled2, err := json.Marshal(item2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	marshalled3, err := json.Marshal(item3)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	_, err = container.CreateItem(context.TODO(), pk1, marshalled1, nil)
 	if err != nil {

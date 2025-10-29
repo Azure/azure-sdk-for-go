@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/MonitoredSubscriptions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/MonitoredSubscriptions_List.json
 func ExampleMonitoredSubscriptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleMonitoredSubscriptionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/MonitoredSubscriptions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/MonitoredSubscriptions_Get.json
 func ExampleMonitoredSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,8 +189,8 @@ func ExampleMonitoredSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/MonitoredSubscriptions_CreateorUpdate.json
-func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/MonitoredSubscriptions_CreateOrUpdate.json
+func ExampleMonitoredSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -200,7 +200,7 @@ func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginCreateorUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, armnewrelicobservability.MonitoredSubscriptionProperties{}, nil)
+	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, armnewrelicobservability.MonitoredSubscriptionProperties{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -275,7 +275,7 @@ func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/MonitoredSubscriptions_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/MonitoredSubscriptions_Update.json
 func ExampleMonitoredSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +361,7 @@ func ExampleMonitoredSubscriptionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/MonitoredSubscriptions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/22ae5674fc98c32b29fb60791bd51a8fbd41b25f/specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/MonitoredSubscriptions_Delete.json
 func ExampleMonitoredSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

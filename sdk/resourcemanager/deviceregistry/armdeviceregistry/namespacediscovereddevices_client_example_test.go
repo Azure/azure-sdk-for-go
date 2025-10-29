@@ -36,7 +36,7 @@ func ExampleNamespaceDiscoveredDevicesClient_BeginCreateOrReplace() {
 			Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
 				Outbound: &armdeviceregistry.DiscoveredOutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"eventGridEndpoint": {
+						"eventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
 							EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 							Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},
@@ -303,7 +303,7 @@ func ExampleNamespaceDiscoveredDevicesClient_BeginUpdate() {
 			Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
 				Outbound: &armdeviceregistry.DiscoveredOutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"newEventGridEndpoint": {
+						"newEventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
 							EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 							Address:      to.Ptr("https://myneweventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},

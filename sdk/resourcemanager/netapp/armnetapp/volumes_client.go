@@ -989,7 +989,7 @@ func (client *VolumesClient) listHandleResponse(resp *http.Response) (VolumesCli
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
 //   - volumeName - The name of the volume
-//   - body - Returns group Id list for a specific LDAP user
+//   - body - The content of the action request
 //   - options - VolumesClientBeginListGetGroupIDListForLdapUserOptions contains the optional parameters for the VolumesClient.BeginListGetGroupIDListForLdapUser
 //     method.
 func (client *VolumesClient) BeginListGetGroupIDListForLdapUser(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, options *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*runtime.Poller[VolumesClientListGetGroupIDListForLdapUserResponse], error) {

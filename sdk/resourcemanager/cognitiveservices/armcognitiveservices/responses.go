@@ -467,6 +467,30 @@ type ProjectsClientUpdateResponse struct {
 	Project
 }
 
+// QuotaTiersClientCreateOrUpdateResponse contains the response from method QuotaTiersClient.CreateOrUpdate.
+type QuotaTiersClientCreateOrUpdateResponse struct {
+	// The quota tier information for the subscription
+	QuotaTier
+}
+
+// QuotaTiersClientGetResponse contains the response from method QuotaTiersClient.Get.
+type QuotaTiersClientGetResponse struct {
+	// The quota tier information for the subscription
+	QuotaTier
+}
+
+// QuotaTiersClientListBySubscriptionResponse contains the response from method QuotaTiersClient.NewListBySubscriptionPager.
+type QuotaTiersClientListBySubscriptionResponse struct {
+	// The list of Quota Tiers response.
+	QuotaTierListResult
+}
+
+// QuotaTiersClientUpdateResponse contains the response from method QuotaTiersClient.Update.
+type QuotaTiersClientUpdateResponse struct {
+	// The quota tier information for the subscription
+	QuotaTier
+}
+
 // RaiBlocklistItemsClientBatchAddResponse contains the response from method RaiBlocklistItemsClient.BatchAdd.
 type RaiBlocklistItemsClientBatchAddResponse struct {
 	// Cognitive Services RaiBlocklist.
@@ -557,6 +581,29 @@ type RaiPoliciesClientGetResponse struct {
 type RaiPoliciesClientListResponse struct {
 	// The list of cognitive services RaiPolicies.
 	RaiPolicyListResult
+}
+
+// RaiTopicsClientCreateOrUpdateResponse contains the response from method RaiTopicsClient.CreateOrUpdate.
+type RaiTopicsClientCreateOrUpdateResponse struct {
+	// Cognitive Services Rai Topic.
+	RaiTopic
+}
+
+// RaiTopicsClientDeleteResponse contains the response from method RaiTopicsClient.BeginDelete.
+type RaiTopicsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RaiTopicsClientGetResponse contains the response from method RaiTopicsClient.Get.
+type RaiTopicsClientGetResponse struct {
+	// Cognitive Services Rai Topic.
+	RaiTopic
+}
+
+// RaiTopicsClientListResponse contains the response from method RaiTopicsClient.NewListPager.
+type RaiTopicsClientListResponse struct {
+	// The list of cognitive services RAI Topics.
+	RaiTopicResult
 }
 
 // ResourceSKUsClientListResponse contains the response from method ResourceSKUsClient.NewListPager.

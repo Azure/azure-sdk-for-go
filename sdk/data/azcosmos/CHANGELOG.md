@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Adjusted the query engine abstraction to support future enhancements and optimizations. See [PR 25503](https://github.com/Azure/azure-sdk-for-go/pull/25503)
+
 ### Breaking Changes
 
 ### Bugs Fixed

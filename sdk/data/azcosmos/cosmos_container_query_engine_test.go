@@ -32,7 +32,8 @@ func generateMockItem(partitionIndex int, itemIndex int) azcosmosinternal.MockIt
 	// Reuse the partitionKeys defined above so generated items match the test partition names.
 	pk := partitionKeys[partitionIndex]
 	return azcosmosinternal.MockItem{
-		ID:           strconv.Itoa(partitionIndex*itemsPerPartition + itemIndex),
+		// make sure id and merge order are not the same
+		ID:           strconv.Itoa(partitionIndex*itemsPerPartition + itemIndex + 1),
 		PartitionKey: pk,
 		// The merge order should alternate between partitions
 		MergeOrder: partitionIndex + itemIndex*partitionCount,
@@ -188,6 +189,9 @@ func TestQueryOverrideWithParameters(t *testing.T) {
 	engine := azcosmosinternal.WithQueryRequestConfig(cfg)
 
 	// choose a target merge order present in the test data: use the first item's merge order (0)
+	if strconv.Itoa(items[0].MergeOrder) == items[0].ID {
+		t.Fatalf("Test data generation error: item ID and MergeOrder should not match")
+	}
 	target := items[0].MergeOrder
 
 	// Build original query that uses a parameter which should be forwarded to the override when includeParameters=true

@@ -81,13 +81,13 @@ type QueryPipeline interface {
 	Run() (*PipelineResult, error)
 	// Data from multiple partition ranges may be provided at once.
 	// However, each page of data must be provided in order.
-	// So, for any given partition key range, page n's results must be earlier in the `data` vector than page n+1's results.
+	// So, for any given partition key range, page n's results must be earlier in the `data` slice than page n+1's results.
 	// Data from different partition key ranges may be interleaved, as long as each partition key range's pages are in order.
 	//
 	// The pipeline will use the QueryResult.RequestIndex field to validate this.
 	//
 	// When providing data from a draining request (i.e. a request with Drain set to true), all pages for that draining request can share the same QueryResult.RequestIndex.
-	ProvideData(data QueryResult) error
+	ProvideData(data []QueryResult) error
 	// Close frees the resources associated with the pipeline.
 	Close()
 }

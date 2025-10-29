@@ -161,6 +161,12 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 						query = qryRequest.Query
 					}
 
+					var queryParameters []QueryParameter
+					if qryRequest.IncludeParameters || qryRequest.Query == "" {
+						// use query options parameters only if IncludeParameters is true or no override query is specified
+						queryParameters = queryOptions.QueryParameters
+					}
+
 					fetchMorePages := true
 					for fetchMorePages {
 
@@ -168,7 +174,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 							path,
 							ctx,
 							query,
-							queryOptions.QueryParameters,
+							queryParameters,
 							operationContext,
 							&qryRequest,
 							nil)
@@ -198,7 +204,8 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 							Data:                data,
 						}
 						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", request.PartitionKeyRangeID, continuation != "")
-						if err = queryPipeline.ProvideData(result); err != nil {
+						results := []queryengine.QueryResult{result}
+						if err = queryPipeline.ProvideData(results); err != nil {
 							queryPipeline.Close()
 							return QueryItemsResponse{}, err
 						}

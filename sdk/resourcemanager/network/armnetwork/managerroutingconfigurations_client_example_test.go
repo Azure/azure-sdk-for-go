@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerRoutingConfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerRoutingConfigurationList.json
 func ExampleManagerRoutingConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,6 +52,7 @@ func ExampleManagerRoutingConfigurationsClient_NewListPager() {
 		// 				Description: to.Ptr("A sample policy"),
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 				ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				RouteTableUsageMode: to.Ptr(armnetwork.RouteTableUsageModeManagedOnly),
 		// 			},
 		// 			SystemData: &armnetwork.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27.000Z"); return t}()),
@@ -66,7 +67,7 @@ func ExampleManagerRoutingConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerRoutingConfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerRoutingConfigurationGet.json
 func ExampleManagerRoutingConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,6 +93,7 @@ func ExampleManagerRoutingConfigurationsClient_Get() {
 	// 		Description: to.Ptr("A sample policy"),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		RouteTableUsageMode: to.Ptr(armnetwork.RouteTableUsageModeManagedOnly),
 	// 	},
 	// 	SystemData: &armnetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27.000Z"); return t}()),
@@ -104,7 +106,7 @@ func ExampleManagerRoutingConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerRoutingConfigurationPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerRoutingConfigurationPut.json
 func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +119,8 @@ func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewManagerRoutingConfigurationsClient().CreateOrUpdate(ctx, "rg1", "testNetworkManager", "myTestRoutingConfig", armnetwork.ManagerRoutingConfiguration{
 		Properties: &armnetwork.ManagerRoutingConfigurationPropertiesFormat{
-			Description: to.Ptr("A sample policy"),
+			Description:         to.Ptr("A sample policy"),
+			RouteTableUsageMode: to.Ptr(armnetwork.RouteTableUsageModeManagedOnly),
 		},
 	}, nil)
 	if err != nil {
@@ -134,6 +137,7 @@ func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	// 		Description: to.Ptr("A sample policy"),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		RouteTableUsageMode: to.Ptr(armnetwork.RouteTableUsageModeManagedOnly),
 	// 	},
 	// 	SystemData: &armnetwork.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27.000Z"); return t}()),
@@ -146,7 +150,7 @@ func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerRoutingConfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkManagerRoutingConfigurationDelete.json
 func ExampleManagerRoutingConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

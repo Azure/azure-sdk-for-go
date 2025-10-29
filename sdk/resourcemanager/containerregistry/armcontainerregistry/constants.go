@@ -5,11 +5,6 @@
 
 package armcontainerregistry
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
-	moduleVersion = "v1.3.0-beta.3"
-)
-
 // Action - The action of IP ACL rule.
 type Action string
 
@@ -53,28 +48,6 @@ func PossibleActivationStatusValues() []ActivationStatus {
 	return []ActivationStatus{
 		ActivationStatusActive,
 		ActivationStatusInactive,
-	}
-}
-
-// Architecture - The OS architecture.
-type Architecture string
-
-const (
-	ArchitectureAmd64                 Architecture = "amd64"
-	ArchitectureArm                   Architecture = "arm"
-	ArchitectureArm64                 Architecture = "arm64"
-	ArchitectureThreeHundredEightySix Architecture = "386"
-	ArchitectureX86                   Architecture = "x86"
-)
-
-// PossibleArchitectureValues returns the possible values for the Architecture const type.
-func PossibleArchitectureValues() []Architecture {
-	return []Architecture{
-		ArchitectureAmd64,
-		ArchitectureArm,
-		ArchitectureArm64,
-		ArchitectureThreeHundredEightySix,
-		ArchitectureX86,
 	}
 }
 
@@ -130,38 +103,6 @@ func PossibleAzureADAuthenticationAsArmPolicyStatusValues() []AzureADAuthenticat
 	return []AzureADAuthenticationAsArmPolicyStatus{
 		AzureADAuthenticationAsArmPolicyStatusDisabled,
 		AzureADAuthenticationAsArmPolicyStatusEnabled,
-	}
-}
-
-// BaseImageDependencyType - The type of the base image dependency.
-type BaseImageDependencyType string
-
-const (
-	BaseImageDependencyTypeBuildTime BaseImageDependencyType = "BuildTime"
-	BaseImageDependencyTypeRunTime   BaseImageDependencyType = "RunTime"
-)
-
-// PossibleBaseImageDependencyTypeValues returns the possible values for the BaseImageDependencyType const type.
-func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
-	return []BaseImageDependencyType{
-		BaseImageDependencyTypeBuildTime,
-		BaseImageDependencyTypeRunTime,
-	}
-}
-
-// BaseImageTriggerType - The type of the auto trigger for base image dependency updates.
-type BaseImageTriggerType string
-
-const (
-	BaseImageTriggerTypeAll     BaseImageTriggerType = "All"
-	BaseImageTriggerTypeRuntime BaseImageTriggerType = "Runtime"
-)
-
-// PossibleBaseImageTriggerTypeValues returns the possible values for the BaseImageTriggerType const type.
-func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
-	return []BaseImageTriggerType{
-		BaseImageTriggerTypeAll,
-		BaseImageTriggerTypeRuntime,
 	}
 }
 
@@ -428,22 +369,6 @@ func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 	}
 }
 
-// OS - The OS of agent machine
-type OS string
-
-const (
-	OSLinux   OS = "Linux"
-	OSWindows OS = "Windows"
-)
-
-// PossibleOSValues returns the possible values for the OS const type.
-func PossibleOSValues() []OS {
-	return []OS{
-		OSLinux,
-		OSWindows,
-	}
-}
-
 // PackageSourceType - The type of package source for a archive.
 type PackageSourceType string
 
@@ -643,54 +568,6 @@ func PossibleRoleAssignmentModeValues() []RoleAssignmentMode {
 	}
 }
 
-// RunStatus - The current status of the run.
-type RunStatus string
-
-const (
-	RunStatusCanceled  RunStatus = "Canceled"
-	RunStatusError     RunStatus = "Error"
-	RunStatusFailed    RunStatus = "Failed"
-	RunStatusQueued    RunStatus = "Queued"
-	RunStatusRunning   RunStatus = "Running"
-	RunStatusStarted   RunStatus = "Started"
-	RunStatusSucceeded RunStatus = "Succeeded"
-	RunStatusTimeout   RunStatus = "Timeout"
-)
-
-// PossibleRunStatusValues returns the possible values for the RunStatus const type.
-func PossibleRunStatusValues() []RunStatus {
-	return []RunStatus{
-		RunStatusCanceled,
-		RunStatusError,
-		RunStatusFailed,
-		RunStatusQueued,
-		RunStatusRunning,
-		RunStatusStarted,
-		RunStatusSucceeded,
-		RunStatusTimeout,
-	}
-}
-
-// RunType - The type of run.
-type RunType string
-
-const (
-	RunTypeAutoBuild  RunType = "AutoBuild"
-	RunTypeAutoRun    RunType = "AutoRun"
-	RunTypeQuickBuild RunType = "QuickBuild"
-	RunTypeQuickRun   RunType = "QuickRun"
-)
-
-// PossibleRunTypeValues returns the possible values for the RunType const type.
-func PossibleRunTypeValues() []RunType {
-	return []RunType{
-		RunTypeAutoBuild,
-		RunTypeAutoRun,
-		RunTypeQuickBuild,
-		RunTypeQuickRun,
-	}
-}
-
 // SKUName - The SKU name of the container registry. Required for registry creation.
 type SKUName string
 
@@ -731,89 +608,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// SecretObjectType - The type of the secret object which determines how the value of the secret object has to be interpreted.
-type SecretObjectType string
-
-const (
-	SecretObjectTypeOpaque      SecretObjectType = "Opaque"
-	SecretObjectTypeVaultsecret SecretObjectType = "Vaultsecret"
-)
-
-// PossibleSecretObjectTypeValues returns the possible values for the SecretObjectType const type.
-func PossibleSecretObjectTypeValues() []SecretObjectType {
-	return []SecretObjectType{
-		SecretObjectTypeOpaque,
-		SecretObjectTypeVaultsecret,
-	}
-}
-
-// SourceControlType - The type of source control service.
-type SourceControlType string
-
-const (
-	SourceControlTypeGithub                  SourceControlType = "Github"
-	SourceControlTypeVisualStudioTeamService SourceControlType = "VisualStudioTeamService"
-)
-
-// PossibleSourceControlTypeValues returns the possible values for the SourceControlType const type.
-func PossibleSourceControlTypeValues() []SourceControlType {
-	return []SourceControlType{
-		SourceControlTypeGithub,
-		SourceControlTypeVisualStudioTeamService,
-	}
-}
-
-// SourceRegistryLoginMode - The authentication mode which determines the source registry login scope. The credentials for
-// the source registry will be generated using the given scope. These credentials will be used to login to
-// the source registry during the run.
-type SourceRegistryLoginMode string
-
-const (
-	SourceRegistryLoginModeDefault SourceRegistryLoginMode = "Default"
-	SourceRegistryLoginModeNone    SourceRegistryLoginMode = "None"
-)
-
-// PossibleSourceRegistryLoginModeValues returns the possible values for the SourceRegistryLoginMode const type.
-func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
-	return []SourceRegistryLoginMode{
-		SourceRegistryLoginModeDefault,
-		SourceRegistryLoginModeNone,
-	}
-}
-
-type SourceTriggerEvent string
-
-const (
-	SourceTriggerEventCommit      SourceTriggerEvent = "commit"
-	SourceTriggerEventPullrequest SourceTriggerEvent = "pullrequest"
-)
-
-// PossibleSourceTriggerEventValues returns the possible values for the SourceTriggerEvent const type.
-func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
-	return []SourceTriggerEvent{
-		SourceTriggerEventCommit,
-		SourceTriggerEventPullrequest,
-	}
-}
-
-// StepType - The type of the step.
-type StepType string
-
-const (
-	StepTypeDocker      StepType = "Docker"
-	StepTypeEncodedTask StepType = "EncodedTask"
-	StepTypeFileTask    StepType = "FileTask"
-)
-
-// PossibleStepTypeValues returns the possible values for the StepType const type.
-func PossibleStepTypeValues() []StepType {
-	return []StepType{
-		StepTypeDocker,
-		StepTypeEncodedTask,
-		StepTypeFileTask,
-	}
-}
-
 // TLSStatus - Indicates whether HTTPS is enabled for the login server.
 type TLSStatus string
 
@@ -827,22 +621,6 @@ func PossibleTLSStatusValues() []TLSStatus {
 	return []TLSStatus{
 		TLSStatusDisabled,
 		TLSStatusEnabled,
-	}
-}
-
-// TaskStatus - The current status of task.
-type TaskStatus string
-
-const (
-	TaskStatusDisabled TaskStatus = "Disabled"
-	TaskStatusEnabled  TaskStatus = "Enabled"
-)
-
-// PossibleTaskStatusValues returns the possible values for the TaskStatus const type.
-func PossibleTaskStatusValues() []TaskStatus {
-	return []TaskStatus{
-		TaskStatusDisabled,
-		TaskStatusEnabled,
 	}
 }
 
@@ -893,22 +671,6 @@ func PossibleTokenStatusValues() []TokenStatus {
 	}
 }
 
-// TokenType - The type of Auth token.
-type TokenType string
-
-const (
-	TokenTypeOAuth TokenType = "OAuth"
-	TokenTypePAT   TokenType = "PAT"
-)
-
-// PossibleTokenTypeValues returns the possible values for the TokenType const type.
-func PossibleTokenTypeValues() []TokenType {
-	return []TokenType{
-		TokenTypeOAuth,
-		TokenTypePAT,
-	}
-}
-
 // TriggerStatus - The current status of the source trigger.
 type TriggerStatus string
 
@@ -936,40 +698,6 @@ const (
 func PossibleTrustPolicyTypeValues() []TrustPolicyType {
 	return []TrustPolicyType{
 		TrustPolicyTypeNotary,
-	}
-}
-
-// UpdateTriggerPayloadType - Type of Payload body for Base image update triggers.
-type UpdateTriggerPayloadType string
-
-const (
-	UpdateTriggerPayloadTypeDefault UpdateTriggerPayloadType = "Default"
-	UpdateTriggerPayloadTypeToken   UpdateTriggerPayloadType = "Token"
-)
-
-// PossibleUpdateTriggerPayloadTypeValues returns the possible values for the UpdateTriggerPayloadType const type.
-func PossibleUpdateTriggerPayloadTypeValues() []UpdateTriggerPayloadType {
-	return []UpdateTriggerPayloadType{
-		UpdateTriggerPayloadTypeDefault,
-		UpdateTriggerPayloadTypeToken,
-	}
-}
-
-// Variant - Variant of the CPU.
-type Variant string
-
-const (
-	VariantV6 Variant = "v6"
-	VariantV7 Variant = "v7"
-	VariantV8 Variant = "v8"
-)
-
-// PossibleVariantValues returns the possible values for the Variant const type.
-func PossibleVariantValues() []Variant {
-	return []Variant{
-		VariantV6,
-		VariantV7,
-		VariantV8,
 	}
 }
 

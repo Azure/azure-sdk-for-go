@@ -33,14 +33,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAgentPoolsClient creates a new instance of AgentPoolsClient.
-func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
-	return &AgentPoolsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewArchiveVersionsClient creates a new instance of ArchiveVersionsClient.
 func (c *ClientFactory) NewArchiveVersionsClient() *ArchiveVersionsClient {
 	return &ArchiveVersionsClient{
@@ -136,33 +128,9 @@ func (c *ClientFactory) NewReplicationsClient() *ReplicationsClient {
 	}
 }
 
-// NewRunsClient creates a new instance of RunsClient.
-func (c *ClientFactory) NewRunsClient() *RunsClient {
-	return &RunsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewScopeMapsClient creates a new instance of ScopeMapsClient.
 func (c *ClientFactory) NewScopeMapsClient() *ScopeMapsClient {
 	return &ScopeMapsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewTaskRunsClient creates a new instance of TaskRunsClient.
-func (c *ClientFactory) NewTaskRunsClient() *TaskRunsClient {
-	return &TaskRunsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewTasksClient creates a new instance of TasksClient.
-func (c *ClientFactory) NewTasksClient() *TasksClient {
-	return &TasksClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

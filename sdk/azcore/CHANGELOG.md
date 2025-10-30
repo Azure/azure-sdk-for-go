@@ -1,6 +1,6 @@
 # Release History
 
-## 1.19.2-beta.1 (Unreleased)
+## 1.20.0 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed potential panic when decoding base64 strings.
 
 ### Other Changes
 

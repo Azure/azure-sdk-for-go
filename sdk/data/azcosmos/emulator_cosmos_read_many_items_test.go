@@ -109,19 +109,24 @@ func TestReadMany_PartialFailure(t *testing.T) {
 
 	// create a valid item
 	item := map[string]string{"id": "good", "pk": "good"}
-	marshalled, err := json.Marshal(item)
-	require.NoError(t, err)
-	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("good"), marshalled, nil)
-	require.NoError(t, err, "failed to create item")
+	item2 := map[string]string{"id": "good2", "pk": "good2"}
+	items := []map[string]string{item, item2}
+	for _, item := range items {
+		marshalled, err := json.Marshal(item)
+		require.NoError(t, err)
+		_, err = container.CreateItem(context.Background(), NewPartitionKeyString(item["id"]), marshalled, nil)
+		require.NoError(t, err, "failed to create item")
+	}
 
 	idents := []ItemIdentity{
 		{ID: "good", PartitionKey: NewPartitionKeyString("good")},
 		{ID: "missing", PartitionKey: NewPartitionKeyString("missing")},
+		{ID: "good2", PartitionKey: NewPartitionKeyString("good2")},
 	}
 
 	resp, err := container.ReadManyItems(context.Background(), idents, nil)
 	require.NoError(t, err)
-	require.Equal(t, 1, len(resp.Items))
+	require.Equal(t, 2, len(resp.Items))
 
 	var returnedItem map[string]interface{}
 	err = json.Unmarshal(resp.Items[0], &returnedItem)
@@ -129,5 +134,12 @@ func TestReadMany_PartialFailure(t *testing.T) {
 	idVal := returnedItem["id"]
 	gotID := fmt.Sprintf("%v", idVal)
 	require.Equal(t, "good", gotID)
+
+	returnedItem = map[string]interface{}{}
+	err = json.Unmarshal(resp.Items[1], &returnedItem)
+	require.NoError(t, err, "failed to unmarshal returned item")
+	idVal = returnedItem["id"]
+	gotID = fmt.Sprintf("%v", idVal)
+	require.Equal(t, "good2", gotID)
 
 }

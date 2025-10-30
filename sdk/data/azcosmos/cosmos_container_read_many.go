@@ -80,7 +80,7 @@ func (c *ContainerClient) executeReadManyWithPointReads(items []ItemIdentity, re
 					// for 404, just continue without error
 					if errors.As(err, &azErr) {
 						if azErr.StatusCode == 404 {
-							return
+							continue
 						}
 					}
 					results[idx].err = err

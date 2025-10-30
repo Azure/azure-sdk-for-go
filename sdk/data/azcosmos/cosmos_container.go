@@ -454,14 +454,8 @@ func (c *ContainerClient) ReadItem(
 // o - Options for the operation.
 func (c *ContainerClient) ReadManyItems(
 	ctx context.Context,
-	partitionKey PartitionKey,
 	itemIdentities []ItemIdentity,
 	o *ReadManyOptions) (ReadManyItemsResponse, error) {
-	correlatedActivityId, _ := uuid.New()
-	h := headerOptionsOverride{
-		partitionKey:         &partitionKey,
-		correlatedActivityId: &correlatedActivityId,
-	}
 
 	readManyOptions := &ReadManyOptions{}
 	if o != nil {
@@ -470,12 +464,14 @@ func (c *ContainerClient) ReadManyItems(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:          resourceTypeDocument,
-		resourceAddress:       c.link,
-		headerOptionsOverride: &h,
+		resourceType:    resourceTypeDocument,
+		resourceAddress: c.link,
+	}
+	if readManyOptions.QueryEngine != nil {
+		return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
 	}
 
-	return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
+	return c.executeReadManyWithPointReads(itemIdentities, readManyOptions, operationContext, ctx)
 }
 
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.

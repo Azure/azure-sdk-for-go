@@ -133,11 +133,7 @@ type queryDatabasesServiceResponse struct {
 
 // ReadManyItemsResponse contains response from the item query operation.
 type ReadManyItemsResponse struct {
-	Response
-	// Contains the query metrics related to the query execution
-	QueryMetrics *string
-	// IndexMetrics contains the index utilization metrics if QueryOptions.PopulateIndexMetrics = true
-	IndexMetrics *string
+	RequestCharge float32
 	// List of items.
 	Items [][]byte
 }

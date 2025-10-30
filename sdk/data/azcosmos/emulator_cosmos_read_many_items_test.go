@@ -8,6 +8,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 // Helper to create a container with simple string id PK and return container + cleanup func
@@ -21,9 +23,7 @@ func setupContainerForReadMany(t *testing.T, e *emulatorTests, client *Client, d
 		},
 	}
 	_, err := database.CreateContainer(context.TODO(), properties, nil)
-	if err != nil {
-		t.Fatalf("failed to create container: %v", err)
-	}
+	require.NoError(t, err, "failed to create container")
 	c, _ := database.NewContainer(containerName)
 	return c
 }
@@ -36,12 +36,8 @@ func TestReadMany_NilItemsSlice(t *testing.T) {
 
 	// Pass nil items slice; should return empty response and no error
 	resp, err := container.ReadManyItems(context.TODO(), nil, nil)
-	if err != nil {
-		t.Fatalf("expected no error for nil items slice, got: %v", err)
-	}
-	if len(resp.Items) != 0 {
-		t.Fatalf("expected zero items, got: %d", len(resp.Items))
-	}
+	require.NoError(t, err)
+	require.Empty(t, resp.Items)
 }
 
 func TestReadMany_ReadSeveralItems(t *testing.T) {
@@ -54,12 +50,11 @@ func TestReadMany_ReadSeveralItems(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		id := fmt.Sprintf("%d", i)
 		item := map[string]string{"id": id, "pk": id}
-		marshalled, _ := json.Marshal(item)
+		marshalled, err := json.Marshal(item)
+		require.NoError(t, err)
 		pk := NewPartitionKeyString(item["id"]) // partition is id
-		_, err := container.CreateItem(context.TODO(), pk, marshalled, nil)
-		if err != nil {
-			t.Fatalf("failed to create item %d: %v", i, err)
-		}
+		_, err = container.CreateItem(context.TODO(), pk, marshalled, nil)
+		require.NoError(t, err)
 	}
 
 	// prepare identities
@@ -70,29 +65,19 @@ func TestReadMany_ReadSeveralItems(t *testing.T) {
 	}
 
 	resp, err := container.ReadManyItems(context.TODO(), idents, nil)
-	if err != nil {
-		t.Fatalf("ReadManyItems failed: %v", err)
-	}
-	if len(resp.Items) != 3 {
-		t.Fatalf("expected 3 items, got: %d", len(resp.Items))
-	}
-	if resp.RequestCharge <= 0 {
-		t.Fatalf("expected positive request charge, got: %f", resp.RequestCharge)
-	}
+	require.NoError(t, err)
+	require.Equal(t, 3, len(resp.Items))
+	require.Positive(t, resp.RequestCharge, "expected positive request charge")
 	// verify items ids are as expected as the items created before
 	for i := 0; i < 3; i++ {
 		var returnedItem map[string]interface{}
 		err := json.Unmarshal(resp.Items[i], &returnedItem)
-		if err != nil {
-			t.Fatalf("failed to unmarshal returned item %d: %v", i, err)
-		}
+		require.NoError(t, err, "failed to unmarshal returned item %d", i)
 		expectedID := fmt.Sprintf("%d", i)
 		// id in the returned JSON might be a string or a number; stringify for comparison
 		idVal := returnedItem["id"]
 		gotID := fmt.Sprintf("%v", idVal)
-		if gotID != expectedID {
-			t.Fatalf("expected item id %s, got: %s", expectedID, gotID)
-		}
+		require.Equal(t, expectedID, gotID)
 	}
 
 }
@@ -107,16 +92,12 @@ func TestReadMany_NilIDReturnsError(t *testing.T) {
 	item := map[string]string{"id": "x", "pk": "x"}
 	marshalled, _ := json.Marshal(item)
 	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("x"), marshalled, nil)
-	if err != nil {
-		t.Fatalf("failed to create item: %v", err)
-	}
+	require.NoError(t, err)
 
 	// pass an identity with empty id
 	idents := []ItemIdentity{{ID: "", PartitionKey: NewPartitionKeyString("x")}}
 	_, err = container.ReadManyItems(context.TODO(), idents, nil)
-	if err == nil {
-		t.Fatalf("expected error for empty id in identity, got nil")
-	}
+	require.Error(t, err, "expected error for empty id in identity")
 }
 
 // Additional test: partial failure - one identity valid, one invalid -> expect error
@@ -128,11 +109,10 @@ func TestReadMany_PartialFailure(t *testing.T) {
 
 	// create a valid item
 	item := map[string]string{"id": "good", "pk": "good"}
-	marshalled, _ := json.Marshal(item)
-	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("good"), marshalled, nil)
-	if err != nil {
-		t.Fatalf("failed to create item: %v", err)
-	}
+	marshalled, err := json.Marshal(item)
+	require.NoError(t, err)
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("good"), marshalled, nil)
+	require.NoError(t, err, "failed to create item")
 
 	idents := []ItemIdentity{
 		{ID: "good", PartitionKey: NewPartitionKeyString("good")},
@@ -140,7 +120,5 @@ func TestReadMany_PartialFailure(t *testing.T) {
 	}
 
 	_, err = container.ReadManyItems(context.TODO(), idents, nil)
-	if err == nil {
-		t.Fatalf("expected an error when one of the reads fails, got nil")
-	}
+	require.Error(t, err, "expected error for missing item")
 }

@@ -399,11 +399,14 @@ func (c *ContainerClient) ReplaceItem(
 	return response, err
 }
 
-// ReadItem reads an item in a Cosmos container.
-// ctx - The context for the request.
-// partitionKey - The partition key for the item.
-// itemId - The id of the item to read.
-// o - Options for the operation.
+// ReadManyItems reads multiple items from the Cosmos container based on their identities (ID and partition key).
+//
+// Parameters:
+//   - ctx: The context for the request.
+//   - itemIdentities: The identities of the items to read.
+//   - o: Options for the operation.
+//
+// Returns a ReadManyItemsResponse containing the items and request charge, or an error if the operation fails..
 func (c *ContainerClient) ReadItem(
 	ctx context.Context,
 	partitionKey PartitionKey,

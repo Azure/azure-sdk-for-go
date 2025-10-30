@@ -1,5 +1,21 @@
 # Release History
 
+## 1.2.0 (2025-10-30)
+### Features Added
+
+- New value `ProvisioningStatesDeleted`, `ProvisioningStatesRestoring` added to enum type `ProvisioningStates`
+- New enum type `AutoScalePolicyEnforcement` with values `AutoScalePolicyEnforcementDisabled`, `AutoScalePolicyEnforcementEnabled`, `AutoScalePolicyEnforcementNone`
+- New function `*VolumesClient.BeginPreBackup(context.Context, string, string, string, VolumeNameList, *VolumesClientBeginPreBackupOptions) (*runtime.Poller[VolumesClientPreBackupResponse], error)`
+- New function `*VolumesClient.BeginPreRestore(context.Context, string, string, string, DiskSnapshotList, *VolumesClientBeginPreRestoreOptions) (*runtime.Poller[VolumesClientPreRestoreResponse], error)`
+- New struct `AutoScaleProperties`
+- New struct `DiskSnapshotList`
+- New struct `PreValidationResponse`
+- New struct `ScaleUpProperties`
+- New struct `VolumeNameList`
+- New field `AutoScaleProperties` in struct `Properties`
+- New field `AutoScaleProperties` in struct `UpdateProperties`
+
+
 ## 1.2.0-beta.2 (2025-04-24)
 ### Features Added
 

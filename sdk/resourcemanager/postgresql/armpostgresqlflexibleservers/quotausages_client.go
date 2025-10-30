@@ -42,7 +42,7 @@ func NewQuotaUsagesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // NewListPager - Get quota usages at specified location in a given subscription.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - locationName - The name of the location.
 //   - options - QuotaUsagesClientListOptions contains the optional parameters for the QuotaUsagesClient.NewListPager method.
 func (client *QuotaUsagesClient) NewListPager(locationName string, options *QuotaUsagesClientListOptions) *runtime.Pager[QuotaUsagesClientListResponse] {
@@ -84,7 +84,7 @@ func (client *QuotaUsagesClient) listCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -93,7 +93,7 @@ func (client *QuotaUsagesClient) listCreateRequest(ctx context.Context, location
 // listHandleResponse handles the List response.
 func (client *QuotaUsagesClient) listHandleResponse(resp *http.Response) (QuotaUsagesClientListResponse, error) {
 	result := QuotaUsagesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaUsagesListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaUsageList); err != nil {
 		return QuotaUsagesClientListResponse{}, err
 	}
 	return result, nil

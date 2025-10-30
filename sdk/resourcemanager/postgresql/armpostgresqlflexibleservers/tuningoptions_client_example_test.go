@@ -13,11 +13,12 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Tuning_GetTuningOption.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c86c7e36fb15171a9967d9fdc47784f2e4202ca6/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/TuningOptionsGet.json
 func ExampleTuningOptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,22 +29,22 @@ func ExampleTuningOptionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTuningOptionsClient().Get(ctx, "testrg", "testserver", armpostgresqlflexibleservers.TuningOptionEnumIndex, nil)
+	res, err := clientFactory.NewTuningOptionsClient().Get(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.TuningOptionIndex, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.TuningOptionsResource = armpostgresqlflexibleservers.TuningOptionsResource{
+	// res.TuningOptions = armpostgresqlflexibleservers.TuningOptions{
 	// 	Name: to.Ptr("index"),
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningoptions"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/tuningoptions/index"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningoptions/index"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Tuning_ListTuningOptions.json
-func ExampleTuningOptionsClient_NewListByServerPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c86c7e36fb15171a9967d9fdc47784f2e4202ca6/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/TuningOptionsListIndexRecommendationsFilteredForCreateIndex.json
+func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRecommendationsFilteredToExclusivelyGetThoseOfCreateIndexType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +54,7 @@ func ExampleTuningOptionsClient_NewListByServerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewTuningOptionsClient().NewListByServerPager("testrg", "testserver", nil)
+	pager := clientFactory.NewTuningOptionsClient().NewListRecommendationsPager("exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.TuningOptionIndex, &armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsOptions{RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeCreateIndex)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,12 +65,481 @@ func ExampleTuningOptionsClient_NewListByServerPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.TuningOptionsListResult = armpostgresqlflexibleservers.TuningOptionsListResult{
-		// 	Value: []*armpostgresqlflexibleservers.TuningOptionsResource{
+		// page.ObjectRecommendationList = armpostgresqlflexibleservers.ObjectRecommendationList{
+		// 	Value: []*armpostgresqlflexibleservers.ObjectRecommendation{
+		// 		{
+		// 			Name: to.Ptr("CreateIndex_ecommerce_public_ps_suppkey_idx"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/index"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/index/recommendations/1"),
+		// 			Kind: to.Ptr(""),
+		// 			Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 				AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					QueryCount: to.Ptr[int32](25),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 				},
+		// 				EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 					{
+		// 						AbsoluteValue: to.Ptr[float64](15.3671875),
+		// 						DimensionName: to.Ptr("IndexSize"),
+		// 						Unit: to.Ptr("MB"),
+		// 					},
+		// 					{
+		// 						AbsoluteValue: to.Ptr[float64](99.67668452400453),
+		// 						DimensionName: to.Ptr("QueryCostImprovement"),
+		// 						QueryID: to.Ptr[int64](-3775242682326862300),
+		// 						Unit: to.Ptr("Percentage"),
+		// 					},
+		// 					{
+		// 						AbsoluteValue: to.Ptr[float64](85.56742436827899),
+		// 						DimensionName: to.Ptr("QueryCostImprovement"),
+		// 						QueryID: to.Ptr[int64](6829938984138799000),
+		// 						Unit: to.Ptr("Percentage"),
+		// 				}},
+		// 				ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 					Method: to.Ptr("SQL"),
+		// 					Script: to.Ptr("create index concurrently ps_suppkey_idx on public.partsupp(ps_suppkey)"),
+		// 				},
+		// 				ImprovedQueryIDs: []*int64{
+		// 					to.Ptr[int64](-3775242682326862300),
+		// 					to.Ptr[int64](6829938984138799000)},
+		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query 6829938984138799352;"),
+		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeCreateIndex),
+		// 					TimesRecommended: to.Ptr[int32](1),
+		// 					Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 						Schema: to.Ptr("public"),
+		// 						DatabaseName: to.Ptr("ecommerce"),
+		// 						IndexColumns: []*string{
+		// 							to.Ptr("\"partsupp\".\"ps_suppkey\"")},
+		// 							IndexName: to.Ptr("ps_suppkey_idx"),
+		// 							IndexType: to.Ptr("BTREE"),
+		// 							Table: to.Ptr("partsupp"),
+		// 						},
+		// 					},
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("CreateIndex_ecommerce_public_ps_partkey_idx"),
+		// 					Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/index"),
+		// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/index/recommendations/2"),
+		// 					Kind: to.Ptr(""),
+		// 					Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 						AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 							QueryCount: to.Ptr[int32](25),
+		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 						},
+		// 						EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 							{
+		// 								AbsoluteValue: to.Ptr[float64](15.3671875),
+		// 								DimensionName: to.Ptr("IndexSize"),
+		// 								Unit: to.Ptr("MB"),
+		// 							},
+		// 							{
+		// 								AbsoluteValue: to.Ptr[float64](99.67668452400453),
+		// 								DimensionName: to.Ptr("QueryCostImprovement"),
+		// 								QueryID: to.Ptr[int64](-3775242682326862300),
+		// 								Unit: to.Ptr("Percentage"),
+		// 							},
+		// 							{
+		// 								AbsoluteValue: to.Ptr[float64](79.06603712430707),
+		// 								DimensionName: to.Ptr("QueryCostImprovement"),
+		// 								QueryID: to.Ptr[int64](4735984994430715000),
+		// 								Unit: to.Ptr("Percentage"),
+		// 						}},
+		// 						ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 							Method: to.Ptr("SQL"),
+		// 							Script: to.Ptr("create index concurrently ps_partkey_idx on public.partsupp(ps_partkey)"),
+		// 						},
+		// 						ImprovedQueryIDs: []*int64{
+		// 							to.Ptr[int64](-3775242682326862300),
+		// 							to.Ptr[int64](4735984994430715000)},
+		// 							InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 							LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 							RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_partkey\" appear in Equal Predicate clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_partkey\" appear in Join On clause(s) in query 4735984994430714735;"),
+		// 							RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeCreateIndex),
+		// 							TimesRecommended: to.Ptr[int32](1),
+		// 							Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 								Schema: to.Ptr("public"),
+		// 								DatabaseName: to.Ptr("ecommerce"),
+		// 								IndexColumns: []*string{
+		// 									to.Ptr("\"partsupp\".\"ps_partkey\"")},
+		// 									IndexName: to.Ptr("ps_partkey_idx"),
+		// 									IndexType: to.Ptr("BTREE"),
+		// 									Table: to.Ptr("partsupp"),
+		// 								},
+		// 							},
+		// 					}},
+		// 				}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c86c7e36fb15171a9967d9fdc47784f2e4202ca6/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/TuningOptionsListIndexRecommendations.json
+func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRecommendations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTuningOptionsClient().NewListRecommendationsPager("exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.TuningOptionIndex, &armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsOptions{RecommendationType: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ObjectRecommendationList = armpostgresqlflexibleservers.ObjectRecommendationList{
+		// 	Value: []*armpostgresqlflexibleservers.ObjectRecommendation{
+		// 		{
+		// 			Name: to.Ptr("CreateIndex_ecommerce_public_ps_suppkey_idx"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/index"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/index/recommendations/1"),
+		// 			Kind: to.Ptr(""),
+		// 			Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 				AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					QueryCount: to.Ptr[int32](25),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 				},
+		// 				EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 					{
+		// 						AbsoluteValue: to.Ptr[float64](15.3671875),
+		// 						DimensionName: to.Ptr("IndexSize"),
+		// 						Unit: to.Ptr("MB"),
+		// 					},
+		// 					{
+		// 						AbsoluteValue: to.Ptr[float64](99.67668452400453),
+		// 						DimensionName: to.Ptr("QueryCostImprovement"),
+		// 						QueryID: to.Ptr[int64](-3775242682326862300),
+		// 						Unit: to.Ptr("Percentage"),
+		// 					},
+		// 					{
+		// 						AbsoluteValue: to.Ptr[float64](85.56742436827899),
+		// 						DimensionName: to.Ptr("QueryCostImprovement"),
+		// 						QueryID: to.Ptr[int64](6829938984138799000),
+		// 						Unit: to.Ptr("Percentage"),
+		// 				}},
+		// 				ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 					Method: to.Ptr("SQL"),
+		// 					Script: to.Ptr("create index concurrently ps_suppkey_idx on public.partsupp(ps_suppkey)"),
+		// 				},
+		// 				ImprovedQueryIDs: []*int64{
+		// 					to.Ptr[int64](-3775242682326862300),
+		// 					to.Ptr[int64](6829938984138799000)},
+		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query 6829938984138799352;"),
+		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeCreateIndex),
+		// 					TimesRecommended: to.Ptr[int32](1),
+		// 					Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 						Schema: to.Ptr("public"),
+		// 						DatabaseName: to.Ptr("ecommerce"),
+		// 						IndexColumns: []*string{
+		// 							to.Ptr("\"partsupp\".\"ps_suppkey\"")},
+		// 							IndexName: to.Ptr("ps_suppkey_idx"),
+		// 							IndexType: to.Ptr("BTREE"),
+		// 							Table: to.Ptr("partsupp"),
+		// 						},
+		// 					},
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("CreateIndex_ecommerce_public_ps_partkey_idx"),
+		// 					Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/index"),
+		// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/index/recommendations/2"),
+		// 					Kind: to.Ptr(""),
+		// 					Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 						AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 							QueryCount: to.Ptr[int32](25),
+		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 						},
+		// 						EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 							{
+		// 								AbsoluteValue: to.Ptr[float64](15.3671875),
+		// 								DimensionName: to.Ptr("IndexSize"),
+		// 								Unit: to.Ptr("MB"),
+		// 							},
+		// 							{
+		// 								AbsoluteValue: to.Ptr[float64](99.67668452400453),
+		// 								DimensionName: to.Ptr("QueryCostImprovement"),
+		// 								QueryID: to.Ptr[int64](-3775242682326862300),
+		// 								Unit: to.Ptr("Percentage"),
+		// 							},
+		// 							{
+		// 								AbsoluteValue: to.Ptr[float64](79.06603712430707),
+		// 								DimensionName: to.Ptr("QueryCostImprovement"),
+		// 								QueryID: to.Ptr[int64](4735984994430715000),
+		// 								Unit: to.Ptr("Percentage"),
+		// 						}},
+		// 						ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 							Method: to.Ptr("SQL"),
+		// 							Script: to.Ptr("create index concurrently ps_partkey_idx on public.partsupp(ps_partkey)"),
+		// 						},
+		// 						ImprovedQueryIDs: []*int64{
+		// 							to.Ptr[int64](-3775242682326862300),
+		// 							to.Ptr[int64](4735984994430715000)},
+		// 							InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 							LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 							RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_partkey\" appear in Equal Predicate clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_partkey\" appear in Join On clause(s) in query 4735984994430714735;"),
+		// 							RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeCreateIndex),
+		// 							TimesRecommended: to.Ptr[int32](1),
+		// 							Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 								Schema: to.Ptr("public"),
+		// 								DatabaseName: to.Ptr("ecommerce"),
+		// 								IndexColumns: []*string{
+		// 									to.Ptr("\"partsupp\".\"ps_partkey\"")},
+		// 									IndexName: to.Ptr("ps_partkey_idx"),
+		// 									IndexType: to.Ptr("BTREE"),
+		// 									Table: to.Ptr("partsupp"),
+		// 								},
+		// 							},
+		// 					}},
+		// 				}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c86c7e36fb15171a9967d9fdc47784f2e4202ca6/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/TuningOptionsListTableRecommendationsFilteredForAnalyzeTable.json
+func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRecommendationsFilteredToExclusivelyGetThoseOfAnalyzeTableType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTuningOptionsClient().NewListRecommendationsPager("exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.TuningOptionTable, &armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsOptions{RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeAnalyzeTable)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ObjectRecommendationList = armpostgresqlflexibleservers.ObjectRecommendationList{
+		// 	Value: []*armpostgresqlflexibleservers.ObjectRecommendation{
+		// 		{
+		// 			Name: to.Ptr("Analyze_postgres_public_nation"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/table"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/table/recommendations/1"),
+		// 			Kind: to.Ptr(""),
+		// 			Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 				AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					QueryCount: to.Ptr[int32](22),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 				},
+		// 				EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 				},
+		// 				ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 					Method: to.Ptr("SQL"),
+		// 					Script: to.Ptr("analyze table public.nation"),
+		// 				},
+		// 				ImprovedQueryIDs: []*int64{
+		// 					to.Ptr[int64](2071439792137543700),
+		// 					to.Ptr[int64](7860150533486302000),
+		// 					to.Ptr[int64](6411979446509506000),
+		// 					to.Ptr[int64](3219604056681277400),
+		// 					to.Ptr[int64](-360410933364310600),
+		// 					to.Ptr[int64](6171467644166225000),
+		// 					to.Ptr[int64](3548728559597612500),
+		// 					to.Ptr[int64](-4753875211349607000),
+		// 					to.Ptr[int64](-8711548294430095000)},
+		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					RecommendationReason: to.Ptr("Table \"nation\" in schema \"public\" is unanalyzed and appears in the following queries: 2071439792137543669, 7860150533486301820, 6411979446509505239, 3219604056681277471, -360410933364310591, 6171467644166224729, 3548728559597612316, -4753875211349607298, -8711548294430094920"),
+		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationType("Analyze")),
+		// 					TimesRecommended: to.Ptr[int32](1),
+		// 					Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 						Schema: to.Ptr("public"),
+		// 						DatabaseName: to.Ptr("postgres"),
+		// 						Table: to.Ptr("nation"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Analyze_postgres_public_region"),
+		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/table"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/table/recommendations/2"),
+		// 				Kind: to.Ptr(""),
+		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 						QueryCount: to.Ptr[int32](22),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 					},
+		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 					},
+		// 					ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 						Method: to.Ptr("SQL"),
+		// 						Script: to.Ptr("analyze table public.region"),
+		// 					},
+		// 					ImprovedQueryIDs: []*int64{
+		// 						to.Ptr[int64](3219604056681277400),
+		// 						to.Ptr[int64](6171467644166225000),
+		// 						to.Ptr[int64](-4753875211349607000)},
+		// 						InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 						LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 						RecommendationReason: to.Ptr("Table \"region\" in schema \"public\" is unanalyzed and appears in the following queries: 3219604056681277471, 6171467644166224729, -4753875211349607298"),
+		// 						RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationType("Analyze")),
+		// 						TimesRecommended: to.Ptr[int32](1),
+		// 						Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 							Schema: to.Ptr("public"),
+		// 							DatabaseName: to.Ptr("postgres"),
+		// 							Table: to.Ptr("region"),
+		// 						},
+		// 					},
+		// 			}},
+		// 		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c86c7e36fb15171a9967d9fdc47784f2e4202ca6/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/TuningOptionsListTableRecommendations.json
+func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRecommendations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTuningOptionsClient().NewListRecommendationsPager("exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.TuningOptionTable, &armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsOptions{RecommendationType: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ObjectRecommendationList = armpostgresqlflexibleservers.ObjectRecommendationList{
+		// 	Value: []*armpostgresqlflexibleservers.ObjectRecommendation{
+		// 		{
+		// 			Name: to.Ptr("Analyze_postgres_public_nation"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/table"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/table/recommendations/1"),
+		// 			Kind: to.Ptr(""),
+		// 			Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 				AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					QueryCount: to.Ptr[int32](22),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 				},
+		// 				EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 				},
+		// 				ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 					Method: to.Ptr("SQL"),
+		// 					Script: to.Ptr("analyze table public.nation"),
+		// 				},
+		// 				ImprovedQueryIDs: []*int64{
+		// 					to.Ptr[int64](2071439792137543700),
+		// 					to.Ptr[int64](7860150533486302000),
+		// 					to.Ptr[int64](6411979446509506000),
+		// 					to.Ptr[int64](3219604056681277400),
+		// 					to.Ptr[int64](-360410933364310600),
+		// 					to.Ptr[int64](6171467644166225000),
+		// 					to.Ptr[int64](3548728559597612500),
+		// 					to.Ptr[int64](-4753875211349607000),
+		// 					to.Ptr[int64](-8711548294430095000)},
+		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					RecommendationReason: to.Ptr("Table \"nation\" in schema \"public\" is unanalyzed and appears in the following queries: 2071439792137543669, 7860150533486301820, 6411979446509505239, 3219604056681277471, -360410933364310591, 6171467644166224729, 3548728559597612316, -4753875211349607298, -8711548294430094920"),
+		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationType("Analyze")),
+		// 					TimesRecommended: to.Ptr[int32](1),
+		// 					Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 						Schema: to.Ptr("public"),
+		// 						DatabaseName: to.Ptr("postgres"),
+		// 						Table: to.Ptr("nation"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Analyze_postgres_public_region"),
+		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningOptions/table"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningOptions/table/recommendations/2"),
+		// 				Kind: to.Ptr(""),
+		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
+		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 						QueryCount: to.Ptr[int32](22),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123Z"); return t}()),
+		// 					},
+		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
+		// 					},
+		// 					ImplementationDetails: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesImplementationDetails{
+		// 						Method: to.Ptr("SQL"),
+		// 						Script: to.Ptr("analyze table public.region"),
+		// 					},
+		// 					ImprovedQueryIDs: []*int64{
+		// 						to.Ptr[int64](3219604056681277400),
+		// 						to.Ptr[int64](6171467644166225000),
+		// 						to.Ptr[int64](-4753875211349607000)},
+		// 						InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 						LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 						RecommendationReason: to.Ptr("Table \"region\" in schema \"public\" is unanalyzed and appears in the following queries: 3219604056681277471, 6171467644166224729, -4753875211349607298"),
+		// 						RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationType("Analyze")),
+		// 						TimesRecommended: to.Ptr[int32](1),
+		// 						Details: &armpostgresqlflexibleservers.ObjectRecommendationDetails{
+		// 							Schema: to.Ptr("public"),
+		// 							DatabaseName: to.Ptr("postgres"),
+		// 							Table: to.Ptr("region"),
+		// 						},
+		// 					},
+		// 			}},
+		// 		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c86c7e36fb15171a9967d9fdc47784f2e4202ca6/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/TuningOptionsListByServer.json
+func ExampleTuningOptionsClient_NewListByServerPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTuningOptionsClient().NewListByServerPager("exampleresourcegroup", "exampleserver", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TuningOptionsList = armpostgresqlflexibleservers.TuningOptionsList{
+		// 	Value: []*armpostgresqlflexibleservers.TuningOptions{
 		// 		{
 		// 			Name: to.Ptr("index"),
 		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningoptions"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/testserver/tuningoptions/index"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningoptions/index"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("table"),
+		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/tuningoptions"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/tuningoptions/table"),
 		// 	}},
 		// }
 	}

@@ -1,5 +1,28 @@
 # Release History
 
+## 2.0.0-beta.2 (2025-10-23)
+### Breaking Changes
+
+- Type of `SystemData.LastModifiedByType` has been changed from `*LastModifiedByType` to `*CreatedByType`
+- Enum `LastModifiedByType` has been removed
+- Function `*ConnectedClusterClient.Update` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+- Field `ResourceID` of struct `Gateway` has been removed
+
+### Features Added
+
+- New value `ConnectedClusterKindGCP` added to enum type `ConnectedClusterKind`
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New function `*ConnectedClusterClient.BeginUpdateAsync(context.Context, string, string, ConnectedClusterPatch, *ConnectedClusterClientBeginUpdateAsyncOptions) (*runtime.Poller[ConnectedClusterClientUpdateAsyncResponse], error)`
+- New field `Gateway` in struct `ConnectedClusterPatchProperties`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+
+
 ## 2.0.0-beta.1 (2025-03-17)
 ### Breaking Changes
 

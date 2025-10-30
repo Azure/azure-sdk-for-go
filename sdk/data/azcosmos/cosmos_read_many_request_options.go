@@ -27,6 +27,9 @@ type ReadManyOptions struct {
 	// QueryEngine can be set to enable the use of an external query engine for processing cross-partition queries.
 	// This is a preview feature, which is NOT SUPPORTED in production, and is subject to breaking changes.
 	QueryEngine queryengine.QueryEngine
+	// MaxConcurrency indicates the maximum number of concurrent operations to use when reading many items.
+	// If not set, the SDK will determine an optimal number of concurrent operations to use.
+	MaxConcurrency *int32
 }
 
 func (options *ReadManyOptions) toHeaders() *map[string]string {

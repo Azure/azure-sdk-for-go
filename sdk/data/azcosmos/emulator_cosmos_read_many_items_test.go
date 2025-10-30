@@ -14,7 +14,7 @@ import (
 
 // Helper to create a container with simple string id PK and return container + cleanup func
 func setupContainerForReadMany(t *testing.T, e *emulatorTests, client *Client, dbName string, containerName string) *ContainerClient {
-	database := e.createDatabase(t, context.TODO(), client, dbName)
+	database := e.createDatabase(t, context.Background(), client, dbName)
 	// create container
 	properties := ContainerProperties{
 		ID: containerName,
@@ -22,7 +22,7 @@ func setupContainerForReadMany(t *testing.T, e *emulatorTests, client *Client, d
 			Paths: []string{"/id"},
 		},
 	}
-	_, err := database.CreateContainer(context.TODO(), properties, nil)
+	_, err := database.CreateContainer(context.Background(), properties, nil)
 	require.NoError(t, err, "failed to create container")
 	c, _ := database.NewContainer(containerName)
 	return c
@@ -32,10 +32,10 @@ func TestReadMany_NilItemsSlice(t *testing.T) {
 	e := newEmulatorTests(t)
 	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
 	container := setupContainerForReadMany(t, e, client, "readmany_nilitems_db", "rmnil")
-	defer e.deleteDatabase(t, context.TODO(), container.database)
+	defer e.deleteDatabase(t, context.Background(), container.database)
 
 	// Pass nil items slice; should return empty response and no error
-	resp, err := container.ReadManyItems(context.TODO(), nil, nil)
+	resp, err := container.ReadManyItems(context.Background(), nil, nil)
 	require.NoError(t, err)
 	require.Empty(t, resp.Items)
 }
@@ -44,16 +44,15 @@ func TestReadMany_ReadSeveralItems(t *testing.T) {
 	e := newEmulatorTests(t)
 	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
 	container := setupContainerForReadMany(t, e, client, "readmany_many_db", "rmmany")
-	defer e.deleteDatabase(t, context.TODO(), container.database)
+	defer e.deleteDatabase(t, context.Background(), container.database)
 
 	// create 3 items
 	for i := 0; i < 3; i++ {
-		id := fmt.Sprintf("%d", i)
-		item := map[string]string{"id": id, "pk": id}
+		item := map[string]string{"id": fmt.Sprintf("%d", i), "pk": fmt.Sprintf("pk_%d", i)}
 		marshalled, err := json.Marshal(item)
 		require.NoError(t, err)
 		pk := NewPartitionKeyString(item["id"]) // partition is id
-		_, err = container.CreateItem(context.TODO(), pk, marshalled, nil)
+		_, err = container.CreateItem(context.Background(), pk, marshalled, nil)
 		require.NoError(t, err)
 	}
 
@@ -64,7 +63,7 @@ func TestReadMany_ReadSeveralItems(t *testing.T) {
 		idents = append(idents, ItemIdentity{ID: id, PartitionKey: NewPartitionKeyString(id)})
 	}
 
-	resp, err := container.ReadManyItems(context.TODO(), idents, nil)
+	resp, err := container.ReadManyItems(context.Background(), idents, nil)
 	require.NoError(t, err)
 	require.Equal(t, 3, len(resp.Items))
 	require.Positive(t, resp.RequestCharge, "expected positive request charge")
@@ -86,18 +85,18 @@ func TestReadMany_NilIDReturnsError(t *testing.T) {
 	e := newEmulatorTests(t)
 	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
 	container := setupContainerForReadMany(t, e, client, "readmany_nils_db", "rmnils")
-	defer e.deleteDatabase(t, context.TODO(), container.database)
+	defer e.deleteDatabase(t, context.Background(), container.database)
 
 	// create one item
 	item := map[string]string{"id": "x", "pk": "x"}
 	marshalled, err := json.Marshal(item)
 	require.NoError(t, err)
-	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("x"), marshalled, nil)
+	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("x"), marshalled, nil)
 	require.NoError(t, err)
 
 	// pass an identity with empty id
 	idents := []ItemIdentity{{ID: "", PartitionKey: NewPartitionKeyString("x")}}
-	_, err = container.ReadManyItems(context.TODO(), idents, nil)
+	_, err = container.ReadManyItems(context.Background(), idents, nil)
 	require.Error(t, err, "expected error for empty id in identity")
 }
 
@@ -106,13 +105,13 @@ func TestReadMany_PartialFailure(t *testing.T) {
 	e := newEmulatorTests(t)
 	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
 	container := setupContainerForReadMany(t, e, client, "readmany_partial_db", "rmpartial")
-	defer e.deleteDatabase(t, context.TODO(), container.database)
+	defer e.deleteDatabase(t, context.Background(), container.database)
 
 	// create a valid item
 	item := map[string]string{"id": "good", "pk": "good"}
 	marshalled, err := json.Marshal(item)
 	require.NoError(t, err)
-	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("good"), marshalled, nil)
+	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("good"), marshalled, nil)
 	require.NoError(t, err, "failed to create item")
 
 	idents := []ItemIdentity{
@@ -120,6 +119,15 @@ func TestReadMany_PartialFailure(t *testing.T) {
 		{ID: "missing", PartitionKey: NewPartitionKeyString("missing")},
 	}
 
-	_, err = container.ReadManyItems(context.TODO(), idents, nil)
-	require.Error(t, err, "expected error for missing item")
+	resp, err := container.ReadManyItems(context.Background(), idents, nil)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.Items))
+
+	var returnedItem map[string]interface{}
+	err = json.Unmarshal(resp.Items[0], &returnedItem)
+	require.NoError(t, err, "failed to unmarshal returned item")
+	idVal := returnedItem["id"]
+	gotID := fmt.Sprintf("%v", idVal)
+	require.Equal(t, "good", gotID)
+
 }

@@ -33,7 +33,8 @@ type ContainerClient struct {
 // composite/hierarchical set of values) the item was written with. For hierarchical
 // partition keys create the PartitionKey with NewPartitionKey* helpers (e.g.
 // NewPartitionKeyString, NewPartitionKeyInt, or NewPartitionKeyArray) following the
-// order defined in the container.
+// order defined in the container. For hierarchical partition keys, all of the
+// levels must be provided.
 type ItemIdentity struct {
 	ID           string       // Item id
 	PartitionKey PartitionKey // Partition key value for the item

@@ -90,8 +90,9 @@ func TestReadMany_NilIDReturnsError(t *testing.T) {
 
 	// create one item
 	item := map[string]string{"id": "x", "pk": "x"}
-	marshalled, _ := json.Marshal(item)
-	_, err := container.CreateItem(context.TODO(), NewPartitionKeyString("x"), marshalled, nil)
+	marshalled, err := json.Marshal(item)
+	require.NoError(t, err)
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("x"), marshalled, nil)
 	require.NoError(t, err)
 
 	// pass an identity with empty id

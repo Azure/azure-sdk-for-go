@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
 )
 
-// Executes a query using the provided query engine.
+// executeReadManyWithEngine executes a query using the provided query engine.
 func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
 	// throw error that this is unsupported
 	return ReadManyItemsResponse{}, errors.New("ReadMany with query engine is not supported yet.")

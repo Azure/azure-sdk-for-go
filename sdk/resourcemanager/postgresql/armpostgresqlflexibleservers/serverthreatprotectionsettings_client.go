@@ -43,14 +43,14 @@ func NewServerThreatProtectionSettingsClient(subscriptionID string, credential a
 // BeginCreateOrUpdate - Creates or updates a server's Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - threatProtectionName - The name of the Threat Protection state.
-//   - parameters - The Advanced Threat Protection state for the flexible server.
+//   - threatProtectionName - Name of the advanced threat protection settings.
+//   - parameters - The Advanced Threat Protection state for the server.
 //   - options - ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.BeginCreateOrUpdate
 //     method.
-func (client *ServerThreatProtectionSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters ServerThreatProtectionSettingsModel, options *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerThreatProtectionSettingsClientCreateOrUpdateResponse], error) {
+func (client *ServerThreatProtectionSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters AdvancedThreatProtectionSettingsModel, options *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerThreatProtectionSettingsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, threatProtectionName, parameters, options)
 		if err != nil {
@@ -71,8 +71,8 @@ func (client *ServerThreatProtectionSettingsClient) BeginCreateOrUpdate(ctx cont
 // CreateOrUpdate - Creates or updates a server's Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
-func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters ServerThreatProtectionSettingsModel, options *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2025-08-01
+func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters AdvancedThreatProtectionSettingsModel, options *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerThreatProtectionSettingsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -86,7 +86,7 @@ func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.C
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServerThreatProtectionSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters ServerThreatProtectionSettingsModel, _ *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ServerThreatProtectionSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters AdvancedThreatProtectionSettingsModel, _ *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,146 +117,11 @@ func (client *ServerThreatProtectionSettingsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
-}
-
-// Get - Get a server's Advanced Threat Protection settings.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - threatProtectionName - The name of the Threat Protection state.
-//   - options - ServerThreatProtectionSettingsClientGetOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.Get
-//     method.
-func (client *ServerThreatProtectionSettingsClient) Get(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, options *ServerThreatProtectionSettingsClientGetOptions) (ServerThreatProtectionSettingsClientGetResponse, error) {
-	var err error
-	const operationName = "ServerThreatProtectionSettingsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, threatProtectionName, options)
-	if err != nil {
-		return ServerThreatProtectionSettingsClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ServerThreatProtectionSettingsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerThreatProtectionSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *ServerThreatProtectionSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, _ *ServerThreatProtectionSettingsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if threatProtectionName == "" {
-		return nil, errors.New("parameter threatProtectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{threatProtectionName}", url.PathEscape(string(threatProtectionName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *ServerThreatProtectionSettingsClient) getHandleResponse(resp *http.Response) (ServerThreatProtectionSettingsClientGetResponse, error) {
-	result := ServerThreatProtectionSettingsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerThreatProtectionSettingsModel); err != nil {
-		return ServerThreatProtectionSettingsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByServerPager - Get a list of server's Threat Protection state.
-//
-// Generated from API version 2025-01-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - options - ServerThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.NewListByServerPager
-//     method.
-func (client *ServerThreatProtectionSettingsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerThreatProtectionSettingsClientListByServerOptions) *runtime.Pager[ServerThreatProtectionSettingsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ServerThreatProtectionSettingsClientListByServerResponse]{
-		More: func(page ServerThreatProtectionSettingsClientListByServerResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ServerThreatProtectionSettingsClientListByServerResponse) (ServerThreatProtectionSettingsClientListByServerResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServerThreatProtectionSettingsClient.NewListByServerPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
-			if err != nil {
-				return ServerThreatProtectionSettingsClientListByServerResponse{}, err
-			}
-			return client.listByServerHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByServerCreateRequest creates the ListByServer request.
-func (client *ServerThreatProtectionSettingsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *ServerThreatProtectionSettingsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByServerHandleResponse handles the ListByServer response.
-func (client *ServerThreatProtectionSettingsClient) listByServerHandleResponse(resp *http.Response) (ServerThreatProtectionSettingsClientListByServerResponse, error) {
-	result := ServerThreatProtectionSettingsClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerThreatProtectionListResult); err != nil {
-		return ServerThreatProtectionSettingsClientListByServerResponse{}, err
-	}
-	return result, nil
 }

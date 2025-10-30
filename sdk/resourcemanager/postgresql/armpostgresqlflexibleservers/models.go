@@ -7,10 +7,28 @@ package armpostgresqlflexibleservers
 
 import "time"
 
-// ActiveDirectoryAdministrator - Represents an Microsoft Entra Administrator.
-type ActiveDirectoryAdministrator struct {
-	// REQUIRED; Properties of the Microsoft Entra Administrator.
-	Properties *AdministratorProperties
+// AdminCredentials - Credentials of administrator users for source and target servers.
+type AdminCredentials struct {
+	// REQUIRED; Password for the user of the source server.
+	SourceServerPassword *string
+
+	// REQUIRED; Password for the user of the target server.
+	TargetServerPassword *string
+}
+
+// AdminCredentialsForPatch - Credentials of administrator users for source and target servers.
+type AdminCredentialsForPatch struct {
+	// Password for the user of the source server.
+	SourceServerPassword *string
+
+	// Password for the user of the target server.
+	TargetServerPassword *string
+}
+
+// AdministratorMicrosoftEntra - Server administrator associated to a Microsoft Entra principal.
+type AdministratorMicrosoftEntra struct {
+	// REQUIRED; Properties of a server administrator associated to a Microsoft Entra principal.
+	Properties *AdministratorMicrosoftEntraProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -25,78 +43,169 @@ type ActiveDirectoryAdministrator struct {
 	Type *string
 }
 
-// ActiveDirectoryAdministratorAdd - Represents an Microsoft Entra Administrator.
-type ActiveDirectoryAdministratorAdd struct {
-	// Properties of the Microsoft Entra Administrator.
-	Properties *AdministratorPropertiesForAdd
+// AdministratorMicrosoftEntraAdd - Server administrator associated to a Microsoft Entra principal.
+type AdministratorMicrosoftEntraAdd struct {
+	// Properties of the server administrator associated to a Microsoft Entra principal.
+	Properties *AdministratorMicrosoftEntraPropertiesForAdd
 }
 
-// AdminCredentials - Server admin credentials.
-type AdminCredentials struct {
-	// REQUIRED; Password for source server.
-	SourceServerPassword *string
-
-	// REQUIRED; Password for target server.
-	TargetServerPassword *string
-}
-
-// AdministratorListResult - A list of Microsoft Entra Administrators.
-type AdministratorListResult struct {
-	// The link used to get the next page of Microsoft Entra administrators.
+// AdministratorMicrosoftEntraList - List of server administrators associated to Microsoft Entra principals.
+type AdministratorMicrosoftEntraList struct {
+	// Link used to get the next page of results.
 	NextLink *string
 
-	// The list of Microsoft Entra Administrators
-	Value []*ActiveDirectoryAdministrator
+	// List of server administrators associated to Microsoft Entra principals.
+	Value []*AdministratorMicrosoftEntra
 }
 
-// AdministratorProperties - The properties of an Microsoft Entra Administrator.
-type AdministratorProperties struct {
-	// The objectId of the Microsoft Entra Administrator.
+// AdministratorMicrosoftEntraProperties - Properties of a server administrator associated to a Microsoft Entra principal.
+type AdministratorMicrosoftEntraProperties struct {
+	// Object identifier of the Microsoft Entra principal.
 	ObjectID *string
 
-	// Microsoft Entra Administrator principal name.
+	// Name of the Microsoft Entra principal.
 	PrincipalName *string
 
-	// The principal type used to represent the type of Microsoft Entra Administrator.
+	// Type of Microsoft Entra principal to which the server administrator is associated.
 	PrincipalType *PrincipalType
 
-	// The tenantId of the Microsoft Entra Administrator.
+	// Identifier of the tenant in which the Microsoft Entra principal exists.
 	TenantID *string
 }
 
-// AdministratorPropertiesForAdd - The properties of an Microsoft Entra Administrator.
-type AdministratorPropertiesForAdd struct {
-	// Microsoft Entra Administrator principal name.
+// AdministratorMicrosoftEntraPropertiesForAdd - Properties of a server administrator associated to a Microsoft Entra principal.
+type AdministratorMicrosoftEntraPropertiesForAdd struct {
+	// Name of the Microsoft Entra principal.
 	PrincipalName *string
 
-	// The principal type used to represent the type of Microsoft Entra Administrator.
+	// Type of Microsoft Entra principal to which the server administrator is associated.
 	PrincipalType *PrincipalType
 
-	// The tenantId of the Microsoft Entra Administrator.
+	// Identifier of the tenant in which the Microsoft Entra principal exists.
 	TenantID *string
 }
 
-// AuthConfig - Authentication configuration properties of a server
+// AdvancedThreatProtectionSettingsList - List of advanced threat protection settings for a server.
+type AdvancedThreatProtectionSettingsList struct {
+	// Link used to get the next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*AdvancedThreatProtectionSettingsModel
+}
+
+// AdvancedThreatProtectionSettingsModel - Advanced threat protection settings of the server.
+type AdvancedThreatProtectionSettingsModel struct {
+	// Advanced threat protection properties.
+	Properties *AdvancedThreatProtectionSettingsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AdvancedThreatProtectionSettingsProperties - Properties of advanced threat protection state for a server.
+type AdvancedThreatProtectionSettingsProperties struct {
+	// REQUIRED; Specifies the state of the advanced threat protection, whether it is enabled, disabled, or a state has not been
+	// applied yet on the server.
+	State *ThreatProtectionState
+
+	// READ-ONLY; Specifies the creation time (UTC) of the policy.
+	CreationTime *time.Time
+}
+
+// AuthConfig - Authentication configuration properties of a server.
 type AuthConfig struct {
-	// If Enabled, Microsoft Entra authentication is enabled.
-	ActiveDirectoryAuth *ActiveDirectoryAuthEnum
+	// Indicates if the server supports Microsoft Entra authentication.
+	ActiveDirectoryAuth *MicrosoftEntraAuth
 
-	// If Enabled, Password authentication is enabled.
-	PasswordAuth *PasswordAuthEnum
+	// Indicates if the server supports password based authentication.
+	PasswordAuth *PasswordBasedAuth
 
-	// Tenant id of the server.
+	// Identifier of the tenant of the delegated resource.
 	TenantID *string
 }
 
-// Backup properties of a server
+// AuthConfigForPatch - Authentication configuration properties of a server.
+type AuthConfigForPatch struct {
+	// Indicates if the server supports Microsoft Entra authentication.
+	ActiveDirectoryAuth *MicrosoftEntraAuth
+
+	// Indicates if the server supports password based authentication.
+	PasswordAuth *PasswordBasedAuth
+
+	// Identifier of the tenant of the delegated resource.
+	TenantID *string
+}
+
+// Backup properties of a server.
 type Backup struct {
 	// Backup retention days for the server.
 	BackupRetentionDays *int32
 
-	// A value indicating whether Geo-Redundant backup is enabled on the server.
-	GeoRedundantBackup *GeoRedundantBackupEnum
+	// Indicates if the server is configured to create geographically redundant backups.
+	GeoRedundantBackup *GeographicallyRedundantBackup
 
-	// READ-ONLY; The earliest restore point time (ISO8601 format) for server.
+	// READ-ONLY; Earliest restore point time (ISO8601 format) for a server.
+	EarliestRestoreDate *time.Time
+}
+
+// BackupAutomaticAndOnDemand - Properties of a backup.
+type BackupAutomaticAndOnDemand struct {
+	// Properties of a backup.
+	Properties *BackupAutomaticAndOnDemandProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BackupAutomaticAndOnDemandList - List of backups.
+type BackupAutomaticAndOnDemandList struct {
+	// Link used to get the next page of results.
+	NextLink *string
+
+	// List of available backups.
+	Value []*BackupAutomaticAndOnDemand
+}
+
+// BackupAutomaticAndOnDemandProperties - Properties of a backup.
+type BackupAutomaticAndOnDemandProperties struct {
+	// Type of backup.
+	BackupType *BackupType
+
+	// Time(ISO8601 format) at which the backup was completed.
+	CompletedTime *time.Time
+
+	// Source of the backup.
+	Source *string
+}
+
+// BackupForPatch - Backup properties of a server.
+type BackupForPatch struct {
+	// Backup retention days for the server.
+	BackupRetentionDays *int32
+
+	// Indicates if the server is configured to create geographically redundant backups.
+	GeoRedundantBackup *GeographicallyRedundantBackup
+
+	// READ-ONLY; Earliest restore point time (ISO8601 format) for a server.
 	EarliestRestoreDate *time.Time
 }
 
@@ -112,13 +221,161 @@ type BackupStoreDetails struct {
 	SasURIList []*string
 }
 
-// CapabilitiesListResult - Capability for the PostgreSQL server
-type CapabilitiesListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
+// BackupsLongTermRetentionOperation - Response for the LTR backup Operation API call
+type BackupsLongTermRetentionOperation struct {
+	// Long Term Retention Backup Operation Resource Properties
+	Properties *LtrBackupOperationResponseProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BackupsLongTermRetentionRequest - The request that is made for a long term retention backup.
+type BackupsLongTermRetentionRequest struct {
+	// REQUIRED; Backup Settings
+	BackupSettings *BackupSettings
+
+	// REQUIRED; Backup store detail for target server
+	TargetDetails *BackupStoreDetails
+}
+
+// BackupsLongTermRetentionResponse - Response for the LTR backup API call
+type BackupsLongTermRetentionResponse struct {
+	// Long Term Retention Backup Operation Resource Properties
+	Properties *LtrBackupOperationResponseProperties
+}
+
+// BackupsLongTermRetentionResponseProperties - Response for the pre-backup request.
+type BackupsLongTermRetentionResponseProperties struct {
+	// REQUIRED; Number of storage containers the plugin will use during backup. More than one containers may be used for size
+	// limitations, parallelism, or redundancy etc.
+	NumberOfContainers *int32
+}
+
+// Capability for the Azure Database for PostgreSQL flexible server.
+type Capability struct {
+	// Name of flexible servers capabilities.
+	Name *string
+
+	// READ-ONLY; Indicates if fast provisioning is supported. 'Enabled' means fast provisioning is supported. 'Disabled' stands
+	// for fast provisioning is not supported. Will be deprecated in the future. Look to
+	// Supported Features for 'FastProvisioning'.
+	FastProvisioningSupported *FastProvisioningSupport
+
+	// READ-ONLY; Indicates if geographically redundant backups are supported in this location. 'Enabled' means geographically
+	// redundant backups are supported. 'Disabled' stands for geographically redundant backup is
+	// not supported. Will be deprecated in the future. Look to Supported Features for 'GeoBackup'.
+	GeoBackupSupported *GeographicallyRedundantBackupSupport
+
+	// READ-ONLY; Indicates if resizing the storage, without interrupting the operation of the database engine, is supported in
+	// this location for the given subscription. 'Enabled' means resizing the storage without
+	// interrupting the operation of the database engine is supported. 'Disabled' means resizing the storage without interrupting
+	// the operation of the database engine is not supported. Will be deprecated in
+	// the future. Look to Supported Features for 'OnlineResize'.
+	OnlineResizeSupported *OnlineStorageResizeSupport
+
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
+
+	// READ-ONLY; Indicates if this location is restricted. 'Enabled' means location is restricted. 'Disabled' stands for location
+	// is not restricted. Will be deprecated in the future. Look to Supported Features for
+	// 'Restricted'.
+	Restricted *LocationRestricted
+
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
+
+	// READ-ONLY; Indicates if storage autogrow is supported in this location. 'Enabled' means storage autogrow is supported.
+	// 'Disabled' stands for storage autogrow is not supported. Will be deprecated in the future.
+	// Look to Supported Features for 'StorageAutoGrowth'.
+	StorageAutoGrowthSupported *StorageAutoGrowthSupport
+
+	// READ-ONLY; List of compute tiers supporting fast provisioning.
+	SupportedFastProvisioningEditions []*FastProvisioningEditionCapability
+
+	// READ-ONLY; Features supported.
+	SupportedFeatures []*SupportedFeature
+
+	// READ-ONLY; List of supported compute tiers.
+	SupportedServerEditions []*ServerEditionCapability
+
+	// READ-ONLY; List of supported major versions of PostgreSQL database engine.
+	SupportedServerVersions []*ServerVersionCapability
+
+	// READ-ONLY; Indicates if high availability with zone redundancy is supported in conjunction with geographically redundant
+	// backups in this location. 'Enabled' means high availability with zone redundancy is
+	// supported in conjunction with geographically redundant backups is supported. 'Disabled' stands for high availability with
+	// zone redundancy is supported in conjunction with geographically redundant
+	// backups is not supported. Will be deprecated in the future. Look to Supported Features for 'ZoneRedundantHaAndGeoBackup'.
+	ZoneRedundantHaAndGeoBackupSupported *ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport
+
+	// READ-ONLY; Indicates if high availability with zone redundancy is supported in this location. 'Enabled' means high availability
+	// with zone redundancy is supported. 'Disabled' stands for high availability with
+	// zone redundancy is not supported. Will be deprecated in the future. Look to Supported Features for 'ZoneRedundantHa'.
+	ZoneRedundantHaSupported *ZoneRedundantHighAvailabilitySupport
+}
+
+// CapabilityList - List of capabilities for the Azure Database for PostgreSQL flexible server.
+type CapabilityList struct {
+	// Link to retrieve next page of results.
 	NextLink *string
 
-	// READ-ONLY; A list of supported capabilities.
-	Value []*FlexibleServerCapability
+	// READ-ONLY; List of supported capabilities.
+	Value []*Capability
+}
+
+// CapturedLog - Log file.
+type CapturedLog struct {
+	// Properties of a log file.
+	Properties *CapturedLogProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CapturedLogList - List of log files.
+type CapturedLogList struct {
+	// Link used to get the next page of results.
+	NextLink *string
+
+	// List of log files in a server.
+	Value []*CapturedLog
+}
+
+// CapturedLogProperties - Properties of a log file.
+type CapturedLogProperties struct {
+	// Creation timestamp of the log file.
+	CreatedTime *time.Time
+
+	// Last modified timestamp of the log file.
+	LastModifiedTime *time.Time
+
+	// Size (in KB) of the log file.
+	SizeInKb *int64
+
+	// Type of log file. Can be 'ServerLogs' or 'UpgradeLogs'.
+	Type *string
+
+	// URL to download the log file from.
+	URL *string
 }
 
 // CheckNameAvailabilityRequest - The check availability request body.
@@ -132,28 +389,16 @@ type CheckNameAvailabilityRequest struct {
 
 // Cluster properties of a server.
 type Cluster struct {
-	// The node count for the cluster.
+	// Number of nodes assigned to the elastic cluster.
 	ClusterSize *int32
+
+	// Default database name for the elastic cluster.
+	DefaultDatabaseName *string
 }
 
-// ConfigTuningRequestParameter - Config tuning request parameters.
-type ConfigTuningRequestParameter struct {
-	// Indicates whether PG should be restarted during a tuning session.
-	AllowServerRestarts *bool
-
-	// The mode with which the feature will be enabled.
-	ConfigTuningUsageMode *bool
-
-	// The name of server.
-	ServerName *string
-
-	// The target metric the tuning session is trying to improve.
-	TargetImprovementMetric *string
-}
-
-// Configuration - Represents a Configuration.
+// Configuration (also known as server parameter).
 type Configuration struct {
-	// The properties of a configuration.
+	// Properties of a configuration (also known as server parameter).
 	Properties *ConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -169,84 +414,98 @@ type Configuration struct {
 	Type *string
 }
 
-// ConfigurationForUpdate - Represents a Configuration.
+// ConfigurationForUpdate - Configuration (also known as server parameter).
 type ConfigurationForUpdate struct {
-	// The properties of a configuration.
+	// Properties of a configuration (also known as server parameter).
 	Properties *ConfigurationProperties
 }
 
-// ConfigurationListResult - A list of server configurations.
-type ConfigurationListResult struct {
-	// The link used to get the next page of operations.
+// ConfigurationList - List of configurations (also known as server parameters).
+type ConfigurationList struct {
+	// Link used to get the next page of results.
 	NextLink *string
 
-	// The list of server configurations.
+	// List of configurations (also known as server parameters).
 	Value []*Configuration
 }
 
-// ConfigurationProperties - The properties of a configuration.
+// ConfigurationProperties - Properties of a configuration (also known as server parameter).
 type ConfigurationProperties struct {
-	// Source of the configuration. Required to update the configuration.
+	// Source of the value assigned to the configuration (also known as server parameter). Required to update the value assigned
+	// to a specific modifiable configuration.
 	Source *string
 
-	// Value of the configuration. Required to update the configuration.
+	// Value of the configuration (also known as server parameter). Required to update the value assigned to a specific modifiable
+	// configuration.
 	Value *string
 
-	// READ-ONLY; Allowed values of the configuration.
+	// READ-ONLY; Allowed values of the configuration (also known as server parameter).
 	AllowedValues *string
 
-	// READ-ONLY; Data type of the configuration.
+	// READ-ONLY; Data type of the configuration (also known as server parameter).
 	DataType *ConfigurationDataType
 
-	// READ-ONLY; Default value of the configuration.
+	// READ-ONLY; Value assigned by default to the configuration (also known as server parameter).
 	DefaultValue *string
 
-	// READ-ONLY; Description of the configuration.
+	// READ-ONLY; Description of the configuration (also known as server parameter).
 	Description *string
 
-	// READ-ONLY; Configuration documentation link.
+	// READ-ONLY; Link pointing to the documentation of the configuration (also known as server parameter).
 	DocumentationLink *string
 
-	// READ-ONLY; Configuration is pending restart or not.
+	// READ-ONLY; Indicates if the value assigned to the configuration (also known as server parameter) is pending a server restart
+	// for it to take effect.
 	IsConfigPendingRestart *bool
 
-	// READ-ONLY; Configuration dynamic or static.
+	// READ-ONLY; Indicates if it's a dynamic (true) or static (false) configuration (also known as server parameter). Static
+	// server parameters require a server restart after changing the value assigned to them, for
+	// the change to take effect. Dynamic server parameters do not require a server restart after changing the value assigned
+	// to them, for the change to take effect.
 	IsDynamicConfig *bool
 
-	// READ-ONLY; Configuration read-only or not.
+	// READ-ONLY; Indicates if it's a read-only (true) or modifiable (false) configuration (also known as server parameter).
 	IsReadOnly *bool
 
-	// READ-ONLY; Configuration unit.
+	// READ-ONLY; Units in which the configuration (also known as server parameter) value is expressed.
 	Unit *string
 }
 
-// DataEncryption - Data encryption properties of a server
+// DataEncryption - Data encryption properties of a server.
 type DataEncryption struct {
-	// Geo-backup encryption key status for Data encryption enabled server.
-	GeoBackupEncryptionKeyStatus *KeyStatusEnum
+	// Status of key used by a server configured with data encryption based on customer managed key, to encrypt the geographically
+	// redundant storage associated to the server when it is configured to support
+	// geographically redundant backups.
+	GeoBackupEncryptionKeyStatus *EncryptionKeyStatus
 
-	// URI for the key in keyvault for data encryption for geo-backup of server.
+	// Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of the geographically
+	// redundant storage associated to a server that is configured to
+	// support geographically redundant backups.
 	GeoBackupKeyURI *string
 
-	// Resource Id for the User assigned identity to be used for data encryption for geo-backup of server.
+	// Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of the geographically
+	// redundant storage associated to a server that is configured to
+	// support geographically redundant backups.
 	GeoBackupUserAssignedIdentityID *string
 
-	// Primary encryption key status for Data encryption enabled server.
-	PrimaryEncryptionKeyStatus *KeyStatusEnum
+	// Status of key used by a server configured with data encryption based on customer managed key, to encrypt the primary storage
+	// associated to the server.
+	PrimaryEncryptionKeyStatus *EncryptionKeyStatus
 
-	// URI for the key in keyvault for data encryption of the primary server.
+	// URI of the key in Azure Key Vault used for data encryption of the primary storage associated to a server.
 	PrimaryKeyURI *string
 
-	// Resource Id for the User assigned identity to be used for data encryption of the primary server.
+	// Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of the primary
+	// storage associated to a server.
 	PrimaryUserAssignedIdentityID *string
 
-	// Data encryption type to depict if it is System Managed vs Azure Key vault.
-	Type *ArmServerKeyType
+	// Data encryption type used by a server.
+	Type *DataEncryptionType
 }
 
-// Database - Represents a Database.
+// Database - Represents a database.
 type Database struct {
-	// The properties of a database.
+	// Properties of a database.
 	Properties *DatabaseProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -262,102 +521,102 @@ type Database struct {
 	Type *string
 }
 
-// DatabaseListResult - A List of databases.
-type DatabaseListResult struct {
-	// The link used to get the next page of databases.
+// DatabaseList - List of all databases in a server.
+type DatabaseList struct {
+	// Link used to get the next page of results.
 	NextLink *string
 
-	// The list of databases housed in a server
+	// List of all databases in a server.
 	Value []*Database
 }
 
-// DatabaseProperties - The properties of a database.
+// DatabaseMigrationState - Migration state of a database.
+type DatabaseMigrationState struct {
+	// Change Data Capture applied changes counter.
+	AppliedChanges *int32
+
+	// Change Data Capture delete counter.
+	CdcDeleteCounter *int32
+
+	// Change Data Capture insert counter.
+	CdcInsertCounter *int32
+
+	// Change Data Capture update counter.
+	CdcUpdateCounter *int32
+
+	// Name of database.
+	DatabaseName *string
+
+	// End time of a migration state.
+	EndedOn *time.Time
+
+	// Number of tables loaded during the migration of a database.
+	FullLoadCompletedTables *int32
+
+	// Number of tables encountering errors during the migration of a database.
+	FullLoadErroredTables *int32
+
+	// Number of tables loading during the migration of a database.
+	FullLoadLoadingTables *int32
+
+	// Number of tables queued for the migration of a database.
+	FullLoadQueuedTables *int32
+
+	// Change Data Capture incoming changes counter.
+	IncomingChanges *int32
+
+	// Lag in seconds between source and target during online phase.
+	Latency *int32
+
+	// Error message, if any, for the migration state.
+	Message *string
+
+	// Migration operation of a database.
+	MigrationOperation *string
+
+	// Migration state of a database.
+	MigrationState *MigrationDatabaseState
+
+	// Start time of a migration state.
+	StartedOn *time.Time
+}
+
+// DatabaseProperties - Properties of a database.
 type DatabaseProperties struct {
-	// The charset of the database.
+	// Character set of the database.
 	Charset *string
 
-	// The collation of the database.
+	// Collation of the database.
 	Collation *string
 }
 
-// DbLevelValidationStatus - Validation status summary for an individual database
+// DbLevelValidationStatus - Validation status summary for a database.
 type DbLevelValidationStatus struct {
-	// Name of the database
+	// Name of database.
 	DatabaseName *string
 
-	// End date-time of a database level validation
+	// End time of a database level validation.
 	EndedOn *time.Time
 
-	// Start date-time of a database level validation
+	// Start time of a database level validation.
 	StartedOn *time.Time
 
-	// Summary of database level validations
+	// Summary of database level validations.
 	Summary []*ValidationSummaryItem
-}
-
-// DbMigrationStatus - Migration status of an individual database
-type DbMigrationStatus struct {
-	// CDC applied changes counter
-	AppliedChanges *int32
-
-	// CDC delete counter
-	CdcDeleteCounter *int32
-
-	// CDC insert counter
-	CdcInsertCounter *int32
-
-	// CDC update counter
-	CdcUpdateCounter *int32
-
-	// Name of the database
-	DatabaseName *string
-
-	// End date-time of a migration state
-	EndedOn *time.Time
-
-	// Number of tables loaded during the migration of a DB
-	FullLoadCompletedTables *int32
-
-	// Number of tables errored out during the migration of a DB
-	FullLoadErroredTables *int32
-
-	// Number of tables loading during the migration of a DB
-	FullLoadLoadingTables *int32
-
-	// Number of tables queued for the migration of a DB
-	FullLoadQueuedTables *int32
-
-	// CDC incoming changes counter
-	IncomingChanges *int32
-
-	// Lag in seconds between source and target during online phase
-	Latency *int32
-
-	// Error message, if any, for the migration state
-	Message *string
-
-	// Migration operation of an individual database
-	MigrationOperation *string
-
-	// Migration db state of an individual database
-	MigrationState *MigrationDbState
-
-	// Start date-time of a migration state
-	StartedOn *time.Time
 }
 
 // DbServerMetadata - Database server metadata.
 type DbServerMetadata struct {
-	// SKU for the database server. This object is empty for PG single server
+	// Compute tier and size of the database server. This object is empty for an Azure Database for PostgreSQL single server.
 	SKU *ServerSKU
 
-	// Storage size in MB for database server
+	// Storage size (in MB) for database server.
 	StorageMb *int32
 
-	// Version for database engine
+	// Major version of PostgreSQL database engine.
 	Version *string
 
-	// READ-ONLY; Location of database server
+	// READ-ONLY; Location of database server.
 	Location *string
 }
 
@@ -370,33 +629,33 @@ type DelegatedSubnetUsage struct {
 	Usage *int64
 }
 
-// FastProvisioningEditionCapability - Represents capability of a fast provisioning edition
+// FastProvisioningEditionCapability - Capability of a fast provisioning compute tier.
 type FastProvisioningEditionCapability struct {
 	// READ-ONLY; The reason for the capability not being available.
 	Reason *string
 
-	// READ-ONLY; Count of servers in cache matching the spec
+	// READ-ONLY; Count of servers in cache matching this specification.
 	ServerCount *int32
 
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
 
-	// READ-ONLY; Fast provisioning supported sku name
+	// READ-ONLY; Compute name (SKU) supporting fast provisioning.
 	SupportedSKU *string
 
-	// READ-ONLY; Fast provisioning supported version
+	// READ-ONLY; Major version of PostgreSQL database engine supporting fast provisioning.
 	SupportedServerVersions *string
 
-	// READ-ONLY; Fast provisioning supported storage in Gb
+	// READ-ONLY; Storage size (in GB) supporting fast provisioning.
 	SupportedStorageGb *int32
 
-	// READ-ONLY; Fast provisioning supported tier name
+	// READ-ONLY; Compute tier supporting fast provisioning.
 	SupportedTier *string
 }
 
-// FirewallRule - Represents a server firewall rule.
+// FirewallRule - Firewall rule.
 type FirewallRule struct {
-	// REQUIRED; The properties of a firewall rule.
+	// REQUIRED; Properties of a firewall rule.
 	Properties *FirewallRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -412,279 +671,61 @@ type FirewallRule struct {
 	Type *string
 }
 
-// FirewallRuleListResult - A list of firewall rules.
-type FirewallRuleListResult struct {
-	// The link used to get the next page of operations.
+// FirewallRuleList - List of firewall rules.
+type FirewallRuleList struct {
+	// Link to retrieve next page of results.
 	NextLink *string
 
-	// The list of firewall rules in a server.
+	// List of firewall rules in a server.
 	Value []*FirewallRule
 }
 
-// FirewallRuleProperties - The properties of a server firewall rule.
+// FirewallRuleProperties - Properties of a firewall rule.
 type FirewallRuleProperties struct {
-	// REQUIRED; The end IP address of the server firewall rule. Must be IPv4 format.
+	// REQUIRED; IP address defining the end of the range of addresses of a firewall rule. Must be expressed in IPv4 format.
 	EndIPAddress *string
 
-	// REQUIRED; The start IP address of the server firewall rule. Must be IPv4 format.
+	// REQUIRED; IP address defining the start of the range of addresses of a firewall rule. Must be expressed in IPv4 format.
 	StartIPAddress *string
 }
 
-// FlexibleServerCapability - Capability for the PostgreSQL server
-type FlexibleServerCapability struct {
-	// Name of flexible servers capability
-	Name *string
-
-	// READ-ONLY; Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning is supported.
-	// "Disabled" stands for fast provisioning is not supported. Will be deprecated in future,
-	// please look to Supported Features for "FastProvisioning".
-	FastProvisioningSupported *FastProvisioningSupportedEnum
-
-	// READ-ONLY; Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported. "Disabled" stands
-	// for geo-back is not supported. Will be deprecated in future, please look to Supported
-	// Features for "GeoBackup".
-	GeoBackupSupported *GeoBackupSupportedEnum
-
-	// READ-ONLY; A value indicating whether online resize is supported in this region for the given subscription. "Enabled" means
-	// storage online resize is supported. "Disabled" means storage online resize is not
-	// supported. Will be deprecated in future, please look to Supported Features for "OnlineResize".
-	OnlineResizeSupported *OnlineResizeSupportedEnum
-
-	// READ-ONLY; The reason for the capability not being available.
-	Reason *string
-
-	// READ-ONLY; A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled" stands
-	// for region is not restricted. Will be deprecated in future, please look to Supported
-	// Features for "Restricted".
-	Restricted *RestrictedEnum
-
-	// READ-ONLY; The status of the capability.
-	Status *CapabilityStatus
-
-	// READ-ONLY; A value indicating whether storage auto-grow is supported in this region. "Enabled" means storage auto-grow
-	// is supported. "Disabled" stands for storage auto-grow is not supported. Will be deprecated
-	// in future, please look to Supported Features for "StorageAutoGrowth".
-	StorageAutoGrowthSupported *StorageAutoGrowthSupportedEnum
-
-	// READ-ONLY; List of supported server editions for fast provisioning
-	SupportedFastProvisioningEditions []*FastProvisioningEditionCapability
-
-	// READ-ONLY; The supported features.
-	SupportedFeatures []*SupportedFeature
-
-	// READ-ONLY; List of supported flexible server editions
-	SupportedServerEditions []*FlexibleServerEditionCapability
-
-	// READ-ONLY; The list of server versions supported for this capability.
-	SupportedServerVersions []*ServerVersionCapability
-
-	// READ-ONLY; A value indicating whether Zone Redundant HA and Geo-backup is supported in this region. "Enabled" means zone
-	// redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and
-	// geo-backup is not supported. Will be deprecated in future, please look to Supported Features for "ZoneRedundantHaAndGeoBackup".
-	ZoneRedundantHaAndGeoBackupSupported *ZoneRedundantHaAndGeoBackupSupportedEnum
-
-	// READ-ONLY; A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means zone redundant HA
-	// is supported. "Disabled" stands for zone redundant HA is not supported. Will be deprecated
-	// in future, please look to Supported Features for "ZoneRedundantHa".
-	ZoneRedundantHaSupported *ZoneRedundantHaSupportedEnum
-}
-
-// FlexibleServerEditionCapability - Flexible server edition capabilities.
-type FlexibleServerEditionCapability struct {
-	// READ-ONLY; Default sku name for the server edition
-	DefaultSKUName *string
-
-	// READ-ONLY; Server edition name
-	Name *string
-
-	// READ-ONLY; The reason for the capability not being available.
-	Reason *string
-
-	// READ-ONLY; The status of the capability.
-	Status *CapabilityStatus
-
-	// READ-ONLY; List of supported server SKUs.
-	SupportedServerSKUs []*ServerSKUCapability
-
-	// READ-ONLY; The list of editions supported by this server edition.
-	SupportedStorageEditions []*StorageEditionCapability
-}
-
-// HighAvailability - High availability properties of a server
+// HighAvailability - High availability properties of a server.
 type HighAvailability struct {
-	// The HA mode for the server.
+	// High availability mode for a server.
 	Mode *HighAvailabilityMode
 
-	// availability zone information of the standby.
+	// Availability zone associated to the standby server created when high availability is set to SameZone or ZoneRedundant.
 	StandbyAvailabilityZone *string
 
-	// READ-ONLY; A state of a HA server that is visible to user.
-	State *ServerHAState
+	// READ-ONLY; Possible states of the standby server created when high availability is set to SameZone or ZoneRedundant.
+	State *HighAvailabilityState
 }
 
-// ImpactRecord - Stores property that features impact on some metric if this recommended action is applied.
+// HighAvailabilityForPatch - High availability properties of a server.
+type HighAvailabilityForPatch struct {
+	// High availability mode for a server.
+	Mode *HighAvailabilityMode
+
+	// Availability zone associated to the standby server created when high availability is set to SameZone or ZoneRedundant.
+	StandbyAvailabilityZone *string
+
+	// READ-ONLY; Possible states of the standby server created when high availability is set to SameZone or ZoneRedundant.
+	State *HighAvailabilityState
+}
+
+// ImpactRecord - Impact on some metric if this recommended action is applied.
 type ImpactRecord struct {
-	// Absolute value
+	// Absolute value.
 	AbsoluteValue *float64
 
-	// Dimension name
+	// Dimension name.
 	DimensionName *string
 
-	// Optional property that can be used to store the QueryId if the metric is for a specific query.
+	// Optional property that can be used to store the identifier of the query, if the metric is for a specific query.
 	QueryID *int64
 
-	// Dimension unit
+	// Dimension unit.
 	Unit *string
-}
-
-// IndexRecommendationDetails - Recommendation details for the recommended action.
-type IndexRecommendationDetails struct {
-	// Database name.
-	DatabaseName *string
-
-	// Index included columns.
-	IncludedColumns []*string
-
-	// Index columns.
-	IndexColumns []*string
-
-	// Index name.
-	IndexName *string
-
-	// Index type.
-	IndexType *string
-
-	// Schema name.
-	Schema *string
-
-	// Table name.
-	Table *string
-}
-
-// IndexRecommendationListResult - A list of available index recommendations.
-type IndexRecommendationListResult struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string
-
-	// A list of available index recommendations.
-	Value []*IndexRecommendationResource
-}
-
-// IndexRecommendationResource - Index recommendation properties.
-type IndexRecommendationResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Properties of IndexRecommendationResource.
-	Properties *IndexRecommendationResourceProperties
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// IndexRecommendationResourceProperties - Index recommendation properties.
-type IndexRecommendationResourceProperties struct {
-	// Stores workload information for the recommended action.
-	AnalyzedWorkload *IndexRecommendationResourcePropertiesAnalyzedWorkload
-
-	// Stores implementation details for the recommended action.
-	ImplementationDetails *IndexRecommendationResourcePropertiesImplementationDetails
-
-	// The ImprovedQueryIds. The list will only be populated for CREATE INDEX recommendations.
-	ImprovedQueryIDs []*int64
-
-	// Creation time of this recommendation in UTC date-time string format.
-	InitialRecommendedTime *time.Time
-
-	// The last refresh of this recommendation in UTC date-time string format.
-	LastRecommendedTime *time.Time
-
-	// Reason for this recommendation.
-	RecommendationReason *string
-
-	// Type for this recommendation.
-	RecommendationType *RecommendationTypeEnum
-
-	// The number of times this recommendation has encountered.
-	TimesRecommended *int32
-
-	// READ-ONLY; Stores recommendation details for the recommended action.
-	Details *IndexRecommendationDetails
-
-	// READ-ONLY; The estimated impact of this recommended action
-	EstimatedImpact []*ImpactRecord
-}
-
-// IndexRecommendationResourcePropertiesAnalyzedWorkload - Stores workload information for the recommended action.
-type IndexRecommendationResourcePropertiesAnalyzedWorkload struct {
-	// Workload end time in UTC date-time string format.
-	EndTime *time.Time
-
-	// Workload query examined count. For DROP INDEX will be 0.
-	QueryCount *int32
-
-	// Workload start time in UTC date-time string format.
-	StartTime *time.Time
-}
-
-// IndexRecommendationResourcePropertiesImplementationDetails - Stores implementation details for the recommended action.
-type IndexRecommendationResourcePropertiesImplementationDetails struct {
-	// Method of implementation for recommended action
-	Method *string
-
-	// Implementation script for the recommended action
-	Script *string
-}
-
-// LogFile - Represents a logFile.
-type LogFile struct {
-	// The properties of a logFile.
-	Properties *LogFileProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// LogFileListResult - A List of logFiles.
-type LogFileListResult struct {
-	// The link used to get the next page of operations.
-	NextLink *string
-
-	// The list of logFiles in a server
-	Value []*LogFile
-}
-
-// LogFileProperties - The properties of a logFile.
-type LogFileProperties struct {
-	// Creation timestamp of the log file.
-	CreatedTime *time.Time
-
-	// Last modified timestamp of the log file.
-	LastModifiedTime *time.Time
-
-	// The size in kb of the logFile.
-	SizeInKb *int64
-
-	// Type of the log file.
-	Type *string
-
-	// The url to download the log file from.
-	URL *string
 }
 
 // LtrBackupOperationResponseProperties - Response for the backup request.
@@ -721,21 +762,6 @@ type LtrBackupOperationResponseProperties struct {
 	ErrorMessage *string
 }
 
-// LtrBackupRequest - The request that is made for a long term retention backup.
-type LtrBackupRequest struct {
-	// REQUIRED; Backup Settings
-	BackupSettings *BackupSettings
-
-	// REQUIRED; Backup store detail for target server
-	TargetDetails *BackupStoreDetails
-}
-
-// LtrBackupResponse - Response for the LTR backup API call
-type LtrBackupResponse struct {
-	// Long Term Retention Backup Operation Resource Properties
-	Properties *LtrBackupOperationResponseProperties
-}
-
 // LtrPreBackupRequest - A request that is made for pre-backup.
 type LtrPreBackupRequest struct {
 	// REQUIRED; Backup Settings
@@ -745,32 +771,7 @@ type LtrPreBackupRequest struct {
 // LtrPreBackupResponse - Response for the LTR pre-backup API call
 type LtrPreBackupResponse struct {
 	// REQUIRED; Additional Properties for the pre backup response
-	Properties *LtrPreBackupResponseProperties
-}
-
-// LtrPreBackupResponseProperties - Response for the pre-backup request.
-type LtrPreBackupResponseProperties struct {
-	// REQUIRED; Number of storage containers the plugin will use during backup. More than one containers may be used for size
-	// limitations, parallelism, or redundancy etc.
-	NumberOfContainers *int32
-}
-
-// LtrServerBackupOperation - Response for the LTR backup Operation API call
-type LtrServerBackupOperation struct {
-	// Long Term Retention Backup Operation Resource Properties
-	Properties *LtrBackupOperationResponseProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	Properties *BackupsLongTermRetentionResponseProperties
 }
 
 // LtrServerBackupOperationList - A list of long term retention backup operations for server.
@@ -779,49 +780,46 @@ type LtrServerBackupOperationList struct {
 	NextLink *string
 
 	// The list of long term retention server backup operations
-	Value []*LtrServerBackupOperation
+	Value []*BackupsLongTermRetentionOperation
 }
 
 // MaintenanceWindow - Maintenance window properties of a server.
 type MaintenanceWindow struct {
-	// indicates whether custom window is enabled or disabled
+	// Indicates whether custom window is enabled or disabled.
 	CustomWindow *string
 
-	// day of week for maintenance window
+	// Day of the week to be used for maintenance window.
 	DayOfWeek *int32
 
-	// start hour for maintenance window
+	// Start hour to be used for maintenance window.
 	StartHour *int32
 
-	// start minute for maintenance window
+	// Start minute to be used for maintenance window.
 	StartMinute *int32
 }
 
-// MigrationNameAvailabilityResource - Represents a migration name's availability.
-type MigrationNameAvailabilityResource struct {
-	// REQUIRED; The resource name to verify.
-	Name *string
+// MaintenanceWindowForPatch - Maintenance window properties of a server.
+type MaintenanceWindowForPatch struct {
+	// Indicates whether custom window is enabled or disabled.
+	CustomWindow *string
 
-	// REQUIRED; The type of the resource.
-	Type *string
+	// Day of the week to be used for maintenance window.
+	DayOfWeek *int32
 
-	// READ-ONLY; Migration name availability message.
-	Message *string
+	// Start hour to be used for maintenance window.
+	StartHour *int32
 
-	// READ-ONLY; Indicates whether the resource name is available.
-	NameAvailable *bool
-
-	// READ-ONLY; Migration name availability reason
-	Reason *MigrationNameAvailabilityReason
+	// Start minute to be used for maintenance window.
+	StartMinute *int32
 }
 
-// MigrationResource - Represents a migration resource.
-type MigrationResource struct {
+// Migration - Properties of a migration.
+type Migration struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Migration resource properties.
-	Properties *MigrationResourceProperties
+	// Migration properties.
+	Properties *MigrationProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -839,200 +837,236 @@ type MigrationResource struct {
 	Type *string
 }
 
-// MigrationResourceForPatch - Represents a migration resource for patch.
+// MigrationList - List of migrations.
+type MigrationList struct {
+	// Link used to get the next page of results.
+	NextLink *string
+
+	// READ-ONLY; List of migrations.
+	Value []*Migration
+}
+
+// MigrationNameAvailability - Availability of a migration name.
+type MigrationNameAvailability struct {
+	// REQUIRED; Name of the migration to check for validity and availability.
+	Name *string
+
+	// REQUIRED; Type of resource.
+	Type *string
+
+	// READ-ONLY; Migration name availability message.
+	Message *string
+
+	// READ-ONLY; Indicates if the migration name is available.
+	NameAvailable *bool
+
+	// READ-ONLY; Migration name availability reason.
+	Reason *MigrationNameAvailabilityReason
+}
+
+// MigrationProperties - Migration.
+type MigrationProperties struct {
+	// Indicates if cancel must be triggered for the entire migration.
+	Cancel *Cancel
+
+	// When you want to trigger cancel for specific databases set 'triggerCutover' to 'True' and the names of the specific databases
+	// in this array.
+	DbsToCancelMigrationOn []*string
+
+	// Names of databases to migrate.
+	DbsToMigrate []*string
+
+	// When you want to trigger cutover for specific databases set 'triggerCutover' to 'True' and the names of the specific databases
+	// in this array.
+	DbsToTriggerCutoverOn []*string
+
+	// Indicates if roles and permissions must be migrated.
+	MigrateRoles *MigrateRolesAndPermissions
+
+	// Identifier of the private endpoint migration instance.
+	MigrationInstanceResourceID *string
+
+	// Mode used to perform the migration: Online or Offline.
+	MigrationMode *MigrationMode
+
+	// Supported option for a migration.
+	MigrationOption *MigrationOption
+
+	// End time (UTC) for migration window.
+	MigrationWindowEndTimeInUTC *time.Time
+
+	// Start time (UTC) for migration window.
+	MigrationWindowStartTimeInUTC *time.Time
+
+	// Indicates if databases on the target server can be overwritten when already present. If set to 'False', when the migration
+	// workflow detects that the database already exists on the target server, it
+	// will wait for a confirmation.
+	OverwriteDbsInTarget *OverwriteDatabasesOnTargetServer
+
+	// SSL mode used by a migration. Default SSL mode for 'PostgreSQLSingleServer' is 'VerifyFull'. Default SSL mode for other
+	// source types is 'Prefer'.
+	SSLMode *SSLMode
+
+	// Migration secret parameters.
+	SecretParameters *MigrationSecretParameters
+
+	// Indicates whether to setup logical replication on source server, if needed.
+	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceServer
+
+	// Fully qualified domain name (FQDN) or IP address of the source server. This property is optional. When provided, the migration
+	// service will always use it to connect to the source server.
+	SourceDbServerFullyQualifiedDomainName *string
+
+	// Identifier of the source database server resource, when 'sourceType' is 'PostgreSQLSingleServer'. For other source types
+	// this must be set to ipaddress:port@username or hostname:port@username.
+	SourceDbServerResourceID *string
+
+	// Source server type used for the migration: ApsaraDBRDS, AWS, AWSAURORA, AWSEC2, AWSRDS, AzureVM, CrunchyPostgreSQL, DigitalOceanDroplets,
+	// DigitalOceanPostgreSQL, EDB, EDBOracleServer, EDBPostgreSQL,
+	// GCP, GCPAlloyDB, GCPCloudSQL, GCPCompute, HerokuPostgreSQL, HuaweiCompute, HuaweiRDS, OnPremises, PostgreSQLCosmosDB, PostgreSQLFlexibleServer,
+	// PostgreSQLSingleServer, or Supabase_PostgreSQL
+	SourceType *SourceType
+
+	// Indicates if data migration must start right away.
+	StartDataMigration *StartDataMigration
+
+	// Fully qualified domain name (FQDN) or IP address of the target server. This property is optional. When provided, the migration
+	// service will always use it to connect to the target server.
+	TargetDbServerFullyQualifiedDomainName *string
+
+	// Indicates if cutover must be triggered for the entire migration.
+	TriggerCutover *TriggerCutover
+
+	// READ-ONLY; Current status of a migration.
+	CurrentStatus *MigrationStatus
+
+	// READ-ONLY; Identifier of a migration.
+	MigrationID *string
+
+	// READ-ONLY; Metadata of source database server.
+	SourceDbServerMetadata *DbServerMetadata
+
+	// READ-ONLY; Metadata of target database server.
+	TargetDbServerMetadata *DbServerMetadata
+
+	// READ-ONLY; Identifier of the target database server resource.
+	TargetDbServerResourceID *string
+}
+
+// MigrationPropertiesForPatch - Migration properties.
+type MigrationPropertiesForPatch struct {
+	// Indicates if cancel must be triggered for the entire migration.
+	Cancel *Cancel
+
+	// When you want to trigger cancel for specific databases set 'triggerCutover' to 'True' and the names of the specific databases
+	// in this array.
+	DbsToCancelMigrationOn []*string
+
+	// Names of databases to migrate.
+	DbsToMigrate []*string
+
+	// When you want to trigger cutover for specific databases set 'triggerCutover' to 'True' and the names of the specific databases
+	// in this array.
+	DbsToTriggerCutoverOn []*string
+
+	// Indicates if roles and permissions must be migrated.
+	MigrateRoles *MigrateRolesAndPermissions
+
+	// Mode used to perform the migration: Online or Offline.
+	MigrationMode *MigrationMode
+
+	// Start time (UTC) for migration window.
+	MigrationWindowStartTimeInUTC *time.Time
+
+	// Indicates if databases on the target server can be overwritten when already present. If set to 'False', when the migration
+	// workflow detects that the database already exists on the target server, it
+	// will wait for a confirmation.
+	OverwriteDbsInTarget *OverwriteDatabasesOnTargetServer
+
+	// Migration secret parameters.
+	SecretParameters *MigrationSecretParametersForPatch
+
+	// Indicates whether to setup logical replication on source server, if needed.
+	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceServer
+
+	// Fully qualified domain name (FQDN) or IP address of the source server. This property is optional. When provided, the migration
+	// service will always use it to connect to the source server.
+	SourceDbServerFullyQualifiedDomainName *string
+
+	// Identifier of the source database server resource, when 'sourceType' is 'PostgreSQLSingleServer'. For other source types
+	// this must be set to ipaddress:port@username or hostname:port@username.
+	SourceDbServerResourceID *string
+
+	// Indicates if data migration must start right away.
+	StartDataMigration *StartDataMigration
+
+	// Fully qualified domain name (FQDN) or IP address of the target server. This property is optional. When provided, the migration
+	// service will always use it to connect to the target server.
+	TargetDbServerFullyQualifiedDomainName *string
+
+	// Indicates if cutover must be triggered for the entire migration.
+	TriggerCutover *TriggerCutover
+}
+
+// MigrationResourceForPatch - Migration.
 type MigrationResourceForPatch struct {
-	// Migration resource properties.
-	Properties *MigrationResourcePropertiesForPatch
+	// Migration properties.
+	Properties *MigrationPropertiesForPatch
 
 	// Application-specific metadata in the form of key-value pairs.
 	Tags map[string]*string
 }
 
-// MigrationResourceListResult - A list of migration resources.
-type MigrationResourceListResult struct {
-	// READ-ONLY; The link used to get the next page of migrations.
-	NextLink *string
-
-	// READ-ONLY; A list of migration resources.
-	Value []*MigrationResource
-}
-
-// MigrationResourceProperties - Migration resource properties.
-type MigrationResourceProperties struct {
-	// To trigger cancel for entire migration we need to send this flag as True
-	Cancel *CancelEnum
-
-	// When you want to trigger cancel for specific databases send cancel flag as True and database names in this array
-	DbsToCancelMigrationOn []*string
-
-	// Number of databases to migrate
-	DbsToMigrate []*string
-
-	// When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
-	DbsToTriggerCutoverOn []*string
-
-	// To migrate roles and permissions we need to send this flag as True
-	MigrateRoles *MigrateRolesEnum
-
-	// ResourceId of the private endpoint migration instance
-	MigrationInstanceResourceID *string
-
-	// There are two types of migration modes Online and Offline
-	MigrationMode *MigrationMode
-
-	// This indicates the supported Migration option for the migration
-	MigrationOption *MigrationOption
-
-	// End time in UTC for migration window
-	MigrationWindowEndTimeInUTC *time.Time
-
-	// Start time in UTC for migration window
-	MigrationWindowStartTimeInUTC *time.Time
-
-	// Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration
-	// workflow will wait for a confirmation, if it detects that the database
-	// already exists.
-	OverwriteDbsInTarget *OverwriteDbsInTargetEnum
-
-	// SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer for other source types
-	SSLMode *SSLMode
-
-	// Migration secret parameters
-	SecretParameters *MigrationSecretParameters
-
-	// Indicates whether to setup LogicalReplicationOnSourceDb, if needed
-	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceDbEnum
-
-	// Source server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
-	// service will always use it for connection
-	SourceDbServerFullyQualifiedDomainName *string
-
-	// ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source types this
-	// should be ipaddress:port@username or hostname:port@username
-	SourceDbServerResourceID *string
-
-	// migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWSRDS, AWSAURORA, AWSEC2, GCPCloudSQL,
-	// GCPAlloyDB, GCPCompute, EDB, EDBOracleServer, EDBPostgreSQL,
-	// PostgreSQLFlexibleServer, PostgreSQLCosmosDB, HuaweiRDS, HuaweiCompute, HerokuPostgreSQL, CrunchyPostgreSQL, ApsaraDBRDS,
-	// DigitalOceanDroplets, DigitalOceanPostgreSQL, or Supabase_PostgreSQL
-	SourceType *SourceType
-
-	// Indicates whether the data migration should start right away
-	StartDataMigration *StartDataMigrationEnum
-
-	// Target server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
-	// service will always use it for connection
-	TargetDbServerFullyQualifiedDomainName *string
-
-	// To trigger cutover for entire migration we need to send this flag as True
-	TriggerCutover *TriggerCutoverEnum
-
-	// READ-ONLY; Current status of migration
-	CurrentStatus *MigrationStatus
-
-	// READ-ONLY; ID for migration, a GUID.
-	MigrationID *string
-
-	// READ-ONLY; Metadata of the source database server
-	SourceDbServerMetadata *DbServerMetadata
-
-	// READ-ONLY; Metadata of the target database server
-	TargetDbServerMetadata *DbServerMetadata
-
-	// READ-ONLY; ResourceId of the source database server
-	TargetDbServerResourceID *string
-}
-
-// MigrationResourcePropertiesForPatch - Migration resource properties for patch.
-type MigrationResourcePropertiesForPatch struct {
-	// To trigger cancel for entire migration we need to send this flag as True
-	Cancel *CancelEnum
-
-	// When you want to trigger cancel for specific databases send cancel flag as True and database names in this array
-	DbsToCancelMigrationOn []*string
-
-	// Number of databases to migrate
-	DbsToMigrate []*string
-
-	// When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
-	DbsToTriggerCutoverOn []*string
-
-	// To migrate roles and permissions we need to send this flag as True
-	MigrateRoles *MigrateRolesEnum
-
-	// There are two types of migration modes Online and Offline
-	MigrationMode *MigrationMode
-
-	// Start time in UTC for migration window
-	MigrationWindowStartTimeInUTC *time.Time
-
-	// Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration
-	// workflow will wait for a confirmation, if it detects that the database
-	// already exists.
-	OverwriteDbsInTarget *OverwriteDbsInTargetEnum
-
-	// Migration secret parameters
-	SecretParameters *MigrationSecretParameters
-
-	// Indicates whether to setup LogicalReplicationOnSourceDb, if needed
-	SetupLogicalReplicationOnSourceDbIfNeeded *LogicalReplicationOnSourceDbEnum
-
-	// Source server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
-	// service will always use it for connection
-	SourceDbServerFullyQualifiedDomainName *string
-
-	// ResourceId of the source database server
-	SourceDbServerResourceID *string
-
-	// Indicates whether the data migration should start right away
-	StartDataMigration *StartDataMigrationEnum
-
-	// Target server fully qualified domain name (FQDN) or IP address. It is a optional value, if customer provide it, migration
-	// service will always use it for connection
-	TargetDbServerFullyQualifiedDomainName *string
-
-	// To trigger cutover for entire migration we need to send this flag as True
-	TriggerCutover *TriggerCutoverEnum
-}
-
 // MigrationSecretParameters - Migration secret parameters.
 type MigrationSecretParameters struct {
-	// REQUIRED; Admin credentials for source and target servers
+	// REQUIRED; Credentials of administrator users for source and target servers.
 	AdminCredentials *AdminCredentials
 
-	// Gets or sets the username for the source server. This user need not be an admin.
+	// Gets or sets the name of the user for the source server. This user doesn't need to be an administrator.
 	SourceServerUsername *string
 
-	// Gets or sets the username for the target server. This user need not be an admin.
+	// Gets or sets the name of the user for the target server. This user doesn't need to be an administrator.
 	TargetServerUsername *string
 }
 
-// MigrationStatus - Migration status.
-type MigrationStatus struct {
-	// READ-ONLY; Current Migration sub state details.
-	CurrentSubStateDetails *MigrationSubStateDetails
+// MigrationSecretParametersForPatch - Migration secret parameters.
+type MigrationSecretParametersForPatch struct {
+	// Credentials of administrator users for source and target servers.
+	AdminCredentials *AdminCredentialsForPatch
 
-	// READ-ONLY; Error message, if any, for the migration state
+	// Gets or sets the name of the user for the source server. This user doesn't need to be an administrator.
+	SourceServerUsername *string
+
+	// Gets or sets the name of the user for the target server. This user doesn't need to be an administrator.
+	TargetServerUsername *string
+}
+
+// MigrationStatus - State of migration.
+type MigrationStatus struct {
+	// READ-ONLY; Current migration sub state details.
+	CurrentSubStateDetails *MigrationSubstateDetails
+
+	// READ-ONLY; Error message, if any, for the migration state.
 	Error *string
 
-	// READ-ONLY; State of migration
+	// READ-ONLY; State of migration.
 	State *MigrationState
 }
 
-// MigrationSubStateDetails - Migration sub state details.
-type MigrationSubStateDetails struct {
+// MigrationSubstateDetails - Details of migration substate.
+type MigrationSubstateDetails struct {
 	// Dictionary of
-	DbDetails map[string]*DbMigrationStatus
+	DbDetails map[string]*DatabaseMigrationState
 
-	// Details for the validation for migration
+	// Details for the validation for migration.
 	ValidationDetails *ValidationDetails
 
-	// READ-ONLY; Migration sub state.
-	CurrentSubState *MigrationSubState
+	// READ-ONLY; Substate of migration.
+	CurrentSubState *MigrationSubstate
 }
 
-// NameAvailability - Represents a resource name availability.
-type NameAvailability struct {
+// NameAvailabilityModel - Availability of a name.
+type NameAvailabilityModel struct {
 	// Detailed reason why the given name is available.
 	Message *string
 
@@ -1042,10 +1076,10 @@ type NameAvailability struct {
 	// The reason why the given name is not available.
 	Reason *CheckNameAvailabilityReason
 
-	// READ-ONLY; name of the PostgreSQL server.
+	// READ-ONLY; Name for which validity and availability was checked.
 	Name *string
 
-	// READ-ONLY; type of the server
+	// READ-ONLY; Type of resource. It can be 'Microsoft.DBforPostgreSQL/flexibleServers' or 'Microsoft.DBforPostgreSQL/flexibleServers/virtualendpoints'.
 	Type *string
 }
 
@@ -1060,32 +1094,146 @@ type NameProperty struct {
 
 // Network properties of a server.
 type Network struct {
-	// Delegated subnet arm resource id. This is required to be passed during create, in case we want the server to be VNET injected,
-	// i.e. Private access server. During update, pass this only if we want to
-	// update the value for Private DNS zone.
+	// Resource identifier of the delegated subnet. Required during creation of a new server, in case you want the server to be
+	// integrated into your own virtual network. For an update operation, you only
+	// have to provide this property if you want to change the value assigned for the private DNS zone.
 	DelegatedSubnetResourceID *string
 
-	// Private dns zone arm resource id. This is required to be passed during create, in case we want the server to be VNET injected,
-	// i.e. Private access server. During update, pass this only if we want to
-	// update the value for Private DNS zone.
+	// Identifier of the private DNS zone. Required during creation of a new server, in case you want the server to be integrated
+	// into your own virtual network. For an update operation, you only have to
+	// provide this property if you want to change the value assigned for the private DNS zone.
 	PrivateDNSZoneArmResourceID *string
 
-	// public network access is enabled or not
+	// Indicates if public network access is enabled or not. This is only supported for servers that are not integrated into a
+	// virtual network which is owned and provided by customer when server is deployed.
 	PublicNetworkAccess *ServerPublicNetworkAccessState
+}
+
+// ObjectRecommendation - Object recommendation properties.
+type ObjectRecommendation struct {
+	// Always empty.
+	Kind *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Properties of an object recommendation.
+	Properties *ObjectRecommendationProperties
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ObjectRecommendationDetails - Recommendation details for the recommended action.
+type ObjectRecommendationDetails struct {
+	// Database name.
+	DatabaseName *string
+
+	// Index included columns.
+	IncludedColumns []*string
+
+	// Index columns.
+	IndexColumns []*string
+
+	// Index name.
+	IndexName *string
+
+	// Index type.
+	IndexType *string
+
+	// Schema name.
+	Schema *string
+
+	// Table name.
+	Table *string
+}
+
+// ObjectRecommendationList - List of available object recommendations.
+type ObjectRecommendationList struct {
+	// Link used to get the next page of results.
+	NextLink *string
+
+	// List of available object recommendations.
+	Value []*ObjectRecommendation
+}
+
+// ObjectRecommendationProperties - Object recommendation properties.
+type ObjectRecommendationProperties struct {
+	// Workload information for the recommended action.
+	AnalyzedWorkload *ObjectRecommendationPropertiesAnalyzedWorkload
+
+	// Current state.
+	CurrentState *string
+
+	// Implementation details for the recommended action.
+	ImplementationDetails *ObjectRecommendationPropertiesImplementationDetails
+
+	// List of identifiers for all queries identified as targets for improvement if the recommendation is applied. The list is
+	// only populated for CREATE INDEX recommendations.
+	ImprovedQueryIDs []*int64
+
+	// Creation time (UTC) of this recommendation.
+	InitialRecommendedTime *time.Time
+
+	// Last time (UTC) that this recommendation was produced.
+	LastRecommendedTime *time.Time
+
+	// Reason for this recommendation.
+	RecommendationReason *string
+
+	// Type for this recommendation.
+	RecommendationType *RecommendationType
+
+	// Number of times this recommendation has been produced.
+	TimesRecommended *int32
+
+	// READ-ONLY; Recommendation details for the recommended action.
+	Details *ObjectRecommendationDetails
+
+	// READ-ONLY; Estimated impact of this recommended action.
+	EstimatedImpact []*ImpactRecord
+}
+
+// ObjectRecommendationPropertiesAnalyzedWorkload - Workload information for the recommended action.
+type ObjectRecommendationPropertiesAnalyzedWorkload struct {
+	// End time (UTC) of the workload analyzed.
+	EndTime *time.Time
+
+	// Number of queries from the workload that were examined to produce this recommendation. For DROP INDEX recommendations it's
+	// 0 (zero).
+	QueryCount *int32
+
+	// Start time (UTC) of the workload analyzed.
+	StartTime *time.Time
+}
+
+// ObjectRecommendationPropertiesImplementationDetails - Implementation details for the recommended action.
+type ObjectRecommendationPropertiesImplementationDetails struct {
+	// Method of implementation for recommended action.
+	Method *string
+
+	// Implementation script for the recommended action.
+	Script *string
 }
 
 // Operation - REST API operation definition.
 type Operation struct {
-	// Indicates whether the operation is a data action
+	// Indicates if the operation is a data action.
 	IsDataAction *bool
 
-	// READ-ONLY; The localized display information for this particular operation or action.
+	// READ-ONLY; Localized display information for this particular operation or action.
 	Display *OperationDisplay
 
-	// READ-ONLY; The name of the operation being performed on this particular object.
+	// READ-ONLY; Name of the operation being performed on this particular object.
 	Name *string
 
-	// READ-ONLY; The intended executor of the operation.
+	// READ-ONLY; Intended executor of the operation.
 	Origin *OperationOrigin
 
 	// READ-ONLY; Additional descriptions for the operation.
@@ -1094,22 +1242,22 @@ type Operation struct {
 
 // OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
-	// READ-ONLY; Operation description.
+	// READ-ONLY; Description of the operation.
 	Description *string
 
-	// READ-ONLY; Localized friendly name for the operation.
+	// READ-ONLY; Name of the operation.
 	Operation *string
 
-	// READ-ONLY; Operation resource provider name.
+	// READ-ONLY; Name of the resource provider.
 	Provider *string
 
-	// READ-ONLY; Resource on which the operation is performed.
+	// READ-ONLY; Type of resource on which the operation is performed.
 	Resource *string
 }
 
-// OperationListResult - A list of resource provider operations.
-type OperationListResult struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+// OperationList - List of resource provider operations.
+type OperationList struct {
+	// Link used to get the next page of results.
 	NextLink *string
 
 	// Collection of available operation details
@@ -1140,9 +1288,9 @@ type PrivateEndpointConnection struct {
 	Type *string
 }
 
-// PrivateEndpointConnectionListResult - A list of private endpoint connections.
-type PrivateEndpointConnectionListResult struct {
-	// READ-ONLY; The URL to get the next set of results.
+// PrivateEndpointConnectionList - List of private endpoint connections.
+type PrivateEndpointConnectionList struct {
+	// Link used to get the next page of results.
 	NextLink *string
 
 	// READ-ONLY; Array of results.
@@ -1182,9 +1330,9 @@ type PrivateLinkResource struct {
 	Type *string
 }
 
-// PrivateLinkResourceListResult - A list of private link resources
-type PrivateLinkResourceListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
+// PrivateLinkResourceList - A list of private link resources
+type PrivateLinkResourceList struct {
+	// Link to retrieve next page of results.
 	NextLink *string
 
 	// READ-ONLY; Array of results.
@@ -1216,7 +1364,7 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
-// QuotaUsage - Quota usage for flexible servers
+// QuotaUsage - Quota usage for servers
 type QuotaUsage struct {
 	// Current Quota usage value
 	CurrentValue *int64
@@ -1227,71 +1375,85 @@ type QuotaUsage struct {
 	// Quota limit
 	Limit *int64
 
-	// Name of quota usage for flexible servers
+	// Name of quota usage for servers
 	Name *NameProperty
 
 	// Quota unit
 	Unit *string
 }
 
-// QuotaUsagesListResult - Capability for the PostgreSQL server
-type QuotaUsagesListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
+// QuotaUsageList - Capability for the PostgreSQL server
+type QuotaUsageList struct {
+	// Link to retrieve next page of results.
 	NextLink *string
 
 	// READ-ONLY; A list of quota usages.
 	Value []*QuotaUsage
 }
 
-// Replica properties of a server
+// Replica properties of a server.
 type Replica struct {
-	// Sets the promote mode for a replica server. This is a write only property.
+	// Type of operation to apply on the read replica. This property is write only. Standalone means that the read replica will
+	// be promoted to a standalone server, and will become a completely independent
+	// entity from the replication set. Switchover means that the read replica will roles with the primary server.
 	PromoteMode *ReadReplicaPromoteMode
 
-	// Sets the promote options for a replica server. This is a write only property.
-	PromoteOption *ReplicationPromoteOption
+	// Data synchronization option to use when processing the operation specified in the promoteMode property. This property is
+	// write only.
+	PromoteOption *ReadReplicaPromoteOption
 
-	// Used to indicate role of the server in replication set.
+	// Role of the server in a replication set.
 	Role *ReplicationRole
 
-	// READ-ONLY; Replicas allowed for a server.
+	// READ-ONLY; Maximum number of read replicas allowed for a server.
 	Capacity *int32
 
-	// READ-ONLY; Gets the replication state of a replica server. This property is returned only for replicas api call. Supported
-	// values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring
+	// READ-ONLY; Indicates the replication state of a read replica. This property is returned only when the target server is
+	// a read replica. Possible values are Active, Broken, Catchup, Provisioning, Reconfiguring,
+	// and Updating
 	ReplicationState *ReplicationState
 }
 
-// RestartParameter - Represents server restart parameters.
+// RestartParameter - PostgreSQL database engine restart parameters.
 type RestartParameter struct {
 	// Failover mode.
 	FailoverMode *FailoverMode
 
-	// Indicates whether to restart the server with failover.
+	// Indicates if restart the PostgreSQL database engine should failover or switch over from primary to standby. This only works
+	// if server has high availability enabled.
 	RestartWithFailover *bool
 }
 
-// SKU - Sku information related properties of a server.
+// SKU - Compute information of a server.
 type SKU struct {
-	// REQUIRED; The name of the sku, typically, tier + family + cores, e.g. StandardD4sv3.
+	// REQUIRED; Name by which is known a given compute size assigned to a server.
 	Name *string
 
-	// REQUIRED; The tier of the particular SKU, e.g. Burstable.
+	// REQUIRED; Tier of the compute assigned to a server.
 	Tier *SKUTier
 }
 
-// Server - Represents a server.
+// SKUForPatch - Compute information of a server.
+type SKUForPatch struct {
+	// Name by which is known a given compute size assigned to a server.
+	Name *string
+
+	// Tier of the compute assigned to a server.
+	Tier *SKUTier
+}
+
+// Server - Properties of a server.
 type Server struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// Describes the identity of the application.
+	// User assigned managed identities assigned to the server.
 	Identity *UserAssignedIdentity
 
-	// Properties of the server.
+	// Properties of a server.
 	Properties *ServerProperties
 
-	// The SKU (pricing tier) of the server.
+	// Compute tier and size of a server.
 	SKU *SKU
 
 	// Resource tags.
@@ -1310,82 +1472,68 @@ type Server struct {
 	Type *string
 }
 
-// ServerBackup - Server backup properties
-type ServerBackup struct {
-	// The properties of a server backup.
-	Properties *ServerBackupProperties
+// ServerEditionCapability - Capabilities in terms of compute tier.
+type ServerEditionCapability struct {
+	// READ-ONLY; Default compute name (SKU) for this computer tier.
+	DefaultSKUName *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Name of compute tier.
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	// READ-ONLY; The reason for the capability not being available.
+	Reason *string
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// READ-ONLY; The status of the capability.
+	Status *CapabilityStatus
+
+	// READ-ONLY; List of supported compute names (SKUs).
+	SupportedServerSKUs []*ServerSKUCapability
+
+	// READ-ONLY; List of storage editions supported by this compute tier and compute name.
+	SupportedStorageEditions []*StorageEditionCapability
 }
 
-// ServerBackupListResult - A list of server backups.
-type ServerBackupListResult struct {
-	// The link used to get the next page of operations.
-	NextLink *string
-
-	// The list of backups of a server.
-	Value []*ServerBackup
-}
-
-// ServerBackupProperties - The properties of a server backup.
-type ServerBackupProperties struct {
-	// Backup type.
-	BackupType *Origin
-
-	// Backup completed time (ISO8601 format).
-	CompletedTime *time.Time
-
-	// Backup source
-	Source *string
-}
-
-// ServerForUpdate - Represents a server to be updated.
-type ServerForUpdate struct {
+// ServerForPatch - Represents a server to be updated.
+type ServerForPatch struct {
 	// Describes the identity of the application.
 	Identity *UserAssignedIdentity
 
 	// Properties of the server.
-	Properties *ServerPropertiesForUpdate
+	Properties *ServerPropertiesForPatch
 
-	// The SKU (pricing tier) of the server.
-	SKU *SKU
+	// Compute tier and size of a server.
+	SKU *SKUForPatch
 
 	// Application-specific metadata in the form of key-value pairs.
 	Tags map[string]*string
 }
 
-// ServerListResult - A list of servers.
-type ServerListResult struct {
+// ServerList - A list of servers.
+type ServerList struct {
 	// The link used to get the next page of operations.
 	NextLink *string
 
-	// The list of flexible servers
+	// The list of servers
 	Value []*Server
 }
 
-// ServerProperties - The properties of a server.
+// ServerProperties - Properties of a server.
 type ServerProperties struct {
-	// The administrator's login name of a server. Can only be specified when the server is being created (and is required for
-	// creation).
+	// Name of the login designated as the first password based administrator assigned to your instance of PostgreSQL. Must be
+	// specified the first time that you enable password based authentication on a
+	// server. Once set to a given value, it cannot be changed for the rest of the life of a server. If you disable password based
+	// authentication on a server which had it enabled, this password based role
+	// isn't deleted.
 	AdministratorLogin *string
 
-	// The administrator login password (required for server creation).
+	// Password assigned to the administrator login. As long as password authentication is enabled, this password can be changed
+	// at any time.
 	AdministratorLoginPassword *string
 
-	// AuthConfig properties of a server.
+	// Authentication configuration properties of a server.
 	AuthConfig *AuthConfig
 
-	// availability zone information of the server.
+	// Availability zone of a server.
 	AvailabilityZone *string
 
 	// Backup properties of a server.
@@ -1394,7 +1542,7 @@ type ServerProperties struct {
 	// Cluster properties of a server.
 	Cluster *Cluster
 
-	// The mode to create a new PostgreSQL server.
+	// Creation mode of a new server.
 	CreateMode *CreateMode
 
 	// Data encryption properties of a server.
@@ -1406,174 +1554,143 @@ type ServerProperties struct {
 	// Maintenance window properties of a server.
 	MaintenanceWindow *MaintenanceWindow
 
-	// Network properties of a server. This Network property is required to be passed only in case you want the server to be Private
-	// access server.
+	// Network properties of a server. Only required if you want your server to be integrated into a virtual network provided
+	// by customer.
 	Network *Network
 
-	// Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when 'createMode' is 'PointInTimeRestore'
-	// or 'GeoRestore' or 'ReviveDropped'.
+	// Creation time (in ISO8601 format) of the backup which you want to restore in the new server. It's required when 'createMode'
+	// is 'PointInTimeRestore', 'GeoRestore', or 'ReviveDropped'.
 	PointInTimeUTC *time.Time
 
-	// Replica properties of a server. These Replica properties are required to be passed only in case you want to Promote a server.
+	// Read replica properties of a server. Required only in case that you want to promote a server.
 	Replica *Replica
 
-	// Replication role of the server
+	// Role of the server in a replication set.
 	ReplicationRole *ReplicationRole
 
-	// The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'
-	// or 'Replica' or 'ReviveDropped'. This property is returned only for Replica
-	// server
+	// Identifier of the server to be used as the source of the new server. Required when 'createMode' is 'PointInTimeRestore',
+	// 'GeoRestore', 'Replica', or 'ReviveDropped'. This property is returned only
+	// when the target server is a read replica.
 	SourceServerResourceID *string
 
 	// Storage properties of a server.
 	Storage *Storage
 
-	// PostgreSQL Server version.
-	Version *ServerVersion
+	// Major version of PostgreSQL database engine.
+	Version *PostgresMajorVersion
 
-	// READ-ONLY; The fully qualified domain name of a server.
+	// READ-ONLY; Fully qualified domain name of a server.
 	FullyQualifiedDomainName *string
 
-	// READ-ONLY; The minor version of the server.
+	// READ-ONLY; Minor version of PostgreSQL database engine.
 	MinorVersion *string
 
-	// READ-ONLY; List of private endpoint connections associated with the specified resource.
+	// READ-ONLY; List of private endpoint connections associated with the specified server.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
-	// READ-ONLY; Replicas allowed for a server.
+	// READ-ONLY; Maximum number of read replicas allowed for a server.
 	ReplicaCapacity *int32
 
-	// READ-ONLY; A state of a server that is visible to user.
+	// READ-ONLY; Possible states of a server.
 	State *ServerState
 }
 
-type ServerPropertiesForUpdate struct {
-	// The administrator's login name of a server. Can only be specified when the server is trying to switch to password authentication
-	// and does not have default administrator login.
+// ServerPropertiesForPatch - Properties of a server.
+type ServerPropertiesForPatch struct {
+	// Name of the login designated as the first password based administrator assigned to your instance of PostgreSQL. Must be
+	// specified the first time that you enable password based authentication on a
+	// server. Once set to a given value, it cannot be changed for the rest of the life of a server. If you disable password based
+	// authentication on a server which had it enabled, this password based role
+	// isn't deleted.
 	AdministratorLogin *string
 
-	// The password of the administrator login.
+	// Password assigned to the administrator login. As long as password authentication is enabled, this password can be changed
+	// at any time.
 	AdministratorLoginPassword *string
 
-	// AuthConfig properties of a server.
-	AuthConfig *AuthConfig
+	// Authentication configuration properties of a server.
+	AuthConfig *AuthConfigForPatch
 
 	// Backup properties of a server.
-	Backup *Backup
+	Backup *BackupForPatch
 
 	// Cluster properties of a server.
 	Cluster *Cluster
 
-	// The mode to update a new PostgreSQL server.
-	CreateMode *CreateModeForUpdate
+	// Update mode of an existing server.
+	CreateMode *CreateModeForPatch
 
 	// Data encryption properties of a server.
 	DataEncryption *DataEncryption
 
 	// High availability properties of a server.
-	HighAvailability *HighAvailability
+	HighAvailability *HighAvailabilityForPatch
 
 	// Maintenance window properties of a server.
-	MaintenanceWindow *MaintenanceWindow
+	MaintenanceWindow *MaintenanceWindowForPatch
 
-	// Network properties of a server. These are required to be passed only in case if server is a private access server.
+	// Network properties of a server. Only required if you want your server to be integrated into a virtual network provided
+	// by customer.
 	Network *Network
 
-	// Replica properties of a server. These Replica properties are required to be passed only in case you want to Promote a server.
+	// Read replica properties of a server. Required only in case that you want to promote a server.
 	Replica *Replica
 
-	// Replication role of the server
+	// Role of the server in a replication set.
 	ReplicationRole *ReplicationRole
 
 	// Storage properties of a server.
 	Storage *Storage
 
-	// PostgreSQL Server version. Version 17 is currently not supported for MVU.
-	Version *ServerVersion
+	// Major version of PostgreSQL database engine.
+	Version *PostgresMajorVersion
 }
 
-// ServerSKU - Sku information related properties of a server.
+// ServerSKU - Compute information of a server.
 type ServerSKU struct {
-	// The name of the sku, typically, tier + family + cores, e.g. StandardD4sv3.
+	// Compute tier and size of the database server. This object is empty for an Azure Database for PostgreSQL single server.
 	Name *string
 
-	// The tier of the particular SKU, e.g. Burstable.
+	// Tier of the compute assigned to a server.
 	Tier *SKUTier
 }
 
-// ServerSKUCapability - Sku capability
+// ServerSKUCapability - Capabilities in terms of compute.
 type ServerSKUCapability struct {
-	// READ-ONLY; Sku name
+	// READ-ONLY; Name of the compute (SKU).
 	Name *string
 
 	// READ-ONLY; The reason for the capability not being available.
 	Reason *string
 
-	// READ-ONLY; The value of security profile indicating if its confidential vm
+	// READ-ONLY; Security profile of the compute. Indicates if it's a Confidential Compute virtual machine.
 	SecurityProfile *string
 
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
 
-	// READ-ONLY; The supported features.
+	// READ-ONLY; Features supported.
 	SupportedFeatures []*SupportedFeature
 
-	// READ-ONLY; Supported high availability mode
-	SupportedHaMode []*HaMode
+	// READ-ONLY; Modes of high availability supported for this compute.
+	SupportedHaMode []*HighAvailabilityMode
 
-	// READ-ONLY; Supported IOPS
+	// READ-ONLY; Maximum IOPS supported by this compute.
 	SupportedIops *int32
 
-	// READ-ONLY; Supported memory per vCore in MB
+	// READ-ONLY; Supported memory (in MB) per virtual core assigned to this compute.
 	SupportedMemoryPerVcoreMb *int64
 
-	// READ-ONLY; List of supported Availability Zones. E.g. "1", "2", "3"
+	// READ-ONLY; List of supported availability zones. E.g. '1', '2', '3'
 	SupportedZones []*string
 
-	// READ-ONLY; Supported vCores
+	// READ-ONLY; vCores available for this compute.
 	VCores *int32
 }
 
-// ServerThreatProtectionListResult - A list of the server's Advanced Threat Protection settings.
-type ServerThreatProtectionListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string
-
-	// READ-ONLY; Array of results.
-	Value []*ServerThreatProtectionSettingsModel
-}
-
-// ServerThreatProtectionProperties - Properties of server Threat Protection state.
-type ServerThreatProtectionProperties struct {
-	// REQUIRED; Specifies the state of the Threat Protection, whether it is enabled or disabled or a state has not been applied
-	// yet on the specific server.
-	State *ThreatProtectionState
-
-	// READ-ONLY; Specifies the UTC creation time of the policy.
-	CreationTime *time.Time
-}
-
-// ServerThreatProtectionSettingsModel - Server's Advanced Threat Protection settings.
-type ServerThreatProtectionSettingsModel struct {
-	// Advanced Threat Protection properties.
-	Properties *ServerThreatProtectionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ServerVersionCapability - Server version capabilities.
+// ServerVersionCapability - Capabilities in terms of major versions of PostgreSQL database engine.
 type ServerVersionCapability struct {
-	// READ-ONLY; Server version
+	// READ-ONLY; Major version of PostgreSQL database engine.
 	Name *string
 
 	// READ-ONLY; The reason for the capability not being available.
@@ -1582,104 +1699,42 @@ type ServerVersionCapability struct {
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
 
-	// READ-ONLY; The supported features.
+	// READ-ONLY; Features supported.
 	SupportedFeatures []*SupportedFeature
 
-	// READ-ONLY; Supported servers versions to upgrade
+	// READ-ONLY; Major versions of PostgreSQL database engine to which this version can be automatically upgraded.
 	SupportedVersionsToUpgrade []*string
 }
 
-// SessionDetailsListResult - A list of tuning configuration sessions.
-type SessionDetailsListResult struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string
-
-	// A list of details of the session.
-	Value []*SessionDetailsResource
-}
-
-// SessionDetailsResource - Session details properties.
-type SessionDetailsResource struct {
-	// Applied configuration for the iteration.
-	AppliedConfiguration *string
-
-	// The aqr for the iteration.
-	AverageQueryRuntimeMs *string
-
-	// Iteration id.
-	IterationID *string
-
-	// Iteration start time.
-	IterationStartTime *string
-
-	// Session id.
-	SessionID *string
-
-	// The tps for the iteration.
-	TransactionsPerSecond *string
-}
-
-// SessionResource - Session resource properties.
-type SessionResource struct {
-	// The post tuning aqr.
-	PostTuningAqr *string
-
-	// The post tuning tps.
-	PostTuningTps *string
-
-	// The pre tuning aqr.
-	PreTuningAqr *string
-
-	// The pre tuning tps.
-	PreTuningTps *string
-
-	// Session id.
-	SessionID *string
-
-	// the tuning session start time.
-	SessionStartTime *string
-
-	// The status of the tuning session.
-	Status *string
-}
-
-// SessionsListResult - A list of tuning configuration sessions.
-type SessionsListResult struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string
-
-	// A list of tuning configuration sessions.
-	Value []*SessionResource
-}
-
-// Storage properties of a server
+// Storage properties of a server.
 type Storage struct {
-	// Flag to enable / disable Storage Auto grow for flexible server.
+	// Flag to enable or disable the automatic growth of storage size of a server when available space is nearing zero and conditions
+	// allow for automatically growing storage size.
 	AutoGrow *StorageAutoGrow
 
-	// Storage IOPS quantity. This property is required to be set for storage Type PremiumV2LRS and UltraSSDLRS.
+	// Maximum IOPS supported for storage. Required when type of storage is PremiumV2LRS or UltraSSDLRS.
 	Iops *int32
 
-	// Max storage allowed for a server.
+	// Size of storage assigned to a server.
 	StorageSizeGB *int32
 
-	// Storage throughput for the server. This is required to be set for storage Type PremiumV2LRS and UltraSSDLRS.
+	// Maximum throughput supported for storage. Required when type of storage is PremiumV2LRS or UltraSSDLRS.
 	Throughput *int32
 
-	// Name of storage tier for IOPS.
-	Tier *AzureManagedDiskPerformanceTiers
+	// Storage tier of a server.
+	Tier *AzureManagedDiskPerformanceTier
 
-	// Storage type for the server. Allowed values are PremiumLRS, PremiumV2LRS, and UltraSSDLRS. Default is PremiumLRS if not
-	// specified
+	// Type of storage assigned to a server. Allowed values are PremiumLRS, PremiumV2LRS, or UltraSSDLRS. If not specified, it
+	// defaults to PremiumLRS.
 	Type *StorageType
 }
 
-// StorageEditionCapability - Storage edition capability
+// StorageEditionCapability - Capabilities in terms of storage tier.
 type StorageEditionCapability struct {
-	// READ-ONLY; Default storage size in MB for storage edition
+	// READ-ONLY; Default storage size (in MB) for this storage tier.
 	DefaultStorageSizeMb *int64
 
-	// READ-ONLY; Storage edition name
+	// READ-ONLY; Name of storage tier.
 	Name *string
 
 	// READ-ONLY; The reason for the capability not being available.
@@ -1688,16 +1743,16 @@ type StorageEditionCapability struct {
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
 
-	// READ-ONLY; Flexible server supported storage range in MB
+	// READ-ONLY; Configurations of storage supported for this storage tier.
 	SupportedStorageMb []*StorageMbCapability
 }
 
-// StorageMbCapability - storage size in MB capability
+// StorageMbCapability - Storage size (in MB) capability.
 type StorageMbCapability struct {
-	// READ-ONLY; Default tier for IOPS
+	// READ-ONLY; Default IOPS for this tier and storage size.
 	DefaultIopsTier *string
 
-	// READ-ONLY; Maximum value of Storage size in MB
+	// READ-ONLY; Maximum supported size (in MB) of storage.
 	MaximumStorageSizeMb *int64
 
 	// READ-ONLY; The reason for the capability not being available.
@@ -1706,31 +1761,31 @@ type StorageMbCapability struct {
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
 
-	// READ-ONLY; Storage size in MB
+	// READ-ONLY; Minimum supported size (in MB) of storage.
 	StorageSizeMb *int64
 
-	// READ-ONLY; Supported IOPS
+	// READ-ONLY; Minimum IOPS supported by the storage size.
 	SupportedIops *int32
 
-	// READ-ONLY; List of available options to upgrade the storage performance
+	// READ-ONLY; List of all supported storage tiers for this tier and storage size.
 	SupportedIopsTiers []*StorageTierCapability
 
-	// READ-ONLY; Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size
+	// READ-ONLY; Maximum IOPS supported by the storage size.
 	SupportedMaximumIops *int32
 
-	// READ-ONLY; Maximum values of throughput in MB/s
+	// READ-ONLY; Maximum supported throughput (in MB/s) of storage.
 	SupportedMaximumThroughput *int32
 
-	// READ-ONLY; Values of throughput in MB/s
+	// READ-ONLY; Minimum supported throughput (in MB/s) of storage.
 	SupportedThroughput *int32
 }
 
-// StorageTierCapability - Represents capability of a storage tier
+// StorageTierCapability - Capability of a storage tier.
 type StorageTierCapability struct {
-	// READ-ONLY; Supported IOPS for this storage tier
+	// READ-ONLY; Supported IOPS for the storage tier.
 	Iops *int32
 
-	// READ-ONLY; Name to represent Storage tier capability
+	// READ-ONLY; Name of the storage tier.
 	Name *string
 
 	// READ-ONLY; The reason for the capability not being available.
@@ -1740,13 +1795,13 @@ type StorageTierCapability struct {
 	Status *CapabilityStatus
 }
 
-// SupportedFeature - The supported features.
+// SupportedFeature - Features supported.
 type SupportedFeature struct {
-	// READ-ONLY; Name of feature
+	// READ-ONLY; Name of the feature.
 	Name *string
 
-	// READ-ONLY; Status of feature
-	Status *SupportedFeatureStatusEnum
+	// READ-ONLY; Status of the feature. Indicates if the feature is enabled or not.
+	Status *FeatureStatus
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1770,17 +1825,8 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// TuningOptionsListResult - A list of server tuning options.
-type TuningOptionsListResult struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string
-
-	// A list of available tuning options.
-	Value []*TuningOptionsResource
-}
-
-// TuningOptionsResource - Stores property that features impact on some metric if this recommended action is applied.
-type TuningOptionsResource struct {
+// TuningOptions - Impact on some metric if this recommended action is applied.
+type TuningOptions struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
@@ -1794,72 +1840,81 @@ type TuningOptionsResource struct {
 	Type *string
 }
 
-// UserAssignedIdentity - Information describing the identities associated with this application.
+// TuningOptionsList - List of server tuning options.
+type TuningOptionsList struct {
+	// Link used to get the next page of results.
+	NextLink *string
+
+	// List of available tuning options.
+	Value []*TuningOptions
+}
+
+// UserAssignedIdentity - Identities associated with a server.
 type UserAssignedIdentity struct {
-	// REQUIRED; the types of identities associated with this resource
+	// REQUIRED; Types of identities associated with a server.
 	Type *IdentityType
 
-	// the identity principal Id of the server.
+	// Identifier of the object of the service principal associated to the user assigned managed identity.
 	PrincipalID *string
 
-	// represents user assigned identities map.
+	// Map of user assigned managed identities.
 	UserAssignedIdentities map[string]*UserIdentity
 
-	// READ-ONLY; Tenant id of the server.
+	// READ-ONLY; Identifier of the tenant of a server.
 	TenantID *string
 }
 
-// UserIdentity - Describes a single user-assigned identity associated with the application.
+// UserIdentity - User assigned managed identity associated with a server.
 type UserIdentity struct {
-	// the client identifier of the Service Principal which this identity represents.
+	// Identifier of the client of the service principal associated to the user assigned managed identity.
 	ClientID *string
 
-	// the object identifier of the Service Principal which this identity represents.
+	// Identifier of the object of the service principal associated to the user assigned managed identity.
 	PrincipalID *string
 }
 
-// ValidationDetails - Details for the validation for migration
+// ValidationDetails - Details for the validation for migration.
 type ValidationDetails struct {
-	// Details of server level validations
+	// Details of server level validations.
 	DbLevelValidationDetails []*DbLevelValidationStatus
 
-	// Details of server level validations
+	// Details of server level validations.
 	ServerLevelValidationDetails []*ValidationSummaryItem
 
-	// Validation status for migration
+	// Validation status for migration.
 	Status *ValidationState
 
-	// Validation End date-time in UTC
+	// End time (UTC) for validation.
 	ValidationEndTimeInUTC *time.Time
 
-	// Validation Start date-time in UTC
+	// Start time (UTC) for validation.
 	ValidationStartTimeInUTC *time.Time
 }
 
-// ValidationMessage - Validation message object
+// ValidationMessage - Validation message object.
 type ValidationMessage struct {
-	// Validation message string
+	// Validation message string.
 	Message *string
 
-	// Severity of validation message
+	// Severity of validation message.
 	State *ValidationState
 }
 
-// ValidationSummaryItem - Validation summary object
+// ValidationSummaryItem - Validation summary object.
 type ValidationSummaryItem struct {
-	// Validation messages
+	// Validation messages.
 	Messages []*ValidationMessage
 
-	// Validation status for migration
+	// Validation status for migration.
 	State *ValidationState
 
-	// Validation type
+	// Validation type.
 	Type *string
 }
 
-// VirtualEndpointResource - Represents a virtual endpoint for a server.
-type VirtualEndpointResource struct {
-	// Properties of the virtual endpoint resource.
+// VirtualEndpoint - Pair of virtual endpoints for a server.
+type VirtualEndpoint struct {
+	// Properties of the pair of virtual endpoints.
 	Properties *VirtualEndpointResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -1875,41 +1930,35 @@ type VirtualEndpointResource struct {
 	Type *string
 }
 
-// VirtualEndpointResourceForPatch - Represents a virtual endpoint for a server.
+// VirtualEndpointResourceForPatch - Pair of virtual endpoints for a server.
 type VirtualEndpointResourceForPatch struct {
-	// Properties of the virtual endpoint resource.
+	// Properties of the pair of virtual endpoints.
 	Properties *VirtualEndpointResourceProperties
 }
 
-// VirtualEndpointResourceProperties - The properties of a virtual endpoint.
+// VirtualEndpointResourceProperties - Properties of a pair of virtual endpoints.
 type VirtualEndpointResourceProperties struct {
-	// The endpoint type for the virtual endpoint.
+	// Type of endpoint for the virtual endpoints.
 	EndpointType *VirtualEndpointType
 
-	// List of members for a virtual endpoint
+	// List of servers that one of the virtual endpoints can refer to.
 	Members []*string
 
-	// READ-ONLY; List of virtual endpoints for a server
+	// READ-ONLY; List of virtual endpoints for a server.
 	VirtualEndpoints []*string
 }
 
-// VirtualEndpointsListResult - A list of virtual endpoints.
-type VirtualEndpointsListResult struct {
-	// The link used to get the next page of operations.
+// VirtualEndpointsList - List of virtual endpoints.
+type VirtualEndpointsList struct {
+	// Link used to get the next page of results.
 	NextLink *string
 
-	// The list of virtual endpoints
-	Value []*VirtualEndpointResource
+	// List of virtual endpoints.
+	Value []*VirtualEndpoint
 }
 
-// VirtualNetworkSubnetUsageParameter - Virtual network subnet usage parameter
-type VirtualNetworkSubnetUsageParameter struct {
-	// Virtual network resource id.
-	VirtualNetworkArmResourceID *string
-}
-
-// VirtualNetworkSubnetUsageResult - Virtual network subnet usage data.
-type VirtualNetworkSubnetUsageResult struct {
+// VirtualNetworkSubnetUsageModel - Virtual network subnet usage data.
+type VirtualNetworkSubnetUsageModel struct {
 	// READ-ONLY
 	DelegatedSubnetsUsage []*DelegatedSubnetUsage
 
@@ -1918,4 +1967,10 @@ type VirtualNetworkSubnetUsageResult struct {
 
 	// READ-ONLY; subscriptionId of the delegated subnet usage
 	SubscriptionID *string
+}
+
+// VirtualNetworkSubnetUsageParameter - Virtual network subnet usage parameter
+type VirtualNetworkSubnetUsageParameter struct {
+	// Virtual network resource id.
+	VirtualNetworkArmResourceID *string
 }

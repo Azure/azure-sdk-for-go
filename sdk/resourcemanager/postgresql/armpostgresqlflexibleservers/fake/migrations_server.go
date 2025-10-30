@@ -21,25 +21,29 @@ import (
 
 // MigrationsServer is a fake server for instances of the armpostgresqlflexibleservers.MigrationsClient type.
 type MigrationsServer struct {
+	// Cancel is the fake for method MigrationsClient.Cancel
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	Cancel func(ctx context.Context, resourceGroupName string, serverName string, migrationName string, options *armpostgresqlflexibleservers.MigrationsClientCancelOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientCancelResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method MigrationsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.MigrationNameAvailability, options *armpostgresqlflexibleservers.MigrationsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Create is the fake for method MigrationsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters armpostgresqlflexibleservers.MigrationResource, options *armpostgresqlflexibleservers.MigrationsClientCreateOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientCreateResponse], errResp azfake.ErrorResponder)
-
-	// Delete is the fake for method MigrationsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, options *armpostgresqlflexibleservers.MigrationsClientDeleteOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Create func(ctx context.Context, resourceGroupName string, serverName string, migrationName string, parameters armpostgresqlflexibleservers.Migration, options *armpostgresqlflexibleservers.MigrationsClientCreateOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MigrationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, options *armpostgresqlflexibleservers.MigrationsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, serverName string, migrationName string, options *armpostgresqlflexibleservers.MigrationsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByTargetServerPager is the fake for method MigrationsClient.NewListByTargetServerPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByTargetServerPager func(subscriptionID string, resourceGroupName string, targetDbServerName string, options *armpostgresqlflexibleservers.MigrationsClientListByTargetServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.MigrationsClientListByTargetServerResponse])
+	NewListByTargetServerPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.MigrationsClientListByTargetServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.MigrationsClientListByTargetServerResponse])
 
 	// Update is the fake for method MigrationsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters armpostgresqlflexibleservers.MigrationResourceForPatch, options *armpostgresqlflexibleservers.MigrationsClientUpdateOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, serverName string, migrationName string, parameters armpostgresqlflexibleservers.MigrationResourceForPatch, options *armpostgresqlflexibleservers.MigrationsClientUpdateOptions) (resp azfake.Responder[armpostgresqlflexibleservers.MigrationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMigrationsServerTransport creates a new instance of MigrationsServerTransport with the provided implementation.
@@ -82,10 +86,12 @@ func (m *MigrationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
+			case "MigrationsClient.Cancel":
+				res.resp, res.err = m.dispatchCancel(req)
+			case "MigrationsClient.CheckNameAvailability":
+				res.resp, res.err = m.dispatchCheckNameAvailability(req)
 			case "MigrationsClient.Create":
 				res.resp, res.err = m.dispatchCreate(req)
-			case "MigrationsClient.Delete":
-				res.resp, res.err = m.dispatchDelete(req)
 			case "MigrationsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MigrationsClient.NewListByTargetServerPager":
@@ -111,29 +117,21 @@ func (m *MigrationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 	}
 }
 
-func (m *MigrationsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if m.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+func (m *MigrationsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if m.srv.Cancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<targetDbServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.MigrationResource](req)
-	if err != nil {
-		return nil, err
-	}
-	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
-	if err != nil {
-		return nil, err
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	targetDbServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbServerName")])
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
 	if err != nil {
 		return nil, err
 	}
@@ -141,48 +139,7 @@ func (m *MigrationsServerTransport) dispatchCreate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Create(req.Context(), subscriptionIDParam, resourceGroupNameParam, targetDbServerNameParam, migrationNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MigrationResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *MigrationsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if m.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<targetDbServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	targetDbServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbServerName")])
-	if err != nil {
-		return nil, err
-	}
-	migrationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("migrationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.Delete(req.Context(), subscriptionIDParam, resourceGroupNameParam, targetDbServerNameParam, migrationNameParam, nil)
+	respr, errRespr := m.srv.Cancel(req.Context(), resourceGroupNameParam, serverNameParam, migrationNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -190,7 +147,85 @@ func (m *MigrationsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
-	resp, err := server.NewResponse(respContent, req, nil)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Migration, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *MigrationsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if m.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkMigrationNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.MigrationNameAvailability](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CheckNameAvailability(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MigrationNameAvailability, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *MigrationsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if m.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.Migration](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	migrationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("migrationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Create(req.Context(), resourceGroupNameParam, serverNameParam, migrationNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Migration, req)
 	if err != nil {
 		return nil, err
 	}
@@ -201,21 +236,17 @@ func (m *MigrationsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<targetDbServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
-	if err != nil {
-		return nil, err
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	targetDbServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbServerName")])
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +254,7 @@ func (m *MigrationsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Get(req.Context(), subscriptionIDParam, resourceGroupNameParam, targetDbServerNameParam, migrationNameParam, nil)
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, migrationNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -231,7 +262,7 @@ func (m *MigrationsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MigrationResource, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Migration, req)
 	if err != nil {
 		return nil, err
 	}
@@ -244,22 +275,18 @@ func (m *MigrationsServerTransport) dispatchNewListByTargetServerPager(req *http
 	}
 	newListByTargetServerPager := m.newListByTargetServerPager.get(req)
 	if newListByTargetServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<targetDbServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
-		if err != nil {
-			return nil, err
-		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		targetDbServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbServerName")])
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
 		if err != nil {
 			return nil, err
 		}
@@ -274,7 +301,7 @@ func (m *MigrationsServerTransport) dispatchNewListByTargetServerPager(req *http
 				MigrationListFilter: migrationListFilterParam,
 			}
 		}
-		resp := m.srv.NewListByTargetServerPager(subscriptionIDParam, resourceGroupNameParam, targetDbServerNameParam, options)
+		resp := m.srv.NewListByTargetServerPager(resourceGroupNameParam, serverNameParam, options)
 		newListByTargetServerPager = &resp
 		m.newListByTargetServerPager.add(req, newListByTargetServerPager)
 		server.PagerResponderInjectNextLinks(newListByTargetServerPager, req, func(page *armpostgresqlflexibleservers.MigrationsClientListByTargetServerResponse, createLink func() string) {
@@ -299,17 +326,13 @@ func (m *MigrationsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if m.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<targetDbServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrations/(?P<migrationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.MigrationResourceForPatch](req)
-	if err != nil {
-		return nil, err
-	}
-	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
 	if err != nil {
 		return nil, err
 	}
@@ -317,7 +340,7 @@ func (m *MigrationsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	targetDbServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetDbServerName")])
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
 	if err != nil {
 		return nil, err
 	}
@@ -325,7 +348,7 @@ func (m *MigrationsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Update(req.Context(), subscriptionIDParam, resourceGroupNameParam, targetDbServerNameParam, migrationNameParam, body, nil)
+	respr, errRespr := m.srv.Update(req.Context(), resourceGroupNameParam, serverNameParam, migrationNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -333,7 +356,7 @@ func (m *MigrationsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MigrationResource, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Migration, req)
 	if err != nil {
 		return nil, err
 	}

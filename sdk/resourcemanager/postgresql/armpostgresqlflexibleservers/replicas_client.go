@@ -40,9 +40,9 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// NewListByServerPager - List all the replicas for a given server.
+// NewListByServerPager - Lists all read replicas of a server.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.NewListByServerPager
@@ -91,7 +91,7 @@ func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +100,7 @@ func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, res
 // listByServerHandleResponse handles the ListByServer response.
 func (client *ReplicasClient) listByServerHandleResponse(resp *http.Response) (ReplicasClientListByServerResponse, error) {
 	result := ReplicasClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServerList); err != nil {
 		return ReplicasClientListByServerResponse{}, err
 	}
 	return result, nil

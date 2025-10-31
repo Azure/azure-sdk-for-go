@@ -131,7 +131,7 @@ type queryDatabasesServiceResponse struct {
 	Databases []DatabaseProperties `json:"Databases,omitempty"`
 }
 
-// ReadManyItemsResponse contains the response from the ReadManyItems operation..
+// ReadManyItemsResponse contains the response from the ReadManyItems operation.
 type ReadManyItemsResponse struct {
 	// The total cost of the operation in RUs
 	RequestCharge float32

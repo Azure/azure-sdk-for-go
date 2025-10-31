@@ -113,7 +113,7 @@ func upsertItemsConcurrently(ctx context.Context, container *azcosmos.ContainerC
 		id := fmt.Sprintf("test-%d", i)
 		pkVal := fmt.Sprintf("pk-%d", i)
 		item["id"] = id
-		item[pkField] = pkVal
+		item["pk"] = pkVal
 		body, err := json.Marshal(item)
 		if err != nil {
 			return err

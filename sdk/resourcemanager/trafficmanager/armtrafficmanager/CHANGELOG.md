@@ -1,5 +1,19 @@
 # Release History
 
+## 2.0.0 (2025-10-31)
+### Breaking Changes
+
+- Function `*HeatMapClient.Get` parameter(s) have been changed from `(context.Context, string, string, *HeatMapClientGetOptions)` to `(context.Context, string, string, HeatMapType, *HeatMapClientGetOptions)`
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New enum type `HeatMapType` with values `HeatMapTypeDefault`
+- New field `NextLink` in struct `ProfileListResult`
+
+
 ## 1.3.0 (2023-11-24)
 ### Features Added
 

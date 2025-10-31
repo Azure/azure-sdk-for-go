@@ -129,7 +129,13 @@ func randomReadWriteQueries(ctx context.Context, container *azcosmos.ContainerCl
 		// pick a random existing (or future) document index to operate on
 		num := rng.Intn(count) + 1
 		id := fmt.Sprintf("test-%d", num)
-		pkVal := fmt.Sprintf("pk-%d", num)
+		var pkVal string
+		if pkField == "id" {
+			pkVal = id
+		} else {
+			pkVal = fmt.Sprintf("pk-%d", num)
+		}
+
 		pk := azcosmos.NewPartitionKeyString(pkVal)
 
 		op := rwOperation(rng.Intn(int(opOpCount)))

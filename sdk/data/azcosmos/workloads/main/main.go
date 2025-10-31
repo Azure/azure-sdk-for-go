@@ -36,8 +36,12 @@ func main() {
 		log.Fatalf("creating client: %v", err)
 	}
 
-	if err := workloads.RunSetup(ctx, client, cfg); err != nil {
-		log.Fatalf("setup failed: %v", err)
+	if cfg.Key != "" {
+		if err := workloads.RunSetup(ctx, client, cfg); err != nil {
+			log.Fatalf("setup failed: %v", err)
+		}
+	} else {
+		log.Printf("Setup skipped as AAD is enabled.")
 	}
 	log.Println("setup completed")
 	if err := workloads.RunWorkload(ctx, client, cfg); err != nil {

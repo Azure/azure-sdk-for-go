@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 	"github.com/google/uuid"
 )
@@ -191,10 +192,6 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 }
 
 func CreateClient(cfg workloadConfig) (*azcosmos.Client, error) {
-	cred, err := azcosmos.NewKeyCredential(cfg.Key)
-	if err != nil {
-		return nil, err
-	}
 	log.Printf("Creating client for endpoint %s with preferred regions: %v", cfg.Endpoint, cfg.PreferredLocations)
 	telemetryOpts := policy.TelemetryOptions{
 		// create a random guid for the application ID to distinguish this workload's telemetry
@@ -208,5 +205,18 @@ func CreateClient(cfg workloadConfig) (*azcosmos.Client, error) {
 		},
 		PreferredRegions: cfg.PreferredLocations,
 	}
-	return azcosmos.NewClientWithKey(cfg.Endpoint, cred, opts)
+	if cfg.Key != "" {
+		cred, err := azcosmos.NewKeyCredential(cfg.Key)
+		if err != nil {
+			return nil, err
+		}
+
+		return azcosmos.NewClientWithKey(cfg.Endpoint, cred, opts)
+	} else {
+		cred, err := azidentity.NewDefaultAzureCredential(nil)
+		if err != nil {
+			return nil, err
+		}
+		return azcosmos.NewClient(cfg.Endpoint, cred, opts)
+	}
 }

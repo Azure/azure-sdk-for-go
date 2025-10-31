@@ -43,8 +43,8 @@ func LoadConfig() (workloadConfig, error) {
 	if cfg.Endpoint, err = get("COSMOS_URI"); err != nil {
 		return cfg, err
 	}
-	if cfg.Key, err = get("COSMOS_KEY"); err != nil {
-		return cfg, err
+	if key := os.Getenv("COSMOS_KEY"); key != "" {
+		cfg.Key = key
 	}
 	if cosmosDatabase := os.Getenv("COSMOS_DATABASE"); cosmosDatabase != "" {
 		cfg.DatabaseID = cosmosDatabase

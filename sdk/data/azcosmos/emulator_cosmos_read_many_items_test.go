@@ -100,7 +100,7 @@ func TestReadMany_NilIDReturnsError(t *testing.T) {
 	require.Error(t, err, "expected error for empty id in identity")
 }
 
-// Additional test: partial failure - one identity valid, one invalid -> expect error
+// Additional test: partial failure - one identity valid, one missing -> expect success with only found items returned
 func TestReadMany_PartialFailure(t *testing.T) {
 	e := newEmulatorTests(t)
 	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))

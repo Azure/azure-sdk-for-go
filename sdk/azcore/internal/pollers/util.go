@@ -116,7 +116,13 @@ func NewNopPoller[T any](resp *http.Response) (*NopPoller[T], error) {
 	if len(payload) == 0 {
 		return np, nil
 	}
-	if err = json.Unmarshal(payload, &np.result); err != nil {
+	// Get unmarshaler from request context (thread-safe) or use global default
+	var ctx context.Context
+	if resp.Request != nil {
+		ctx = resp.Request.Context()
+	}
+	unmarshaler := exported.GetUnmarshaler(ctx)
+	if err = unmarshaler.Unmarshal(payload, &np.result); err != nil {
 		return nil, err
 	}
 	return np, nil
@@ -177,12 +183,19 @@ func ResultHelper[T any](resp *http.Response, failed bool, jsonPath string, out 
 		return err
 	}
 
+	// Get unmarshaler from request context (thread-safe) or use global default
+	var ctx context.Context
+	if resp.Request != nil {
+		ctx = resp.Request.Context()
+	}
+	unmarshaler := exported.GetUnmarshaler(ctx)
+
 	if jsonPath != "" && len(payload) > 0 {
 		// extract the payload from the specified JSON path.
 		// do this before the zero-length check in case there
 		// is no payload.
 		jsonBody := map[string]json.RawMessage{}
-		if err = json.Unmarshal(payload, &jsonBody); err != nil {
+		if err = unmarshaler.Unmarshal(payload, &jsonBody); err != nil {
 			return err
 		}
 		payload = jsonBody[jsonPath]
@@ -192,7 +205,7 @@ func ResultHelper[T any](resp *http.Response, failed bool, jsonPath string, out 
 		return nil
 	}
 
-	if err = json.Unmarshal(payload, out); err != nil {
+	if err = unmarshaler.Unmarshal(payload, out); err != nil {
 		return err
 	}
 	return nil

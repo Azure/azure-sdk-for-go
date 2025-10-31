@@ -7,6 +7,8 @@
 package exported
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -126,4 +128,61 @@ func (r *nopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
 	}
 	r.i = i
 	return i, nil
+}
+
+// Unmarshaler is an interface for custom JSON unmarshaling implementations.
+// This is NOT exported directly but used internally by azcore.
+// The public API is exposed via runtime.SetUnmarshaler().
+type Unmarshaler interface {
+	// Unmarshal parses the JSON-encoded data and stores the result
+	// in the value pointed to by v.
+	Unmarshal(data []byte, v any) error
+}
+
+// DefaultUnmarshaler is the global JSON unmarshaler used by all Azure SDK operations.
+// By default, it uses the standard library's encoding/json.
+// This can be customized via runtime.SetUnmarshaler().
+var DefaultUnmarshaler Unmarshaler = &stdlibUnmarshaler{}
+
+// stdlibUnmarshaler is the default unmarshaler that uses encoding/json from the standard library.
+type stdlibUnmarshaler struct{}
+
+func (s *stdlibUnmarshaler) Unmarshal(data []byte, v any) error {
+	return json.Unmarshal(data, v)
+}
+
+// SetUnmarshaler replaces the default JSON unmarshaler with a custom implementation.
+// This is NOT exported directly - use runtime.SetUnmarshaler() instead.
+// WARNING: This is NOT thread-safe. Only call this in init() functions or at application startup.
+// For concurrent/per-request usage, use WithUnmarshaler() with context instead.
+func SetUnmarshaler(u Unmarshaler) {
+	if u == nil {
+		panic("exported: SetUnmarshaler called with nil")
+	}
+	DefaultUnmarshaler = u
+}
+
+// unmarshalerKey is the context key type for storing custom Unmarshaler instances.
+type unmarshalerKey struct{}
+
+// WithUnmarshaler returns a new context with the specified Unmarshaler attached.
+// This is thread-safe and allows per-request unmarshaler customization.
+// NOT exported directly - use runtime.WithUnmarshaler() instead.
+func WithUnmarshaler(ctx context.Context, u Unmarshaler) context.Context {
+	if u == nil {
+		panic("exported: WithUnmarshaler called with nil")
+	}
+	return context.WithValue(ctx, unmarshalerKey{}, u)
+}
+
+// GetUnmarshaler returns the Unmarshaler from the context, or the global DefaultUnmarshaler if not set.
+// This provides the lookup mechanism for context-based unmarshaler selection.
+// NOT exported - used internally by runtime and pollers.
+func GetUnmarshaler(ctx context.Context) Unmarshaler {
+	if ctx != nil {
+		if u, ok := ctx.Value(unmarshalerKey{}).(Unmarshaler); ok {
+			return u
+		}
+	}
+	return DefaultUnmarshaler
 }

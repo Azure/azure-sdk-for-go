@@ -8,7 +8,6 @@ package runtime
 
 import (
 	"bytes"
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -39,7 +38,9 @@ func UnmarshalAsByteArray(resp *http.Response, v *[]byte, format Base64Encoding)
 	return DecodeByteArray(string(p), v, format)
 }
 
-// UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
+// UnmarshalAsJSON unmarshals the received payload into the value pointed to by v.
+// Uses the context-based unmarshaler if set via WithUnmarshaler(),
+// otherwise falls back to the global DefaultUnmarshaler.
 func UnmarshalAsJSON(resp *http.Response, v any) error {
 	payload, err := Payload(resp)
 	if err != nil {
@@ -53,7 +54,14 @@ func UnmarshalAsJSON(resp *http.Response, v any) error {
 	if err != nil {
 		return err
 	}
-	err = json.Unmarshal(payload, v)
+	// Get unmarshaler from request context (thread-safe) or use global default
+	var unmarshaler exported.Unmarshaler
+	if resp.Request != nil {
+		unmarshaler = exported.GetUnmarshaler(resp.Request.Context())
+	} else {
+		unmarshaler = exported.DefaultUnmarshaler
+	}
+	err = unmarshaler.Unmarshal(payload, v)
 	if err != nil {
 		err = fmt.Errorf("unmarshalling type %T: %s", v, err)
 	}

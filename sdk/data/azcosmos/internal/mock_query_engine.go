@@ -247,7 +247,7 @@ func (m *MockQueryPipeline) getRequests() []queryengine.QueryRequest {
 
 		requests = append(requests, queryengine.QueryRequest{
 			PartitionKeyRangeID: m.partitionState[i].ID,
-			Index:               m.partitionState[i].nextIndex,
+			Id:                  m.partitionState[i].nextIndex,
 			Continuation:        continuation,
 			Query:               q,
 			IncludeParameters:   includeParams,
@@ -274,8 +274,8 @@ func (m *MockQueryPipeline) ProvideData(data []queryengine.QueryResult) error {
 	for i := range m.partitionState {
 		if m.partitionState[i].ID == data[0].PartitionKeyRangeID {
 			// Validate request ordering: the provided result must match the expected nextIndex.
-			if m.partitionState[i].nextIndex != data[0].RequestIndex {
-				return fmt.Errorf("out of order data provided for partition key range %s: expected index %d, got %d", data[0].PartitionKeyRangeID, m.partitionState[i].nextIndex, data[0].RequestIndex)
+			if m.partitionState[i].nextIndex != data[0].RequestId {
+				return fmt.Errorf("out of order data provided for partition key range %s: expected index %d, got %d", data[0].PartitionKeyRangeID, m.partitionState[i].nextIndex, data[0].RequestId)
 			}
 			// advance expected index for next request
 			m.partitionState[i].nextIndex++

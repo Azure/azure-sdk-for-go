@@ -13,11 +13,10 @@ type QueryEngine interface {
 type QueryRequest struct {
 	// PartitionKeyRangeID is the ID of the partition key range from which data is requested.
 	PartitionKeyRangeID string
-	// The index of this request, within the partition key range.
+	// The ID of this request, within the partition key range.
 	//
-	// This value will always increase for subsequent requests for the same partition key range.
-	// It must be provided back to the pipeline when providing data, so that the pipeline can ensure that data is provided in order.
-	Index uint
+	// Opaque identifier that must be provided back to the pipeline when providing data.
+	Id uint
 	// Continuation is the continuation token to use in the request.
 	Continuation string
 	// The query to execute for this partition key range, if different from the original query.
@@ -28,6 +27,7 @@ type QueryRequest struct {
 	IncludeParameters bool
 	// If specified, indicates that the SDK should IMMEDIATELY drain all remaining results from this partition key range, following continuation tokens, until no more results are available.
 	// All the data from this partition key range should be provided BEFORE any new items will be made available.
+	// The data may be provided in multiple QueryResults, but every result correlated to this request should have the same RequestId value.
 	//
 	// This allows engines to optimize for non-streaming scenarios, where the entire result set must be provided to the engine before it can make progress.
 	Drain bool
@@ -37,8 +37,8 @@ type QueryRequest struct {
 type QueryResult struct {
 	// The ID of the partition key range that was queried.
 	PartitionKeyRangeID string
-	// The index of the QueryRequest that generated this result.
-	RequestIndex uint
+	// The ID of the QueryRequest that generated this result.
+	RequestId uint
 	// The continuation token to be used for the next request, if any.
 	NextContinuation string
 	// The raw body of the response from the query.
@@ -84,9 +84,9 @@ type QueryPipeline interface {
 	// So, for any given partition key range, page n's results must be earlier in the `data` slice than page n+1's results.
 	// Data from different partition key ranges may be interleaved, as long as each partition key range's pages are in order.
 	//
-	// The pipeline will use the QueryResult.RequestIndex field to validate this.
+	// The pipeline will use the QueryResult.RequestId field to validate this.
 	//
-	// When providing data from a draining request (i.e. a request with Drain set to true), all pages for that draining request can share the same QueryResult.RequestIndex.
+	// When providing data from a draining request (i.e. a request with Drain set to true), all pages for that draining request can share the same QueryResult.RequestId.
 	ProvideData(data []QueryResult) error
 	// Close frees the resources associated with the pipeline.
 	Close()

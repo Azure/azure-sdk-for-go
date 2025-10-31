@@ -199,7 +199,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
 						result := queryengine.QueryResult{
 							PartitionKeyRangeID: request.PartitionKeyRangeID,
-							RequestIndex:        request.Index,
+							RequestId:           request.Id,
 							NextContinuation:    continuation,
 							Data:                data,
 						}

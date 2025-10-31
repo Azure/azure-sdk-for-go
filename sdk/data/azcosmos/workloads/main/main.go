@@ -7,7 +7,6 @@ import (
 	"context"
 	"log"
 	"os"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/workloads"
 )
@@ -25,9 +24,7 @@ func main() {
 	// Optional: set flags to include date/time/file info
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.Lshortfile)
 
-	// max run the workload for 36 hours
-	ctx, cancel := context.WithTimeout(context.Background(), 36*60*time.Minute)
-	defer cancel()
+	ctx := context.Background()
 
 	cfg, err := workloads.LoadConfig()
 	if err != nil {

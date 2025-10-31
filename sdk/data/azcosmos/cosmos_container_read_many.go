@@ -99,7 +99,7 @@ func (c *ContainerClient) executeReadManyWithPointReads(items []ItemIdentity, re
 		}()
 	}
 
-	// feed jobs
+	// Start a goroutine to distribute item indices to the worker pool via the jobs channel.
 	go func() {
 		for i := range items {
 			select {

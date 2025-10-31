@@ -482,7 +482,7 @@ func TestNewServiceClient_sovereignClouds(t *testing.T) {
 		{
 			label:    "storage China",
 			endpoint: "https://myAccountName.table.core.windows.net",
-			scope:    "https://storage.azure.cn/.default",
+			scope:    "https://storage.azure.com/.default",
 			cfg:      cloud.AzureChina,
 		},
 		{
@@ -494,7 +494,7 @@ func TestNewServiceClient_sovereignClouds(t *testing.T) {
 		{
 			label:    "storage USGov",
 			endpoint: "https://myAccountName.table.core.windows.net",
-			scope:    "https://storage.azure.us/.default",
+			scope:    "https://storage.azure.com/.default",
 			cfg:      cloud.AzureGovernment,
 		},
 		{

@@ -26,9 +26,9 @@ type HTTPRouteConfigServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *armappcontainers.HTTPRouteConfigClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.HTTPRouteConfigClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method HTTPRouteConfigClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *armappcontainers.HTTPRouteConfigClientDeleteOptions) (resp azfake.Responder[armappcontainers.HTTPRouteConfigClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method HTTPRouteConfigClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *armappcontainers.HTTPRouteConfigClientBeginDeleteOptions) (resp azfake.PollerResponder[armappcontainers.HTTPRouteConfigClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method HTTPRouteConfigClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -49,6 +49,7 @@ type HTTPRouteConfigServer struct {
 func NewHTTPRouteConfigServerTransport(srv *HTTPRouteConfigServer) *HTTPRouteConfigServerTransport {
 	return &HTTPRouteConfigServerTransport{
 		srv:          srv,
+		beginDelete:  newTracker[azfake.PollerResponder[armappcontainers.HTTPRouteConfigClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armappcontainers.HTTPRouteConfigClientListResponse]](),
 	}
 }
@@ -57,6 +58,7 @@ func NewHTTPRouteConfigServerTransport(srv *HTTPRouteConfigServer) *HTTPRouteCon
 // Don't use this type directly, use NewHTTPRouteConfigServerTransport instead.
 type HTTPRouteConfigServerTransport struct {
 	srv          *HTTPRouteConfigServer
+	beginDelete  *tracker[azfake.PollerResponder[armappcontainers.HTTPRouteConfigClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armappcontainers.HTTPRouteConfigClientListResponse]]
 }
 
@@ -85,8 +87,8 @@ func (h *HTTPRouteConfigServerTransport) dispatchToMethodFake(req *http.Request,
 			switch method {
 			case "HTTPRouteConfigClient.CreateOrUpdate":
 				res.resp, res.err = h.dispatchCreateOrUpdate(req)
-			case "HTTPRouteConfigClient.Delete":
-				res.resp, res.err = h.dispatchDelete(req)
+			case "HTTPRouteConfigClient.BeginDelete":
+				res.resp, res.err = h.dispatchBeginDelete(req)
 			case "HTTPRouteConfigClient.Get":
 				res.resp, res.err = h.dispatchGet(req)
 			case "HTTPRouteConfigClient.NewListPager":
@@ -159,40 +161,51 @@ func (h *HTTPRouteConfigServerTransport) dispatchCreateOrUpdate(req *http.Reques
 	return resp, nil
 }
 
-func (h *HTTPRouteConfigServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if h.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (h *HTTPRouteConfigServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if h.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/httpRouteConfigs/(?P<httpRouteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := h.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/httpRouteConfigs/(?P<httpRouteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		httpRouteNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("httpRouteName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := h.srv.BeginDelete(req.Context(), resourceGroupNameParam, environmentNameParam, httpRouteNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		h.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		h.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	httpRouteNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("httpRouteName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		h.beginDelete.remove(req)
 	}
-	respr, errRespr := h.srv.Delete(req.Context(), resourceGroupNameParam, environmentNameParam, httpRouteNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

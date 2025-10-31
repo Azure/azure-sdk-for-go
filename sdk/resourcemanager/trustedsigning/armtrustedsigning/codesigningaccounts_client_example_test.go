@@ -24,6 +24,7 @@ func ExampleCodeSigningAccountsClient_CheckNameAvailability() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewCodeSigningAccountsClient().CheckNameAvailability(ctx, armtrustedsigning.CheckNameAvailability{
+		Type: to.Ptr("Microsoft.CodeSigning/codeSigningAccounts"),
 		Name: to.Ptr("sample-account"),
 	}, nil)
 	if err != nil {

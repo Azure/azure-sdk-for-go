@@ -12,6 +12,98 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-09-01/GiVersions_Get_MaximumSet_Gen.json
+func ExampleGiVersionsClient_Get_getAGiVersionByNameGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGiVersionsClient().Get(ctx, "eastus", "giversion1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.GiVersionsClientGetResponse{
+	// 	GiVersion: &armoracledatabase.GiVersion{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
+	// 		Type: to.Ptr("Oracle.Database/locations/giVersions"),
+	// 		Properties: &armoracledatabase.GiVersionProperties{
+	// 			Version: to.Ptr("19.0.0.0"),
+	// 		},
+	// 		Name: to.Ptr("hitornrpyhizxmoirxa"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/GiVersions_Get_MinimumSet_Gen.json
+func ExampleGiVersionsClient_Get_getAGiVersionByNameGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGiVersionsClient().Get(ctx, "eastus", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.GiVersionsClientGetResponse{
+	// 	GiVersion: &armoracledatabase.GiVersion{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/giVersions_get.json
+func ExampleGiVersionsClient_Get_giVersionsGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGiVersionsClient().Get(ctx, "eastus", "19.0.0.0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.GiVersionsClientGetResponse{
+	// 	GiVersion: &armoracledatabase.GiVersion{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
+	// 		Type: to.Ptr("Oracle.Database/locations/giVersions"),
+	// 		Properties: &armoracledatabase.GiVersionProperties{
+	// 			Version: to.Ptr("19.0.0.0"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-09-01/GiVersions_ListByLocation_MaximumSet_Gen.json
 func ExampleGiVersionsClient_NewListByLocationPager_giVersionsListByLocationMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)

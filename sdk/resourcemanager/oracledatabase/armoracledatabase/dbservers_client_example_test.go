@@ -11,6 +11,150 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-09-01/DbServers_Get_MaximumSet_Gen.json
+func ExampleDbServersClient_Get_getDbServerByParentGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbServersClient().Get(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbServersClientGetResponse{
+	// 	DbServer: &armoracledatabase.DbServer{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1/dbServers/ocid1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/dbServers"),
+	// 		Properties: &armoracledatabase.DbServerProperties{
+	// 			Ocid: to.Ptr("ocid1"),
+	// 			DisplayName: to.Ptr("dbserver1"),
+	// 			CompartmentID: to.Ptr("ocid1....aaaa"),
+	// 			ExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			CPUCoreCount: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](150),
+	// 			VMClusterIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 			DbNodeIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 			LifecycleState: to.Ptr(armoracledatabase.DbServerProvisioningStateAvailable),
+	// 			MaxCPUCount: to.Ptr[int32](1000),
+	// 			AutonomousVMClusterIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 			AutonomousVirtualMachineIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 			DbServerPatchingDetails: &armoracledatabase.DbServerPatchingDetails{
+	// 				EstimatedPatchDuration: to.Ptr[int32](1059),
+	// 				PatchingStatus: to.Ptr(armoracledatabase.DbServerPatchingStatusScheduled),
+	// 				TimePatchingEnded: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.730Z"); return t}()),
+	// 				TimePatchingStarted: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.730Z"); return t}()),
+	// 			},
+	// 			LifecycleDetails: to.Ptr("ldarjcunaldpxtbodwhge"),
+	// 			MaxDbNodeStorageInGbs: to.Ptr[int32](27),
+	// 			MemorySizeInGbs: to.Ptr[int32](2),
+	// 			Shape: to.Ptr("qnatubovfuujpppqymibduvwrbkrdoctilffhglnpffmwjcnwduxdrbcqg"),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.730Z"); return t}()),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.ResourceProvisioningStateSucceeded),
+	// 			ComputeModel: to.Ptr(armoracledatabase.ComputeModelECPU),
+	// 		},
+	// 		Name: to.Ptr("csvikzumjdgelarpxrdoydysdua"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/DbServers_Get_MinimumSet_Gen.json
+func ExampleDbServersClient_Get_getDbServerByParentGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbServersClient().Get(ctx, "rgopenapi", "Replace this value with a string matching RegExp .*", "Replace this value with a string matching RegExp .*", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbServersClientGetResponse{
+	// 	DbServer: &armoracledatabase.DbServer{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/dbServers_get.json
+func ExampleDbServersClient_Get_dbServersGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDbServersClient().Get(ctx, "rg000", "infra1", "ocid1....aaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.DbServersClientGetResponse{
+	// 	DbServer: &armoracledatabase.DbServer{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1/dbServers/ocid1"),
+	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/dbServers"),
+	// 		Properties: &armoracledatabase.DbServerProperties{
+	// 			Ocid: to.Ptr("ocid1"),
+	// 			DisplayName: to.Ptr("dbserver1"),
+	// 			CompartmentID: to.Ptr("ocid1....aaaa"),
+	// 			ExadataInfrastructureID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1"),
+	// 			CPUCoreCount: to.Ptr[int32](100),
+	// 			MaxMemoryInGbs: to.Ptr[int32](1000),
+	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](150),
+	// 			VMClusterIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 			DbNodeIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 			LifecycleState: to.Ptr(armoracledatabase.DbServerProvisioningStateAvailable),
+	// 			MaxCPUCount: to.Ptr[int32](1000),
+	// 			AutonomousVMClusterIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 			AutonomousVirtualMachineIDs: []*string{
+	// 				to.Ptr("ocid1..aaaaa"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-09-01/dbServers_listByParent.json
 func ExampleDbServersClient_NewListByCloudExadataInfrastructurePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)

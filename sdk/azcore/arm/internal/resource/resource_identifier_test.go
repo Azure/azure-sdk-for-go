@@ -291,6 +291,8 @@ func TestParseResourceIdentifier(t *testing.T) {
 		"/providers":                                                 nil,
 		"":                                                           nil,
 		" ":                                                          nil,
+		"//":                                                         nil,
+		"/ /":                                                        nil,
 		"asdfghj":                                                    nil,
 		"123456":                                                     nil,
 		"!@#$%^&*/":                                                  nil,

@@ -16,7 +16,7 @@ type QueryRequest struct {
 	// The ID of this request, within the partition key range.
 	//
 	// Opaque identifier that must be provided back to the pipeline when providing data.
-	Id uint
+	Id uint64
 	// Continuation is the continuation token to use in the request.
 	Continuation string
 	// The query to execute for this partition key range, if different from the original query.
@@ -38,7 +38,7 @@ type QueryResult struct {
 	// The ID of the partition key range that was queried.
 	PartitionKeyRangeID string
 	// The ID of the QueryRequest that generated this result.
-	RequestId uint
+	RequestId uint64
 	// The continuation token to be used for the next request, if any.
 	NextContinuation string
 	// The raw body of the response from the query.

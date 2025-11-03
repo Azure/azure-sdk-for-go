@@ -89,7 +89,7 @@ type partitionState struct {
 	started          bool
 	queue            []MockItem
 	nextContinuation string
-	nextIndex        uint
+	nextIndex        uint64
 }
 
 // IsExhausted returns true if the partition is exhausted.

@@ -39,9 +39,9 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 		return nil, errors.New("cloud configuration is missing for Azure Tables")
 	}
 
-	audience := cfg.Audience
+	audience := "https://storage.azure.com"
 	if isCosmosEndpoint(serviceURL) {
-		audience = cfg.CosmosAudience
+		audience = cfg.Audience
 	}
 
 	plOpts := runtime.PipelineOptions{

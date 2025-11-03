@@ -12,15 +12,12 @@ const ServiceName cloud.ServiceName = "data/aztables"
 
 func init() {
 	cloud.AzureChina.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://storage.azure.com",
-		CosmosAudience: "https://cosmos.azure.cn",
+		Audience: "https://cosmos.azure.cn",
 	}
 	cloud.AzureGovernment.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://storage.azure.com",
-		CosmosAudience: "https://cosmos.azure.us",
+		Audience: "https://cosmos.azure.us",
 	}
 	cloud.AzurePublic.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://storage.azure.com",
-		CosmosAudience: "https://cosmos.azure.com",
+		Audience: "https://cosmos.azure.com",
 	}
 }

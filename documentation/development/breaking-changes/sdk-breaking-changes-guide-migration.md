@@ -243,6 +243,41 @@ Use client customization to perform the same renaming as the directives in the l
 @@clientName(RedisResource, "ResourceInfo", "go");
 ```
 
+### 7. Type Changed from `string` to Another Enum Type
+
+**Changelog Pattern**:
+
+One property type changes from `*string` to another enum type, along with a newly added enum type:
+
+```md
+- Type of `RegistryNameCheckRequest.Type` has been changed from `*string` to `*ResourceType`
+- New enum type `ResourceType` with values `ResourceTypeMicrosoftContainerRegistryRegistries`
+```
+
+**Reason**: In Swagger, we converted single-value fixed enums to constants, but in TypeSpec we need to ensure the same behavior with client customization.
+
+**Spec Pattern**:
+
+Find the model property and enum using the name from the changelog (pattern: `Type of <model name>.<property name>` has been changed from *string to *<enum name>):
+
+```tsp
+model RegistryNameCheckRequest {
+  type: ContainerRegistryResourceType;
+}
+
+enum ContainerRegistryResourceType {
+  `Microsoft.ContainerRegistry/registries`,
+}
+```
+
+**Resolution**:
+
+Locate the model property and use `@@alternateType` to change the property type back to the constant string:
+
+```tsp
+@@alternateType(RegistryNameCheckRequest.type, "Microsoft.ContainerRegistry/registries", "go");
+```
+
 ## Breaking Changes That Can Be Accepted
 
 All these breaking changes will be released in a new major version, except the last one about unreferenced types.

@@ -41,7 +41,7 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 
 	audience := cfg.Audience
 	if isCosmosEndpoint(serviceURL) {
-		audience = strings.Replace(audience, "storage", "cosmos", 1)
+		audience = cfg.CosmosAudience
 	}
 
 	plOpts := runtime.PipelineOptions{

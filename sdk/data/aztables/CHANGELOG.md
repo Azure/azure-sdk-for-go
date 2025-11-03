@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fix an issue that the token audiences for sovereign clouds are incorrect.
+* Fix an issue that the Storage Table token audiences for sovereign clouds are incorrect.
 
 ### Other Changes
 

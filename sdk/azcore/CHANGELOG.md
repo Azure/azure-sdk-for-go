@@ -1,12 +1,16 @@
 # Release History
 
-## 1.19.2-beta.1 (Unreleased)
+## 1.20.0 (Unreleased)
 
 ### Features Added
+
+* Added `runtime.FetcherForNextLinkOptions.HTTPVerb` to specify the HTTP verb when fetching the next page via next link. Defaults to `http.MethodGet`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed potential panic when decoding base64 strings.
 
 ### Other Changes
 

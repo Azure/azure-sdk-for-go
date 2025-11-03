@@ -37,7 +37,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 	ScheduledActionResourcesListResult: armcomputeschedule.ScheduledActionResourcesListResult{
 		// 		Value: []*armcomputeschedule.ScheduledActionResources{
 		// 			{
-		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
+		// 				Properties: &armcomputeschedule.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
 		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
@@ -73,6 +73,14 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 					},
 		// 					Disabled: to.Ptr(true),
 		// 					ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
+		// 					ResourceNotificationSettings: []*armcomputeschedule.NotificationProperties{
+		// 						{
+		// 							Destination: to.Ptr("hjnstepnzzdg"),
+		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
+		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
+		// 							Disabled: to.Ptr(true),
+		// 						},
+		// 					},
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
 		// 				Name: to.Ptr("lktvylsmyrhgllrxisfdeqd"),
@@ -119,7 +127,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 	ScheduledActionResourcesListResult: armcomputeschedule.ScheduledActionResourcesListResult{
 		// 		Value: []*armcomputeschedule.ScheduledActionResources{
 		// 			{
-		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
+		// 				Properties: &armcomputeschedule.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
 		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),

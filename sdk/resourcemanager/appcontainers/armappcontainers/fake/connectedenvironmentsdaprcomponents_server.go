@@ -23,7 +23,7 @@ import (
 type ConnectedEnvironmentsDaprComponentsServer struct {
 	// BeginCreateOrUpdate is the fake for method ConnectedEnvironmentsDaprComponentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, daprComponentEnvelope armappcontainers.ConnectedEnvironmentDaprComponent, options *armappcontainers.ConnectedEnvironmentsDaprComponentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, componentName string, daprComponentEnvelope armappcontainers.DaprComponent, options *armappcontainers.ConnectedEnvironmentsDaprComponentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ConnectedEnvironmentsDaprComponentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -127,7 +127,7 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchBeginCreate
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armappcontainers.ConnectedEnvironmentDaprComponent](req)
+		body, err := server.UnmarshalRequestAsJSON[armappcontainers.DaprComponent](req)
 		if err != nil {
 			return nil, err
 		}
@@ -245,7 +245,7 @@ func (c *ConnectedEnvironmentsDaprComponentsServerTransport) dispatchGet(req *ht
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectedEnvironmentDaprComponent, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DaprComponent, req)
 	if err != nil {
 		return nil, err
 	}

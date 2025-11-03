@@ -40,3 +40,30 @@ func Test_ParseCoverageFloat(t *testing.T) {
 		t.Errorf("Expected coverage percent of .805 to be parsed as %f, found %f", expected, coveragePercent)
 	}
 }
+
+func Test_FindCoverageGoal(t *testing.T) {
+	configData := &codeCoverage{
+		Packages: []coveragePackage{
+			{Name: "module", CoverageGoal: 1},
+			{Name: "module/submodule", CoverageGoal: 2},
+			{Name: "module/submodule/submodule_2", CoverageGoal: 3},
+		},
+	}
+	for _, test := range []struct {
+		covFile string
+		want    float64
+	}{
+		{"default", 0.95},
+		{"module", 1},
+		{"module/foo", 1},
+		{`C:\prefix\sdk\module`, 1},
+		{"/prefix/sdk/module", 1},
+		{"/prefix/sdk/module/foo/bar", 1},
+		{"/prefix/sdk/module/submodule", 2},
+		{"/prefix/sdk/module/submodule/submodule_2/submodule", 3},
+	} {
+		if got := findCoverageGoal([]string{test.covFile}, configData); got != test.want {
+			t.Errorf("findCoverageGoal(%v) = %.2f; want %.2f", test.covFile, got, test.want)
+		}
+	}
+}

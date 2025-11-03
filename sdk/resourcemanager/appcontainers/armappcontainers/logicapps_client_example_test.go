@@ -13,12 +13,11 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/LogicApps_Get.json
 func ExampleLogicAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,12 +39,10 @@ func ExampleLogicAppsClient_Get() {
 	// 	Name: to.Ptr("testcontainerApp0"),
 	// 	Type: to.Ptr("Microsoft.App/logicApps"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/containerApps/testcontainerApp0/providers/Microsoft.App/logicApps/testcontainerApp0"),
-	// 	Properties: map[string]any{
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/LogicApps_Create.json
 func ExampleLogicAppsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,9 +53,7 @@ func ExampleLogicAppsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewLogicAppsClient().CreateOrUpdate(ctx, "examplerg", "testcontainerApp0", "testcontainerApp0", armappcontainers.LogicApp{
-		Properties: map[string]any{},
-	}, nil)
+	res, err := clientFactory.NewLogicAppsClient().CreateOrUpdate(ctx, "examplerg", "testcontainerApp0", "testcontainerApp0", &armappcontainers.LogicAppsClientCreateOrUpdateOptions{Resource: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -69,12 +64,10 @@ func ExampleLogicAppsClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("testcontainerApp0"),
 	// 	Type: to.Ptr("Microsoft.App/logicApps"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/containerApps/testcontainerApp0/providers/Microsoft.App/logicApps/testcontainerApp0"),
-	// 	Properties: map[string]any{
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/LogicApps_Delete.json
 func ExampleLogicAppsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +84,7 @@ func ExampleLogicAppsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_ListWorkflows.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/LogicApps_ListWorkflows.json
 func ExampleLogicAppsClient_NewListWorkflowsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,8 +112,7 @@ func ExampleLogicAppsClient_NewListWorkflowsPager() {
 		// 			Name: to.Ptr("testcontainerApp0/a1"),
 		// 			Type: to.Ptr("Microsoft.App/logicApps/workflows"),
 		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/containerApps/testcontainerApp0/providers/Microsoft.App/logicApps/testcontainerApp0/workflows/a1"),
-		// 			Kind: to.Ptr("Stateful"),
-		// 			Location: to.Ptr("East US"),
+		// 			Kind: to.Ptr(armappcontainers.WorkflowKindStateful),
 		// 			Properties: &armappcontainers.WorkflowEnvelopeProperties{
 		// 				FlowState: to.Ptr(armappcontainers.WorkflowStateEnabled),
 		// 				Health: &armappcontainers.WorkflowHealth{
@@ -132,8 +124,7 @@ func ExampleLogicAppsClient_NewListWorkflowsPager() {
 		// 			Name: to.Ptr("testcontainerApp0/stateful2"),
 		// 			Type: to.Ptr("Microsoft.App/logicApps/workflows"),
 		// 			ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/containerApps/testcontainerApp0/providers/Microsoft.App/logicApps/testcontainerApp0/workflows/stateful2"),
-		// 			Kind: to.Ptr("Stateful"),
-		// 			Location: to.Ptr("East US"),
+		// 			Kind: to.Ptr(armappcontainers.WorkflowKindStateful),
 		// 			Properties: &armappcontainers.WorkflowEnvelopeProperties{
 		// 				FlowState: to.Ptr(armappcontainers.WorkflowStateEnabled),
 		// 				Health: &armappcontainers.WorkflowHealth{
@@ -149,7 +140,7 @@ func ExampleLogicAppsClient_NewListWorkflowsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_GetWorkflow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/LogicApps_GetWorkflow.json
 func ExampleLogicAppsClient_GetWorkflow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,8 +162,7 @@ func ExampleLogicAppsClient_GetWorkflow() {
 	// 	Name: to.Ptr("testcontainerApp0/stateful1"),
 	// 	Type: to.Ptr("Microsoft.App/logicApps/workflows"),
 	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/containerApps/testcontainerApp0/providers/Microsoft.App/logicApps/testcontainerApp0/workflows/stateful1"),
-	// 	Kind: to.Ptr("Stateful"),
-	// 	Location: to.Ptr("East US"),
+	// 	Kind: to.Ptr(armappcontainers.WorkflowKindStateful),
 	// 	Properties: &armappcontainers.WorkflowEnvelopeProperties{
 	// 		Files: map[string]any{
 	// 			"connections.json":map[string]any{
@@ -216,92 +206,7 @@ func ExampleLogicAppsClient_GetWorkflow() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_DeleteDeployWorkflowArtifacts.json
-func ExampleLogicAppsClient_DeployWorkflowArtifacts_deleteWorkflowArtifacts() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewLogicAppsClient().DeployWorkflowArtifacts(ctx, "testrg123", "testapp2", "testapp2", &armappcontainers.LogicAppsClientDeployWorkflowArtifactsOptions{WorkflowArtifacts: &armappcontainers.WorkflowArtifacts{
-		FilesToDelete: []*string{
-			to.Ptr("test/workflow.json"),
-			to.Ptr("test/")},
-	},
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_PostDeployWorkflowArtifacts.json
-func ExampleLogicAppsClient_DeployWorkflowArtifacts_deploysWorkflowArtifacts() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewLogicAppsClient().DeployWorkflowArtifacts(ctx, "testrg123", "testapp2", "testapp2", &armappcontainers.LogicAppsClientDeployWorkflowArtifactsOptions{WorkflowArtifacts: &armappcontainers.WorkflowArtifacts{
-		AppSettings: map[string]any{
-			"eventHub_connectionString": "Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=EXAMPLE1a2b3c4d5e6fEXAMPLE=",
-		},
-		Files: map[string]any{
-			"connections.json": map[string]any{
-				"managedApiConnections": map[string]any{},
-				"serviceProviderConnections": map[string]any{
-					"eventHub": map[string]any{
-						"displayName": "example1",
-						"parameterValues": map[string]any{
-							"connectionString": "@appsetting('eventHub_connectionString')",
-						},
-						"serviceProvider": map[string]any{
-							"id": "/serviceProviders/eventHub",
-						},
-					},
-				},
-			},
-			"test1/workflow.json": map[string]any{
-				"definition": map[string]any{
-					"$schema":        "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-					"actions":        map[string]any{},
-					"contentVersion": "1.0.0.0",
-					"outputs":        map[string]any{},
-					"triggers": map[string]any{
-						"When_events_are_available_in_Event_hub": map[string]any{
-							"type": "ServiceProvider",
-							"inputs": map[string]any{
-								"parameters": map[string]any{
-									"eventHubName": "test123",
-								},
-								"serviceProviderConfiguration": map[string]any{
-									"operationId":       "receiveEvents",
-									"connectionName":    "eventHub",
-									"serviceProviderId": "/serviceProviders/eventHub",
-								},
-							},
-							"splitOn": "@triggerOutputs()?['body']",
-						},
-					},
-				},
-				"kind": "Stateful",
-			},
-		},
-	},
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_ListConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/LogicApps_ListConnections.json
 func ExampleLogicAppsClient_ListWorkflowsConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,15 +227,14 @@ func ExampleLogicAppsClient_ListWorkflowsConnections() {
 	// res.WorkflowEnvelope = armappcontainers.WorkflowEnvelope{
 	// 	Name: to.Ptr("testapp2/connections"),
 	// 	Type: to.Ptr("Microsoft.App/logicApps/workflowsconfiguration"),
-	// 	ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/containerApps/testapp2/providers/Microsoft.App/logicApps/testapp2/workflowconfigurations/connections"),
-	// 	Location: to.Ptr("East US"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/examplerg/providers/Microsoft.App/containerApps/testapp2/providers/Microsoft.App/logicApps/testapp2/workflowconfigurations/connections"),
 	// 	Properties: &armappcontainers.WorkflowEnvelopeProperties{
 	// 		Files: map[string]any{
 	// 			"connections.json":map[string]any{
 	// 				"managedApiConnections":map[string]any{
 	// 					"office365":map[string]any{
 	// 						"api":map[string]any{
-	// 							"id": "string",
+	// 							"id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Web/locations/centraluseuap/managedApis/arm",
 	// 						},
 	// 						"authentication":map[string]any{
 	// 							"type": "Raw",
@@ -338,9 +242,9 @@ func ExampleLogicAppsClient_ListWorkflowsConnections() {
 	// 							"scheme": "Key",
 	// 						},
 	// 						"connection":map[string]any{
-	// 							"id": "string",
+	// 							"id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/examplerg/providers/Microsoft.Web/connections/arm",
 	// 						},
-	// 						"connectionRuntimeUrl": "string",
+	// 						"connectionRuntimeUrl": "https://9d51d1ffc9f77572.00.common.logic.azure-apihub.net/apim/arm/connectionruntimeid",
 	// 					},
 	// 				},
 	// 			},
@@ -349,36 +253,5 @@ func ExampleLogicAppsClient_ListWorkflowsConnections() {
 	// 			State: to.Ptr(armappcontainers.WorkflowHealthStateHealthy),
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/LogicApps_ListCallbackURL.json
-func ExampleLogicAppsClient_Invoke() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewLogicAppsClient().Invoke(ctx, "testrg123", "testapp2", "testapp2", "/runtime/webhooks/workflow/api/management/workflows/Stateful1/triggers/When_a_HTTP_request_is_received/listCallbackUrl", armappcontainers.LogicAppsProxyMethodPOST, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Interface = map[string]any{
-	// 	"method": "POST",
-	// 	"basePath": "https://testapp2.livelyriver-730e4fd9.eastasia.azurecontainerapps.io /api/test/triggers/When_a_HTTP_request_is_received/invoke",
-	// 	"queries":map[string]any{
-	// 		"api-version": "2022-05-01",
-	// 		"sig": "IxEQ_ygZf6WNEQCbjV0Vs6p6Y4DyNEJVAa86U5B4xhk",
-	// 		"sp": "/triggers/When_a_HTTP_request_is_received/run",
-	// 		"sv": "1.0",
-	// 	},
-	// 	"value": "https://testapp2.livelyriver-730e4fd9.eastasia.azurecontainerapps.io:443/api/test/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=<sig> ",
 	// }
 }

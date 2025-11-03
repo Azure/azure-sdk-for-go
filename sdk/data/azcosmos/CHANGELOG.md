@@ -1,16 +1,11 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0-beta.2 (2025-11-11)
 
 ### Features Added
 
 * Adjusted the query engine abstraction to support future enhancements and optimizations. See [PR 25503](https://github.com/Azure/azure-sdk-for-go/pull/25503)
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added `ReadManyItems` API to read documents across partitions. See [PR 25522](https://github.com/Azure/azure-sdk-for-go/pull/25522)
 
 ## 1.5.0-beta.1 (2025-10-16)
 

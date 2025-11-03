@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase
 
 go 1.24.0
 

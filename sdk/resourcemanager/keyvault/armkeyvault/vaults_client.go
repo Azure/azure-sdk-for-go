@@ -302,14 +302,16 @@ func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsClient
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-01
+//   - location - The name of the Azure region.
+//   - vaultName - The name of the vault.
 //   - options - VaultsClientGetDeletedOptions contains the optional parameters for the VaultsClient.GetDeleted method.
-func (client *VaultsClient) GetDeleted(ctx context.Context, vaultName string, location string, options *VaultsClientGetDeletedOptions) (VaultsClientGetDeletedResponse, error) {
+func (client *VaultsClient) GetDeleted(ctx context.Context, location string, vaultName string, options *VaultsClientGetDeletedOptions) (VaultsClientGetDeletedResponse, error) {
 	var err error
 	const operationName = "VaultsClient.GetDeleted"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getDeletedCreateRequest(ctx, vaultName, location, options)
+	req, err := client.getDeletedCreateRequest(ctx, location, vaultName, options)
 	if err != nil {
 		return VaultsClientGetDeletedResponse{}, err
 	}
@@ -326,20 +328,20 @@ func (client *VaultsClient) GetDeleted(ctx context.Context, vaultName string, lo
 }
 
 // getDeletedCreateRequest creates the GetDeleted request.
-func (client *VaultsClient) getDeletedCreateRequest(ctx context.Context, vaultName string, location string, _ *VaultsClientGetDeletedOptions) (*policy.Request, error) {
+func (client *VaultsClient) getDeletedCreateRequest(ctx context.Context, location string, vaultName string, _ *VaultsClientGetDeletedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -596,11 +598,13 @@ func (client *VaultsClient) listDeletedHandleResponse(resp *http.Response) (Vaul
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-01
+//   - location - The name of the Azure region.
+//   - vaultName - The name of the vault.
 //   - options - VaultsClientBeginPurgeDeletedOptions contains the optional parameters for the VaultsClient.BeginPurgeDeleted
 //     method.
-func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsClientBeginPurgeDeletedOptions) (*runtime.Poller[VaultsClientPurgeDeletedResponse], error) {
+func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, location string, vaultName string, options *VaultsClientBeginPurgeDeletedOptions) (*runtime.Poller[VaultsClientPurgeDeletedResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purgeDeleted(ctx, vaultName, location, options)
+		resp, err := client.purgeDeleted(ctx, location, vaultName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -619,13 +623,13 @@ func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName str
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-01
-func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsClientBeginPurgeDeletedOptions) (*http.Response, error) {
+func (client *VaultsClient) purgeDeleted(ctx context.Context, location string, vaultName string, options *VaultsClientBeginPurgeDeletedOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VaultsClient.BeginPurgeDeleted"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.purgeDeletedCreateRequest(ctx, vaultName, location, options)
+	req, err := client.purgeDeletedCreateRequest(ctx, location, vaultName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -641,20 +645,20 @@ func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, 
 }
 
 // purgeDeletedCreateRequest creates the PurgeDeleted request.
-func (client *VaultsClient) purgeDeletedCreateRequest(ctx context.Context, vaultName string, location string, _ *VaultsClientBeginPurgeDeletedOptions) (*policy.Request, error) {
+func (client *VaultsClient) purgeDeletedCreateRequest(ctx context.Context, location string, vaultName string, _ *VaultsClientBeginPurgeDeletedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}/purge"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

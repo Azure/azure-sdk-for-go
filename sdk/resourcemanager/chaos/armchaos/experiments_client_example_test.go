@@ -639,7 +639,7 @@ func ExampleExperimentsClient_BeginUpdate() {
 		Identity: &armchaos.ManagedServiceIdentity{
 			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-				"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ManagedIdentity/userAssignedIdentity/exampleUMI": {},
+				"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ManagedIdentity/userAssignedIdentity/exampleUMI": &armchaos.UserAssignedIdentity{},
 			},
 		},
 		Tags: map[string]*string{

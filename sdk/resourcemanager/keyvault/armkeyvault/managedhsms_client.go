@@ -323,14 +323,16 @@ func (client *ManagedHsmsClient) getHandleResponse(resp *http.Response) (Managed
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-01
+//   - location - The name of the Azure region.
+//   - name - The name of the deleted managed HSM.
 //   - options - ManagedHsmsClientGetDeletedOptions contains the optional parameters for the ManagedHsmsClient.GetDeleted method.
-func (client *ManagedHsmsClient) GetDeleted(ctx context.Context, name string, location string, options *ManagedHsmsClientGetDeletedOptions) (ManagedHsmsClientGetDeletedResponse, error) {
+func (client *ManagedHsmsClient) GetDeleted(ctx context.Context, location string, name string, options *ManagedHsmsClientGetDeletedOptions) (ManagedHsmsClientGetDeletedResponse, error) {
 	var err error
 	const operationName = "ManagedHsmsClient.GetDeleted"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getDeletedCreateRequest(ctx, name, location, options)
+	req, err := client.getDeletedCreateRequest(ctx, location, name, options)
 	if err != nil {
 		return ManagedHsmsClientGetDeletedResponse{}, err
 	}
@@ -347,20 +349,20 @@ func (client *ManagedHsmsClient) GetDeleted(ctx context.Context, name string, lo
 }
 
 // getDeletedCreateRequest creates the GetDeleted request.
-func (client *ManagedHsmsClient) getDeletedCreateRequest(ctx context.Context, name string, location string, _ *ManagedHsmsClientGetDeletedOptions) (*policy.Request, error) {
+func (client *ManagedHsmsClient) getDeletedCreateRequest(ctx context.Context, location string, name string, _ *ManagedHsmsClientGetDeletedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -562,11 +564,13 @@ func (client *ManagedHsmsClient) listDeletedHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-01
+//   - location - The name of the Azure region.
+//   - name - The name of the deleted managed HSM.
 //   - options - ManagedHsmsClientBeginPurgeDeletedOptions contains the optional parameters for the ManagedHsmsClient.BeginPurgeDeleted
 //     method.
-func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, name string, location string, options *ManagedHsmsClientBeginPurgeDeletedOptions) (*runtime.Poller[ManagedHsmsClientPurgeDeletedResponse], error) {
+func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, location string, name string, options *ManagedHsmsClientBeginPurgeDeletedOptions) (*runtime.Poller[ManagedHsmsClientPurgeDeletedResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purgeDeleted(ctx, name, location, options)
+		resp, err := client.purgeDeleted(ctx, location, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -585,13 +589,13 @@ func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, name str
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-01
-func (client *ManagedHsmsClient) purgeDeleted(ctx context.Context, name string, location string, options *ManagedHsmsClientBeginPurgeDeletedOptions) (*http.Response, error) {
+func (client *ManagedHsmsClient) purgeDeleted(ctx context.Context, location string, name string, options *ManagedHsmsClientBeginPurgeDeletedOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedHsmsClient.BeginPurgeDeleted"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.purgeDeletedCreateRequest(ctx, name, location, options)
+	req, err := client.purgeDeletedCreateRequest(ctx, location, name, options)
 	if err != nil {
 		return nil, err
 	}
@@ -607,20 +611,20 @@ func (client *ManagedHsmsClient) purgeDeleted(ctx context.Context, name string, 
 }
 
 // purgeDeletedCreateRequest creates the PurgeDeleted request.
-func (client *ManagedHsmsClient) purgeDeletedCreateRequest(ctx context.Context, name string, location string, _ *ManagedHsmsClientBeginPurgeDeletedOptions) (*policy.Request, error) {
+func (client *ManagedHsmsClient) purgeDeletedCreateRequest(ctx context.Context, location string, name string, _ *ManagedHsmsClientBeginPurgeDeletedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}/purge"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

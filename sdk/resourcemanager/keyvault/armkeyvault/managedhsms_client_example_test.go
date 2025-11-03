@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"log"
 )
 
@@ -195,7 +195,7 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagedHsmsClient().GetDeleted(ctx, "hsm1", "westus", nil)
+	res, err := clientFactory.NewManagedHsmsClient().GetDeleted(ctx, "westus", "hsm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -465,7 +465,7 @@ func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewManagedHsmsClient().BeginPurgeDeleted(ctx, "hsm1", "westus", nil)
+	poller, err := clientFactory.NewManagedHsmsClient().BeginPurgeDeleted(ctx, "westus", "hsm1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

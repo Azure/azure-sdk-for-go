@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -39,7 +39,7 @@ type ManagedHsmsServer struct {
 
 	// GetDeleted is the fake for method ManagedHsmsClient.GetDeleted
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeleted func(ctx context.Context, name string, location string, options *armkeyvault.ManagedHsmsClientGetDeletedOptions) (resp azfake.Responder[armkeyvault.ManagedHsmsClientGetDeletedResponse], errResp azfake.ErrorResponder)
+	GetDeleted func(ctx context.Context, location string, name string, options *armkeyvault.ManagedHsmsClientGetDeletedOptions) (resp azfake.Responder[armkeyvault.ManagedHsmsClientGetDeletedResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method ManagedHsmsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -55,7 +55,7 @@ type ManagedHsmsServer struct {
 
 	// BeginPurgeDeleted is the fake for method ManagedHsmsClient.BeginPurgeDeleted
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPurgeDeleted func(ctx context.Context, name string, location string, options *armkeyvault.ManagedHsmsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+	BeginPurgeDeleted func(ctx context.Context, location string, name string, options *armkeyvault.ManagedHsmsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.ManagedHsmsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method ManagedHsmsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -317,15 +317,15 @@ func (m *ManagedHsmsServerTransport) dispatchGetDeleted(req *http.Request) (*htt
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.GetDeleted(req.Context(), nameParam, locationParam, nil)
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.GetDeleted(req.Context(), locationParam, nameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -497,15 +497,15 @@ func (m *ManagedHsmsServerTransport) dispatchBeginPurgeDeleted(req *http.Request
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginPurgeDeleted(req.Context(), nameParam, locationParam, nil)
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginPurgeDeleted(req.Context(), locationParam, nameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

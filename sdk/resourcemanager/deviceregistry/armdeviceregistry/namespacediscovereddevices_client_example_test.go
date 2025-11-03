@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func ExampleNamespaceDiscoveredDevicesClient_BeginCreateOrReplace() {
 			Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
 				Outbound: &armdeviceregistry.DiscoveredOutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"eventGridEndpoint": {
+						"eventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
 							EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 							Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},
@@ -303,7 +303,7 @@ func ExampleNamespaceDiscoveredDevicesClient_BeginUpdate() {
 			Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
 				Outbound: &armdeviceregistry.DiscoveredOutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"newEventGridEndpoint": {
+						"newEventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
 							EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 							Address:      to.Ptr("https://myneweventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},

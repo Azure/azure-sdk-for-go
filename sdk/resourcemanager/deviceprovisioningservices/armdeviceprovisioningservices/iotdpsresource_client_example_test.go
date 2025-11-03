@@ -196,7 +196,7 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsUpdate() {
 		Identity: &armdeviceprovisioningservices.ManagedServiceIdentity{
 			Type: to.Ptr(armdeviceprovisioningservices.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armdeviceprovisioningservices.UserAssignedIdentity{
-				"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": {},
+				"/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourcegroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity": &armdeviceprovisioningservices.UserAssignedIdentity{},
 			},
 		},
 		Location: to.Ptr("East US"),

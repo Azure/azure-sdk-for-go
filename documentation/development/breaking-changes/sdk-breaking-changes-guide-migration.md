@@ -529,7 +529,39 @@ if *message.ContentType == "PlainText" {
 }
 ```
 
-### 7. Removal of Unreferenced Types
+### 7. Change type from `string` to `azore.ETag`
+
+**Changelog Pattern**:
+
+Type change for ETag fields from `*string` to `*azcore.ETag`:
+
+```md
+- Type of `PrivateEndpointConnection.Etag` has been changed from `*string` to `*azcore.ETag`
+```
+
+**Reason**: When migrating to TypeSpec, we change ETag fields from `*string` to `azcore.ETag`.
+
+**Impact**: Low impact since underlaying type of `azure.Etag` is `string`.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to remove type casting.
+
+For example:
+
+Previous code:
+
+```go
+privateEndpointConnection.Etag = to.Ptr("*")
+```
+
+New code:
+
+```go
+privateEndpointConnection.Etag = to.Ptr(azcore.ETag("*"))
+```
+
+### 8. Removal of Unreferenced Types
 
 **Changelog Pattern**:
 

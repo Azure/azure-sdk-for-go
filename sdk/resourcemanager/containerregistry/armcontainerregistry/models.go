@@ -97,108 +97,6 @@ type AgentProperties struct {
 	CPU *int32
 }
 
-// Archive - An object that represents a archive for a container registry.
-type Archive struct {
-	// The properties of the archive.
-	Properties *ArchiveProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ArchiveListResult - The result of a request to list archives for a container registry.
-type ArchiveListResult struct {
-	// The URI that can be used to request the next list of archives.
-	NextLink *string
-
-	// The list of archives. Since this list may be incomplete, the nextLink field should be used to request the next list of
-	// distributions.
-	Value []*Archive
-}
-
-// ArchivePackageSourceProperties - The properties of the archive package source.
-type ArchivePackageSourceProperties struct {
-	// The type of package source for a archive.
-	Type *PackageSourceType
-
-	// The external repository url.
-	URL *string
-}
-
-// ArchiveProperties - The properties of a archive.
-type ArchiveProperties struct {
-	// The package source of the archive.
-	PackageSource *ArchivePackageSourceProperties
-
-	// The published version of the archive.
-	PublishedVersion         *string
-	RepositoryEndpointPrefix *string
-
-	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY
-	RepositoryEndpoint *string
-}
-
-// ArchiveUpdateParameters - The parameters for updating a archive.
-type ArchiveUpdateParameters struct {
-	// The properties of the connected registry update parameters.
-	Properties *ArchiveUpdateProperties
-}
-
-// ArchiveUpdateProperties - The properties of a archive.
-type ArchiveUpdateProperties struct {
-	// The published version of the archive.
-	PublishedVersion *string
-}
-
-// ArchiveVersion - An object that represents an export pipeline for a container registry.
-type ArchiveVersion struct {
-	// The properties of the archive.
-	Properties *ArchiveVersionProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ArchiveVersionListResult - The result of a request to list export pipelines for a container registry.
-type ArchiveVersionListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of export pipelines.
-	Value []*ArchiveVersion
-}
-
-// ArchiveVersionProperties - The properties of an export pipeline.
-type ArchiveVersionProperties struct {
-	// The detailed error message for the archive version in the case of failure.
-	ArchiveVersionErrorMessage *string
-
-	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
 // Argument - The properties of a run argument.
 type Argument struct {
 	// REQUIRED; The name of the argument.
@@ -262,7 +160,7 @@ type AuthInfoUpdateParameters struct {
 	TokenType *TokenType
 }
 
-// AzureADAuthenticationAsArmPolicy - The policy for using ARM audience token for a container registry.
+// AzureADAuthenticationAsArmPolicy - The policy for using Azure Resource Manager audience token for a container registry.
 type AzureADAuthenticationAsArmPolicy struct {
 	// The value that indicates whether the policy is enabled or not.
 	Status *AzureADAuthenticationAsArmPolicyStatus
@@ -327,16 +225,16 @@ type CacheRule struct {
 	// The properties of the cache rule.
 	Properties *CacheRuleProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -372,10 +270,11 @@ type CacheRuleUpdateProperties struct {
 
 // CacheRulesListResult - The result of a request to list cache rules for a container registry.
 type CacheRulesListResult struct {
-	// If provided, client must use NextLink URI to request next list of cache rules.
+	// The URI that can be used to request the next list of cache rules.
 	NextLink *string
 
-	// The list of cache rules.
+	// The list of cache rules. Since this list may be incomplete, the nextLink field should be used to request the next list
+	// of cache rules.
 	Value []*CacheRule
 }
 
@@ -393,16 +292,16 @@ type ConnectedRegistry struct {
 	// The properties of the connected registry.
 	Properties *ConnectedRegistryProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -502,16 +401,16 @@ type CredentialSet struct {
 	// The properties of the credential set.
 	Properties *CredentialSetProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -934,66 +833,6 @@ type EventResponseMessage struct {
 	Version *string
 }
 
-// ExportPipeline - An object that represents an export pipeline for a container registry.
-type ExportPipeline struct {
-	// The identity of the export pipeline.
-	Identity *IdentityProperties
-
-	// The location of the export pipeline.
-	Location *string
-
-	// The properties of the export pipeline.
-	Properties *ExportPipelineProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ExportPipelineListResult - The result of a request to list export pipelines for a container registry.
-type ExportPipelineListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of export pipelines.
-	Value []*ExportPipeline
-}
-
-// ExportPipelineProperties - The properties of an export pipeline.
-type ExportPipelineProperties struct {
-	// REQUIRED; The target properties of the export pipeline.
-	Target *ExportPipelineTargetProperties
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
-// ExportPipelineTargetProperties - The properties of the export pipeline target.
-type ExportPipelineTargetProperties struct {
-	// REQUIRED; They key vault secret uri to obtain the target storage SAS token.
-	KeyVaultURI *string
-
-	// The type of target for the export pipeline.
-	Type *string
-
-	// The target uri of the export pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
-	URI *string
-}
-
 // ExportPolicy - The export policy for a container registry.
 type ExportPolicy struct {
 	// The value that indicates whether the policy is enabled or not.
@@ -1214,69 +1053,6 @@ type ImportImageParameters struct {
 	UntaggedTargetRepositories []*string
 }
 
-// ImportPipeline - An object that represents an import pipeline for a container registry.
-type ImportPipeline struct {
-	// The identity of the import pipeline.
-	Identity *IdentityProperties
-
-	// The location of the import pipeline.
-	Location *string
-
-	// The properties of the import pipeline.
-	Properties *ImportPipelineProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// ImportPipelineListResult - The result of a request to list import pipelines for a container registry.
-type ImportPipelineListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of import pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of import pipelines.
-	Value []*ImportPipeline
-}
-
-// ImportPipelineProperties - The properties of an import pipeline.
-type ImportPipelineProperties struct {
-	// REQUIRED; The source properties of the import pipeline.
-	Source *ImportPipelineSourceProperties
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions
-
-	// The properties that describe the trigger of the import pipeline.
-	Trigger *PipelineTriggerProperties
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
-// ImportPipelineSourceProperties - The properties of the import pipeline source.
-type ImportPipelineSourceProperties struct {
-	// REQUIRED; They key vault secret uri to obtain the source storage SAS token.
-	KeyVaultURI *string
-
-	// The type of source for the import pipeline.
-	Type *PipelineSourceType
-
-	// The source uri of the import pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer':
-	// "https://accountName.blob.core.windows.net/containerName"
-	URI *string
-}
-
 type ImportSource struct {
 	// REQUIRED; Repository name of the source image. Specify an image by repository ('hello-world'). This will use the 'latest'
 	// tag. Specify an image by tag ('hello-world:latest'). Specify an image by sha256-based
@@ -1465,138 +1241,6 @@ type ParentProperties struct {
 	ID *string
 }
 
-// PipelineRun - An object that represents a pipeline run for a container registry.
-type PipelineRun struct {
-	// The properties of a pipeline run.
-	Properties *PipelineRunProperties
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// PipelineRunListResult - The result of a request to list pipeline runs for a container registry.
-type PipelineRunListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of pipeline runs. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of pipeline runs.
-	Value []*PipelineRun
-}
-
-// PipelineRunProperties - The properties of a pipeline run.
-type PipelineRunProperties struct {
-	// How the pipeline run should be forced to recreate even if the pipeline run configuration has not changed.
-	ForceUpdateTag *string
-
-	// The request parameters for a pipeline run.
-	Request *PipelineRunRequest
-
-	// READ-ONLY; The provisioning state of a pipeline run.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The response of a pipeline run.
-	Response *PipelineRunResponse
-}
-
-// PipelineRunRequest - The request properties provided for a pipeline run.
-type PipelineRunRequest struct {
-	// List of source artifacts to be transferred by the pipeline. Specify an image by repository ('hello-world'). This will use
-	// the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an
-	// image by sha256-based manifest digest ('hello-world@sha256:abc123').
-	Artifacts []*string
-
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string
-
-	// The resource ID of the pipeline to run.
-	PipelineResourceID *string
-
-	// The source properties of the pipeline run.
-	Source *PipelineRunSourceProperties
-
-	// The target properties of the pipeline run.
-	Target *PipelineRunTargetProperties
-}
-
-// PipelineRunResponse - The response properties returned for a pipeline run.
-type PipelineRunResponse struct {
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string
-
-	// The time the pipeline run finished.
-	FinishTime *time.Time
-
-	// The artifacts imported in the pipeline run.
-	ImportedArtifacts []*string
-
-	// The detailed error message for the pipeline run in the case of failure.
-	PipelineRunErrorMessage *string
-
-	// The current progress of the copy operation.
-	Progress *ProgressProperties
-
-	// The source of the pipeline run.
-	Source *ImportPipelineSourceProperties
-
-	// The time the pipeline run started.
-	StartTime *time.Time
-
-	// The current status of the pipeline run.
-	Status *string
-
-	// The target of the pipeline run.
-	Target *ExportPipelineTargetProperties
-
-	// The trigger that caused the pipeline run.
-	Trigger *PipelineTriggerDescriptor
-}
-
-type PipelineRunSourceProperties struct {
-	// The name of the source.
-	Name *string
-
-	// The type of the source.
-	Type *PipelineRunSourceType
-}
-
-type PipelineRunTargetProperties struct {
-	// The name of the target.
-	Name *string
-
-	// The type of the target.
-	Type *PipelineRunTargetType
-}
-
-type PipelineSourceTriggerDescriptor struct {
-	// The timestamp when the source update happened.
-	Timestamp *time.Time
-}
-
-type PipelineSourceTriggerProperties struct {
-	// REQUIRED; The current status of the source trigger.
-	Status *TriggerStatus
-}
-
-type PipelineTriggerDescriptor struct {
-	// The source trigger that caused the pipeline run.
-	SourceTrigger *PipelineSourceTriggerDescriptor
-}
-
-type PipelineTriggerProperties struct {
-	// The source trigger properties of the pipeline.
-	SourceTrigger *PipelineSourceTriggerProperties
-}
-
 // PlatformProperties - The platform properties against which the run has to happen.
 type PlatformProperties struct {
 	// REQUIRED; The operating system type required for the run.
@@ -1623,7 +1267,7 @@ type PlatformUpdateParameters struct {
 
 // Policies - The policies for a container registry.
 type Policies struct {
-	// The policy for using ARM audience token for a container registry.
+	// The policy for using Azure Resource Manager audience token for a container registry.
 	AzureADAuthenticationAsArmPolicy *AzureADAuthenticationAsArmPolicy
 
 	// The export policy for a container registry.
@@ -1634,9 +1278,6 @@ type Policies struct {
 
 	// The retention policy for a container registry.
 	RetentionPolicy *RetentionPolicy
-
-	// The soft delete policy for a container registry.
-	SoftDeletePolicy *SoftDeletePolicy
 
 	// The content trust policy for a container registry.
 	TrustPolicy *TrustPolicy
@@ -1653,16 +1294,16 @@ type PrivateEndpointConnection struct {
 	// The properties of a private endpoint connection.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1688,18 +1329,21 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
-// PrivateLinkResource - A resource that supports private link capabilities.
+// PrivateLinkResource - A private link resource.
 type PrivateLinkResource struct {
-	// The resource ID.
-	ID *string
-
-	// The name of the resource.
-	Name *string
-
-	// A resource that supports private link capabilities.
+	// Resource properties.
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; The resource type is private link resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1713,16 +1357,16 @@ type PrivateLinkResourceListResult struct {
 	Value []*PrivateLinkResource
 }
 
-// PrivateLinkResourceProperties - The properties of a private link resource.
+// PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
-	// The private link resource group id.
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
 	GroupID *string
 
-	// The private link resource required member names.
+	// READ-ONLY; The private link resource required member names.
 	RequiredMembers []*string
-
-	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string
 }
 
 // PrivateLinkServiceConnectionState - The state of a private link service connection.
@@ -1735,11 +1379,6 @@ type PrivateLinkServiceConnectionState struct {
 
 	// The private link service connection status.
 	Status *ConnectionStatus
-}
-
-type ProgressProperties struct {
-	// The percentage complete of the copy operation.
-	Percentage *string
 }
 
 // QuarantinePolicy - The quarantine policy for a container registry.
@@ -1756,7 +1395,7 @@ type RegenerateCredentialParameters struct {
 
 // Registry - An object that represents a container registry.
 type Registry struct {
-	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// REQUIRED; The SKU of the container registry.
@@ -1768,19 +1407,19 @@ type Registry struct {
 	// The properties of the container registry.
 	Properties *RegistryProperties
 
-	// The tags of the resource.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1860,8 +1499,8 @@ type RegistryProperties struct {
 	// The encryption settings of container registry.
 	Encryption *EncryptionProperty
 
-	// Determines whether registry artifacts are indexed for metadata search.
-	MetadataSearch *MetadataSearch
+	// Whether or not Tasks allowed to bypass the network rules for this container registry.
+	NetworkRuleBypassAllowedForTasks *bool
 
 	// Whether to allow trusted Azure services to access a network restricted registry.
 	NetworkRuleBypassOptions *NetworkRuleBypassOptions
@@ -1914,8 +1553,8 @@ type RegistryPropertiesUpdateParameters struct {
 	// The encryption settings of container registry.
 	Encryption *EncryptionProperty
 
-	// Determines whether registry artifacts are indexed for metadata search.
-	MetadataSearch *MetadataSearch
+	// Whether to allow ACR Tasks service to access a network restricted registry.
+	NetworkRuleBypassAllowedForTasks *bool
 
 	// Whether to allow trusted Azure services to access a network restricted registry.
 	NetworkRuleBypassOptions *NetworkRuleBypassOptions
@@ -1971,25 +1610,25 @@ type RegistryUsageListResult struct {
 
 // Replication - An object that represents a replication for a container registry.
 type Replication struct {
-	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The properties of the replication.
 	Properties *ReplicationProperties
 
-	// The tags of the resource.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2072,16 +1711,16 @@ type Run struct {
 	// The properties of a run.
 	Properties *RunProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2241,16 +1880,16 @@ type ScopeMap struct {
 	// The properties of the scope map.
 	Properties *ScopeMapProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2319,18 +1958,6 @@ type SetValue struct {
 	IsSecret *bool
 }
 
-// SoftDeletePolicy - The soft delete policy for a container registry
-type SoftDeletePolicy struct {
-	// The number of days after which a soft-deleted item is permanently deleted.
-	RetentionDays *int32
-
-	// The value that indicates whether the policy is enabled or not.
-	Status *PolicyStatus
-
-	// READ-ONLY; The timestamp when the policy was last updated.
-	LastUpdatedTime *time.Time
-}
-
 // Source - The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
 // it.
 type Source struct {
@@ -2359,10 +1986,6 @@ type SourceProperties struct {
 
 // SourceRegistryCredentials - Describes the credential parameters for accessing the source registry.
 type SourceRegistryCredentials struct {
-	// The Entra identity used for source registry login. The value is [system] for system-assigned managed identity, [caller]
-	// for caller identity, and client ID for user-assigned managed identity.
-	Identity *string
-
 	// The authentication mode which determines the source registry login scope. The credentials for the source registry will
 	// be generated using the given scope. These credentials will be used to login to
 	// the source registry during the run.
@@ -2461,7 +2084,7 @@ type Status struct {
 
 // StatusDetailProperties - The status detail properties of the connected registry.
 type StatusDetailProperties struct {
-	// READ-ONLY; The code of the status.
+	// READ-ONLY; The HTTP status code.
 	Code *string
 
 	// READ-ONLY; The correlation ID of the status.
@@ -2525,14 +2148,14 @@ type SystemData struct {
 	// The type of identity that created the resource.
 	CreatedByType *CreatedByType
 
-	// The timestamp of resource modification (UTC).
+	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
 	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *LastModifiedByType
+	LastModifiedByType *CreatedByType
 }
 
 // TLSCertificateProperties - The TLS certificate properties of the connected registry login server.
@@ -2701,16 +2324,16 @@ type TaskRun struct {
 	// The properties associated with the task run, i.e., request and result of the run
 	Properties *TaskRunProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2875,16 +2498,16 @@ type Token struct {
 	// The properties of the token.
 	Properties *TokenProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -3010,25 +2633,25 @@ type UserIdentityProperties struct {
 
 // Webhook - An object that represents a webhook for a container registry.
 type Webhook struct {
-	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The properties of the webhook.
 	Properties *WebhookProperties
 
-	// The tags of the resource.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 

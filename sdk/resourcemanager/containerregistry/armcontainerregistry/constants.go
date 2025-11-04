@@ -5,11 +5,6 @@
 
 package armcontainerregistry
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
-	moduleVersion = "v1.3.0-beta.3"
-)
-
 // Action - The action of IP ACL rule.
 type Action string
 
@@ -354,26 +349,6 @@ func PossibleImportModeValues() []ImportMode {
 	}
 }
 
-// LastModifiedByType - The type of identity that last modified the resource.
-type LastModifiedByType string
-
-const (
-	LastModifiedByTypeApplication     LastModifiedByType = "Application"
-	LastModifiedByTypeKey             LastModifiedByType = "Key"
-	LastModifiedByTypeManagedIdentity LastModifiedByType = "ManagedIdentity"
-	LastModifiedByTypeUser            LastModifiedByType = "User"
-)
-
-// PossibleLastModifiedByTypeValues returns the possible values for the LastModifiedByType const type.
-func PossibleLastModifiedByTypeValues() []LastModifiedByType {
-	return []LastModifiedByType{
-		LastModifiedByTypeApplication,
-		LastModifiedByTypeKey,
-		LastModifiedByTypeManagedIdentity,
-		LastModifiedByTypeUser,
-	}
-}
-
 // LogLevel - The verbosity of logs persisted on the connected registry.
 type LogLevel string
 
@@ -393,22 +368,6 @@ func PossibleLogLevelValues() []LogLevel {
 		LogLevelInformation,
 		LogLevelNone,
 		LogLevelWarning,
-	}
-}
-
-// MetadataSearch - Determines whether registry artifacts are indexed for metadata search.
-type MetadataSearch string
-
-const (
-	MetadataSearchDisabled MetadataSearch = "Disabled"
-	MetadataSearchEnabled  MetadataSearch = "Enabled"
-)
-
-// PossibleMetadataSearchValues returns the possible values for the MetadataSearch const type.
-func PossibleMetadataSearchValues() []MetadataSearch {
-	return []MetadataSearch{
-		MetadataSearchDisabled,
-		MetadataSearchEnabled,
 	}
 }
 
@@ -444,20 +403,6 @@ func PossibleOSValues() []OS {
 	}
 }
 
-// PackageSourceType - The type of package source for a archive.
-type PackageSourceType string
-
-const (
-	PackageSourceTypeRemote PackageSourceType = "remote"
-)
-
-// PossiblePackageSourceTypeValues returns the possible values for the PackageSourceType const type.
-func PossiblePackageSourceTypeValues() []PackageSourceType {
-	return []PackageSourceType{
-		PackageSourceTypeRemote,
-	}
-}
-
 // PasswordName - The password name.
 type PasswordName string
 
@@ -471,67 +416,6 @@ func PossiblePasswordNameValues() []PasswordName {
 	return []PasswordName{
 		PasswordNamePassword,
 		PasswordNamePassword2,
-	}
-}
-
-type PipelineOptions string
-
-const (
-	PipelineOptionsContinueOnErrors          PipelineOptions = "ContinueOnErrors"
-	PipelineOptionsDeleteSourceBlobOnSuccess PipelineOptions = "DeleteSourceBlobOnSuccess"
-	PipelineOptionsOverwriteBlobs            PipelineOptions = "OverwriteBlobs"
-	PipelineOptionsOverwriteTags             PipelineOptions = "OverwriteTags"
-)
-
-// PossiblePipelineOptionsValues returns the possible values for the PipelineOptions const type.
-func PossiblePipelineOptionsValues() []PipelineOptions {
-	return []PipelineOptions{
-		PipelineOptionsContinueOnErrors,
-		PipelineOptionsDeleteSourceBlobOnSuccess,
-		PipelineOptionsOverwriteBlobs,
-		PipelineOptionsOverwriteTags,
-	}
-}
-
-// PipelineRunSourceType - The type of the source.
-type PipelineRunSourceType string
-
-const (
-	PipelineRunSourceTypeAzureStorageBlob PipelineRunSourceType = "AzureStorageBlob"
-)
-
-// PossiblePipelineRunSourceTypeValues returns the possible values for the PipelineRunSourceType const type.
-func PossiblePipelineRunSourceTypeValues() []PipelineRunSourceType {
-	return []PipelineRunSourceType{
-		PipelineRunSourceTypeAzureStorageBlob,
-	}
-}
-
-// PipelineRunTargetType - The type of the target.
-type PipelineRunTargetType string
-
-const (
-	PipelineRunTargetTypeAzureStorageBlob PipelineRunTargetType = "AzureStorageBlob"
-)
-
-// PossiblePipelineRunTargetTypeValues returns the possible values for the PipelineRunTargetType const type.
-func PossiblePipelineRunTargetTypeValues() []PipelineRunTargetType {
-	return []PipelineRunTargetType{
-		PipelineRunTargetTypeAzureStorageBlob,
-	}
-}
-
-// PipelineSourceType - The type of source for the import pipeline.
-type PipelineSourceType string
-
-const (
-	PipelineSourceTypeAzureStorageBlobContainer PipelineSourceType = "AzureStorageBlobContainer"
-)
-
-// PossiblePipelineSourceTypeValues returns the possible values for the PipelineSourceType const type.
-func PossiblePipelineSourceTypeValues() []PipelineSourceType {
-	return []PipelineSourceType{
-		PipelineSourceTypeAzureStorageBlobContainer,
 	}
 }
 
@@ -551,7 +435,7 @@ func PossiblePolicyStatusValues() []PolicyStatus {
 	}
 }
 
-// ProvisioningState - The provisioning state of the archive at the time the operation was called.
+// ProvisioningState - The provisioning state of this agent pool
 type ProvisioningState string
 
 const (
@@ -909,7 +793,7 @@ func PossibleTokenTypeValues() []TokenType {
 	}
 }
 
-// TriggerStatus - The current status of the source trigger.
+// TriggerStatus - The current status of trigger.
 type TriggerStatus string
 
 const (

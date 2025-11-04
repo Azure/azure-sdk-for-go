@@ -1,5 +1,96 @@
 # Release History
 
+## 1.3.0-beta.4 (2025-11-04)
+### Breaking Changes
+
+- Type of `SystemData.LastModifiedByType` has been changed from `*LastModifiedByType` to `*CreatedByType`
+- Enum `LastModifiedByType` has been removed
+- Enum `MetadataSearch` has been removed
+- Enum `PackageSourceType` has been removed
+- Enum `PipelineOptions` has been removed
+- Enum `PipelineRunSourceType` has been removed
+- Enum `PipelineRunTargetType` has been removed
+- Enum `PipelineSourceType` has been removed
+- Function `NewArchiveVersionsClient` has been removed
+- Function `*ArchiveVersionsClient.BeginCreate` has been removed
+- Function `*ArchiveVersionsClient.BeginDelete` has been removed
+- Function `*ArchiveVersionsClient.Get` has been removed
+- Function `*ArchiveVersionsClient.NewListPager` has been removed
+- Function `NewArchivesClient` has been removed
+- Function `*ArchivesClient.BeginCreate` has been removed
+- Function `*ArchivesClient.BeginDelete` has been removed
+- Function `*ArchivesClient.Get` has been removed
+- Function `*ArchivesClient.NewListPager` has been removed
+- Function `*ArchivesClient.Update` has been removed
+- Function `*ClientFactory.NewArchiveVersionsClient` has been removed
+- Function `*ClientFactory.NewArchivesClient` has been removed
+- Function `*ClientFactory.NewExportPipelinesClient` has been removed
+- Function `*ClientFactory.NewImportPipelinesClient` has been removed
+- Function `*ClientFactory.NewPipelineRunsClient` has been removed
+- Function `NewExportPipelinesClient` has been removed
+- Function `*ExportPipelinesClient.BeginCreate` has been removed
+- Function `*ExportPipelinesClient.BeginDelete` has been removed
+- Function `*ExportPipelinesClient.Get` has been removed
+- Function `*ExportPipelinesClient.NewListPager` has been removed
+- Function `NewImportPipelinesClient` has been removed
+- Function `*ImportPipelinesClient.BeginCreate` has been removed
+- Function `*ImportPipelinesClient.BeginDelete` has been removed
+- Function `*ImportPipelinesClient.Get` has been removed
+- Function `*ImportPipelinesClient.NewListPager` has been removed
+- Function `NewPipelineRunsClient` has been removed
+- Function `*PipelineRunsClient.BeginCreate` has been removed
+- Function `*PipelineRunsClient.BeginDelete` has been removed
+- Function `*PipelineRunsClient.Get` has been removed
+- Function `*PipelineRunsClient.NewListPager` has been removed
+- Operation `*RegistriesClient.ScheduleRun` has been changed to LRO, use `*RegistriesClient.BeginScheduleRun` instead.
+- Operation `*RunsClient.Cancel` has been changed to LRO, use `*RunsClient.BeginCancel` instead.
+- Operation `*RunsClient.Update` has been changed to LRO, use `*RunsClient.BeginUpdate` instead.
+- Operation `*TaskRunsClient.Delete` has been changed to LRO, use `*TaskRunsClient.BeginDelete` instead.
+- Operation `*TasksClient.Create` has been changed to LRO, use `*TasksClient.BeginCreate` instead.
+- Operation `*TasksClient.Delete` has been changed to LRO, use `*TasksClient.BeginDelete` instead.
+- Operation `*TasksClient.Update` has been changed to LRO, use `*TasksClient.BeginUpdate` instead.
+- Struct `Archive` has been removed
+- Struct `ArchiveListResult` has been removed
+- Struct `ArchivePackageSourceProperties` has been removed
+- Struct `ArchiveProperties` has been removed
+- Struct `ArchiveUpdateParameters` has been removed
+- Struct `ArchiveUpdateProperties` has been removed
+- Struct `ArchiveVersion` has been removed
+- Struct `ArchiveVersionListResult` has been removed
+- Struct `ArchiveVersionProperties` has been removed
+- Struct `ExportPipeline` has been removed
+- Struct `ExportPipelineListResult` has been removed
+- Struct `ExportPipelineProperties` has been removed
+- Struct `ExportPipelineTargetProperties` has been removed
+- Struct `ImportPipeline` has been removed
+- Struct `ImportPipelineListResult` has been removed
+- Struct `ImportPipelineProperties` has been removed
+- Struct `ImportPipelineSourceProperties` has been removed
+- Struct `PipelineRun` has been removed
+- Struct `PipelineRunListResult` has been removed
+- Struct `PipelineRunProperties` has been removed
+- Struct `PipelineRunRequest` has been removed
+- Struct `PipelineRunResponse` has been removed
+- Struct `PipelineRunSourceProperties` has been removed
+- Struct `PipelineRunTargetProperties` has been removed
+- Struct `PipelineSourceTriggerDescriptor` has been removed
+- Struct `PipelineSourceTriggerProperties` has been removed
+- Struct `PipelineTriggerDescriptor` has been removed
+- Struct `PipelineTriggerProperties` has been removed
+- Struct `ProgressProperties` has been removed
+- Struct `SoftDeletePolicy` has been removed
+- Field `SoftDeletePolicy` of struct `Policies` has been removed
+- Field `MetadataSearch` of struct `RegistryProperties` has been removed
+- Field `MetadataSearch` of struct `RegistryPropertiesUpdateParameters` has been removed
+- Field `Identity` of struct `SourceRegistryCredentials` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `NetworkRuleBypassAllowedForTasks` in struct `RegistryProperties`
+- New field `NetworkRuleBypassAllowedForTasks` in struct `RegistryPropertiesUpdateParameters`
+
+
 ## 1.3.0-beta.3 (2025-04-24)
 ### Breaking Changes
 

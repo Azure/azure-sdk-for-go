@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 * Fixed potential panic when decoding base64 strings.
+* Fixed an issue in resource identifier parsing which prevented it from returning an error for malformed resource IDs.
 
 ### Other Changes
 

@@ -1,5 +1,177 @@
 # Release History
 
+## 2.0.0 (2025-11-04)
+### Breaking Changes
+
+- Type of `SystemData.LastModifiedByType` has been changed from `*LastModifiedByType` to `*CreatedByType`
+- Enum `Architecture` has been removed
+- Enum `BaseImageDependencyType` has been removed
+- Enum `BaseImageTriggerType` has been removed
+- Enum `LastModifiedByType` has been removed
+- Enum `OS` has been removed
+- Enum `RunStatus` has been removed
+- Enum `RunType` has been removed
+- Enum `SecretObjectType` has been removed
+- Enum `SourceControlType` has been removed
+- Enum `SourceRegistryLoginMode` has been removed
+- Enum `SourceTriggerEvent` has been removed
+- Enum `StepType` has been removed
+- Enum `TaskStatus` has been removed
+- Enum `TokenType` has been removed
+- Enum `TriggerStatus` has been removed
+- Enum `UpdateTriggerPayloadType` has been removed
+- Enum `Variant` has been removed
+- Function `NewAgentPoolsClient` has been removed
+- Function `*AgentPoolsClient.BeginCreate` has been removed
+- Function `*AgentPoolsClient.BeginDelete` has been removed
+- Function `*AgentPoolsClient.Get` has been removed
+- Function `*AgentPoolsClient.GetQueueStatus` has been removed
+- Function `*AgentPoolsClient.NewListPager` has been removed
+- Function `*AgentPoolsClient.BeginUpdate` has been removed
+- Function `*ClientFactory.NewAgentPoolsClient` has been removed
+- Function `*ClientFactory.NewRunsClient` has been removed
+- Function `*ClientFactory.NewTaskRunsClient` has been removed
+- Function `*ClientFactory.NewTasksClient` has been removed
+- Function `*DockerBuildRequest.GetRunRequest` has been removed
+- Function `*DockerBuildStep.GetTaskStepProperties` has been removed
+- Function `*DockerBuildStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `*EncodedTaskRunRequest.GetRunRequest` has been removed
+- Function `*EncodedTaskStep.GetTaskStepProperties` has been removed
+- Function `*EncodedTaskStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `*FileTaskRunRequest.GetRunRequest` has been removed
+- Function `*FileTaskStep.GetTaskStepProperties` has been removed
+- Function `*FileTaskStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `*RegistriesClient.GetBuildSourceUploadURL` has been removed
+- Function `*RegistriesClient.BeginScheduleRun` has been removed
+- Function `*RunRequest.GetRunRequest` has been removed
+- Function `NewRunsClient` has been removed
+- Function `*RunsClient.BeginCancel` has been removed
+- Function `*RunsClient.Get` has been removed
+- Function `*RunsClient.GetLogSasURL` has been removed
+- Function `*RunsClient.NewListPager` has been removed
+- Function `*RunsClient.BeginUpdate` has been removed
+- Function `*TaskRunRequest.GetRunRequest` has been removed
+- Function `NewTaskRunsClient` has been removed
+- Function `*TaskRunsClient.BeginCreate` has been removed
+- Function `*TaskRunsClient.BeginDelete` has been removed
+- Function `*TaskRunsClient.Get` has been removed
+- Function `*TaskRunsClient.GetDetails` has been removed
+- Function `*TaskRunsClient.NewListPager` has been removed
+- Function `*TaskRunsClient.BeginUpdate` has been removed
+- Function `*TaskStepProperties.GetTaskStepProperties` has been removed
+- Function `*TaskStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `NewTasksClient` has been removed
+- Function `*TasksClient.BeginCreate` has been removed
+- Function `*TasksClient.BeginDelete` has been removed
+- Function `*TasksClient.Get` has been removed
+- Function `*TasksClient.GetDetails` has been removed
+- Function `*TasksClient.NewListPager` has been removed
+- Function `*TasksClient.BeginUpdate` has been removed
+- Struct `AgentPool` has been removed
+- Struct `AgentPoolListResult` has been removed
+- Struct `AgentPoolProperties` has been removed
+- Struct `AgentPoolPropertiesUpdateParameters` has been removed
+- Struct `AgentPoolQueueStatus` has been removed
+- Struct `AgentPoolUpdateParameters` has been removed
+- Struct `AgentProperties` has been removed
+- Struct `Argument` has been removed
+- Struct `AuthInfo` has been removed
+- Struct `AuthInfoUpdateParameters` has been removed
+- Struct `BaseImageDependency` has been removed
+- Struct `BaseImageTrigger` has been removed
+- Struct `BaseImageTriggerUpdateParameters` has been removed
+- Struct `Credentials` has been removed
+- Struct `CustomRegistryCredentials` has been removed
+- Struct `DockerBuildRequest` has been removed
+- Struct `DockerBuildStep` has been removed
+- Struct `DockerBuildStepUpdateParameters` has been removed
+- Struct `EncodedTaskRunRequest` has been removed
+- Struct `EncodedTaskStep` has been removed
+- Struct `EncodedTaskStepUpdateParameters` has been removed
+- Struct `FileTaskRunRequest` has been removed
+- Struct `FileTaskStep` has been removed
+- Struct `FileTaskStepUpdateParameters` has been removed
+- Struct `ImageDescriptor` has been removed
+- Struct `ImageUpdateTrigger` has been removed
+- Struct `OverrideTaskStepProperties` has been removed
+- Struct `PlatformProperties` has been removed
+- Struct `PlatformUpdateParameters` has been removed
+- Struct `Run` has been removed
+- Struct `RunFilter` has been removed
+- Struct `RunGetLogResult` has been removed
+- Struct `RunListResult` has been removed
+- Struct `RunProperties` has been removed
+- Struct `RunUpdateParameters` has been removed
+- Struct `SecretObject` has been removed
+- Struct `SetValue` has been removed
+- Struct `SourceProperties` has been removed
+- Struct `SourceRegistryCredentials` has been removed
+- Struct `SourceTrigger` has been removed
+- Struct `SourceTriggerDescriptor` has been removed
+- Struct `SourceTriggerUpdateParameters` has been removed
+- Struct `SourceUpdateParameters` has been removed
+- Struct `SourceUploadDefinition` has been removed
+- Struct `Task` has been removed
+- Struct `TaskListResult` has been removed
+- Struct `TaskProperties` has been removed
+- Struct `TaskPropertiesUpdateParameters` has been removed
+- Struct `TaskRun` has been removed
+- Struct `TaskRunListResult` has been removed
+- Struct `TaskRunProperties` has been removed
+- Struct `TaskRunPropertiesUpdateParameters` has been removed
+- Struct `TaskRunRequest` has been removed
+- Struct `TaskRunUpdateParameters` has been removed
+- Struct `TaskUpdateParameters` has been removed
+- Struct `TimerTrigger` has been removed
+- Struct `TimerTriggerDescriptor` has been removed
+- Struct `TimerTriggerUpdateParameters` has been removed
+- Struct `TriggerProperties` has been removed
+- Struct `TriggerUpdateParameters` has been removed
+
+### Features Added
+
+- New enum type `ActivationStatus` with values `ActivationStatusActive`, `ActivationStatusInactive`
+- New enum type `AuditLogStatus` with values `AuditLogStatusDisabled`, `AuditLogStatusEnabled`
+- New enum type `AutoGeneratedDomainNameLabelScope` with values `AutoGeneratedDomainNameLabelScopeNoReuse`, `AutoGeneratedDomainNameLabelScopeResourceGroupReuse`, `AutoGeneratedDomainNameLabelScopeSubscriptionReuse`, `AutoGeneratedDomainNameLabelScopeTenantReuse`, `AutoGeneratedDomainNameLabelScopeUnsecure`
+- New enum type `AzureADAuthenticationAsArmPolicyStatus` with values `AzureADAuthenticationAsArmPolicyStatusDisabled`, `AzureADAuthenticationAsArmPolicyStatusEnabled`
+- New enum type `CertificateType` with values `CertificateTypeLocalDirectory`
+- New enum type `ConnectedRegistryMode` with values `ConnectedRegistryModeMirror`, `ConnectedRegistryModeReadOnly`, `ConnectedRegistryModeReadWrite`, `ConnectedRegistryModeRegistry`
+- New enum type `ConnectionState` with values `ConnectionStateOffline`, `ConnectionStateOnline`, `ConnectionStateSyncing`, `ConnectionStateUnhealthy`
+- New enum type `LogLevel` with values `LogLevelDebug`, `LogLevelError`, `LogLevelInformation`, `LogLevelNone`, `LogLevelWarning`
+- New enum type `RoleAssignmentMode` with values `RoleAssignmentModeAbacRepositoryPermissions`, `RoleAssignmentModeLegacyRegistryPermissions`
+- New enum type `TLSStatus` with values `TLSStatusDisabled`, `TLSStatusEnabled`
+- New function `*ClientFactory.NewConnectedRegistriesClient() *ConnectedRegistriesClient`
+- New function `NewConnectedRegistriesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ConnectedRegistriesClient, error)`
+- New function `*ConnectedRegistriesClient.BeginCreate(context.Context, string, string, string, ConnectedRegistry, *ConnectedRegistriesClientBeginCreateOptions) (*runtime.Poller[ConnectedRegistriesClientCreateResponse], error)`
+- New function `*ConnectedRegistriesClient.BeginDeactivate(context.Context, string, string, string, *ConnectedRegistriesClientBeginDeactivateOptions) (*runtime.Poller[ConnectedRegistriesClientDeactivateResponse], error)`
+- New function `*ConnectedRegistriesClient.BeginDelete(context.Context, string, string, string, *ConnectedRegistriesClientBeginDeleteOptions) (*runtime.Poller[ConnectedRegistriesClientDeleteResponse], error)`
+- New function `*ConnectedRegistriesClient.Get(context.Context, string, string, string, *ConnectedRegistriesClientGetOptions) (ConnectedRegistriesClientGetResponse, error)`
+- New function `*ConnectedRegistriesClient.NewListPager(string, string, *ConnectedRegistriesClientListOptions) *runtime.Pager[ConnectedRegistriesClientListResponse]`
+- New function `*ConnectedRegistriesClient.BeginUpdate(context.Context, string, string, string, ConnectedRegistryUpdateParameters, *ConnectedRegistriesClientBeginUpdateOptions) (*runtime.Poller[ConnectedRegistriesClientUpdateResponse], error)`
+- New struct `ActivationProperties`
+- New struct `AzureADAuthenticationAsArmPolicy`
+- New struct `ConnectedRegistry`
+- New struct `ConnectedRegistryListResult`
+- New struct `ConnectedRegistryProperties`
+- New struct `ConnectedRegistryUpdateParameters`
+- New struct `ConnectedRegistryUpdateProperties`
+- New struct `GarbageCollectionProperties`
+- New struct `LoggingProperties`
+- New struct `LoginServerProperties`
+- New struct `ParentProperties`
+- New struct `StatusDetailProperties`
+- New struct `SyncProperties`
+- New struct `SyncUpdateProperties`
+- New struct `TLSCertificateProperties`
+- New struct `TLSProperties`
+- New field `AzureADAuthenticationAsArmPolicy` in struct `Policies`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `AutoGeneratedDomainNameLabelScope`, `ResourceGroupName` in struct `RegistryNameCheckRequest`
+- New field `AvailableLoginServerName` in struct `RegistryNameStatus`
+- New field `AnonymousPullEnabled`, `AutoGeneratedDomainNameLabelScope`, `NetworkRuleBypassAllowedForTasks`, `RoleAssignmentMode` in struct `RegistryProperties`
+- New field `AnonymousPullEnabled`, `NetworkRuleBypassAllowedForTasks`, `RoleAssignmentMode` in struct `RegistryPropertiesUpdateParameters`
+
+
 ## 1.3.0-beta.3 (2025-04-24)
 ### Breaking Changes
 

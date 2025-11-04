@@ -5,88 +5,6 @@
 
 package armcontainerregistry
 
-// AgentPoolsClientBeginCreateOptions contains the optional parameters for the AgentPoolsClient.BeginCreate method.
-type AgentPoolsClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
-type AgentPoolsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
-type AgentPoolsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
-type AgentPoolsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AgentPoolsClientGetQueueStatusOptions contains the optional parameters for the AgentPoolsClient.GetQueueStatus method.
-type AgentPoolsClientGetQueueStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
-type AgentPoolsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ArchiveVersionsClientBeginCreateOptions contains the optional parameters for the ArchiveVersionsClient.BeginCreate method.
-type ArchiveVersionsClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ArchiveVersionsClientBeginDeleteOptions contains the optional parameters for the ArchiveVersionsClient.BeginDelete method.
-type ArchiveVersionsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ArchiveVersionsClientGetOptions contains the optional parameters for the ArchiveVersionsClient.Get method.
-type ArchiveVersionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ArchiveVersionsClientListOptions contains the optional parameters for the ArchiveVersionsClient.NewListPager method.
-type ArchiveVersionsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ArchivesClientBeginCreateOptions contains the optional parameters for the ArchivesClient.BeginCreate method.
-type ArchivesClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ArchivesClientBeginDeleteOptions contains the optional parameters for the ArchivesClient.BeginDelete method.
-type ArchivesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ArchivesClientGetOptions contains the optional parameters for the ArchivesClient.Get method.
-type ArchivesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ArchivesClientListOptions contains the optional parameters for the ArchivesClient.NewListPager method.
-type ArchivesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ArchivesClientUpdateOptions contains the optional parameters for the ArchivesClient.Update method.
-type ArchivesClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CacheRulesClientBeginCreateOptions contains the optional parameters for the CacheRulesClient.BeginCreate method.
 type CacheRulesClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -184,74 +102,8 @@ type CredentialSetsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExportPipelinesClientBeginCreateOptions contains the optional parameters for the ExportPipelinesClient.BeginCreate method.
-type ExportPipelinesClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientBeginDeleteOptions contains the optional parameters for the ExportPipelinesClient.BeginDelete method.
-type ExportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ExportPipelinesClientGetOptions contains the optional parameters for the ExportPipelinesClient.Get method.
-type ExportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.NewListPager method.
-type ExportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ImportPipelinesClientBeginCreateOptions contains the optional parameters for the ImportPipelinesClient.BeginCreate method.
-type ImportPipelinesClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientBeginDeleteOptions contains the optional parameters for the ImportPipelinesClient.BeginDelete method.
-type ImportPipelinesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ImportPipelinesClientGetOptions contains the optional parameters for the ImportPipelinesClient.Get method.
-type ImportPipelinesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ImportPipelinesClientListOptions contains the optional parameters for the ImportPipelinesClient.NewListPager method.
-type ImportPipelinesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PipelineRunsClientBeginCreateOptions contains the optional parameters for the PipelineRunsClient.BeginCreate method.
-type PipelineRunsClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientBeginDeleteOptions contains the optional parameters for the PipelineRunsClient.BeginDelete method.
-type PipelineRunsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PipelineRunsClientGetOptions contains the optional parameters for the PipelineRunsClient.Get method.
-type PipelineRunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.NewListPager method.
-type PipelineRunsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -318,12 +170,6 @@ type RegistriesClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistriesClientGetBuildSourceUploadURLOptions contains the optional parameters for the RegistriesClient.GetBuildSourceUploadURL
-// method.
-type RegistriesClientGetBuildSourceUploadURLOptions struct {
-	// placeholder for future optional parameters
-}
-
 // RegistriesClientGetOptions contains the optional parameters for the RegistriesClient.Get method.
 type RegistriesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -368,11 +214,6 @@ type RegistriesClientRegenerateCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RegistriesClientScheduleRunOptions contains the optional parameters for the RegistriesClient.ScheduleRun method.
-type RegistriesClientScheduleRunOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ReplicationsClientBeginCreateOptions contains the optional parameters for the ReplicationsClient.BeginCreate method.
 type ReplicationsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -401,36 +242,6 @@ type ReplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RunsClientCancelOptions contains the optional parameters for the RunsClient.Cancel method.
-type RunsClientCancelOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RunsClientGetLogSasURLOptions contains the optional parameters for the RunsClient.GetLogSasURL method.
-type RunsClientGetLogSasURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RunsClientGetOptions contains the optional parameters for the RunsClient.Get method.
-type RunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RunsClientListOptions contains the optional parameters for the RunsClient.NewListPager method.
-type RunsClientListOptions struct {
-	// The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'.
-	// All logical operators except 'Not', 'Has', 'All' are allowed.
-	Filter *string
-
-	// $top is supported for get list of runs, which limits the maximum number of runs to return.
-	Top *int32
-}
-
-// RunsClientUpdateOptions contains the optional parameters for the RunsClient.Update method.
-type RunsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ScopeMapsClientBeginCreateOptions contains the optional parameters for the ScopeMapsClient.BeginCreate method.
 type ScopeMapsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -456,68 +267,6 @@ type ScopeMapsClientGetOptions struct {
 
 // ScopeMapsClientListOptions contains the optional parameters for the ScopeMapsClient.NewListPager method.
 type ScopeMapsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TaskRunsClientBeginCreateOptions contains the optional parameters for the TaskRunsClient.BeginCreate method.
-type TaskRunsClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// TaskRunsClientBeginUpdateOptions contains the optional parameters for the TaskRunsClient.BeginUpdate method.
-type TaskRunsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// TaskRunsClientDeleteOptions contains the optional parameters for the TaskRunsClient.Delete method.
-type TaskRunsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TaskRunsClientGetDetailsOptions contains the optional parameters for the TaskRunsClient.GetDetails method.
-type TaskRunsClientGetDetailsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TaskRunsClientGetOptions contains the optional parameters for the TaskRunsClient.Get method.
-type TaskRunsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TaskRunsClientListOptions contains the optional parameters for the TaskRunsClient.NewListPager method.
-type TaskRunsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientCreateOptions contains the optional parameters for the TasksClient.Create method.
-type TasksClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientDeleteOptions contains the optional parameters for the TasksClient.Delete method.
-type TasksClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientGetDetailsOptions contains the optional parameters for the TasksClient.GetDetails method.
-type TasksClientGetDetailsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientGetOptions contains the optional parameters for the TasksClient.Get method.
-type TasksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
-type TasksClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TasksClientUpdateOptions contains the optional parameters for the TasksClient.Update method.
-type TasksClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookList.json
 func ExampleWebhooksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleWebhooksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookGet.json
 func ExampleWebhooksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleWebhooksClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookCreate.json
 func ExampleWebhooksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,28 +153,7 @@ func ExampleWebhooksClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookDelete.json
-func ExampleWebhooksClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebhooksClient().BeginDelete(ctx, "myResourceGroup", "myRegistry", "myWebhook", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookUpdate.json
 func ExampleWebhooksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,8 +207,8 @@ func ExampleWebhooksClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookPing.json
-func ExampleWebhooksClient_Ping() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookDelete.json
+func ExampleWebhooksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -239,19 +218,43 @@ func ExampleWebhooksClient_Ping() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebhooksClient().Ping(ctx, "myResourceGroup", "myRegistry", "myWebhook", nil)
+	poller, err := clientFactory.NewWebhooksClient().BeginDelete(ctx, "myResourceGroup", "myRegistry", "myWebhook", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookGetCallbackConfig.json
+func ExampleWebhooksClient_GetCallbackConfig() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebhooksClient().GetCallbackConfig(ctx, "myResourceGroup", "myRegistry", "myWebhook", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.EventInfo = armcontainerregistry.EventInfo{
-	// 	ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// res.CallbackConfig = armcontainerregistry.CallbackConfig{
+	// 	CustomHeaders: map[string]*string{
+	// 		"Authorization": to.Ptr("******"),
+	// 	},
+	// 	ServiceURI: to.Ptr("http://myservice.com"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookListEvents.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookListEvents.json
 func ExampleWebhooksClient_NewListEventsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,8 +329,8 @@ func ExampleWebhooksClient_NewListEventsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/WebhookGetCallbackConfig.json
-func ExampleWebhooksClient_GetCallbackConfig() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/WebhookPing.json
+func ExampleWebhooksClient_Ping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -337,17 +340,14 @@ func ExampleWebhooksClient_GetCallbackConfig() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebhooksClient().GetCallbackConfig(ctx, "myResourceGroup", "myRegistry", "myWebhook", nil)
+	res, err := clientFactory.NewWebhooksClient().Ping(ctx, "myResourceGroup", "myRegistry", "myWebhook", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CallbackConfig = armcontainerregistry.CallbackConfig{
-	// 	CustomHeaders: map[string]*string{
-	// 		"Authorization": to.Ptr("******"),
-	// 	},
-	// 	ServiceURI: to.Ptr("http://myservice.com"),
+	// res.EventInfo = armcontainerregistry.EventInfo{
+	// 	ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// }
 }

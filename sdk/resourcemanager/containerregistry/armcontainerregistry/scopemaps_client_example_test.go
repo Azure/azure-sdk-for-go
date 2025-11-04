@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/ScopeMapList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapList.json
 func ExampleScopeMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleScopeMapsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/ScopeMapGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapGet.json
 func ExampleScopeMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleScopeMapsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/ScopeMapCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapCreate.json
 func ExampleScopeMapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,28 +136,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/ScopeMapDelete.json
-func ExampleScopeMapsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewScopeMapsClient().BeginDelete(ctx, "myResourceGroup", "myRegistry", "myScopeMap", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/ScopeMapUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapUpdate.json
 func ExampleScopeMapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,4 +178,25 @@ func ExampleScopeMapsClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapDelete.json
+func ExampleScopeMapsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScopeMapsClient().BeginDelete(ctx, "myResourceGroup", "myRegistry", "myScopeMap", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

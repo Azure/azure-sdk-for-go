@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/AgentPoolsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/AgentPoolsGet.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/AgentPoolsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/AgentPoolsCreate.json
 func ExampleAgentPoolsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleAgentPoolsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/AgentPoolsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/AgentPoolsDelete.json
 func ExampleAgentPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/AgentPoolsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/AgentPoolsUpdate.json
 func ExampleAgentPoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleAgentPoolsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/AgentPoolsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/AgentPoolsList.json
 func ExampleAgentPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleAgentPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc4c1eaef16e0bc8b1e96c3d1e014deb96259b35/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/AgentPoolsGetQueueStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0bd6f6efa5dd9ea7bd2756348bba0631746aa486/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/AgentPoolsGetQueueStatus.json
 func ExampleAgentPoolsClient_GetQueueStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

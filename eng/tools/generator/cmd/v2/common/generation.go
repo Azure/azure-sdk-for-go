@@ -146,6 +146,7 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				RemoveTagSet:         commonGenerateParam.RemoveTagSet,
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
+				ForceStableVersion:   commonGenerateParam.ForceStableVersion,
 			})
 			if err != nil {
 				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))

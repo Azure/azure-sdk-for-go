@@ -34,13 +34,23 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 		return ReadManyItemsResponse{}, err
 	}
 
-	// call client engine here to group the partition key ranges
-	// create query chunks for each physical partition
-	readManyPipeline, err := queryEngine.CreateReadManyPipeline(rawPartitionKeyRanges, items, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version))
+	// create the item identities for the query engine
+	newItemIdentities := make([]queryengine.ItemIdentity, len(items))
+	for i := range items {
+		pkStr, err := items[i].PartitionKey.toJsonString()
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+		newItemIdentities[i] = queryengine.ItemIdentity{
+			PartitionKeyValue: pkStr,
+			ID:                items[i].ID,
+		}
+	}
+	readManyPipeline, err := queryEngine.CreateReadManyPipeline(rawPartitionKeyRanges, newItemIdentities, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version))
 	if err != nil {
 		return ReadManyItemsResponse{}, err
 	}
-	log.Writef(EventQueryEngine, "Created query pipeline")
+	log.Writef(EventQueryEngine, "Created readMany pipeline")
 	// Fetch more data from the pipeline
 	log.Writef(EventQueryEngine, "Fetching more data from readMany pipeline")
 	result, err := readManyPipeline.Run()
@@ -50,7 +60,6 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 	}
 
 	// If we got items, we can return them, and we should do so now, to avoid making unnecessary requests.
-	// Even if there are requests in the queue, the pipeline should return the same requests again on the next call to NextBatch.
 	if len(result.Items) > 0 {
 		log.Writef(EventQueryEngine, "ReadMany pipeline did not process any items", len(result.Items))
 		return ReadManyItemsResponse{}, nil
@@ -80,7 +89,7 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 		buf := new(bytes.Buffer)
 		_, err = buf.ReadFrom(azResponse.Body)
 		if err != nil {
-			queryPipeline.Close()
+			readManyPipeline.Close()
 			return ReadManyItemsResponse{}, err
 		}
 		data := buf.Bytes()
@@ -98,5 +107,13 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 			return ReadManyItemsResponse{}, err
 		}
 	}
-	// No items, but we provided more data, so let's continue the loop.
+
+	if readManyPipeline.IsComplete() {
+		log.Writef(EventQueryEngine, "ReadMany pipeline is complete")
+		readManyPipeline.Close()
+		return ReadManyItemsResponse{
+			Response: lastResponse,
+			Items:    nil,
+		}, nil
+	}
 }

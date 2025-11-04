@@ -54,6 +54,7 @@ type GenerateParam struct {
 	ReleaseDate          string
 	SkipGenerateExample  bool
 	RemoveTagSet         bool
+	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
 	ReleasedTags         []string
@@ -392,6 +393,10 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 	isCurrentPreview, err = changelog.ContainsPreviewAPIVersion(t.PackagePath)
 	if err != nil {
 		return nil, err
+	}
+
+	if generateParam.ForceStableVersion {
+		isCurrentPreview = false
 	}
 
 	log.Printf("Get ori exports for changelog generation...")

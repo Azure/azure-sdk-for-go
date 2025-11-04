@@ -93,14 +93,14 @@ type DirectoryClientCreateOptions struct {
 	Owner *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // DirectoryClientDeleteOptions contains the optional parameters for the DirectoryClient.Delete method.
 type DirectoryClientDeleteOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -119,7 +119,7 @@ type DirectoryClientForceCloseHandlesOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -129,7 +129,7 @@ type DirectoryClientGetPropertiesOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -159,7 +159,7 @@ type DirectoryClientListFilesAndDirectoriesSegmentOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -182,7 +182,7 @@ type DirectoryClientListHandlesOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -221,7 +221,7 @@ type DirectoryClientRenameOptions struct {
 	ReplaceIfExists *bool
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -231,7 +231,7 @@ type DirectoryClientSetMetadataOptions struct {
 	Metadata map[string]*string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -277,14 +277,14 @@ type DirectoryClientSetPropertiesOptions struct {
 	Owner *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
 type FileClientAbortCopyOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -300,7 +300,7 @@ type FileClientAcquireLeaseOptions struct {
 	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -311,7 +311,7 @@ type FileClientBreakLeaseOptions struct {
 	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -327,7 +327,7 @@ type FileClientChangeLeaseOptions struct {
 	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -338,7 +338,7 @@ type FileClientCreateHardLinkOptions struct {
 	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -390,7 +390,7 @@ type FileClientCreateOptions struct {
 	Owner *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -416,14 +416,14 @@ type FileClientCreateSymbolicLinkOptions struct {
 	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // FileClientDeleteOptions contains the optional parameters for the FileClient.Delete method.
 type FileClientDeleteOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -441,7 +441,7 @@ type FileClientDownloadOptions struct {
 	StructuredBodyType *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -457,7 +457,7 @@ type FileClientForceCloseHandlesOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -467,7 +467,7 @@ type FileClientGetPropertiesOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -490,7 +490,7 @@ type FileClientGetRangeListOptions struct {
 	SupportRename *bool
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -504,7 +504,7 @@ type FileClientGetSymbolicLinkOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -524,7 +524,7 @@ type FileClientListHandlesOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -535,7 +535,7 @@ type FileClientReleaseLeaseOptions struct {
 	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -574,7 +574,7 @@ type FileClientRenameOptions struct {
 	ReplaceIfExists *bool
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -624,7 +624,7 @@ type FileClientSetHTTPHeadersOptions struct {
 	Owner *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -634,7 +634,7 @@ type FileClientSetMetadataOptions struct {
 	Metadata map[string]*string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -681,7 +681,7 @@ type FileClientStartCopyOptions struct {
 	Owner *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -700,7 +700,7 @@ type FileClientUploadRangeFromURLOptions struct {
 	SourceRange *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -723,7 +723,7 @@ type FileClientUploadRangeOptions struct {
 	StructuredContentLength *int64
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -736,7 +736,7 @@ type LeaseAccessConditions struct {
 // ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 type ServiceClientGetPropertiesOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -760,14 +760,14 @@ type ServiceClientListSharesSegmentOptions struct {
 	Prefix *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 type ServiceClientSetPropertiesOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -786,7 +786,7 @@ type ShareClientAcquireLeaseOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -808,7 +808,7 @@ type ShareClientBreakLeaseOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -827,7 +827,7 @@ type ShareClientChangeLeaseOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -871,14 +871,14 @@ type ShareClientCreateOptions struct {
 	ShareProvisionedIops *int64
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // ShareClientCreatePermissionOptions contains the optional parameters for the ShareClient.CreatePermission method.
 type ShareClientCreatePermissionOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -888,7 +888,7 @@ type ShareClientCreateSnapshotOptions struct {
 	Metadata map[string]*string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -901,14 +901,14 @@ type ShareClientDeleteOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // ShareClientGetAccessPolicyOptions contains the optional parameters for the ShareClient.GetAccessPolicy method.
 type ShareClientGetAccessPolicyOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -922,7 +922,7 @@ type ShareClientGetPermissionOptions struct {
 	FilePermissionFormat *FilePermissionFormat
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -932,14 +932,14 @@ type ShareClientGetPropertiesOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // ShareClientGetStatisticsOptions contains the optional parameters for the ShareClient.GetStatistics method.
 type ShareClientGetStatisticsOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -953,7 +953,7 @@ type ShareClientReleaseLeaseOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -967,7 +967,7 @@ type ShareClientRenewLeaseOptions struct {
 	Sharesnapshot *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -984,14 +984,14 @@ type ShareClientRestoreOptions struct {
 	RequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
 // ShareClientSetAccessPolicyOptions contains the optional parameters for the ShareClient.SetAccessPolicy method.
 type ShareClientSetAccessPolicyOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -1001,7 +1001,7 @@ type ShareClientSetMetadataOptions struct {
 	Metadata map[string]*string
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 
@@ -1039,7 +1039,7 @@ type ShareClientSetPropertiesOptions struct {
 	ShareProvisionedIops *int64
 
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
-	// [https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN]
+	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32
 }
 

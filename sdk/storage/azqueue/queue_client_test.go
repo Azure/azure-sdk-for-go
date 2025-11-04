@@ -17,11 +17,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/internal/testcommon"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/queueerror"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
 	"github.com/stretchr/testify/require"
 )
 
@@ -1569,4 +1569,41 @@ func (s *UnrecordedTestSuite) TestQueueSASUsingAccessPolicy() {
 		_require.Equal(fmt.Sprintf("%v : %v", testcommon.QueueDefaultData, i), *resp.Messages[0].MessageText)
 		_require.NotNil(resp.Messages[0].MessageID)
 	}
+}
+
+func (s *UnrecordedTestSuite) TestQueueClientGetPropertiesApproximateMessagesCountInt64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azqueue.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	serviceClient, err := azqueue.NewServiceClientWithSharedKeyCredential(
+		fmt.Sprintf("https://%s.queue.core.windows.net/", accountName), cred, nil)
+	_require.NoError(err)
+
+	queueName := testcommon.GenerateQueueName(testName)
+	queueClient := serviceClient.NewQueueClient(queueName)
+
+	_, err = queueClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer func() {
+		_, _ = queueClient.Delete(context.Background(), nil)
+	}()
+
+	const messageCount = 50
+	for i := 0; i < messageCount; i++ {
+		_, err = queueClient.EnqueueMessage(context.Background(), fmt.Sprintf("msg-%d", i), nil)
+		_require.NoError(err)
+	}
+	time.Sleep(3 * time.Second)
+	propsResp, err := queueClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	count := propsResp.ApproximateMessagesCount
+	_require.NotNil(count)
+	_require.GreaterOrEqual(*count, int64(1))
+	_require.IsType(int64(0), *count)
 }

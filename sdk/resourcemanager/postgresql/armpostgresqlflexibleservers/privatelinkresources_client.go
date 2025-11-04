@@ -43,7 +43,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // Get - Gets a private link resource for PostgreSQL server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - groupName - The name of the private link resource.
@@ -95,7 +95,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // NewListByServerPager - Gets the private link resources for PostgreSQL server.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - PrivateLinkResourcesClientListByServerOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByServerPager
@@ -160,7 +160,7 @@ func (client *PrivateLinkResourcesClient) listByServerCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -25,8 +25,7 @@ type SharedGalleriesClient struct {
 }
 
 // NewSharedGalleriesClient creates a new instance of SharedGalleriesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSharedGalleriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedGalleriesClient, error) {
@@ -45,7 +44,7 @@ func NewSharedGalleriesClient(subscriptionID string, credential azcore.TokenCred
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-03
-//   - location - Resource location.
+//   - location - The name of Azure region.
 //   - galleryUniqueName - The unique name of the Shared Gallery.
 //   - options - SharedGalleriesClientGetOptions contains the optional parameters for the SharedGalleriesClient.Get method.
 func (client *SharedGalleriesClient) Get(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleriesClientGetOptions) (SharedGalleriesClientGetResponse, error) {
@@ -108,7 +107,7 @@ func (client *SharedGalleriesClient) getHandleResponse(resp *http.Response) (Sha
 // NewListPager - List shared galleries by subscription id or tenant id.
 //
 // Generated from API version 2024-03-03
-//   - location - Resource location.
+//   - location - The name of Azure region.
 //   - options - SharedGalleriesClientListOptions contains the optional parameters for the SharedGalleriesClient.NewListPager
 //     method.
 func (client *SharedGalleriesClient) NewListPager(location string, options *SharedGalleriesClientListOptions) *runtime.Pager[SharedGalleriesClientListResponse] {

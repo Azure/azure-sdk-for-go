@@ -1,4 +1,4 @@
-# Migration Guide from Azure OpenAI SDK v0.7.x to v0.8.0
+# Migration Guide from Azure OpenAI SDK v0.7.x to v0.8.0+
 
 ## Table of Contents
 - [Overview](#overview)
@@ -23,10 +23,13 @@ The `azopenai.Client` provided by this package has been retired in favor of the 
 | Area                | v0.7.x Approach                | v0.8.0+ Approach (Recommended)         |
 |---------------------|--------------------------------|----------------------------------------|
 | Client              | `azopenai.Client`              | `openai.Client`                        |
-| Assistants          | `azopenaiassistants`           | `openai.Client.Beta.Assistants`        |
+| Assistants          | `azopenaiassistants`           | **No longer available**                |
 | Azure Extensions    | Built-in                       | Use `azopenai` as a companion          |
 | API Structure       | Flat methods                   | Subclients per service category        |
 | Authentication      | Azure-specific                 | Use `azure.With...` options            |
+
+> [!IMPORTANT]
+> The Assistants API is no longer available in the `openai-go` package. If you require Assistants functionality, please refer to the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/assistants) for alternative approaches or use the HTTP API directly.
 
 ## Key Changes
 
@@ -151,12 +154,14 @@ The official OpenAI Go client organizes operations into subclients for each serv
 | `client.Models`       | [Models API](https://platform.openai.com/docs/api-reference/models) |
 | `client.FineTuning`   | [Fine-tuning API](https://platform.openai.com/docs/api-reference/fine-tuning) |
 | `client.VectorStores` | [Vector Stores API](https://platform.openai.com/docs/api-reference/vector-stores) |
-| `client.Beta`         | Beta features (e.g., [Assistants](https://platform.openai.com/docs/api-reference/assistants), [Threads](https://platform.openai.com/docs/api-reference/threads)) |
 | `client.Batches`      | [Batch API](https://platform.openai.com/docs/api-reference/batch) |
 | `client.Uploads`      | [Uploads API](https://platform.openai.com/docs/api-reference/uploads) |
 | `client.Responses`    | [Responses API](https://platform.openai.com/docs/api-reference/responses) |
 
 Refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go) for details.
+
+> [!NOTE]
+> **Assistants API:** As of v1.0.0, the Assistants API is not supported in the `openai-go` package. There is currently no official Go SDK support for Assistants. You may need to use direct HTTP requests for this functionality.
 
 For Azure-specific extensions, see the reference documentation and examples in this companion library.
 

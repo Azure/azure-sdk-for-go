@@ -14,6 +14,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"hash/crc64"
@@ -5682,4 +5683,32 @@ func (s *UnrecordedTestSuite) TestGetPropertiesWithInvalidSAS() {
 	// Attempt to call GetProperties (Issue# https://github.com/Azure/azure-sdk-for-go/issues/23912)
 	_, err = fClientWithInvalidSAS.GetProperties(context.Background(), nil)
 	_require.Error(err)
+}
+
+// TestFileClientAuthenticationFailure tests that GetProperties and DownloadStream handle authentication failures gracefully
+func (s *UnrecordedTestSuite) TestFileClientAuthenticationFailure() {
+	_require := require.New(s.T())
+	tenantID := "invalid-tenant-id"
+	clientID := "invalid-client-id"
+	clientSecret := "invalid-secret"
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	url := "https://" + accountName + ".dfs.core.windows.net/"
+
+	srvClient, err := service.NewClient(url, cred, nil)
+	_require.NoError(err)
+
+	fsClient := srvClient.NewFileSystemClient("testfs")
+	fileClient := fsClient.NewFileClient("testfile")
+
+	_, err = fileClient.GetProperties(context.Background(), nil)
+	_require.Error(err, "Expected authentication error")
+	_require.Contains(err.Error(), "ClientSecretCredential")
+
+	// Test DownloadStream - should return an error, not panic
+	_, err = fileClient.DownloadStream(context.Background(), nil)
+	_require.Error(err, "Expected authentication error")
+	_require.Contains(err.Error(), "ClientSecretCredential")
 }

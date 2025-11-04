@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListNetworkSecurityPerimeterConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListNetworkSecurityPerimeterConfigurations.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("networkSecurityPerimeterConfigurationName"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/networkSecurityPerimeterConfigurations"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/networkSecurityPerimeterConfigurations"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/networkSecurityPerimeterConfigurations/config1"),
 		// 			Properties: &armcognitiveservices.NetworkSecurityPerimeterConfigurationProperties{
 		// 				NetworkSecurityPerimeter: &armcognitiveservices.NetworkSecurityPerimeter{
 		// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Network/networkSecurityPerimeters/perimeter"),
@@ -76,7 +76,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/GetNetworkSecurityPerimeterConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetNetworkSecurityPerimeterConfigurations.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// res.NetworkSecurityPerimeterConfiguration = armcognitiveservices.NetworkSecurityPerimeterConfiguration{
 	// 	Name: to.Ptr("networkSecurityPerimeterConfigurationName"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/networkSecurityPerimeterConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/networkSecurityPerimeterConfigurations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/networkSecurityPerimeterConfigurations/config1"),
 	// 	Properties: &armcognitiveservices.NetworkSecurityPerimeterConfigurationProperties{
 	// 		NetworkSecurityPerimeter: &armcognitiveservices.NetworkSecurityPerimeter{
 	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Network/networkSecurityPerimeters/perimeter"),
@@ -127,7 +127,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ReconcileNetworkSecurityPerimeterConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ReconcileNetworkSecurityPerimeterConfigurations.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	// res.NetworkSecurityPerimeterConfiguration = armcognitiveservices.NetworkSecurityPerimeterConfiguration{
 	// 	Name: to.Ptr("networkSecurityPerimeterConfigurationName"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/networkSecurityPerimeterConfigurations"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/networkSecurityPerimeterConfigurations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/networkSecurityPerimeterConfigurations/config1"),
 	// 	Properties: &armcognitiveservices.NetworkSecurityPerimeterConfigurationProperties{
 	// 		NetworkSecurityPerimeter: &armcognitiveservices.NetworkSecurityPerimeter{
 	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Network/networkSecurityPerimeters/perimeter"),

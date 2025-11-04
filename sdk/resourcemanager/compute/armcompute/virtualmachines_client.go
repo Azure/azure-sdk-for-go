@@ -26,8 +26,7 @@ type VirtualMachinesClient struct {
 }
 
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachinesClient, error) {
@@ -45,8 +44,8 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 // BeginAssessPatches - Assess patches on the VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginAssessPatchesOptions contains the optional parameters for the VirtualMachinesClient.BeginAssessPatches
 //     method.
@@ -71,7 +70,7 @@ func (client *VirtualMachinesClient) BeginAssessPatches(ctx context.Context, res
 // AssessPatches - Assess patches on the VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) assessPatches(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginAssessPatchesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginAssessPatches"
@@ -96,6 +95,10 @@ func (client *VirtualMachinesClient) assessPatches(ctx context.Context, resource
 // assessPatchesCreateRequest creates the AssessPatches request.
 func (client *VirtualMachinesClient) assessPatchesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientBeginAssessPatchesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/assessPatches"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -104,16 +107,12 @@ func (client *VirtualMachinesClient) assessPatchesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -122,8 +121,8 @@ func (client *VirtualMachinesClient) assessPatchesCreateRequest(ctx context.Cont
 // BeginAttachDetachDataDisks - Attach and detach data disks to/from the virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - parameters - Parameters supplied to the attach and detach data disks operation on the virtual machine.
 //   - options - VirtualMachinesClientBeginAttachDetachDataDisksOptions contains the optional parameters for the VirtualMachinesClient.BeginAttachDetachDataDisks
@@ -149,7 +148,7 @@ func (client *VirtualMachinesClient) BeginAttachDetachDataDisks(ctx context.Cont
 // AttachDetachDataDisks - Attach and detach data disks to/from the virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) attachDetachDataDisks(ctx context.Context, resourceGroupName string, vmName string, parameters AttachDetachDataDisksRequest, options *VirtualMachinesClientBeginAttachDetachDataDisksOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginAttachDetachDataDisks"
@@ -174,6 +173,10 @@ func (client *VirtualMachinesClient) attachDetachDataDisks(ctx context.Context, 
 // attachDetachDataDisksCreateRequest creates the AttachDetachDataDisks request.
 func (client *VirtualMachinesClient) attachDetachDataDisksCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters AttachDetachDataDisksRequest, _ *VirtualMachinesClientBeginAttachDetachDataDisksOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/attachDetachDataDisks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -182,16 +185,12 @@ func (client *VirtualMachinesClient) attachDetachDataDisksCreateRequest(ctx cont
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -204,8 +203,8 @@ func (client *VirtualMachinesClient) attachDetachDataDisksCreateRequest(ctx cont
 // similar VMs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - parameters - Parameters supplied to the Capture Virtual Machine operation.
 //   - options - VirtualMachinesClientBeginCaptureOptions contains the optional parameters for the VirtualMachinesClient.BeginCapture
@@ -232,7 +231,7 @@ func (client *VirtualMachinesClient) BeginCapture(ctx context.Context, resourceG
 // VMs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) capture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesClientBeginCaptureOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginCapture"
@@ -257,6 +256,10 @@ func (client *VirtualMachinesClient) capture(ctx context.Context, resourceGroupN
 // captureCreateRequest creates the Capture request.
 func (client *VirtualMachinesClient) captureCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, _ *VirtualMachinesClientBeginCaptureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/capture"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -265,16 +268,12 @@ func (client *VirtualMachinesClient) captureCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -287,8 +286,8 @@ func (client *VirtualMachinesClient) captureCreateRequest(ctx context.Context, r
 // before invoking this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginConvertToManagedDisksOptions contains the optional parameters for the VirtualMachinesClient.BeginConvertToManagedDisks
 //     method.
@@ -299,7 +298,8 @@ func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Cont
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientConvertToManagedDisksResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -313,7 +313,7 @@ func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Cont
 // before invoking this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) convertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginConvertToManagedDisksOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginConvertToManagedDisks"
@@ -338,6 +338,10 @@ func (client *VirtualMachinesClient) convertToManagedDisks(ctx context.Context, 
 // convertToManagedDisksCreateRequest creates the ConvertToManagedDisks request.
 func (client *VirtualMachinesClient) convertToManagedDisksCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientBeginConvertToManagedDisksOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/convertToManagedDisks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -346,16 +350,12 @@ func (client *VirtualMachinesClient) convertToManagedDisksCreateRequest(ctx cont
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,8 +365,8 @@ func (client *VirtualMachinesClient) convertToManagedDisksCreateRequest(ctx cont
 // during virtual machine creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - parameters - Parameters supplied to the Create Virtual Machine operation.
 //   - options - VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
@@ -378,7 +378,8 @@ func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, re
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -392,7 +393,7 @@ func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, re
 // virtual machine creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginCreateOrUpdate"
@@ -417,6 +418,10 @@ func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourc
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -425,16 +430,12 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -453,8 +454,8 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 // resources that this virtual machine uses.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginDeallocateOptions contains the optional parameters for the VirtualMachinesClient.BeginDeallocate
 //     method.
@@ -465,7 +466,8 @@ func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resour
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientDeallocateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -479,7 +481,7 @@ func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resour
 // that this virtual machine uses.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) deallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginDeallocateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginDeallocate"
@@ -504,6 +506,10 @@ func (client *VirtualMachinesClient) deallocate(ctx context.Context, resourceGro
 // deallocateCreateRequest creates the Deallocate request.
 func (client *VirtualMachinesClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/deallocate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -512,16 +518,12 @@ func (client *VirtualMachinesClient) deallocateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	if options != nil && options.Hibernate != nil {
 		reqQP.Set("hibernate", strconv.FormatBool(*options.Hibernate))
 	}
@@ -533,8 +535,8 @@ func (client *VirtualMachinesClient) deallocateCreateRequest(ctx context.Context
 // BeginDelete - The operation to delete a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete
 //     method.
@@ -545,7 +547,8 @@ func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGr
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -558,7 +561,7 @@ func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - The operation to delete a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginDelete"
@@ -583,6 +586,10 @@ func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resour
 // deleteCreateRequest creates the Delete request.
 func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -591,16 +598,12 @@ func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	if options != nil && options.ForceDeletion != nil {
 		reqQP.Set("forceDeletion", strconv.FormatBool(*options.ForceDeletion))
 	}
@@ -616,8 +619,8 @@ func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, re
 // [https://docs.microsoft.com/azure/virtual-machines/linux/capture-image].
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientGeneralizeOptions contains the optional parameters for the VirtualMachinesClient.Generalize
 //     method.
@@ -645,6 +648,10 @@ func (client *VirtualMachinesClient) Generalize(ctx context.Context, resourceGro
 // generalizeCreateRequest creates the Generalize request.
 func (client *VirtualMachinesClient) generalizeCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientGeneralizeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/generalize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -653,16 +660,12 @@ func (client *VirtualMachinesClient) generalizeCreateRequest(ctx context.Context
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -671,8 +674,8 @@ func (client *VirtualMachinesClient) generalizeCreateRequest(ctx context.Context
 // Get - Retrieves information about the model view or the instance view of a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
 func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientGetOptions) (VirtualMachinesClientGetResponse, error) {
@@ -700,6 +703,10 @@ func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName 
 // getCreateRequest creates the Get request.
 func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -708,10 +715,6 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -720,7 +723,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -738,8 +741,8 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 // BeginInstallPatches - Installs patches on the VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - installPatchesInput - Input for InstallPatches as directly received by the API
 //   - options - VirtualMachinesClientBeginInstallPatchesOptions contains the optional parameters for the VirtualMachinesClient.BeginInstallPatches
@@ -765,7 +768,7 @@ func (client *VirtualMachinesClient) BeginInstallPatches(ctx context.Context, re
 // InstallPatches - Installs patches on the VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) installPatches(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, options *VirtualMachinesClientBeginInstallPatchesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginInstallPatches"
@@ -790,6 +793,10 @@ func (client *VirtualMachinesClient) installPatches(ctx context.Context, resourc
 // installPatchesCreateRequest creates the InstallPatches request.
 func (client *VirtualMachinesClient) installPatchesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, installPatchesInput VirtualMachineInstallPatchesParameters, _ *VirtualMachinesClientBeginInstallPatchesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/installPatches"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -798,16 +805,12 @@ func (client *VirtualMachinesClient) installPatchesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, installPatchesInput); err != nil {
@@ -819,8 +822,8 @@ func (client *VirtualMachinesClient) installPatchesCreateRequest(ctx context.Con
 // InstanceView - Retrieves information about the run-time state of a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientInstanceViewOptions contains the optional parameters for the VirtualMachinesClient.InstanceView
 //     method.
@@ -849,6 +852,10 @@ func (client *VirtualMachinesClient) InstanceView(ctx context.Context, resourceG
 // instanceViewCreateRequest creates the InstanceView request.
 func (client *VirtualMachinesClient) instanceViewCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientInstanceViewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/instanceView"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -857,16 +864,12 @@ func (client *VirtualMachinesClient) instanceViewCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -884,8 +887,8 @@ func (client *VirtualMachinesClient) instanceViewHandleResponse(resp *http.Respo
 // NewListPager - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response
 // to get the next page of virtual machines.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.NewListPager
 //     method.
 func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, options *VirtualMachinesClientListOptions) *runtime.Pager[VirtualMachinesClientListResponse] {
@@ -914,14 +917,14 @@ func (client *VirtualMachinesClient) NewListPager(resourceGroupName string, opti
 // listCreateRequest creates the List request.
 func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualMachinesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines"
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -933,7 +936,7 @@ func (client *VirtualMachinesClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -951,7 +954,7 @@ func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (Vi
 // NewListAllPager - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response
 // to get the next page of virtual machines.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - options - VirtualMachinesClientListAllOptions contains the optional parameters for the VirtualMachinesClient.NewListAllPager
 //     method.
 func (client *VirtualMachinesClient) NewListAllPager(options *VirtualMachinesClientListAllOptions) *runtime.Pager[VirtualMachinesClientListAllResponse] {
@@ -995,7 +998,7 @@ func (client *VirtualMachinesClient) listAllCreateRequest(ctx context.Context, o
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	if options != nil && options.StatusOnly != nil {
 		reqQP.Set("statusOnly", *options.StatusOnly)
 	}
@@ -1015,28 +1018,27 @@ func (client *VirtualMachinesClient) listAllHandleResponse(resp *http.Response) 
 
 // NewListAvailableSizesPager - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientListAvailableSizesOptions contains the optional parameters for the VirtualMachinesClient.NewListAvailableSizesPager
 //     method.
 func (client *VirtualMachinesClient) NewListAvailableSizesPager(resourceGroupName string, vmName string, options *VirtualMachinesClientListAvailableSizesOptions) *runtime.Pager[VirtualMachinesClientListAvailableSizesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListAvailableSizesResponse]{
 		More: func(page VirtualMachinesClientListAvailableSizesResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachinesClientListAvailableSizesResponse) (VirtualMachinesClientListAvailableSizesResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachinesClient.NewListAvailableSizesPager")
-			req, err := client.listAvailableSizesCreateRequest(ctx, resourceGroupName, vmName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAvailableSizesCreateRequest(ctx, resourceGroupName, vmName, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachinesClientListAvailableSizesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachinesClientListAvailableSizesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachinesClientListAvailableSizesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAvailableSizesHandleResponse(resp)
 		},
@@ -1047,6 +1049,10 @@ func (client *VirtualMachinesClient) NewListAvailableSizesPager(resourceGroupNam
 // listAvailableSizesCreateRequest creates the ListAvailableSizes request.
 func (client *VirtualMachinesClient) listAvailableSizesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientListAvailableSizesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/vmSizes"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1055,16 +1061,12 @@ func (client *VirtualMachinesClient) listAvailableSizesCreateRequest(ctx context
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1081,8 +1083,8 @@ func (client *VirtualMachinesClient) listAvailableSizesHandleResponse(resp *http
 
 // NewListByLocationPager - Gets all the virtual machines under the specified subscription for the specified location.
 //
-// Generated from API version 2024-11-01
-//   - location - The location for which virtual machines under the subscription are queried.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - options - VirtualMachinesClientListByLocationOptions contains the optional parameters for the VirtualMachinesClient.NewListByLocationPager
 //     method.
 func (client *VirtualMachinesClient) NewListByLocationPager(location string, options *VirtualMachinesClientListByLocationOptions) *runtime.Pager[VirtualMachinesClientListByLocationResponse] {
@@ -1111,20 +1113,20 @@ func (client *VirtualMachinesClient) NewListByLocationPager(location string, opt
 // listByLocationCreateRequest creates the ListByLocation request.
 func (client *VirtualMachinesClient) listByLocationCreateRequest(ctx context.Context, location string, _ *VirtualMachinesClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1142,8 +1144,8 @@ func (client *VirtualMachinesClient) listByLocationHandleResponse(resp *http.Res
 // BeginMigrateToVMScaleSet - Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginMigrateToVMScaleSetOptions contains the optional parameters for the VirtualMachinesClient.BeginMigrateToVMScaleSet
 //     method.
@@ -1154,7 +1156,8 @@ func (client *VirtualMachinesClient) BeginMigrateToVMScaleSet(ctx context.Contex
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientMigrateToVMScaleSetResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1167,7 +1170,7 @@ func (client *VirtualMachinesClient) BeginMigrateToVMScaleSet(ctx context.Contex
 // MigrateToVMScaleSet - Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) migrateToVMScaleSet(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginMigrateToVMScaleSetOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginMigrateToVMScaleSet"
@@ -1192,6 +1195,10 @@ func (client *VirtualMachinesClient) migrateToVMScaleSet(ctx context.Context, re
 // migrateToVMScaleSetCreateRequest creates the MigrateToVMScaleSet request.
 func (client *VirtualMachinesClient) migrateToVMScaleSetCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginMigrateToVMScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/migrateToVirtualMachineScaleSet"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1200,16 +1207,12 @@ func (client *VirtualMachinesClient) migrateToVMScaleSetCreateRequest(ctx contex
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -1224,8 +1227,8 @@ func (client *VirtualMachinesClient) migrateToVMScaleSetCreateRequest(ctx contex
 // BeginPerformMaintenance - The operation to perform maintenance on a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginPerformMaintenanceOptions contains the optional parameters for the VirtualMachinesClient.BeginPerformMaintenance
 //     method.
@@ -1236,7 +1239,8 @@ func (client *VirtualMachinesClient) BeginPerformMaintenance(ctx context.Context
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientPerformMaintenanceResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1249,7 +1253,7 @@ func (client *VirtualMachinesClient) BeginPerformMaintenance(ctx context.Context
 // PerformMaintenance - The operation to perform maintenance on a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) performMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginPerformMaintenanceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginPerformMaintenance"
@@ -1274,6 +1278,10 @@ func (client *VirtualMachinesClient) performMaintenance(ctx context.Context, res
 // performMaintenanceCreateRequest creates the PerformMaintenance request.
 func (client *VirtualMachinesClient) performMaintenanceCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientBeginPerformMaintenanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/performMaintenance"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1282,28 +1290,23 @@ func (client *VirtualMachinesClient) performMaintenanceCreateRequest(ctx context
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginPowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-// provisioned resources. You are still charged for this virtual machine. NOTE: This operation is
-// not allowed on a virtual machine that is being deallocated or has already been deallocated.
+// provisioned resources. You are still charged for this virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginPowerOffOptions contains the optional parameters for the VirtualMachinesClient.BeginPowerOff
 //     method.
@@ -1314,7 +1317,8 @@ func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resource
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientPowerOffResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1325,11 +1329,10 @@ func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resource
 }
 
 // PowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned
-// resources. You are still charged for this virtual machine. NOTE: This operation is
-// not allowed on a virtual machine that is being deallocated or has already been deallocated.
+// resources. You are still charged for this virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) powerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginPowerOffOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginPowerOff"
@@ -1354,6 +1357,10 @@ func (client *VirtualMachinesClient) powerOff(ctx context.Context, resourceGroup
 // powerOffCreateRequest creates the PowerOff request.
 func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginPowerOffOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/powerOff"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1362,16 +1369,12 @@ func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	if options != nil && options.SkipShutdown != nil {
 		reqQP.Set("skipShutdown", strconv.FormatBool(*options.SkipShutdown))
 	}
@@ -1383,8 +1386,8 @@ func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, 
 // BeginReapply - The operation to reapply a virtual machine's state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginReapplyOptions contains the optional parameters for the VirtualMachinesClient.BeginReapply
 //     method.
@@ -1395,7 +1398,8 @@ func (client *VirtualMachinesClient) BeginReapply(ctx context.Context, resourceG
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientReapplyResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1408,7 +1412,7 @@ func (client *VirtualMachinesClient) BeginReapply(ctx context.Context, resourceG
 // Reapply - The operation to reapply a virtual machine's state.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) reapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginReapplyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginReapply"
@@ -1433,6 +1437,10 @@ func (client *VirtualMachinesClient) reapply(ctx context.Context, resourceGroupN
 // reapplyCreateRequest creates the Reapply request.
 func (client *VirtualMachinesClient) reapplyCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientBeginReapplyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/reapply"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1441,16 +1449,12 @@ func (client *VirtualMachinesClient) reapplyCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1459,8 +1463,8 @@ func (client *VirtualMachinesClient) reapplyCreateRequest(ctx context.Context, r
 // BeginRedeploy - Shuts down the virtual machine, moves it to a new node, and powers it back on.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginRedeployOptions contains the optional parameters for the VirtualMachinesClient.BeginRedeploy
 //     method.
@@ -1471,7 +1475,8 @@ func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resource
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientRedeployResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1484,7 +1489,7 @@ func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resource
 // Redeploy - Shuts down the virtual machine, moves it to a new node, and powers it back on.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginRedeployOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginRedeploy"
@@ -1509,6 +1514,10 @@ func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroup
 // redeployCreateRequest creates the Redeploy request.
 func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientBeginRedeployOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/redeploy"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1517,16 +1526,12 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1539,8 +1544,8 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 // will be deleted after reimage. The deleteOption of the OS disk should be updated accordingly before performing the reimage.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginReimageOptions contains the optional parameters for the VirtualMachinesClient.BeginReimage
 //     method.
@@ -1551,7 +1556,8 @@ func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceG
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientReimageResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1568,7 +1574,7 @@ func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceG
 // will be deleted after reimage. The deleteOption of the OS disk should be updated accordingly before performing the reimage.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginReimageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginReimage"
@@ -1593,6 +1599,10 @@ func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupN
 // reimageCreateRequest creates the Reimage request.
 func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginReimageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/reimage"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1601,16 +1611,12 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -1625,8 +1631,8 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 // BeginRestart - The operation to restart a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginRestartOptions contains the optional parameters for the VirtualMachinesClient.BeginRestart
 //     method.
@@ -1637,7 +1643,8 @@ func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceG
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1650,7 +1657,7 @@ func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceG
 // Restart - The operation to restart a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) restart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginRestart"
@@ -1675,6 +1682,10 @@ func (client *VirtualMachinesClient) restart(ctx context.Context, resourceGroupN
 // restartCreateRequest creates the Restart request.
 func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1683,16 +1694,12 @@ func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1701,8 +1708,8 @@ func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, r
 // RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientRetrieveBootDiagnosticsDataOptions contains the optional parameters for the VirtualMachinesClient.RetrieveBootDiagnosticsData
 //     method.
@@ -1731,6 +1738,10 @@ func (client *VirtualMachinesClient) RetrieveBootDiagnosticsData(ctx context.Con
 // retrieveBootDiagnosticsDataCreateRequest creates the RetrieveBootDiagnosticsData request.
 func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientRetrieveBootDiagnosticsDataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/retrieveBootDiagnosticsData"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1739,16 +1750,12 @@ func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataCreateRequest(ct
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	if options != nil && options.SasURIExpirationTimeInMinutes != nil {
 		reqQP.Set("sasUriExpirationTimeInMinutes", strconv.FormatInt(int64(*options.SasURIExpirationTimeInMinutes), 10))
 	}
@@ -1769,8 +1776,8 @@ func (client *VirtualMachinesClient) retrieveBootDiagnosticsDataHandleResponse(r
 // BeginRunCommand - Run command on the VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - parameters - Parameters supplied to the Run command operation.
 //   - options - VirtualMachinesClientBeginRunCommandOptions contains the optional parameters for the VirtualMachinesClient.BeginRunCommand
@@ -1796,7 +1803,7 @@ func (client *VirtualMachinesClient) BeginRunCommand(ctx context.Context, resour
 // RunCommand - Run command on the VM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) runCommand(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesClientBeginRunCommandOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginRunCommand"
@@ -1821,6 +1828,10 @@ func (client *VirtualMachinesClient) runCommand(ctx context.Context, resourceGro
 // runCommandCreateRequest creates the RunCommand request.
 func (client *VirtualMachinesClient) runCommandCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, _ *VirtualMachinesClientBeginRunCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/runCommand"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1829,18 +1840,14 @@ func (client *VirtualMachinesClient) runCommandCreateRequest(ctx context.Context
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
@@ -1850,8 +1857,8 @@ func (client *VirtualMachinesClient) runCommandCreateRequest(ctx context.Context
 // SimulateEviction - The operation to simulate the eviction of spot virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientSimulateEvictionOptions contains the optional parameters for the VirtualMachinesClient.SimulateEviction
 //     method.
@@ -1879,6 +1886,10 @@ func (client *VirtualMachinesClient) SimulateEviction(ctx context.Context, resou
 // simulateEvictionCreateRequest creates the SimulateEviction request.
 func (client *VirtualMachinesClient) simulateEvictionCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientSimulateEvictionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/simulateEviction"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1887,16 +1898,12 @@ func (client *VirtualMachinesClient) simulateEvictionCreateRequest(ctx context.C
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1905,8 +1912,8 @@ func (client *VirtualMachinesClient) simulateEvictionCreateRequest(ctx context.C
 // BeginStart - The operation to start a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart
 //     method.
@@ -1917,7 +1924,8 @@ func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGro
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -1930,7 +1938,7 @@ func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGro
 // Start - The operation to start a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginStart"
@@ -1955,6 +1963,10 @@ func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupNam
 // startCreateRequest creates the Start request.
 func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *VirtualMachinesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1963,16 +1975,12 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1981,8 +1989,8 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 // BeginUpdate - The operation to update a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmName - The name of the virtual machine.
 //   - parameters - Parameters supplied to the Update Virtual Machine operation.
 //   - options - VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate
@@ -1994,7 +2002,8 @@ func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGr
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachinesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -2007,7 +2016,7 @@ func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - The operation to update a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginUpdate"
@@ -2032,6 +2041,10 @@ func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupNa
 // updateCreateRequest creates the Update request.
 func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -2040,16 +2053,12 @@ func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter vmName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

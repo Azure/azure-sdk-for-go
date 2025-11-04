@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/GetDeletedAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetDeletedAccount.json
 func ExampleDeletedAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleDeletedAccountsClient_Get() {
 	// res.Account = armcognitiveservices.Account{
 	// 	Name: to.Ptr("myAccount"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/providers/Microsoft.CognitiveServices/locations/westus/resourceGroups/myResourceGroup/deletedAccounts/myAccount"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.CognitiveServices/locations/westus/resourceGroups/myResourceGroup/deletedAccounts/myAccount"),
 	// 	Etag: to.Ptr("W/\"datetime'2017-04-10T04%3A42%3A19.7067387Z'\""),
 	// 	Kind: to.Ptr("Emotion"),
 	// 	Location: to.Ptr("westus"),
@@ -56,7 +56,7 @@ func ExampleDeletedAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/PurgeDeletedAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/PurgeDeletedAccount.json
 func ExampleDeletedAccountsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleDeletedAccountsClient_BeginPurge() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListDeletedAccountsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListDeletedAccountsBySubscription.json
 func ExampleDeletedAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleDeletedAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("bingSearch"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A19%3A08.762494Z'\""),
 		// 			Kind: to.Ptr("Bing.Search"),
 		// 			Location: to.Ptr("global"),
@@ -119,7 +119,7 @@ func ExampleDeletedAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("CrisProd"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/CrisProd"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/CrisProd"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-03-31T08%3A57%3A07.4499566Z'\""),
 		// 			Kind: to.Ptr("CRIS"),
 		// 			Location: to.Ptr("westus"),
@@ -137,7 +137,7 @@ func ExampleDeletedAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("rayrptest0308"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/rayrptest0308"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/rayrptest0308"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A15%3A23.5232645Z'\""),
 		// 			Kind: to.Ptr("Face"),
 		// 			Location: to.Ptr("westus"),
@@ -152,7 +152,7 @@ func ExampleDeletedAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("raytest02"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/raytest02"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/raytest02"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-04-04T02%3A07%3A07.3957572Z'\""),
 		// 			Kind: to.Ptr("Emotion"),
 		// 			Location: to.Ptr("westus"),

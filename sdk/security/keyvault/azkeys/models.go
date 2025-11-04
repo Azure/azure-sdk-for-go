@@ -194,9 +194,6 @@ type KeyAttestation struct {
 
 // KeyAttributes - The attributes of a key managed by the key vault service.
 type KeyAttributes struct {
-	// The key or key version attestation information.
-	Attestation *KeyAttestation
-
 	// Determines whether the object is enabled.
 	Enabled *bool
 
@@ -209,6 +206,9 @@ type KeyAttributes struct {
 
 	// Not before date in UTC.
 	NotBefore *time.Time
+
+	// READ-ONLY; The key or key version attestation information.
+	Attestation *KeyAttestation
 
 	// READ-ONLY; Creation time in UTC.
 	Created *time.Time

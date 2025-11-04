@@ -147,7 +147,16 @@ func (c *ClusterManagersServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterManagerNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.ClusterManagersClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.ClusterManagersClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterManagerNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -191,7 +200,16 @@ func (c *ClusterManagersServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterManagerNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.ClusterManagersClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.ClusterManagersClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterManagerNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -340,7 +358,16 @@ func (c *ClusterManagersServerTransport) dispatchUpdate(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.Update(req.Context(), resourceGroupNameParam, clusterManagerNameParam, body, nil)
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	var options *armnetworkcloud.ClusterManagersClientUpdateOptions
+	if ifMatchParam != nil || ifNoneMatchParam != nil {
+		options = &armnetworkcloud.ClusterManagersClientUpdateOptions{
+			IfMatch:     ifMatchParam,
+			IfNoneMatch: ifNoneMatchParam,
+		}
+	}
+	respr, errRespr := c.srv.Update(req.Context(), resourceGroupNameParam, clusterManagerNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

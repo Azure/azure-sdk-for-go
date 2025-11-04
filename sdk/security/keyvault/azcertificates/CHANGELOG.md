@@ -1,14 +1,24 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.5.0 (Unreleased)
 
 ### Features Added
+* Added support for IP addresses and URIs in `SubjectAlternativeNames` through new `IPAddresses` and `URIs` fields
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded to API service version `2025-07-01`
+
+## 1.4.0 (2025-06-12)
+
+### Features Added
+* Add fakes support (https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes)
+
+### Other Changes
+* Upgraded to API service version `7.6`
 
 ## 1.4.0-beta.1 (2025-04-10)
 

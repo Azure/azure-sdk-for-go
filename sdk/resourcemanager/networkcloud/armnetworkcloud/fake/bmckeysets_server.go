@@ -145,7 +145,16 @@ func (b *BmcKeySetsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BmcKeySetsClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BmcKeySetsClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -193,7 +202,16 @@ func (b *BmcKeySetsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BmcKeySetsClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BmcKeySetsClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -323,7 +341,16 @@ func (b *BmcKeySetsServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.BmcKeySetsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.BmcKeySetsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := b.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, bmcKeySetNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

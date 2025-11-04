@@ -15,345 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
-func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySetWithScheduledEventPolicy() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAvailabilitySetsClient().CreateOrUpdate(ctx, "myResourceGroup", "myAvailabilitySet", armcompute.AvailabilitySet{
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.AvailabilitySetProperties{
-			PlatformFaultDomainCount:  to.Ptr[int32](2),
-			PlatformUpdateDomainCount: to.Ptr[int32](20),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AvailabilitySet = armcompute.AvailabilitySet{
-	// 	Name: to.Ptr("myAvailabilitySet"),
-	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armcompute.AvailabilitySetProperties{
-	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
-	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
-	// 		ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
-	// 			ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
-	// 				EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
-	// 					Enable: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			UserInitiatedReboot: &armcompute.UserInitiatedReboot{
-	// 				AutomaticallyApprove: to.Ptr(true),
-	// 			},
-	// 			UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
-	// 				AutomaticallyApprove: to.Ptr(true),
-	// 			},
-	// 		},
-	// 	},
-	// 	SKU: &armcompute.SKU{
-	// 		Name: to.Ptr("Classic"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Create.json
-func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAvailabilitySetsClient().CreateOrUpdate(ctx, "myResourceGroup", "myAvailabilitySet", armcompute.AvailabilitySet{
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.AvailabilitySetProperties{
-			PlatformFaultDomainCount:  to.Ptr[int32](2),
-			PlatformUpdateDomainCount: to.Ptr[int32](20),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AvailabilitySet = armcompute.AvailabilitySet{
-	// 	Name: to.Ptr("myAvailabilitySet"),
-	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armcompute.AvailabilitySetProperties{
-	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
-	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
-	// 		VirtualMachineScaleSetMigrationInfo: &armcompute.VirtualMachineScaleSetMigrationInfo{
-	// 			DefaultVirtualMachineScaleSetInfo: &armcompute.DefaultVirtualMachineScaleSetInfo{
-	// 				ConstrainedMaximumCapacity: to.Ptr(false),
-	// 				DefaultVirtualMachineScaleSet: &armcompute.SubResource{
-	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 				},
-	// 			},
-	// 			MigrateToVirtualMachineScaleSet: &armcompute.SubResource{
-	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 			},
-	// 		},
-	// 	},
-	// 	SKU: &armcompute.SKU{
-	// 		Name: to.Ptr("Classic"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Update_MaximumSet_Gen.json
-func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAvailabilitySetsClient().Update(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaa", armcompute.AvailabilitySetUpdate{
-		Tags: map[string]*string{
-			"key2574": to.Ptr("aaaaaaaa"),
-		},
-		Properties: &armcompute.AvailabilitySetProperties{
-			PlatformFaultDomainCount:  to.Ptr[int32](2),
-			PlatformUpdateDomainCount: to.Ptr[int32](20),
-			ProximityPlacementGroup: &armcompute.SubResource{
-				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-			},
-			VirtualMachines: []*armcompute.SubResource{
-				{
-					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-				}},
-		},
-		SKU: &armcompute.SKU{
-			Name:     to.Ptr("DSv3-Type1"),
-			Capacity: to.Ptr[int64](7),
-			Tier:     to.Ptr("aaa"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AvailabilitySet = armcompute.AvailabilitySet{
-	// 	Name: to.Ptr("myAvailabilitySet"),
-	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key2505": to.Ptr("aa"),
-	// 		"key9626": to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armcompute.AvailabilitySetProperties{
-	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
-	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
-	// 		ProximityPlacementGroup: &armcompute.SubResource{
-	// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-	// 		},
-	// 		Statuses: []*armcompute.InstanceViewStatus{
-	// 			{
-	// 				Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-	// 				DisplayStatus: to.Ptr("aaaaaa"),
-	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 				Message: to.Ptr("a"),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
-	// 		}},
-	// 		VirtualMachines: []*armcompute.SubResource{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-	// 		}},
-	// 	},
-	// 	SKU: &armcompute.SKU{
-	// 		Name: to.Ptr("Classic"),
-	// 		Capacity: to.Ptr[int64](29),
-	// 		Tier: to.Ptr("aaaaaaaaaaaaaa"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Update_MinimumSet_Gen.json
-func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAvailabilitySetsClient().Update(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", armcompute.AvailabilitySetUpdate{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AvailabilitySet = armcompute.AvailabilitySet{
-	// 	Location: to.Ptr("westus"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MaximumSet_Gen.json
-func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewAvailabilitySetsClient().Delete(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MinimumSet_Gen.json
-func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewAvailabilitySetsClient().Delete(ctx, "rgcompute", "aaaaaaaaaaa", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
-func ExampleAvailabilitySetsClient_Get_availabilitySetGetMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAvailabilitySetsClient().Get(ctx, "rgcompute", "aaaaaaaaaaaa", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AvailabilitySet = armcompute.AvailabilitySet{
-	// 	Name: to.Ptr("myAvailabilitySet"),
-	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key2505": to.Ptr("aa"),
-	// 		"key9626": to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armcompute.AvailabilitySetProperties{
-	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
-	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
-	// 		ProximityPlacementGroup: &armcompute.SubResource{
-	// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-	// 		},
-	// 		ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
-	// 			ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
-	// 				EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
-	// 					Enable: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			UserInitiatedReboot: &armcompute.UserInitiatedReboot{
-	// 				AutomaticallyApprove: to.Ptr(true),
-	// 			},
-	// 			UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
-	// 				AutomaticallyApprove: to.Ptr(true),
-	// 			},
-	// 		},
-	// 		Statuses: []*armcompute.InstanceViewStatus{
-	// 			{
-	// 				Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-	// 				DisplayStatus: to.Ptr("aaaaaa"),
-	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 				Message: to.Ptr("a"),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
-	// 		}},
-	// 		VirtualMachineScaleSetMigrationInfo: &armcompute.VirtualMachineScaleSetMigrationInfo{
-	// 			DefaultVirtualMachineScaleSetInfo: &armcompute.DefaultVirtualMachineScaleSetInfo{
-	// 				ConstrainedMaximumCapacity: to.Ptr(false),
-	// 				DefaultVirtualMachineScaleSet: &armcompute.SubResource{
-	// 					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 				},
-	// 			},
-	// 			MigrateToVirtualMachineScaleSet: &armcompute.SubResource{
-	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/{vmss-name}"),
-	// 			},
-	// 		},
-	// 		VirtualMachines: []*armcompute.SubResource{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
-	// 		}},
-	// 	},
-	// 	SKU: &armcompute.SKU{
-	// 		Name: to.Ptr("Classic"),
-	// 		Capacity: to.Ptr[int64](29),
-	// 		Tier: to.Ptr("aaaaaaaaaaaaaa"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
-func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAvailabilitySetsClient().Get(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AvailabilitySet = armcompute.AvailabilitySet{
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
-	// 	Location: to.Ptr("westus"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
 func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -451,7 +116,7 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,7 +270,7 @@ func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMaximumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -649,7 +314,433 @@ func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMinimumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_Get_availabilitySetGetMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAvailabilitySetsClient().Get(ctx, "rgcompute", "aaaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AvailabilitySet = armcompute.AvailabilitySet{
+	// 	Name: to.Ptr("myAvailabilitySet"),
+	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"key2505": to.Ptr("aa"),
+	// 		"key9626": to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armcompute.AvailabilitySetProperties{
+	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
+	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
+	// 		ProximityPlacementGroup: &armcompute.SubResource{
+	// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+	// 		},
+	// 		ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
+	// 			AllInstancesDown: &armcompute.AllInstancesDown{
+	// 				AutomaticallyApprove: to.Ptr(true),
+	// 			},
+	// 			ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
+	// 				EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
+	// 					Enable: to.Ptr(true),
+	// 					ScheduledEventsAPIVersion: to.Ptr("2020-07-01"),
+	// 				},
+	// 			},
+	// 			UserInitiatedReboot: &armcompute.UserInitiatedReboot{
+	// 				AutomaticallyApprove: to.Ptr(true),
+	// 			},
+	// 			UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
+	// 				AutomaticallyApprove: to.Ptr(true),
+	// 			},
+	// 		},
+	// 		Statuses: []*armcompute.InstanceViewStatus{
+	// 			{
+	// 				Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+	// 				DisplayStatus: to.Ptr("aaaaaa"),
+	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 				Message: to.Ptr("a"),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
+	// 		}},
+	// 		VirtualMachineScaleSetMigrationInfo: &armcompute.VirtualMachineScaleSetMigrationInfo{
+	// 			DefaultVirtualMachineScaleSetInfo: &armcompute.DefaultVirtualMachineScaleSetInfo{
+	// 				ConstrainedMaximumCapacity: to.Ptr(false),
+	// 				DefaultVirtualMachineScaleSet: &armcompute.SubResource{
+	// 					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+	// 				},
+	// 			},
+	// 			MigrateToVirtualMachineScaleSet: &armcompute.SubResource{
+	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/{vmss-name}"),
+	// 			},
+	// 		},
+	// 		VirtualMachines: []*armcompute.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+	// 		}},
+	// 	},
+	// 	SKU: &armcompute.SKU{
+	// 		Name: to.Ptr("Classic"),
+	// 		Capacity: to.Ptr[int64](29),
+	// 		Tier: to.Ptr("aaaaaaaaaaaaaa"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
+func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAvailabilitySetsClient().Get(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AvailabilitySet = armcompute.AvailabilitySet{
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
+	// 	Location: to.Ptr("westus"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
+func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySetWithScheduledEventPolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAvailabilitySetsClient().CreateOrUpdate(ctx, "myResourceGroup", "myAvailabilitySet", armcompute.AvailabilitySet{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.AvailabilitySetProperties{
+			PlatformFaultDomainCount:  to.Ptr[int32](2),
+			PlatformUpdateDomainCount: to.Ptr[int32](20),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AvailabilitySet = armcompute.AvailabilitySet{
+	// 	Name: to.Ptr("myAvailabilitySet"),
+	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armcompute.AvailabilitySetProperties{
+	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
+	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
+	// 		ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
+	// 			AllInstancesDown: &armcompute.AllInstancesDown{
+	// 				AutomaticallyApprove: to.Ptr(true),
+	// 			},
+	// 			ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
+	// 				EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
+	// 					Enable: to.Ptr(true),
+	// 					ScheduledEventsAPIVersion: to.Ptr("2020-07-01"),
+	// 				},
+	// 			},
+	// 			UserInitiatedReboot: &armcompute.UserInitiatedReboot{
+	// 				AutomaticallyApprove: to.Ptr(true),
+	// 			},
+	// 			UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
+	// 				AutomaticallyApprove: to.Ptr(true),
+	// 			},
+	// 		},
+	// 	},
+	// 	SKU: &armcompute.SKU{
+	// 		Name: to.Ptr("Classic"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Create.json
+func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAvailabilitySetsClient().CreateOrUpdate(ctx, "myResourceGroup", "myAvailabilitySet", armcompute.AvailabilitySet{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.AvailabilitySetProperties{
+			PlatformFaultDomainCount:  to.Ptr[int32](2),
+			PlatformUpdateDomainCount: to.Ptr[int32](20),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AvailabilitySet = armcompute.AvailabilitySet{
+	// 	Name: to.Ptr("myAvailabilitySet"),
+	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armcompute.AvailabilitySetProperties{
+	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
+	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
+	// 		VirtualMachineScaleSetMigrationInfo: &armcompute.VirtualMachineScaleSetMigrationInfo{
+	// 			DefaultVirtualMachineScaleSetInfo: &armcompute.DefaultVirtualMachineScaleSetInfo{
+	// 				ConstrainedMaximumCapacity: to.Ptr(false),
+	// 				DefaultVirtualMachineScaleSet: &armcompute.SubResource{
+	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+	// 				},
+	// 			},
+	// 			MigrateToVirtualMachineScaleSet: &armcompute.SubResource{
+	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+	// 			},
+	// 		},
+	// 	},
+	// 	SKU: &armcompute.SKU{
+	// 		Name: to.Ptr("Classic"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Update_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAvailabilitySetsClient().Update(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaa", armcompute.AvailabilitySetUpdate{
+		Tags: map[string]*string{
+			"key2574": to.Ptr("aaaaaaaa"),
+		},
+		Properties: &armcompute.AvailabilitySetProperties{
+			PlatformFaultDomainCount:  to.Ptr[int32](2),
+			PlatformUpdateDomainCount: to.Ptr[int32](20),
+			ProximityPlacementGroup: &armcompute.SubResource{
+				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+			},
+			VirtualMachines: []*armcompute.SubResource{
+				{
+					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+				}},
+		},
+		SKU: &armcompute.SKU{
+			Name:     to.Ptr("DSv3-Type1"),
+			Capacity: to.Ptr[int64](7),
+			Tier:     to.Ptr("aaa"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AvailabilitySet = armcompute.AvailabilitySet{
+	// 	Name: to.Ptr("myAvailabilitySet"),
+	// 	Type: to.Ptr("Microsoft.Compute/availabilitySets"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/myAvailabilitySet"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"key2505": to.Ptr("aa"),
+	// 		"key9626": to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armcompute.AvailabilitySetProperties{
+	// 		PlatformFaultDomainCount: to.Ptr[int32](2),
+	// 		PlatformUpdateDomainCount: to.Ptr[int32](20),
+	// 		ProximityPlacementGroup: &armcompute.SubResource{
+	// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+	// 		},
+	// 		Statuses: []*armcompute.InstanceViewStatus{
+	// 			{
+	// 				Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+	// 				DisplayStatus: to.Ptr("aaaaaa"),
+	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 				Message: to.Ptr("a"),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
+	// 		}},
+	// 		VirtualMachines: []*armcompute.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
+	// 		}},
+	// 	},
+	// 	SKU: &armcompute.SKU{
+	// 		Name: to.Ptr("Classic"),
+	// 		Capacity: to.Ptr[int64](29),
+	// 		Tier: to.Ptr("aaaaaaaaaaaaaa"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Update_MinimumSet_Gen.json
+func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAvailabilitySetsClient().Update(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", armcompute.AvailabilitySetUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AvailabilitySet = armcompute.AvailabilitySet{
+	// 	Location: to.Ptr("westus"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MaximumSet_Gen.json
+func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewAvailabilitySetsClient().Delete(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MinimumSet_Gen.json
+func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewAvailabilitySetsClient().Delete(ctx, "rgcompute", "aaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
+func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewAvailabilitySetsClient().CancelMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
+func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAvailabilitySetsClient().BeginConvertToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", &armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions{Parameters: &armcompute.ConvertToVirtualMachineScaleSetInput{
+		VirtualMachineScaleSetName: to.Ptr("{vmss-name}"),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
+func ExampleAvailabilitySetsClient_StartMigrationToVirtualMachineScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewAvailabilitySetsClient().StartMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", armcompute.MigrateToVirtualMachineScaleSetInput{
+		VirtualMachineScaleSetFlexible: &armcompute.SubResource{
+			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ValidateMigrationToVirtualMachineScaleSet.json
+func ExampleAvailabilitySetsClient_ValidateMigrationToVirtualMachineScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewAvailabilitySetsClient().ValidateMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", armcompute.MigrateToVirtualMachineScaleSetInput{
+		VirtualMachineScaleSetFlexible: &armcompute.SubResource{
+			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,7 +784,7 @@ func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetLis
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -717,88 +808,5 @@ func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetLis
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.VirtualMachineSizeListResult = armcompute.VirtualMachineSizeListResult{
 		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
-func ExampleAvailabilitySetsClient_StartMigrationToVirtualMachineScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewAvailabilitySetsClient().StartMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", armcompute.MigrateToVirtualMachineScaleSetInput{
-		VirtualMachineScaleSetFlexible: &armcompute.SubResource{
-			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
-func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewAvailabilitySetsClient().CancelMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_ValidateMigrationToVirtualMachineScaleSet.json
-func ExampleAvailabilitySetsClient_ValidateMigrationToVirtualMachineScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewAvailabilitySetsClient().ValidateMigrationToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", armcompute.MigrateToVirtualMachineScaleSetInput{
-		VirtualMachineScaleSetFlexible: &armcompute.SubResource{
-			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
-func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAvailabilitySetsClient().BeginConvertToVirtualMachineScaleSet(ctx, "rgcompute", "myAvailabilitySet", &armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions{Parameters: &armcompute.ConvertToVirtualMachineScaleSetInput{
-		VirtualMachineScaleSetName: to.Ptr("{vmss-name}"),
-	},
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

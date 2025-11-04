@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -83,6 +84,18 @@ func (e *ErrorInfo) Error() string {
 	return string(e.data)
 }
 
+// getHandler returns the correct custom handler for Restore operations
+func getHandler[T any](pipeline runtime.Pipeline, resp *http.Response, finalState runtime.FinalStateVia) (runtime.PollingHandler[T], error) {
+	// if fake, don't return a handler
+	// that way, runtime.NewPoller will set the poller to use the fake handler
+	if resp != nil && resp.Header.Get("Fake-Poller-Status") != "" {
+		return nil, nil
+	}
+
+	// return custom restore handler
+	return pollers.NewRestorePoller[T](pipeline, resp, finalState)
+}
+
 // beginPreFullRestore is a custom implementation of BeginFullRestore
 // Uses custom poller handler
 func (client *Client) beginPreFullRestore(ctx context.Context, preRestoreOperationParameters PreRestoreOperationParameters, options *BeginPreFullRestoreOptions) (*runtime.Poller[PreFullRestoreResponse], error) {
@@ -91,7 +104,7 @@ func (client *Client) beginPreFullRestore(ctx context.Context, preRestoreOperati
 		if err != nil {
 			return nil, err
 		}
-		handler, err := pollers.NewRestorePoller[PreFullRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := getHandler[PreFullRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
@@ -102,7 +115,7 @@ func (client *Client) beginPreFullRestore(ctx context.Context, preRestoreOperati
 		})
 		return poller, err
 	} else {
-		handler, err := pollers.NewRestorePoller[PreFullRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := getHandler[PreFullRestoreResponse](client.internal.Pipeline(), nil, "")
 		if err != nil {
 			return nil, err
 		}
@@ -121,18 +134,17 @@ func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails R
 		if err != nil {
 			return nil, err
 		}
-		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := getHandler[FullRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FullRestoreResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Handler:       handler,
-			Tracer:        client.internal.Tracer(),
+			Handler: handler,
+			Tracer:  client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := getHandler[FullRestoreResponse](client.internal.Pipeline(), nil, "")
 		if err != nil {
 			return nil, err
 		}
@@ -151,18 +163,17 @@ func (client *Client) beginSelectiveKeyRestore(ctx context.Context, keyName stri
 		if err != nil {
 			return nil, err
 		}
-		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := getHandler[SelectiveKeyRestoreResponse](client.internal.Pipeline(), resp, runtime.FinalStateViaAzureAsyncOp)
 		if err != nil {
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Handler:       handler,
-			Tracer:        client.internal.Tracer(),
+			Handler: handler,
+			Tracer:  client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
+		handler, err := getHandler[SelectiveKeyRestoreResponse](client.internal.Pipeline(), nil, "")
 		if err != nil {
 			return nil, err
 		}

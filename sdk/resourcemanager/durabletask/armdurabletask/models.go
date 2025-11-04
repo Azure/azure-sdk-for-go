@@ -6,7 +6,9 @@ package armdurabletask
 
 import "time"
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -60,11 +62,11 @@ type RetentionPolicy struct {
 	// The resource-specific properties for this resource.
 	Properties *RetentionPolicyProperties
 
-	// READ-ONLY; The name of the RetentionPolicy
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -111,11 +113,11 @@ type Scheduler struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the Scheduler
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -166,7 +168,7 @@ type SchedulerPropertiesUpdate struct {
 // SchedulerSKU - The SKU (Stock Keeping Unit) assigned to this durable task scheduler
 type SchedulerSKU struct {
 	// REQUIRED; The name of the SKU
-	Name *string
+	Name *SchedulerSKUName
 
 	// The SKU capacity. This allows scale out/in for the resource and impacts zone redundancy
 	Capacity *int32
@@ -181,7 +183,7 @@ type SchedulerSKUUpdate struct {
 	Capacity *int32
 
 	// The name of the SKU
-	Name *string
+	Name *SchedulerSKUName
 
 	// READ-ONLY; Indicates whether the current SKU configuration is zone redundant
 	RedundancyState *RedundancyState
@@ -222,11 +224,11 @@ type TaskHub struct {
 	// The resource-specific properties for this resource.
 	Properties *TaskHubProperties
 
-	// READ-ONLY; The name of the TaskHub
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

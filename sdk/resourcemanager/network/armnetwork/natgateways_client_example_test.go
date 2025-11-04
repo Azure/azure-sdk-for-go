@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NatGatewayDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayDelete.json
 func ExampleNatGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,8 +39,8 @@ func ExampleNatGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NatGatewayGet.json
-func ExampleNatGatewaysClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayGet.json
+func ExampleNatGatewaysClient_Get_getNatGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -84,8 +84,64 @@ func ExampleNatGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NatGatewayCreateOrUpdate.json
-func ExampleNatGatewaysClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayGetStandardV2Sku.json
+func ExampleNatGatewaysClient_Get_getNatGatewayWithStandardV2Sku() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNatGatewaysClient().Get(ctx, "rg1", "test-natGateway", &armnetwork.NatGatewaysClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NatGateway = armnetwork.NatGateway{
+	// 	Name: to.Ptr("test-natGateway"),
+	// 	Type: to.Ptr("Microsoft.Network/natGateways"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/natGateways/test-natGateway"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armnetwork.NatGatewayPropertiesFormat{
+	// 		IdleTimeoutInMinutes: to.Ptr[int32](5),
+	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		PublicIPAddresses: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress1"),
+	// 		}},
+	// 		PublicIPAddressesV6: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress2"),
+	// 		}},
+	// 		PublicIPPrefixes: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix1"),
+	// 		}},
+	// 		PublicIPPrefixesV6: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix2"),
+	// 		}},
+	// 		SourceVirtualNetwork: &armnetwork.SubResource{
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet"),
+	// 		},
+	// 		Subnets: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 		}},
+	// 	},
+	// 	SKU: &armnetwork.NatGatewaySKU{
+	// 		Name: to.Ptr(armnetwork.NatGatewaySKUNameStandardV2),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayCreateOrUpdate.json
+func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -148,8 +204,75 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NatGatewayUpdateTags.json
-func ExampleNatGatewaysClient_UpdateTags() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayCreateOrUpdateStandardV2Sku.json
+func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGatewayWithStandardV2Sku() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNatGatewaysClient().BeginCreateOrUpdate(ctx, "rg1", "test-natgateway", armnetwork.NatGateway{
+		Location: to.Ptr("westus"),
+		Properties: &armnetwork.NatGatewayPropertiesFormat{
+			PublicIPAddresses: []*armnetwork.SubResource{
+				{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress1"),
+				}},
+			PublicIPPrefixes: []*armnetwork.SubResource{
+				{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix1"),
+				}},
+		},
+		SKU: &armnetwork.NatGatewaySKU{
+			Name: to.Ptr(armnetwork.NatGatewaySKUNameStandardV2),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NatGateway = armnetwork.NatGateway{
+	// 	Name: to.Ptr("test-natGateway"),
+	// 	Type: to.Ptr("Microsoft.Network/natGateways"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/natGateways/test-natGateway"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armnetwork.NatGatewayPropertiesFormat{
+	// 		IdleTimeoutInMinutes: to.Ptr[int32](5),
+	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		PublicIPAddresses: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress1"),
+	// 		}},
+	// 		PublicIPPrefixes: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix1"),
+	// 		}},
+	// 		SourceVirtualNetwork: &armnetwork.SubResource{
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet"),
+	// 		},
+	// 		Subnets: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 		}},
+	// 	},
+	// 	SKU: &armnetwork.NatGatewaySKU{
+	// 		Name: to.Ptr(armnetwork.NatGatewaySKUNameStandardV2),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayUpdateTags.json
+func ExampleNatGatewaysClient_UpdateTags_updateNatGatewayTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -202,7 +325,72 @@ func ExampleNatGatewaysClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NatGatewayListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayUpdateTagsStandardV2Sku.json
+func ExampleNatGatewaysClient_UpdateTags_updateNatGatewayWithStandardV2SkuTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNatGatewaysClient().UpdateTags(ctx, "rg1", "test-natGateway", armnetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NatGateway = armnetwork.NatGateway{
+	// 	Name: to.Ptr("test-natGateway"),
+	// 	Type: to.Ptr("Microsoft.Network/natGateways"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/natGateways/test-natGateway"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"tag1": to.Ptr("value1"),
+	// 		"tag2": to.Ptr("value2"),
+	// 	},
+	// 	Properties: &armnetwork.NatGatewayPropertiesFormat{
+	// 		IdleTimeoutInMinutes: to.Ptr[int32](5),
+	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		PublicIPAddresses: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress1"),
+	// 		}},
+	// 		PublicIPAddressesV6: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress2"),
+	// 		}},
+	// 		PublicIPPrefixes: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix1"),
+	// 		}},
+	// 		PublicIPPrefixesV6: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix2"),
+	// 		}},
+	// 		SourceVirtualNetwork: &armnetwork.SubResource{
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet"),
+	// 		},
+	// 		Subnets: []*armnetwork.SubResource{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"),
+	// 		}},
+	// 	},
+	// 	SKU: &armnetwork.NatGatewaySKU{
+	// 		Name: to.Ptr(armnetwork.NatGatewaySKUNameStandardV2),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayListAll.json
 func ExampleNatGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,12 +463,48 @@ func ExampleNatGatewaysClient_NewListAllPager() {
 		// 			SKU: &armnetwork.NatGatewaySKU{
 		// 				Name: to.Ptr(armnetwork.NatGatewaySKUNameStandard),
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("test-natGateway3"),
+		// 			Type: to.Ptr("Microsoft.Network/natGateways"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/natGatewayes/test-natGateway3"),
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armnetwork.NatGatewayPropertiesFormat{
+		// 				IdleTimeoutInMinutes: to.Ptr[int32](5),
+		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				PublicIPAddresses: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress1"),
+		// 				}},
+		// 				PublicIPAddressesV6: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress2"),
+		// 				}},
+		// 				PublicIPPrefixes: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix1"),
+		// 				}},
+		// 				PublicIPPrefixesV6: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix2"),
+		// 				}},
+		// 				SourceVirtualNetwork: &armnetwork.SubResource{
+		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet"),
+		// 				},
+		// 				Subnets: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"),
+		// 				}},
+		// 			},
+		// 			SKU: &armnetwork.NatGatewaySKU{
+		// 				Name: to.Ptr(armnetwork.NatGatewaySKUNameStandardV2),
+		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NatGatewayList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayList.json
 func ExampleNatGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,6 +576,42 @@ func ExampleNatGatewaysClient_NewListPager() {
 		// 			},
 		// 			SKU: &armnetwork.NatGatewaySKU{
 		// 				Name: to.Ptr(armnetwork.NatGatewaySKUNameStandard),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("test-natGateway3"),
+		// 			Type: to.Ptr("Microsoft.Network/natGateways"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/natGateway/test-natGateway3"),
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armnetwork.NatGatewayPropertiesFormat{
+		// 				IdleTimeoutInMinutes: to.Ptr[int32](5),
+		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				PublicIPAddresses: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress1"),
+		// 				}},
+		// 				PublicIPAddressesV6: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPAddresses/PublicIpAddress2"),
+		// 				}},
+		// 				PublicIPPrefixes: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix1"),
+		// 				}},
+		// 				PublicIPPrefixesV6: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPPrefixes/PublicIpPrefix2"),
+		// 				}},
+		// 				SourceVirtualNetwork: &armnetwork.SubResource{
+		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet"),
+		// 				},
+		// 				Subnets: []*armnetwork.SubResource{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"),
+		// 				}},
+		// 			},
+		// 			SKU: &armnetwork.NatGatewaySKU{
+		// 				Name: to.Ptr(armnetwork.NatGatewaySKUNameStandardV2),
 		// 			},
 		// 	}},
 		// }

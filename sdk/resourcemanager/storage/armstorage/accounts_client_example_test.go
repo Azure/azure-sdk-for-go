@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCheckNameAvailability.json
 func ExampleAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleAccountsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/NfsV3AccountCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/NfsV3AccountCreate.json
 func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreate.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,6 +153,9 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
 					},
 				},
+			},
+			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
+				IsBlobEnabled: to.Ptr(true),
 			},
 			IsHnsEnabled:  to.Ptr(true),
 			IsSftpEnabled: to.Ptr(true),
@@ -222,6 +225,9 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// 				},
 	// 			},
 	// 		},
+	// 		GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
+	// 			IsBlobEnabled: to.Ptr(true),
+	// 		},
 	// 		IsHnsEnabled: to.Ptr(true),
 	// 		IsSftpEnabled: to.Ptr(true),
 	// 		KeyCreationTime: &armstorage.KeyCreationTime{
@@ -277,7 +283,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateAllowedCopyScopeToAAD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,7 +437,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPrivateLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -585,7 +591,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPri
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateDisallowPublicNetworkAccess.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateDisallowPublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -743,7 +749,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetwork
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzureDnsZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -904,7 +910,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzur
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateDnsEndpointTypeToStandard.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateDnsEndpointTypeToStandard.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStandard() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1065,7 +1071,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStan
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateEnablePublicNetworkAccess.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateEnablePublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1223,7 +1229,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAc
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreatePremiumBlockBlobStorage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreatePremiumBlockBlobStorage.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1322,7 +1328,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStora
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1454,7 +1460,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptio
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1588,7 +1594,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityW
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateWithImmutabilityPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateWithImmutabilityPolicy.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1668,7 +1674,337 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolic
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreate_placement.json
+func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginCreate(ctx, "res9101", "sto4445", armstorage.AccountCreateParameters{
+		ExtendedLocation: &armstorage.ExtendedLocation{
+			Name: to.Ptr("losangeles001"),
+			Type: to.Ptr(armstorage.ExtendedLocationTypesEdgeZone),
+		},
+		Kind:     to.Ptr(armstorage.KindStorage),
+		Location: to.Ptr("eastus"),
+		Placement: &armstorage.Placement{
+			ZonePlacementPolicy: to.Ptr(armstorage.ZonePlacementPolicyAny),
+		},
+		Properties: &armstorage.AccountPropertiesCreateParameters{
+			AllowBlobPublicAccess:        to.Ptr(false),
+			AllowSharedKeyAccess:         to.Ptr(true),
+			DefaultToOAuthAuthentication: to.Ptr(false),
+			Encryption: &armstorage.Encryption{
+				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),
+				RequireInfrastructureEncryption: to.Ptr(false),
+				Services: &armstorage.EncryptionServices{
+					Blob: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+					File: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+				},
+			},
+			IsHnsEnabled:  to.Ptr(true),
+			IsSftpEnabled: to.Ptr(true),
+			KeyPolicy: &armstorage.KeyPolicy{
+				KeyExpirationPeriodInDays: to.Ptr[int32](20),
+			},
+			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+			RoutingPreference: &armstorage.RoutingPreference{
+				PublishInternetEndpoints:  to.Ptr(true),
+				PublishMicrosoftEndpoints: to.Ptr(true),
+				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+			},
+			SasPolicy: &armstorage.SasPolicy{
+				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
+				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+			},
+		},
+		SKU: &armstorage.SKU{
+			Name: to.Ptr(armstorage.SKUNameStandardGRS),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+			"key2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armstorage.Account{
+	// 	Name: to.Ptr("sto4445"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// 	ExtendedLocation: &armstorage.ExtendedLocation{
+	// 		Name: to.Ptr("losangeles001"),
+	// 		Type: to.Ptr(armstorage.ExtendedLocationTypesEdgeZone),
+	// 	},
+	// 	Kind: to.Ptr(armstorage.KindStorage),
+	// 	Placement: &armstorage.Placement{
+	// 		ZonePlacementPolicy: to.Ptr(armstorage.ZonePlacementPolicyAny),
+	// 	},
+	// 	Properties: &armstorage.AccountProperties{
+	// 		AllowBlobPublicAccess: to.Ptr(false),
+	// 		AllowSharedKeyAccess: to.Ptr(true),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.486Z"); return t}()),
+	// 		Encryption: &armstorage.Encryption{
+	// 			KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
+	// 			RequireInfrastructureEncryption: to.Ptr(false),
+	// 			Services: &armstorage.EncryptionServices{
+	// 				Blob: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 				File: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 			},
+	// 		},
+	// 		IsHnsEnabled: to.Ptr(true),
+	// 		IsSftpEnabled: to.Ptr(true),
+	// 		KeyCreationTime: &armstorage.KeyCreationTime{
+	// 			Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 			Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 		},
+	// 		KeyPolicy: &armstorage.KeyPolicy{
+	// 			KeyExpirationPeriodInDays: to.Ptr[int32](20),
+	// 		},
+	// 		MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+	// 		PrimaryEndpoints: &armstorage.Endpoints{
+	// 			Blob: to.Ptr("https://sto4445.blob.core.windows.net/"),
+	// 			Dfs: to.Ptr("https://sto4445.dfs.core.windows.net/"),
+	// 			File: to.Ptr("https://sto4445.file.core.windows.net/"),
+	// 			InternetEndpoints: &armstorage.AccountInternetEndpoints{
+	// 				Blob: to.Ptr("https://sto4445-internetrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto4445-internetrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto4445-internetrouting.file.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto4445-internetrouting.web.core.windows.net/"),
+	// 			},
+	// 			MicrosoftEndpoints: &armstorage.AccountMicrosoftEndpoints{
+	// 				Blob: to.Ptr("https://sto4445-microsoftrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto4445-microsoftrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto4445-microsoftrouting.file.core.windows.net/"),
+	// 				Queue: to.Ptr("https://sto4445-microsoftrouting.queue.core.windows.net/"),
+	// 				Table: to.Ptr("https://sto4445-microsoftrouting.table.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto4445-microsoftrouting.web.core.windows.net/"),
+	// 			},
+	// 			Queue: to.Ptr("https://sto4445.queue.core.windows.net/"),
+	// 			Table: to.Ptr("https://sto4445.table.core.windows.net/"),
+	// 			Web: to.Ptr("https://sto4445.web.core.windows.net/"),
+	// 		},
+	// 		PrimaryLocation: to.Ptr("eastus2euap"),
+	// 		ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 		RoutingPreference: &armstorage.RoutingPreference{
+	// 			PublishInternetEndpoints: to.Ptr(true),
+	// 			PublishMicrosoftEndpoints: to.Ptr(true),
+	// 			RoutingChoice: to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+	// 		},
+	// 		SasPolicy: &armstorage.SasPolicy{
+	// 			ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
+	// 			SasExpirationPeriod: to.Ptr("1.15:59:59"),
+	// 		},
+	// 		SecondaryLocation: to.Ptr("centraluseuap"),
+	// 		StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		EnableHTTPSTrafficOnly: to.Ptr(true),
+	// 	},
+	// 	SKU: &armstorage.SKU{
+	// 		Name: to.Ptr(armstorage.SKUNameStandardGRS),
+	// 		Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 	},
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreate_zones.json
+func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginCreate(ctx, "res9101", "sto4445", armstorage.AccountCreateParameters{
+		ExtendedLocation: &armstorage.ExtendedLocation{
+			Name: to.Ptr("losangeles001"),
+			Type: to.Ptr(armstorage.ExtendedLocationTypesEdgeZone),
+		},
+		Kind:     to.Ptr(armstorage.KindStorage),
+		Location: to.Ptr("eastus"),
+		Properties: &armstorage.AccountPropertiesCreateParameters{
+			AllowBlobPublicAccess:        to.Ptr(false),
+			AllowSharedKeyAccess:         to.Ptr(true),
+			DefaultToOAuthAuthentication: to.Ptr(false),
+			Encryption: &armstorage.Encryption{
+				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),
+				RequireInfrastructureEncryption: to.Ptr(false),
+				Services: &armstorage.EncryptionServices{
+					Blob: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+					File: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+				},
+			},
+			IsHnsEnabled:  to.Ptr(true),
+			IsSftpEnabled: to.Ptr(true),
+			KeyPolicy: &armstorage.KeyPolicy{
+				KeyExpirationPeriodInDays: to.Ptr[int32](20),
+			},
+			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+			RoutingPreference: &armstorage.RoutingPreference{
+				PublishInternetEndpoints:  to.Ptr(true),
+				PublishMicrosoftEndpoints: to.Ptr(true),
+				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+			},
+			SasPolicy: &armstorage.SasPolicy{
+				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
+				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+			},
+		},
+		SKU: &armstorage.SKU{
+			Name: to.Ptr(armstorage.SKUNameStandardGRS),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+			"key2": to.Ptr("value2"),
+		},
+		Zones: []*string{
+			to.Ptr("1")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armstorage.Account{
+	// 	Name: to.Ptr("sto4445"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Storage/storageAccounts/sto4445"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// 	ExtendedLocation: &armstorage.ExtendedLocation{
+	// 		Name: to.Ptr("losangeles001"),
+	// 		Type: to.Ptr(armstorage.ExtendedLocationTypesEdgeZone),
+	// 	},
+	// 	Kind: to.Ptr(armstorage.KindStorage),
+	// 	Properties: &armstorage.AccountProperties{
+	// 		AllowBlobPublicAccess: to.Ptr(false),
+	// 		AllowSharedKeyAccess: to.Ptr(true),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T13:25:33.486Z"); return t}()),
+	// 		Encryption: &armstorage.Encryption{
+	// 			KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
+	// 			RequireInfrastructureEncryption: to.Ptr(false),
+	// 			Services: &armstorage.EncryptionServices{
+	// 				Blob: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 				File: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 			},
+	// 		},
+	// 		IsHnsEnabled: to.Ptr(true),
+	// 		IsSftpEnabled: to.Ptr(true),
+	// 		KeyCreationTime: &armstorage.KeyCreationTime{
+	// 			Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 			Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 		},
+	// 		KeyPolicy: &armstorage.KeyPolicy{
+	// 			KeyExpirationPeriodInDays: to.Ptr[int32](20),
+	// 		},
+	// 		MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+	// 		PrimaryEndpoints: &armstorage.Endpoints{
+	// 			Blob: to.Ptr("https://sto4445.blob.core.windows.net/"),
+	// 			Dfs: to.Ptr("https://sto4445.dfs.core.windows.net/"),
+	// 			File: to.Ptr("https://sto4445.file.core.windows.net/"),
+	// 			InternetEndpoints: &armstorage.AccountInternetEndpoints{
+	// 				Blob: to.Ptr("https://sto4445-internetrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto4445-internetrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto4445-internetrouting.file.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto4445-internetrouting.web.core.windows.net/"),
+	// 			},
+	// 			MicrosoftEndpoints: &armstorage.AccountMicrosoftEndpoints{
+	// 				Blob: to.Ptr("https://sto4445-microsoftrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto4445-microsoftrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto4445-microsoftrouting.file.core.windows.net/"),
+	// 				Queue: to.Ptr("https://sto4445-microsoftrouting.queue.core.windows.net/"),
+	// 				Table: to.Ptr("https://sto4445-microsoftrouting.table.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto4445-microsoftrouting.web.core.windows.net/"),
+	// 			},
+	// 			Queue: to.Ptr("https://sto4445.queue.core.windows.net/"),
+	// 			Table: to.Ptr("https://sto4445.table.core.windows.net/"),
+	// 			Web: to.Ptr("https://sto4445.web.core.windows.net/"),
+	// 		},
+	// 		PrimaryLocation: to.Ptr("eastus2euap"),
+	// 		ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 		RoutingPreference: &armstorage.RoutingPreference{
+	// 			PublishInternetEndpoints: to.Ptr(true),
+	// 			PublishMicrosoftEndpoints: to.Ptr(true),
+	// 			RoutingChoice: to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+	// 		},
+	// 		SasPolicy: &armstorage.SasPolicy{
+	// 			ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
+	// 			SasExpirationPeriod: to.Ptr("1.15:59:59"),
+	// 		},
+	// 		SecondaryLocation: to.Ptr("centraluseuap"),
+	// 		StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		EnableHTTPSTrafficOnly: to.Ptr(true),
+	// 	},
+	// 	SKU: &armstorage.SKU{
+	// 		Name: to.Ptr(armstorage.SKUNameStandardGRS),
+	// 		Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 	},
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountDelete.json
 func ExampleAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1685,7 +2021,7 @@ func ExampleAccountsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
 func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1726,7 +2062,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetProperties.json
 func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1771,6 +2107,9 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
 	// 				},
 	// 			},
+	// 		},
+	// 		GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
+	// 			IsBlobEnabled: to.Ptr(true),
 	// 		},
 	// 		GeoReplicationStats: &armstorage.GeoReplicationStats{
 	// 			CanFailover: to.Ptr(true),
@@ -1837,7 +2176,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetPropertiesCMKEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetPropertiesCMKEnabled.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1951,7 +2290,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetPropertiesCMKVersionExpirationTime.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionExpirationTime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2066,7 +2405,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionEx
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverFalse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2180,7 +2519,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2294,7 +2633,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountEnableAD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountEnableAD.json
 func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2375,7 +2714,7 @@ func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountEnableCMK.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountEnableCMK.json
 func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2475,7 +2814,74 @@ func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountEnableSmbOAuth.json
+func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "sto8596", armstorage.AccountUpdateParameters{
+		Properties: &armstorage.AccountPropertiesUpdateParameters{
+			AzureFilesIdentityBasedAuthentication: &armstorage.AzureFilesIdentityBasedAuthentication{
+				DirectoryServiceOptions: to.Ptr(armstorage.DirectoryServiceOptionsNone),
+				SmbOAuthSettings: &armstorage.SmbOAuthSettings{
+					IsSmbOAuthEnabled: to.Ptr(true),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armstorage.Account{
+	// 	Name: to.Ptr("sto8596"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
+	// 	Location: to.Ptr("eastus2(stage)"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// 	Kind: to.Ptr(armstorage.KindStorage),
+	// 	Properties: &armstorage.AccountProperties{
+	// 		AzureFilesIdentityBasedAuthentication: &armstorage.AzureFilesIdentityBasedAuthentication{
+	// 			DirectoryServiceOptions: to.Ptr(armstorage.DirectoryServiceOptionsNone),
+	// 			SmbOAuthSettings: &armstorage.SmbOAuthSettings{
+	// 				IsSmbOAuthEnabled: to.Ptr(true),
+	// 			},
+	// 		},
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.763Z"); return t}()),
+	// 		PrimaryEndpoints: &armstorage.Endpoints{
+	// 			Blob: to.Ptr("https://sto8596.blob.core.windows.net/"),
+	// 			Dfs: to.Ptr("https://sto8596.dfs.core.windows.net/"),
+	// 			File: to.Ptr("https://sto8596.file.core.windows.net/"),
+	// 			Queue: to.Ptr("https://sto8596.queue.core.windows.net/"),
+	// 			Table: to.Ptr("https://sto8596.table.core.windows.net/"),
+	// 			Web: to.Ptr("https://sto8596.web.core.windows.net/"),
+	// 		},
+	// 		PrimaryLocation: to.Ptr("eastus2(stage)"),
+	// 		ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 		SecondaryLocation: to.Ptr("northcentralus(stage)"),
+	// 		StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		EnableHTTPSTrafficOnly: to.Ptr(false),
+	// 	},
+	// 	SKU: &armstorage.SKU{
+	// 		Name: to.Ptr(armstorage.SKUNameStandardGRS),
+	// 		Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdate.json
 func ExampleAccountsClient_Update_storageAccountUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2504,6 +2910,9 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 						KeyType: to.Ptr(armstorage.KeyTypeAccount),
 					},
 				},
+			},
+			GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
+				IsBlobEnabled: to.Ptr(true),
 			},
 			IsLocalUserEnabled: to.Ptr(true),
 			IsSftpEnabled:      to.Ptr(true),
@@ -2565,6 +2974,9 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
 	// 				},
 	// 			},
+	// 		},
+	// 		GeoPriorityReplicationStatus: &armstorage.GeoPriorityReplicationStatus{
+	// 			IsBlobEnabled: to.Ptr(true),
 	// 		},
 	// 		IsHnsEnabled: to.Ptr(true),
 	// 		IsLocalUserEnabled: to.Ptr(true),
@@ -2635,7 +3047,7 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdateAllowedCopyScopeToAAD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2790,7 +3202,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdateDisablePublicNetworkAccess.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdateDisablePublicNetworkAccess.json
 func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2945,7 +3357,98 @@ func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountLeverageIPv6Ability.json
+func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "sto8596", armstorage.AccountUpdateParameters{
+		Properties: &armstorage.AccountPropertiesUpdateParameters{
+			DualStackEndpointPreference: &armstorage.DualStackEndpointPreference{
+				PublishIPv6Endpoint: to.Ptr(true),
+			},
+			NetworkRuleSet: &armstorage.NetworkRuleSet{
+				DefaultAction: to.Ptr(armstorage.DefaultActionDeny),
+				IPv6Rules: []*armstorage.IPRule{
+					{
+						Action:           to.Ptr("Allow"),
+						IPAddressOrRange: to.Ptr("2001:0db8:85a3::/64"),
+					}},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armstorage.Account{
+	// 	Name: to.Ptr("sto8596"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
+	// 	Location: to.Ptr("eastus2(stage)"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// 	Kind: to.Ptr(armstorage.KindStorage),
+	// 	Properties: &armstorage.AccountProperties{
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.763Z"); return t}()),
+	// 		DualStackEndpointPreference: &armstorage.DualStackEndpointPreference{
+	// 			PublishIPv6Endpoint: to.Ptr(true),
+	// 		},
+	// 		KeyCreationTime: &armstorage.KeyCreationTime{
+	// 			Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 			Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 		},
+	// 		NetworkRuleSet: &armstorage.NetworkRuleSet{
+	// 			Bypass: to.Ptr(armstorage.BypassAzureServices),
+	// 			DefaultAction: to.Ptr(armstorage.DefaultActionDeny),
+	// 			IPRules: []*armstorage.IPRule{
+	// 			},
+	// 			IPv6Rules: []*armstorage.IPRule{
+	// 				{
+	// 					Action: to.Ptr("Allow"),
+	// 					IPAddressOrRange: to.Ptr("2001:0db8:85a3::/64"),
+	// 			}},
+	// 			VirtualNetworkRules: []*armstorage.VirtualNetworkRule{
+	// 			},
+	// 		},
+	// 		PrimaryEndpoints: &armstorage.Endpoints{
+	// 			Blob: to.Ptr("https://sto8596.blob.core.windows.net/"),
+	// 			Dfs: to.Ptr("https://sto8596.dfs.core.windows.net/"),
+	// 			File: to.Ptr("https://sto8596.file.core.windows.net/"),
+	// 			IPv6Endpoints: &armstorage.AccountIPv6Endpoints{
+	// 				Blob: to.Ptr("https://sto8596-ipv6.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto8596-ipv6.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto8596-ipv6.file.core.windows.net/"),
+	// 				Queue: to.Ptr("https://sto8596-ipv6.queue.core.windows.net/"),
+	// 				Table: to.Ptr("https://sto8596-ipv6.table.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto8596-ipv6.web.core.windows.net/"),
+	// 			},
+	// 			Queue: to.Ptr("https://sto8596.queue.core.windows.net/"),
+	// 			Table: to.Ptr("https://sto8596.table.core.windows.net/"),
+	// 			Web: to.Ptr("https://sto8596.web.core.windows.net/"),
+	// 		},
+	// 		PrimaryLocation: to.Ptr("eastus2(stage)"),
+	// 		ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 		StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 	},
+	// 	SKU: &armstorage.SKU{
+	// 		Name: to.Ptr(armstorage.SKUNameStandardLRS),
+	// 		Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3072,7 +3575,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIden
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3201,7 +3704,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdateWithImmutabilityPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdateWithImmutabilityPolicy.json
 func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3257,7 +3760,339 @@ func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdate_placement.json
+func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "sto8596", armstorage.AccountUpdateParameters{
+		Placement: &armstorage.Placement{
+			ZonePlacementPolicy: to.Ptr(armstorage.ZonePlacementPolicyAny),
+		},
+		Properties: &armstorage.AccountPropertiesUpdateParameters{
+			AllowBlobPublicAccess:        to.Ptr(false),
+			AllowSharedKeyAccess:         to.Ptr(true),
+			DefaultToOAuthAuthentication: to.Ptr(false),
+			EnableExtendedGroups:         to.Ptr(true),
+			Encryption: &armstorage.Encryption{
+				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
+				Services: &armstorage.EncryptionServices{
+					Blob: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+					File: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+				},
+			},
+			IsLocalUserEnabled: to.Ptr(true),
+			IsSftpEnabled:      to.Ptr(true),
+			KeyPolicy: &armstorage.KeyPolicy{
+				KeyExpirationPeriodInDays: to.Ptr[int32](20),
+			},
+			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+			NetworkRuleSet: &armstorage.NetworkRuleSet{
+				DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
+				ResourceAccessRules: []*armstorage.ResourceAccessRule{
+					{
+						ResourceID: to.Ptr("/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace"),
+						TenantID:   to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+					}},
+			},
+			RoutingPreference: &armstorage.RoutingPreference{
+				PublishInternetEndpoints:  to.Ptr(true),
+				PublishMicrosoftEndpoints: to.Ptr(true),
+				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+			},
+			SasPolicy: &armstorage.SasPolicy{
+				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
+				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armstorage.Account{
+	// 	Name: to.Ptr("sto8596"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
+	// 	Location: to.Ptr("eastus2(stage)"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// 	Kind: to.Ptr(armstorage.KindStorage),
+	// 	Placement: &armstorage.Placement{
+	// 		ZonePlacementPolicy: to.Ptr(armstorage.ZonePlacementPolicyAny),
+	// 	},
+	// 	Properties: &armstorage.AccountProperties{
+	// 		AllowBlobPublicAccess: to.Ptr(false),
+	// 		AllowSharedKeyAccess: to.Ptr(true),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.763Z"); return t}()),
+	// 		EnableExtendedGroups: to.Ptr(true),
+	// 		Encryption: &armstorage.Encryption{
+	// 			KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
+	// 			Services: &armstorage.EncryptionServices{
+	// 				Blob: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 				File: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 			},
+	// 		},
+	// 		IsHnsEnabled: to.Ptr(true),
+	// 		IsLocalUserEnabled: to.Ptr(true),
+	// 		IsSftpEnabled: to.Ptr(true),
+	// 		KeyCreationTime: &armstorage.KeyCreationTime{
+	// 			Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 			Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 		},
+	// 		KeyPolicy: &armstorage.KeyPolicy{
+	// 			KeyExpirationPeriodInDays: to.Ptr[int32](20),
+	// 		},
+	// 		MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+	// 		NetworkRuleSet: &armstorage.NetworkRuleSet{
+	// 			Bypass: to.Ptr(armstorage.BypassAzureServices),
+	// 			DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
+	// 			IPRules: []*armstorage.IPRule{
+	// 			},
+	// 			ResourceAccessRules: []*armstorage.ResourceAccessRule{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace"),
+	// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 			}},
+	// 			VirtualNetworkRules: []*armstorage.VirtualNetworkRule{
+	// 			},
+	// 		},
+	// 		PrimaryEndpoints: &armstorage.Endpoints{
+	// 			Blob: to.Ptr("https://sto8596.blob.core.windows.net/"),
+	// 			Dfs: to.Ptr("https://sto8596.dfs.core.windows.net/"),
+	// 			File: to.Ptr("https://sto8596.file.core.windows.net/"),
+	// 			InternetEndpoints: &armstorage.AccountInternetEndpoints{
+	// 				Blob: to.Ptr("https://sto8596-internetrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto8596-internetrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto8596-internetrouting.file.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto8596-internetrouting.web.core.windows.net/"),
+	// 			},
+	// 			MicrosoftEndpoints: &armstorage.AccountMicrosoftEndpoints{
+	// 				Blob: to.Ptr("https://sto8596-microsoftrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto8596-microsoftrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto8596-microsoftrouting.file.core.windows.net/"),
+	// 				Queue: to.Ptr("https://sto8596-microsoftrouting.queue.core.windows.net/"),
+	// 				Table: to.Ptr("https://sto8596-microsoftrouting.table.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto8596-microsoftrouting.web.core.windows.net/"),
+	// 			},
+	// 			Queue: to.Ptr("https://sto8596.queue.core.windows.net/"),
+	// 			Table: to.Ptr("https://sto8596.table.core.windows.net/"),
+	// 			Web: to.Ptr("https://sto8596.web.core.windows.net/"),
+	// 		},
+	// 		PrimaryLocation: to.Ptr("eastus2(stage)"),
+	// 		ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 		RoutingPreference: &armstorage.RoutingPreference{
+	// 			PublishInternetEndpoints: to.Ptr(true),
+	// 			PublishMicrosoftEndpoints: to.Ptr(true),
+	// 			RoutingChoice: to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+	// 		},
+	// 		SasPolicy: &armstorage.SasPolicy{
+	// 			ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
+	// 			SasExpirationPeriod: to.Ptr("1.15:59:59"),
+	// 		},
+	// 		SecondaryLocation: to.Ptr("northcentralus(stage)"),
+	// 		StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		EnableHTTPSTrafficOnly: to.Ptr(false),
+	// 	},
+	// 	SKU: &armstorage.SKU{
+	// 		Name: to.Ptr(armstorage.SKUNameStandardGRS),
+	// 		Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 	},
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdate_zones.json
+func ExampleAccountsClient_Update_storageAccountUpdateZones() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Update(ctx, "res9407", "sto8596", armstorage.AccountUpdateParameters{
+		Properties: &armstorage.AccountPropertiesUpdateParameters{
+			AllowBlobPublicAccess:        to.Ptr(false),
+			AllowSharedKeyAccess:         to.Ptr(true),
+			DefaultToOAuthAuthentication: to.Ptr(false),
+			EnableExtendedGroups:         to.Ptr(true),
+			Encryption: &armstorage.Encryption{
+				KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
+				Services: &armstorage.EncryptionServices{
+					Blob: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+					File: &armstorage.EncryptionService{
+						Enabled: to.Ptr(true),
+						KeyType: to.Ptr(armstorage.KeyTypeAccount),
+					},
+				},
+			},
+			IsLocalUserEnabled: to.Ptr(true),
+			IsSftpEnabled:      to.Ptr(true),
+			KeyPolicy: &armstorage.KeyPolicy{
+				KeyExpirationPeriodInDays: to.Ptr[int32](20),
+			},
+			MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+			NetworkRuleSet: &armstorage.NetworkRuleSet{
+				DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
+				ResourceAccessRules: []*armstorage.ResourceAccessRule{
+					{
+						ResourceID: to.Ptr("/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace"),
+						TenantID:   to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+					}},
+			},
+			RoutingPreference: &armstorage.RoutingPreference{
+				PublishInternetEndpoints:  to.Ptr(true),
+				PublishMicrosoftEndpoints: to.Ptr(true),
+				RoutingChoice:             to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+			},
+			SasPolicy: &armstorage.SasPolicy{
+				ExpirationAction:    to.Ptr(armstorage.ExpirationActionLog),
+				SasExpirationPeriod: to.Ptr("1.15:59:59"),
+			},
+		},
+		Zones: []*string{
+			to.Ptr("1")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Account = armstorage.Account{
+	// 	Name: to.Ptr("sto8596"),
+	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596"),
+	// 	Location: to.Ptr("eastus2(stage)"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 		"key2": to.Ptr("value2"),
+	// 	},
+	// 	Kind: to.Ptr(armstorage.KindStorage),
+	// 	Properties: &armstorage.AccountProperties{
+	// 		AllowBlobPublicAccess: to.Ptr(false),
+	// 		AllowSharedKeyAccess: to.Ptr(true),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T02:42:41.763Z"); return t}()),
+	// 		EnableExtendedGroups: to.Ptr(true),
+	// 		Encryption: &armstorage.Encryption{
+	// 			KeySource: to.Ptr(armstorage.KeySourceMicrosoftStorage),
+	// 			Services: &armstorage.EncryptionServices{
+	// 				Blob: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 				File: &armstorage.EncryptionService{
+	// 					Enabled: to.Ptr(true),
+	// 					KeyType: to.Ptr(armstorage.KeyTypeAccount),
+	// 					LastEnabledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-11T20:49:31.703Z"); return t}()),
+	// 				},
+	// 			},
+	// 		},
+	// 		IsHnsEnabled: to.Ptr(true),
+	// 		IsLocalUserEnabled: to.Ptr(true),
+	// 		IsSftpEnabled: to.Ptr(true),
+	// 		KeyCreationTime: &armstorage.KeyCreationTime{
+	// 			Key1: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 			Key2: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-18T04:42:22.432Z"); return t}()),
+	// 		},
+	// 		KeyPolicy: &armstorage.KeyPolicy{
+	// 			KeyExpirationPeriodInDays: to.Ptr[int32](20),
+	// 		},
+	// 		MinimumTLSVersion: to.Ptr(armstorage.MinimumTLSVersionTLS12),
+	// 		NetworkRuleSet: &armstorage.NetworkRuleSet{
+	// 			Bypass: to.Ptr(armstorage.BypassAzureServices),
+	// 			DefaultAction: to.Ptr(armstorage.DefaultActionAllow),
+	// 			IPRules: []*armstorage.IPRule{
+	// 			},
+	// 			ResourceAccessRules: []*armstorage.ResourceAccessRule{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace"),
+	// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 			}},
+	// 			VirtualNetworkRules: []*armstorage.VirtualNetworkRule{
+	// 			},
+	// 		},
+	// 		PrimaryEndpoints: &armstorage.Endpoints{
+	// 			Blob: to.Ptr("https://sto8596.blob.core.windows.net/"),
+	// 			Dfs: to.Ptr("https://sto8596.dfs.core.windows.net/"),
+	// 			File: to.Ptr("https://sto8596.file.core.windows.net/"),
+	// 			InternetEndpoints: &armstorage.AccountInternetEndpoints{
+	// 				Blob: to.Ptr("https://sto8596-internetrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto8596-internetrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto8596-internetrouting.file.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto8596-internetrouting.web.core.windows.net/"),
+	// 			},
+	// 			MicrosoftEndpoints: &armstorage.AccountMicrosoftEndpoints{
+	// 				Blob: to.Ptr("https://sto8596-microsoftrouting.blob.core.windows.net/"),
+	// 				Dfs: to.Ptr("https://sto8596-microsoftrouting.dfs.core.windows.net/"),
+	// 				File: to.Ptr("https://sto8596-microsoftrouting.file.core.windows.net/"),
+	// 				Queue: to.Ptr("https://sto8596-microsoftrouting.queue.core.windows.net/"),
+	// 				Table: to.Ptr("https://sto8596-microsoftrouting.table.core.windows.net/"),
+	// 				Web: to.Ptr("https://sto8596-microsoftrouting.web.core.windows.net/"),
+	// 			},
+	// 			Queue: to.Ptr("https://sto8596.queue.core.windows.net/"),
+	// 			Table: to.Ptr("https://sto8596.table.core.windows.net/"),
+	// 			Web: to.Ptr("https://sto8596.web.core.windows.net/"),
+	// 		},
+	// 		PrimaryLocation: to.Ptr("eastus2(stage)"),
+	// 		ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+	// 		RoutingPreference: &armstorage.RoutingPreference{
+	// 			PublishInternetEndpoints: to.Ptr(true),
+	// 			PublishMicrosoftEndpoints: to.Ptr(true),
+	// 			RoutingChoice: to.Ptr(armstorage.RoutingChoiceMicrosoftRouting),
+	// 		},
+	// 		SasPolicy: &armstorage.SasPolicy{
+	// 			ExpirationAction: to.Ptr(armstorage.ExpirationActionLog),
+	// 			SasExpirationPeriod: to.Ptr("1.15:59:59"),
+	// 		},
+	// 		SecondaryLocation: to.Ptr("northcentralus(stage)"),
+	// 		StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+	// 		EnableHTTPSTrafficOnly: to.Ptr(false),
+	// 	},
+	// 	SKU: &armstorage.SKU{
+	// 		Name: to.Ptr(armstorage.SKUNameStandardGRS),
+	// 		Tier: to.Ptr(armstorage.SKUTierStandard),
+	// 	},
+	// 	Zones: []*string{
+	// 		to.Ptr("1")},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountList.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3584,7 +4419,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountListByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3675,7 +4510,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3708,7 +4543,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountRegenerateKerbKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountRegenerateKerbKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3748,7 +4583,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountRegenerateKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3783,7 +4618,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountListAccountSAS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountListAccountSAS.json
 func ExampleAccountsClient_ListAccountSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3814,7 +4649,7 @@ func ExampleAccountsClient_ListAccountSAS() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountListServiceSAS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountListServiceSAS.json
 func ExampleAccountsClient_ListServiceSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3842,7 +4677,7 @@ func ExampleAccountsClient_ListServiceSAS() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountFailover.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3863,7 +4698,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountFailoverPlanned.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountFailoverPlanned.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3884,7 +4719,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountHierarchicalNamespaceMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3905,7 +4740,7 @@ func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountAbortHierarchicalNamespaceMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountAbortHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3926,7 +4761,7 @@ func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountPostMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountPostMigration.json
 func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3951,7 +4786,7 @@ func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetMigrationFailed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetMigrationFailed.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3982,7 +4817,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetMigrationInProgress.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetMigrationInProgress.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationInProgress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4011,7 +4846,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/BlobRangesRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/BlobRangesRestore.json
 func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4062,7 +4897,7 @@ func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/97ee23a6db6078abcbec7b75bf9af8c503e9bb8b/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountRevokeUserDelegationKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountRevokeUserDelegationKeys.json
 func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

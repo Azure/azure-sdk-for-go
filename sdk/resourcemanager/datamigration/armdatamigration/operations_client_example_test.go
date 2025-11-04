@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/163e27c0ca7570bc39e00a46f255740d9b3ba3cb/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2021-06-30/examples/Operations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/ListOperation.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,15 +39,229 @@ func ExampleOperationsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ServiceOperationList = armdatamigration.ServiceOperationList{
-		// 	Value: []*armdatamigration.ServiceOperation{
+		// page.OperationListResult = armdatamigration.OperationListResult{
+		// 	Value: []*armdatamigration.OperationsDefinition{
 		// 		{
-		// 			Name: to.Ptr("Microsoft.DataMigration/services/read"),
-		// 			Display: &armdatamigration.ServiceOperationDisplay{
-		// 				Description: to.Ptr("Read information about services."),
-		// 				Operation: to.Ptr("Read"),
-		// 				Provider: to.Ptr("Database Migration Service"),
-		// 				Resource: to.Ptr("Database Migration Service"),
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/write"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Create a new or change properties of existing Service"),
+		// 				Operation: to.Ptr("Create or update properties of existing Service"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/write"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Update tag of the Service"),
+		// 				Operation: to.Ptr("Update tag of the Service"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/delete"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Delete existing Service"),
+		// 				Operation: to.Ptr("Delete existing Service"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve details of Migration Service"),
+		// 				Operation: to.Ptr("Get Migration Service details"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve details of Migration Services in a Resource Group"),
+		// 				Operation: to.Ptr("Get Migration Service details in a Resource Group"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/listAuthKeys/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve the List of AuthKeys"),
+		// 				Operation: to.Ptr("Get List of AuthKeys"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/regenerateAuthKeys/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Regenerate the AuthKeys"),
+		// 				Operation: to.Ptr("Regenerate the AuthKeys"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/monitoringData/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve the Monitoring Data"),
+		// 				Operation: to.Ptr("Get the Monitoring Data"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/updateNode/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Update Node"),
+		// 				Operation: to.Ptr("Update Node"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/deleteNode/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Delete Node"),
+		// 				Operation: to.Ptr("DeleteNode"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/operations/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Get all REST Operations"),
+		// 				Operation: to.Ptr("Get all REST Operations"),
+		// 				Resource: to.Ptr("Available REST operations"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/databaseMigrations/cancel/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Stop ongoing migration for the database"),
+		// 				Operation: to.Ptr("Stop ongoing migration for the database"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/databaseMigrations/start/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Start stopped migration for the database"),
+		// 				Operation: to.Ptr("Start stopped migration for the database"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/databaseMigrations/cutover/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Cutover online migration operation for the database"),
+		// 				Operation: to.Ptr("Cutover online migration operation for the database"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/databaseMigrations/write"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Create or Update Database Migration resource"),
+		// 				Operation: to.Ptr("Create or Update Database Migration resource"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/databaseMigrations/write"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Update Database Migration resource"),
+		// 				Operation: to.Ptr("Update Database Migration resource"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/delete"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Delete Database Migration resource"),
+		// 				Operation: to.Ptr("Delete Database Migration resource"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve the Database Migration resource"),
+		// 				Operation: to.Ptr("Get the Database Migration resource"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/Microsoft.DataMigration/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve Database Migration for the server"),
+		// 				Operation: to.Ptr("Get Database Migration in the server"),
+		// 				Resource: to.Ptr("Database Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/cancel/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Stop ongoing login migration"),
+		// 				Operation: to.Ptr("Stop ongoing login migration"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/validate/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Validate login migration"),
+		// 				Operation: to.Ptr("Validate login migration"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/checkNameAvailability/action"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Operation: to.Ptr("Check Name availability for login migration"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/write"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Create or Update Login Migration resource"),
+		// 				Operation: to.Ptr("Create or Update Login Migration resource"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/write"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Update Login Migration resource"),
+		// 				Operation: to.Ptr("Update Login Migration resource"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/delete"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Delete Login Migration resource"),
+		// 				Operation: to.Ptr("Delete Login Migration resource"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve the Login Migration resource"),
+		// 				Operation: to.Ptr("Get Login Migration resource"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.Sql/managedInstances/providers/loginMigrations/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve the Login Migrations"),
+		// 				Operation: to.Ptr("Get all Login Migration resources by server"),
+		// 				Resource: to.Ptr("Login Migration Resource"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.DataMigration/sqlMigrationServices/read"),
+		// 			Display: &armdatamigration.OperationsDisplayDefinition{
+		// 				Description: to.Ptr("Retrieve all services in the Subscription"),
+		// 				Operation: to.Ptr("Get all services in the Subscription"),
+		// 				Resource: to.Ptr("SQL Migration Service"),
 		// 			},
 		// 	}},
 		// }

@@ -25,7 +25,7 @@ type FirewallRulesServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, resource armmongocluster.FirewallRule, options *armmongocluster.FirewallRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmongocluster.FirewallRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method FirewallRulesClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, mongoClusterName string, firewallRuleName string, options *armmongocluster.FirewallRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmongocluster.FirewallRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FirewallRulesClient.Get
@@ -70,23 +70,42 @@ func (f *FirewallRulesServerTransport) Do(req *http.Request) (*http.Response, er
 }
 
 func (f *FirewallRulesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	switch method {
-	case "FirewallRulesClient.BeginCreateOrUpdate":
-		resp, err = f.dispatchBeginCreateOrUpdate(req)
-	case "FirewallRulesClient.BeginDelete":
-		resp, err = f.dispatchBeginDelete(req)
-	case "FirewallRulesClient.Get":
-		resp, err = f.dispatchGet(req)
-	case "FirewallRulesClient.NewListByMongoClusterPager":
-		resp, err = f.dispatchNewListByMongoClusterPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+	go func() {
+		var intercepted bool
+		var res result
+		if firewallRulesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = firewallRulesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "FirewallRulesClient.BeginCreateOrUpdate":
+				res.resp, res.err = f.dispatchBeginCreateOrUpdate(req)
+			case "FirewallRulesClient.BeginDelete":
+				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FirewallRulesClient.Get":
+				res.resp, res.err = f.dispatchGet(req)
+			case "FirewallRulesClient.NewListByMongoClusterPager":
+				res.resp, res.err = f.dispatchNewListByMongoClusterPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	return resp, err
 }
 
 func (f *FirewallRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -98,7 +117,7 @@ func (f *FirewallRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/firewallRules/(?P<firewallRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmongocluster.FirewallRule](req)
@@ -150,7 +169,7 @@ func (f *FirewallRulesServerTransport) dispatchBeginDelete(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/firewallRules/(?P<firewallRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -178,9 +197,9 @@ func (f *FirewallRulesServerTransport) dispatchBeginDelete(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		f.beginDelete.remove(req)
@@ -196,7 +215,7 @@ func (f *FirewallRulesServerTransport) dispatchGet(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/firewallRules/(?P<firewallRuleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -235,7 +254,7 @@ func (f *FirewallRulesServerTransport) dispatchNewListByMongoClusterPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/mongoClusters/(?P<mongoClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/firewallRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -265,4 +284,10 @@ func (f *FirewallRulesServerTransport) dispatchNewListByMongoClusterPager(req *h
 		f.newListByMongoClusterPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to FirewallRulesServerTransport
+var firewallRulesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

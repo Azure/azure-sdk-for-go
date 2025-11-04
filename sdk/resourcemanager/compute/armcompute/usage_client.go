@@ -25,8 +25,7 @@ type UsageClient struct {
 }
 
 // NewUsageClient creates a new instance of UsageClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsageClient, error) {
@@ -44,8 +43,8 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 // NewListPager - Gets, for the specified location, the current compute resource usage information as well as the limits for
 // compute resources under the subscription.
 //
-// Generated from API version 2024-11-01
-//   - location - The location for which resource usage is queried.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - options - UsageClientListOptions contains the optional parameters for the UsageClient.NewListPager method.
 func (client *UsageClient) NewListPager(location string, options *UsageClientListOptions) *runtime.Pager[UsageClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsageClientListResponse]{
@@ -73,20 +72,20 @@ func (client *UsageClient) NewListPager(location string, options *UsageClientLis
 // listCreateRequest creates the List request.
 func (client *UsageClient) listCreateRequest(ctx context.Context, location string, _ *UsageClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

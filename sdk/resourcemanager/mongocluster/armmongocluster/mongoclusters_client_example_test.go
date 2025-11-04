@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_NameAvailability.json
+// Generated from example definition: 2025-09-01/MongoClusters_NameAvailability.json
 func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoClusterNameIsAvailabilityForUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoC
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_NameAvailability_AlreadyExists.json
+// Generated from example definition: 2025-09-01/MongoClusters_NameAvailability_AlreadyExists.json
 func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMon
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_Create.json
+// Generated from example definition: 2025-09-01/MongoClusters_Create.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,6 +89,11 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 				UserName: to.Ptr("mongoAdmin"),
 				Password: to.Ptr("password"),
 			},
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+				},
+			},
 			ServerVersion: to.Ptr("5.0"),
 			Storage: &armmongocluster.StorageProperties{
 				SizeGb: to.Ptr[int64](128),
@@ -100,7 +105,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 				ShardCount: to.Ptr[int32](1),
 			},
 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
-				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeZoneRedundantPreferred),
 			},
 		},
 	}, nil)
@@ -132,9 +137,15 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 			Administrator: &armmongocluster.AdministratorProperties{
 	// 				UserName: to.Ptr("mongoAdmin"),
 	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -156,13 +167,16 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 			Replica: &armmongocluster.ReplicationProperties{
 	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
 	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_CreateGeoReplica.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreateGeoReplica.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,9 +217,15 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// 			Administrator: &armmongocluster.AdministratorProperties{
 	// 				UserName: to.Ptr("mongoAdmin"),
 	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -230,13 +250,144 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster"),
 	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateProvisioning),
 	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
 	// 		},
 	// 		Location: to.Ptr("centralus"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_CreatePITR.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreateGeoReplica_CMK.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myReplicaMongoCluster", armmongocluster.MongoCluster{
+		Identity: &armmongocluster.ManagedServiceIdentity{
+			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+			},
+		},
+		Location: to.Ptr("centralus"),
+		Properties: &armmongocluster.Properties{
+			CreateMode: to.Ptr(armmongocluster.CreateModeGeoReplica),
+			ReplicaParameters: &armmongocluster.ReplicaParameters{
+				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster"),
+				SourceLocation:   to.Ptr("eastus"),
+			},
+			Encryption: &armmongocluster.EncryptionProperties{
+				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myReplicaMongoCluster"),
+	// 		Name: to.Ptr("myReplicaMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("centralus"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-08T10:00:00Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-08T12:00:00Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
+	// 			ClusterStatus: to.Ptr(armmongocluster.StatusReady),
+	// 			CreateMode: to.Ptr(armmongocluster.CreateModeGeoReplica),
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("7.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](1),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2025-06-08T12:30:00Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 				to.Ptr(armmongocluster.PreviewFeatureGeoReplicas),
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myReplicaMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				Role: to.Ptr(armmongocluster.ReplicationRoleGeoAsyncReplica),
+	// 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster"),
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateProvisioning),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 			Encryption: &armmongocluster.EncryptionProperties{
+	// 				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+	// 					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myReplicaMongoCluster"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armmongocluster.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myReplicaMongoCluster": &armmongocluster.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_CreatePITR.json
 func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,6 +402,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 		Location: to.Ptr("westus2"),
 		Properties: &armmongocluster.Properties{
 			CreateMode: to.Ptr(armmongocluster.CreateModePointInTimeRestore),
+			Administrator: &armmongocluster.AdministratorProperties{
+				UserName: to.Ptr("mongoAdmin"),
+				Password: to.Ptr("password"),
+			},
 			RestoreParameters: &armmongocluster.RestoreParameters{
 				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
@@ -277,9 +432,15 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 			Administrator: &armmongocluster.AdministratorProperties{
 	// 				UserName: to.Ptr("mongoAdmin"),
 	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -301,13 +462,465 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 			Replica: &armmongocluster.ReplicationProperties{
 	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
 	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_Delete.json
+// Generated from example definition: 2025-09-01/MongoClusters_CreatePITR_CMK.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+		Identity: &armmongocluster.ManagedServiceIdentity{
+			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+			},
+		},
+		Location: to.Ptr("westus2"),
+		Properties: &armmongocluster.Properties{
+			CreateMode: to.Ptr(armmongocluster.CreateModePointInTimeRestore),
+			RestoreParameters: &armmongocluster.RestoreParameters{
+				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
+				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
+			},
+			Encryption: &armmongocluster.EncryptionProperties{
+				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
+	// 			ClusterStatus: to.Ptr(armmongocluster.StatusReady),
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("7.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](32),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](1),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2025-06-01T20:07:35Z"),
+	// 			},
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 			CreateMode: to.Ptr(armmongocluster.CreateModeDefault),
+	// 			Encryption: &armmongocluster.EncryptionProperties{
+	// 				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+	// 					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armmongocluster.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_CreatePITR_EntraAuth.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIdAuthenticationModeEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+		Location: to.Ptr("westus2"),
+		Properties: &armmongocluster.Properties{
+			CreateMode: to.Ptr(armmongocluster.CreateModePointInTimeRestore),
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+				},
+			},
+			RestoreParameters: &armmongocluster.RestoreParameters{
+				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
+				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		Properties: &armmongocluster.Properties{
+	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](1),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_Create_CMK.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithCustomerManagedKeyEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+		Identity: &armmongocluster.ManagedServiceIdentity{
+			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+			},
+		},
+		Location: to.Ptr("westus2"),
+		Properties: &armmongocluster.Properties{
+			Administrator: &armmongocluster.AdministratorProperties{
+				UserName: to.Ptr("mongoAdmin"),
+				Password: to.Ptr("password"),
+			},
+			Storage: &armmongocluster.StorageProperties{
+				SizeGb: to.Ptr[int64](32),
+			},
+			Compute: &armmongocluster.ComputeProperties{
+				Tier: to.Ptr("M30"),
+			},
+			Sharding: &armmongocluster.ShardingProperties{
+				ShardCount: to.Ptr[int32](1),
+			},
+			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeDisabled),
+			},
+			Encryption: &armmongocluster.EncryptionProperties{
+				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
+	// 			ClusterStatus: to.Ptr(armmongocluster.StatusReady),
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			ServerVersion: to.Ptr("7.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](32),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](1),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeDisabled),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2025-06-13T01:23:33Z"),
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PrivateEndpointConnections: []*armmongocluster.PrivateEndpointConnection{
+	// 			},
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			CreateMode: to.Ptr(armmongocluster.CreateModeDefault),
+	// 			Encryption: &armmongocluster.EncryptionProperties{
+	// 				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+	// 					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armmongocluster.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_Create_SSDv2.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithPremiumSsDv2Storage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
+		Location: to.Ptr("westus2"),
+		Properties: &armmongocluster.Properties{
+			Administrator: &armmongocluster.AdministratorProperties{
+				UserName: to.Ptr("mongoAdmin"),
+				Password: to.Ptr("password"),
+			},
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+				},
+			},
+			ServerVersion: to.Ptr("5.0"),
+			Storage: &armmongocluster.StorageProperties{
+				SizeGb: to.Ptr[int64](32),
+				Type:   to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
+			},
+			Compute: &armmongocluster.ComputeProperties{
+				Tier: to.Ptr("M30"),
+			},
+			Sharding: &armmongocluster.ShardingProperties{
+				ShardCount: to.Ptr[int32](1),
+			},
+			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeZoneRedundantPreferred),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](32),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](1),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_Delete.json
 func ExampleMongoClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +941,7 @@ func ExampleMongoClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_Get.json
+// Generated from example definition: 2025-09-01/MongoClusters_Get.json
 func ExampleMongoClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,9 +982,15 @@ func ExampleMongoClustersClient_Get() {
 	// 			Administrator: &armmongocluster.AdministratorProperties{
 	// 				UserName: to.Ptr("mongoAdmin"),
 	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -394,13 +1013,16 @@ func ExampleMongoClustersClient_Get() {
 	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
 	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_List.json
+// Generated from example definition: 2025-09-01/MongoClusters_List.json
 func ExampleMongoClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,9 +1069,15 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 					Administrator: &armmongocluster.AdministratorProperties{
 		// 						UserName: to.Ptr("mongoAdmin"),
 		// 					},
+		// 					AuthConfig: &armmongocluster.AuthConfigProperties{
+		// 						AllowedModes: []*armmongocluster.AuthenticationMode{
+		// 							to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+		// 						},
+		// 					},
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](128),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M30"),
@@ -471,6 +1099,9 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 					Replica: &armmongocluster.ReplicationProperties{
 		// 						ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 		// 						Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+		// 					},
+		// 					DataAPI: &armmongocluster.DataAPIProperties{
+		// 						Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
 		// 					},
 		// 				},
 		// 				Location: to.Ptr("westus2"),
@@ -495,9 +1126,15 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 					Administrator: &armmongocluster.AdministratorProperties{
 		// 						UserName: to.Ptr("mongoAdmin"),
 		// 					},
+		// 					AuthConfig: &armmongocluster.AuthConfigProperties{
+		// 						AllowedModes: []*armmongocluster.AuthenticationMode{
+		// 							to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+		// 						},
+		// 					},
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](256),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M40"),
@@ -520,6 +1157,9 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 						ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 		// 						Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
 		// 					},
+		// 					DataAPI: &armmongocluster.DataAPIProperties{
+		// 						Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+		// 					},
 		// 				},
 		// 				Location: to.Ptr("eastus"),
 		// 			},
@@ -529,7 +1169,7 @@ func ExampleMongoClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_ListByResourceGroup.json
+// Generated from example definition: 2025-09-01/MongoClusters_ListByResourceGroup.json
 func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -576,9 +1216,15 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 					Administrator: &armmongocluster.AdministratorProperties{
 		// 						UserName: to.Ptr("mongoAdmin"),
 		// 					},
+		// 					AuthConfig: &armmongocluster.AuthConfigProperties{
+		// 						AllowedModes: []*armmongocluster.AuthenticationMode{
+		// 							to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+		// 						},
+		// 					},
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](128),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M30"),
@@ -600,6 +1246,9 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 					Replica: &armmongocluster.ReplicationProperties{
 		// 						ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 		// 						Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+		// 					},
+		// 					DataAPI: &armmongocluster.DataAPIProperties{
+		// 						Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
 		// 					},
 		// 				},
 		// 				Location: to.Ptr("westus2"),
@@ -624,9 +1273,15 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 					Administrator: &armmongocluster.AdministratorProperties{
 		// 						UserName: to.Ptr("mongoAdmin"),
 		// 					},
+		// 					AuthConfig: &armmongocluster.AuthConfigProperties{
+		// 						AllowedModes: []*armmongocluster.AuthenticationMode{
+		// 							to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+		// 						},
+		// 					},
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](256),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M40"),
@@ -649,6 +1304,9 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 						ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 		// 						Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
 		// 					},
+		// 					DataAPI: &armmongocluster.DataAPIProperties{
+		// 						Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+		// 					},
 		// 				},
 		// 				Location: to.Ptr("eastus"),
 		// 			},
@@ -658,7 +1316,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_ListConnectionStrings.json
+// Generated from example definition: 2025-09-01/MongoClusters_ListConnectionStrings.json
 func ExampleMongoClustersClient_ListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,7 +1346,7 @@ func ExampleMongoClustersClient_ListConnectionStrings() {
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_ForcePromoteReplica.json
+// Generated from example definition: 2025-09-01/MongoClusters_ForcePromoteReplica.json
 func ExampleMongoClustersClient_BeginPromote() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -712,8 +1370,8 @@ func ExampleMongoClustersClient_BeginPromote() {
 	}
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_PatchDiskSize.json
-func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterResource() {
+// Generated from example definition: 2025-09-01/MongoClusters_PatchCMK.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionKeyOnAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -724,9 +1382,21 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Identity: &armmongocluster.ManagedServiceIdentity{
+			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2": {},
+			},
+		},
 		Properties: &armmongocluster.UpdateProperties{
-			Storage: &armmongocluster.StorageProperties{
-				SizeGb: to.Ptr[int64](256),
+			Encryption: &armmongocluster.EncryptionProperties{
+				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey2"),
+				},
 			},
 		},
 	}, nil)
@@ -757,83 +1427,15 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	// 			Administrator: &armmongocluster.AdministratorProperties{
 	// 				UserName: to.Ptr("mongoAdmin"),
 	// 			},
-	// 			ServerVersion: to.Ptr("5.0"),
-	// 			Storage: &armmongocluster.StorageProperties{
-	// 				SizeGb: to.Ptr[int64](256),
-	// 			},
-	// 			Compute: &armmongocluster.ComputeProperties{
-	// 				Tier: to.Ptr("M30"),
-	// 			},
-	// 			Sharding: &armmongocluster.ShardingProperties{
-	// 				ShardCount: to.Ptr[int32](4),
-	// 			},
-	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
-	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
-	// 			},
-	// 			Backup: &armmongocluster.BackupProperties{
-	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
-	// 			},
-	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
-	// 			},
-	// 			InfrastructureVersion: to.Ptr("2.0"),
-	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
-	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
-	// 			Replica: &armmongocluster.ReplicationProperties{
-	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
-	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus2"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_PatchPrivateNetworkAccess.json
-func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
-		Properties: &armmongocluster.UpdateProperties{
-			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessDisabled),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmongocluster.MongoClustersClientUpdateResponse{
-	// 	MongoCluster: &armmongocluster.MongoCluster{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
-	// 		Name: to.Ptr("myMongoCluster"),
-	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
-	// 		SystemData: &armmongocluster.SystemData{
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
-	// 		},
-	// 		Properties: &armmongocluster.Properties{
-	// 			Administrator: &armmongocluster.AdministratorProperties{
-	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
 	// 			},
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -882,13 +1484,602 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
 	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 			CreateMode: to.Ptr(armmongocluster.CreateModeDefault),
+	// 			Encryption: &armmongocluster.EncryptionProperties{
+	// 				CustomerManagedKeyEncryption: &armmongocluster.CustomerManagedKeyEncryptionProperties{
+	// 					KeyEncryptionKeyIdentity: &armmongocluster.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armmongocluster.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myVault.vault.azure.net/keys/myKey2"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armmongocluster.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
+	// 				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2": &armmongocluster.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 				},
+	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_ResetPassword.json
+// Generated from example definition: 2025-09-01/MongoClusters_PatchDataApi.json
+func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			DataAPI: &armmongocluster.DataAPIProperties{
+				Mode: to.Ptr(armmongocluster.DataAPIModeEnabled),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PrivateEndpointConnections: []*armmongocluster.PrivateEndpointConnection{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster/privateEndpointConnections/mymongocluster-pe.ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 					SystemData: &armmongocluster.SystemData{
+	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						CreatedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 						CreatedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
+	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						LastModifiedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 						LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
+	// 					},
+	// 					Properties: &armmongocluster.PrivateEndpointConnectionProperties{
+	// 						PrivateEndpoint: &armmongocluster.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.Network/privateEndpoints/mymongocluster-pe"),
+	// 						},
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("MongoCluster"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armmongocluster.PrivateLinkServiceConnectionState{
+	// 							Status: to.Ptr(armmongocluster.PrivateEndpointServiceConnectionStatusApproved),
+	// 							Description: to.Ptr("Auto-approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessDisabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeEnabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_PatchDisableNativeAuth.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_PatchDiskSize.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			Storage: &armmongocluster.StorageProperties{
+				SizeGb: to.Ptr[int64](256),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_PatchEnableEntraIDAuth.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIdAuthentication() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 					to.Ptr(armmongocluster.AuthenticationModeMicrosoftEntraID),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_PatchPrivateNetworkAccess.json
+func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessDisabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PrivateEndpointConnections: []*armmongocluster.PrivateEndpointConnection{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster/privateEndpointConnections/mymongocluster-pe.ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 					SystemData: &armmongocluster.SystemData{
+	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						CreatedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 						CreatedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
+	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						LastModifiedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 						LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
+	// 					},
+	// 					Properties: &armmongocluster.PrivateEndpointConnectionProperties{
+	// 						PrivateEndpoint: &armmongocluster.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.Network/privateEndpoints/mymongocluster-pe"),
+	// 						},
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("MongoCluster"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armmongocluster.PrivateLinkServiceConnectionState{
+	// 							Status: to.Ptr(armmongocluster.PrivateEndpointServiceConnectionStatusApproved),
+	// 							Description: to.Ptr("Auto-approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessDisabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_PatchSSDv2.json
+func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnAMongoClusterResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Properties: &armmongocluster.UpdateProperties{
+			Storage: &armmongocluster.StorageProperties{
+				SizeGb: to.Ptr[int64](128),
+				Type:   to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: &armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("/Microsoft.DocumentDB/mongoClusters"),
+	// 		SystemData: &armmongocluster.SystemData{
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			Administrator: &armmongocluster.AdministratorProperties{
+	// 				UserName: to.Ptr("mongoAdmin"),
+	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
+	// 			ServerVersion: to.Ptr("5.0"),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
+	// 			},
+	// 			Compute: &armmongocluster.ComputeProperties{
+	// 				Tier: to.Ptr("M30"),
+	// 			},
+	// 			Sharding: &armmongocluster.ShardingProperties{
+	// 				ShardCount: to.Ptr[int32](4),
+	// 			},
+	// 			HighAvailability: &armmongocluster.HighAvailabilityProperties{
+	// 				TargetMode: to.Ptr(armmongocluster.HighAvailabilityModeSameZone),
+	// 			},
+	// 			Backup: &armmongocluster.BackupProperties{
+	// 				EarliestRestoreTime: to.Ptr("2023-01-13T20:07:35Z"),
+	// 			},
+	// 			PreviewFeatures: []*armmongocluster.PreviewFeature{
+	// 			},
+	// 			InfrastructureVersion: to.Ptr("2.0"),
+	// 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+	// 			ConnectionString: to.Ptr("mongodb+srv://<user>:<password>@myMongoCluster.mongocluster.cosmos.azure.com"),
+	// 			Replica: &armmongocluster.ReplicationProperties{
+	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
+	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/MongoClusters_ResetPassword.json
 func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -934,9 +2125,15 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// 			Administrator: &armmongocluster.AdministratorProperties{
 	// 				UserName: to.Ptr("mongoAdmin"),
 	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -959,13 +2156,16 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
 	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus2"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: D:/ws/azure-sdk-for-go/sdk/resourcemanager/mongocluster/armmongocluster/TempTypeSpecFiles/DocumentDB.MongoCluster.Management/examples/2024-07-01/MongoClusters_Update.json
+// Generated from example definition: 2025-09-01/MongoClusters_Update.json
 func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -981,9 +2181,15 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),
 			},
+			AuthConfig: &armmongocluster.AuthConfigProperties{
+				AllowedModes: []*armmongocluster.AuthenticationMode{
+					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+				},
+			},
 			ServerVersion: to.Ptr("5.0"),
 			Storage: &armmongocluster.StorageProperties{
 				SizeGb: to.Ptr[int64](256),
+				Type:   to.Ptr(armmongocluster.StorageTypePremiumSSD),
 			},
 			Compute: &armmongocluster.ComputeProperties{
 				Tier: to.Ptr("M50"),
@@ -996,6 +2202,9 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 			},
 			PreviewFeatures:     []*armmongocluster.PreviewFeature{},
 			PublicNetworkAccess: to.Ptr(armmongocluster.PublicNetworkAccessEnabled),
+			DataAPI: &armmongocluster.DataAPIProperties{
+				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -1026,9 +2235,15 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	// 			Administrator: &armmongocluster.AdministratorProperties{
 	// 				UserName: to.Ptr("mongoAdmin"),
 	// 			},
+	// 			AuthConfig: &armmongocluster.AuthConfigProperties{
+	// 				AllowedModes: []*armmongocluster.AuthenticationMode{
+	// 					to.Ptr(armmongocluster.AuthenticationModeNativeAuth),
+	// 				},
+	// 			},
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M50"),
@@ -1050,6 +2265,9 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	// 			Replica: &armmongocluster.ReplicationProperties{
 	// 				ReplicationState: to.Ptr(armmongocluster.ReplicationStateActive),
 	// 				Role: to.Ptr(armmongocluster.ReplicationRolePrimary),
+	// 			},
+	// 			DataAPI: &armmongocluster.DataAPIProperties{
+	// 				Mode: to.Ptr(armmongocluster.DataAPIModeDisabled),
 	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus2"),

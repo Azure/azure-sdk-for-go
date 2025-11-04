@@ -1,5 +1,200 @@
 # Release History
 
+## 2.0.0 (2025-09-01)
+### Breaking Changes
+
+- Function `*SummariesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, SummaryName, *SummariesClientGetOptions)` to `(context.Context, string, string, string, SummaryType, *SummariesClientGetOptions)`
+- Function `*WorkspacesClient.Update` parameter(s) have been changed from `(context.Context, string, string, WorkspaceUpdateDefinition, *WorkspacesClientUpdateOptions)` to `(context.Context, string, string, WorkspaceUpdate, *WorkspacesClientUpdateOptions)`
+- Type of `CryptoKey.KeyType` has been changed from `*string` to `*CryptoKeyType`
+- `ProvisioningStateAccepted` from enum `ProvisioningState` has been removed
+- `SummaryTypeCVE` from enum `SummaryType` has been removed
+- Enum `SummaryName` has been removed
+- Function `*FirmwaresClient.GenerateDownloadURL` has been removed
+- Function `*FirmwaresClient.GenerateFilesystemDownloadURL` has been removed
+- Operation `*WorkspacesClient.Delete` has been changed to LRO, use `*WorkspacesClient.BeginDelete` instead.
+- Struct `BinaryHardeningListResult` has been removed
+- Struct `CryptoCertificateListResult` has been removed
+- Struct `CryptoKeyListResult` has been removed
+- Struct `CveListResult` has been removed
+- Struct `FirmwareList` has been removed
+- Struct `PasswordHashListResult` has been removed
+- Struct `SbomComponentListResult` has been removed
+- Struct `SummaryListResult` has been removed
+- Struct `WorkspaceList` has been removed
+- Struct `WorkspaceUpdateDefinition` has been removed
+- Field `BinaryHardeningListResult` of struct `BinaryHardeningClientListByFirmwareResponse` has been removed
+- Field `Nx`, `Pie`, `Relro` of struct `BinaryHardeningFeatures` has been removed
+- Field `Architecture`, `Class`, `Features` of struct `BinaryHardeningResult` has been removed
+- Field `Canary`, `Nx`, `Pie`, `Relro`, `Stripped` of struct `BinaryHardeningSummaryResource` has been removed
+- Field `KeyAlgorithm`, `KeySize`, `Name`, `Role`, `Usage` of struct `CryptoCertificate` has been removed
+- Field `Expired`, `ExpiringSoon`, `PairedKeys`, `SelfSigned`, `ShortKeySize`, `TotalCertificates`, `WeakSignature` of struct `CryptoCertificateSummaryResource` has been removed
+- Field `CryptoCertificateListResult` of struct `CryptoCertificatesClientListByFirmwareResponse` has been removed
+- Field `KeySize` of struct `CryptoKey` has been removed
+- Field `PairedKeys`, `PrivateKeys`, `PublicKeys`, `ShortKeySize`, `TotalKeys` of struct `CryptoKeySummaryResource` has been removed
+- Field `CryptoKeyListResult` of struct `CryptoKeysClientListByFirmwareResponse` has been removed
+- Field `Name` of struct `CveResult` has been removed
+- Field `Critical`, `High`, `Low`, `Medium`, `Unknown` of struct `CveSummary` has been removed
+- Field `CveListResult` of struct `CvesClientListByFirmwareResponse` has been removed
+- Field `FirmwareList` of struct `FirmwaresClientListByWorkspaceResponse` has been removed
+- Field `ID` of struct `PairedKey` has been removed
+- Field `PasswordHashListResult` of struct `PasswordHashesClientListByFirmwareResponse` has been removed
+- Field `SbomComponentListResult` of struct `SbomComponentsClientListByFirmwareResponse` has been removed
+- Field `SummaryListResult` of struct `SummariesClientListByFirmwareResponse` has been removed
+- Field `WorkspaceList` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `WorkspaceList` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+
+### Features Added
+
+- New value `ProvisioningStateAnalyzing`, `ProvisioningStateExtracting`, `ProvisioningStatePending` added to enum type `ProvisioningState`
+- New value `SummaryTypeCommonVulnerabilitiesAndExposures` added to enum type `SummaryType`
+- New enum type `CertificateUsage` with values `CertificateUsageCRLSign`, `CertificateUsageClientAuthentication`, `CertificateUsageCodeSigning`, `CertificateUsageContentCommitment`, `CertificateUsageDataEncipherment`, `CertificateUsageDecipherOnly`, `CertificateUsageDigitalSignature`, `CertificateUsageEmailProtection`, `CertificateUsageEncipherOnly`, `CertificateUsageKeyAgreement`, `CertificateUsageKeyCertSign`, `CertificateUsageKeyEncipherment`, `CertificateUsageNonRepudiation`, `CertificateUsageOCSPSigning`, `CertificateUsageServerAuthentication`, `CertificateUsageTimeStamping`
+- New enum type `CryptoKeyType` with values `CryptoKeyTypePrivate`, `CryptoKeyTypePublic`
+- New enum type `ExecutableClass` with values `ExecutableClassX64`, `ExecutableClassX86`
+- New enum type `SKUTier` with values `SKUTierBasic`, `SKUTierFree`, `SKUTierPremium`, `SKUTierStandard`
+- New function `*ClientFactory.NewUsageMetricsClient() *UsageMetricsClient`
+- New function `NewUsageMetricsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsageMetricsClient, error)`
+- New function `*UsageMetricsClient.Get(context.Context, string, string, string, *UsageMetricsClientGetOptions) (UsageMetricsClientGetResponse, error)`
+- New function `*UsageMetricsClient.NewListByWorkspacePager(string, string, *UsageMetricsClientListByWorkspaceOptions) *runtime.Pager[UsageMetricsClientListByWorkspaceResponse]`
+- New struct `BinaryHardeningResourceListResult`
+- New struct `CryptoCertificateResourceListResult`
+- New struct `CryptoKeyResourceListResult`
+- New struct `CveResourceListResult`
+- New struct `CvssScore`
+- New struct `FirmwareListResult`
+- New struct `PasswordHashResourceListResult`
+- New struct `SKU`
+- New struct `SbomComponentResourceListResult`
+- New struct `SummaryResourceListResult`
+- New struct `UsageMetric`
+- New struct `UsageMetricListResult`
+- New struct `UsageMetricProperties`
+- New struct `WorkspaceListResult`
+- New struct `WorkspaceUpdate`
+- New anonymous field `BinaryHardeningResourceListResult` in struct `BinaryHardeningClientListByFirmwareResponse`
+- New field `NoExecute`, `PositionIndependentExecutable`, `RelocationReadOnly` in struct `BinaryHardeningFeatures`
+- New field `ExecutableArchitecture`, `ExecutableClass`, `ProvisioningState`, `SecurityHardeningFeatures` in struct `BinaryHardeningResult`
+- New field `NotExecutableStackCount`, `PositionIndependentExecutableCount`, `ProvisioningState`, `RelocationReadOnlyCount`, `StackCanaryCount`, `StrippedBinaryCount` in struct `BinaryHardeningSummaryResource`
+- New field `CertificateKeyAlgorithm`, `CertificateKeySize`, `CertificateName`, `CertificateRole`, `CertificateUsage`, `ProvisioningState` in struct `CryptoCertificate`
+- New field `ExpiredCertificateCount`, `ExpiringSoonCertificateCount`, `PairedKeyCount`, `ProvisioningState`, `SelfSignedCertificateCount`, `ShortKeySizeCount`, `TotalCertificateCount`, `WeakSignatureCount` in struct `CryptoCertificateSummaryResource`
+- New anonymous field `CryptoCertificateResourceListResult` in struct `CryptoCertificatesClientListByFirmwareResponse`
+- New field `CryptoKeySize`, `ProvisioningState` in struct `CryptoKey`
+- New field `PairedKeyCount`, `PrivateKeyCount`, `ProvisioningState`, `PublicKeyCount`, `ShortKeySizeCount`, `TotalKeyCount` in struct `CryptoKeySummaryResource`
+- New anonymous field `CryptoKeyResourceListResult` in struct `CryptoKeysClientListByFirmwareResponse`
+- New field `ComponentID`, `ComponentName`, `ComponentVersion`, `CveName`, `CvssScores`, `EffectiveCvssScore`, `EffectiveCvssVersion`, `ProvisioningState` in struct `CveResult`
+- New field `CriticalCveCount`, `HighCveCount`, `LowCveCount`, `MediumCveCount`, `ProvisioningState`, `UnknownCveCount` in struct `CveSummary`
+- New anonymous field `CveResourceListResult` in struct `CvesClientListByFirmwareResponse`
+- New field `ProvisioningState` in struct `FirmwareSummary`
+- New anonymous field `FirmwareListResult` in struct `FirmwaresClientListByWorkspaceResponse`
+- New field `PairedKeyID` in struct `PairedKey`
+- New field `ProvisioningState` in struct `PasswordHash`
+- New anonymous field `PasswordHashResourceListResult` in struct `PasswordHashesClientListByFirmwareResponse`
+- New field `ProvisioningState` in struct `SbomComponent`
+- New anonymous field `SbomComponentResourceListResult` in struct `SbomComponentsClientListByFirmwareResponse`
+- New anonymous field `SummaryResourceListResult` in struct `SummariesClientListByFirmwareResponse`
+- New field `ProvisioningState` in struct `SummaryResourceProperties`
+- New field `SKU` in struct `Workspace`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListByResourceGroupResponse`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListBySubscriptionResponse`
+
+
+## 2.0.0-beta.1 (2025-06-02)
+### Breaking Changes
+
+- Function `*SummariesClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, SummaryName, *SummariesClientGetOptions)` to `(context.Context, string, string, string, SummaryType, *SummariesClientGetOptions)`
+- Function `*WorkspacesClient.Update` parameter(s) have been changed from `(context.Context, string, string, WorkspaceUpdateDefinition, *WorkspacesClientUpdateOptions)` to `(context.Context, string, string, WorkspaceUpdate, *WorkspacesClientUpdateOptions)`
+- Type of `CryptoKey.KeyType` has been changed from `*string` to `*CryptoKeyType`
+- Type of `SummaryResource.Name` has been changed from `*string` to `*SummaryType`
+- `ProvisioningStateAccepted` from enum `ProvisioningState` has been removed
+- `SummaryTypeCVE` from enum `SummaryType` has been removed
+- Enum `SummaryName` has been removed
+- Function `*FirmwaresClient.GenerateDownloadURL` has been removed
+- Function `*FirmwaresClient.GenerateFilesystemDownloadURL` has been removed
+- Struct `BinaryHardeningListResult` has been removed
+- Struct `CryptoCertificateListResult` has been removed
+- Struct `CryptoKeyListResult` has been removed
+- Struct `CveComponent` has been removed
+- Struct `CveListResult` has been removed
+- Struct `FirmwareList` has been removed
+- Struct `PasswordHashListResult` has been removed
+- Struct `SbomComponentListResult` has been removed
+- Struct `SummaryListResult` has been removed
+- Struct `WorkspaceList` has been removed
+- Struct `WorkspaceUpdateDefinition` has been removed
+- Field `BinaryHardeningListResult` of struct `BinaryHardeningClientListByFirmwareResponse` has been removed
+- Field `Nx`, `Pie`, `Relro` of struct `BinaryHardeningFeatures` has been removed
+- Field `Architecture`, `Class`, `Features` of struct `BinaryHardeningResult` has been removed
+- Field `Canary`, `Nx`, `Pie`, `Relro`, `Stripped` of struct `BinaryHardeningSummaryResource` has been removed
+- Field `KeyAlgorithm`, `KeySize`, `Name`, `Role`, `Usage` of struct `CryptoCertificate` has been removed
+- Field `Expired`, `ExpiringSoon`, `PairedKeys`, `SelfSigned`, `ShortKeySize`, `TotalCertificates`, `WeakSignature` of struct `CryptoCertificateSummaryResource` has been removed
+- Field `CryptoCertificateListResult` of struct `CryptoCertificatesClientListByFirmwareResponse` has been removed
+- Field `KeySize` of struct `CryptoKey` has been removed
+- Field `PairedKeys`, `PrivateKeys`, `PublicKeys`, `ShortKeySize`, `TotalKeys` of struct `CryptoKeySummaryResource` has been removed
+- Field `CryptoKeyListResult` of struct `CryptoKeysClientListByFirmwareResponse` has been removed
+- Field `Component`, `CvssScore`, `CvssV2Score`, `CvssV3Score`, `CvssVersion`, `Name` of struct `CveResult` has been removed
+- Field `Critical`, `High`, `Low`, `Medium`, `Unknown` of struct `CveSummary` has been removed
+- Field `CveListResult` of struct `CvesClientListByFirmwareResponse` has been removed
+- Field `FirmwareList` of struct `FirmwaresClientListByWorkspaceResponse` has been removed
+- Field `ID` of struct `PairedKey` has been removed
+- Field `PasswordHashListResult` of struct `PasswordHashesClientListByFirmwareResponse` has been removed
+- Field `SbomComponentListResult` of struct `SbomComponentsClientListByFirmwareResponse` has been removed
+- Field `SummaryListResult` of struct `SummariesClientListByFirmwareResponse` has been removed
+- Field `WorkspaceList` of struct `WorkspacesClientListByResourceGroupResponse` has been removed
+- Field `WorkspaceList` of struct `WorkspacesClientListBySubscriptionResponse` has been removed
+
+### Features Added
+
+- New value `ProvisioningStateAnalyzing`, `ProvisioningStateExtracting`, `ProvisioningStatePending` added to enum type `ProvisioningState`
+- New value `SummaryTypeCommonVulnerabilitiesAndExposures` added to enum type `SummaryType`
+- New enum type `CertificateUsage` with values `CertificateUsageCRLSign`, `CertificateUsageClientAuthentication`, `CertificateUsageCodeSigning`, `CertificateUsageContentCommitment`, `CertificateUsageDataEncipherment`, `CertificateUsageDecipherOnly`, `CertificateUsageDigitalSignature`, `CertificateUsageEmailProtection`, `CertificateUsageEncipherOnly`, `CertificateUsageKeyAgreement`, `CertificateUsageKeyCertSign`, `CertificateUsageKeyEncipherment`, `CertificateUsageNonRepudiation`, `CertificateUsageOCSPSigning`, `CertificateUsageServerAuthentication`, `CertificateUsageTimeStamping`
+- New enum type `CryptoKeyType` with values `CryptoKeyTypePrivate`, `CryptoKeyTypePublic`
+- New enum type `ExecutableClass` with values `ExecutableClassX64`, `ExecutableClassX86`
+- New enum type `SKUTier` with values `SKUTierBasic`, `SKUTierFree`, `SKUTierPremium`, `SKUTierStandard`
+- New function `*ClientFactory.NewUsageMetricsClient() *UsageMetricsClient`
+- New function `NewUsageMetricsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsageMetricsClient, error)`
+- New function `*UsageMetricsClient.Get(context.Context, string, string, string, *UsageMetricsClientGetOptions) (UsageMetricsClientGetResponse, error)`
+- New function `*UsageMetricsClient.NewListByWorkspacePager(string, string, *UsageMetricsClientListByWorkspaceOptions) *runtime.Pager[UsageMetricsClientListByWorkspaceResponse]`
+- New struct `BinaryHardeningResourceListResult`
+- New struct `CryptoCertificateResourceListResult`
+- New struct `CryptoKeyResourceListResult`
+- New struct `CveResourceListResult`
+- New struct `CvssScore`
+- New struct `FirmwareListResult`
+- New struct `PasswordHashResourceListResult`
+- New struct `SKU`
+- New struct `SbomComponentResourceListResult`
+- New struct `SummaryResourceListResult`
+- New struct `UsageMetric`
+- New struct `UsageMetricListResult`
+- New struct `UsageMetricProperties`
+- New struct `WorkspaceListResult`
+- New struct `WorkspaceUpdate`
+- New anonymous field `BinaryHardeningResourceListResult` in struct `BinaryHardeningClientListByFirmwareResponse`
+- New field `NoExecute`, `PositionIndependentExecutable`, `RelocationReadOnly` in struct `BinaryHardeningFeatures`
+- New field `ExecutableArchitecture`, `ExecutableClass`, `ProvisioningState`, `SecurityHardeningFeatures` in struct `BinaryHardeningResult`
+- New field `NotExecutableStackCount`, `PositionIndependentExecutableCount`, `ProvisioningState`, `RelocationReadOnlyCount`, `StackCanaryCount`, `StrippedBinaryCount` in struct `BinaryHardeningSummaryResource`
+- New field `CertificateKeyAlgorithm`, `CertificateKeySize`, `CertificateName`, `CertificateRole`, `CertificateUsage`, `ProvisioningState` in struct `CryptoCertificate`
+- New field `ExpiredCertificateCount`, `ExpiringSoonCertificateCount`, `PairedKeyCount`, `ProvisioningState`, `SelfSignedCertificateCount`, `ShortKeySizeCount`, `TotalCertificateCount`, `WeakSignatureCount` in struct `CryptoCertificateSummaryResource`
+- New anonymous field `CryptoCertificateResourceListResult` in struct `CryptoCertificatesClientListByFirmwareResponse`
+- New field `CryptoKeySize`, `ProvisioningState` in struct `CryptoKey`
+- New field `PairedKeyCount`, `PrivateKeyCount`, `ProvisioningState`, `PublicKeyCount`, `ShortKeySizeCount`, `TotalKeyCount` in struct `CryptoKeySummaryResource`
+- New anonymous field `CryptoKeyResourceListResult` in struct `CryptoKeysClientListByFirmwareResponse`
+- New field `ComponentID`, `ComponentName`, `ComponentVersion`, `CveName`, `CvssScores`, `EffectiveCvssScore`, `EffectiveCvssVersion`, `ProvisioningState` in struct `CveResult`
+- New field `CriticalCveCount`, `HighCveCount`, `LowCveCount`, `MediumCveCount`, `ProvisioningState`, `UnknownCveCount` in struct `CveSummary`
+- New anonymous field `CveResourceListResult` in struct `CvesClientListByFirmwareResponse`
+- New field `ProvisioningState` in struct `FirmwareSummary`
+- New anonymous field `FirmwareListResult` in struct `FirmwaresClientListByWorkspaceResponse`
+- New field `PairedKeyID` in struct `PairedKey`
+- New field `ProvisioningState` in struct `PasswordHash`
+- New anonymous field `PasswordHashResourceListResult` in struct `PasswordHashesClientListByFirmwareResponse`
+- New field `ProvisioningState` in struct `SbomComponent`
+- New anonymous field `SbomComponentResourceListResult` in struct `SbomComponentsClientListByFirmwareResponse`
+- New anonymous field `SummaryResourceListResult` in struct `SummariesClientListByFirmwareResponse`
+- New field `ProvisioningState` in struct `SummaryResourceProperties`
+- New field `SKU` in struct `Workspace`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListByResourceGroupResponse`
+- New anonymous field `WorkspaceListResult` in struct `WorkspacesClientListBySubscriptionResponse`
+
+
 ## 1.0.0 (2024-03-22)
 ### Breaking Changes
 

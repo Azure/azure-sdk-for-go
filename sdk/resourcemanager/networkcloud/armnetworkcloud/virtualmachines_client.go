@@ -43,7 +43,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Create a new virtual machine or update the properties of the existing virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - virtualMachineParameters - The request body.
@@ -70,7 +70,7 @@ func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Create a new virtual machine or update the properties of the existing virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineParameters VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineParameters VirtualMachine, _ *VirtualMachinesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineParameters VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -112,9 +112,15 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	if err := runtime.MarshalAsJSON(req, virtualMachineParameters); err != nil {
 		return nil, err
 	}
@@ -124,7 +130,7 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete
@@ -150,7 +156,7 @@ func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginDelete"
@@ -173,7 +179,7 @@ func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, _ *VirtualMachinesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -192,16 +198,22 @@ func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	return req, nil
 }
 
 // Get - Get properties of the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - options - VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
@@ -247,7 +259,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +276,7 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 
 // NewListByResourceGroupPager - Get a list of virtual machines in the provided resource group.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.NewListByResourceGroupPager
 //     method.
@@ -307,7 +319,7 @@ func (client *VirtualMachinesClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +336,7 @@ func (client *VirtualMachinesClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Get a list of virtual machines in the provided subscription.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - options - VirtualMachinesClientListBySubscriptionOptions contains the optional parameters for the VirtualMachinesClient.NewListBySubscriptionPager
 //     method.
 func (client *VirtualMachinesClient) NewListBySubscriptionPager(options *VirtualMachinesClientListBySubscriptionOptions) *runtime.Pager[VirtualMachinesClientListBySubscriptionResponse] {
@@ -362,7 +374,7 @@ func (client *VirtualMachinesClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -380,7 +392,7 @@ func (client *VirtualMachinesClient) listBySubscriptionHandleResponse(resp *http
 // BeginPowerOff - Power off the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginPowerOffOptions contains the optional parameters for the VirtualMachinesClient.BeginPowerOff
@@ -406,7 +418,7 @@ func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resource
 // PowerOff - Power off the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *VirtualMachinesClient) powerOff(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginPowerOffOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginPowerOff"
@@ -448,7 +460,7 @@ func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.VirtualMachinePowerOffParameters != nil {
@@ -463,7 +475,7 @@ func (client *VirtualMachinesClient) powerOffCreateRequest(ctx context.Context, 
 // BeginReimage - Reimage the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginReimageOptions contains the optional parameters for the VirtualMachinesClient.BeginReimage
@@ -489,7 +501,7 @@ func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceG
 // Reimage - Reimage the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginReimage"
@@ -531,7 +543,7 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -540,7 +552,7 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 // BeginRestart - Restart the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginRestartOptions contains the optional parameters for the VirtualMachinesClient.BeginRestart
@@ -566,7 +578,7 @@ func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceG
 // Restart - Restart the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *VirtualMachinesClient) restart(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginRestart"
@@ -608,7 +620,7 @@ func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -617,7 +629,7 @@ func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, r
 // BeginStart - Start the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - options - VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart
@@ -643,7 +655,7 @@ func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGro
 // Start - Start the provided virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginStart"
@@ -685,7 +697,7 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -695,7 +707,7 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 // Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - virtualMachineUpdateParameters - The request body.
@@ -723,7 +735,7 @@ func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGr
 // Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-10-01-preview
+// Generated from API version 2025-02-01
 func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineUpdateParameters VirtualMachinePatchParameters, options *VirtualMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualMachinesClient.BeginUpdate"
@@ -746,7 +758,7 @@ func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineUpdateParameters VirtualMachinePatchParameters, _ *VirtualMachinesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineUpdateParameters VirtualMachinePatchParameters, options *VirtualMachinesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -765,9 +777,15 @@ func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01-preview")
+	reqQP.Set("api-version", "2025-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	if err := runtime.MarshalAsJSON(req, virtualMachineUpdateParameters); err != nil {
 		return nil, err
 	}

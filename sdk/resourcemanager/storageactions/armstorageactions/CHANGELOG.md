@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0 (2025-06-30)
+### Breaking Changes
+
+- Type of `StorageTaskUpdateParameters.Properties` has been changed from `*StorageTaskProperties` to `*StorageTaskUpdateProperties`
+
+### Features Added
+
+- New struct `StorageTaskUpdateProperties`
+
+
 ## 0.2.0 (2025-04-21)
 ### Breaking Changes
 

@@ -15,10 +15,152 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineScaleSetExtensionListMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetExtensionsClient().NewListPager("rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VirtualMachineScaleSetExtensionListResult = armcompute.VirtualMachineScaleSetExtensionListResult{
+		// 	Value: []*armcompute.VirtualMachineScaleSetExtension{
+		// 		{
+		// 			ID: to.Ptr("aaaaaaaa"),
+		// 			Name: to.Ptr("{extension-name}"),
+		// 			Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 			Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
+		// 				Type: to.Ptr("{extension-Type}"),
+		// 				AutoUpgradeMinorVersion: to.Ptr(true),
+		// 				EnableAutomaticUpgrade: to.Ptr(true),
+		// 				ForceUpdateTag: to.Ptr("aaaaaaaaa"),
+		// 				ProtectedSettings: map[string]any{
+		// 				},
+		// 				ProvisionAfterExtensions: []*string{
+		// 					to.Ptr("aa")},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					Publisher: to.Ptr("{extension-Publisher}"),
+		// 					Settings: map[string]any{
+		// 					},
+		// 					SuppressFailures: to.Ptr(true),
+		// 					TypeHandlerVersion: to.Ptr("{handler-version}"),
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineScaleSetExtensionListMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetExtensionsClient().NewListPager("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VirtualMachineScaleSetExtensionListResult = armcompute.VirtualMachineScaleSetExtensionListResult{
+		// 	Value: []*armcompute.VirtualMachineScaleSetExtension{
+		// 		{
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MaximumSet_Gen.json
+func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExtensionGetMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetExtensionsClient().Get(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachineScaleSetExtensionsClientGetOptions{Expand: to.Ptr("aaaaaaa")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualMachineScaleSetExtension = armcompute.VirtualMachineScaleSetExtension{
+	// 	ID: to.Ptr("aaaaaaaa"),
+	// 	Name: to.Ptr("{extension-name}"),
+	// 	Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
+	// 		Type: to.Ptr("{extension-Type}"),
+	// 		AutoUpgradeMinorVersion: to.Ptr(true),
+	// 		EnableAutomaticUpgrade: to.Ptr(true),
+	// 		ForceUpdateTag: to.Ptr("aaaaaaaaa"),
+	// 		ProtectedSettings: map[string]any{
+	// 		},
+	// 		ProvisionAfterExtensions: []*string{
+	// 			to.Ptr("aa")},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Publisher: to.Ptr("{extension-Publisher}"),
+	// 			Settings: map[string]any{
+	// 			},
+	// 			SuppressFailures: to.Ptr(true),
+	// 			TypeHandlerVersion: to.Ptr("{handler-version}"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MinimumSet_Gen.json
+func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExtensionGetMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetExtensionsClient().Get(ctx, "rgcompute", "a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachineScaleSetExtensionsClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualMachineScaleSetExtension = armcompute.VirtualMachineScaleSetExtension{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMachineScaleSetExtensionCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +220,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMa
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMachineScaleSetExtensionCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +246,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineScaleSetExtensionUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +305,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineSca
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineScaleSetExtensionUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +331,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineScaleSetExtensionDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +352,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineSca
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineScaleSetExtensionDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,147 +370,5 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineSca
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExtensionGetMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetExtensionsClient().Get(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachineScaleSetExtensionsClientGetOptions{Expand: to.Ptr("aaaaaaa")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualMachineScaleSetExtension = armcompute.VirtualMachineScaleSetExtension{
-	// 	ID: to.Ptr("aaaaaaaa"),
-	// 	Name: to.Ptr("{extension-name}"),
-	// 	Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
-	// 		Type: to.Ptr("{extension-Type}"),
-	// 		AutoUpgradeMinorVersion: to.Ptr(true),
-	// 		EnableAutomaticUpgrade: to.Ptr(true),
-	// 		ForceUpdateTag: to.Ptr("aaaaaaaaa"),
-	// 		ProtectedSettings: map[string]any{
-	// 		},
-	// 		ProvisionAfterExtensions: []*string{
-	// 			to.Ptr("aa")},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Publisher: to.Ptr("{extension-Publisher}"),
-	// 			Settings: map[string]any{
-	// 			},
-	// 			SuppressFailures: to.Ptr(true),
-	// 			TypeHandlerVersion: to.Ptr("{handler-version}"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExtensionGetMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetExtensionsClient().Get(ctx, "rgcompute", "a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", &armcompute.VirtualMachineScaleSetExtensionsClientGetOptions{Expand: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualMachineScaleSetExtension = armcompute.VirtualMachineScaleSetExtension{
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MaximumSet_Gen.json
-func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineScaleSetExtensionListMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetExtensionsClient().NewListPager("rgcompute", "aaaaaaaaaaaaaaaaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VirtualMachineScaleSetExtensionListResult = armcompute.VirtualMachineScaleSetExtensionListResult{
-		// 	Value: []*armcompute.VirtualMachineScaleSetExtension{
-		// 		{
-		// 			ID: to.Ptr("aaaaaaaa"),
-		// 			Name: to.Ptr("{extension-name}"),
-		// 			Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 			Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
-		// 				Type: to.Ptr("{extension-Type}"),
-		// 				AutoUpgradeMinorVersion: to.Ptr(true),
-		// 				EnableAutomaticUpgrade: to.Ptr(true),
-		// 				ForceUpdateTag: to.Ptr("aaaaaaaaa"),
-		// 				ProtectedSettings: map[string]any{
-		// 				},
-		// 				ProvisionAfterExtensions: []*string{
-		// 					to.Ptr("aa")},
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					Publisher: to.Ptr("{extension-Publisher}"),
-		// 					Settings: map[string]any{
-		// 					},
-		// 					SuppressFailures: to.Ptr(true),
-		// 					TypeHandlerVersion: to.Ptr("{handler-version}"),
-		// 				},
-		// 		}},
-		// 	}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MinimumSet_Gen.json
-func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineScaleSetExtensionListMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetExtensionsClient().NewListPager("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VirtualMachineScaleSetExtensionListResult = armcompute.VirtualMachineScaleSetExtensionListResult{
-		// 	Value: []*armcompute.VirtualMachineScaleSetExtension{
-		// 		{
-		// 	}},
-		// }
 	}
 }

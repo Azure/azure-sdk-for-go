@@ -12,4 +12,7 @@ type DedicatedGatewayRequestOptions struct {
 	// responses from the integrated cache are guaranteed to be no staler than value indicated by this MaxIntegratedCacheStaleness.
 	// Cache Staleness is supported in milliseconds granularity. Anything smaller than milliseconds will be ignored.
 	MaxIntegratedCacheStaleness *time.Duration
+
+	// When set to true, the request will not be served from the integrated cache, and the response will not be cached either.
+	BypassIntegratedCache bool
 }

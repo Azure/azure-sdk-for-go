@@ -124,11 +124,16 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			FilePermissionKey: permissionKey,
 			Metadata:          o.Metadata,
 		}
-
-		if permissionKey != nil && *permissionKey != shared.DefaultFilePermissionString {
-			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(shared.DefaultFilePermissionFormat))
-		} else if o.FilePermissionFormat != nil {
-			createOptions.FilePermissionFormat = to.Ptr(PermissionFormat(*o.FilePermissionFormat))
+		// Refer the documentation for details - https://learn.microsoft.com/en-us/rest/api/storageservices/create-file#smb-only-request-headers
+		if permissionKey != nil {
+			createOptions.FilePermissionKey = permissionKey
+		} else if permission != nil {
+			createOptions.FilePermission = permission
+			if o.FilePermissionFormat != nil {
+				createOptions.FilePermissionFormat = to.Ptr(*o.FilePermissionFormat)
+			} else {
+				createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormatSddl) // optional, default
+			}
 		}
 	}
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
@@ -833,6 +838,8 @@ func (o *ForceCloseHandlesOptions) format() *generated.FileClientForceCloseHandl
 	}
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
 // CreateHardLinkOptions contains the optional parameters for the Client.CreateHardLink method.
 type CreateHardLinkOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
@@ -844,6 +851,63 @@ func (o *CreateHardLinkOptions) format() (*generated.FileClientCreateHardLinkOpt
 		return nil, nil
 	}
 	return &generated.FileClientCreateHardLinkOptions{}, o.LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// CreateSymbolicLinkOptions contains the optional parameters for the Client.CreateSymbolicLink method.
+type CreateSymbolicLinkOptions struct {
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+	// NFS only.
+	FileNFSProperties *NFSProperties
+	// A name-value pair to associate with a file storage object.
+	Metadata map[string]*string
+	// The default value is 'Directory' for Attributes and 'now' for CreationTime and LastWriteTime fields in file.SMBProperties.
+	FileSMBProperties *SMBProperties
+	// Client request id
+	ClientRequestID *string
+}
+
+func (o *CreateSymbolicLinkOptions) format() (*generated.FileClientCreateSymbolicLinkOptions, *generated.LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	var options *generated.FileClientCreateSymbolicLinkOptions
+	if o.FileNFSProperties != nil {
+		fileCreationTime, fileLastWriteTime := exported.FormatNFSProperties(o.FileNFSProperties, false)
+
+		options = &generated.FileClientCreateSymbolicLinkOptions{
+			FileCreationTime:  fileCreationTime,
+			FileLastWriteTime: fileLastWriteTime,
+			Group:             o.FileNFSProperties.Group,
+			Owner:             o.FileNFSProperties.Owner,
+			Metadata:          o.Metadata,
+		}
+	}
+	return options, o.LeaseAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetSymbolicLinkOptions contains the optional parameters for the Client.GetSymbolicLink method.
+type GetSymbolicLinkOptions struct {
+
+	// The snapshot parameter, when present, specifies the share snapshot to query.
+	ShareSnapshot *string
+
+	// Client request id
+	ClientRequestID *string
+}
+
+func (o *GetSymbolicLinkOptions) format() *generated.FileClientGetSymbolicLinkOptions {
+	if o == nil {
+		return nil
+	}
+	return &generated.FileClientGetSymbolicLinkOptions{
+		Sharesnapshot: o.ShareSnapshot,
+	}
+
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

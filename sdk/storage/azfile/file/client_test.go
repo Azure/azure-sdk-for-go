@@ -33,6 +33,7 @@ import (
 	"hash/crc64"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync/atomic"
@@ -418,6 +419,36 @@ func (f *FileRecordedTestsSuite) TestFileCreateNegativeMetadataInvalid() {
 		HTTPHeaders: &file.HTTPHeaders{},
 	})
 	_require.Error(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileCreateWithPermissionKey() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	createResp, err := shareClient.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
+	_require.NoError(err)
+	_require.NotNil(createResp.FilePermissionKey)
+	_require.NotEmpty(*createResp.FilePermissionKey)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+	_, err = fileClient.Create(context.Background(), 1024, &file.CreateOptions{
+		Permissions: &file.Permissions{
+			PermissionKey: createResp.FilePermissionKey,
+		},
+	})
+	_require.NoError(err)
+
+	getResp, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.FilePermissionKey)
 }
 
 func (f *FileRecordedTestsSuite) TestCreateFileNFS() {
@@ -5176,6 +5207,166 @@ func (f *FileRecordedTestsSuite) TestCreateHardLinkNilOptions() {
 
 	_, err = hardLinkFileClient.CreateHardLink(context.Background(), "", nil)
 	_require.Error(err)
+}
+
+func (f *FileRecordedTestsSuite) TestCreateSymbolicLinkNFS() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a symbolic link to the source file
+	symbolicLinkFileName := testcommon.GenerateFileName("file2")
+	symbolicLinkFileClient := directoryClient.NewFileClient(symbolicLinkFileName)
+
+	linkFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := symbolicLinkFileClient.CreateSymbolicLink(context.Background(), linkFilePath, &file.CreateSymbolicLinkOptions{})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_require.Equal(*resp.NFSFileType, file.NFSFileType("SymLink"))
+	_require.NotNil(resp.FileCreationTime)
+	_require.NotNil(resp.FileLastWriteTime)
+	_require.NotNil(resp.FileChangeTime)
+	_require.NotNil(resp.ParentID)
+}
+
+func (f *FileRecordedTestsSuite) TestCreateSymbolicLinkNFSWithOptions() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	owner := "345"
+	group := "123"
+	mode := "6444"
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a symbolic link to the source file
+	symbolicLinkFileName := testcommon.GenerateFileName("file2")
+	symbolicLinkFileClient := directoryClient.NewFileClient(symbolicLinkFileName)
+
+	linkFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := symbolicLinkFileClient.CreateSymbolicLink(context.Background(), linkFilePath, &file.CreateSymbolicLinkOptions{FileNFSProperties: &file.NFSProperties{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(mode),
+	}})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_require.Equal(*resp.NFSFileType, file.NFSFileType("SymLink"))
+	_require.Equal(resp.Owner, to.Ptr("345"))
+	_require.Equal(resp.Group, to.Ptr("123"))
+	_require.NotNil(resp.FileCreationTime)
+	_require.NotNil(resp.FileLastWriteTime)
+	_require.NotNil(resp.FileChangeTime)
+}
+
+func (f *FileRecordedTestsSuite) TestGetSymbolicLinkNFS() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	owner := "345"
+	group := "123"
+	mode := "6444"
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, options)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	directoryClient := premiumShareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = directoryClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a source file
+	sourceFileName := testcommon.GenerateFileName("file1")
+	sourceFileClient := directoryClient.NewFileClient(sourceFileName)
+	_, err = sourceFileClient.Create(context.Background(), int64(1024), nil)
+	_require.NoError(err)
+
+	// Create a symbolic link to the source file
+	symbolicLinkFileName := testcommon.GenerateFileName("file2")
+	symbolicLinkFileClient := directoryClient.NewFileClient(symbolicLinkFileName)
+
+	linkFilePath := fmt.Sprintf("/%s/%s", directoryName, sourceFileName)
+	resp, err := symbolicLinkFileClient.CreateSymbolicLink(context.Background(), linkFilePath, &file.CreateSymbolicLinkOptions{FileNFSProperties: &file.NFSProperties{
+		Owner:    to.Ptr(owner),
+		Group:    to.Ptr(group),
+		FileMode: to.Ptr(mode),
+	}})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	response, err := symbolicLinkFileClient.GetSymbolicLink(context.Background(), &file.GetSymbolicLinkOptions{})
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Equal(*response.LinkText, url.QueryEscape(linkFilePath))
 }
 
 func (f *FileUnrecordedTestsSuite) TestFileDownloadBufferLessCountThanData() {

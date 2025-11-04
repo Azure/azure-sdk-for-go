@@ -12,6 +12,13 @@ type AgentPoolsClientBeginAbortLatestOperationOptions struct {
 	ResumeToken string
 }
 
+// AgentPoolsClientBeginCompleteUpgradeOptions contains the optional parameters for the AgentPoolsClient.BeginCompleteUpgrade
+// method.
+type AgentPoolsClientBeginCompleteUpgradeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // AgentPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginCreateOrUpdate
 // method.
 type AgentPoolsClientBeginCreateOrUpdateOptions struct {
@@ -77,6 +84,55 @@ type ClientListNodeImageVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// IdentityBindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the IdentityBindingsClient.BeginCreateOrUpdate
+// method.
+type IdentityBindingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityBindingsClientBeginDeleteOptions contains the optional parameters for the IdentityBindingsClient.BeginDelete method.
+type IdentityBindingsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityBindingsClientGetOptions contains the optional parameters for the IdentityBindingsClient.Get method.
+type IdentityBindingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityBindingsClientListByManagedClusterOptions contains the optional parameters for the IdentityBindingsClient.NewListByManagedClusterPager
+// method.
+type IdentityBindingsClientListByManagedClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JWTAuthenticatorsClientBeginCreateOrUpdateOptions contains the optional parameters for the JWTAuthenticatorsClient.BeginCreateOrUpdate
+// method.
+type JWTAuthenticatorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// JWTAuthenticatorsClientBeginDeleteOptions contains the optional parameters for the JWTAuthenticatorsClient.BeginDelete
+// method.
+type JWTAuthenticatorsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// JWTAuthenticatorsClientGetOptions contains the optional parameters for the JWTAuthenticatorsClient.Get method.
+type JWTAuthenticatorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JWTAuthenticatorsClientListByManagedClusterOptions contains the optional parameters for the JWTAuthenticatorsClient.NewListByManagedClusterPager
+// method.
+type JWTAuthenticatorsClientListByManagedClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LoadBalancersClientBeginDeleteOptions contains the optional parameters for the LoadBalancersClient.BeginDelete method.
 type LoadBalancersClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -97,6 +153,18 @@ type LoadBalancersClientGetOptions struct {
 // method.
 type LoadBalancersClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
+}
+
+// MachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the MachinesClient.BeginCreateOrUpdate method.
+type MachinesClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // MachinesClientGetOptions contains the optional parameters for the MachinesClient.Get method.
@@ -384,37 +452,63 @@ type ManagedClustersClientListSafeguardsVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// ManagedNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedNamespacesClient.BeginCreateOrUpdate
 // method.
-type NamespacesClientBeginCreateOrUpdateOptions struct {
+type ManagedNamespacesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
-type NamespacesClientBeginDeleteOptions struct {
+// ManagedNamespacesClientBeginDeleteOptions contains the optional parameters for the ManagedNamespacesClient.BeginDelete
+// method.
+type ManagedNamespacesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
-type NamespacesClientGetOptions struct {
+// ManagedNamespacesClientGetOptions contains the optional parameters for the ManagedNamespacesClient.Get method.
+type ManagedNamespacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListByManagedClusterOptions contains the optional parameters for the NamespacesClient.NewListByManagedClusterPager
+// ManagedNamespacesClientListByManagedClusterOptions contains the optional parameters for the ManagedNamespacesClient.NewListByManagedClusterPager
 // method.
-type NamespacesClientListByManagedClusterOptions struct {
+type ManagedNamespacesClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientListCredentialOptions contains the optional parameters for the NamespacesClient.ListCredential method.
-type NamespacesClientListCredentialOptions struct {
+// ManagedNamespacesClientListCredentialOptions contains the optional parameters for the ManagedNamespacesClient.ListCredential
+// method.
+type ManagedNamespacesClientListCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesClientUpdateOptions contains the optional parameters for the NamespacesClient.Update method.
-type NamespacesClientUpdateOptions struct {
+// ManagedNamespacesClientUpdateOptions contains the optional parameters for the ManagedNamespacesClient.Update method.
+type ManagedNamespacesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MeshMembershipsClientBeginCreateOrUpdateOptions contains the optional parameters for the MeshMembershipsClient.BeginCreateOrUpdate
+// method.
+type MeshMembershipsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MeshMembershipsClientBeginDeleteOptions contains the optional parameters for the MeshMembershipsClient.BeginDelete method.
+type MeshMembershipsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MeshMembershipsClientGetOptions contains the optional parameters for the MeshMembershipsClient.Get method.
+type MeshMembershipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MeshMembershipsClientListByManagedClusterOptions contains the optional parameters for the MeshMembershipsClient.NewListByManagedClusterPager
+// method.
+type MeshMembershipsClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
 }
 

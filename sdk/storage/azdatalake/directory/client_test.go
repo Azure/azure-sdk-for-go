@@ -8,7 +8,9 @@ package directory_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"net/http"
 	"strconv"
 	"testing"
@@ -2978,4 +2980,31 @@ func (s *RecordedTestSuite) TestCreateDirectoryClientCustomAudience() {
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 
+}
+
+func (s *UnrecordedTestSuite) TestDirectoryClientOnAuthenticationFailure() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	tenantID := "xxx"
+	clientID := "xxx"
+	clientSecret := "xxx"
+
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	url := "https://" + accountName + ".dfs.core.windows.net/"
+
+	srvClient, err := service.NewClient(url, cred, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := srvClient.NewFileSystemClient(fsName)
+	dirClient := fsClient.NewDirectoryClient("testdir")
+
+	// This should return an error, not panic
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.Error(err, "Expected authentication error")
+	_require.Contains(err.Error(), "ClientSecretCredential")
 }

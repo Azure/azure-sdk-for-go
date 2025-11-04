@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/KubernetesClusterFeatures_ListByKubernetesCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/KubernetesClusterFeatures_ListByKubernetesCluster.json
 func ExampleKubernetesClusterFeaturesClient_NewListByKubernetesClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleKubernetesClusterFeaturesClient_NewListByKubernetesClusterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/KubernetesClusterFeatures_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/KubernetesClusterFeatures_Get.json
 func ExampleKubernetesClusterFeaturesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleKubernetesClusterFeaturesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/KubernetesClusterFeatures_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/KubernetesClusterFeatures_Create.json
 func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,9 @@ func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 					Value: to.Ptr("featureOptionValue"),
 				}},
 		},
-	}, nil)
+	}, &armnetworkcloud.KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -196,7 +198,7 @@ func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/KubernetesClusterFeatures_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/KubernetesClusterFeatures_Delete.json
 func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +209,9 @@ func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewKubernetesClusterFeaturesClient().BeginDelete(ctx, "resourceGroupName", "kubernetesClusterName", "featureName", nil)
+	poller, err := clientFactory.NewKubernetesClusterFeaturesClient().BeginDelete(ctx, "resourceGroupName", "kubernetesClusterName", "featureName", &armnetworkcloud.KubernetesClusterFeaturesClientBeginDeleteOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -217,7 +221,7 @@ func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/KubernetesClusterFeatures_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/KubernetesClusterFeatures_Patch.json
 func ExampleKubernetesClusterFeaturesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +244,9 @@ func ExampleKubernetesClusterFeaturesClient_BeginUpdate() {
 			"key1": to.Ptr("myvalue1"),
 			"key2": to.Ptr("myvalue2"),
 		},
-	}, nil)
+	}, &armnetworkcloud.KubernetesClusterFeaturesClientBeginUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

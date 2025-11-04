@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/TaskHubs_CreateOrUpdate.json
+// Generated from example definition: 2025-11-01/TaskHubs_CreateOrUpdate.json
 func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/TaskHubs_Delete.json
+// Generated from example definition: 2025-11-01/TaskHubs_Delete.json
 func ExampleTaskHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleTaskHubsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/TaskHubs_Get.json
+// Generated from example definition: 2025-11-01/TaskHubs_Get.json
 func ExampleTaskHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleTaskHubsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/TaskHubs_ListByScheduler.json
+// Generated from example definition: 2025-11-01/TaskHubs_ListByScheduler.json
 func ExampleTaskHubsClient_NewListBySchedulerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

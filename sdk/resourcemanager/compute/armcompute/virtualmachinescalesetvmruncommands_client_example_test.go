@@ -15,10 +15,116 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
+func ExampleVirtualMachineScaleSetVMRunCommandsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineScaleSetVMRunCommandsClient().NewListPager("myResourceGroup", "myvmScaleSet", "0", &armcompute.VirtualMachineScaleSetVMRunCommandsClientListOptions{Expand: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.VirtualMachineRunCommandsListResult = armcompute.VirtualMachineRunCommandsListResult{
+		// 	Value: []*armcompute.VirtualMachineRunCommand{
+		// 		{
+		// 			Name: to.Ptr("myRunCommand"),
+		// 			Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/runCommands"),
+		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/runCommands/myRunCommand"),
+		// 			Location: to.Ptr("westus"),
+		// 			Properties: &armcompute.VirtualMachineRunCommandProperties{
+		// 				AsyncExecution: to.Ptr(false),
+		// 				ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
+		// 				OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
+		// 				Parameters: []*armcompute.RunCommandInputParameter{
+		// 					{
+		// 						Name: to.Ptr("param1"),
+		// 						Value: to.Ptr("value1"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("param2"),
+		// 						Value: to.Ptr("value2"),
+		// 				}},
+		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				RunAsUser: to.Ptr("user1"),
+		// 				Source: &armcompute.VirtualMachineRunCommandScriptSource{
+		// 					Script: to.Ptr("Write-Host Hello World! ; Remove-Item C:	est	estFile.txt"),
+		// 				},
+		// 				TimeoutInSeconds: to.Ptr[int32](0),
+		// 				TreatFailureAsDeploymentFailure: to.Ptr(false),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Get.json
+func ExampleVirtualMachineScaleSetVMRunCommandsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineScaleSetVMRunCommandsClient().Get(ctx, "myResourceGroup", "myvmScaleSet", "0", "myRunCommand", &armcompute.VirtualMachineScaleSetVMRunCommandsClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.VirtualMachineRunCommand = armcompute.VirtualMachineRunCommand{
+	// 	Name: to.Ptr("myRunCommand"),
+	// 	Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/runCommands"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/runCommands/myRunCommand"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"tag1": to.Ptr("value1"),
+	// 		"tag2": to.Ptr("value2"),
+	// 	},
+	// 	Properties: &armcompute.VirtualMachineRunCommandProperties{
+	// 		AsyncExecution: to.Ptr(false),
+	// 		ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
+	// 		OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
+	// 		Parameters: []*armcompute.RunCommandInputParameter{
+	// 			{
+	// 				Name: to.Ptr("param1"),
+	// 				Value: to.Ptr("value1"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("param2"),
+	// 				Value: to.Ptr("value2"),
+	// 		}},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		RunAsUser: to.Ptr("user1"),
+	// 		Source: &armcompute.VirtualMachineRunCommandScriptSource{
+	// 			ScriptURI: to.Ptr("https://gist.githubusercontent.com/myusername/75fd3634w7511116063c60bcc50bee0/raw/04a4c68ac9e1d36asfasdc64bd1d889b104c7abdb8/HelloWorld.ps1"),
+	// 		},
+	// 		TimeoutInSeconds: to.Ptr[int32](3600),
+	// 		TreatFailureAsDeploymentFailure: to.Ptr(false),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +205,7 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Update.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +269,7 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,111 +287,5 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginDelete() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Get.json
-func ExampleVirtualMachineScaleSetVMRunCommandsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineScaleSetVMRunCommandsClient().Get(ctx, "myResourceGroup", "myvmScaleSet", "0", "myRunCommand", &armcompute.VirtualMachineScaleSetVMRunCommandsClientGetOptions{Expand: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualMachineRunCommand = armcompute.VirtualMachineRunCommand{
-	// 	Name: to.Ptr("myRunCommand"),
-	// 	Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/runCommands"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/runCommands/myRunCommand"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"tag1": to.Ptr("value1"),
-	// 		"tag2": to.Ptr("value2"),
-	// 	},
-	// 	Properties: &armcompute.VirtualMachineRunCommandProperties{
-	// 		AsyncExecution: to.Ptr(false),
-	// 		ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
-	// 		OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
-	// 		Parameters: []*armcompute.RunCommandInputParameter{
-	// 			{
-	// 				Name: to.Ptr("param1"),
-	// 				Value: to.Ptr("value1"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("param2"),
-	// 				Value: to.Ptr("value2"),
-	// 		}},
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		RunAsUser: to.Ptr("user1"),
-	// 		Source: &armcompute.VirtualMachineRunCommandScriptSource{
-	// 			ScriptURI: to.Ptr("https://gist.githubusercontent.com/myusername/75fd3634w7511116063c60bcc50bee0/raw/04a4c68ac9e1d36asfasdc64bd1d889b104c7abdb8/HelloWorld.ps1"),
-	// 		},
-	// 		TimeoutInSeconds: to.Ptr[int32](3600),
-	// 		TreatFailureAsDeploymentFailure: to.Ptr(false),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
-func ExampleVirtualMachineScaleSetVMRunCommandsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineScaleSetVMRunCommandsClient().NewListPager("myResourceGroup", "myvmScaleSet", "0", &armcompute.VirtualMachineScaleSetVMRunCommandsClientListOptions{Expand: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.VirtualMachineRunCommandsListResult = armcompute.VirtualMachineRunCommandsListResult{
-		// 	Value: []*armcompute.VirtualMachineRunCommand{
-		// 		{
-		// 			Name: to.Ptr("myRunCommand"),
-		// 			Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/virtualMachines/runCommands"),
-		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myvmScaleSet/virtualMachines/0/runCommands/myRunCommand"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armcompute.VirtualMachineRunCommandProperties{
-		// 				AsyncExecution: to.Ptr(false),
-		// 				ErrorBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt"),
-		// 				OutputBlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt"),
-		// 				Parameters: []*armcompute.RunCommandInputParameter{
-		// 					{
-		// 						Name: to.Ptr("param1"),
-		// 						Value: to.Ptr("value1"),
-		// 					},
-		// 					{
-		// 						Name: to.Ptr("param2"),
-		// 						Value: to.Ptr("value2"),
-		// 				}},
-		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				RunAsUser: to.Ptr("user1"),
-		// 				Source: &armcompute.VirtualMachineRunCommandScriptSource{
-		// 					Script: to.Ptr("Write-Host Hello World! ; Remove-Item C:	est	estFile.txt"),
-		// 				},
-		// 				TimeoutInSeconds: to.Ptr[int32](0),
-		// 				TreatFailureAsDeploymentFailure: to.Ptr(false),
-		// 			},
-		// 	}},
-		// }
 	}
 }

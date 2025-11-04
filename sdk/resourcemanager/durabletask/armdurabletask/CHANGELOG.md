@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2025-09-26)
+### Breaking Changes
+
+- Type of `SchedulerSKU.Name` has been changed from `*string` to `*SchedulerSKUName`
+- Type of `SchedulerSKUUpdate.Name` has been changed from `*string` to `*SchedulerSKUName`
+
+### Features Added
+
+- New enum type `SchedulerSKUName` with values `SchedulerSKUNameConsumption`, `SchedulerSKUNameDedicated`
+
+
 ## 0.2.0 (2025-04-15)
 ### Features Added
 

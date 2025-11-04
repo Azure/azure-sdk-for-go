@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateService.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,6 +58,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -68,9 +76,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -92,20 +100,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceAuthOptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceAuthOptions.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,6 +153,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -161,7 +172,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
@@ -184,23 +195,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(true),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceDisableLocalAuth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceDisableLocalAuth.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,15 +244,23 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisabl
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
 	// 	},
 	// 	Properties: &armsearch.ServiceProperties{
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(true),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(true),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -271,23 +282,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisabl
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,6 +331,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -338,9 +349,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -362,23 +373,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,6 +430,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -437,9 +448,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -465,23 +476,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +504,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-				Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
+				Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 				IPRules: []*armsearch.IPRule{
 					{
 						Value: to.Ptr("123.4.5.6"),
@@ -531,6 +534,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -541,9 +552,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -551,7 +562,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 		Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
 	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
 	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 			Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
+	// 			Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 	// 			IPRules: []*armsearch.IPRule{
 	// 				{
 	// 					Value: to.Ptr("123.4.5.6"),
@@ -570,23 +581,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceWithCmkEnforcement.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceWithCmkEnforcement.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCmkEnforcement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -629,6 +632,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -639,9 +650,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
@@ -663,23 +674,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceWithDataExfiltration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceWithDataExfiltration.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDataExfiltration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -697,8 +700,8 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 		},
 		Properties: &armsearch.ServiceProperties{
 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-			DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
-				to.Ptr(armsearch.SearchDisabledDataExfiltrationOptionAll)},
+			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll)},
 			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
 			PartitionCount: to.Ptr[int32](1),
 			ReplicaCount:   to.Ptr[int32](3),
@@ -721,6 +724,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -731,9 +742,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
-	// 			to.Ptr(armsearch.SearchDisabledDataExfiltrationOptionAll)},
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll)},
+	// 			DisableLocalAuth: to.Ptr(false),
 	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -755,23 +766,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	// 			},
 	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 			StatusDetails: to.Ptr(""),
-	// 			UpgradeAvailable: to.Ptr(false),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		SystemData: &armsearch.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 			CreatedBy: to.Ptr("My e-commerce app"),
-	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateServiceWithIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateServiceWithIdentity.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -789,7 +792,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 		},
 		Identity: &armsearch.Identity{
 			Type: to.Ptr(armsearch.IdentityTypeSystemAssignedUserAssigned),
-			UserAssignedIdentities: map[string]*armsearch.UserAssignedManagedIdentity{
+			UserAssignedIdentities: map[string]*armsearch.UserAssignedIdentity{
 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi": {},
 			},
 		},
@@ -817,6 +820,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -825,8 +836,8 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// 		Type: to.Ptr(armsearch.IdentityTypeSystemAssignedUserAssigned),
 	// 		PrincipalID: to.Ptr("9d1e1f18-2122-4988-a11c-878782e40a5c"),
 	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
-	// 		UserAssignedIdentities: map[string]*armsearch.UserAssignedManagedIdentity{
-	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi": &armsearch.UserAssignedManagedIdentity{
+	// 		UserAssignedIdentities: map[string]*armsearch.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi": &armsearch.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("cd1dcac8-82dd-45b5-9aed-76795d529f6b"),
 	// 				PrincipalID: to.Ptr("24e07a75-1286-41e5-a15d-ded85ec3acd7"),
 	// 			},
@@ -838,9 +849,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -862,23 +873,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCreateOrUpdateWithSemanticSearch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCreateOrUpdateWithSemanticSearch.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticSearch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -919,6 +922,14 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -929,9 +940,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -954,23 +965,15 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateService.json
 func ExampleServicesClient_Update_searchUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1000,6 +1003,14 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1011,9 +1022,9 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1035,23 +1046,15 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceAuthOptions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceAuthOptions.json
 func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1086,6 +1089,14 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1098,7 +1109,7 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
@@ -1121,23 +1132,15 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceDisableLocalAuth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceDisableLocalAuth.json
 func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1168,6 +1171,14 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1175,9 +1186,9 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	// 	},
 	// 	Properties: &armsearch.ServiceProperties{
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(true),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(true),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1199,23 +1210,15 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1243,6 +1246,14 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1254,9 +1265,9 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1278,23 +1289,15 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameBasic),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1331,6 +1334,14 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1342,9 +1353,9 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1367,23 +1378,15 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1397,7 +1400,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
 		Properties: &armsearch.ServiceProperties{
 			NetworkRuleSet: &armsearch.NetworkRuleSet{
-				Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
+				Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 				IPRules: []*armsearch.IPRule{
 					{
 						Value: to.Ptr("123.4.5.6"),
@@ -1421,6 +1424,14 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1432,9 +1443,9 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1442,7 +1453,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// 		Endpoint: to.Ptr("https://mysearchservice.search.windows.net/"),
 	// 		HostingMode: to.Ptr(armsearch.HostingModeDefault),
 	// 		NetworkRuleSet: &armsearch.NetworkRuleSet{
-	// 			Bypass: to.Ptr(armsearch.SearchBypassAzurePortal),
+	// 			Bypass: to.Ptr(armsearch.SearchBypassAzureServices),
 	// 			IPRules: []*armsearch.IPRule{
 	// 				{
 	// 					Value: to.Ptr("10.2.3.4"),
@@ -1458,23 +1469,15 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceToRemoveIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceToRemoveIdentity.json
 func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1503,6 +1506,14 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 	},
@@ -1512,9 +1523,9 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1536,23 +1547,15 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceWithCmkEnforcement.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceWithCmkEnforcement.json
 func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1585,6 +1588,14 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1596,9 +1607,9 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkEnabled),
@@ -1620,23 +1631,15 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceWithDataExfiltration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceWithDataExfiltration.json
 func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1649,8 +1652,8 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "rg1", "mysearchservice", armsearch.ServiceUpdate{
 		Properties: &armsearch.ServiceProperties{
-			DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
-				to.Ptr(armsearch.SearchDisabledDataExfiltrationOptionAll)},
+			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+				to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll)},
 			ReplicaCount: to.Ptr[int32](2),
 		},
 		Tags: map[string]*string{
@@ -1668,6 +1671,14 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1679,9 +1690,9 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
-	// 			to.Ptr(armsearch.SearchDisabledDataExfiltrationOptionAll)},
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			to.Ptr(armsearch.SearchDataExfiltrationProtectionBlockAll)},
+	// 			DisableLocalAuth: to.Ptr(false),
 	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1703,23 +1714,15 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	// 			},
 	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 			StatusDetails: to.Ptr(""),
-	// 			UpgradeAvailable: to.Ptr(false),
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 		},
 	// 		SKU: &armsearch.SKU{
 	// 			Name: to.Ptr(armsearch.SKUNameStandard),
 	// 		},
-	// 		SystemData: &armsearch.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 			CreatedBy: to.Ptr("My e-commerce app"),
-	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceWithSemanticSearch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceWithSemanticSearch.json
 func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1750,6 +1753,14 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1761,9 +1772,9 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1786,23 +1797,15 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchUpdateServiceWithSku.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceWithSku.json
 func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1832,6 +1835,14 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1842,9 +1853,10 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	// 			APIKeyOnly: map[string]any{
 	// 			},
 	// 		},
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1865,23 +1877,15 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard2),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchGetService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchGetService.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1903,6 +1907,14 @@ func ExampleServicesClient_Get() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -1913,9 +1925,9 @@ func ExampleServicesClient_Get() {
 	// 			},
 	// 		},
 	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -1933,28 +1945,20 @@ func ExampleServicesClient_Get() {
 	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
 	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
 	// 		ReplicaCount: to.Ptr[int32](3),
-	// 		ServiceUpgradeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T00:00:00.000Z"); return t}()),
+	// 		ServiceUpgradedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-01T00:00:00.000Z"); return t}()),
 	// 		SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
 	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchDeleteService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchDeleteService.json
 func ExampleServicesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1971,7 +1975,7 @@ func ExampleServicesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchListServicesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchListServicesByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1999,6 +2003,14 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("mysearchservice"),
 		// 			Type: to.Ptr("Microsoft.Search/searchServices"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+		// 			SystemData: &armsearch.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("My e-commerce app"),
+		// 				CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+		// 				LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+		// 			},
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"app-name": to.Ptr("My e-commerce app"),
@@ -2009,9 +2021,9 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 				DisableLocalAuth: to.Ptr(false),
-		// 				DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+		// 				DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 		// 				},
+		// 				DisableLocalAuth: to.Ptr(false),
 		// 				EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 		// 					EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 		// 					Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -2033,11 +2045,16 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 		// 				StatusDetails: to.Ptr(""),
-		// 				UpgradeAvailable: to.Ptr(false),
+		// 				UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 			},
 		// 			SKU: &armsearch.SKU{
 		// 				Name: to.Ptr(armsearch.SKUNameStandard),
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("mysearchservice2"),
+		// 			Type: to.Ptr("Microsoft.Search/searchServices"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice2"),
 		// 			SystemData: &armsearch.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("My e-commerce app"),
@@ -2046,11 +2063,6 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 				LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 		// 				LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("mysearchservice2"),
-		// 			Type: to.Ptr("Microsoft.Search/searchServices"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice2"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"app-name": to.Ptr("My e-commerce app"),
@@ -2061,9 +2073,9 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 				DisableLocalAuth: to.Ptr(false),
-		// 				DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+		// 				DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 		// 				},
+		// 				DisableLocalAuth: to.Ptr(false),
 		// 				EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 		// 					EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 		// 					Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -2085,25 +2097,17 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 		// 				StatusDetails: to.Ptr(""),
-		// 				UpgradeAvailable: to.Ptr(false),
+		// 				UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 			},
 		// 			SKU: &armsearch.SKU{
 		// 				Name: to.Ptr(armsearch.SKUNameBasic),
-		// 			},
-		// 			SystemData: &armsearch.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("My e-commerce app"),
-		// 				CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-		// 				LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchListServicesBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchListServicesBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2131,6 +2135,14 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 			Name: to.Ptr("mysearchservice"),
 		// 			Type: to.Ptr("Microsoft.Search/searchServices"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+		// 			SystemData: &armsearch.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("My e-commerce app"),
+		// 				CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+		// 				LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+		// 			},
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"app-name": to.Ptr("My e-commerce app"),
@@ -2141,9 +2153,9 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 				DisableLocalAuth: to.Ptr(false),
-		// 				DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+		// 				DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 		// 				},
+		// 				DisableLocalAuth: to.Ptr(false),
 		// 				EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 		// 					EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 		// 					Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -2165,11 +2177,16 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 		// 				StatusDetails: to.Ptr(""),
-		// 				UpgradeAvailable: to.Ptr(false),
+		// 				UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 			},
 		// 			SKU: &armsearch.SKU{
 		// 				Name: to.Ptr(armsearch.SKUNameStandard),
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("mysearchservice2"),
+		// 			Type: to.Ptr("Microsoft.Search/searchServices"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Search/searchServices/mysearchservice2"),
 		// 			SystemData: &armsearch.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("My e-commerce app"),
@@ -2178,11 +2195,6 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 				LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 		// 				LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("mysearchservice2"),
-		// 			Type: to.Ptr("Microsoft.Search/searchServices"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Search/searchServices/mysearchservice2"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"app-name": to.Ptr("My e-commerce app"),
@@ -2193,9 +2205,9 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
-		// 				DisableLocalAuth: to.Ptr(false),
-		// 				DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+		// 				DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 		// 				},
+		// 				DisableLocalAuth: to.Ptr(false),
 		// 				EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 		// 					EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 		// 					Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -2217,25 +2229,17 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 		// 				StatusDetails: to.Ptr(""),
-		// 				UpgradeAvailable: to.Ptr(false),
+		// 				UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 		// 			},
 		// 			SKU: &armsearch.SKU{
 		// 				Name: to.Ptr(armsearch.SKUNameBasic),
-		// 			},
-		// 			SystemData: &armsearch.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("My e-commerce app"),
-		// 				CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-		// 				LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchCheckNameAvailability.json
 func ExampleServicesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2263,7 +2267,7 @@ func ExampleServicesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/UpgradeSearchServiceToLatestVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb3217991ff57b5760525aeba1a0670bfe0880fa/specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/UpgradeSearchServiceToLatestVersion.json
 func ExampleServicesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2289,6 +2293,14 @@ func ExampleServicesClient_BeginUpgrade() {
 	// 	Name: to.Ptr("mysearchservice"),
 	// 	Type: to.Ptr("Microsoft.Search/searchServices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 	SystemData: &armsearch.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("My e-commerce app"),
+	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"app-name": to.Ptr("My e-commerce app"),
@@ -2299,9 +2311,10 @@ func ExampleServicesClient_BeginUpgrade() {
 	// 			APIKeyOnly: map[string]any{
 	// 			},
 	// 		},
-	// 		DisableLocalAuth: to.Ptr(false),
-	// 		DisabledDataExfiltrationOptions: []*armsearch.SearchDisabledDataExfiltrationOption{
+	// 		ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 		DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
 	// 		},
+	// 		DisableLocalAuth: to.Ptr(false),
 	// 		EncryptionWithCmk: &armsearch.EncryptionWithCmk{
 	// 			EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
 	// 			Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
@@ -2318,23 +2331,15 @@ func ExampleServicesClient_BeginUpgrade() {
 	// 		ProvisioningState: to.Ptr(armsearch.ProvisioningStateSucceeded),
 	// 		PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
 	// 		ReplicaCount: to.Ptr[int32](1),
-	// 		ServiceUpgradeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T00:00:00.000Z"); return t}()),
+	// 		ServiceUpgradedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-01T00:00:00.000Z"); return t}()),
 	// 		SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
 	// 		},
 	// 		Status: to.Ptr(armsearch.SearchServiceStatusRunning),
 	// 		StatusDetails: to.Ptr(""),
-	// 		UpgradeAvailable: to.Ptr(false),
+	// 		UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
 	// 	},
 	// 	SKU: &armsearch.SKU{
 	// 		Name: to.Ptr(armsearch.SKUNameStandard),
-	// 	},
-	// 	SystemData: &armsearch.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
-	// 		CreatedBy: to.Ptr("My e-commerce app"),
-	// 		CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
-	// 		LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
 	// 	},
 	// }
 }

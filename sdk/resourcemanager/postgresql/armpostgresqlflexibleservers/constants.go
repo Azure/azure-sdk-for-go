@@ -7,10 +7,10 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
-	moduleVersion = "v4.1.0"
+	moduleVersion = "v5.0.0-beta.1"
 )
 
-// ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.
+// ActiveDirectoryAuthEnum - If Enabled, Microsoft Entra authentication is enabled.
 type ActiveDirectoryAuthEnum string
 
 const (
@@ -257,7 +257,8 @@ func PossibleFailoverModeValues() []FailoverMode {
 }
 
 // FastProvisioningSupportedEnum - Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning
-// is supported. "Disabled" stands for fast provisioning is not supported.
+// is supported. "Disabled" stands for fast provisioning is not supported. Will be deprecated in future,
+// please look to Supported Features for "FastProvisioning".
 type FastProvisioningSupportedEnum string
 
 const (
@@ -274,7 +275,8 @@ func PossibleFastProvisioningSupportedEnumValues() []FastProvisioningSupportedEn
 }
 
 // GeoBackupSupportedEnum - Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported.
-// "Disabled" stands for geo-back is not supported.
+// "Disabled" stands for geo-back is not supported. Will be deprecated in future, please look to Supported
+// Features for "GeoBackup".
 type GeoBackupSupportedEnum string
 
 const (
@@ -561,7 +563,7 @@ func PossibleMigrationSubStateValues() []MigrationSubState {
 
 // OnlineResizeSupportedEnum - A value indicating whether online resize is supported in this region for the given subscription.
 // "Enabled" means storage online resize is supported. "Disabled" means storage online resize is not
-// supported.
+// supported. Will be deprecated in future, please look to Supported Features for "OnlineResize".
 type OnlineResizeSupportedEnum string
 
 const (
@@ -645,7 +647,7 @@ func PossiblePasswordAuthEnumValues() []PasswordAuthEnum {
 	}
 }
 
-// PrincipalType - The principal type used to represent the type of Active Directory Administrator.
+// PrincipalType - The principal type used to represent the type of Microsoft Entra Administrator.
 type PrincipalType string
 
 const (
@@ -719,6 +721,39 @@ func PossibleReadReplicaPromoteModeValues() []ReadReplicaPromoteMode {
 	}
 }
 
+type RecommendationType string
+
+const (
+	RecommendationTypeCreateIndex RecommendationType = "CreateIndex"
+	RecommendationTypeDropIndex   RecommendationType = "DropIndex"
+)
+
+// PossibleRecommendationTypeValues returns the possible values for the RecommendationType const type.
+func PossibleRecommendationTypeValues() []RecommendationType {
+	return []RecommendationType{
+		RecommendationTypeCreateIndex,
+		RecommendationTypeDropIndex,
+	}
+}
+
+// RecommendationTypeEnum - Type for this recommendation.
+type RecommendationTypeEnum string
+
+const (
+	RecommendationTypeEnumCreateIndex RecommendationTypeEnum = "CreateIndex"
+	RecommendationTypeEnumDropIndex   RecommendationTypeEnum = "DropIndex"
+	RecommendationTypeEnumReIndex     RecommendationTypeEnum = "ReIndex"
+)
+
+// PossibleRecommendationTypeEnumValues returns the possible values for the RecommendationTypeEnum const type.
+func PossibleRecommendationTypeEnumValues() []RecommendationTypeEnum {
+	return []RecommendationTypeEnum{
+		RecommendationTypeEnumCreateIndex,
+		RecommendationTypeEnumDropIndex,
+		RecommendationTypeEnumReIndex,
+	}
+}
+
 // ReplicationPromoteOption - Sets the promote options for a replica server. This is a write only property.
 type ReplicationPromoteOption string
 
@@ -781,7 +816,8 @@ func PossibleReplicationStateValues() []ReplicationState {
 }
 
 // RestrictedEnum - A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled"
-// stands for region is not restricted.
+// stands for region is not restricted. Will be deprecated in future, please look to Supported
+// Features for "Restricted".
 type RestrictedEnum string
 
 const (
@@ -880,13 +916,16 @@ func PossibleServerPublicNetworkAccessStateValues() []ServerPublicNetworkAccessS
 type ServerState string
 
 const (
-	ServerStateDisabled ServerState = "Disabled"
-	ServerStateDropping ServerState = "Dropping"
-	ServerStateReady    ServerState = "Ready"
-	ServerStateStarting ServerState = "Starting"
-	ServerStateStopped  ServerState = "Stopped"
-	ServerStateStopping ServerState = "Stopping"
-	ServerStateUpdating ServerState = "Updating"
+	ServerStateDisabled     ServerState = "Disabled"
+	ServerStateDropping     ServerState = "Dropping"
+	ServerStateInaccessible ServerState = "Inaccessible"
+	ServerStateProvisioning ServerState = "Provisioning"
+	ServerStateReady        ServerState = "Ready"
+	ServerStateRestarting   ServerState = "Restarting"
+	ServerStateStarting     ServerState = "Starting"
+	ServerStateStopped      ServerState = "Stopped"
+	ServerStateStopping     ServerState = "Stopping"
+	ServerStateUpdating     ServerState = "Updating"
 )
 
 // PossibleServerStateValues returns the possible values for the ServerState const type.
@@ -894,7 +933,10 @@ func PossibleServerStateValues() []ServerState {
 	return []ServerState{
 		ServerStateDisabled,
 		ServerStateDropping,
+		ServerStateInaccessible,
+		ServerStateProvisioning,
 		ServerStateReady,
+		ServerStateRestarting,
 		ServerStateStarting,
 		ServerStateStopped,
 		ServerStateStopping,
@@ -906,12 +948,13 @@ func PossibleServerStateValues() []ServerState {
 type ServerVersion string
 
 const (
-	ServerVersionEleven   ServerVersion = "11"
-	ServerVersionFifteen  ServerVersion = "15"
-	ServerVersionFourteen ServerVersion = "14"
-	ServerVersionSixteen  ServerVersion = "16"
-	ServerVersionThirteen ServerVersion = "13"
-	ServerVersionTwelve   ServerVersion = "12"
+	ServerVersionEleven    ServerVersion = "11"
+	ServerVersionFifteen   ServerVersion = "15"
+	ServerVersionFourteen  ServerVersion = "14"
+	ServerVersionSeventeen ServerVersion = "17"
+	ServerVersionSixteen   ServerVersion = "16"
+	ServerVersionThirteen  ServerVersion = "13"
+	ServerVersionTwelve    ServerVersion = "12"
 )
 
 // PossibleServerVersionValues returns the possible values for the ServerVersion const type.
@@ -920,6 +963,7 @@ func PossibleServerVersionValues() []ServerVersion {
 		ServerVersionEleven,
 		ServerVersionFifteen,
 		ServerVersionFourteen,
+		ServerVersionSeventeen,
 		ServerVersionSixteen,
 		ServerVersionThirteen,
 		ServerVersionTwelve,
@@ -927,22 +971,36 @@ func PossibleServerVersionValues() []ServerVersion {
 }
 
 // SourceType - Migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWSRDS, AWSAURORA, AWSEC2,
-// GCPCloudSQL, GCPAlloyDB, GCPCompute, or EDB
+// GCPCloudSQL, GCPAlloyDB, GCPCompute, EDB, EDBOracleServer, EDBPostgreSQL,
+// PostgreSQLFlexibleServer, PostgreSQLCosmosDB, HuaweiRDS, HuaweiCompute, HerokuPostgreSQL, CrunchyPostgreSQL, ApsaraDBRDS,
+// DigitalOceanDroplets, DigitalOceanPostgreSQL, or Supabase_PostgreSQL
 type SourceType string
 
 const (
-	SourceTypeAWS                    SourceType = "AWS"
-	SourceTypeAWSAURORA              SourceType = "AWS_AURORA"
-	SourceTypeAWSEC2                 SourceType = "AWS_EC2"
-	SourceTypeAWSRDS                 SourceType = "AWS_RDS"
-	SourceTypeAzureVM                SourceType = "AzureVM"
-	SourceTypeEDB                    SourceType = "EDB"
-	SourceTypeGCP                    SourceType = "GCP"
-	SourceTypeGCPAlloyDB             SourceType = "GCP_AlloyDB"
-	SourceTypeGCPCloudSQL            SourceType = "GCP_CloudSQL"
-	SourceTypeGCPCompute             SourceType = "GCP_Compute"
-	SourceTypeOnPremises             SourceType = "OnPremises"
-	SourceTypePostgreSQLSingleServer SourceType = "PostgreSQLSingleServer"
+	SourceTypeAWS                      SourceType = "AWS"
+	SourceTypeAWSAURORA                SourceType = "AWS_AURORA"
+	SourceTypeAWSEC2                   SourceType = "AWS_EC2"
+	SourceTypeAWSRDS                   SourceType = "AWS_RDS"
+	SourceTypeApsaraDBRDS              SourceType = "ApsaraDB_RDS"
+	SourceTypeAzureVM                  SourceType = "AzureVM"
+	SourceTypeCrunchyPostgreSQL        SourceType = "Crunchy_PostgreSQL"
+	SourceTypeDigitalOceanDroplets     SourceType = "Digital_Ocean_Droplets"
+	SourceTypeDigitalOceanPostgreSQL   SourceType = "Digital_Ocean_PostgreSQL"
+	SourceTypeEDB                      SourceType = "EDB"
+	SourceTypeEDBOracleServer          SourceType = "EDB_Oracle_Server"
+	SourceTypeEDBPostgreSQL            SourceType = "EDB_PostgreSQL"
+	SourceTypeGCP                      SourceType = "GCP"
+	SourceTypeGCPAlloyDB               SourceType = "GCP_AlloyDB"
+	SourceTypeGCPCloudSQL              SourceType = "GCP_CloudSQL"
+	SourceTypeGCPCompute               SourceType = "GCP_Compute"
+	SourceTypeHerokuPostgreSQL         SourceType = "Heroku_PostgreSQL"
+	SourceTypeHuaweiCompute            SourceType = "Huawei_Compute"
+	SourceTypeHuaweiRDS                SourceType = "Huawei_RDS"
+	SourceTypeOnPremises               SourceType = "OnPremises"
+	SourceTypePostgreSQLCosmosDB       SourceType = "PostgreSQLCosmosDB"
+	SourceTypePostgreSQLFlexibleServer SourceType = "PostgreSQLFlexibleServer"
+	SourceTypePostgreSQLSingleServer   SourceType = "PostgreSQLSingleServer"
+	SourceTypeSupabasePostgreSQL       SourceType = "Supabase_PostgreSQL"
 )
 
 // PossibleSourceTypeValues returns the possible values for the SourceType const type.
@@ -952,14 +1010,26 @@ func PossibleSourceTypeValues() []SourceType {
 		SourceTypeAWSAURORA,
 		SourceTypeAWSEC2,
 		SourceTypeAWSRDS,
+		SourceTypeApsaraDBRDS,
 		SourceTypeAzureVM,
+		SourceTypeCrunchyPostgreSQL,
+		SourceTypeDigitalOceanDroplets,
+		SourceTypeDigitalOceanPostgreSQL,
 		SourceTypeEDB,
+		SourceTypeEDBOracleServer,
+		SourceTypeEDBPostgreSQL,
 		SourceTypeGCP,
 		SourceTypeGCPAlloyDB,
 		SourceTypeGCPCloudSQL,
 		SourceTypeGCPCompute,
+		SourceTypeHerokuPostgreSQL,
+		SourceTypeHuaweiCompute,
+		SourceTypeHuaweiRDS,
 		SourceTypeOnPremises,
+		SourceTypePostgreSQLCosmosDB,
+		SourceTypePostgreSQLFlexibleServer,
 		SourceTypePostgreSQLSingleServer,
+		SourceTypeSupabasePostgreSQL,
 	}
 }
 
@@ -996,7 +1066,8 @@ func PossibleStorageAutoGrowValues() []StorageAutoGrow {
 }
 
 // StorageAutoGrowthSupportedEnum - A value indicating whether storage auto-grow is supported in this region. "Enabled" means
-// storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
+// storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported. Will be deprecated
+// in future, please look to Supported Features for "StorageAutoGrowth".
 type StorageAutoGrowthSupportedEnum string
 
 const (
@@ -1012,13 +1083,14 @@ func PossibleStorageAutoGrowthSupportedEnumValues() []StorageAutoGrowthSupported
 	}
 }
 
-// StorageType - Storage type for the server. Allowed values are PremiumLRS and PremiumV2LRS, and default is Premium_LRS if
-// not specified
+// StorageType - Storage type for the server. Allowed values are PremiumLRS, PremiumV2LRS, and UltraSSDLRS. Default is PremiumLRS
+// if not specified
 type StorageType string
 
 const (
 	StorageTypePremiumLRS   StorageType = "Premium_LRS"
 	StorageTypePremiumV2LRS StorageType = "PremiumV2_LRS"
+	StorageTypeUltraSSDLRS  StorageType = "UltraSSD_LRS"
 )
 
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
@@ -1026,6 +1098,23 @@ func PossibleStorageTypeValues() []StorageType {
 	return []StorageType{
 		StorageTypePremiumLRS,
 		StorageTypePremiumV2LRS,
+		StorageTypeUltraSSDLRS,
+	}
+}
+
+// SupportedFeatureStatusEnum - Status of feature
+type SupportedFeatureStatusEnum string
+
+const (
+	SupportedFeatureStatusEnumDisabled SupportedFeatureStatusEnum = "Disabled"
+	SupportedFeatureStatusEnumEnabled  SupportedFeatureStatusEnum = "Enabled"
+)
+
+// PossibleSupportedFeatureStatusEnumValues returns the possible values for the SupportedFeatureStatusEnum const type.
+func PossibleSupportedFeatureStatusEnumValues() []SupportedFeatureStatusEnum {
+	return []SupportedFeatureStatusEnum{
+		SupportedFeatureStatusEnumDisabled,
+		SupportedFeatureStatusEnumEnabled,
 	}
 }
 
@@ -1075,6 +1164,21 @@ func PossibleTriggerCutoverEnumValues() []TriggerCutoverEnum {
 	}
 }
 
+type TuningOptionEnum string
+
+const (
+	TuningOptionEnumConfiguration TuningOptionEnum = "configuration"
+	TuningOptionEnumIndex         TuningOptionEnum = "index"
+)
+
+// PossibleTuningOptionEnumValues returns the possible values for the TuningOptionEnum const type.
+func PossibleTuningOptionEnumValues() []TuningOptionEnum {
+	return []TuningOptionEnum{
+		TuningOptionEnumConfiguration,
+		TuningOptionEnumIndex,
+	}
+}
+
 // ValidationState - Validation status for migration
 type ValidationState string
 
@@ -1109,7 +1213,7 @@ func PossibleVirtualEndpointTypeValues() []VirtualEndpointType {
 
 // ZoneRedundantHaAndGeoBackupSupportedEnum - A value indicating whether Zone Redundant HA and Geo-backup is supported in
 // this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and
-// geo-backup is not supported.
+// geo-backup is not supported. Will be deprecated in future, please look to Supported Features for "ZoneRedundantHaAndGeoBackup".
 type ZoneRedundantHaAndGeoBackupSupportedEnum string
 
 const (
@@ -1126,7 +1230,8 @@ func PossibleZoneRedundantHaAndGeoBackupSupportedEnumValues() []ZoneRedundantHaA
 }
 
 // ZoneRedundantHaSupportedEnum - A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means
-// zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
+// zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported. Will be deprecated
+// in future, please look to Supported Features for "ZoneRedundantHa".
 type ZoneRedundantHaSupportedEnum string
 
 const (

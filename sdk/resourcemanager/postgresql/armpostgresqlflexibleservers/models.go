@@ -7,9 +7,9 @@ package armpostgresqlflexibleservers
 
 import "time"
 
-// ActiveDirectoryAdministrator - Represents an Active Directory administrator.
+// ActiveDirectoryAdministrator - Represents an Microsoft Entra Administrator.
 type ActiveDirectoryAdministrator struct {
-	// REQUIRED; Properties of the active directory administrator.
+	// REQUIRED; Properties of the Microsoft Entra Administrator.
 	Properties *AdministratorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -25,9 +25,9 @@ type ActiveDirectoryAdministrator struct {
 	Type *string
 }
 
-// ActiveDirectoryAdministratorAdd - Represents an Active Directory administrator.
+// ActiveDirectoryAdministratorAdd - Represents an Microsoft Entra Administrator.
 type ActiveDirectoryAdministratorAdd struct {
-	// Properties of the active directory administrator.
+	// Properties of the Microsoft Entra Administrator.
 	Properties *AdministratorPropertiesForAdd
 }
 
@@ -40,45 +40,45 @@ type AdminCredentials struct {
 	TargetServerPassword *string
 }
 
-// AdministratorListResult - A list of active directory administrators.
+// AdministratorListResult - A list of Microsoft Entra Administrators.
 type AdministratorListResult struct {
-	// The link used to get the next page of active directory.
+	// The link used to get the next page of Microsoft Entra administrators.
 	NextLink *string
 
-	// The list of active directory administrators
+	// The list of Microsoft Entra Administrators
 	Value []*ActiveDirectoryAdministrator
 }
 
-// AdministratorProperties - The properties of an Active Directory administrator.
+// AdministratorProperties - The properties of an Microsoft Entra Administrator.
 type AdministratorProperties struct {
-	// The objectId of the Active Directory administrator.
+	// The objectId of the Microsoft Entra Administrator.
 	ObjectID *string
 
-	// Active Directory administrator principal name.
+	// Microsoft Entra Administrator principal name.
 	PrincipalName *string
 
-	// The principal type used to represent the type of Active Directory Administrator.
+	// The principal type used to represent the type of Microsoft Entra Administrator.
 	PrincipalType *PrincipalType
 
-	// The tenantId of the Active Directory administrator.
+	// The tenantId of the Microsoft Entra Administrator.
 	TenantID *string
 }
 
-// AdministratorPropertiesForAdd - The properties of an Active Directory administrator.
+// AdministratorPropertiesForAdd - The properties of an Microsoft Entra Administrator.
 type AdministratorPropertiesForAdd struct {
-	// Active Directory administrator principal name.
+	// Microsoft Entra Administrator principal name.
 	PrincipalName *string
 
-	// The principal type used to represent the type of Active Directory Administrator.
+	// The principal type used to represent the type of Microsoft Entra Administrator.
 	PrincipalType *PrincipalType
 
-	// The tenantId of the Active Directory administrator.
+	// The tenantId of the Microsoft Entra Administrator.
 	TenantID *string
 }
 
 // AuthConfig - Authentication configuration properties of a server
 type AuthConfig struct {
-	// If Enabled, Azure Active Directory authentication is enabled.
+	// If Enabled, Microsoft Entra authentication is enabled.
 	ActiveDirectoryAuth *ActiveDirectoryAuthEnum
 
 	// If Enabled, Password authentication is enabled.
@@ -128,6 +128,27 @@ type CheckNameAvailabilityRequest struct {
 
 	// The resource type.
 	Type *string
+}
+
+// Cluster properties of a server.
+type Cluster struct {
+	// The node count for the cluster.
+	ClusterSize *int32
+}
+
+// ConfigTuningRequestParameter - Config tuning request parameters.
+type ConfigTuningRequestParameter struct {
+	// Indicates whether PG should be restarted during a tuning session.
+	AllowServerRestarts *bool
+
+	// The mode with which the feature will be enabled.
+	ConfigTuningUsageMode *bool
+
+	// The name of server.
+	ServerName *string
+
+	// The target metric the tuning session is trying to improve.
+	TargetImprovementMetric *string
 }
 
 // Configuration - Represents a Configuration.
@@ -415,34 +436,41 @@ type FlexibleServerCapability struct {
 	Name *string
 
 	// READ-ONLY; Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning is supported.
-	// "Disabled" stands for fast provisioning is not supported.
+	// "Disabled" stands for fast provisioning is not supported. Will be deprecated in future,
+	// please look to Supported Features for "FastProvisioning".
 	FastProvisioningSupported *FastProvisioningSupportedEnum
 
 	// READ-ONLY; Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported. "Disabled" stands
-	// for geo-back is not supported.
+	// for geo-back is not supported. Will be deprecated in future, please look to Supported
+	// Features for "GeoBackup".
 	GeoBackupSupported *GeoBackupSupportedEnum
 
 	// READ-ONLY; A value indicating whether online resize is supported in this region for the given subscription. "Enabled" means
 	// storage online resize is supported. "Disabled" means storage online resize is not
-	// supported.
+	// supported. Will be deprecated in future, please look to Supported Features for "OnlineResize".
 	OnlineResizeSupported *OnlineResizeSupportedEnum
 
 	// READ-ONLY; The reason for the capability not being available.
 	Reason *string
 
 	// READ-ONLY; A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled" stands
-	// for region is not restricted.
+	// for region is not restricted. Will be deprecated in future, please look to Supported
+	// Features for "Restricted".
 	Restricted *RestrictedEnum
 
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; A value indicating whether storage auto-grow is supported in this region. "Enabled" means storage auto-grow
-	// is supported. "Disabled" stands for storage auto-grow is not supported.
+	// is supported. "Disabled" stands for storage auto-grow is not supported. Will be deprecated
+	// in future, please look to Supported Features for "StorageAutoGrowth".
 	StorageAutoGrowthSupported *StorageAutoGrowthSupportedEnum
 
 	// READ-ONLY; List of supported server editions for fast provisioning
 	SupportedFastProvisioningEditions []*FastProvisioningEditionCapability
+
+	// READ-ONLY; The supported features.
+	SupportedFeatures []*SupportedFeature
 
 	// READ-ONLY; List of supported flexible server editions
 	SupportedServerEditions []*FlexibleServerEditionCapability
@@ -452,11 +480,12 @@ type FlexibleServerCapability struct {
 
 	// READ-ONLY; A value indicating whether Zone Redundant HA and Geo-backup is supported in this region. "Enabled" means zone
 	// redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and
-	// geo-backup is not supported.
+	// geo-backup is not supported. Will be deprecated in future, please look to Supported Features for "ZoneRedundantHaAndGeoBackup".
 	ZoneRedundantHaAndGeoBackupSupported *ZoneRedundantHaAndGeoBackupSupportedEnum
 
 	// READ-ONLY; A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means zone redundant HA
-	// is supported. "Disabled" stands for zone redundant HA is not supported.
+	// is supported. "Disabled" stands for zone redundant HA is not supported. Will be deprecated
+	// in future, please look to Supported Features for "ZoneRedundantHa".
 	ZoneRedundantHaSupported *ZoneRedundantHaSupportedEnum
 }
 
@@ -491,6 +520,126 @@ type HighAvailability struct {
 
 	// READ-ONLY; A state of a HA server that is visible to user.
 	State *ServerHAState
+}
+
+// ImpactRecord - Stores property that features impact on some metric if this recommended action is applied.
+type ImpactRecord struct {
+	// Absolute value
+	AbsoluteValue *float64
+
+	// Dimension name
+	DimensionName *string
+
+	// Optional property that can be used to store the QueryId if the metric is for a specific query.
+	QueryID *int64
+
+	// Dimension unit
+	Unit *string
+}
+
+// IndexRecommendationDetails - Recommendation details for the recommended action.
+type IndexRecommendationDetails struct {
+	// Database name.
+	DatabaseName *string
+
+	// Index included columns.
+	IncludedColumns []*string
+
+	// Index columns.
+	IndexColumns []*string
+
+	// Index name.
+	IndexName *string
+
+	// Index type.
+	IndexType *string
+
+	// Schema name.
+	Schema *string
+
+	// Table name.
+	Table *string
+}
+
+// IndexRecommendationListResult - A list of available index recommendations.
+type IndexRecommendationListResult struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// A list of available index recommendations.
+	Value []*IndexRecommendationResource
+}
+
+// IndexRecommendationResource - Index recommendation properties.
+type IndexRecommendationResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Properties of IndexRecommendationResource.
+	Properties *IndexRecommendationResourceProperties
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IndexRecommendationResourceProperties - Index recommendation properties.
+type IndexRecommendationResourceProperties struct {
+	// Stores workload information for the recommended action.
+	AnalyzedWorkload *IndexRecommendationResourcePropertiesAnalyzedWorkload
+
+	// Stores implementation details for the recommended action.
+	ImplementationDetails *IndexRecommendationResourcePropertiesImplementationDetails
+
+	// The ImprovedQueryIds. The list will only be populated for CREATE INDEX recommendations.
+	ImprovedQueryIDs []*int64
+
+	// Creation time of this recommendation in UTC date-time string format.
+	InitialRecommendedTime *time.Time
+
+	// The last refresh of this recommendation in UTC date-time string format.
+	LastRecommendedTime *time.Time
+
+	// Reason for this recommendation.
+	RecommendationReason *string
+
+	// Type for this recommendation.
+	RecommendationType *RecommendationTypeEnum
+
+	// The number of times this recommendation has encountered.
+	TimesRecommended *int32
+
+	// READ-ONLY; Stores recommendation details for the recommended action.
+	Details *IndexRecommendationDetails
+
+	// READ-ONLY; The estimated impact of this recommended action
+	EstimatedImpact []*ImpactRecord
+}
+
+// IndexRecommendationResourcePropertiesAnalyzedWorkload - Stores workload information for the recommended action.
+type IndexRecommendationResourcePropertiesAnalyzedWorkload struct {
+	// Workload end time in UTC date-time string format.
+	EndTime *time.Time
+
+	// Workload query examined count. For DROP INDEX will be 0.
+	QueryCount *int32
+
+	// Workload start time in UTC date-time string format.
+	StartTime *time.Time
+}
+
+// IndexRecommendationResourcePropertiesImplementationDetails - Stores implementation details for the recommended action.
+type IndexRecommendationResourcePropertiesImplementationDetails struct {
+	// Method of implementation for recommended action
+	Method *string
+
+	// Implementation script for the recommended action
+	Script *string
 }
 
 // LogFile - Represents a logFile.
@@ -763,7 +912,9 @@ type MigrationResourceProperties struct {
 	SourceDbServerResourceID *string
 
 	// migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWSRDS, AWSAURORA, AWSEC2, GCPCloudSQL,
-	// GCPAlloyDB, GCPCompute, or EDB
+	// GCPAlloyDB, GCPCompute, EDB, EDBOracleServer, EDBPostgreSQL,
+	// PostgreSQLFlexibleServer, PostgreSQLCosmosDB, HuaweiRDS, HuaweiCompute, HerokuPostgreSQL, CrunchyPostgreSQL, ApsaraDBRDS,
+	// DigitalOceanDroplets, DigitalOceanPostgreSQL, or Supabase_PostgreSQL
 	SourceType *SourceType
 
 	// Indicates whether the data migration should start right away
@@ -896,6 +1047,15 @@ type NameAvailability struct {
 
 	// READ-ONLY; type of the server
 	Type *string
+}
+
+// NameProperty - Name property for quota usage
+type NameProperty struct {
+	// Localized name
+	LocalizedValue *string
+
+	// Name value
+	Value *string
 }
 
 // Network properties of a server.
@@ -1056,6 +1216,33 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// QuotaUsage - Quota usage for flexible servers
+type QuotaUsage struct {
+	// Current Quota usage value
+	CurrentValue *int64
+
+	// Fully qualified ARM resource Id
+	ID *string
+
+	// Quota limit
+	Limit *int64
+
+	// Name of quota usage for flexible servers
+	Name *NameProperty
+
+	// Quota unit
+	Unit *string
+}
+
+// QuotaUsagesListResult - Capability for the PostgreSQL server
+type QuotaUsagesListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; A list of quota usages.
+	Value []*QuotaUsage
+}
+
 // Replica properties of a server
 type Replica struct {
 	// Sets the promote mode for a replica server. This is a write only property.
@@ -1204,6 +1391,9 @@ type ServerProperties struct {
 	// Backup properties of a server.
 	Backup *Backup
 
+	// Cluster properties of a server.
+	Cluster *Cluster
+
 	// The mode to create a new PostgreSQL server.
 	CreateMode *CreateMode
 
@@ -1271,6 +1461,9 @@ type ServerPropertiesForUpdate struct {
 	// Backup properties of a server.
 	Backup *Backup
 
+	// Cluster properties of a server.
+	Cluster *Cluster
+
 	// The mode to update a new PostgreSQL server.
 	CreateMode *CreateModeForUpdate
 
@@ -1295,7 +1488,7 @@ type ServerPropertiesForUpdate struct {
 	// Storage properties of a server.
 	Storage *Storage
 
-	// PostgreSQL Server version. Version 16 is currently not supported for MVU.
+	// PostgreSQL Server version. Version 17 is currently not supported for MVU.
 	Version *ServerVersion
 }
 
@@ -1316,8 +1509,14 @@ type ServerSKUCapability struct {
 	// READ-ONLY; The reason for the capability not being available.
 	Reason *string
 
+	// READ-ONLY; The value of security profile indicating if its confidential vm
+	SecurityProfile *string
+
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
+
+	// READ-ONLY; The supported features.
+	SupportedFeatures []*SupportedFeature
 
 	// READ-ONLY; Supported high availability mode
 	SupportedHaMode []*HaMode
@@ -1383,8 +1582,74 @@ type ServerVersionCapability struct {
 	// READ-ONLY; The status of the capability.
 	Status *CapabilityStatus
 
+	// READ-ONLY; The supported features.
+	SupportedFeatures []*SupportedFeature
+
 	// READ-ONLY; Supported servers versions to upgrade
 	SupportedVersionsToUpgrade []*string
+}
+
+// SessionDetailsListResult - A list of tuning configuration sessions.
+type SessionDetailsListResult struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// A list of details of the session.
+	Value []*SessionDetailsResource
+}
+
+// SessionDetailsResource - Session details properties.
+type SessionDetailsResource struct {
+	// Applied configuration for the iteration.
+	AppliedConfiguration *string
+
+	// The aqr for the iteration.
+	AverageQueryRuntimeMs *string
+
+	// Iteration id.
+	IterationID *string
+
+	// Iteration start time.
+	IterationStartTime *string
+
+	// Session id.
+	SessionID *string
+
+	// The tps for the iteration.
+	TransactionsPerSecond *string
+}
+
+// SessionResource - Session resource properties.
+type SessionResource struct {
+	// The post tuning aqr.
+	PostTuningAqr *string
+
+	// The post tuning tps.
+	PostTuningTps *string
+
+	// The pre tuning aqr.
+	PreTuningAqr *string
+
+	// The pre tuning tps.
+	PreTuningTps *string
+
+	// Session id.
+	SessionID *string
+
+	// the tuning session start time.
+	SessionStartTime *string
+
+	// The status of the tuning session.
+	Status *string
+}
+
+// SessionsListResult - A list of tuning configuration sessions.
+type SessionsListResult struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// A list of tuning configuration sessions.
+	Value []*SessionResource
 }
 
 // Storage properties of a server
@@ -1392,19 +1657,20 @@ type Storage struct {
 	// Flag to enable / disable Storage Auto grow for flexible server.
 	AutoGrow *StorageAutoGrow
 
-	// Storage tier IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
+	// Storage IOPS quantity. This property is required to be set for storage Type PremiumV2LRS and UltraSSDLRS.
 	Iops *int32
 
 	// Max storage allowed for a server.
 	StorageSizeGB *int32
 
-	// Storage throughput for the server. This is required to be set for storage Type PremiumV2_LRS
+	// Storage throughput for the server. This is required to be set for storage Type PremiumV2LRS and UltraSSDLRS.
 	Throughput *int32
 
 	// Name of storage tier for IOPS.
 	Tier *AzureManagedDiskPerformanceTiers
 
-	// Storage type for the server. Allowed values are PremiumLRS and PremiumV2LRS, and default is Premium_LRS if not specified
+	// Storage type for the server. Allowed values are PremiumLRS, PremiumV2LRS, and UltraSSDLRS. Default is PremiumLRS if not
+	// specified
 	Type *StorageType
 }
 
@@ -1474,6 +1740,15 @@ type StorageTierCapability struct {
 	Status *CapabilityStatus
 }
 
+// SupportedFeature - The supported features.
+type SupportedFeature struct {
+	// READ-ONLY; Name of feature
+	Name *string
+
+	// READ-ONLY; Status of feature
+	Status *SupportedFeatureStatusEnum
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1493,6 +1768,30 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// TuningOptionsListResult - A list of server tuning options.
+type TuningOptionsListResult struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// A list of available tuning options.
+	Value []*TuningOptionsResource
+}
+
+// TuningOptionsResource - Stores property that features impact on some metric if this recommended action is applied.
+type TuningOptionsResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // UserAssignedIdentity - Information describing the identities associated with this application.

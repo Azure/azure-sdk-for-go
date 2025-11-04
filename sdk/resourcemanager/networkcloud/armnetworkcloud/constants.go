@@ -7,7 +7,7 @@ package armnetworkcloud
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
-	moduleVersion = "v1.3.0-beta.1"
+	moduleVersion = "v1.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -1722,7 +1722,8 @@ const (
 	VirtualMachineDeviceModelTypeT1 VirtualMachineDeviceModelType = "T1"
 	// VirtualMachineDeviceModelTypeT2 - Modern and enhanced device virtualization interface.
 	VirtualMachineDeviceModelTypeT2 VirtualMachineDeviceModelType = "T2"
-	// VirtualMachineDeviceModelTypeT3 - Improved security and functionality (including TPM and secure boot support).
+	// VirtualMachineDeviceModelTypeT3 - Improved security and functionality (including TPM and secure boot support). Required
+	// for windows 11 and server 2025.
 	VirtualMachineDeviceModelTypeT3 VirtualMachineDeviceModelType = "T3"
 )
 

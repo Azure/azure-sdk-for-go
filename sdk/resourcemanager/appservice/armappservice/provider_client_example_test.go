@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetFunctionAppStacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetFunctionAppStacks.json
 func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -767,7 +767,7 @@ func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetFunctionAppStacksForLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetFunctionAppStacksForLocation.json
 func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1523,7 +1523,7 @@ func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetWebAppStacksForLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetWebAppStacksForLocation.json
 func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2959,7 +2959,7 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
@@ -2971,7 +2971,7 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
@@ -4420,7 +4420,7 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListOperations.json
 func ExampleProviderClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5161,6 +5161,16 @@ func ExampleProviderClient_NewListOperationsPager() {
 		// 				Operation: to.Ptr("Get Check Name Availability"),
 		// 				Provider: to.Ptr("Microsoft Web Apps"),
 		// 				Resource: to.Ptr("Check Name Availability"),
+		// 			},
+		// 			Origin: to.Ptr("user,system"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("microsoft.web/locations/checknameavailability/read"),
+		// 			Display: &armappservice.CsmOperationDisplay{
+		// 				Description: to.Ptr("Check if resource name is available for DNL apps."),
+		// 				Operation: to.Ptr("Get Check Name Availability"),
+		// 				Provider: to.Ptr("Microsoft Web Apps"),
+		// 				Resource: to.Ptr("DNL Check Name Availability"),
 		// 			},
 		// 			Origin: to.Ptr("user,system"),
 		// 		},
@@ -10133,7 +10143,7 @@ func ExampleProviderClient_NewListOperationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b5d78da207e9c5d8f82e95224039867271f47cdf/specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetWebAppStacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetWebAppStacks.json
 func ExampleProviderClient_NewGetWebAppStacksPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11565,7 +11575,7 @@ func ExampleProviderClient_NewGetWebAppStacksPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
@@ -11577,7 +11587,7 @@ func ExampleProviderClient_NewGetWebAppStacksPager() {
 		// 										AppInsightsSettings: &armappservice.AppInsightsWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},
-		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-01T00:00:00.000Z"); return t}()),
+		// 										EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
 		// 										GitHubActionSettings: &armappservice.GitHubActionWebAppStackSettings{
 		// 											IsSupported: to.Ptr(false),
 		// 										},

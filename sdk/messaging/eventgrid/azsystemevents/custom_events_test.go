@@ -77,7 +77,7 @@ func TestUnmarshalInternalACSRouterCommunicationError(t *testing.T) {
 	})
 }
 
-func TestUnmarshalInternalAcsRouterCCSmunicationErrorRecursive(t *testing.T) {
+func TestUnmarshalInternalAcsRouterCommunicationErrorRecursive(t *testing.T) {
 	text := `[
 		{
 			"code": "Root.Failure",

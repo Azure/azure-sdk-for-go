@@ -269,6 +269,8 @@ To see some example code for receiving messages using the `Receiver`, see the [R
 
 ## Troubleshooting
 
+For detailed troubleshooting information, refer to the [Service Bus Troubleshooting Guide][servicebus_troubleshooting].
+
 ### Logging
 
 This module uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set the environment variable `AZURE_SDK_GO_LOGGING` to `all`. 
@@ -331,3 +333,4 @@ If you'd like to contribute to this library, please read the [contributing guide
 [godoc_newsender]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewSender
 [godoc_newreceiver_queue]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForQueue
 [godoc_newreceiver_subscription]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForSubscription
+[servicebus_troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/TROUBLESHOOTING.md

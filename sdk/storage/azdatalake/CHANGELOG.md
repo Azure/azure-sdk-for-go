@@ -1,5 +1,36 @@
 # Release History
 
+## 1.4.4-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.4.3 (2025-10-16)
+
+### Other Changes
+* Updated service version to `2025-11-05`
+* Updated `azidentity` version to `1.13.0`
+* Updated `azcore` version to `1.19.1`
+* Updated `azblob` version to `v1.6.2`
+
+## 1.4.2 (2025-07-23)
+
+### Other Changes
+* Updated `azcore` version to `1.18.1`
+
+## 1.4.2-beta.1 (2025-07-08)
+
+### Bugs Fixed
+* Fix panic in File and Directory client DownloadStream and Get Properties on authentication failure.
+
+### Other Changes
+* Updated `azidentity` version to `1.10.1`
+
 ## 1.4.1 (2025-04-28)
 
 ### Other Changes

@@ -8,18 +8,42 @@ package armnetworkcloud
 // AgentPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginCreateOrUpdate
 // method.
 type AgentPoolsClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
 type AgentPoolsClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
 type AgentPoolsClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -38,6 +62,14 @@ type AgentPoolsClientListByKubernetesClusterOptions struct {
 // BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions contains the optional parameters for the BareMetalMachineKeySetsClient.BeginCreateOrUpdate
 // method.
 type BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -45,6 +77,14 @@ type BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions struct {
 // BareMetalMachineKeySetsClientBeginDeleteOptions contains the optional parameters for the BareMetalMachineKeySetsClient.BeginDelete
 // method.
 type BareMetalMachineKeySetsClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -52,6 +92,14 @@ type BareMetalMachineKeySetsClientBeginDeleteOptions struct {
 // BareMetalMachineKeySetsClientBeginUpdateOptions contains the optional parameters for the BareMetalMachineKeySetsClient.BeginUpdate
 // method.
 type BareMetalMachineKeySetsClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -80,6 +128,14 @@ type BareMetalMachinesClientBeginCordonOptions struct {
 // BareMetalMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the BareMetalMachinesClient.BeginCreateOrUpdate
 // method.
 type BareMetalMachinesClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -87,6 +143,14 @@ type BareMetalMachinesClientBeginCreateOrUpdateOptions struct {
 // BareMetalMachinesClientBeginDeleteOptions contains the optional parameters for the BareMetalMachinesClient.BeginDelete
 // method.
 type BareMetalMachinesClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -162,6 +226,14 @@ type BareMetalMachinesClientBeginUncordonOptions struct {
 // BareMetalMachinesClientBeginUpdateOptions contains the optional parameters for the BareMetalMachinesClient.BeginUpdate
 // method.
 type BareMetalMachinesClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -186,18 +258,42 @@ type BareMetalMachinesClientListBySubscriptionOptions struct {
 // BmcKeySetsClientBeginCreateOrUpdateOptions contains the optional parameters for the BmcKeySetsClient.BeginCreateOrUpdate
 // method.
 type BmcKeySetsClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // BmcKeySetsClientBeginDeleteOptions contains the optional parameters for the BmcKeySetsClient.BeginDelete method.
 type BmcKeySetsClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // BmcKeySetsClientBeginUpdateOptions contains the optional parameters for the BmcKeySetsClient.BeginUpdate method.
 type BmcKeySetsClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -215,6 +311,14 @@ type BmcKeySetsClientListByClusterOptions struct {
 // CloudServicesNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesNetworksClient.BeginCreateOrUpdate
 // method.
 type CloudServicesNetworksClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -222,6 +326,14 @@ type CloudServicesNetworksClientBeginCreateOrUpdateOptions struct {
 // CloudServicesNetworksClientBeginDeleteOptions contains the optional parameters for the CloudServicesNetworksClient.BeginDelete
 // method.
 type CloudServicesNetworksClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -229,6 +341,14 @@ type CloudServicesNetworksClientBeginDeleteOptions struct {
 // CloudServicesNetworksClientBeginUpdateOptions contains the optional parameters for the CloudServicesNetworksClient.BeginUpdate
 // method.
 type CloudServicesNetworksClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -253,12 +373,28 @@ type CloudServicesNetworksClientListBySubscriptionOptions struct {
 // ClusterManagersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterManagersClient.BeginCreateOrUpdate
 // method.
 type ClusterManagersClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClusterManagersClientBeginDeleteOptions contains the optional parameters for the ClusterManagersClient.BeginDelete method.
 type ClusterManagersClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -282,7 +418,13 @@ type ClusterManagersClientListBySubscriptionOptions struct {
 
 // ClusterManagersClientUpdateOptions contains the optional parameters for the ClusterManagersClient.Update method.
 type ClusterManagersClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
 }
 
 // ClustersClientBeginContinueUpdateVersionOptions contains the optional parameters for the ClustersClient.BeginContinueUpdateVersion
@@ -294,12 +436,28 @@ type ClustersClientBeginContinueUpdateVersionOptions struct {
 
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
 type ClustersClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 type ClustersClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -324,6 +482,14 @@ type ClustersClientBeginScanRuntimeOptions struct {
 
 // ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
 type ClustersClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -353,18 +519,42 @@ type ClustersClientListBySubscriptionOptions struct {
 
 // ConsolesClientBeginCreateOrUpdateOptions contains the optional parameters for the ConsolesClient.BeginCreateOrUpdate method.
 type ConsolesClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ConsolesClientBeginDeleteOptions contains the optional parameters for the ConsolesClient.BeginDelete method.
 type ConsolesClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ConsolesClientBeginUpdateOptions contains the optional parameters for the ConsolesClient.BeginUpdate method.
 type ConsolesClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -383,6 +573,14 @@ type ConsolesClientListByVirtualMachineOptions struct {
 // KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions contains the optional parameters for the KubernetesClusterFeaturesClient.BeginCreateOrUpdate
 // method.
 type KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -390,6 +588,14 @@ type KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions struct {
 // KubernetesClusterFeaturesClientBeginDeleteOptions contains the optional parameters for the KubernetesClusterFeaturesClient.BeginDelete
 // method.
 type KubernetesClusterFeaturesClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -397,6 +603,14 @@ type KubernetesClusterFeaturesClientBeginDeleteOptions struct {
 // KubernetesClusterFeaturesClientBeginUpdateOptions contains the optional parameters for the KubernetesClusterFeaturesClient.BeginUpdate
 // method.
 type KubernetesClusterFeaturesClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -416,6 +630,14 @@ type KubernetesClusterFeaturesClientListByKubernetesClusterOptions struct {
 // KubernetesClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginCreateOrUpdate
 // method.
 type KubernetesClustersClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -423,6 +645,14 @@ type KubernetesClustersClientBeginCreateOrUpdateOptions struct {
 // KubernetesClustersClientBeginDeleteOptions contains the optional parameters for the KubernetesClustersClient.BeginDelete
 // method.
 type KubernetesClustersClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -437,6 +667,14 @@ type KubernetesClustersClientBeginRestartNodeOptions struct {
 // KubernetesClustersClientBeginUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginUpdate
 // method.
 type KubernetesClustersClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -461,12 +699,28 @@ type KubernetesClustersClientListBySubscriptionOptions struct {
 // L2NetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the L2NetworksClient.BeginCreateOrUpdate
 // method.
 type L2NetworksClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // L2NetworksClientBeginDeleteOptions contains the optional parameters for the L2NetworksClient.BeginDelete method.
 type L2NetworksClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -490,18 +744,40 @@ type L2NetworksClientListBySubscriptionOptions struct {
 
 // L2NetworksClientUpdateOptions contains the optional parameters for the L2NetworksClient.Update method.
 type L2NetworksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
 }
 
 // L3NetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the L3NetworksClient.BeginCreateOrUpdate
 // method.
 type L3NetworksClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // L3NetworksClientBeginDeleteOptions contains the optional parameters for the L3NetworksClient.BeginDelete method.
 type L3NetworksClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -525,12 +801,26 @@ type L3NetworksClientListBySubscriptionOptions struct {
 
 // L3NetworksClientUpdateOptions contains the optional parameters for the L3NetworksClient.Update method.
 type L3NetworksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
 }
 
 // MetricsConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the MetricsConfigurationsClient.BeginCreateOrUpdate
 // method.
 type MetricsConfigurationsClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -538,6 +828,14 @@ type MetricsConfigurationsClientBeginCreateOrUpdateOptions struct {
 // MetricsConfigurationsClientBeginDeleteOptions contains the optional parameters for the MetricsConfigurationsClient.BeginDelete
 // method.
 type MetricsConfigurationsClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -545,6 +843,14 @@ type MetricsConfigurationsClientBeginDeleteOptions struct {
 // MetricsConfigurationsClientBeginUpdateOptions contains the optional parameters for the MetricsConfigurationsClient.BeginUpdate
 // method.
 type MetricsConfigurationsClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -578,18 +884,42 @@ type RackSKUsClientListBySubscriptionOptions struct {
 
 // RacksClientBeginCreateOrUpdateOptions contains the optional parameters for the RacksClient.BeginCreateOrUpdate method.
 type RacksClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RacksClientBeginDeleteOptions contains the optional parameters for the RacksClient.BeginDelete method.
 type RacksClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RacksClientBeginUpdateOptions contains the optional parameters for the RacksClient.BeginUpdate method.
 type RacksClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -613,6 +943,14 @@ type RacksClientListBySubscriptionOptions struct {
 // StorageAppliancesClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAppliancesClient.BeginCreateOrUpdate
 // method.
 type StorageAppliancesClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -620,6 +958,14 @@ type StorageAppliancesClientBeginCreateOrUpdateOptions struct {
 // StorageAppliancesClientBeginDeleteOptions contains the optional parameters for the StorageAppliancesClient.BeginDelete
 // method.
 type StorageAppliancesClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -644,6 +990,14 @@ type StorageAppliancesClientBeginEnableRemoteVendorManagementOptions struct {
 // StorageAppliancesClientBeginUpdateOptions contains the optional parameters for the StorageAppliancesClient.BeginUpdate
 // method.
 type StorageAppliancesClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -668,12 +1022,28 @@ type StorageAppliancesClientListBySubscriptionOptions struct {
 // TrunkedNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the TrunkedNetworksClient.BeginCreateOrUpdate
 // method.
 type TrunkedNetworksClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // TrunkedNetworksClientBeginDeleteOptions contains the optional parameters for the TrunkedNetworksClient.BeginDelete method.
 type TrunkedNetworksClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -697,18 +1067,40 @@ type TrunkedNetworksClientListBySubscriptionOptions struct {
 
 // TrunkedNetworksClientUpdateOptions contains the optional parameters for the TrunkedNetworksClient.Update method.
 type TrunkedNetworksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
 }
 
 // VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
 // method.
 type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete method.
 type VirtualMachinesClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -743,6 +1135,14 @@ type VirtualMachinesClientBeginStartOptions struct {
 
 // VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate method.
 type VirtualMachinesClientBeginUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -766,12 +1166,28 @@ type VirtualMachinesClientListBySubscriptionOptions struct {
 
 // VolumesClientBeginCreateOrUpdateOptions contains the optional parameters for the VolumesClient.BeginCreateOrUpdate method.
 type VolumesClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // VolumesClientBeginDeleteOptions contains the optional parameters for the VolumesClient.BeginDelete method.
 type VolumesClientBeginDeleteOptions struct {
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -795,5 +1211,11 @@ type VolumesClientListBySubscriptionOptions struct {
 
 // VolumesClientUpdateOptions contains the optional parameters for the VolumesClient.Update method.
 type VolumesClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
+	// in error from server as they are not supported.
+	IfNoneMatch *string
 }

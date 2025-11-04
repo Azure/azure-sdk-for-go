@@ -13,6 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/batch/azbatch"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -35,6 +36,9 @@ func TestApplications(t *testing.T) {
 }
 
 func TestCertificates(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/24713")
+	}
 	client := record(t)
 	cc, err := client.CreateCertificate(ctx, azbatch.Certificate{
 		Format: to.Ptr(azbatch.CertificateFormatCER),

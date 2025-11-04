@@ -1,5 +1,183 @@
 # Release History
 
+## 7.1.0 (2025-10-23)
+### Features Added
+
+- New value `TransportProtocolQuic` added to enum type `TransportProtocol`
+- New enum type `AzureFirewallPacketCaptureOperationType` with values `AzureFirewallPacketCaptureOperationTypeStart`, `AzureFirewallPacketCaptureOperationTypeStatus`, `AzureFirewallPacketCaptureOperationTypeStop`
+- New enum type `AzureFirewallPacketCaptureResponseCode` with values `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureCompleted`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureFailed`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureInProgress`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureNotInProgress`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartFailed`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartFailedToUpload`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartFailure`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartSucceeded`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStopSucceeded`, `AzureFirewallPacketCaptureResponseCodeNotImplemented`
+- New enum type `NvaNicType` with values `NvaNicTypeAdditionalPrivateNic`, `NvaNicTypeAdditionalPublicNic`, `NvaNicTypePrivateNic`, `NvaNicTypePublicNic`
+- New function `*AzureFirewallsClient.BeginPacketCaptureOperation(context.Context, string, string, FirewallPacketCaptureParameters, *AzureFirewallsClientBeginPacketCaptureOperationOptions) (*runtime.Poller[AzureFirewallsClientPacketCaptureOperationResponse], error)`
+- New function `*ClientFactory.NewSecurityPerimeterServiceTagsClient() *SecurityPerimeterServiceTagsClient`
+- New function `NewSecurityPerimeterServiceTagsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterServiceTagsClient, error)`
+- New function `*SecurityPerimeterServiceTagsClient.NewListPager(string, *SecurityPerimeterServiceTagsClientListOptions) *runtime.Pager[SecurityPerimeterServiceTagsClientListResponse]`
+- New function `*VPNServerConfigurationsClient.ListRadiusSecrets(context.Context, string, string, *VPNServerConfigurationsClientListRadiusSecretsOptions) (VPNServerConfigurationsClientListRadiusSecretsResponse, error)`
+- New function `*VirtualNetworkGatewaysClient.ListRadiusSecrets(context.Context, string, string, *VirtualNetworkGatewaysClientListRadiusSecretsOptions) (VirtualNetworkGatewaysClientListRadiusSecretsResponse, error)`
+- New struct `AzureFirewallPacketCaptureResponse`
+- New struct `NspServiceTagsListResult`
+- New struct `NspServiceTagsResource`
+- New struct `NvaInVnetSubnetReferenceProperties`
+- New struct `NvaInterfaceConfigurationsProperties`
+- New struct `RadiusAuthServer`
+- New struct `RadiusAuthServerListResult`
+- New field `DedicatedBackendConnection`, `SniName`, `ValidateCertChainAndExpiry`, `ValidateSNI` in struct `ApplicationGatewayBackendHTTPSettingsPropertiesFormat`
+- New field `ExtendedLocation` in struct `AzureFirewall`
+- New field `Operation` in struct `FirewallPacketCaptureParameters`
+- New field `NvaInterfaceConfigurations`, `PrivateIPAddress` in struct `VirtualAppliancePropertiesFormat`
+
+
+## 7.0.0 (2025-05-22)
+### Breaking Changes
+
+- Type of `LoadBalancerHealthPerRulePerBackendAddress.NetworkInterfaceIPConfigurationID` has been changed from `*InterfaceIPConfiguration` to `*string`
+- Function `*ConnectionMonitorsClient.BeginQuery` has been removed
+- Function `*ConnectionMonitorsClient.BeginStart` has been removed
+
+### Features Added
+
+- New value `ApplicationGatewayFirewallUserSessionVariableClientAddrXFFHeader`, `ApplicationGatewayFirewallUserSessionVariableGeoLocationXFFHeader` added to enum type `ApplicationGatewayFirewallUserSessionVariable`
+- New value `NatGatewaySKUNameStandardV2` added to enum type `NatGatewaySKUName`
+- New value `PublicIPAddressSKUNameStandardV2` added to enum type `PublicIPAddressSKUName`
+- New value `PublicIPPrefixSKUNameStandardV2` added to enum type `PublicIPPrefixSKUName`
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `AdvertisedPublicPrefixPropertiesValidationState` with values `AdvertisedPublicPrefixPropertiesValidationStateAsnValidationFailed`, `AdvertisedPublicPrefixPropertiesValidationStateCertificateMissingInRoutingRegistry`, `AdvertisedPublicPrefixPropertiesValidationStateConfigured`, `AdvertisedPublicPrefixPropertiesValidationStateConfiguring`, `AdvertisedPublicPrefixPropertiesValidationStateInvalidSignatureEncoding`, `AdvertisedPublicPrefixPropertiesValidationStateManualValidationNeeded`, `AdvertisedPublicPrefixPropertiesValidationStateNotConfigured`, `AdvertisedPublicPrefixPropertiesValidationStateSignatureVerificationFailed`, `AdvertisedPublicPrefixPropertiesValidationStateValidationFailed`, `AdvertisedPublicPrefixPropertiesValidationStateValidationNeeded`
+- New enum type `AssociationAccessMode` with values `AssociationAccessModeAudit`, `AssociationAccessModeEnforced`, `AssociationAccessModeLearning`
+- New enum type `ConnectedGroupAddressOverlap` with values `ConnectedGroupAddressOverlapAllowed`, `ConnectedGroupAddressOverlapDisallowed`
+- New enum type `ConnectedGroupPrivateEndpointsScale` with values `ConnectedGroupPrivateEndpointsScaleHighScale`, `ConnectedGroupPrivateEndpointsScaleStandard`
+- New enum type `NspLinkProvisioningState` with values `NspLinkProvisioningStateAccepted`, `NspLinkProvisioningStateCreating`, `NspLinkProvisioningStateDeleting`, `NspLinkProvisioningStateFailed`, `NspLinkProvisioningStateSucceeded`, `NspLinkProvisioningStateUpdating`, `NspLinkProvisioningStateWaitForRemoteCompletion`
+- New enum type `NspLinkStatus` with values `NspLinkStatusApproved`, `NspLinkStatusDisconnected`, `NspLinkStatusPending`, `NspLinkStatusRejected`
+- New enum type `NspProvisioningState` with values `NspProvisioningStateAccepted`, `NspProvisioningStateCreating`, `NspProvisioningStateDeleting`, `NspProvisioningStateFailed`, `NspProvisioningStateSucceeded`, `NspProvisioningStateUpdating`
+- New enum type `PeeringEnforcement` with values `PeeringEnforcementEnforced`, `PeeringEnforcementUnenforced`
+- New enum type `VirtualNetworkGatewayMigrationPhase` with values `VirtualNetworkGatewayMigrationPhaseAbort`, `VirtualNetworkGatewayMigrationPhaseAbortSucceeded`, `VirtualNetworkGatewayMigrationPhaseCommit`, `VirtualNetworkGatewayMigrationPhaseCommitSucceeded`, `VirtualNetworkGatewayMigrationPhaseExecute`, `VirtualNetworkGatewayMigrationPhaseExecuteSucceeded`, `VirtualNetworkGatewayMigrationPhaseNone`, `VirtualNetworkGatewayMigrationPhasePrepare`, `VirtualNetworkGatewayMigrationPhasePrepareSucceeded`
+- New enum type `VirtualNetworkGatewayMigrationState` with values `VirtualNetworkGatewayMigrationStateFailed`, `VirtualNetworkGatewayMigrationStateInProgress`, `VirtualNetworkGatewayMigrationStateNone`, `VirtualNetworkGatewayMigrationStateSucceeded`
+- New enum type `VirtualNetworkGatewayMigrationType` with values `VirtualNetworkGatewayMigrationTypeUpgradeDeploymentToStandardIP`
+- New function `*ClientFactory.NewSecurityPerimeterAccessRulesClient() *SecurityPerimeterAccessRulesClient`
+- New function `*ClientFactory.NewSecurityPerimeterAssociableResourceTypesClient() *SecurityPerimeterAssociableResourceTypesClient`
+- New function `*ClientFactory.NewSecurityPerimeterAssociationsClient() *SecurityPerimeterAssociationsClient`
+- New function `*ClientFactory.NewSecurityPerimeterLinkReferencesClient() *SecurityPerimeterLinkReferencesClient`
+- New function `*ClientFactory.NewSecurityPerimeterLinksClient() *SecurityPerimeterLinksClient`
+- New function `*ClientFactory.NewSecurityPerimeterLoggingConfigurationsClient() *SecurityPerimeterLoggingConfigurationsClient`
+- New function `*ClientFactory.NewSecurityPerimeterOperationStatusesClient() *SecurityPerimeterOperationStatusesClient`
+- New function `*ClientFactory.NewSecurityPerimeterProfilesClient() *SecurityPerimeterProfilesClient`
+- New function `*ClientFactory.NewSecurityPerimetersClient() *SecurityPerimetersClient`
+- New function `NewSecurityPerimeterAccessRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterAccessRulesClient, error)`
+- New function `*SecurityPerimeterAccessRulesClient.CreateOrUpdate(context.Context, string, string, string, string, NspAccessRule, *SecurityPerimeterAccessRulesClientCreateOrUpdateOptions) (SecurityPerimeterAccessRulesClientCreateOrUpdateResponse, error)`
+- New function `*SecurityPerimeterAccessRulesClient.Delete(context.Context, string, string, string, string, *SecurityPerimeterAccessRulesClientDeleteOptions) (SecurityPerimeterAccessRulesClientDeleteResponse, error)`
+- New function `*SecurityPerimeterAccessRulesClient.Get(context.Context, string, string, string, string, *SecurityPerimeterAccessRulesClientGetOptions) (SecurityPerimeterAccessRulesClientGetResponse, error)`
+- New function `*SecurityPerimeterAccessRulesClient.NewListPager(string, string, string, *SecurityPerimeterAccessRulesClientListOptions) *runtime.Pager[SecurityPerimeterAccessRulesClientListResponse]`
+- New function `*SecurityPerimeterAccessRulesClient.Reconcile(context.Context, string, string, string, string, any, *SecurityPerimeterAccessRulesClientReconcileOptions) (SecurityPerimeterAccessRulesClientReconcileResponse, error)`
+- New function `NewSecurityPerimeterAssociableResourceTypesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterAssociableResourceTypesClient, error)`
+- New function `*SecurityPerimeterAssociableResourceTypesClient.NewListPager(string, *SecurityPerimeterAssociableResourceTypesClientListOptions) *runtime.Pager[SecurityPerimeterAssociableResourceTypesClientListResponse]`
+- New function `NewSecurityPerimeterAssociationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterAssociationsClient, error)`
+- New function `*SecurityPerimeterAssociationsClient.BeginCreateOrUpdate(context.Context, string, string, string, NspAssociation, *SecurityPerimeterAssociationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SecurityPerimeterAssociationsClientCreateOrUpdateResponse], error)`
+- New function `*SecurityPerimeterAssociationsClient.BeginDelete(context.Context, string, string, string, *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterAssociationsClientDeleteResponse], error)`
+- New function `*SecurityPerimeterAssociationsClient.Get(context.Context, string, string, string, *SecurityPerimeterAssociationsClientGetOptions) (SecurityPerimeterAssociationsClientGetResponse, error)`
+- New function `*SecurityPerimeterAssociationsClient.NewListPager(string, string, *SecurityPerimeterAssociationsClientListOptions) *runtime.Pager[SecurityPerimeterAssociationsClientListResponse]`
+- New function `*SecurityPerimeterAssociationsClient.Reconcile(context.Context, string, string, string, any, *SecurityPerimeterAssociationsClientReconcileOptions) (SecurityPerimeterAssociationsClientReconcileResponse, error)`
+- New function `NewSecurityPerimeterLinkReferencesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterLinkReferencesClient, error)`
+- New function `*SecurityPerimeterLinkReferencesClient.BeginDelete(context.Context, string, string, string, *SecurityPerimeterLinkReferencesClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterLinkReferencesClientDeleteResponse], error)`
+- New function `*SecurityPerimeterLinkReferencesClient.Get(context.Context, string, string, string, *SecurityPerimeterLinkReferencesClientGetOptions) (SecurityPerimeterLinkReferencesClientGetResponse, error)`
+- New function `*SecurityPerimeterLinkReferencesClient.NewListPager(string, string, *SecurityPerimeterLinkReferencesClientListOptions) *runtime.Pager[SecurityPerimeterLinkReferencesClientListResponse]`
+- New function `NewSecurityPerimeterLinksClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterLinksClient, error)`
+- New function `*SecurityPerimeterLinksClient.CreateOrUpdate(context.Context, string, string, string, NspLink, *SecurityPerimeterLinksClientCreateOrUpdateOptions) (SecurityPerimeterLinksClientCreateOrUpdateResponse, error)`
+- New function `*SecurityPerimeterLinksClient.BeginDelete(context.Context, string, string, string, *SecurityPerimeterLinksClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterLinksClientDeleteResponse], error)`
+- New function `*SecurityPerimeterLinksClient.Get(context.Context, string, string, string, *SecurityPerimeterLinksClientGetOptions) (SecurityPerimeterLinksClientGetResponse, error)`
+- New function `*SecurityPerimeterLinksClient.NewListPager(string, string, *SecurityPerimeterLinksClientListOptions) *runtime.Pager[SecurityPerimeterLinksClientListResponse]`
+- New function `NewSecurityPerimeterLoggingConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterLoggingConfigurationsClient, error)`
+- New function `*SecurityPerimeterLoggingConfigurationsClient.CreateOrUpdate(context.Context, string, string, string, NspLoggingConfiguration, *SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateOptions) (SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*SecurityPerimeterLoggingConfigurationsClient.Delete(context.Context, string, string, string, *SecurityPerimeterLoggingConfigurationsClientDeleteOptions) (SecurityPerimeterLoggingConfigurationsClientDeleteResponse, error)`
+- New function `*SecurityPerimeterLoggingConfigurationsClient.Get(context.Context, string, string, string, *SecurityPerimeterLoggingConfigurationsClientGetOptions) (SecurityPerimeterLoggingConfigurationsClientGetResponse, error)`
+- New function `*SecurityPerimeterLoggingConfigurationsClient.NewListPager(string, string, *SecurityPerimeterLoggingConfigurationsClientListOptions) *runtime.Pager[SecurityPerimeterLoggingConfigurationsClientListResponse]`
+- New function `NewSecurityPerimeterOperationStatusesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterOperationStatusesClient, error)`
+- New function `*SecurityPerimeterOperationStatusesClient.Get(context.Context, string, string, *SecurityPerimeterOperationStatusesClientGetOptions) (SecurityPerimeterOperationStatusesClientGetResponse, error)`
+- New function `NewSecurityPerimeterProfilesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterProfilesClient, error)`
+- New function `*SecurityPerimeterProfilesClient.CreateOrUpdate(context.Context, string, string, string, NspProfile, *SecurityPerimeterProfilesClientCreateOrUpdateOptions) (SecurityPerimeterProfilesClientCreateOrUpdateResponse, error)`
+- New function `*SecurityPerimeterProfilesClient.Delete(context.Context, string, string, string, *SecurityPerimeterProfilesClientDeleteOptions) (SecurityPerimeterProfilesClientDeleteResponse, error)`
+- New function `*SecurityPerimeterProfilesClient.Get(context.Context, string, string, string, *SecurityPerimeterProfilesClientGetOptions) (SecurityPerimeterProfilesClientGetResponse, error)`
+- New function `*SecurityPerimeterProfilesClient.NewListPager(string, string, *SecurityPerimeterProfilesClientListOptions) *runtime.Pager[SecurityPerimeterProfilesClientListResponse]`
+- New function `NewSecurityPerimetersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimetersClient, error)`
+- New function `*SecurityPerimetersClient.CreateOrUpdate(context.Context, string, string, SecurityPerimeter, *SecurityPerimetersClientCreateOrUpdateOptions) (SecurityPerimetersClientCreateOrUpdateResponse, error)`
+- New function `*SecurityPerimetersClient.BeginDelete(context.Context, string, string, *SecurityPerimetersClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimetersClientDeleteResponse], error)`
+- New function `*SecurityPerimetersClient.Get(context.Context, string, string, *SecurityPerimetersClientGetOptions) (SecurityPerimetersClientGetResponse, error)`
+- New function `*SecurityPerimetersClient.NewListBySubscriptionPager(*SecurityPerimetersClientListBySubscriptionOptions) *runtime.Pager[SecurityPerimetersClientListBySubscriptionResponse]`
+- New function `*SecurityPerimetersClient.NewListPager(string, *SecurityPerimetersClientListOptions) *runtime.Pager[SecurityPerimetersClientListResponse]`
+- New function `*SecurityPerimetersClient.Patch(context.Context, string, string, UpdateTagsRequest, *SecurityPerimetersClientPatchOptions) (SecurityPerimetersClientPatchResponse, error)`
+- New function `*VirtualAppliancesClient.BeginGetBootDiagnosticLogs(context.Context, string, string, VirtualApplianceBootDiagnosticParameters, *VirtualAppliancesClientBeginGetBootDiagnosticLogsOptions) (*runtime.Poller[VirtualAppliancesClientGetBootDiagnosticLogsResponse], error)`
+- New function `*VirtualAppliancesClient.BeginReimage(context.Context, string, string, *VirtualAppliancesClientBeginReimageOptions) (*runtime.Poller[VirtualAppliancesClientReimageResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginGetResiliencyInformation(context.Context, string, string, *VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetResiliencyInformationResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginGetRoutesInformation(context.Context, string, string, *VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientGetRoutesInformationResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginInvokeAbortMigration(context.Context, string, string, *VirtualNetworkGatewaysClientBeginInvokeAbortMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokeAbortMigrationResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginInvokeCommitMigration(context.Context, string, string, *VirtualNetworkGatewaysClientBeginInvokeCommitMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokeCommitMigrationResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginInvokeExecuteMigration(context.Context, string, string, *VirtualNetworkGatewaysClientBeginInvokeExecuteMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokeExecuteMigrationResponse], error)`
+- New function `*VirtualNetworkGatewaysClient.BeginInvokePrepareMigration(context.Context, string, string, VirtualNetworkGatewayMigrationParameters, *VirtualNetworkGatewaysClientBeginInvokePrepareMigrationOptions) (*runtime.Poller[VirtualNetworkGatewaysClientInvokePrepareMigrationResponse], error)`
+- New struct `AdvertisedPublicPrefixProperties`
+- New struct `CircuitMetadataMap`
+- New struct `ConnectivityConfigurationPropertiesConnectivityCapabilities`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `GatewayResiliencyInformation`
+- New struct `GatewayResiliencyRecommendation`
+- New struct `GatewayRouteSet`
+- New struct `GatewayRouteSetsInformation`
+- New struct `ManagedRuleSetRuleGroup`
+- New struct `NspAccessRule`
+- New struct `NspAccessRuleListResult`
+- New struct `NspAccessRuleProperties`
+- New struct `NspAssociation`
+- New struct `NspAssociationProperties`
+- New struct `NspAssociationsListResult`
+- New struct `NspLink`
+- New struct `NspLinkListResult`
+- New struct `NspLinkProperties`
+- New struct `NspLinkReference`
+- New struct `NspLinkReferenceListResult`
+- New struct `NspLinkReferenceProperties`
+- New struct `NspLoggingConfiguration`
+- New struct `NspLoggingConfigurationListResult`
+- New struct `NspLoggingConfigurationProperties`
+- New struct `NspProfile`
+- New struct `NspProfileListResult`
+- New struct `NspProfileProperties`
+- New struct `OperationStatusResult`
+- New struct `PerimeterAssociableResource`
+- New struct `PerimeterAssociableResourceProperties`
+- New struct `PerimeterAssociableResourcesListResult`
+- New struct `PerimeterBasedAccessRule`
+- New struct `ProxyResource`
+- New struct `ResiliencyRecommendationComponents`
+- New struct `RouteSourceDetails`
+- New struct `SecurityPerimeter`
+- New struct `SecurityPerimeterListResult`
+- New struct `SecurityPerimeterProperties`
+- New struct `SecurityPerimeterProxyResource`
+- New struct `SecurityPerimeterResource`
+- New struct `SecurityPerimeterSystemData`
+- New struct `SubscriptionID`
+- New struct `TrackedResource`
+- New struct `UpdateTagsRequest`
+- New struct `VirtualApplianceBootDiagnosticParameters`
+- New struct `VirtualApplianceInstanceID`
+- New struct `VirtualNetworkGatewayConnectionTunnelProperties`
+- New struct `VirtualNetworkGatewayMigrationParameters`
+- New struct `VirtualNetworkGatewayMigrationStatus`
+- New field `ConnectivityCapabilities` in struct `ConnectivityConfigurationProperties`
+- New field `AdvertisedPublicPrefixInfo` in struct `ExpressRouteCircuitPeeringConfig`
+- New field `Etag` in struct `IpamPool`
+- New field `IfMatch` in struct `IpamPoolsClientBeginCreateOptions`
+- New field `IfMatch` in struct `IpamPoolsClientBeginDeleteOptions`
+- New field `IfMatch` in struct `IpamPoolsClientUpdateOptions`
+- New field `EnableConnectionTracking` in struct `LoadBalancingRulePropertiesFormat`
+- New field `ComputedDisabledRules` in struct `ManagedRuleSet`
+- New field `PublicIPAddressesV6`, `PublicIPPrefixesV6`, `SourceVirtualNetwork` in struct `NatGatewayPropertiesFormat`
+- New field `Etag` in struct `VerifierWorkspace`
+- New field `IfMatch` in struct `VerifierWorkspacesClientBeginDeleteOptions`
+- New field `IfMatch` in struct `VerifierWorkspacesClientCreateOptions`
+- New field `IfMatch` in struct `VerifierWorkspacesClientUpdateOptions`
+- New field `TunnelProperties` in struct `VirtualNetworkGatewayConnectionPropertiesFormat`
+- New field `EnableHighBandwidthVPNGateway`, `VirtualNetworkGatewayMigrationStatus` in struct `VirtualNetworkGatewayPropertiesFormat`
+- New field `DefaultPublicNatGateway` in struct `VirtualNetworkPropertiesFormat`
+
+
 ## 6.2.0 (2024-12-09)
 ### Features Added
 

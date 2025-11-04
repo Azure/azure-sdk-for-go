@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListPrivateEndpointConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,10 +41,10 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	// 		{
 	// 			Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/privateEndpointConnections"),
-	// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.CognitiveServices/accounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/res7231/providers/Microsoft.CognitiveServices/accounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 			Properties: &armcognitiveservices.PrivateEndpointConnectionProperties{
 	// 				PrivateEndpoint: &armcognitiveservices.PrivateEndpoint{
-	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Network/privateEndpoints/petest01"),
+	// 					ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/res7231/providers/Microsoft.Network/privateEndpoints/petest01"),
 	// 				},
 	// 				PrivateLinkServiceConnectionState: &armcognitiveservices.PrivateLinkServiceConnectionState{
 	// 					Description: to.Ptr("Auto-Approved"),
@@ -56,7 +56,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/GetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,10 +77,10 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// res.PrivateEndpointConnection = armcognitiveservices.PrivateEndpointConnection{
 	// 	Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/privateEndpointConnections"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.CognitiveServices/accounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/res7231/providers/Microsoft.CognitiveServices/accounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	Properties: &armcognitiveservices.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armcognitiveservices.PrivateEndpoint{
-	// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Network/privateEndpoints/petest01"),
+	// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/res7231/providers/Microsoft.Network/privateEndpoints/petest01"),
 	// 		},
 	// 		PrivateLinkServiceConnectionState: &armcognitiveservices.PrivateLinkServiceConnectionState{
 	// 			Description: to.Ptr("Auto-Approved"),
@@ -91,7 +91,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/PutPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/PutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,10 +123,10 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	// res.PrivateEndpointConnection = armcognitiveservices.PrivateEndpointConnection{
 	// 	Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/privateEndpointConnections"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.CognitiveServices/accounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/res7231/providers/Microsoft.CognitiveServices/accounts/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	Properties: &armcognitiveservices.PrivateEndpointConnectionProperties{
 	// 		PrivateEndpoint: &armcognitiveservices.PrivateEndpoint{
-	// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Network/privateEndpoints/petest01"),
+	// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/res7231/providers/Microsoft.Network/privateEndpoints/petest01"),
 	// 		},
 	// 		PrivateLinkServiceConnectionState: &armcognitiveservices.PrivateLinkServiceConnectionState{
 	// 			Description: to.Ptr("Auto-Approved"),
@@ -137,7 +137,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/DeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/DeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

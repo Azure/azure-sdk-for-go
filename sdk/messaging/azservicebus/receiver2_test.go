@@ -24,9 +24,7 @@ func TestRenewLocks(t *testing.T) {
 		NewClient:                     azservicebus.NewClient,
 	}, nil)
 
-	queueName, cleanupQueue := test.CreateExpiringQueue(t, &atom.QueueDescription{
-		LockDuration: to.Ptr("PT5S"),
-	})
+	queueName, cleanupQueue := test.CreateExpiringQueue(t, nil)
 
 	defer cleanupQueue()
 
@@ -48,6 +46,8 @@ func TestRenewLocks(t *testing.T) {
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 
+	origTime := *messages[0].LockedUntil
+
 	errCh := make(chan error)
 
 	go func() {
@@ -61,6 +61,8 @@ func TestRenewLocks(t *testing.T) {
 	err = receiver.CompleteMessage(context.Background(), messages[0], nil)
 	require.NoError(t, err)
 	log.Printf("Completed message")
+
+	require.Greater(t, *messages[0].LockedUntil, origTime)
 
 	select {
 	case err := <-errCh:

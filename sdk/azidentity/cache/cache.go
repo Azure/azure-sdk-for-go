@@ -39,7 +39,7 @@ var (
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
-		in := []byte(n)
+		in := []byte("test content")
 		err = s.Write(ctx, in)
 		if err != nil {
 			storageError = fmt.Errorf(errFmt, err)

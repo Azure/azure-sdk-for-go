@@ -5,11 +5,6 @@
 
 package armstorage
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	moduleVersion = "v1.8.0"
-)
-
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium'
 // access tier is the default value for premium block blobs storage account type and it cannot
 // be changed for the premium block blobs storage account type.
@@ -70,7 +65,10 @@ func PossibleAccountStatusValues() []AccountStatus {
 	}
 }
 
-// ActiveDirectoryPropertiesAccountType - Specifies the Active Directory account type for Azure Storage.
+// ActiveDirectoryPropertiesAccountType - Specifies the Active Directory account type for Azure Storage. If directoryServiceOptions
+// is set to AD (AD DS authentication), this property is optional. If provided, samAccountName should also be
+// provided. For directoryServiceOptions AADDS (Entra DS authentication) or AADKERB (Entra authentication), this property
+// can be omitted.
 type ActiveDirectoryPropertiesAccountType string
 
 const (
@@ -467,6 +465,22 @@ func PossibleImmutabilityPolicyUpdateTypeValues() []ImmutabilityPolicyUpdateType
 		ImmutabilityPolicyUpdateTypeExtend,
 		ImmutabilityPolicyUpdateTypeLock,
 		ImmutabilityPolicyUpdateTypePut,
+	}
+}
+
+// IntervalUnit - Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule';
+// this property should not be present when ExecutionTrigger.properties.type is
+// 'RunOnce'
+type IntervalUnit string
+
+const (
+	IntervalUnitDays IntervalUnit = "Days"
+)
+
+// PossibleIntervalUnitValues returns the possible values for the IntervalUnit const type.
+func PossibleIntervalUnitValues() []IntervalUnit {
+	return []IntervalUnit{
+		IntervalUnitDays,
 	}
 }
 
@@ -1452,5 +1466,21 @@ func PossibleUsageUnitValues() []UsageUnit {
 		UsageUnitCountsPerSecond,
 		UsageUnitPercent,
 		UsageUnitSeconds,
+	}
+}
+
+// ZonePlacementPolicy - The availability zone pinning policy for the storage account.
+type ZonePlacementPolicy string
+
+const (
+	ZonePlacementPolicyAny  ZonePlacementPolicy = "Any"
+	ZonePlacementPolicyNone ZonePlacementPolicy = "None"
+)
+
+// PossibleZonePlacementPolicyValues returns the possible values for the ZonePlacementPolicy const type.
+func PossibleZonePlacementPolicyValues() []ZonePlacementPolicy {
+	return []ZonePlacementPolicy{
+		ZonePlacementPolicyAny,
+		ZonePlacementPolicyNone,
 	}
 }

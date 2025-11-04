@@ -1,5 +1,128 @@
 # Release History
 
+## 7.1.0 (2025-10-09)
+### Features Added
+
+- New value `OrchestrationServiceNamesAutomaticZoneRebalancing` added to enum type `OrchestrationServiceNames`
+- New value `ZonePlacementPolicyTypeAuto` added to enum type `ZonePlacementPolicyType`
+- New enum type `HighSpeedInterconnectPlacement` with values `HighSpeedInterconnectPlacementNone`, `HighSpeedInterconnectPlacementTrunk`
+- New enum type `OrchestrationServiceOperationStatus` with values `OrchestrationServiceOperationStatusCompleted`, `OrchestrationServiceOperationStatusInProgress`
+- New enum type `ReservationType` with values `ReservationTypeBlock`, `ReservationTypeTargeted`
+- New enum type `ScriptShellTypes` with values `ScriptShellTypesDefault`, `ScriptShellTypesPowershell7`
+- New function `*VirtualMachineScaleSetsClient.BeginScaleOut(context.Context, string, string, VMScaleSetScaleOutInput, *VirtualMachineScaleSetsClientBeginScaleOutOptions) (*runtime.Poller[VirtualMachineScaleSetsClientScaleOutResponse], error)`
+- New struct `AllInstancesDown`
+- New struct `MaxInstancePercentPerZonePolicy`
+- New struct `ScheduleProfile`
+- New struct `VMScaleSetScaleOutInput`
+- New struct `VMScaleSetScaleOutInputProperties`
+- New struct `ZoneAllocationPolicy`
+- New field `ReservationType` in struct `CapacityReservationGroupProperties`
+- New field `ScheduleProfile` in struct `CapacityReservationProperties`
+- New field `ScheduledEventsAPIVersion` in struct `EventGridAndResourceGraph`
+- New field `LastStatusChangeTime`, `LatestOperationStatus` in struct `OrchestrationServiceSummary`
+- New field `AddProxyAgentExtension` in struct `ProxyAgentSettings`
+- New field `ZoneAllocationPolicy` in struct `ResiliencyPolicy`
+- New field `AllInstancesDown` in struct `ScheduledEventsPolicy`
+- New field `Tags` in struct `VirtualMachineNetworkInterfaceConfiguration`
+- New field `Tags` in struct `VirtualMachinePublicIPAddressConfiguration`
+- New field `GalleryScriptReferenceID`, `ScriptShell` in struct `VirtualMachineRunCommandScriptSource`
+- New field `Placement` in struct `VirtualMachineScaleSet`
+- New field `Tags` in struct `VirtualMachineScaleSetNetworkConfiguration`
+- New field `HighSpeedInterconnectPlacement` in struct `VirtualMachineScaleSetProperties`
+- New field `Tags` in struct `VirtualMachineScaleSetPublicIPAddressConfiguration`
+- New field `Tags` in struct `VirtualMachineScaleSetUpdateNetworkConfiguration`
+- New field `Tags` in struct `VirtualMachineScaleSetUpdatePublicIPAddressConfiguration`
+- New field `PatchNameMasksToExclude`, `PatchNameMasksToInclude` in struct `WindowsParameters`
+
+
+## 7.0.0 (2025-07-23)
+### Breaking Changes
+
+- Type of `OperationValue.Display` has been changed from `*OperationValueDisplay` to `*OperationDisplay`
+- Type of `OperationValue.Origin` has been changed from `*string` to `*Origin`
+- Enum `AvailabilitySetSKUTypes` has been removed
+- Enum `Expand` has been removed
+- Operation `*VirtualMachineImagesClient.NewListWithPropertiesPager` does not support pagination anymore, use `*VirtualMachineImagesClient.ListWithProperties` instead.
+- Struct `DiskImageEncryption` has been removed
+- Struct `GalleryArtifactPublishingProfileBase` has been removed
+- Struct `GalleryArtifactSafetyProfileBase` has been removed
+- Struct `GalleryArtifactSource` has been removed
+- Struct `GalleryArtifactVersionSource` has been removed
+- Struct `GalleryDiskImage` has been removed
+- Struct `GalleryResourceProfilePropertiesBase` has been removed
+- Struct `GalleryResourceProfileVersionPropertiesBase` has been removed
+- Struct `ImageDisk` has been removed
+- Struct `LatestGalleryImageVersion` has been removed
+- Struct `LogAnalyticsInputBase` has been removed
+- Struct `ManagedArtifact` has been removed
+- Struct `OperationValueDisplay` has been removed
+- Struct `PirCommunityGalleryResource` has been removed
+- Struct `PirResource` has been removed
+- Struct `PirSharedGalleryResource` has been removed
+- Struct `ProxyOnlyResource` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceWithOptionalLocation` has been removed
+- Struct `SharedGalleryDiskImage` has been removed
+- Struct `UpdateResource` has been removed
+- Struct `UpdateResourceDefinition` has been removed
+- Struct `VirtualMachineImagesWithPropertiesListResult` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `AvailabilityPolicyDiskDelay` with values `AvailabilityPolicyDiskDelayAutomaticReattach`, `AvailabilityPolicyDiskDelayNone`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `SnapshotAccessState` with values `SnapshotAccessStateAvailable`, `SnapshotAccessStateAvailableWithInstantAccess`, `SnapshotAccessStateInstantAccess`, `SnapshotAccessStatePending`, `SnapshotAccessStateUnknown`
+- New enum type `SupportedSecurityOption` with values `SupportedSecurityOptionTrustedLaunchAndConfidentialVMSupported`, `SupportedSecurityOptionTrustedLaunchSupported`
+- New struct `AvailabilityPolicy`
+- New struct `OperationDisplay`
+- New field `SecurityMetadataAccessSAS` in struct `AccessURI`
+- New field `SystemData` in struct `AvailabilitySet`
+- New field `SystemData` in struct `CapacityReservation`
+- New field `SystemData` in struct `CapacityReservationGroup`
+- New field `InstantAccessDurationMinutes`, `SecurityMetadataURI` in struct `CreationData`
+- New field `SystemData` in struct `DedicatedHost`
+- New field `SystemData` in struct `DedicatedHostGroup`
+- New field `NextLink` in struct `DedicatedHostSizeListResult`
+- New field `SystemData` in struct `Disk`
+- New field `SystemData` in struct `DiskAccess`
+- New field `SystemData` in struct `DiskEncryptionSet`
+- New field `AvailabilityPolicy` in struct `DiskProperties`
+- New field `SystemData` in struct `DiskRestorePoint`
+- New field `AvailabilityPolicy` in struct `DiskUpdateProperties`
+- New field `SystemData` in struct `Gallery`
+- New field `SystemData` in struct `GalleryApplication`
+- New field `SystemData` in struct `GalleryApplicationVersion`
+- New field `SystemData` in struct `GalleryImage`
+- New field `SystemData` in struct `GalleryImageVersion`
+- New field `SystemData` in struct `GalleryInVMAccessControlProfile`
+- New field `SystemData` in struct `GalleryInVMAccessControlProfileVersion`
+- New field `SystemData` in struct `GallerySoftDeletedResource`
+- New field `SystemData` in struct `Image`
+- New field `NextLink` in struct `OperationListResult`
+- New field `ActionType`, `IsDataAction` in struct `OperationValue`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `ProximityPlacementGroup`
+- New field `SystemData` in struct `RestorePoint`
+- New field `SystemData` in struct `RestorePointCollection`
+- New field `SystemData` in struct `RollingUpgradeStatusInfo`
+- New field `SystemData` in struct `SSHPublicKeyResource`
+- New field `SystemData` in struct `Snapshot`
+- New field `SnapshotAccessState` in struct `SnapshotProperties`
+- New field `SnapshotAccessState` in struct `SnapshotUpdateProperties`
+- New field `SupportedSecurityOption` in struct `SupportedCapabilities`
+- New field `CreatedBy`, `CreatedByType`, `LastModifiedBy`, `LastModifiedByType` in struct `SystemData`
+- New field `SystemData` in struct `VirtualMachine`
+- New field `SystemData` in struct `VirtualMachineExtension`
+- New field `SystemData` in struct `VirtualMachineExtensionImage`
+- New field `SystemData` in struct `VirtualMachineRunCommand`
+- New field `SystemData` in struct `VirtualMachineScaleSet`
+- New field `SystemData` in struct `VirtualMachineScaleSetVM`
+- New field `NextLink` in struct `VirtualMachineSizeListResult`
+
+
 ## 6.4.0 (2025-03-28)
 ### Features Added
 

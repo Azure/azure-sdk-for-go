@@ -10,6 +10,11 @@ type AgentPoolsClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
 }
 
+// AgentPoolsClientCompleteUpgradeResponse contains the response from method AgentPoolsClient.BeginCompleteUpgrade.
+type AgentPoolsClientCompleteUpgradeResponse struct {
+	// placeholder for future response values
+}
+
 // AgentPoolsClientCreateOrUpdateResponse contains the response from method AgentPoolsClient.BeginCreateOrUpdate.
 type AgentPoolsClientCreateOrUpdateResponse struct {
 	// Agent Pool.
@@ -62,6 +67,52 @@ type ClientListNodeImageVersionsResponse struct {
 	NodeImageVersionsListResult
 }
 
+// IdentityBindingsClientCreateOrUpdateResponse contains the response from method IdentityBindingsClient.BeginCreateOrUpdate.
+type IdentityBindingsClientCreateOrUpdateResponse struct {
+	// The IdentityBinding resource.
+	IdentityBinding
+}
+
+// IdentityBindingsClientDeleteResponse contains the response from method IdentityBindingsClient.BeginDelete.
+type IdentityBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// IdentityBindingsClientGetResponse contains the response from method IdentityBindingsClient.Get.
+type IdentityBindingsClientGetResponse struct {
+	// The IdentityBinding resource.
+	IdentityBinding
+}
+
+// IdentityBindingsClientListByManagedClusterResponse contains the response from method IdentityBindingsClient.NewListByManagedClusterPager.
+type IdentityBindingsClientListByManagedClusterResponse struct {
+	// The response of a IdentityBinding list operation.
+	IdentityBindingListResult
+}
+
+// JWTAuthenticatorsClientCreateOrUpdateResponse contains the response from method JWTAuthenticatorsClient.BeginCreateOrUpdate.
+type JWTAuthenticatorsClientCreateOrUpdateResponse struct {
+	// Configuration for JWT authenticator in the managed cluster.
+	JWTAuthenticator
+}
+
+// JWTAuthenticatorsClientDeleteResponse contains the response from method JWTAuthenticatorsClient.BeginDelete.
+type JWTAuthenticatorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// JWTAuthenticatorsClientGetResponse contains the response from method JWTAuthenticatorsClient.Get.
+type JWTAuthenticatorsClientGetResponse struct {
+	// Configuration for JWT authenticator in the managed cluster.
+	JWTAuthenticator
+}
+
+// JWTAuthenticatorsClientListByManagedClusterResponse contains the response from method JWTAuthenticatorsClient.NewListByManagedClusterPager.
+type JWTAuthenticatorsClientListByManagedClusterResponse struct {
+	// The response from the List JWT authenticator operation.
+	JWTAuthenticatorListResult
+}
+
 // LoadBalancersClientCreateOrUpdateResponse contains the response from method LoadBalancersClient.CreateOrUpdate.
 type LoadBalancersClientCreateOrUpdateResponse struct {
 	// The configurations regarding multiple standard load balancers. If not supplied, single load balancer mode will be used.
@@ -93,10 +144,17 @@ type LoadBalancersClientListByManagedClusterResponse struct {
 	LoadBalancerListResult
 }
 
+// MachinesClientCreateOrUpdateResponse contains the response from method MachinesClient.BeginCreateOrUpdate.
+type MachinesClientCreateOrUpdateResponse struct {
+	// A machine provides detailed information about its configuration and status. A machine may be visible here but not in kubectl
+	// get nodes; if so, it may be because the machine has not been registered with the Kubernetes API Server yet.
+	Machine
+}
+
 // MachinesClientGetResponse contains the response from method MachinesClient.Get.
 type MachinesClientGetResponse struct {
-	// A machine. Contains details about the underlying virtual machine. A machine may be visible here but not in kubectl get
-	// nodes; if so it may be because the machine has not been registered with the Kubernetes API Server yet.
+	// A machine provides detailed information about its configuration and status. A machine may be visible here but not in kubectl
+	// get nodes; if so, it may be because the machine has not been registered with the Kubernetes API Server yet.
 	Machine
 }
 
@@ -108,8 +166,8 @@ type MachinesClientListResponse struct {
 
 // MaintenanceConfigurationsClientCreateOrUpdateResponse contains the response from method MaintenanceConfigurationsClient.CreateOrUpdate.
 type MaintenanceConfigurationsClientCreateOrUpdateResponse struct {
-	// See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about planned
-	// maintenance.
+	// Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster. See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance)
+	// for more information about planned maintenance.
 	MaintenanceConfiguration
 }
 
@@ -120,8 +178,8 @@ type MaintenanceConfigurationsClientDeleteResponse struct {
 
 // MaintenanceConfigurationsClientGetResponse contains the response from method MaintenanceConfigurationsClient.Get.
 type MaintenanceConfigurationsClientGetResponse struct {
-	// See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about planned
-	// maintenance.
+	// Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster. See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance)
+	// for more information about planned maintenance.
 	MaintenanceConfiguration
 }
 
@@ -346,39 +404,62 @@ type ManagedClustersClientUpdateTagsResponse struct {
 	ManagedCluster
 }
 
-// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.BeginCreateOrUpdate.
-type NamespacesClientCreateOrUpdateResponse struct {
+// ManagedNamespacesClientCreateOrUpdateResponse contains the response from method ManagedNamespacesClient.BeginCreateOrUpdate.
+type ManagedNamespacesClientCreateOrUpdateResponse struct {
 	// Namespace managed by ARM.
-	Namespace
+	ManagedNamespace
 }
 
-// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
-type NamespacesClientDeleteResponse struct {
+// ManagedNamespacesClientDeleteResponse contains the response from method ManagedNamespacesClient.BeginDelete.
+type ManagedNamespacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
-type NamespacesClientGetResponse struct {
+// ManagedNamespacesClientGetResponse contains the response from method ManagedNamespacesClient.Get.
+type ManagedNamespacesClientGetResponse struct {
 	// Namespace managed by ARM.
-	Namespace
+	ManagedNamespace
 }
 
-// NamespacesClientListByManagedClusterResponse contains the response from method NamespacesClient.NewListByManagedClusterPager.
-type NamespacesClientListByManagedClusterResponse struct {
-	// The result of a request to list namespaces in a managed cluster.
-	NamespaceListResult
+// ManagedNamespacesClientListByManagedClusterResponse contains the response from method ManagedNamespacesClient.NewListByManagedClusterPager.
+type ManagedNamespacesClientListByManagedClusterResponse struct {
+	// The result of a request to list managed namespaces in a managed cluster.
+	ManagedNamespaceListResult
 }
 
-// NamespacesClientListCredentialResponse contains the response from method NamespacesClient.ListCredential.
-type NamespacesClientListCredentialResponse struct {
+// ManagedNamespacesClientListCredentialResponse contains the response from method ManagedNamespacesClient.ListCredential.
+type ManagedNamespacesClientListCredentialResponse struct {
 	// The list credential result response.
 	CredentialResults
 }
 
-// NamespacesClientUpdateResponse contains the response from method NamespacesClient.Update.
-type NamespacesClientUpdateResponse struct {
+// ManagedNamespacesClientUpdateResponse contains the response from method ManagedNamespacesClient.Update.
+type ManagedNamespacesClientUpdateResponse struct {
 	// Namespace managed by ARM.
-	Namespace
+	ManagedNamespace
+}
+
+// MeshMembershipsClientCreateOrUpdateResponse contains the response from method MeshMembershipsClient.BeginCreateOrUpdate.
+type MeshMembershipsClientCreateOrUpdateResponse struct {
+	// Mesh membership of a managed cluster.
+	MeshMembership
+}
+
+// MeshMembershipsClientDeleteResponse contains the response from method MeshMembershipsClient.BeginDelete.
+type MeshMembershipsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MeshMembershipsClientGetResponse contains the response from method MeshMembershipsClient.Get.
+type MeshMembershipsClientGetResponse struct {
+	// Mesh membership of a managed cluster.
+	MeshMembership
+}
+
+// MeshMembershipsClientListByManagedClusterResponse contains the response from method MeshMembershipsClient.NewListByManagedClusterPager.
+type MeshMembershipsClientListByManagedClusterResponse struct {
+	// The result of a request to list mesh memberships in a managed cluster.
+	MeshMembershipsListResult
 }
 
 // OperationStatusResultClientGetByAgentPoolResponse contains the response from method OperationStatusResultClient.GetByAgentPool.

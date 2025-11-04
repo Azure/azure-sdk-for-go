@@ -145,7 +145,16 @@ func (m *MetricsConfigurationsServerTransport) dispatchBeginCreateOrUpdate(req *
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.MetricsConfigurationsClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.MetricsConfigurationsClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -193,7 +202,16 @@ func (m *MetricsConfigurationsServerTransport) dispatchBeginDelete(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.MetricsConfigurationsClientBeginDeleteOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.MetricsConfigurationsClientBeginDeleteOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -323,7 +341,16 @@ func (m *MetricsConfigurationsServerTransport) dispatchBeginUpdate(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armnetworkcloud.MetricsConfigurationsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, metricsConfigurationNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

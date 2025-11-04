@@ -40,8 +40,9 @@ type DeliveryAttributeMappingClassification interface {
 // Call the interface's GetEventSubscriptionDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureFunctionEventSubscriptionDestination, *EventHubEventSubscriptionDestination, *EventSubscriptionDestination, *HybridConnectionEventSubscriptionDestination,
-// - *MonitorAlertEventSubscriptionDestination, *NamespaceTopicEventSubscriptionDestination, *ServiceBusQueueEventSubscriptionDestination,
-// - *ServiceBusTopicEventSubscriptionDestination, *StorageQueueEventSubscriptionDestination, *WebHookEventSubscriptionDestination
+// - *MonitorAlertEventSubscriptionDestination, *NamespaceTopicEventSubscriptionDestination, *PartnerEventSubscriptionDestination,
+// - *ServiceBusQueueEventSubscriptionDestination, *ServiceBusTopicEventSubscriptionDestination, *StorageQueueEventSubscriptionDestination,
+// - *WebHookEventSubscriptionDestination
 type EventSubscriptionDestinationClassification interface {
 	// GetEventSubscriptionDestination returns the EventSubscriptionDestination content of the underlying type.
 	GetEventSubscriptionDestination() *EventSubscriptionDestination
@@ -66,6 +67,33 @@ type FilterClassification interface {
 type InputSchemaMappingClassification interface {
 	// GetInputSchemaMapping returns the InputSchemaMapping content of the underlying type.
 	GetInputSchemaMapping() *InputSchemaMapping
+}
+
+// PartnerClientAuthenticationClassification provides polymorphic access to related types.
+// Call the interface's GetPartnerClientAuthentication() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureADPartnerClientAuthentication, *PartnerClientAuthentication
+type PartnerClientAuthenticationClassification interface {
+	// GetPartnerClientAuthentication returns the PartnerClientAuthentication content of the underlying type.
+	GetPartnerClientAuthentication() *PartnerClientAuthentication
+}
+
+// PartnerDestinationInfoClassification provides polymorphic access to related types.
+// Call the interface's GetPartnerDestinationInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *PartnerDestinationInfo, *WebhookPartnerDestinationInfo
+type PartnerDestinationInfoClassification interface {
+	// GetPartnerDestinationInfo returns the PartnerDestinationInfo content of the underlying type.
+	GetPartnerDestinationInfo() *PartnerDestinationInfo
+}
+
+// PartnerUpdateDestinationInfoClassification provides polymorphic access to related types.
+// Call the interface's GetPartnerUpdateDestinationInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *PartnerUpdateDestinationInfo, *WebhookUpdatePartnerDestinationInfo
+type PartnerUpdateDestinationInfoClassification interface {
+	// GetPartnerUpdateDestinationInfo returns the PartnerUpdateDestinationInfo content of the underlying type.
+	GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo
 }
 
 // StaticRoutingEnrichmentClassification provides polymorphic access to related types.

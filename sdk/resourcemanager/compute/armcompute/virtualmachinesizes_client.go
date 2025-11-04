@@ -25,8 +25,7 @@ type VirtualMachineSizesClient struct {
 }
 
 // NewVirtualMachineSizesClient creates a new instance of VirtualMachineSizesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineSizesClient, error) {
@@ -43,27 +42,26 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 
 // NewListPager - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/rest/api/compute/resourceskus/list]
 //
-// Generated from API version 2024-11-01
-//   - location - The location upon which virtual-machine-sizes is queried.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - options - VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.NewListPager
 //     method.
 func (client *VirtualMachineSizesClient) NewListPager(location string, options *VirtualMachineSizesClientListOptions) *runtime.Pager[VirtualMachineSizesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineSizesClientListResponse]{
 		More: func(page VirtualMachineSizesClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineSizesClientListResponse) (VirtualMachineSizesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineSizesClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, location, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return VirtualMachineSizesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineSizesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualMachineSizesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -74,20 +72,20 @@ func (client *VirtualMachineSizesClient) NewListPager(location string, options *
 // listCreateRequest creates the List request.
 func (client *VirtualMachineSizesClient) listCreateRequest(ctx context.Context, location string, _ *VirtualMachineSizesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

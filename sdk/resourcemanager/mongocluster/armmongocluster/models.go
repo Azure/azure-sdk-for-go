@@ -15,6 +15,12 @@ type AdministratorProperties struct {
 	UserName *string
 }
 
+// AuthConfigProperties - The authentication configuration for the Mongo cluster.
+type AuthConfigProperties struct {
+	// Allowed authentication modes for data access on the cluster.
+	AllowedModes []*AuthenticationMode
+}
+
 // BackupProperties - The backup properties of the cluster. This includes the earliest restore time and retention settings.
 type BackupProperties struct {
 	// READ-ONLY; Earliest restore timestamp in UTC ISO8601 format.
@@ -62,16 +68,69 @@ type ConnectionString struct {
 	Name *string
 }
 
+// CustomerManagedKeyEncryptionProperties - Customer managed key encryption settings.
+type CustomerManagedKeyEncryptionProperties struct {
+	// The identity used to access the key encryption key.
+	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
+
+	// The URI of the key vault key used for encryption.
+	KeyEncryptionKeyURL *string
+}
+
+// DataAPIProperties - Data API properties.
+type DataAPIProperties struct {
+	// The mode to indicate whether the Mongo Data API is enabled for a cluster.
+	Mode *DataAPIMode
+}
+
+// DatabaseRole - Database role definition that is assigned to a user.
+type DatabaseRole struct {
+	// REQUIRED; Database scope that the role is assigned to.
+	Db *string
+
+	// REQUIRED; The role that is assigned to the user on the database scope.
+	Role *UserRole
+}
+
+// EncryptionProperties - The encryption configuration for the mongo cluster.
+type EncryptionProperties struct {
+	// Customer managed key encryption settings.
+	CustomerManagedKeyEncryption *CustomerManagedKeyEncryptionProperties
+}
+
+// EntraIdentityProvider - Defines a Microsoft Entra ID Mongo user.
+type EntraIdentityProvider struct {
+	// REQUIRED; The Entra identity properties for the user.
+	Properties *EntraIdentityProviderProperties
+
+	// CONSTANT; The type of identity provider that the user belongs to.
+	// Field has constant value IdentityProviderTypeMicrosoftEntraID, any specified value is ignored.
+	Type *IdentityProviderType
+}
+
+// GetIdentityProvider implements the IdentityProviderClassification interface for type EntraIdentityProvider.
+func (e *EntraIdentityProvider) GetIdentityProvider() *IdentityProvider {
+	return &IdentityProvider{
+		Type: e.Type,
+	}
+}
+
+// EntraIdentityProviderProperties - Microsoft Entra ID provider properties.
+type EntraIdentityProviderProperties struct {
+	// REQUIRED; The principal type of the user.
+	PrincipalType *EntraPrincipalType
+}
+
 // FirewallRule - Represents a mongo cluster firewall rule.
 type FirewallRule struct {
 	// The resource-specific properties for this resource.
 	Properties *FirewallRuleProperties
 
-	// READ-ONLY; The name of the mongo cluster firewall rule.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -107,6 +166,24 @@ type HighAvailabilityProperties struct {
 	TargetMode *HighAvailabilityMode
 }
 
+// IdentityProvider - Defines a user's identity provider definition.
+type IdentityProvider struct {
+	// REQUIRED; The type of identity provider that the user belongs to.
+	Type *IdentityProviderType
+}
+
+// GetIdentityProvider implements the IdentityProviderClassification interface for type IdentityProvider.
+func (i *IdentityProvider) GetIdentityProvider() *IdentityProvider { return i }
+
+// KeyEncryptionKeyIdentity - The identity used for key encryption key.
+type KeyEncryptionKeyIdentity struct {
+	// The type of identity. Only 'UserAssignedIdentity' is supported.
+	IdentityType *KeyEncryptionKeyIdentityType
+
+	// The user assigned identity resource id.
+	UserAssignedIdentityResourceID *string
+}
+
 // ListConnectionStringsResult - The connection strings for the given mongo cluster.
 type ListConnectionStringsResult struct {
 	// READ-ONLY; An array that contains the connection strings for a mongo cluster.
@@ -122,10 +199,29 @@ type ListResult struct {
 	NextLink *string
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // MongoCluster - Represents a mongo cluster resource.
 type MongoCluster struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
 	Properties *Properties
@@ -133,11 +229,11 @@ type MongoCluster struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the mongo cluster.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -146,13 +242,15 @@ type MongoCluster struct {
 	Type *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -195,9 +293,9 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// PrivateEndpoint - The Private Endpoint resource.
+// PrivateEndpoint - The private endpoint resource.
 type PrivateEndpoint struct {
-	// READ-ONLY; The resource identifier for private endpoint
+	// READ-ONLY; The resource identifier of the private endpoint
 	ID *string
 }
 
@@ -240,11 +338,11 @@ type PrivateEndpointConnectionResource struct {
 	// The resource-specific properties for this resource.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; The name of the private endpoint connection associated with the Azure resource.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -267,11 +365,11 @@ type PrivateLinkResource struct {
 	// The resource-specific properties for this resource.
 	Properties *PrivateLinkResourceProperties
 
-	// READ-ONLY; The name of the private link associated with the Azure resource.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -328,6 +426,9 @@ type Properties struct {
 	// The local administrator properties for the mongo cluster.
 	Administrator *AdministratorProperties
 
+	// The authentication configuration for the cluster.
+	AuthConfig *AuthConfigProperties
+
 	// The backup properties of the mongo cluster.
 	Backup *BackupProperties
 
@@ -336,6 +437,12 @@ type Properties struct {
 
 	// The mode to create a mongo cluster.
 	CreateMode *CreateMode
+
+	// The Data API properties of the mongo cluster.
+	DataAPI *DataAPIProperties
+
+	// The encryption configuration for the cluster. Depends on identity being configured.
+	Encryption *EncryptionProperties
 
 	// The high availability properties of the mongo cluster.
 	HighAvailability *HighAvailabilityProperties
@@ -385,11 +492,11 @@ type Replica struct {
 	// The resource-specific properties for this resource.
 	Properties *Properties
 
-	// READ-ONLY; The name of the mongo cluster firewall rule.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -449,6 +556,9 @@ type ShardingProperties struct {
 type StorageProperties struct {
 	// The size of the data disk assigned to each server.
 	SizeGb *int64
+
+	// The type of storage to provision the cluster servers with.
+	Type *StorageType
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -474,6 +584,9 @@ type SystemData struct {
 
 // Update - The type used for update operations of the MongoCluster.
 type Update struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
 	// The resource-specific properties for this resource.
 	Properties *UpdateProperties
 
@@ -486,11 +599,20 @@ type UpdateProperties struct {
 	// The local administrator properties for the mongo cluster.
 	Administrator *AdministratorProperties
 
+	// The authentication configuration for the cluster.
+	AuthConfig *AuthConfigProperties
+
 	// The backup properties of the mongo cluster.
 	Backup *BackupProperties
 
 	// The compute properties of the mongo cluster.
 	Compute *ComputeProperties
+
+	// The Data API properties of the mongo cluster.
+	DataAPI *DataAPIProperties
+
+	// The encryption configuration for the cluster. Depends on identity being configured.
+	Encryption *EncryptionProperties
 
 	// The high availability properties of the mongo cluster.
 	HighAvailability *HighAvailabilityProperties
@@ -509,4 +631,52 @@ type UpdateProperties struct {
 
 	// The storage properties of the mongo cluster.
 	Storage *StorageProperties
+}
+
+// User - Represents a Mongo cluster user.
+type User struct {
+	// The resource-specific properties for this resource.
+	Properties *UserProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
+// UserListResult - The response of a User list operation.
+type UserListResult struct {
+	// REQUIRED; The User items on this page
+	Value []*User
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// UserProperties - Definition of Mongo user resource on a cluster.
+type UserProperties struct {
+	// The user's identity provider definition.
+	IdentityProvider IdentityProviderClassification
+
+	// Database roles that are assigned to the user.
+	Roles []*DatabaseRole
+
+	// READ-ONLY; The provisioning state of the user.
+	ProvisioningState *ProvisioningState
 }

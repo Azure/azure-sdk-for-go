@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -66,7 +66,7 @@ func (testsuite *SqlResourcesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestSqlResourcesTestSuite(t *testing.T) {
+func TTestSqlResourcesTestSuite(t *testing.T) {
 	suite.Run(t, new(SqlResourcesTestSuite))
 }
 

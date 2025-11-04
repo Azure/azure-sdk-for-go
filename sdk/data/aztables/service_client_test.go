@@ -4,12 +4,16 @@
 package aztables
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -446,4 +450,78 @@ func TestGetAccountSASTokenError(t *testing.T) {
 
 	_, err = service.GetAccountSASURL(resources, perms, time.Now(), time.Now().Add(time.Hour))
 	require.Error(t, err)
+}
+
+type tokenCredFunc func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error)
+
+func (t tokenCredFunc) GetToken(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	if l := len(tro.Scopes); l != 1 {
+		return azcore.AccessToken{}, fmt.Errorf("unexpected scopes len %d", l)
+	}
+	return t(ctx, tro)
+}
+
+type fakeTransport struct{}
+
+func (fakeTransport) Do(req *http.Request) (*http.Response, error) {
+	return &http.Response{
+		Request:    req,
+		StatusCode: http.StatusNoContent,
+		Body:       http.NoBody,
+		Header:     http.Header{},
+	}, nil
+}
+
+func TestNewServiceClient_sovereignClouds(t *testing.T) {
+	tests := []struct {
+		label    string
+		endpoint string
+		scope    string
+		cfg      cloud.Configuration
+	}{
+		{
+			label:    "storage China",
+			endpoint: "https://myAccountName.table.core.windows.net",
+			scope:    "https://storage.azure.cn/.default",
+			cfg:      cloud.AzureChina,
+		},
+		{
+			label:    "cosmos China",
+			endpoint: "https://myAccountName.table.cosmos.windows.net",
+			scope:    "https://cosmos.azure.cn/.default",
+			cfg:      cloud.AzureChina,
+		},
+		{
+			label:    "storage USGov",
+			endpoint: "https://myAccountName.table.core.windows.net",
+			scope:    "https://storage.azure.us/.default",
+			cfg:      cloud.AzureGovernment,
+		},
+		{
+			label:    "cosmos USGov",
+			endpoint: "https://myAccountName.table.cosmos.windows.net",
+			scope:    "https://cosmos.azure.us/.default",
+			cfg:      cloud.AzureGovernment,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.label, func(t *testing.T) {
+			client, err := NewServiceClient(tt.endpoint, tokenCredFunc(func(_ context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+				if s := tro.Scopes[0]; s != tt.scope {
+					return azcore.AccessToken{}, fmt.Errorf("incorrect scope %s", s)
+				}
+				return azcore.AccessToken{Token: "fake_token", ExpiresOn: time.Now().Add(time.Hour)}, nil
+			}), &ClientOptions{
+				ClientOptions: policy.ClientOptions{
+					Cloud:     tt.cfg,
+					Transport: &fakeTransport{},
+				},
+			})
+			require.NoError(t, err)
+
+			// we just call some API so that the pipeline is triggered which will call GetToken on our fake cred
+			_, err = client.DeleteTable(context.Background(), "fake-table", nil)
+			require.NoError(t, err)
+		})
+	}
 }

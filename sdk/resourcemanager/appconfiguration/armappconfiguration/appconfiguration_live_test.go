@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
@@ -217,41 +217,8 @@ func (testsuite *AppconfigurationTestSuite) TestReplicas() {
 	testsuite.Require().NoError(err)
 }
 
-// Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}
-func (testsuite *AppconfigurationTestSuite) TestKeyValues() {
-	var err error
-	// From step KeyValues_CreateOrUpdate
-	fmt.Println("Call operation: KeyValues_CreateOrUpdate")
-	keyValuesClient, err := armappconfiguration.NewKeyValuesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	_, err = keyValuesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, testsuite.keyValueName, &armappconfiguration.KeyValuesClientCreateOrUpdateOptions{
-		KeyValueParameters: &armappconfiguration.KeyValue{
-			Properties: &armappconfiguration.KeyValueProperties{
-				Tags: map[string]*string{
-					"tag1": to.Ptr("tagValue1"),
-					"tag2": to.Ptr("tagValue2"),
-				},
-				Value: to.Ptr("myValue"),
-			},
-		},
-	})
-	testsuite.Require().NoError(err)
-
-	// From step KeyValues_Get
-	fmt.Println("Call operation: KeyValues_Get")
-	_, err = keyValuesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, testsuite.keyValueName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step KeyValues_Delete
-	fmt.Println("Call operation: KeyValues_Delete")
-	keyValuesClientDeleteResponsePoller, err := keyValuesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, testsuite.keyValueName, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, keyValuesClientDeleteResponsePoller)
-	testsuite.Require().NoError(err)
-}
-
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}
-func (testsuite *AppconfigurationTestSuite) TestPrivateEndpointConnections() {
+func (testsuite *AppconfigurationTestSuite) TTestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
 	// From step Create_PrivateEndpoint

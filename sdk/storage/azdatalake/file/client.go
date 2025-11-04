@@ -558,6 +558,9 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	var respFromCtx *http.Response
 	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
 	resp, err := f.blobClient().DownloadStream(ctxWithResp, opts)
+	if err != nil {
+		return DownloadStreamResponse{}, exported.ConvertToDFSError(err)
+	}
 	newResp := FormatDownloadStreamResponse(&resp, respFromCtx)
 	fullResp := DownloadStreamResponse{
 		client:           f,
@@ -567,7 +570,7 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		cpkScope:         o.CPKScopeInfo,
 	}
 
-	return fullResp, exported.ConvertToDFSError(err)
+	return fullResp, nil
 }
 
 // DownloadBuffer downloads an Azure file to a buffer with parallel.

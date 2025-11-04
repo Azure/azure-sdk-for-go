@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/CreateAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 			},
 			UserOwnedStorage: []*armcognitiveservices.UserOwnedStorage{
 				{
-					ResourceID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
+					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
 				}},
 		},
 		SKU: &armcognitiveservices.SKU{
@@ -66,7 +66,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// res.Account = armcognitiveservices.Account{
 	// 	Name: to.Ptr("testCreate1"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/testCreate1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/testCreate1"),
 	// 	Etag: to.Ptr("W/\"datetime'2017-04-10T08%3A00%3A05.445595Z'\""),
 	// 	Identity: &armcognitiveservices.Identity{
 	// 		Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeSystemAssigned),
@@ -88,7 +88,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// 		ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 		UserOwnedStorage: []*armcognitiveservices.UserOwnedStorage{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
 	// 		}},
 	// 	},
 	// 	SKU: &armcognitiveservices.SKU{
@@ -97,7 +97,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/CreateAccountMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// res.Account = armcognitiveservices.Account{
 	// 	Name: to.Ptr("testCreate1"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/testCreate1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/testCreate1"),
 	// 	Etag: to.Ptr("W/\"datetime'2017-04-10T08%3A00%3A05.445595Z'\""),
 	// 	Identity: &armcognitiveservices.Identity{
 	// 		Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeSystemAssigned),
@@ -151,7 +151,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/UpdateAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/UpdateAccount.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	// res.Account = armcognitiveservices.Account{
 	// 	Name: to.Ptr("bingSearch"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
 	// 	Etag: to.Ptr("W/\"datetime'2017-04-10T07%3A46%3A21.5618831Z'\""),
 	// 	Kind: to.Ptr("Bing.Search"),
 	// 	Location: to.Ptr("global"),
@@ -195,7 +195,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/DeleteAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/GetAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleAccountsClient_Get() {
 	// res.Account = armcognitiveservices.Account{
 	// 	Name: to.Ptr("myAccount"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 	ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
 	// 	Etag: to.Ptr("W/\"datetime'2017-04-10T04%3A42%3A19.7067387Z'\""),
 	// 	Kind: to.Ptr("Emotion"),
 	// 	Location: to.Ptr("westus"),
@@ -255,7 +255,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListAccountsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("myAccount"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-04-10T04%3A42%3A19.7067387Z'\""),
 		// 			Kind: to.Ptr("Emotion"),
 		// 			Location: to.Ptr("westus"),
@@ -301,7 +301,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("TestPropertyWU2"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/TestPropertyWU2"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/TestPropertyWU2"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-04-07T04%3A32%3A38.9187216Z'\""),
 		// 			Kind: to.Ptr("Face"),
 		// 			Location: to.Ptr("westus"),
@@ -319,7 +319,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListAccountsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("bingSearch"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A19%3A08.762494Z'\""),
 		// 			Kind: to.Ptr("Bing.Search"),
 		// 			Location: to.Ptr("global"),
@@ -361,7 +361,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("CrisProd"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/CrisProd"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/CrisProd"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-03-31T08%3A57%3A07.4499566Z'\""),
 		// 			Kind: to.Ptr("CRIS"),
 		// 			Location: to.Ptr("westus"),
@@ -379,7 +379,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("rayrptest0308"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/rayrptest0308"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/rayrptest0308"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A15%3A23.5232645Z'\""),
 		// 			Kind: to.Ptr("Face"),
 		// 			Location: to.Ptr("westus"),
@@ -394,7 +394,7 @@ func ExampleAccountsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("raytest02"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 			ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/raytest02"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/raytest02"),
 		// 			Etag: to.Ptr("W/\"datetime'2017-04-04T02%3A07%3A07.3957572Z'\""),
 		// 			Kind: to.Ptr("Emotion"),
 		// 			Location: to.Ptr("westus"),
@@ -410,7 +410,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,7 +434,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,7 +460,7 @@ func ExampleAccountsClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListSkus.json
 func ExampleAccountsClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -497,7 +497,7 @@ func ExampleAccountsClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/GetUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetUsages.json
 func ExampleAccountsClient_ListUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +532,7 @@ func ExampleAccountsClient_ListUsages() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/ListAccountModels.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

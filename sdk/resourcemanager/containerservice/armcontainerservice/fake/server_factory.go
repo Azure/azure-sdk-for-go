@@ -22,6 +22,12 @@ type ServerFactory struct {
 	// Server contains the fakes for client Client
 	Server Server
 
+	// IdentityBindingsServer contains the fakes for client IdentityBindingsClient
+	IdentityBindingsServer IdentityBindingsServer
+
+	// JWTAuthenticatorsServer contains the fakes for client JWTAuthenticatorsClient
+	JWTAuthenticatorsServer JWTAuthenticatorsServer
+
 	// LoadBalancersServer contains the fakes for client LoadBalancersClient
 	LoadBalancersServer LoadBalancersServer
 
@@ -37,8 +43,11 @@ type ServerFactory struct {
 	// ManagedClustersServer contains the fakes for client ManagedClustersClient
 	ManagedClustersServer ManagedClustersServer
 
-	// NamespacesServer contains the fakes for client NamespacesClient
-	NamespacesServer NamespacesServer
+	// ManagedNamespacesServer contains the fakes for client ManagedNamespacesClient
+	ManagedNamespacesServer ManagedNamespacesServer
+
+	// MeshMembershipsServer contains the fakes for client MeshMembershipsClient
+	MeshMembershipsServer MeshMembershipsServer
 
 	// OperationStatusResultServer contains the fakes for client OperationStatusResultClient
 	OperationStatusResultServer OperationStatusResultServer
@@ -81,12 +90,15 @@ type ServerFactoryTransport struct {
 	trMu                                sync.Mutex
 	trAgentPoolsServer                  *AgentPoolsServerTransport
 	trServer                            *ServerTransport
+	trIdentityBindingsServer            *IdentityBindingsServerTransport
+	trJWTAuthenticatorsServer           *JWTAuthenticatorsServerTransport
 	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
 	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
-	trNamespacesServer                  *NamespacesServerTransport
+	trManagedNamespacesServer           *ManagedNamespacesServerTransport
+	trMeshMembershipsServer             *MeshMembershipsServerTransport
 	trOperationStatusResultServer       *OperationStatusResultServerTransport
 	trOperationsServer                  *OperationsServerTransport
 	trPrivateEndpointConnectionsServer  *PrivateEndpointConnectionsServerTransport
@@ -116,6 +128,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "IdentityBindingsClient":
+		initServer(s, &s.trIdentityBindingsServer, func() *IdentityBindingsServerTransport {
+			return NewIdentityBindingsServerTransport(&s.srv.IdentityBindingsServer)
+		})
+		resp, err = s.trIdentityBindingsServer.Do(req)
+	case "JWTAuthenticatorsClient":
+		initServer(s, &s.trJWTAuthenticatorsServer, func() *JWTAuthenticatorsServerTransport {
+			return NewJWTAuthenticatorsServerTransport(&s.srv.JWTAuthenticatorsServer)
+		})
+		resp, err = s.trJWTAuthenticatorsServer.Do(req)
 	case "LoadBalancersClient":
 		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
 			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
@@ -139,9 +161,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedClustersServerTransport(&s.srv.ManagedClustersServer)
 		})
 		resp, err = s.trManagedClustersServer.Do(req)
-	case "NamespacesClient":
-		initServer(s, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
-		resp, err = s.trNamespacesServer.Do(req)
+	case "ManagedNamespacesClient":
+		initServer(s, &s.trManagedNamespacesServer, func() *ManagedNamespacesServerTransport {
+			return NewManagedNamespacesServerTransport(&s.srv.ManagedNamespacesServer)
+		})
+		resp, err = s.trManagedNamespacesServer.Do(req)
+	case "MeshMembershipsClient":
+		initServer(s, &s.trMeshMembershipsServer, func() *MeshMembershipsServerTransport {
+			return NewMeshMembershipsServerTransport(&s.srv.MeshMembershipsServer)
+		})
+		resp, err = s.trMeshMembershipsServer.Do(req)
 	case "OperationStatusResultClient":
 		initServer(s, &s.trOperationStatusResultServer, func() *OperationStatusResultServerTransport {
 			return NewOperationStatusResultServerTransport(&s.srv.OperationStatusResultServer)

@@ -22,6 +22,33 @@ func PossibleACSCallEndedByKindValues() []ACSCallEndedByKind {
 	}
 }
 
+// ACSCallParticipantRoleKind - Call participant kind.
+type ACSCallParticipantRoleKind string
+
+const (
+	// ACSCallParticipantRoleKindAttendee - Attendee
+	ACSCallParticipantRoleKindAttendee ACSCallParticipantRoleKind = "Attendee"
+	// ACSCallParticipantRoleKindCollaborator - Collaborator
+	ACSCallParticipantRoleKindCollaborator ACSCallParticipantRoleKind = "Collaborator"
+	// ACSCallParticipantRoleKindConsumer - Consumer
+	ACSCallParticipantRoleKindConsumer ACSCallParticipantRoleKind = "Consumer"
+	// ACSCallParticipantRoleKindOrganizer - Organizer
+	ACSCallParticipantRoleKindOrganizer ACSCallParticipantRoleKind = "Organizer"
+	// ACSCallParticipantRoleKindPresenter - Presenter
+	ACSCallParticipantRoleKindPresenter ACSCallParticipantRoleKind = "Presenter"
+)
+
+// PossibleACSCallParticipantRoleKindValues returns the possible values for the ACSCallParticipantRoleKind const type.
+func PossibleACSCallParticipantRoleKindValues() []ACSCallParticipantRoleKind {
+	return []ACSCallParticipantRoleKind{
+		ACSCallParticipantRoleKindAttendee,
+		ACSCallParticipantRoleKindCollaborator,
+		ACSCallParticipantRoleKindConsumer,
+		ACSCallParticipantRoleKindOrganizer,
+		ACSCallParticipantRoleKindPresenter,
+	}
+}
+
 // ACSEmailDeliveryReportStatus - The status of the email. Any value other than Delivered is considered failed.
 type ACSEmailDeliveryReportStatus string
 
@@ -116,6 +143,63 @@ func PossibleACSMessageDeliveryStatusValues() []ACSMessageDeliveryStatus {
 		ACSMessageDeliveryStatusSent,
 		ACSMessageDeliveryStatusUnknown,
 		ACSMessageDeliveryStatusWarning,
+	}
+}
+
+// ACSRecordingChannelType - Recording channel type
+type ACSRecordingChannelType string
+
+const (
+	// ACSRecordingChannelTypeMixed - Mixed channel type
+	ACSRecordingChannelTypeMixed ACSRecordingChannelType = "Mixed"
+	// ACSRecordingChannelTypeUnmixed - Unmixed channel type
+	ACSRecordingChannelTypeUnmixed ACSRecordingChannelType = "Unmixed"
+)
+
+// PossibleACSRecordingChannelTypeValues returns the possible values for the ACSRecordingChannelType const type.
+func PossibleACSRecordingChannelTypeValues() []ACSRecordingChannelType {
+	return []ACSRecordingChannelType{
+		ACSRecordingChannelTypeMixed,
+		ACSRecordingChannelTypeUnmixed,
+	}
+}
+
+// ACSRecordingContentType - Recording content type
+type ACSRecordingContentType string
+
+const (
+	// ACSRecordingContentTypeAudio - Audio content type
+	ACSRecordingContentTypeAudio ACSRecordingContentType = "Audio"
+	// ACSRecordingContentTypeAudioVideo - AudioVideo content type
+	ACSRecordingContentTypeAudioVideo ACSRecordingContentType = "AudioVideo"
+)
+
+// PossibleACSRecordingContentTypeValues returns the possible values for the ACSRecordingContentType const type.
+func PossibleACSRecordingContentTypeValues() []ACSRecordingContentType {
+	return []ACSRecordingContentType{
+		ACSRecordingContentTypeAudio,
+		ACSRecordingContentTypeAudioVideo,
+	}
+}
+
+// ACSRecordingFormatType - Recording format type
+type ACSRecordingFormatType string
+
+const (
+	// ACSRecordingFormatTypeMP3 - MP3 format
+	ACSRecordingFormatTypeMP3 ACSRecordingFormatType = "Mp3"
+	// ACSRecordingFormatTypeMP4 - MP4 format
+	ACSRecordingFormatTypeMP4 ACSRecordingFormatType = "Mp4"
+	// ACSRecordingFormatTypeWav - WAV format
+	ACSRecordingFormatTypeWav ACSRecordingFormatType = "Wav"
+)
+
+// PossibleACSRecordingFormatTypeValues returns the possible values for the ACSRecordingFormatType const type.
+func PossibleACSRecordingFormatTypeValues() []ACSRecordingFormatType {
+	return []ACSRecordingFormatType{
+		ACSRecordingFormatTypeMP3,
+		ACSRecordingFormatTypeMP4,
+		ACSRecordingFormatTypeWav,
 	}
 }
 
@@ -356,6 +440,8 @@ type CommunicationIdentifierModelKind string
 const (
 	// CommunicationIdentifierModelKindCommunicationUser - Communication User
 	CommunicationIdentifierModelKindCommunicationUser CommunicationIdentifierModelKind = "communicationUser"
+	// CommunicationIdentifierModelKindMicrosoftTeamsApp - Microsoft Teams App
+	CommunicationIdentifierModelKindMicrosoftTeamsApp CommunicationIdentifierModelKind = "microsoftTeamsApp"
 	// CommunicationIdentifierModelKindMicrosoftTeamsUser - Microsoft Teams User
 	CommunicationIdentifierModelKindMicrosoftTeamsUser CommunicationIdentifierModelKind = "microsoftTeamsUser"
 	// CommunicationIdentifierModelKindPhoneNumber - Phone Number
@@ -368,6 +454,7 @@ const (
 func PossibleCommunicationIdentifierModelKindValues() []CommunicationIdentifierModelKind {
 	return []CommunicationIdentifierModelKind{
 		CommunicationIdentifierModelKindCommunicationUser,
+		CommunicationIdentifierModelKindMicrosoftTeamsApp,
 		CommunicationIdentifierModelKindMicrosoftTeamsUser,
 		CommunicationIdentifierModelKindPhoneNumber,
 		CommunicationIdentifierModelKindUnknown,
@@ -958,63 +1045,6 @@ func PossibleHealthcareFhirResourceTypeValues() []HealthcareFhirResourceType {
 		HealthcareFhirResourceTypeValueSet,
 		HealthcareFhirResourceTypeVerificationResult,
 		HealthcareFhirResourceTypeVisionPrescription,
-	}
-}
-
-// RecordingChannelKind - Recording channel type
-type RecordingChannelKind string
-
-const (
-	// RecordingChannelKindMixed - Mixed channel type
-	RecordingChannelKindMixed RecordingChannelKind = "Mixed"
-	// RecordingChannelKindUnmixed - Unmixed channel type
-	RecordingChannelKindUnmixed RecordingChannelKind = "Unmixed"
-)
-
-// PossibleRecordingChannelKindValues returns the possible values for the RecordingChannelKind const type.
-func PossibleRecordingChannelKindValues() []RecordingChannelKind {
-	return []RecordingChannelKind{
-		RecordingChannelKindMixed,
-		RecordingChannelKindUnmixed,
-	}
-}
-
-// RecordingContentType - Recording content type
-type RecordingContentType string
-
-const (
-	// RecordingContentTypeAudio - Audio content type
-	RecordingContentTypeAudio RecordingContentType = "Audio"
-	// RecordingContentTypeAudioVideo - AudioVideo content type
-	RecordingContentTypeAudioVideo RecordingContentType = "AudioVideo"
-)
-
-// PossibleRecordingContentTypeValues returns the possible values for the RecordingContentType const type.
-func PossibleRecordingContentTypeValues() []RecordingContentType {
-	return []RecordingContentType{
-		RecordingContentTypeAudio,
-		RecordingContentTypeAudioVideo,
-	}
-}
-
-// RecordingFormatType - Recording format type
-type RecordingFormatType string
-
-const (
-	// RecordingFormatTypeMp3 - MP3 format
-	RecordingFormatTypeMp3 RecordingFormatType = "Mp3"
-	// RecordingFormatTypeMp4 - MP4 format
-	RecordingFormatTypeMp4 RecordingFormatType = "Mp4"
-	// RecordingFormatTypeWav - WAV format
-	RecordingFormatTypeWav RecordingFormatType = "Wav"
-)
-
-// PossibleRecordingFormatTypeValues returns the possible values for the RecordingFormatType const type.
-func PossibleRecordingFormatTypeValues() []RecordingFormatType {
-	return []RecordingFormatType{
-		RecordingFormatTypeMp3,
-		RecordingFormatTypeMp4,
-		RecordingFormatTypeWav,
 	}
 }
 

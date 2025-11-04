@@ -7,7 +7,7 @@ package armeventgrid
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
-	moduleVersion = "v2.3.0"
+	moduleVersion = "v2.4.0-beta.1"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -60,6 +60,29 @@ func PossibleAdvancedFilterOperatorTypeValues() []AdvancedFilterOperatorType {
 	}
 }
 
+// AlternativeAuthenticationNameSource - Alternative authentication name sources related to client authentication settings
+// for namespace resource.
+type AlternativeAuthenticationNameSource string
+
+const (
+	AlternativeAuthenticationNameSourceClientCertificateDNS     AlternativeAuthenticationNameSource = "ClientCertificateDns"
+	AlternativeAuthenticationNameSourceClientCertificateEmail   AlternativeAuthenticationNameSource = "ClientCertificateEmail"
+	AlternativeAuthenticationNameSourceClientCertificateIP      AlternativeAuthenticationNameSource = "ClientCertificateIp"
+	AlternativeAuthenticationNameSourceClientCertificateSubject AlternativeAuthenticationNameSource = "ClientCertificateSubject"
+	AlternativeAuthenticationNameSourceClientCertificateURI     AlternativeAuthenticationNameSource = "ClientCertificateUri"
+)
+
+// PossibleAlternativeAuthenticationNameSourceValues returns the possible values for the AlternativeAuthenticationNameSource const type.
+func PossibleAlternativeAuthenticationNameSourceValues() []AlternativeAuthenticationNameSource {
+	return []AlternativeAuthenticationNameSource{
+		AlternativeAuthenticationNameSourceClientCertificateDNS,
+		AlternativeAuthenticationNameSourceClientCertificateEmail,
+		AlternativeAuthenticationNameSourceClientCertificateIP,
+		AlternativeAuthenticationNameSourceClientCertificateSubject,
+		AlternativeAuthenticationNameSourceClientCertificateURI,
+	}
+}
+
 // CaCertificateProvisioningState - Provisioning state of the CA Certificate resource.
 type CaCertificateProvisioningState string
 
@@ -90,13 +113,14 @@ func PossibleCaCertificateProvisioningStateValues() []CaCertificateProvisioningS
 type ChannelProvisioningState string
 
 const (
-	ChannelProvisioningStateCanceled                              ChannelProvisioningState = "Canceled"
-	ChannelProvisioningStateCreating                              ChannelProvisioningState = "Creating"
-	ChannelProvisioningStateDeleting                              ChannelProvisioningState = "Deleting"
-	ChannelProvisioningStateFailed                                ChannelProvisioningState = "Failed"
-	ChannelProvisioningStateIdleDueToMirroredPartnerTopicDeletion ChannelProvisioningState = "IdleDueToMirroredPartnerTopicDeletion"
-	ChannelProvisioningStateSucceeded                             ChannelProvisioningState = "Succeeded"
-	ChannelProvisioningStateUpdating                              ChannelProvisioningState = "Updating"
+	ChannelProvisioningStateCanceled                                    ChannelProvisioningState = "Canceled"
+	ChannelProvisioningStateCreating                                    ChannelProvisioningState = "Creating"
+	ChannelProvisioningStateDeleting                                    ChannelProvisioningState = "Deleting"
+	ChannelProvisioningStateFailed                                      ChannelProvisioningState = "Failed"
+	ChannelProvisioningStateIdleDueToMirroredPartnerDestinationDeletion ChannelProvisioningState = "IdleDueToMirroredPartnerDestinationDeletion"
+	ChannelProvisioningStateIdleDueToMirroredPartnerTopicDeletion       ChannelProvisioningState = "IdleDueToMirroredPartnerTopicDeletion"
+	ChannelProvisioningStateSucceeded                                   ChannelProvisioningState = "Succeeded"
+	ChannelProvisioningStateUpdating                                    ChannelProvisioningState = "Updating"
 )
 
 // PossibleChannelProvisioningStateValues returns the possible values for the ChannelProvisioningState const type.
@@ -106,6 +130,7 @@ func PossibleChannelProvisioningStateValues() []ChannelProvisioningState {
 		ChannelProvisioningStateCreating,
 		ChannelProvisioningStateDeleting,
 		ChannelProvisioningStateFailed,
+		ChannelProvisioningStateIdleDueToMirroredPartnerDestinationDeletion,
 		ChannelProvisioningStateIdleDueToMirroredPartnerTopicDeletion,
 		ChannelProvisioningStateSucceeded,
 		ChannelProvisioningStateUpdating,
@@ -116,12 +141,14 @@ func PossibleChannelProvisioningStateValues() []ChannelProvisioningState {
 type ChannelType string
 
 const (
-	ChannelTypePartnerTopic ChannelType = "PartnerTopic"
+	ChannelTypePartnerDestination ChannelType = "PartnerDestination"
+	ChannelTypePartnerTopic       ChannelType = "PartnerTopic"
 )
 
 // PossibleChannelTypeValues returns the possible values for the ChannelType const type.
 func PossibleChannelTypeValues() []ChannelType {
 	return []ChannelType{
+		ChannelTypePartnerDestination,
 		ChannelTypePartnerTopic,
 	}
 }
@@ -274,6 +301,38 @@ func PossibleCustomDomainValidationStateValues() []CustomDomainValidationState {
 	}
 }
 
+// CustomJwtAuthenticationManagedIdentityType - The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+type CustomJwtAuthenticationManagedIdentityType string
+
+const (
+	CustomJwtAuthenticationManagedIdentityTypeSystemAssigned CustomJwtAuthenticationManagedIdentityType = "SystemAssigned"
+	CustomJwtAuthenticationManagedIdentityTypeUserAssigned   CustomJwtAuthenticationManagedIdentityType = "UserAssigned"
+)
+
+// PossibleCustomJwtAuthenticationManagedIdentityTypeValues returns the possible values for the CustomJwtAuthenticationManagedIdentityType const type.
+func PossibleCustomJwtAuthenticationManagedIdentityTypeValues() []CustomJwtAuthenticationManagedIdentityType {
+	return []CustomJwtAuthenticationManagedIdentityType{
+		CustomJwtAuthenticationManagedIdentityTypeSystemAssigned,
+		CustomJwtAuthenticationManagedIdentityTypeUserAssigned,
+	}
+}
+
+// CustomWebhookAuthenticationManagedIdentityType - The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
+type CustomWebhookAuthenticationManagedIdentityType string
+
+const (
+	CustomWebhookAuthenticationManagedIdentityTypeSystemAssigned CustomWebhookAuthenticationManagedIdentityType = "SystemAssigned"
+	CustomWebhookAuthenticationManagedIdentityTypeUserAssigned   CustomWebhookAuthenticationManagedIdentityType = "UserAssigned"
+)
+
+// PossibleCustomWebhookAuthenticationManagedIdentityTypeValues returns the possible values for the CustomWebhookAuthenticationManagedIdentityType const type.
+func PossibleCustomWebhookAuthenticationManagedIdentityTypeValues() []CustomWebhookAuthenticationManagedIdentityType {
+	return []CustomWebhookAuthenticationManagedIdentityType{
+		CustomWebhookAuthenticationManagedIdentityTypeSystemAssigned,
+		CustomWebhookAuthenticationManagedIdentityTypeUserAssigned,
+	}
+}
+
 // DataResidencyBoundary - Data Residency Boundary of the resource.
 type DataResidencyBoundary string
 
@@ -402,15 +461,16 @@ func PossibleDomainTopicProvisioningStateValues() []DomainTopicProvisioningState
 type EndpointType string
 
 const (
-	EndpointTypeAzureFunction    EndpointType = "AzureFunction"
-	EndpointTypeEventHub         EndpointType = "EventHub"
-	EndpointTypeHybridConnection EndpointType = "HybridConnection"
-	EndpointTypeMonitorAlert     EndpointType = "MonitorAlert"
-	EndpointTypeNamespaceTopic   EndpointType = "NamespaceTopic"
-	EndpointTypeServiceBusQueue  EndpointType = "ServiceBusQueue"
-	EndpointTypeServiceBusTopic  EndpointType = "ServiceBusTopic"
-	EndpointTypeStorageQueue     EndpointType = "StorageQueue"
-	EndpointTypeWebHook          EndpointType = "WebHook"
+	EndpointTypeAzureFunction      EndpointType = "AzureFunction"
+	EndpointTypeEventHub           EndpointType = "EventHub"
+	EndpointTypeHybridConnection   EndpointType = "HybridConnection"
+	EndpointTypeMonitorAlert       EndpointType = "MonitorAlert"
+	EndpointTypeNamespaceTopic     EndpointType = "NamespaceTopic"
+	EndpointTypePartnerDestination EndpointType = "PartnerDestination"
+	EndpointTypeServiceBusQueue    EndpointType = "ServiceBusQueue"
+	EndpointTypeServiceBusTopic    EndpointType = "ServiceBusTopic"
+	EndpointTypeStorageQueue       EndpointType = "StorageQueue"
+	EndpointTypeWebHook            EndpointType = "WebHook"
 )
 
 // PossibleEndpointTypeValues returns the possible values for the EndpointType const type.
@@ -421,6 +481,7 @@ func PossibleEndpointTypeValues() []EndpointType {
 		EndpointTypeHybridConnection,
 		EndpointTypeMonitorAlert,
 		EndpointTypeNamespaceTopic,
+		EndpointTypePartnerDestination,
 		EndpointTypeServiceBusQueue,
 		EndpointTypeServiceBusTopic,
 		EndpointTypeStorageQueue,
@@ -721,6 +782,134 @@ func PossibleNamespaceTopicProvisioningStateValues() []NamespaceTopicProvisionin
 	}
 }
 
+// NetworkSecurityPerimeterAssociationAccessMode - Network security perimeter access mode.
+type NetworkSecurityPerimeterAssociationAccessMode string
+
+const (
+	NetworkSecurityPerimeterAssociationAccessModeAudit    NetworkSecurityPerimeterAssociationAccessMode = "Audit"
+	NetworkSecurityPerimeterAssociationAccessModeEnforced NetworkSecurityPerimeterAssociationAccessMode = "Enforced"
+	NetworkSecurityPerimeterAssociationAccessModeLearning NetworkSecurityPerimeterAssociationAccessMode = "Learning"
+)
+
+// PossibleNetworkSecurityPerimeterAssociationAccessModeValues returns the possible values for the NetworkSecurityPerimeterAssociationAccessMode const type.
+func PossibleNetworkSecurityPerimeterAssociationAccessModeValues() []NetworkSecurityPerimeterAssociationAccessMode {
+	return []NetworkSecurityPerimeterAssociationAccessMode{
+		NetworkSecurityPerimeterAssociationAccessModeAudit,
+		NetworkSecurityPerimeterAssociationAccessModeEnforced,
+		NetworkSecurityPerimeterAssociationAccessModeLearning,
+	}
+}
+
+// NetworkSecurityPerimeterConfigProvisioningState - Provisioning state to reflect configuration state and indicate status
+// of nsp profile configuration retrieval.
+type NetworkSecurityPerimeterConfigProvisioningState string
+
+const (
+	NetworkSecurityPerimeterConfigProvisioningStateAccepted  NetworkSecurityPerimeterConfigProvisioningState = "Accepted"
+	NetworkSecurityPerimeterConfigProvisioningStateCanceled  NetworkSecurityPerimeterConfigProvisioningState = "Canceled"
+	NetworkSecurityPerimeterConfigProvisioningStateCreating  NetworkSecurityPerimeterConfigProvisioningState = "Creating"
+	NetworkSecurityPerimeterConfigProvisioningStateDeleted   NetworkSecurityPerimeterConfigProvisioningState = "Deleted"
+	NetworkSecurityPerimeterConfigProvisioningStateDeleting  NetworkSecurityPerimeterConfigProvisioningState = "Deleting"
+	NetworkSecurityPerimeterConfigProvisioningStateFailed    NetworkSecurityPerimeterConfigProvisioningState = "Failed"
+	NetworkSecurityPerimeterConfigProvisioningStateSucceeded NetworkSecurityPerimeterConfigProvisioningState = "Succeeded"
+	NetworkSecurityPerimeterConfigProvisioningStateUpdating  NetworkSecurityPerimeterConfigProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigProvisioningStateValues() []NetworkSecurityPerimeterConfigProvisioningState {
+	return []NetworkSecurityPerimeterConfigProvisioningState{
+		NetworkSecurityPerimeterConfigProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigProvisioningStateDeleted,
+		NetworkSecurityPerimeterConfigProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigProvisioningStateUpdating,
+	}
+}
+
+// NetworkSecurityPerimeterConfigurationIssueSeverity - Provisioning issue severity.
+type NetworkSecurityPerimeterConfigurationIssueSeverity string
+
+const (
+	NetworkSecurityPerimeterConfigurationIssueSeverityError   NetworkSecurityPerimeterConfigurationIssueSeverity = "Error"
+	NetworkSecurityPerimeterConfigurationIssueSeverityWarning NetworkSecurityPerimeterConfigurationIssueSeverity = "Warning"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationIssueSeverityValues returns the possible values for the NetworkSecurityPerimeterConfigurationIssueSeverity const type.
+func PossibleNetworkSecurityPerimeterConfigurationIssueSeverityValues() []NetworkSecurityPerimeterConfigurationIssueSeverity {
+	return []NetworkSecurityPerimeterConfigurationIssueSeverity{
+		NetworkSecurityPerimeterConfigurationIssueSeverityError,
+		NetworkSecurityPerimeterConfigurationIssueSeverityWarning,
+	}
+}
+
+// NetworkSecurityPerimeterConfigurationIssueType - Provisioning issue type.
+type NetworkSecurityPerimeterConfigurationIssueType string
+
+const (
+	NetworkSecurityPerimeterConfigurationIssueTypeConfigurationPropagationFailure NetworkSecurityPerimeterConfigurationIssueType = "ConfigurationPropagationFailure"
+	NetworkSecurityPerimeterConfigurationIssueTypeMissingIdentityConfiguration    NetworkSecurityPerimeterConfigurationIssueType = "MissingIdentityConfiguration"
+	NetworkSecurityPerimeterConfigurationIssueTypeMissingPerimeterConfiguration   NetworkSecurityPerimeterConfigurationIssueType = "MissingPerimeterConfiguration"
+	NetworkSecurityPerimeterConfigurationIssueTypeOther                           NetworkSecurityPerimeterConfigurationIssueType = "Other"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationIssueTypeValues returns the possible values for the NetworkSecurityPerimeterConfigurationIssueType const type.
+func PossibleNetworkSecurityPerimeterConfigurationIssueTypeValues() []NetworkSecurityPerimeterConfigurationIssueType {
+	return []NetworkSecurityPerimeterConfigurationIssueType{
+		NetworkSecurityPerimeterConfigurationIssueTypeConfigurationPropagationFailure,
+		NetworkSecurityPerimeterConfigurationIssueTypeMissingIdentityConfiguration,
+		NetworkSecurityPerimeterConfigurationIssueTypeMissingPerimeterConfiguration,
+		NetworkSecurityPerimeterConfigurationIssueTypeOther,
+	}
+}
+
+// NetworkSecurityPerimeterProfileAccessRuleDirection - NSP access rule direction.
+type NetworkSecurityPerimeterProfileAccessRuleDirection string
+
+const (
+	NetworkSecurityPerimeterProfileAccessRuleDirectionInbound  NetworkSecurityPerimeterProfileAccessRuleDirection = "Inbound"
+	NetworkSecurityPerimeterProfileAccessRuleDirectionOutbound NetworkSecurityPerimeterProfileAccessRuleDirection = "Outbound"
+)
+
+// PossibleNetworkSecurityPerimeterProfileAccessRuleDirectionValues returns the possible values for the NetworkSecurityPerimeterProfileAccessRuleDirection const type.
+func PossibleNetworkSecurityPerimeterProfileAccessRuleDirectionValues() []NetworkSecurityPerimeterProfileAccessRuleDirection {
+	return []NetworkSecurityPerimeterProfileAccessRuleDirection{
+		NetworkSecurityPerimeterProfileAccessRuleDirectionInbound,
+		NetworkSecurityPerimeterProfileAccessRuleDirectionOutbound,
+	}
+}
+
+type NetworkSecurityPerimeterResourceType string
+
+const (
+	NetworkSecurityPerimeterResourceTypeDomains NetworkSecurityPerimeterResourceType = "domains"
+	NetworkSecurityPerimeterResourceTypeTopics  NetworkSecurityPerimeterResourceType = "topics"
+)
+
+// PossibleNetworkSecurityPerimeterResourceTypeValues returns the possible values for the NetworkSecurityPerimeterResourceType const type.
+func PossibleNetworkSecurityPerimeterResourceTypeValues() []NetworkSecurityPerimeterResourceType {
+	return []NetworkSecurityPerimeterResourceType{
+		NetworkSecurityPerimeterResourceTypeDomains,
+		NetworkSecurityPerimeterResourceTypeTopics,
+	}
+}
+
+// PartnerClientAuthenticationType - Type of client authentication
+type PartnerClientAuthenticationType string
+
+const (
+	PartnerClientAuthenticationTypeAzureAD PartnerClientAuthenticationType = "AzureAD"
+)
+
+// PossiblePartnerClientAuthenticationTypeValues returns the possible values for the PartnerClientAuthenticationType const type.
+func PossiblePartnerClientAuthenticationTypeValues() []PartnerClientAuthenticationType {
+	return []PartnerClientAuthenticationType{
+		PartnerClientAuthenticationTypeAzureAD,
+	}
+}
+
 // PartnerConfigurationProvisioningState - Provisioning state of the partner configuration.
 type PartnerConfigurationProvisioningState string
 
@@ -742,6 +931,62 @@ func PossiblePartnerConfigurationProvisioningStateValues() []PartnerConfiguratio
 		PartnerConfigurationProvisioningStateFailed,
 		PartnerConfigurationProvisioningStateSucceeded,
 		PartnerConfigurationProvisioningStateUpdating,
+	}
+}
+
+// PartnerDestinationActivationState - Activation state of the partner destination.
+type PartnerDestinationActivationState string
+
+const (
+	PartnerDestinationActivationStateActivated      PartnerDestinationActivationState = "Activated"
+	PartnerDestinationActivationStateNeverActivated PartnerDestinationActivationState = "NeverActivated"
+)
+
+// PossiblePartnerDestinationActivationStateValues returns the possible values for the PartnerDestinationActivationState const type.
+func PossiblePartnerDestinationActivationStateValues() []PartnerDestinationActivationState {
+	return []PartnerDestinationActivationState{
+		PartnerDestinationActivationStateActivated,
+		PartnerDestinationActivationStateNeverActivated,
+	}
+}
+
+// PartnerDestinationProvisioningState - Provisioning state of the partner destination.
+type PartnerDestinationProvisioningState string
+
+const (
+	PartnerDestinationProvisioningStateCanceled                                 PartnerDestinationProvisioningState = "Canceled"
+	PartnerDestinationProvisioningStateCreating                                 PartnerDestinationProvisioningState = "Creating"
+	PartnerDestinationProvisioningStateDeleting                                 PartnerDestinationProvisioningState = "Deleting"
+	PartnerDestinationProvisioningStateFailed                                   PartnerDestinationProvisioningState = "Failed"
+	PartnerDestinationProvisioningStateIdleDueToMirroredChannelResourceDeletion PartnerDestinationProvisioningState = "IdleDueToMirroredChannelResourceDeletion"
+	PartnerDestinationProvisioningStateSucceeded                                PartnerDestinationProvisioningState = "Succeeded"
+	PartnerDestinationProvisioningStateUpdating                                 PartnerDestinationProvisioningState = "Updating"
+)
+
+// PossiblePartnerDestinationProvisioningStateValues returns the possible values for the PartnerDestinationProvisioningState const type.
+func PossiblePartnerDestinationProvisioningStateValues() []PartnerDestinationProvisioningState {
+	return []PartnerDestinationProvisioningState{
+		PartnerDestinationProvisioningStateCanceled,
+		PartnerDestinationProvisioningStateCreating,
+		PartnerDestinationProvisioningStateDeleting,
+		PartnerDestinationProvisioningStateFailed,
+		PartnerDestinationProvisioningStateIdleDueToMirroredChannelResourceDeletion,
+		PartnerDestinationProvisioningStateSucceeded,
+		PartnerDestinationProvisioningStateUpdating,
+	}
+}
+
+// PartnerEndpointType - Type of the endpoint for the partner destination
+type PartnerEndpointType string
+
+const (
+	PartnerEndpointTypeWebHook PartnerEndpointType = "WebHook"
+)
+
+// PossiblePartnerEndpointTypeValues returns the possible values for the PartnerEndpointType const type.
+func PossiblePartnerEndpointTypeValues() []PartnerEndpointType {
+	return []PartnerEndpointType{
+		PartnerEndpointTypeWebHook,
 	}
 }
 
@@ -941,8 +1186,9 @@ func PossiblePrivateEndpointConnectionsParentTypeValues() []PrivateEndpointConne
 type PublicNetworkAccess string
 
 const (
-	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -950,6 +1196,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 
@@ -980,6 +1227,22 @@ func PossibleReadinessStateValues() []ReadinessState {
 	return []ReadinessState{
 		ReadinessStateActivated,
 		ReadinessStateNeverActivated,
+	}
+}
+
+// ResourceKind - Kind of the resource.
+type ResourceKind string
+
+const (
+	ResourceKindAzure    ResourceKind = "Azure"
+	ResourceKindAzureArc ResourceKind = "AzureArc"
+)
+
+// PossibleResourceKindValues returns the possible values for the ResourceKind const type.
+func PossibleResourceKindValues() []ResourceKind {
+	return []ResourceKind{
+		ResourceKindAzure,
+		ResourceKindAzureArc,
 	}
 }
 
@@ -1038,6 +1301,22 @@ func PossibleRoutingIdentityTypeValues() []RoutingIdentityType {
 		RoutingIdentityTypeNone,
 		RoutingIdentityTypeSystemAssigned,
 		RoutingIdentityTypeUserAssigned,
+	}
+}
+
+// SKU - The Sku name of the resource. The possible values are: Basic or Premium.
+type SKU string
+
+const (
+	SKUBasic   SKU = "Basic"
+	SKUPremium SKU = "Premium"
+)
+
+// PossibleSKUValues returns the possible values for the SKU const type.
+func PossibleSKUValues() []SKU {
+	return []SKU{
+		SKUBasic,
+		SKUPremium,
 	}
 }
 

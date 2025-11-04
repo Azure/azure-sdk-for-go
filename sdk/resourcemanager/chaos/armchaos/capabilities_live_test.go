@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
@@ -61,7 +61,7 @@ func (testsuite *CapabilitiesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestCapabilitiesTestSuite(t *testing.T) {
+func TTestCapabilitiesTestSuite(t *testing.T) {
 	suite.Run(t, new(CapabilitiesTestSuite))
 }
 

@@ -195,6 +195,8 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
+		"", // Placeholder for SignedKeyDelegatedUserTenantId (future field)
+		"", // Placeholder for SignedDelegatedUserObjectId (future field)
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,

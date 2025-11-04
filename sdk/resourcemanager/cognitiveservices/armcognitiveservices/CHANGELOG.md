@@ -1,5 +1,200 @@
 # Release History
 
+## 2.0.0 (2025-09-15)
+### Breaking Changes
+
+- Type of `AccountProperties.NetworkInjections` has been changed from `*NetworkInjections` to `[]*NetworkInjection`
+- Struct `NetworkInjections` has been removed
+
+### Features Added
+
+- New struct `NetworkInjection`
+
+
+## 1.8.0 (2025-07-25)
+### Features Added
+
+- New value `ProvisioningStateCanceled` added to enum type `ProvisioningState`
+- New enum type `CapabilityHostKind` with values `CapabilityHostKindAgents`
+- New enum type `CapabilityHostProvisioningState` with values `CapabilityHostProvisioningStateCanceled`, `CapabilityHostProvisioningStateCreating`, `CapabilityHostProvisioningStateDeleting`, `CapabilityHostProvisioningStateFailed`, `CapabilityHostProvisioningStateSucceeded`, `CapabilityHostProvisioningStateUpdating`
+- New enum type `ConnectionAuthType` with values `ConnectionAuthTypeAAD`, `ConnectionAuthTypeAPIKey`, `ConnectionAuthTypeAccessKey`, `ConnectionAuthTypeAccountKey`, `ConnectionAuthTypeCustomKeys`, `ConnectionAuthTypeManagedIdentity`, `ConnectionAuthTypeNone`, `ConnectionAuthTypeOAuth2`, `ConnectionAuthTypePAT`, `ConnectionAuthTypeSAS`, `ConnectionAuthTypeServicePrincipal`, `ConnectionAuthTypeUsernamePassword`
+- New enum type `ConnectionCategory` with values `ConnectionCategoryADLSGen2`, `ConnectionCategoryAIServices`, `ConnectionCategoryAPIKey`, `ConnectionCategoryAmazonMws`, `ConnectionCategoryAmazonRdsForOracle`, `ConnectionCategoryAmazonRdsForSQLServer`, `ConnectionCategoryAmazonRedshift`, `ConnectionCategoryAmazonS3Compatible`, `ConnectionCategoryAzureBlob`, `ConnectionCategoryAzureDataExplorer`, `ConnectionCategoryAzureDatabricksDeltaLake`, `ConnectionCategoryAzureMariaDb`, `ConnectionCategoryAzureMySQLDb`, `ConnectionCategoryAzureOneLake`, `ConnectionCategoryAzureOpenAI`, `ConnectionCategoryAzurePostgresDb`, `ConnectionCategoryAzureSQLDb`, `ConnectionCategoryAzureSQLMi`, `ConnectionCategoryAzureSynapseAnalytics`, `ConnectionCategoryAzureTableStorage`, `ConnectionCategoryBingLLMSearch`, `ConnectionCategoryCassandra`, `ConnectionCategoryCognitiveSearch`, `ConnectionCategoryCognitiveService`, `ConnectionCategoryConcur`, `ConnectionCategoryContainerRegistry`, `ConnectionCategoryCosmosDb`, `ConnectionCategoryCosmosDbMongoDbAPI`, `ConnectionCategoryCouchbase`, `ConnectionCategoryCustomKeys`, `ConnectionCategoryDb2`, `ConnectionCategoryDrill`, `ConnectionCategoryDynamics`, `ConnectionCategoryDynamicsAx`, `ConnectionCategoryDynamicsCrm`, `ConnectionCategoryElasticsearch`, `ConnectionCategoryEloqua`, `ConnectionCategoryFileServer`, `ConnectionCategoryFtpServer`, `ConnectionCategoryGenericContainerRegistry`, `ConnectionCategoryGenericHTTP`, `ConnectionCategoryGenericRest`, `ConnectionCategoryGit`, `ConnectionCategoryGoogleAdWords`, `ConnectionCategoryGoogleBigQuery`, `ConnectionCategoryGoogleCloudStorage`, `ConnectionCategoryGreenplum`, `ConnectionCategoryHbase`, `ConnectionCategoryHdfs`, `ConnectionCategoryHive`, `ConnectionCategoryHubspot`, `ConnectionCategoryImpala`, `ConnectionCategoryInformix`, `ConnectionCategoryJira`, `ConnectionCategoryMagento`, `ConnectionCategoryManagedOnlineEndpoint`, `ConnectionCategoryMariaDb`, `ConnectionCategoryMarketo`, `ConnectionCategoryMicrosoftAccess`, `ConnectionCategoryMongoDbAtlas`, `ConnectionCategoryMongoDbV2`, `ConnectionCategoryMySQL`, `ConnectionCategoryNetezza`, `ConnectionCategoryODataRest`, `ConnectionCategoryOdbc`, `ConnectionCategoryOffice365`, `ConnectionCategoryOpenAI`, `ConnectionCategoryOracle`, `ConnectionCategoryOracleCloudStorage`, `ConnectionCategoryOracleServiceCloud`, `ConnectionCategoryPayPal`, `ConnectionCategoryPhoenix`, `ConnectionCategoryPinecone`, `ConnectionCategoryPostgreSQL`, `ConnectionCategoryPresto`, `ConnectionCategoryPythonFeed`, `ConnectionCategoryQuickBooks`, `ConnectionCategoryRedis`, `ConnectionCategoryResponsys`, `ConnectionCategoryS3`, `ConnectionCategorySQLServer`, `ConnectionCategorySalesforce`, `ConnectionCategorySalesforceMarketingCloud`, `ConnectionCategorySalesforceServiceCloud`, `ConnectionCategorySapBw`, `ConnectionCategorySapCloudForCustomer`, `ConnectionCategorySapEcc`, `ConnectionCategorySapHana`, `ConnectionCategorySapOpenHub`, `ConnectionCategorySapTable`, `ConnectionCategorySerp`, `ConnectionCategoryServerless`, `ConnectionCategoryServiceNow`, `ConnectionCategorySftp`, `ConnectionCategorySharePointOnlineList`, `ConnectionCategoryShopify`, `ConnectionCategorySnowflake`, `ConnectionCategorySpark`, `ConnectionCategorySquare`, `ConnectionCategorySybase`, `ConnectionCategoryTeradata`, `ConnectionCategoryVertica`, `ConnectionCategoryWebTable`, `ConnectionCategoryXero`, `ConnectionCategoryZoho`
+- New enum type `ConnectionGroup` with values `ConnectionGroupAzure`, `ConnectionGroupAzureAI`, `ConnectionGroupDatabase`, `ConnectionGroupFile`, `ConnectionGroupGenericProtocol`, `ConnectionGroupNoSQL`, `ConnectionGroupServicesAndApps`
+- New enum type `ManagedPERequirement` with values `ManagedPERequirementNotApplicable`, `ManagedPERequirementNotRequired`, `ManagedPERequirementRequired`
+- New enum type `ManagedPEStatus` with values `ManagedPEStatusActive`, `ManagedPEStatusInactive`, `ManagedPEStatusNotApplicable`
+- New enum type `ScenarioType` with values `ScenarioTypeAgent`, `ScenarioTypeNone`
+- New function `*AADAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*APIKeyAuthConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*AccessKeyAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `NewAccountCapabilityHostsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccountCapabilityHostsClient, error)`
+- New function `*AccountCapabilityHostsClient.BeginCreateOrUpdate(context.Context, string, string, string, CapabilityHost, *AccountCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AccountCapabilityHostsClientCreateOrUpdateResponse], error)`
+- New function `*AccountCapabilityHostsClient.BeginDelete(context.Context, string, string, string, *AccountCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[AccountCapabilityHostsClientDeleteResponse], error)`
+- New function `*AccountCapabilityHostsClient.Get(context.Context, string, string, string, *AccountCapabilityHostsClientGetOptions) (AccountCapabilityHostsClientGetResponse, error)`
+- New function `NewAccountConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccountConnectionsClient, error)`
+- New function `*AccountConnectionsClient.Create(context.Context, string, string, string, *AccountConnectionsClientCreateOptions) (AccountConnectionsClientCreateResponse, error)`
+- New function `*AccountConnectionsClient.Delete(context.Context, string, string, string, *AccountConnectionsClientDeleteOptions) (AccountConnectionsClientDeleteResponse, error)`
+- New function `*AccountConnectionsClient.Get(context.Context, string, string, string, *AccountConnectionsClientGetOptions) (AccountConnectionsClientGetResponse, error)`
+- New function `*AccountConnectionsClient.NewListPager(string, string, *AccountConnectionsClientListOptions) *runtime.Pager[AccountConnectionsClientListResponse]`
+- New function `*AccountConnectionsClient.Update(context.Context, string, string, string, *AccountConnectionsClientUpdateOptions) (AccountConnectionsClientUpdateResponse, error)`
+- New function `*AccountKeyAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*ClientFactory.NewAccountCapabilityHostsClient() *AccountCapabilityHostsClient`
+- New function `*ClientFactory.NewAccountConnectionsClient() *AccountConnectionsClient`
+- New function `*ClientFactory.NewProjectCapabilityHostsClient() *ProjectCapabilityHostsClient`
+- New function `*ClientFactory.NewProjectConnectionsClient() *ProjectConnectionsClient`
+- New function `*ClientFactory.NewProjectsClient() *ProjectsClient`
+- New function `*ConnectionPropertiesV2.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*CustomKeysConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*ManagedIdentityAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*OAuth2AuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*PATAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `NewProjectCapabilityHostsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectCapabilityHostsClient, error)`
+- New function `*ProjectCapabilityHostsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, CapabilityHost, *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProjectCapabilityHostsClientCreateOrUpdateResponse], error)`
+- New function `*ProjectCapabilityHostsClient.BeginDelete(context.Context, string, string, string, string, *ProjectCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[ProjectCapabilityHostsClientDeleteResponse], error)`
+- New function `*ProjectCapabilityHostsClient.Get(context.Context, string, string, string, string, *ProjectCapabilityHostsClientGetOptions) (ProjectCapabilityHostsClientGetResponse, error)`
+- New function `NewProjectConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectConnectionsClient, error)`
+- New function `*ProjectConnectionsClient.Create(context.Context, string, string, string, string, *ProjectConnectionsClientCreateOptions) (ProjectConnectionsClientCreateResponse, error)`
+- New function `*ProjectConnectionsClient.Delete(context.Context, string, string, string, string, *ProjectConnectionsClientDeleteOptions) (ProjectConnectionsClientDeleteResponse, error)`
+- New function `*ProjectConnectionsClient.Get(context.Context, string, string, string, string, *ProjectConnectionsClientGetOptions) (ProjectConnectionsClientGetResponse, error)`
+- New function `*ProjectConnectionsClient.NewListPager(string, string, string, *ProjectConnectionsClientListOptions) *runtime.Pager[ProjectConnectionsClientListResponse]`
+- New function `*ProjectConnectionsClient.Update(context.Context, string, string, string, string, *ProjectConnectionsClientUpdateOptions) (ProjectConnectionsClientUpdateResponse, error)`
+- New function `NewProjectsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectsClient, error)`
+- New function `*ProjectsClient.BeginCreate(context.Context, string, string, string, Project, *ProjectsClientBeginCreateOptions) (*runtime.Poller[ProjectsClientCreateResponse], error)`
+- New function `*ProjectsClient.BeginDelete(context.Context, string, string, string, *ProjectsClientBeginDeleteOptions) (*runtime.Poller[ProjectsClientDeleteResponse], error)`
+- New function `*ProjectsClient.Get(context.Context, string, string, string, *ProjectsClientGetOptions) (ProjectsClientGetResponse, error)`
+- New function `*ProjectsClient.NewListPager(string, string, *ProjectsClientListOptions) *runtime.Pager[ProjectsClientListResponse]`
+- New function `*ProjectsClient.BeginUpdate(context.Context, string, string, string, Project, *ProjectsClientBeginUpdateOptions) (*runtime.Poller[ProjectsClientUpdateResponse], error)`
+- New function `*SASAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*ServicePrincipalAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*UsernamePasswordAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*NoneAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New struct `AADAuthTypeConnectionProperties`
+- New struct `APIKeyAuthConnectionProperties`
+- New struct `AccessKeyAuthTypeConnectionProperties`
+- New struct `AccountKeyAuthTypeConnectionProperties`
+- New struct `CapabilityHost`
+- New struct `CapabilityHostProperties`
+- New struct `ConnectionAPIKey`
+- New struct `ConnectionAccessKey`
+- New struct `ConnectionAccountKey`
+- New struct `ConnectionManagedIdentity`
+- New struct `ConnectionOAuth2`
+- New struct `ConnectionPersonalAccessToken`
+- New struct `ConnectionPropertiesV2BasicResource`
+- New struct `ConnectionPropertiesV2BasicResourceArmPaginatedResult`
+- New struct `ConnectionServicePrincipal`
+- New struct `ConnectionSharedAccessSignature`
+- New struct `ConnectionUpdateContent`
+- New struct `ConnectionUsernamePassword`
+- New struct `CustomKeys`
+- New struct `CustomKeysConnectionProperties`
+- New struct `ManagedIdentityAuthTypeConnectionProperties`
+- New struct `NetworkInjections`
+- New struct `NoneAuthTypeConnectionProperties`
+- New struct `OAuth2AuthTypeConnectionProperties`
+- New struct `PATAuthTypeConnectionProperties`
+- New struct `Project`
+- New struct `ProjectListResult`
+- New struct `ProjectProperties`
+- New struct `ResourceBase`
+- New struct `SASAuthTypeConnectionProperties`
+- New struct `ServicePrincipalAuthTypeConnectionProperties`
+- New struct `UsernamePasswordAuthTypeConnectionProperties`
+- New field `AllowProjectManagement`, `AssociatedProjects`, `DefaultProject`, `NetworkInjections` in struct `AccountProperties`
+- New field `SpilloverDeploymentName` in struct `DeploymentProperties`
+
+
+## 1.8.0-beta.1 (2025-05-12)
+### Features Added
+
+- New value `ProvisioningStateCanceled` added to enum type `ProvisioningState`
+- New enum type `CapabilityHostKind` with values `CapabilityHostKindAgents`
+- New enum type `CapabilityHostProvisioningState` with values `CapabilityHostProvisioningStateCanceled`, `CapabilityHostProvisioningStateCreating`, `CapabilityHostProvisioningStateDeleting`, `CapabilityHostProvisioningStateFailed`, `CapabilityHostProvisioningStateSucceeded`, `CapabilityHostProvisioningStateUpdating`
+- New enum type `ConnectionAuthType` with values `ConnectionAuthTypeAAD`, `ConnectionAuthTypeAPIKey`, `ConnectionAuthTypeAccessKey`, `ConnectionAuthTypeAccountKey`, `ConnectionAuthTypeCustomKeys`, `ConnectionAuthTypeManagedIdentity`, `ConnectionAuthTypeNone`, `ConnectionAuthTypeOAuth2`, `ConnectionAuthTypePAT`, `ConnectionAuthTypeSAS`, `ConnectionAuthTypeServicePrincipal`, `ConnectionAuthTypeUsernamePassword`
+- New enum type `ConnectionCategory` with values `ConnectionCategoryADLSGen2`, `ConnectionCategoryAIServices`, `ConnectionCategoryAPIKey`, `ConnectionCategoryAmazonMws`, `ConnectionCategoryAmazonRdsForOracle`, `ConnectionCategoryAmazonRdsForSQLServer`, `ConnectionCategoryAmazonRedshift`, `ConnectionCategoryAmazonS3Compatible`, `ConnectionCategoryAzureBlob`, `ConnectionCategoryAzureDataExplorer`, `ConnectionCategoryAzureDatabricksDeltaLake`, `ConnectionCategoryAzureMariaDb`, `ConnectionCategoryAzureMySQLDb`, `ConnectionCategoryAzureOneLake`, `ConnectionCategoryAzureOpenAI`, `ConnectionCategoryAzurePostgresDb`, `ConnectionCategoryAzureSQLDb`, `ConnectionCategoryAzureSQLMi`, `ConnectionCategoryAzureSynapseAnalytics`, `ConnectionCategoryAzureTableStorage`, `ConnectionCategoryBingLLMSearch`, `ConnectionCategoryCassandra`, `ConnectionCategoryCognitiveSearch`, `ConnectionCategoryCognitiveService`, `ConnectionCategoryConcur`, `ConnectionCategoryContainerRegistry`, `ConnectionCategoryCosmosDb`, `ConnectionCategoryCosmosDbMongoDbAPI`, `ConnectionCategoryCouchbase`, `ConnectionCategoryCustomKeys`, `ConnectionCategoryDb2`, `ConnectionCategoryDrill`, `ConnectionCategoryDynamics`, `ConnectionCategoryDynamicsAx`, `ConnectionCategoryDynamicsCrm`, `ConnectionCategoryElasticsearch`, `ConnectionCategoryEloqua`, `ConnectionCategoryFileServer`, `ConnectionCategoryFtpServer`, `ConnectionCategoryGenericContainerRegistry`, `ConnectionCategoryGenericHTTP`, `ConnectionCategoryGenericRest`, `ConnectionCategoryGit`, `ConnectionCategoryGoogleAdWords`, `ConnectionCategoryGoogleBigQuery`, `ConnectionCategoryGoogleCloudStorage`, `ConnectionCategoryGreenplum`, `ConnectionCategoryHbase`, `ConnectionCategoryHdfs`, `ConnectionCategoryHive`, `ConnectionCategoryHubspot`, `ConnectionCategoryImpala`, `ConnectionCategoryInformix`, `ConnectionCategoryJira`, `ConnectionCategoryMagento`, `ConnectionCategoryManagedOnlineEndpoint`, `ConnectionCategoryMariaDb`, `ConnectionCategoryMarketo`, `ConnectionCategoryMicrosoftAccess`, `ConnectionCategoryMongoDbAtlas`, `ConnectionCategoryMongoDbV2`, `ConnectionCategoryMySQL`, `ConnectionCategoryNetezza`, `ConnectionCategoryODataRest`, `ConnectionCategoryOdbc`, `ConnectionCategoryOffice365`, `ConnectionCategoryOpenAI`, `ConnectionCategoryOracle`, `ConnectionCategoryOracleCloudStorage`, `ConnectionCategoryOracleServiceCloud`, `ConnectionCategoryPayPal`, `ConnectionCategoryPhoenix`, `ConnectionCategoryPinecone`, `ConnectionCategoryPostgreSQL`, `ConnectionCategoryPresto`, `ConnectionCategoryPythonFeed`, `ConnectionCategoryQuickBooks`, `ConnectionCategoryRedis`, `ConnectionCategoryResponsys`, `ConnectionCategoryS3`, `ConnectionCategorySQLServer`, `ConnectionCategorySalesforce`, `ConnectionCategorySalesforceMarketingCloud`, `ConnectionCategorySalesforceServiceCloud`, `ConnectionCategorySapBw`, `ConnectionCategorySapCloudForCustomer`, `ConnectionCategorySapEcc`, `ConnectionCategorySapHana`, `ConnectionCategorySapOpenHub`, `ConnectionCategorySapTable`, `ConnectionCategorySerp`, `ConnectionCategoryServerless`, `ConnectionCategoryServiceNow`, `ConnectionCategorySftp`, `ConnectionCategorySharePointOnlineList`, `ConnectionCategoryShopify`, `ConnectionCategorySnowflake`, `ConnectionCategorySpark`, `ConnectionCategorySquare`, `ConnectionCategorySybase`, `ConnectionCategoryTeradata`, `ConnectionCategoryVertica`, `ConnectionCategoryWebTable`, `ConnectionCategoryXero`, `ConnectionCategoryZoho`
+- New enum type `ConnectionGroup` with values `ConnectionGroupAzure`, `ConnectionGroupAzureAI`, `ConnectionGroupDatabase`, `ConnectionGroupFile`, `ConnectionGroupGenericProtocol`, `ConnectionGroupNoSQL`, `ConnectionGroupServicesAndApps`
+- New enum type `ManagedPERequirement` with values `ManagedPERequirementNotApplicable`, `ManagedPERequirementNotRequired`, `ManagedPERequirementRequired`
+- New enum type `ManagedPEStatus` with values `ManagedPEStatusActive`, `ManagedPEStatusInactive`, `ManagedPEStatusNotApplicable`
+- New enum type `ScenarioType` with values `ScenarioTypeAgent`, `ScenarioTypeNone`
+- New function `*AADAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*APIKeyAuthConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*AccessKeyAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `NewAccountCapabilityHostsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccountCapabilityHostsClient, error)`
+- New function `*AccountCapabilityHostsClient.BeginCreateOrUpdate(context.Context, string, string, string, CapabilityHost, *AccountCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AccountCapabilityHostsClientCreateOrUpdateResponse], error)`
+- New function `*AccountCapabilityHostsClient.BeginDelete(context.Context, string, string, string, *AccountCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[AccountCapabilityHostsClientDeleteResponse], error)`
+- New function `*AccountCapabilityHostsClient.Get(context.Context, string, string, string, *AccountCapabilityHostsClientGetOptions) (AccountCapabilityHostsClientGetResponse, error)`
+- New function `NewAccountConnectionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccountConnectionClient, error)`
+- New function `*AccountConnectionClient.Create(context.Context, string, string, string, *AccountConnectionClientCreateOptions) (AccountConnectionClientCreateResponse, error)`
+- New function `*AccountConnectionClient.Delete(context.Context, string, string, string, *AccountConnectionClientDeleteOptions) (AccountConnectionClientDeleteResponse, error)`
+- New function `*AccountConnectionClient.Get(context.Context, string, string, string, *AccountConnectionClientGetOptions) (AccountConnectionClientGetResponse, error)`
+- New function `*AccountConnectionClient.NewListPager(string, string, *AccountConnectionClientListOptions) *runtime.Pager[AccountConnectionClientListResponse]`
+- New function `*AccountConnectionClient.Update(context.Context, string, string, string, *AccountConnectionClientUpdateOptions) (AccountConnectionClientUpdateResponse, error)`
+- New function `*AccountKeyAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*ClientFactory.NewAccountCapabilityHostsClient() *AccountCapabilityHostsClient`
+- New function `*ClientFactory.NewAccountConnectionClient() *AccountConnectionClient`
+- New function `*ClientFactory.NewProjectCapabilityHostsClient() *ProjectCapabilityHostsClient`
+- New function `*ClientFactory.NewProjectConnectionClient() *ProjectConnectionClient`
+- New function `*ClientFactory.NewProjectsClient() *ProjectsClient`
+- New function `*ConnectionPropertiesV2.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*CustomKeysConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*ManagedIdentityAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*OAuth2AuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*PATAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `NewProjectCapabilityHostsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectCapabilityHostsClient, error)`
+- New function `*ProjectCapabilityHostsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, CapabilityHost, *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProjectCapabilityHostsClientCreateOrUpdateResponse], error)`
+- New function `*ProjectCapabilityHostsClient.BeginDelete(context.Context, string, string, string, string, *ProjectCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[ProjectCapabilityHostsClientDeleteResponse], error)`
+- New function `*ProjectCapabilityHostsClient.Get(context.Context, string, string, string, string, *ProjectCapabilityHostsClientGetOptions) (ProjectCapabilityHostsClientGetResponse, error)`
+- New function `NewProjectConnectionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectConnectionClient, error)`
+- New function `*ProjectConnectionClient.Create(context.Context, string, string, string, string, *ProjectConnectionClientCreateOptions) (ProjectConnectionClientCreateResponse, error)`
+- New function `*ProjectConnectionClient.Delete(context.Context, string, string, string, string, *ProjectConnectionClientDeleteOptions) (ProjectConnectionClientDeleteResponse, error)`
+- New function `*ProjectConnectionClient.Get(context.Context, string, string, string, string, *ProjectConnectionClientGetOptions) (ProjectConnectionClientGetResponse, error)`
+- New function `*ProjectConnectionClient.NewListPager(string, string, string, *ProjectConnectionClientListOptions) *runtime.Pager[ProjectConnectionClientListResponse]`
+- New function `*ProjectConnectionClient.Update(context.Context, string, string, string, string, *ProjectConnectionClientUpdateOptions) (ProjectConnectionClientUpdateResponse, error)`
+- New function `NewProjectsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectsClient, error)`
+- New function `*ProjectsClient.BeginCreate(context.Context, string, string, string, Project, *ProjectsClientBeginCreateOptions) (*runtime.Poller[ProjectsClientCreateResponse], error)`
+- New function `*ProjectsClient.BeginDelete(context.Context, string, string, string, *ProjectsClientBeginDeleteOptions) (*runtime.Poller[ProjectsClientDeleteResponse], error)`
+- New function `*ProjectsClient.Get(context.Context, string, string, string, *ProjectsClientGetOptions) (ProjectsClientGetResponse, error)`
+- New function `*ProjectsClient.NewListPager(string, string, *ProjectsClientListOptions) *runtime.Pager[ProjectsClientListResponse]`
+- New function `*ProjectsClient.BeginUpdate(context.Context, string, string, string, Project, *ProjectsClientBeginUpdateOptions) (*runtime.Poller[ProjectsClientUpdateResponse], error)`
+- New function `*SASAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*ServicePrincipalAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*UsernamePasswordAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New function `*NoneAuthTypeConnectionProperties.GetConnectionPropertiesV2() *ConnectionPropertiesV2`
+- New struct `AADAuthTypeConnectionProperties`
+- New struct `APIKeyAuthConnectionProperties`
+- New struct `AccessKeyAuthTypeConnectionProperties`
+- New struct `AccountKeyAuthTypeConnectionProperties`
+- New struct `CapabilityHost`
+- New struct `CapabilityHostProperties`
+- New struct `ConnectionAPIKey`
+- New struct `ConnectionAccessKey`
+- New struct `ConnectionAccountKey`
+- New struct `ConnectionManagedIdentity`
+- New struct `ConnectionOAuth2`
+- New struct `ConnectionPersonalAccessToken`
+- New struct `ConnectionPropertiesV2BasicResource`
+- New struct `ConnectionPropertiesV2BasicResourceArmPaginatedResult`
+- New struct `ConnectionServicePrincipal`
+- New struct `ConnectionSharedAccessSignature`
+- New struct `ConnectionUpdateContent`
+- New struct `ConnectionUsernamePassword`
+- New struct `CustomKeys`
+- New struct `CustomKeysConnectionProperties`
+- New struct `ManagedIdentityAuthTypeConnectionProperties`
+- New struct `NetworkInjections`
+- New struct `NoneAuthTypeConnectionProperties`
+- New struct `OAuth2AuthTypeConnectionProperties`
+- New struct `PATAuthTypeConnectionProperties`
+- New struct `Project`
+- New struct `ProjectListResult`
+- New struct `ProjectProperties`
+- New struct `ResourceBase`
+- New struct `SASAuthTypeConnectionProperties`
+- New struct `ServicePrincipalAuthTypeConnectionProperties`
+- New struct `UsernamePasswordAuthTypeConnectionProperties`
+- New field `AllowProjectManagement`, `AssociatedProjects`, `DefaultProject`, `NetworkInjections` in struct `AccountProperties`
+- New field `SpilloverDeploymentName` in struct `DeploymentProperties`
+
+
 ## 1.7.0 (2024-12-27)
 ### Features Added
 

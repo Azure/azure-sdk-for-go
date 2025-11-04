@@ -119,3 +119,26 @@ type ReplicasClientListByParentResponse struct {
 	// The response of a Replica list operation.
 	ReplicaListResult
 }
+
+// UsersClientCreateOrUpdateResponse contains the response from method UsersClient.BeginCreateOrUpdate.
+type UsersClientCreateOrUpdateResponse struct {
+	// Represents a Mongo cluster user.
+	User
+}
+
+// UsersClientDeleteResponse contains the response from method UsersClient.BeginDelete.
+type UsersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// UsersClientGetResponse contains the response from method UsersClient.Get.
+type UsersClientGetResponse struct {
+	// Represents a Mongo cluster user.
+	User
+}
+
+// UsersClientListByMongoClusterResponse contains the response from method UsersClient.NewListByMongoClusterPager.
+type UsersClientListByMongoClusterResponse struct {
+	// The response of a User list operation.
+	UserListResult
+}

@@ -64,7 +64,7 @@ func (l commitLink) Resolve() (ResolveResult, error) {
 		}
 	} else if tspConfig != "" {
 		remoteTspConfigPath := fmt.Sprintf("https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/%s", tspConfig)
-		exist, err := typespec.TspConfigExistEmitOption(remoteTspConfigPath, string(typespec.TypeSpec_GO))
+		exist, err := typespec.ExistGoConfigInTspConfig(remoteTspConfigPath)
 		if err != nil {
 			return nil, err
 		}

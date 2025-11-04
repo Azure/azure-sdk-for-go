@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_List.json
 func ExampleIpamPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,6 +62,7 @@ func ExampleIpamPoolsClient_NewListPager() {
 		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 			},
+		// 			Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 		// 			Properties: &armnetwork.IpamPoolProperties{
 		// 				Description: to.Ptr("Test description."),
 		// 				AddressPrefixes: []*string{
@@ -76,7 +77,7 @@ func ExampleIpamPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_Create.json
 func ExampleIpamPoolsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +96,7 @@ func ExampleIpamPoolsClient_BeginCreate() {
 				to.Ptr("10.0.0.0/24")},
 			ParentPoolName: to.Ptr(""),
 		},
-	}, nil)
+	}, &armnetwork.IpamPoolsClientBeginCreateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -121,6 +122,7 @@ func ExampleIpamPoolsClient_BeginCreate() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 	},
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.IpamPoolProperties{
 	// 		Description: to.Ptr("Test description."),
 	// 		AddressPrefixes: []*string{
@@ -133,7 +135,7 @@ func ExampleIpamPoolsClient_BeginCreate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_Update.json
 func ExampleIpamPoolsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +146,9 @@ func ExampleIpamPoolsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewIpamPoolsClient().Update(ctx, "rg1", "TestNetworkManager", "TestPool", &armnetwork.IpamPoolsClientUpdateOptions{Body: nil})
+	res, err := clientFactory.NewIpamPoolsClient().Update(ctx, "rg1", "TestNetworkManager", "TestPool", &armnetwork.IpamPoolsClientUpdateOptions{IfMatch: nil,
+		Body: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -166,6 +170,7 @@ func ExampleIpamPoolsClient_Update() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 	},
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.IpamPoolProperties{
 	// 		Description: to.Ptr("Test description."),
 	// 		AddressPrefixes: []*string{
@@ -178,7 +183,7 @@ func ExampleIpamPoolsClient_Update() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_Get.json
 func ExampleIpamPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,6 +216,7 @@ func ExampleIpamPoolsClient_Get() {
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 	},
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.IpamPoolProperties{
 	// 		Description: to.Ptr("Test description."),
 	// 		AddressPrefixes: []*string{
@@ -223,7 +229,7 @@ func ExampleIpamPoolsClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_Delete.json
 func ExampleIpamPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +240,7 @@ func ExampleIpamPoolsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewIpamPoolsClient().BeginDelete(ctx, "rg1", "TestNetworkManager", "TestPool", nil)
+	poller, err := clientFactory.NewIpamPoolsClient().BeginDelete(ctx, "rg1", "TestNetworkManager", "TestPool", &armnetwork.IpamPoolsClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -244,7 +250,7 @@ func ExampleIpamPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_GetPoolUsage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_GetPoolUsage.json
 func ExampleIpamPoolsClient_GetPoolUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -310,7 +316,7 @@ func ExampleIpamPoolsClient_GetPoolUsage() {
 	// 						}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_ListAssociatedResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_ListAssociatedResources.json
 func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,5 +1,60 @@
 # Release History
 
+## 2.1.0 (2025-07-29)
+### Features Added
+
+- New enum type `HostKind` with values `HostKindGeneral`, `HostKindSpecialized`
+- New enum type `HostMaintenance` with values `HostMaintenanceReplacement`, `HostMaintenanceUpgrade`
+- New enum type `HostProvisioningState` with values `HostProvisioningStateCanceled`, `HostProvisioningStateFailed`, `HostProvisioningStateSucceeded`
+- New enum type `ProvisionedNetworkProvisioningState` with values `ProvisionedNetworkProvisioningStateCanceled`, `ProvisionedNetworkProvisioningStateFailed`, `ProvisionedNetworkProvisioningStateSucceeded`
+- New enum type `ProvisionedNetworkTypes` with values `ProvisionedNetworkTypesEsxManagement`, `ProvisionedNetworkTypesEsxReplication`, `ProvisionedNetworkTypesHcxManagement`, `ProvisionedNetworkTypesHcxUplink`, `ProvisionedNetworkTypesVcenterManagement`, `ProvisionedNetworkTypesVmotion`, `ProvisionedNetworkTypesVsan`
+- New enum type `PureStoragePolicyProvisioningState` with values `PureStoragePolicyProvisioningStateCanceled`, `PureStoragePolicyProvisioningStateDeleting`, `PureStoragePolicyProvisioningStateFailed`, `PureStoragePolicyProvisioningStateSucceeded`, `PureStoragePolicyProvisioningStateUpdating`
+- New enum type `ResourceSKUResourceType` with values `ResourceSKUResourceTypePrivateClouds`, `ResourceSKUResourceTypePrivateCloudsClusters`
+- New enum type `ResourceSKURestrictionsReasonCode` with values `ResourceSKURestrictionsReasonCodeNotAvailableForSubscription`, `ResourceSKURestrictionsReasonCodeQuotaID`
+- New enum type `ResourceSKURestrictionsType` with values `ResourceSKURestrictionsTypeLocation`, `ResourceSKURestrictionsTypeZone`
+- New function `*ClientFactory.NewHostsClient() *HostsClient`
+- New function `*ClientFactory.NewProvisionedNetworksClient() *ProvisionedNetworksClient`
+- New function `*ClientFactory.NewPureStoragePoliciesClient() *PureStoragePoliciesClient`
+- New function `*ClientFactory.NewSKUsClient() *SKUsClient`
+- New function `*GeneralHostProperties.GetHostProperties() *HostProperties`
+- New function `*HostProperties.GetHostProperties() *HostProperties`
+- New function `NewHostsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*HostsClient, error)`
+- New function `*HostsClient.Get(context.Context, string, string, string, string, *HostsClientGetOptions) (HostsClientGetResponse, error)`
+- New function `*HostsClient.NewListPager(string, string, string, *HostsClientListOptions) *runtime.Pager[HostsClientListResponse]`
+- New function `NewProvisionedNetworksClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProvisionedNetworksClient, error)`
+- New function `*ProvisionedNetworksClient.Get(context.Context, string, string, string, *ProvisionedNetworksClientGetOptions) (ProvisionedNetworksClientGetResponse, error)`
+- New function `*ProvisionedNetworksClient.NewListPager(string, string, *ProvisionedNetworksClientListOptions) *runtime.Pager[ProvisionedNetworksClientListResponse]`
+- New function `NewPureStoragePoliciesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PureStoragePoliciesClient, error)`
+- New function `*PureStoragePoliciesClient.BeginCreateOrUpdate(context.Context, string, string, string, PureStoragePolicy, *PureStoragePoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PureStoragePoliciesClientCreateOrUpdateResponse], error)`
+- New function `*PureStoragePoliciesClient.BeginDelete(context.Context, string, string, string, *PureStoragePoliciesClientBeginDeleteOptions) (*runtime.Poller[PureStoragePoliciesClientDeleteResponse], error)`
+- New function `*PureStoragePoliciesClient.Get(context.Context, string, string, string, *PureStoragePoliciesClientGetOptions) (PureStoragePoliciesClientGetResponse, error)`
+- New function `*PureStoragePoliciesClient.NewListPager(string, string, *PureStoragePoliciesClientListOptions) *runtime.Pager[PureStoragePoliciesClientListResponse]`
+- New function `NewSKUsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SKUsClient, error)`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `*SpecializedHostProperties.GetHostProperties() *HostProperties`
+- New struct `GeneralHostProperties`
+- New struct `Host`
+- New struct `HostListResult`
+- New struct `PagedResourceSKU`
+- New struct `ProvisionedNetwork`
+- New struct `ProvisionedNetworkListResult`
+- New struct `ProvisionedNetworkProperties`
+- New struct `PureStoragePolicy`
+- New struct `PureStoragePolicyListResult`
+- New struct `PureStoragePolicyProperties`
+- New struct `PureStorageVolume`
+- New struct `ResourceSKU`
+- New struct `ResourceSKUCapabilities`
+- New struct `ResourceSKULocationInfo`
+- New struct `ResourceSKURestrictionInfo`
+- New struct `ResourceSKURestrictions`
+- New struct `ResourceSKUZoneDetails`
+- New struct `SpecializedHostProperties`
+- New field `ManagementNetwork`, `UplinkNetwork` in struct `AddonHcxProperties`
+- New field `PureStorageVolume` in struct `DatastoreProperties`
+- New field `Zones` in struct `PrivateCloud`
+
+
 ## 2.0.0 (2024-09-26)
 ### Breaking Changes
 

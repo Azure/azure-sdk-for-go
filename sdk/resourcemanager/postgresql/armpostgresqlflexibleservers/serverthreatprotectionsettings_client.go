@@ -43,7 +43,7 @@ func NewServerThreatProtectionSettingsClient(subscriptionID string, credential a
 // BeginCreateOrUpdate - Creates or updates a server's Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - threatProtectionName - The name of the Threat Protection state.
@@ -71,7 +71,7 @@ func (client *ServerThreatProtectionSettingsClient) BeginCreateOrUpdate(ctx cont
 // CreateOrUpdate - Creates or updates a server's Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName ThreatProtectionName, parameters ServerThreatProtectionSettingsModel, options *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerThreatProtectionSettingsClient.BeginCreateOrUpdate"
@@ -117,7 +117,7 @@ func (client *ServerThreatProtectionSettingsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -129,7 +129,7 @@ func (client *ServerThreatProtectionSettingsClient) createOrUpdateCreateRequest(
 // Get - Get a server's Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - threatProtectionName - The name of the Threat Protection state.
@@ -181,7 +181,7 @@ func (client *ServerThreatProtectionSettingsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +198,7 @@ func (client *ServerThreatProtectionSettingsClient) getHandleResponse(resp *http
 
 // NewListByServerPager - Get a list of server's Threat Protection state.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.NewListByServerPager
@@ -246,7 +246,7 @@ func (client *ServerThreatProtectionSettingsClient) listByServerCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

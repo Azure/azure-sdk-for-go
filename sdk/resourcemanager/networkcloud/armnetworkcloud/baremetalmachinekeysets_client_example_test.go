@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/BareMetalMachineKeySets_ListByCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachineKeySets_ListByCluster.json
 func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleBareMetalMachineKeySetsClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/BareMetalMachineKeySets_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachineKeySets_Get.json
 func ExampleBareMetalMachineKeySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleBareMetalMachineKeySetsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/BareMetalMachineKeySets_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachineKeySets_Create.json
 func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +241,9 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
 				}},
 		},
-	}, nil)
+	}, &armnetworkcloud.BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -317,7 +319,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/BareMetalMachineKeySets_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachineKeySets_Delete.json
 func ExampleBareMetalMachineKeySetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +330,9 @@ func ExampleBareMetalMachineKeySetsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBareMetalMachineKeySetsClient().BeginDelete(ctx, "resourceGroupName", "clusterName", "bareMetalMachineKeySetName", nil)
+	poller, err := clientFactory.NewBareMetalMachineKeySetsClient().BeginDelete(ctx, "resourceGroupName", "clusterName", "bareMetalMachineKeySetName", &armnetworkcloud.BareMetalMachineKeySetsClientBeginDeleteOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -338,7 +342,7 @@ func ExampleBareMetalMachineKeySetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3db6867b8e524ea6d1bc7a3bbb989fe50dd2f184/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/BareMetalMachineKeySets_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachineKeySets_Patch.json
 func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,7 +381,9 @@ func ExampleBareMetalMachineKeySetsClient_BeginUpdate() {
 			"key1": to.Ptr("myvalue1"),
 			"key2": to.Ptr("myvalue2"),
 		},
-	}, nil)
+	}, &armnetworkcloud.BareMetalMachineKeySetsClientBeginUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

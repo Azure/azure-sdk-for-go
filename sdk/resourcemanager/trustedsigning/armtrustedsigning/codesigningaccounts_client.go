@@ -26,7 +26,7 @@ type CodeSigningAccountsClient struct {
 // NewCodeSigningAccountsClient creates a new instance of CodeSigningAccountsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCodeSigningAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CodeSigningAccountsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewCodeSigningAccountsClient(subscriptionID string, credential azcore.Token
 // CheckNameAvailability - Checks that the trusted signing account name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - body - The CheckAvailability request
 //   - options - CodeSigningAccountsClientCheckNameAvailabilityOptions contains the optional parameters for the CodeSigningAccountsClient.CheckNameAvailability
 //     method.
@@ -80,7 +80,7 @@ func (client *CodeSigningAccountsClient) checkNameAvailabilityCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -102,7 +102,7 @@ func (client *CodeSigningAccountsClient) checkNameAvailabilityHandleResponse(res
 // BeginCreate - Create a trusted Signing Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - resource - Parameters to create the trusted signing account
@@ -129,7 +129,7 @@ func (client *CodeSigningAccountsClient) BeginCreate(ctx context.Context, resour
 // Create - Create a trusted Signing Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 func (client *CodeSigningAccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, resource CodeSigningAccount, options *CodeSigningAccountsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CodeSigningAccountsClient.BeginCreate"
@@ -171,7 +171,7 @@ func (client *CodeSigningAccountsClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -184,7 +184,7 @@ func (client *CodeSigningAccountsClient) createCreateRequest(ctx context.Context
 // BeginDelete - Delete a trusted signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - options - CodeSigningAccountsClientBeginDeleteOptions contains the optional parameters for the CodeSigningAccountsClient.BeginDelete
@@ -209,7 +209,7 @@ func (client *CodeSigningAccountsClient) BeginDelete(ctx context.Context, resour
 // Delete - Delete a trusted signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 func (client *CodeSigningAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *CodeSigningAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CodeSigningAccountsClient.BeginDelete"
@@ -251,16 +251,15 @@ func (client *CodeSigningAccountsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a trusted Signing Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - options - CodeSigningAccountsClientGetOptions contains the optional parameters for the CodeSigningAccountsClient.Get method.
@@ -306,7 +305,7 @@ func (client *CodeSigningAccountsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,7 +322,7 @@ func (client *CodeSigningAccountsClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Lists trusted signing accounts within a resource group.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CodeSigningAccountsClientListByResourceGroupOptions contains the optional parameters for the CodeSigningAccountsClient.NewListByResourceGroupPager
 //     method.
@@ -366,7 +365,7 @@ func (client *CodeSigningAccountsClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -383,7 +382,7 @@ func (client *CodeSigningAccountsClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - Lists trusted signing accounts within a subscription.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - options - CodeSigningAccountsClientListBySubscriptionOptions contains the optional parameters for the CodeSigningAccountsClient.NewListBySubscriptionPager
 //     method.
 func (client *CodeSigningAccountsClient) NewListBySubscriptionPager(options *CodeSigningAccountsClientListBySubscriptionOptions) *runtime.Pager[CodeSigningAccountsClientListBySubscriptionResponse] {
@@ -421,7 +420,7 @@ func (client *CodeSigningAccountsClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -439,7 +438,7 @@ func (client *CodeSigningAccountsClient) listBySubscriptionHandleResponse(resp *
 // BeginUpdate - Update a trusted signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Trusted Signing account name.
 //   - properties - Parameters supplied to update the trusted signing account
@@ -465,7 +464,7 @@ func (client *CodeSigningAccountsClient) BeginUpdate(ctx context.Context, resour
 // Update - Update a trusted signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-02-05-preview
+// Generated from API version 2025-10-13
 func (client *CodeSigningAccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, properties CodeSigningAccountPatch, options *CodeSigningAccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CodeSigningAccountsClient.BeginUpdate"
@@ -507,7 +506,7 @@ func (client *CodeSigningAccountsClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-05-preview")
+	reqQP.Set("api-version", "2025-10-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

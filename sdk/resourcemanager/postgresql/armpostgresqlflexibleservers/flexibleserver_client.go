@@ -43,7 +43,7 @@ func NewFlexibleServerClient(subscriptionID string, credential azcore.TokenCrede
 // BeginStartLtrBackup - Start the Long Term Retention Backup operation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Request body for operation
@@ -70,7 +70,7 @@ func (client *FlexibleServerClient) BeginStartLtrBackup(ctx context.Context, res
 // StartLtrBackup - Start the Long Term Retention Backup operation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 func (client *FlexibleServerClient) startLtrBackup(ctx context.Context, resourceGroupName string, serverName string, parameters LtrBackupRequest, options *FlexibleServerClientBeginStartLtrBackupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FlexibleServerClient.BeginStartLtrBackup"
@@ -112,7 +112,7 @@ func (client *FlexibleServerClient) startLtrBackupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +125,7 @@ func (client *FlexibleServerClient) startLtrBackupCreateRequest(ctx context.Cont
 // backup operation to succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Request body for operation
@@ -173,7 +173,7 @@ func (client *FlexibleServerClient) triggerLtrPreBackupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -43,7 +43,7 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreate - Create a specific backup for PostgreSQL flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -69,7 +69,7 @@ func (client *BackupsClient) BeginCreate(ctx context.Context, resourceGroupName 
 // Create - Create a specific backup for PostgreSQL flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 func (client *BackupsClient) create(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsClient.BeginCreate"
@@ -115,7 +115,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -124,7 +124,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 // BeginDelete - Deletes a specific backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -150,7 +150,7 @@ func (client *BackupsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Deletes a specific backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsClient.BeginDelete"
@@ -196,7 +196,7 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +205,7 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get specific backup for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -256,7 +256,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,7 +273,7 @@ func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClie
 
 // NewListByServerPager - List all the backups for a given server.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.NewListByServerPager
@@ -321,7 +321,7 @@ func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

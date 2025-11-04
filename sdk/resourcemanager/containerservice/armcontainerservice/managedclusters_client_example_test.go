@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/KubernetesVersions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/KubernetesVersions_List.json
 func ExampleManagedClustersClient_ListKubernetesVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleManagedClustersClient_ListKubernetesVersions() {
 	// 										}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersList.json
 func ExampleManagedClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleManagedClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersListByResourceGroup.json
 func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersGetUpgradeProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersGetUpgradeProfile.json
 func ExampleManagedClustersClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleManagedClustersClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersGetAccessProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersGetAccessProfile.json
 func ExampleManagedClustersClient_GetAccessProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +355,7 @@ func ExampleManagedClustersClient_GetAccessProfile() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +382,7 @@ func ExampleManagedClustersClient_ListClusterAdminCredentials() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterUserCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -411,7 +411,7 @@ func ExampleManagedClustersClient_ListClusterUserCredentials() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersListClusterCredentialResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersListClusterCredentialResult.json
 func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,7 +438,7 @@ func ExampleManagedClustersClient_ListClusterMonitoringUserCredentials() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersGet.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +552,7 @@ func ExampleManagedClustersClient_Get() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersAssociate_CRG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersAssociate_CRG.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_associateManagedClusterWithCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,11 +586,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_associateManagedClusterWit
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -667,7 +666,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_associateManagedClusterWit
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -721,7 +719,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_associateManagedClusterWit
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_MCSnapshot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_MCSnapshot.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingAManagedClusterSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -865,7 +863,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingA
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_Snapshot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_Snapshot.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingAnAgentPoolSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -902,11 +900,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingA
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(false),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -986,7 +983,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingA
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(false),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -1040,7 +1036,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterUsingA
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_EnableAIToolchainOperator.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_EnableAIToolchainOperator.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAiToolchainOperatorEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1196,7 +1192,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAi
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_ManagedNATGateway.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_ManagedNATGateway.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAksManagedNatGatewayAsOutboundType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1229,11 +1225,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAk
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -1309,7 +1304,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAk
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -1356,7 +1350,183 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAk
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/AdvancedNetworkingTransitEncryption.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAdvancedNetworkingTransitEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservice.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedClustersClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", armcontainerservice.ManagedCluster{
+		Location: to.Ptr("location1"),
+		Tags: map[string]*string{
+			"archv2": to.Ptr(""),
+			"tier":   to.Ptr("production"),
+		},
+		Properties: &armcontainerservice.ManagedClusterProperties{
+			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
+			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+				{
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
+				}},
+			DNSPrefix:         to.Ptr("dnsprefix1"),
+			EnableRBAC:        to.Ptr(true),
+			KubernetesVersion: to.Ptr(""),
+			LinuxProfile: &armcontainerservice.LinuxProfile{
+				AdminUsername: to.Ptr("azureuser"),
+				SSH: &armcontainerservice.SSHConfiguration{
+					PublicKeys: []*armcontainerservice.SSHPublicKey{
+						{
+							KeyData: to.Ptr("keydata"),
+						}},
+				},
+			},
+			NetworkProfile: &armcontainerservice.NetworkProfile{
+				AdvancedNetworking: &armcontainerservice.AdvancedNetworking{
+					Enabled: to.Ptr(true),
+					Observability: &armcontainerservice.AdvancedNetworkingObservability{
+						Enabled: to.Ptr(false),
+					},
+					Security: &armcontainerservice.AdvancedNetworkingSecurity{
+						AdvancedNetworkPolicies: to.Ptr(armcontainerservice.AdvancedNetworkPoliciesFQDN),
+						Enabled:                 to.Ptr(true),
+						TransitEncryption: &armcontainerservice.AdvancedNetworkingSecurityTransitEncryption{
+							Type: to.Ptr(armcontainerservice.TransitEncryptionTypeWireGuard),
+						},
+					},
+				},
+				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+						Count: to.Ptr[int32](2),
+					},
+				},
+				LoadBalancerSKU:   to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+				NetworkDataplane:  to.Ptr(armcontainerservice.NetworkDataplaneCilium),
+				NetworkPlugin:     to.Ptr(armcontainerservice.NetworkPluginAzure),
+				NetworkPluginMode: to.Ptr(armcontainerservice.NetworkPluginModeOverlay),
+				OutboundType:      to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+			},
+			ServicePrincipalProfile: &armcontainerservice.ManagedClusterServicePrincipalProfile{
+				ClientID: to.Ptr("clientid"),
+				Secret:   to.Ptr("secret"),
+			},
+		},
+		SKU: &armcontainerservice.ManagedClusterSKU{
+			Name: to.Ptr(armcontainerservice.ManagedClusterSKUName("Basic")),
+			Tier: to.Ptr(armcontainerservice.ManagedClusterSKUTierFree),
+		},
+	}, &armcontainerservice.ManagedClustersClientBeginCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ManagedCluster = armcontainerservice.ManagedCluster{
+	// 	Name: to.Ptr("clustername1"),
+	// 	Type: to.Ptr("Microsoft.ContainerService/ManagedClusters"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1"),
+	// 	Location: to.Ptr("location1"),
+	// 	Tags: map[string]*string{
+	// 		"archv2": to.Ptr(""),
+	// 		"tier": to.Ptr("production"),
+	// 	},
+	// 	Properties: &armcontainerservice.ManagedClusterProperties{
+	// 		AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
+	// 			{
+	// 				Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+	// 				Count: to.Ptr[int32](3),
+	// 				CurrentOrchestratorVersion: to.Ptr("1.9.6"),
+	// 				EnableNodePublicIP: to.Ptr(true),
+	// 				MaxPods: to.Ptr[int32](110),
+	// 				Mode: to.Ptr(armcontainerservice.AgentPoolModeSystem),
+	// 				NodeImageVersion: to.Ptr("AKSUbuntu:1604:2020.03.11"),
+	// 				OrchestratorVersion: to.Ptr("1.9.6"),
+	// 				OSType: to.Ptr(armcontainerservice.OSTypeLinux),
+	// 				ProvisioningState: to.Ptr("Succeeded"),
+	// 				VMSize: to.Ptr("Standard_DS2_v2"),
+	// 				Name: to.Ptr("nodepool1"),
+	// 		}},
+	// 		DNSPrefix: to.Ptr("dnsprefix1"),
+	// 		EnableRBAC: to.Ptr(true),
+	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
+	// 		KubernetesVersion: to.Ptr("1.9.6"),
+	// 		LinuxProfile: &armcontainerservice.LinuxProfile{
+	// 			AdminUsername: to.Ptr("azureuser"),
+	// 			SSH: &armcontainerservice.SSHConfiguration{
+	// 				PublicKeys: []*armcontainerservice.SSHPublicKey{
+	// 					{
+	// 						KeyData: to.Ptr("keydata"),
+	// 				}},
+	// 			},
+	// 		},
+	// 		MaxAgentPools: to.Ptr[int32](1),
+	// 		NetworkProfile: &armcontainerservice.NetworkProfile{
+	// 			AdvancedNetworking: &armcontainerservice.AdvancedNetworking{
+	// 				Enabled: to.Ptr(true),
+	// 				Observability: &armcontainerservice.AdvancedNetworkingObservability{
+	// 					Enabled: to.Ptr(false),
+	// 				},
+	// 				Security: &armcontainerservice.AdvancedNetworkingSecurity{
+	// 					AdvancedNetworkPolicies: to.Ptr(armcontainerservice.AdvancedNetworkPoliciesFQDN),
+	// 					Enabled: to.Ptr(true),
+	// 					TransitEncryption: &armcontainerservice.AdvancedNetworkingSecurityTransitEncryption{
+	// 						Type: to.Ptr(armcontainerservice.TransitEncryptionTypeWireGuard),
+	// 					},
+	// 				},
+	// 			},
+	// 			DNSServiceIP: to.Ptr("10.0.0.10"),
+	// 			IPFamilies: []*armcontainerservice.IPFamily{
+	// 				to.Ptr(armcontainerservice.IPFamilyIPv4)},
+	// 				LoadBalancerProfile: &armcontainerservice.ManagedClusterLoadBalancerProfile{
+	// 					AllocatedOutboundPorts: to.Ptr[int32](2000),
+	// 					EffectiveOutboundIPs: []*armcontainerservice.ResourceReference{
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MC_rg1/providers/Microsoft.Network/publicIPAddresses/mgdoutboundip1"),
+	// 						},
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MC_rg1/providers/Microsoft.Network/publicIPAddresses/mgdoutboundip2"),
+	// 					}},
+	// 					IdleTimeoutInMinutes: to.Ptr[int32](10),
+	// 					ManagedOutboundIPs: &armcontainerservice.ManagedClusterLoadBalancerProfileManagedOutboundIPs{
+	// 						Count: to.Ptr[int32](2),
+	// 					},
+	// 				},
+	// 				LoadBalancerSKU: to.Ptr(armcontainerservice.LoadBalancerSKUStandard),
+	// 				NetworkDataplane: to.Ptr(armcontainerservice.NetworkDataplaneCilium),
+	// 				NetworkPlugin: to.Ptr(armcontainerservice.NetworkPluginAzure),
+	// 				NetworkPluginMode: to.Ptr(armcontainerservice.NetworkPluginModeOverlay),
+	// 				OutboundType: to.Ptr(armcontainerservice.OutboundTypeLoadBalancer),
+	// 				PodCidr: to.Ptr("10.244.0.0/16"),
+	// 				PodCidrs: []*string{
+	// 					to.Ptr("10.244.0.0/16")},
+	// 					ServiceCidr: to.Ptr("10.0.0.0/16"),
+	// 					ServiceCidrs: []*string{
+	// 						to.Ptr("10.0.0.0/16")},
+	// 					},
+	// 					NodeResourceGroup: to.Ptr("MC_rg1_clustername1_location1"),
+	// 					ProvisioningState: to.Ptr("Succeeded"),
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAzureKeyVaultSecretsProviderAddon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1397,11 +1567,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAz
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -1486,7 +1655,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAz
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -1534,8 +1702,8 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithAz
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_EnableCustomCATrust.json
-func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCustomCaTrustCertificatesPopulatedAndCustomCaTrustEnabled() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_CustomCATrustCertificates.json
+func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCustomCaTrustCertificatesPopulated() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1555,24 +1723,22 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCu
 			AddonProfiles: map[string]*armcontainerservice.ManagedClusterAddonProfile{},
 			AgentPoolProfiles: []*armcontainerservice.ManagedClusterAgentPoolProfile{
 				{
-					Type:                to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
-					Count:               to.Ptr[int32](3),
-					EnableCustomCATrust: to.Ptr(true),
-					EnableNodePublicIP:  to.Ptr(true),
-					Mode:                to.Ptr(armcontainerservice.AgentPoolModeSystem),
-					OSType:              to.Ptr(armcontainerservice.OSTypeLinux),
-					VMSize:              to.Ptr("Standard_DS2_v2"),
-					Name:                to.Ptr("nodepool1"),
+					Type:               to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
+					Count:              to.Ptr[int32](3),
+					EnableNodePublicIP: to.Ptr(true),
+					Mode:               to.Ptr(armcontainerservice.AgentPoolModeSystem),
+					OSType:             to.Ptr(armcontainerservice.OSTypeLinux),
+					VMSize:             to.Ptr("Standard_DS2_v2"),
+					Name:               to.Ptr("nodepool1"),
 				}},
 			AutoScalerProfile: &armcontainerservice.ManagedClusterPropertiesAutoScalerProfile{
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -1636,7 +1802,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCu
 	// 				Type: to.Ptr(armcontainerservice.AgentPoolTypeVirtualMachineScaleSets),
 	// 				Count: to.Ptr[int32](3),
 	// 				CurrentOrchestratorVersion: to.Ptr("1.9.6"),
-	// 				EnableCustomCATrust: to.Ptr(true),
 	// 				EnableNodePublicIP: to.Ptr(true),
 	// 				MaxPods: to.Ptr[int32](110),
 	// 				Mode: to.Ptr(armcontainerservice.AgentPoolModeSystem),
@@ -1653,7 +1818,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCu
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -1711,7 +1875,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithCu
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_DedicatedHostGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_DedicatedHostGroup.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1744,11 +1908,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDe
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(false),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -1824,7 +1987,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDe
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(false),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -1878,7 +2040,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithDe
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEncryptionAtHostEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1912,11 +2074,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEn
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -1993,7 +2154,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEn
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -2047,7 +2207,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithEn
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_EnabledFIPS.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_EnabledFIPS.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFipsEnabledOs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2081,11 +2241,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFi
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(false),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -2162,7 +2321,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFi
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(false),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -2216,7 +2374,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithFi
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_GPUMIG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_GPUMIG.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGpumig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2250,10 +2408,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGp
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
 			HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
 				HTTPProxy:  to.Ptr("http://myproxy.server.com:8080"),
 				HTTPSProxy: to.Ptr("https://myproxy.server.com:8080"),
@@ -2339,7 +2496,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGp
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
@@ -2401,7 +2557,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithGp
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_HTTPProxy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_HTTPProxy.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHttpProxyConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2434,10 +2590,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHt
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
 			HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
 				HTTPProxy:  to.Ptr("http://myproxy.server.com:8080"),
 				HTTPSProxy: to.Ptr("https://myproxy.server.com:8080"),
@@ -2522,7 +2677,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHt
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
@@ -2584,7 +2738,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithHt
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_Premium.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_Premium.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithLongTermSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2621,10 +2775,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithLo
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DNSPrefix:         to.Ptr("dnsprefix1"),
+			EnableRBAC:        to.Ptr(true),
+			KubernetesVersion: to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -2704,7 +2857,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithLo
 	// 			ScanInterval: to.Ptr("20s"),
 	// 		},
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-ee788a1f.hcp.location1.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -2764,7 +2916,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithLo
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_NodeAutoProvisioning.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_NodeAutoProvisioning.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNodeAutoProvisioning() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2793,10 +2945,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 					VMSize:             to.Ptr("Standard_DS2_v2"),
 					Name:               to.Ptr("nodepool1"),
 				}},
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DNSPrefix:         to.Ptr("dnsprefix1"),
+			EnableRBAC:        to.Ptr(true),
+			KubernetesVersion: to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -2866,7 +3017,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 	// 				Name: to.Ptr("nodepool1"),
 	// 		}},
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -2916,7 +3066,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_NodePublicIPPrefix.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_NodePublicIPPrefix.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNodePublicIpPrefix() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2950,11 +3100,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -3031,7 +3180,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -3085,7 +3233,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithNo
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_OSSKU.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_OSSKU.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3119,10 +3267,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOs
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
 			HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
 				HTTPProxy:  to.Ptr("http://myproxy.server.com:8080"),
 				HTTPSProxy: to.Ptr("https://myproxy.server.com:8080"),
@@ -3208,7 +3355,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOs
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		HTTPProxyConfig: &armcontainerservice.ManagedClusterHTTPProxyConfig{
@@ -3270,7 +3416,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithOs
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_PPG.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_PPG.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPpg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3304,11 +3450,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPp
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -3385,7 +3530,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPp
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -3439,7 +3583,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPp
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_PodIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_PodIdentity.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPodIdentityEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3472,11 +3616,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPo
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -3556,7 +3699,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPo
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -3614,7 +3756,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithPo
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_DisableRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_DisableRunCommand.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRunCommandDisabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3651,10 +3793,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRu
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DNSPrefix:         to.Ptr("dnsprefix1"),
+			EnableRBAC:        to.Ptr(true),
+			KubernetesVersion: to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -3733,7 +3874,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRu
 	// 			ScanInterval: to.Ptr("20s"),
 	// 		},
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-ee788a1f.hcp.location1.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -3789,7 +3929,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithRu
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_SecurityProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_SecurityProfile.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithSecurityProfileConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3902,7 +4042,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithSe
 	// 		}},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -3976,7 +4115,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithSe
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_EnableUltraSSD.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_EnableUltraSSD.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUltraSsdEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4010,11 +4149,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUl
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -4091,7 +4229,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUl
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -4145,7 +4282,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUl
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_VirtualMachines.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_VirtualMachines.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithVirtualMachinesPoolType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4174,11 +4311,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithVi
 					VMSize:     to.Ptr("Standard_DS2_v2"),
 					Name:       to.Ptr("nodepool1"),
 				}},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(false),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -4246,7 +4382,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithVi
 	// 		}},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(false),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -4297,7 +4432,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithVi
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_IngressProfile_WebAppRouting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_IngressProfile_WebAppRouting.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithWebAppRoutingIngressProfileConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4396,7 +4531,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithWe
 	// 		}},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		IngressProfile: &armcontainerservice.ManagedClusterIngressProfile{
@@ -4457,7 +4591,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithWe
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_UserAssignedNATGateway.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_UserAssignedNATGateway.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUserAssignedNatGatewayAsOutboundType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4490,11 +4624,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUs
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -4565,7 +4698,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUs
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -4599,7 +4731,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedClusterWithUs
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateClusterWithPublicFqdnSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4637,10 +4769,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DNSPrefix:         to.Ptr("dnsprefix1"),
+			EnableRBAC:        to.Ptr(true),
+			KubernetesVersion: to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -4721,7 +4852,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 	// 			ScanInterval: to.Ptr("20s"),
 	// 		},
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-ee788a1f.hcp.location1.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -4776,7 +4906,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateClusterWithFqdnSubdomainSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4814,10 +4944,9 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			FqdnSubdomain:           to.Ptr("domain1"),
-			KubernetesVersion:       to.Ptr(""),
+			EnableRBAC:        to.Ptr(true),
+			FqdnSubdomain:     to.Ptr("domain1"),
+			KubernetesVersion: to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -4896,7 +5025,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 	// 			ScaleDownDelayAfterAdd: to.Ptr("15m"),
 	// 			ScanInterval: to.Ptr("20s"),
 	// 		},
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		FqdnSubdomain: to.Ptr("domain1"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -4951,7 +5079,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createManagedPrivateCluste
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClusterWithEnableAzureRbac() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4992,11 +5120,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClus
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -5081,7 +5208,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClus
 	// 			},
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			EnablePodSecurityPolicy: to.Ptr(true),
 	// 			EnableRBAC: to.Ptr(true),
 	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 			KubernetesVersion: to.Ptr("1.9.6"),
@@ -5135,7 +5261,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateAadManagedClus
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_Update.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5184,11 +5310,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 				ScanInterval:             to.Ptr("20s"),
 				SkipNodesWithSystemPods:  to.Ptr("false"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -5289,7 +5414,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 			},
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			EnablePodSecurityPolicy: to.Ptr(true),
 	// 			EnableRBAC: to.Ptr(true),
 	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 			KubernetesVersion: to.Ptr("1.9.6"),
@@ -5349,7 +5473,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_AzureServiceMesh.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_AzureServiceMesh.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithAzureServiceMesh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5390,11 +5514,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -5505,7 +5628,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 		},
 	// 		DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 		DNSPrefix: to.Ptr("dnsprefix1"),
-	// 		EnablePodSecurityPolicy: to.Ptr(true),
 	// 		EnableRBAC: to.Ptr(true),
 	// 		Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 		KubernetesVersion: to.Ptr("1.9.6"),
@@ -5581,7 +5703,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_UpdateWithAHUB.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_UpdateWithAHUB.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithEnableAhub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5624,11 +5746,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -5718,7 +5839,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 			},
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			EnablePodSecurityPolicy: to.Ptr(true),
 	// 			EnableRBAC: to.Ptr(true),
 	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 			KubernetesVersion: to.Ptr("1.9.6"),
@@ -5773,7 +5893,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_UpdateWithEnableNamespaceResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_UpdateWithEnableNamespaceResources.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithEnableNamespaceResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5813,7 +5933,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 			DiskEncryptionSetID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 			DNSPrefix:                to.Ptr("dnsprefix1"),
 			EnableNamespaceResources: to.Ptr(true),
-			EnablePodSecurityPolicy:  to.Ptr(true),
 			EnableRBAC:               to.Ptr(true),
 			KubernetesVersion:        to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
@@ -5896,7 +6015,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 			DNSPrefix: to.Ptr("dnsprefix1"),
 	// 			EnableNamespaceResources: to.Ptr(true),
-	// 			EnablePodSecurityPolicy: to.Ptr(true),
 	// 			EnableRBAC: to.Ptr(true),
 	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 			KubernetesVersion: to.Ptr("1.9.6"),
@@ -5950,7 +6068,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithWindowsGMsaEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5993,11 +6111,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 				ScaleDownDelayAfterAdd: to.Ptr("15m"),
 				ScanInterval:           to.Ptr("20s"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -6089,7 +6206,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 			},
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			EnablePodSecurityPolicy: to.Ptr(true),
 	// 			EnableRBAC: to.Ptr(true),
 	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 			KubernetesVersion: to.Ptr("1.9.6"),
@@ -6146,7 +6262,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersCreate_DualStackNetworking.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersCreate_DualStackNetworking.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedClusterWithDualStackNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6195,11 +6311,10 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 				ScanInterval:             to.Ptr("20s"),
 				SkipNodesWithSystemPods:  to.Ptr("false"),
 			},
-			DiskEncryptionSetID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-			DNSPrefix:               to.Ptr("dnsprefix1"),
-			EnablePodSecurityPolicy: to.Ptr(true),
-			EnableRBAC:              to.Ptr(true),
-			KubernetesVersion:       to.Ptr(""),
+			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+			DNSPrefix:           to.Ptr("dnsprefix1"),
+			EnableRBAC:          to.Ptr(true),
+			KubernetesVersion:   to.Ptr(""),
 			LinuxProfile: &armcontainerservice.LinuxProfile{
 				AdminUsername: to.Ptr("azureuser"),
 				SSH: &armcontainerservice.SSHConfiguration{
@@ -6297,7 +6412,6 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 			},
 	// 			DiskEncryptionSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
 	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			EnablePodSecurityPolicy: to.Ptr(true),
 	// 			EnableRBAC: to.Ptr(true),
 	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.hcp.eastus.azmk8s.io"),
 	// 			KubernetesVersion: to.Ptr("1.9.6"),
@@ -6358,7 +6472,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersUpdateTags.json
 func ExampleManagedClustersClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6435,7 +6549,7 @@ func ExampleManagedClustersClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersDelete.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6458,7 +6572,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersResetServicePrincipalProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersResetServicePrincipalProfile.json
 func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6482,7 +6596,7 @@ func ExampleManagedClustersClient_BeginResetServicePrincipalProfile() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersResetAADProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersResetAADProfile.json
 func ExampleManagedClustersClient_BeginResetAADProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6508,7 +6622,7 @@ func ExampleManagedClustersClient_BeginResetAADProfile() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersAbortOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersAbortOperation.json
 func ExampleManagedClustersClient_BeginAbortLatestOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6529,7 +6643,7 @@ func ExampleManagedClustersClient_BeginAbortLatestOperation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersRotateClusterCertificates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersRotateClusterCertificates.json
 func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6550,7 +6664,7 @@ func ExampleManagedClustersClient_BeginRotateClusterCertificates() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersRotateServiceAccountSigningKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersRotateServiceAccountSigningKeys.json
 func ExampleManagedClustersClient_BeginRotateServiceAccountSigningKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6571,7 +6685,7 @@ func ExampleManagedClustersClient_BeginRotateServiceAccountSigningKeys() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersStop.json
 func ExampleManagedClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6592,7 +6706,7 @@ func ExampleManagedClustersClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersStart.json
 func ExampleManagedClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6613,7 +6727,7 @@ func ExampleManagedClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/RunCommandRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/RunCommandRequest.json
 func ExampleManagedClustersClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6651,7 +6765,7 @@ func ExampleManagedClustersClient_BeginRunCommand() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/RunCommandResultFailed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/RunCommandResultFailed.json
 func ExampleManagedClustersClient_GetCommandResult_commandFailedResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6678,7 +6792,7 @@ func ExampleManagedClustersClient_GetCommandResult_commandFailedResult() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/RunCommandResultSucceed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/RunCommandResultSucceed.json
 func ExampleManagedClustersClient_GetCommandResult_commandSucceedResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6708,7 +6822,7 @@ func ExampleManagedClustersClient_GetCommandResult_commandSucceedResult() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/OutboundNetworkDependenciesEndpointsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/OutboundNetworkDependenciesEndpointsList.json
 func ExampleManagedClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6933,7 +7047,7 @@ func ExampleManagedClustersClient_NewListOutboundNetworkDependenciesEndpointsPag
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/GetGuardrailsVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/GetGuardrailsVersions.json
 func ExampleManagedClustersClient_GetGuardrailsVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6962,7 +7076,7 @@ func ExampleManagedClustersClient_GetGuardrailsVersions() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ListGuardrailsVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ListGuardrailsVersions.json
 func ExampleManagedClustersClient_NewListGuardrailsVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6999,7 +7113,7 @@ func ExampleManagedClustersClient_NewListGuardrailsVersionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/GetSafeguardsVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/GetSafeguardsVersions.json
 func ExampleManagedClustersClient_GetSafeguardsVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7028,7 +7142,7 @@ func ExampleManagedClustersClient_GetSafeguardsVersions() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ListSafeguardsVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ListSafeguardsVersions.json
 func ExampleManagedClustersClient_NewListSafeguardsVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7065,7 +7179,7 @@ func ExampleManagedClustersClient_NewListSafeguardsVersionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersList_MeshRevisionProfiles.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersList_MeshRevisionProfiles.json
 func ExampleManagedClustersClient_NewListMeshRevisionProfilesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7129,7 +7243,7 @@ func ExampleManagedClustersClient_NewListMeshRevisionProfilesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersGet_MeshRevisionProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersGet_MeshRevisionProfile.json
 func ExampleManagedClustersClient_GetMeshRevisionProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7185,7 +7299,7 @@ func ExampleManagedClustersClient_GetMeshRevisionProfile() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersList_MeshUpgradeProfiles.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersList_MeshUpgradeProfiles.json
 func ExampleManagedClustersClient_NewListMeshUpgradeProfilesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7232,7 +7346,7 @@ func ExampleManagedClustersClient_NewListMeshUpgradeProfilesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/ManagedClustersGet_MeshUpgradeProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/ManagedClustersGet_MeshUpgradeProfile.json
 func ExampleManagedClustersClient_GetMeshUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7271,7 +7385,7 @@ func ExampleManagedClustersClient_GetMeshUpgradeProfile() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/29bc17223449e7a865a6f38552eacfd213d812fd/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-02-02-preview/examples/LoadBalancers_Rebalance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/examples/LoadBalancers_Rebalance.json
 func ExampleManagedClustersClient_BeginRebalanceLoadBalancers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

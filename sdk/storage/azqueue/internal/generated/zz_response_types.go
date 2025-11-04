@@ -140,7 +140,7 @@ type QueueClientGetAccessPolicyResponse struct {
 // QueueClientGetPropertiesResponse contains the response from method QueueClient.GetProperties.
 type QueueClientGetPropertiesResponse struct {
 	// ApproximateMessagesCount contains the information returned from the x-ms-approximate-messages-count header response.
-	ApproximateMessagesCount *int32
+	ApproximateMessagesCount *int64
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time

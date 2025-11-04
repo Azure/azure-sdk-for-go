@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspaceList.json
 func ExampleVerifierWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,7 @@ func ExampleVerifierWorkspacesClient_NewListPager() {
 		// 				LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 			},
 		// 			Location: to.Ptr("eastus"),
+		// 			Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 		// 			Properties: &armnetwork.VerifierWorkspaceProperties{
 		// 				Description: to.Ptr("A sample verfier workspace"),
 		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -69,7 +70,7 @@ func ExampleVerifierWorkspacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspaceGet.json
 func ExampleVerifierWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,6 +101,7 @@ func ExampleVerifierWorkspacesClient_Get() {
 	// 		LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 	},
 	// 	Location: to.Ptr("eastus"),
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.VerifierWorkspaceProperties{
 	// 		Description: to.Ptr("A sample workspace"),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -107,7 +109,7 @@ func ExampleVerifierWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspacePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspacePut.json
 func ExampleVerifierWorkspacesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +125,7 @@ func ExampleVerifierWorkspacesClient_Create() {
 		Properties: &armnetwork.VerifierWorkspaceProperties{
 			Description: to.Ptr("A sample workspace"),
 		},
-	}, nil)
+	}, &armnetwork.VerifierWorkspacesClientCreateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -143,6 +145,7 @@ func ExampleVerifierWorkspacesClient_Create() {
 	// 		LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 	},
 	// 	Location: to.Ptr("eastus"),
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.VerifierWorkspaceProperties{
 	// 		Description: to.Ptr("A sample workspace"),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -150,7 +153,7 @@ func ExampleVerifierWorkspacesClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspacePatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspacePatch.json
 func ExampleVerifierWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +164,9 @@ func ExampleVerifierWorkspacesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVerifierWorkspacesClient().Update(ctx, "rg1", "testNetworkManager", "testWorkspace", &armnetwork.VerifierWorkspacesClientUpdateOptions{Body: nil})
+	res, err := clientFactory.NewVerifierWorkspacesClient().Update(ctx, "rg1", "testNetworkManager", "testWorkspace", &armnetwork.VerifierWorkspacesClientUpdateOptions{IfMatch: nil,
+		Body: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -184,6 +189,7 @@ func ExampleVerifierWorkspacesClient_Update() {
 	// 	Tags: map[string]*string{
 	// 		"color": to.Ptr("blue"),
 	// 	},
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.VerifierWorkspaceProperties{
 	// 		Description: to.Ptr("A sample workspace"),
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -191,7 +197,7 @@ func ExampleVerifierWorkspacesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspaceDelete.json
 func ExampleVerifierWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +208,7 @@ func ExampleVerifierWorkspacesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVerifierWorkspacesClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testWorkspace", nil)
+	poller, err := clientFactory.NewVerifierWorkspacesClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testWorkspace", &armnetwork.VerifierWorkspacesClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

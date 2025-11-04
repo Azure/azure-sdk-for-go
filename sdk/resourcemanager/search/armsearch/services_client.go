@@ -45,7 +45,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 // must be globally unique since they are part of the service URI (https://.search.windows.net).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - checkNameAvailabilityInput - The resource name and type to check.
 //   - SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
 //     method.
@@ -85,7 +85,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
@@ -110,14 +110,14 @@ func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // all properties will be updated with the given values.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service to create or update. Search service names must only contain
 //     lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-//     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be globally unique
-//     since they are part of the service URI (https://.search.windows.net). You
-//     cannot change the service name after the service is created.
+//     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be unique since
+//     they are part of the service URI (https://.search.windows.net). You cannot
+//     change the service name after the service is created.
 //   - service - The definition of the search service to create or update.
 //   - SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
 //     method.
@@ -144,7 +144,7 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // all properties will be updated with the given values.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, searchServiceName string, service Service, searchManagementRequestOptions *SearchManagementRequestOptions, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginCreateOrUpdate"
@@ -186,7 +186,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
@@ -201,7 +201,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // Delete - Deletes a search service in the given resource group, along with its associated resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
@@ -249,7 +249,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
@@ -261,7 +261,7 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets the search service with the given name in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
@@ -310,7 +310,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
@@ -330,7 +330,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // NewListByResourceGroupPager - Gets a list of all Search services in the given resource group.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
@@ -376,7 +376,7 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
@@ -396,7 +396,7 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Gets a list of all Search services in the given subscription.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - SearchManagementRequestOptions - SearchManagementRequestOptions contains a group of parameters for the AdminKeysClient.Get
 //     method.
 //   - options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.NewListBySubscriptionPager
@@ -436,7 +436,7 @@ func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
@@ -457,7 +457,7 @@ func (client *ServicesClient) listBySubscriptionHandleResponse(resp *http.Respon
 // Update - Updates an existing search service in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service to update.
@@ -507,7 +507,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
@@ -531,7 +531,7 @@ func (client *ServicesClient) updateHandleResponse(resp *http.Response) (Service
 // BeginUpgrade - Upgrades the Azure AI Search service to the latest version available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 //     Azure Resource Manager API or the portal.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
@@ -557,7 +557,7 @@ func (client *ServicesClient) BeginUpgrade(ctx context.Context, resourceGroupNam
 // Upgrade - Upgrades the Azure AI Search service to the latest version available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-05-01
 func (client *ServicesClient) upgrade(ctx context.Context, resourceGroupName string, searchServiceName string, options *ServicesClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginUpgrade"
@@ -599,7 +599,7 @@ func (client *ServicesClient) upgradeCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

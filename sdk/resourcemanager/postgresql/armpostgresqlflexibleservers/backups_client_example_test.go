@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/BackupCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/BackupCreate.json
 func ExampleBackupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleBackupsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBackupsClient().BeginCreate(ctx, "TestGroup", "postgresqltestserver", "backup_20210615T160516", nil)
+	poller, err := clientFactory.NewBackupsClient().BeginCreate(ctx, "TestGroup", "postgresqltestserver", "backup_20250303T160516", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -40,18 +40,18 @@ func ExampleBackupsClient_BeginCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ServerBackup = armpostgresqlflexibleservers.ServerBackup{
-	// 	Name: to.Ptr("backup_20210615T160516"),
+	// 	Name: to.Ptr("backup_20250303T160516"),
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/backup_20210615T160516"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/backup_20250303T160516"),
 	// 	Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
 	// 		BackupType: to.Ptr(armpostgresqlflexibleservers.OriginCustomerOnDemand),
-	// 		CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T16:05:19.902Z"); return t}()),
+	// 		CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-03T16:05:19.902Z"); return t}()),
 	// 		Source: to.Ptr("Customer Initiated"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/BackupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/BackupDelete.json
 func ExampleBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleBackupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBackupsClient().BeginDelete(ctx, "TestGroup", "testserver", "backup_20210615T160516", nil)
+	poller, err := clientFactory.NewBackupsClient().BeginDelete(ctx, "TestGroup", "testserver", "backup_20250303T160516", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -72,7 +72,7 @@ func ExampleBackupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/BackupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/BackupGet.json
 func ExampleBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleBackupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBackupsClient().Get(ctx, "TestGroup", "postgresqltestserver", "daily_20210615T160516", nil)
+	res, err := clientFactory.NewBackupsClient().Get(ctx, "TestGroup", "postgresqltestserver", "daily_20250303T160516", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,18 +91,18 @@ func ExampleBackupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ServerBackup = armpostgresqlflexibleservers.ServerBackup{
-	// 	Name: to.Ptr("daily_20210615T160516"),
+	// 	Name: to.Ptr("daily_20250303T160516"),
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210615T160516"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20250303T160516"),
 	// 	Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
 	// 		BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-	// 		CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T16:05:19.902Z"); return t}()),
+	// 		CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-03T16:05:19.902Z"); return t}()),
 	// 		Source: to.Ptr("Automatic"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ecee919199a39cc0d864410f540aa105bf7cdb64/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/BackupListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/BackupListByServer.json
 func ExampleBackupsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,113 +127,23 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// page.ServerBackupListResult = armpostgresqlflexibleservers.ServerBackupListResult{
 		// 	Value: []*armpostgresqlflexibleservers.ServerBackup{
 		// 		{
-		// 			Name: to.Ptr("daily_20210615T160516"),
+		// 			Name: to.Ptr("backup_638766209959406043"),
 		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210615T160516"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/backup_638766209959406043"),
 		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
 		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T16:05:19.902Z"); return t}()),
+		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-03T17:49:56.940Z"); return t}()),
 		// 				Source: to.Ptr("Automatic"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("daily_20210616T160520"),
+		// 			Name: to.Ptr("ondemandbackup-03032025-1"),
 		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210616T160520"),
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/ondemandbackup-03032025-1"),
 		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T16:05:23.924Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210617T160525"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210617T160525"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T16:05:28.124Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210618T160529"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210618T160529"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-18T16:05:32.273Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210619T160533"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210619T160533"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T16:05:36.860Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210620T160538"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210620T160538"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-20T16:05:41.920Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210621T160543"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210621T160543"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-21T16:05:48.852Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210622T160803"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210622T160803"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-22T16:08:06.312Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210622T210807"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210622T210807"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-22T21:08:10.505Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210623T212413"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210623T212413"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-23T21:24:16.940Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("daily_20210624T061328"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/postgresqltestserver/backups/daily_20210624T061328"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerBackupProperties{
-		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginFull),
-		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T06:13:31.496Z"); return t}()),
-		// 				Source: to.Ptr("Automatic"),
+		// 				BackupType: to.Ptr(armpostgresqlflexibleservers.OriginCustomerOnDemand),
+		// 				CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-03T20:53:22.446Z"); return t}()),
+		// 				Source: to.Ptr("Customer Initiated"),
 		// 			},
 		// 	}},
 		// }

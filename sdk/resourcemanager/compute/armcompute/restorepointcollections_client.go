@@ -25,8 +25,7 @@ type RestorePointCollectionsClient struct {
 }
 
 // NewRestorePointCollectionsClient creates a new instance of RestorePointCollectionsClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorePointCollectionsClient, error) {
@@ -45,8 +44,8 @@ func NewRestorePointCollectionsClient(subscriptionID string, credential azcore.T
 // for more details. When updating a restore point collection, only tags may be modified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - restorePointCollectionName - The name of the restore point collection.
 //   - parameters - Parameters supplied to the Create or Update restore point collection operation.
 //   - options - RestorePointCollectionsClientCreateOrUpdateOptions contains the optional parameters for the RestorePointCollectionsClient.CreateOrUpdate
@@ -93,7 +92,7 @@ func (client *RestorePointCollectionsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -115,9 +114,9 @@ func (client *RestorePointCollectionsClient) createOrUpdateHandleResponse(resp *
 // points.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
-//   - restorePointCollectionName - The name of the Restore Point Collection.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - restorePointCollectionName - The name of the restore point collection.
 //   - options - RestorePointCollectionsClientBeginDeleteOptions contains the optional parameters for the RestorePointCollectionsClient.BeginDelete
 //     method.
 func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*runtime.Poller[RestorePointCollectionsClientDeleteResponse], error) {
@@ -127,7 +126,8 @@ func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, re
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RestorePointCollectionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -141,7 +141,7 @@ func (client *RestorePointCollectionsClient) BeginDelete(ctx context.Context, re
 // points.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 func (client *RestorePointCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *RestorePointCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RestorePointCollectionsClient.BeginDelete"
@@ -183,7 +183,7 @@ func (client *RestorePointCollectionsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,8 +192,8 @@ func (client *RestorePointCollectionsClient) deleteCreateRequest(ctx context.Con
 // Get - The operation to get the restore point collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - restorePointCollectionName - The name of the restore point collection.
 //   - options - RestorePointCollectionsClientGetOptions contains the optional parameters for the RestorePointCollectionsClient.Get
 //     method.
@@ -242,7 +242,7 @@ func (client *RestorePointCollectionsClient) getCreateRequest(ctx context.Contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,8 +259,8 @@ func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Gets the list of restore point collections in a resource group.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RestorePointCollectionsClientListOptions contains the optional parameters for the RestorePointCollectionsClient.NewListPager
 //     method.
 func (client *RestorePointCollectionsClient) NewListPager(resourceGroupName string, options *RestorePointCollectionsClientListOptions) *runtime.Pager[RestorePointCollectionsClientListResponse] {
@@ -302,7 +302,7 @@ func (client *RestorePointCollectionsClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Respo
 // to get the next page of restore point collections. Do this till nextLink is not null to fetch all
 // the restore point collections.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-04-01
 //   - options - RestorePointCollectionsClientListAllOptions contains the optional parameters for the RestorePointCollectionsClient.NewListAllPager
 //     method.
 func (client *RestorePointCollectionsClient) NewListAllPager(options *RestorePointCollectionsClientListAllOptions) *runtime.Pager[RestorePointCollectionsClientListAllResponse] {
@@ -359,7 +359,7 @@ func (client *RestorePointCollectionsClient) listAllCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,8 +377,8 @@ func (client *RestorePointCollectionsClient) listAllHandleResponse(resp *http.Re
 // Update - The operation to update the restore point collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - resourceGroupName - The name of the resource group.
+// Generated from API version 2025-04-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - restorePointCollectionName - The name of the restore point collection.
 //   - parameters - Parameters supplied to the Update restore point collection operation.
 //   - options - RestorePointCollectionsClientUpdateOptions contains the optional parameters for the RestorePointCollectionsClient.Update
@@ -425,7 +425,7 @@ func (client *RestorePointCollectionsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

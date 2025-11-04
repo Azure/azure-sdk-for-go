@@ -199,14 +199,14 @@ type MigrationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the PostgreSQLServerManagementClient.CheckMigrationNameAvailability
+// PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the PostgreSQLManagementClient.CheckMigrationNameAvailability
 // method.
-type PostgreSQLServerManagementClientCheckMigrationNameAvailabilityOptions struct {
+type PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -244,6 +244,11 @@ type PrivateLinkResourcesClientGetOptions struct {
 // PrivateLinkResourcesClientListByServerOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByServerPager
 // method.
 type PrivateLinkResourcesClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaUsagesClientListOptions contains the optional parameters for the QuotaUsagesClient.NewListPager method.
+type QuotaUsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -328,6 +333,64 @@ type ServersClientListByResourceGroupOptions struct {
 
 // ServersClientListOptions contains the optional parameters for the ServersClient.NewListPager method.
 type ServersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TuningConfigurationClientBeginDisableOptions contains the optional parameters for the TuningConfigurationClient.BeginDisable
+// method.
+type TuningConfigurationClientBeginDisableOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TuningConfigurationClientBeginEnableOptions contains the optional parameters for the TuningConfigurationClient.BeginEnable
+// method.
+type TuningConfigurationClientBeginEnableOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TuningConfigurationClientBeginStartSessionOptions contains the optional parameters for the TuningConfigurationClient.BeginStartSession
+// method.
+type TuningConfigurationClientBeginStartSessionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TuningConfigurationClientBeginStopSessionOptions contains the optional parameters for the TuningConfigurationClient.BeginStopSession
+// method.
+type TuningConfigurationClientBeginStopSessionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TuningConfigurationClientListSessionDetailsOptions contains the optional parameters for the TuningConfigurationClient.NewListSessionDetailsPager
+// method.
+type TuningConfigurationClientListSessionDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TuningConfigurationClientListSessionsOptions contains the optional parameters for the TuningConfigurationClient.NewListSessionsPager
+// method.
+type TuningConfigurationClientListSessionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TuningIndexClientListRecommendationsOptions contains the optional parameters for the TuningIndexClient.NewListRecommendationsPager
+// method.
+type TuningIndexClientListRecommendationsOptions struct {
+	// Recommendations list filter. Retrieves recommendations based on type.
+	RecommendationType *RecommendationType
+}
+
+// TuningOptionsClientGetOptions contains the optional parameters for the TuningOptionsClient.Get method.
+type TuningOptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TuningOptionsClientListByServerOptions contains the optional parameters for the TuningOptionsClient.NewListByServerPager
+// method.
+type TuningOptionsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 

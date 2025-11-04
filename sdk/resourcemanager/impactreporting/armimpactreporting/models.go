@@ -37,11 +37,11 @@ type Connector struct {
 	// The resource-specific properties for this resource.
 	Properties *ConnectorProperties
 
-	// READ-ONLY; The name of the connector
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -121,11 +121,11 @@ type ImpactCategory struct {
 	// The resource-specific properties for this resource.
 	Properties *ImpactCategoryProperties
 
-	// READ-ONLY; Name of the impact category
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -181,11 +181,11 @@ type Insight struct {
 	// The resource-specific properties for this resource.
 	Properties *InsightProperties
 
-	// READ-ONLY; Name of the insight
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -240,7 +240,9 @@ type InsightProperties struct {
 type InsightPropertiesAdditionalDetails struct {
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -357,11 +359,11 @@ type WorkloadImpact struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadImpactProperties
 
-	// READ-ONLY; workloadImpact resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -391,7 +393,7 @@ type WorkloadImpactProperties struct {
 	StartDateTime *time.Time
 
 	// Additional fields related to impact, applicable fields per resource type are list under /impactCategories API
-	AdditionalProperties *WorkloadImpactPropertiesAdditionalProperties
+	AdditionalProperties map[string]any
 
 	// The ARM correlation ids, this is important field for control plane related impacts
 	ArmCorrelationIDs []*string
@@ -433,7 +435,4 @@ type WorkloadImpactProperties struct {
 
 	// READ-ONLY; Time at which impact is reported
 	ReportedTimeUTC *time.Time
-}
-
-type WorkloadImpactPropertiesAdditionalProperties struct {
 }

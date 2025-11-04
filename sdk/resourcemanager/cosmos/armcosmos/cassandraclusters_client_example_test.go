@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterListBySubscription.json
 func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("cassandra-prod"),
 		// 			Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/cassandraClusters"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/cassandraClusters"),
 		// 			Location: to.Ptr("West US"),
 		// 			Tags: map[string]*string{
 		// 			},
@@ -103,7 +103,7 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
 func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("cassandra-prod"),
 		// 			Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters"),
 		// 			Location: to.Ptr("West US"),
 		// 			Tags: map[string]*string{
 		// 			},
@@ -188,7 +188,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterGet.json
 func ExampleCassandraClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +209,7 @@ func ExampleCassandraClustersClient_Get() {
 	// res.ClusterResource = armcosmos.ClusterResource{
 	// 	Name: to.Ptr("cassandra-prod"),
 	// 	Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 	Location: to.Ptr("West US"),
 	// 	Tags: map[string]*string{
 	// 	},
@@ -265,7 +265,7 @@ func ExampleCassandraClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterDelete.json
 func ExampleCassandraClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleCassandraClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterCreate.json
 func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	// res.ClusterResource = armcosmos.ClusterResource{
 	// 	Name: to.Ptr("cassandra-prod"),
 	// 	Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 	Location: to.Ptr("West US"),
 	// 	Tags: map[string]*string{
 	// 	},
@@ -396,7 +396,7 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterPatch.json
 func ExampleCassandraClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +455,7 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	// 				Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
 	// 		}},
 	// 		ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
-	// 		DelegatedManagementSubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+	// 		DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
 	// 		ExternalGossipCertificates: []*armcosmos.Certificate{
 	// 			{
 	// 				Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
@@ -499,7 +499,7 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraCommand.json
 func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,10 +511,7 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCassandraClustersClient().BeginInvokeCommand(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.CommandPostBody{
-		Arguments: map[string]*string{
-			"status": to.Ptr(""),
-		},
-		Command: to.Ptr("nodetool"),
+		Command: to.Ptr("nodetool status"),
 		Host:    to.Ptr("10.0.1.12"),
 	}, nil)
 	if err != nil {
@@ -526,200 +523,7 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraCommandAsync.json
-func ExampleCassandraClustersClient_BeginInvokeCommandAsync() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraClustersClient().BeginInvokeCommandAsync(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.CommandAsyncPostBody{
-		Arguments: map[string]any{
-			"status": "",
-		},
-		Command: to.Ptr("nodetool"),
-		Host:    to.Ptr("10.0.1.12"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CommandPublicResource = armcosmos.CommandPublicResource{
-	// 	Arguments: map[string]any{
-	// 		"status": "",
-	// 	},
-	// 	CassandraStopStart: to.Ptr(false),
-	// 	Command: to.Ptr("nodetool"),
-	// 	Host: to.Ptr("10.0.1.12"),
-	// 	IsAdmin: to.Ptr(false),
-	// 	OutputFile: to.Ptr("301fc7c1-397f-4e4a-89db-478f61f89d67"),
-	// 	ReadWrite: to.Ptr(false),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraListCommand.json
-func ExampleCassandraClustersClient_NewListCommandPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCassandraClustersClient().NewListCommandPager("cassandra-prod-rg", "cassandra-prod", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ListCommands = armcosmos.ListCommands{
-		// 	Value: []*armcosmos.CommandPublicResource{
-		// 		{
-		// 			Arguments: map[string]any{
-		// 				"status": "",
-		// 			},
-		// 			CassandraStopStart: to.Ptr(false),
-		// 			Command: to.Ptr("nodetool"),
-		// 			CommandID: to.Ptr("1234"),
-		// 			Host: to.Ptr("10.0.1.12"),
-		// 			ReadWrite: to.Ptr(true),
-		// 			Status: to.Ptr(armcosmos.CommandStatus("Enqueued")),
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraCommandResult.json
-func ExampleCassandraClustersClient_GetCommandAsync() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraClustersClient().GetCommandAsync(ctx, "cassandra-prod-rg", "cassandra-prod", "318653d0-3da5-4814-b8f6-429f2af0b2a4", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CommandPublicResource = armcosmos.CommandPublicResource{
-	// 	Arguments: map[string]any{
-	// 		"status": "",
-	// 	},
-	// 	CassandraStopStart: to.Ptr(false),
-	// 	Command: to.Ptr("nodetool"),
-	// 	Host: to.Ptr("10.0.1.12"),
-	// 	IsAdmin: to.Ptr(false),
-	// 	OutputFile: to.Ptr("318653d0-3da5-4814-b8f6-429f2af0b2a4"),
-	// 	ReadWrite: to.Ptr(false),
-	// 	Result: to.Ptr("{\"exitCode\":0, \"CommandOutput\":\"RESULT\"}"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraBackupsList.json
-func ExampleCassandraClustersClient_NewListBackupsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCassandraClustersClient().NewListBackupsPager("cassandra-prod-rg", "cassandra-prod", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ListBackups = armcosmos.ListBackups{
-		// 	Value: []*armcosmos.BackupResource{
-		// 		{
-		// 			BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:10:17.296Z"); return t}()),
-		// 			BackupID: to.Ptr("2517222701827037570"),
-		// 			BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:10:17.296Z"); return t}()),
-		// 			BackupState: to.Ptr(armcosmos.BackupStateInitiated),
-		// 		},
-		// 		{
-		// 			BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.384Z"); return t}()),
-		// 			BackupID: to.Ptr("2517222704776158382"),
-		// 			BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.384Z"); return t}()),
-		// 			BackupState: to.Ptr(armcosmos.BackupStateInProgress),
-		// 		},
-		// 		{
-		// 			BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.384Z"); return t}()),
-		// 			BackupID: to.Ptr("2517222704776158383"),
-		// 			BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.384Z"); return t}()),
-		// 			BackupState: to.Ptr(armcosmos.BackupStateSucceeded),
-		// 			BackupStopTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.384Z"); return t}()),
-		// 		},
-		// 		{
-		// 			BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.384Z"); return t}()),
-		// 			BackupID: to.Ptr("2517222704776158384"),
-		// 			BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.384Z"); return t}()),
-		// 			BackupState: to.Ptr(armcosmos.BackupStateFailed),
-		// 			BackupStopTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.384Z"); return t}()),
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraBackup.json
-func ExampleCassandraClustersClient_GetBackup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraClustersClient().GetBackup(ctx, "cassandra-prod-rg", "cassandra-prod", "1611250348", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.BackupResource = armcosmos.BackupResource{
-	// 	BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.384Z"); return t}()),
-	// 	BackupID: to.Ptr("2517222704776158383"),
-	// 	BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.384Z"); return t}()),
-	// 	BackupState: to.Ptr(armcosmos.BackupStateSucceeded),
-	// 	BackupStopTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.384Z"); return t}()),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterDeallocate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterDeallocate.json
 func ExampleCassandraClustersClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -730,7 +534,7 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCassandraClustersClient().BeginDeallocate(ctx, "cassandra-prod-rg", "cassandra-prod", &armcosmos.CassandraClustersClientBeginDeallocateOptions{XMSForceDeallocate: nil})
+	poller, err := clientFactory.NewCassandraClustersClient().BeginDeallocate(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -740,7 +544,7 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraClusterStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraClusterStart.json
 func ExampleCassandraClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -761,7 +565,7 @@ func ExampleCassandraClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/069a65e8a6d1a6c0c58d9a9d97610b7103b6e8a5/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-12-01-preview/examples/CosmosDBManagedCassandraStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/011ecc5633300a5eefe43dde748f269d39e96458/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/CosmosDBManagedCassandraStatus.json
 func ExampleCassandraClustersClient_Status() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -863,7 +667,6 @@ func ExampleCassandraClustersClient_Status() {
 	// 							DiskFreeKB: to.Ptr[int64](1001252352),
 	// 							DiskUsedKB: to.Ptr[int64](757540),
 	// 							HostID: to.Ptr("e16ada14-39db-462b-9f9e-5b5f6beb8bbd"),
-	// 							IsLatestModel: to.Ptr(true),
 	// 							Load: to.Ptr("93.2 MiB"),
 	// 							MemoryBuffersAndCachedKB: to.Ptr[int64](10453856),
 	// 							MemoryFreeKB: to.Ptr[int64](36104980),

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorCreate.json
 func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitorV1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitor
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorV2Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorV2Create.json
 func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitorV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitor
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorCreateWithArcNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorCreateWithArcNetwork.json
 func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitorWithArcNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleConnectionMonitorsClient_BeginCreateOrUpdate_createConnectionMonitor
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorGet.json
 func ExampleConnectionMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +447,7 @@ func ExampleConnectionMonitorsClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorDelete.json
 func ExampleConnectionMonitorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +468,7 @@ func ExampleConnectionMonitorsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorUpdateTags.json
 func ExampleConnectionMonitorsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,7 +519,7 @@ func ExampleConnectionMonitorsClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorStop.json
 func ExampleConnectionMonitorsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,83 +540,7 @@ func ExampleConnectionMonitorsClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorStart.json
-func ExampleConnectionMonitorsClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewConnectionMonitorsClient().BeginStart(ctx, "rg1", "nw1", "cm1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorQuery.json
-func ExampleConnectionMonitorsClient_BeginQuery() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewConnectionMonitorsClient().BeginQuery(ctx, "rg1", "nw1", "cm1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ConnectionMonitorQueryResult = armnetwork.ConnectionMonitorQueryResult{
-	// 	SourceStatus: to.Ptr(armnetwork.ConnectionMonitorSourceStatusActive),
-	// 	States: []*armnetwork.ConnectionStateSnapshot{
-	// 		{
-	// 			ConnectionState: to.Ptr(armnetwork.ConnectionStateReachable),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-08T05:12:41.526Z"); return t}()),
-	// 			EvaluationState: to.Ptr(armnetwork.EvaluationStateCompleted),
-	// 			Hops: []*armnetwork.ConnectivityHop{
-	// 				{
-	// 					Type: to.Ptr("Source"),
-	// 					Address: to.Ptr("10.1.1.4"),
-	// 					ID: to.Ptr("7dbbe7aa-60ba-4650-831e-63d775d38e9e"),
-	// 					Issues: []*armnetwork.ConnectivityIssue{
-	// 					},
-	// 					NextHopIDs: []*string{
-	// 						to.Ptr("75c8d819-b208-4584-a311-1aa45ce753f9")},
-	// 						ResourceID: to.Ptr("subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic0/ipConfigurations/ipconfig1"),
-	// 					},
-	// 					{
-	// 						Type: to.Ptr("VirtualNetwork"),
-	// 						Address: to.Ptr("192.168.100.4"),
-	// 						ID: to.Ptr("75c8d819-b208-4584-a311-1aa45ce753f9"),
-	// 						Issues: []*armnetwork.ConnectivityIssue{
-	// 						},
-	// 						NextHopIDs: []*string{
-	// 						},
-	// 						ResourceID: to.Ptr("subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic1/ipConfigurations/ipconfig1"),
-	// 				}},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-08T03:42:33.338Z"); return t}()),
-	// 		}},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkWatcherConnectionMonitorList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherConnectionMonitorList.json
 func ExampleConnectionMonitorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

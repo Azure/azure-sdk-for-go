@@ -1,0 +1,5 @@
+path_classifiers:
+  generated:
+    - "sdk/**/fake"
+  tests:
+    - "sdk/internal/perf"

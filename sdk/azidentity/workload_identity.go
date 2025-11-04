@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -54,6 +55,11 @@ type WorkloadIdentityCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
+	// EnableAzureTokenProxy determines whether the credential reads token proxy configuration from environment variables.
+	// When this value is true and proxy configuration isn't present or this value is false, the credential will request
+	// tokens directly from Entra ID.
+	EnableAzureTokenProxy bool
+
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
 
@@ -87,14 +93,22 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 			return nil, errors.New("no tenant ID specified. Check pod configuration or set TenantID in the options")
 		}
 	}
+
 	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
-	caco := ClientAssertionCredentialOptions{
+	caco := &ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Cache:                      options.Cache,
 		ClientOptions:              options.ClientOptions,
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
-	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, &caco)
+
+	if options.EnableAzureTokenProxy {
+		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
+			return nil, err
+		}
+	}
+
+	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, caco)
 	if err != nil {
 		return nil, err
 	}

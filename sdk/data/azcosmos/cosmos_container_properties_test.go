@@ -43,6 +43,24 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 					{Path: "/someCompositeIndex",
 						Order: CompositeIndexAscending},
 				}},
+			VectorIndexes: []VectorIndex{
+				{
+					Path: "/vector1",
+					Type: VectorIndexTypeFlat,
+				},
+				{
+					Path: "/embeddings/textVector",
+					Type: VectorIndexTypeDiskANN,
+				},
+			},
+			FullTextIndexes: []FullTextIndex{
+				{
+					Path: "/text",
+				},
+				{
+					Path: "/description",
+				},
+			},
 		},
 		UniqueKeyPolicy: &UniqueKeyPolicy{
 			UniqueKeys: []UniqueKey{
@@ -52,6 +70,35 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		ConflictResolutionPolicy: &ConflictResolutionPolicy{
 			Mode:           ConflictResolutionModeLastWriteWins,
 			ResolutionPath: "/someResolutionPath",
+		},
+		VectorEmbeddingPolicy: &VectorEmbeddingPolicy{
+			VectorEmbeddings: []VectorEmbedding{
+				{
+					Path:             "/vector1",
+					DataType:         VectorDataTypeFloat32,
+					DistanceFunction: VectorDistanceFunctionCosine,
+					Dimensions:       1536,
+				},
+				{
+					Path:             "/embeddings/textVector",
+					DataType:         VectorDataTypeUint8,
+					DistanceFunction: VectorDistanceFunctionEuclidean,
+					Dimensions:       768,
+				},
+			},
+		},
+		FullTextPolicy: &FullTextPolicy{
+			DefaultLanguage: "en-US",
+			FullTextPaths: []FullTextPath{
+				{
+					Path:     "/text",
+					Language: "en-US",
+				},
+				{
+					Path:     "/description",
+					Language: "en-US",
+				},
+			},
 		},
 	}
 
@@ -134,6 +181,38 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		t.Errorf("Expected IndexingPolicy.CompositeIndexes[0][0].Path to be %s, but got %s", properties.IndexingPolicy.CompositeIndexes[0][0].Path, otherProperties.IndexingPolicy.CompositeIndexes[0][0].Path)
 	}
 
+	if len(otherProperties.IndexingPolicy.VectorIndexes) != len(properties.IndexingPolicy.VectorIndexes) {
+		t.Errorf("Expected VectorIndexes length to be %d, but got %d", len(properties.IndexingPolicy.VectorIndexes), len(otherProperties.IndexingPolicy.VectorIndexes))
+	}
+
+	if otherProperties.IndexingPolicy.VectorIndexes[0].Path != properties.IndexingPolicy.VectorIndexes[0].Path {
+		t.Errorf("Expected VectorIndexes[0].Path to be %s, but got %s", properties.IndexingPolicy.VectorIndexes[0].Path, otherProperties.IndexingPolicy.VectorIndexes[0].Path)
+	}
+
+	if otherProperties.IndexingPolicy.VectorIndexes[0].Type != properties.IndexingPolicy.VectorIndexes[0].Type {
+		t.Errorf("Expected VectorIndexes[0].Type to be %s, but got %s", properties.IndexingPolicy.VectorIndexes[0].Type, otherProperties.IndexingPolicy.VectorIndexes[0].Type)
+	}
+
+	if otherProperties.IndexingPolicy.VectorIndexes[1].Path != properties.IndexingPolicy.VectorIndexes[1].Path {
+		t.Errorf("Expected VectorIndexes[1].Path to be %s, but got %s", properties.IndexingPolicy.VectorIndexes[1].Path, otherProperties.IndexingPolicy.VectorIndexes[1].Path)
+	}
+
+	if otherProperties.IndexingPolicy.VectorIndexes[1].Type != properties.IndexingPolicy.VectorIndexes[1].Type {
+		t.Errorf("Expected VectorIndexes[1].Type to be %s, but got %s", properties.IndexingPolicy.VectorIndexes[1].Type, otherProperties.IndexingPolicy.VectorIndexes[1].Type)
+	}
+
+	if len(otherProperties.IndexingPolicy.FullTextIndexes) != len(properties.IndexingPolicy.FullTextIndexes) {
+		t.Errorf("Expected FullTextIndexes length to be %d, but got %d", len(properties.IndexingPolicy.FullTextIndexes), len(otherProperties.IndexingPolicy.FullTextIndexes))
+	}
+
+	if otherProperties.IndexingPolicy.FullTextIndexes[0].Path != properties.IndexingPolicy.FullTextIndexes[0].Path {
+		t.Errorf("Expected FullTextIndexes[0].Path to be %s, but got %s", properties.IndexingPolicy.FullTextIndexes[0].Path, otherProperties.IndexingPolicy.FullTextIndexes[0].Path)
+	}
+
+	if otherProperties.IndexingPolicy.FullTextIndexes[1].Path != properties.IndexingPolicy.FullTextIndexes[1].Path {
+		t.Errorf("Expected FullTextIndexes[1].Path to be %s, but got %s", properties.IndexingPolicy.FullTextIndexes[1].Path, otherProperties.IndexingPolicy.FullTextIndexes[1].Path)
+	}
+
 	if otherProperties.UniqueKeyPolicy == nil {
 		t.Errorf("Expected UniqueKeyPolicy to be not nil, but got nil")
 	}
@@ -152,6 +231,78 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 
 	if otherProperties.ConflictResolutionPolicy.ResolutionPath != properties.ConflictResolutionPolicy.ResolutionPath {
 		t.Errorf("Expected ConflictResolutionPolicy.ResolutionPath to be %s, but got %s", properties.ConflictResolutionPolicy.ResolutionPath, otherProperties.ConflictResolutionPolicy.ResolutionPath)
+	}
+
+	if otherProperties.VectorEmbeddingPolicy == nil {
+		t.Errorf("Expected VectorEmbeddingPolicy to be not nil, but got nil")
+	}
+
+	if len(otherProperties.VectorEmbeddingPolicy.VectorEmbeddings) != len(properties.VectorEmbeddingPolicy.VectorEmbeddings) {
+		t.Errorf("Expected VectorEmbeddings length to be %d, but got %d", len(properties.VectorEmbeddingPolicy.VectorEmbeddings), len(otherProperties.VectorEmbeddingPolicy.VectorEmbeddings))
+	}
+
+	// Test first vector embedding
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].Path != properties.VectorEmbeddingPolicy.VectorEmbeddings[0].Path {
+		t.Errorf("Expected VectorEmbeddings[0].Path to be %s, but got %s", properties.VectorEmbeddingPolicy.VectorEmbeddings[0].Path, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].Path)
+	}
+
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].DataType != properties.VectorEmbeddingPolicy.VectorEmbeddings[0].DataType {
+		t.Errorf("Expected VectorEmbeddings[0].DataType to be %s, but got %s", properties.VectorEmbeddingPolicy.VectorEmbeddings[0].DataType, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].DataType)
+	}
+
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].DistanceFunction != properties.VectorEmbeddingPolicy.VectorEmbeddings[0].DistanceFunction {
+		t.Errorf("Expected VectorEmbeddings[0].DistanceFunction to be %s, but got %s", properties.VectorEmbeddingPolicy.VectorEmbeddings[0].DistanceFunction, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].DistanceFunction)
+	}
+
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].Dimensions != properties.VectorEmbeddingPolicy.VectorEmbeddings[0].Dimensions {
+		t.Errorf("Expected VectorEmbeddings[0].Dimensions to be %d, but got %d", properties.VectorEmbeddingPolicy.VectorEmbeddings[0].Dimensions, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[0].Dimensions)
+	}
+
+	// Test second vector embedding
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].Path != properties.VectorEmbeddingPolicy.VectorEmbeddings[1].Path {
+		t.Errorf("Expected VectorEmbeddings[1].Path to be %s, but got %s", properties.VectorEmbeddingPolicy.VectorEmbeddings[1].Path, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].Path)
+	}
+
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].DataType != properties.VectorEmbeddingPolicy.VectorEmbeddings[1].DataType {
+		t.Errorf("Expected VectorEmbeddings[1].DataType to be %s, but got %s", properties.VectorEmbeddingPolicy.VectorEmbeddings[1].DataType, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].DataType)
+	}
+
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].DistanceFunction != properties.VectorEmbeddingPolicy.VectorEmbeddings[1].DistanceFunction {
+		t.Errorf("Expected VectorEmbeddings[1].DistanceFunction to be %s, but got %s", properties.VectorEmbeddingPolicy.VectorEmbeddings[1].DistanceFunction, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].DistanceFunction)
+	}
+
+	if otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].Dimensions != properties.VectorEmbeddingPolicy.VectorEmbeddings[1].Dimensions {
+		t.Errorf("Expected VectorEmbeddings[1].Dimensions to be %d, but got %d", properties.VectorEmbeddingPolicy.VectorEmbeddings[1].Dimensions, otherProperties.VectorEmbeddingPolicy.VectorEmbeddings[1].Dimensions)
+	}
+
+	if otherProperties.FullTextPolicy == nil {
+		t.Errorf("Expected FullTextPolicy to be not nil, but got nil")
+	}
+
+	if otherProperties.FullTextPolicy.DefaultLanguage != properties.FullTextPolicy.DefaultLanguage {
+		t.Errorf("Expected FullTextPolicy.DefaultLanguage to be %s, but got %s", properties.FullTextPolicy.DefaultLanguage, otherProperties.FullTextPolicy.DefaultLanguage)
+	}
+
+	if len(otherProperties.FullTextPolicy.FullTextPaths) != len(properties.FullTextPolicy.FullTextPaths) {
+		t.Errorf("Expected FullTextPaths length to be %d, but got %d", len(properties.FullTextPolicy.FullTextPaths), len(otherProperties.FullTextPolicy.FullTextPaths))
+	}
+
+	// Test first full text path
+	if otherProperties.FullTextPolicy.FullTextPaths[0].Path != properties.FullTextPolicy.FullTextPaths[0].Path {
+		t.Errorf("Expected FullTextPaths[0].Path to be %s, but got %s", properties.FullTextPolicy.FullTextPaths[0].Path, otherProperties.FullTextPolicy.FullTextPaths[0].Path)
+	}
+
+	if otherProperties.FullTextPolicy.FullTextPaths[0].Language != properties.FullTextPolicy.FullTextPaths[0].Language {
+		t.Errorf("Expected FullTextPaths[0].Language to be %s, but got %s", properties.FullTextPolicy.FullTextPaths[0].Language, otherProperties.FullTextPolicy.FullTextPaths[0].Language)
+	}
+
+	// Test second full text path
+	if otherProperties.FullTextPolicy.FullTextPaths[1].Path != properties.FullTextPolicy.FullTextPaths[1].Path {
+		t.Errorf("Expected FullTextPaths[1].Path to be %s, but got %s", properties.FullTextPolicy.FullTextPaths[1].Path, otherProperties.FullTextPolicy.FullTextPaths[1].Path)
+	}
+
+	if otherProperties.FullTextPolicy.FullTextPaths[1].Language != properties.FullTextPolicy.FullTextPaths[1].Language {
+		t.Errorf("Expected FullTextPaths[1].Language to be %s, but got %s", properties.FullTextPolicy.FullTextPaths[1].Language, otherProperties.FullTextPolicy.FullTextPaths[1].Language)
 	}
 }
 

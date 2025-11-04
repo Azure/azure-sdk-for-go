@@ -15,156 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
-func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProximityPlacementGroupsClient().CreateOrUpdate(ctx, "myResourceGroup", "myProximityPlacementGroup", armcompute.ProximityPlacementGroup{
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.ProximityPlacementGroupProperties{
-			Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
-				VMSizes: []*string{
-					to.Ptr("Basic_A0"),
-					to.Ptr("Basic_A2")},
-			},
-			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
-		},
-		Zones: []*string{
-			to.Ptr("1")},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ProximityPlacementGroup = armcompute.ProximityPlacementGroup{
-	// 	Name: to.Ptr("myProximityPlacementGroup"),
-	// 	Type: to.Ptr("Microsoft.Compute/proximityPlacementGroups"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/proximityPlacementGroups/myProximityPlacementGroup"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armcompute.ProximityPlacementGroupProperties{
-	// 		Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
-	// 			VMSizes: []*string{
-	// 				to.Ptr("Basic_A0"),
-	// 				to.Ptr("Basic_A2")},
-	// 			},
-	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
-	// 		},
-	// 		Zones: []*string{
-	// 			to.Ptr("1")},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
-func ExampleProximityPlacementGroupsClient_Update() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProximityPlacementGroupsClient().Update(ctx, "myResourceGroup", "myProximityPlacementGroup", armcompute.ProximityPlacementGroupUpdate{
-		Tags: map[string]*string{
-			"additionalProp1": to.Ptr("string"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ProximityPlacementGroup = armcompute.ProximityPlacementGroup{
-	// 	Name: to.Ptr("myProximityPlacementGroup"),
-	// 	Type: to.Ptr("Microsoft.Compute/proximityPlacementGroups"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/proximityPlacementGroups/myProximityPlacementGroup"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armcompute.ProximityPlacementGroupProperties{
-	// 		ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
-func ExampleProximityPlacementGroupsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewProximityPlacementGroupsClient().Delete(ctx, "myResourceGroup", "myProximityPlacementGroup", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Get.json
-func ExampleProximityPlacementGroupsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProximityPlacementGroupsClient().Get(ctx, "myResourceGroup", "myProximityPlacementGroup", &armcompute.ProximityPlacementGroupsClientGetOptions{IncludeColocationStatus: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ProximityPlacementGroup = armcompute.ProximityPlacementGroup{
-	// 	Name: to.Ptr("myProximityPlacementGroup"),
-	// 	Type: to.Ptr("Microsoft.Compute/proximityPlacementGroups"),
-	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/proximityPlacementGroups/myProximityPlacementGroup"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armcompute.ProximityPlacementGroupProperties{
-	// 		AvailabilitySets: []*armcompute.SubResourceWithColocationStatus{
-	// 			{
-	// 				ID: to.Ptr("string"),
-	// 		}},
-	// 		Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
-	// 			VMSizes: []*string{
-	// 				to.Ptr("Basic_A0"),
-	// 				to.Ptr("Basic_A2")},
-	// 			},
-	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
-	// 			VirtualMachineScaleSets: []*armcompute.SubResourceWithColocationStatus{
-	// 				{
-	// 					ID: to.Ptr("string"),
-	// 			}},
-	// 			VirtualMachines: []*armcompute.SubResourceWithColocationStatus{
-	// 				{
-	// 					ID: to.Ptr("string"),
-	// 			}},
-	// 		},
-	// 		Zones: []*string{
-	// 			to.Ptr("1")},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListBySubscription.json
 func ExampleProximityPlacementGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +74,7 @@ func ExampleProximityPlacementGroupsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/250861bb6a886b75255edfa0aa5ee2dd0d6e7a11/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListByResourceGroup.json
 func ExampleProximityPlacementGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,5 +127,151 @@ func ExampleProximityPlacementGroupsClient_NewListByResourceGroupPager() {
 		// 					to.Ptr("1")},
 		// 			}},
 		// 		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Get.json
+func ExampleProximityPlacementGroupsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProximityPlacementGroupsClient().Get(ctx, "myResourceGroup", "myProximityPlacementGroup", &armcompute.ProximityPlacementGroupsClientGetOptions{IncludeColocationStatus: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ProximityPlacementGroup = armcompute.ProximityPlacementGroup{
+	// 	Name: to.Ptr("myProximityPlacementGroup"),
+	// 	Type: to.Ptr("Microsoft.Compute/proximityPlacementGroups"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/proximityPlacementGroups/myProximityPlacementGroup"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armcompute.ProximityPlacementGroupProperties{
+	// 		AvailabilitySets: []*armcompute.SubResourceWithColocationStatus{
+	// 			{
+	// 				ID: to.Ptr("string"),
+	// 		}},
+	// 		Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
+	// 			VMSizes: []*string{
+	// 				to.Ptr("Basic_A0"),
+	// 				to.Ptr("Basic_A2")},
+	// 			},
+	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
+	// 			VirtualMachineScaleSets: []*armcompute.SubResourceWithColocationStatus{
+	// 				{
+	// 					ID: to.Ptr("string"),
+	// 			}},
+	// 			VirtualMachines: []*armcompute.SubResourceWithColocationStatus{
+	// 				{
+	// 					ID: to.Ptr("string"),
+	// 			}},
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1")},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
+func ExampleProximityPlacementGroupsClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProximityPlacementGroupsClient().CreateOrUpdate(ctx, "myResourceGroup", "myProximityPlacementGroup", armcompute.ProximityPlacementGroup{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.ProximityPlacementGroupProperties{
+			Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
+				VMSizes: []*string{
+					to.Ptr("Basic_A0"),
+					to.Ptr("Basic_A2")},
+			},
+			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
+		},
+		Zones: []*string{
+			to.Ptr("1")},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ProximityPlacementGroup = armcompute.ProximityPlacementGroup{
+	// 	Name: to.Ptr("myProximityPlacementGroup"),
+	// 	Type: to.Ptr("Microsoft.Compute/proximityPlacementGroups"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/proximityPlacementGroups/myProximityPlacementGroup"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armcompute.ProximityPlacementGroupProperties{
+	// 		Intent: &armcompute.ProximityPlacementGroupPropertiesIntent{
+	// 			VMSizes: []*string{
+	// 				to.Ptr("Basic_A0"),
+	// 				to.Ptr("Basic_A2")},
+	// 			},
+	// 			ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1")},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
+func ExampleProximityPlacementGroupsClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProximityPlacementGroupsClient().Update(ctx, "myResourceGroup", "myProximityPlacementGroup", armcompute.ProximityPlacementGroupUpdate{
+		Tags: map[string]*string{
+			"additionalProp1": to.Ptr("string"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ProximityPlacementGroup = armcompute.ProximityPlacementGroup{
+	// 	Name: to.Ptr("myProximityPlacementGroup"),
+	// 	Type: to.Ptr("Microsoft.Compute/proximityPlacementGroups"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/proximityPlacementGroups/myProximityPlacementGroup"),
+	// 	Location: to.Ptr("westus"),
+	// 	Properties: &armcompute.ProximityPlacementGroupProperties{
+	// 		ProximityPlacementGroupType: to.Ptr(armcompute.ProximityPlacementGroupTypeStandard),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb90eb1bec64c6e8ad3e288a64c84cc18742a394/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
+func ExampleProximityPlacementGroupsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewProximityPlacementGroupsClient().Delete(ctx, "myResourceGroup", "myProximityPlacementGroup", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

@@ -34,7 +34,6 @@ _testmain.go
 *.swp
 *~
 .DS_Store
-.vscode
 .vs
 .idea
 
@@ -47,6 +46,7 @@ vendor/
 # vscode
 **/.vscode/*
 !.vscode/cspell.json
+!.vscode/mcp.json
 
 # api view file
 *.gosource
@@ -59,3 +59,6 @@ vendor/
 
 # Default sync TypeSpec Project directory
 TempTypeSpecFiles/
+
+# Node modules for pinned tsp-client
+/eng/common/tsp-client/node_modules

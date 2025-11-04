@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/LoadBalancerLoadBalancingRuleList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/LoadBalancerLoadBalancingRuleList.json
 func ExampleLoadBalancerLoadBalancingRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleLoadBalancerLoadBalancingRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/LoadBalancerLoadBalancingRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/LoadBalancerLoadBalancingRuleGet.json
 func ExampleLoadBalancerLoadBalancingRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleLoadBalancerLoadBalancingRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/LoadBalancerHealth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/LoadBalancerHealth.json
 func ExampleLoadBalancerLoadBalancingRulesClient_BeginHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,8 +142,7 @@ func ExampleLoadBalancerLoadBalancingRulesClient_BeginHealth() {
 	// 	LoadBalancerBackendAddresses: []*armnetwork.LoadBalancerHealthPerRulePerBackendAddress{
 	// 		{
 	// 			IPAddress: to.Ptr("10.1.0.4"),
-	// 			NetworkInterfaceIPConfigurationID: &armnetwork.InterfaceIPConfiguration{
-	// 			},
+	// 			NetworkInterfaceIPConfigurationID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/NIC1/IpConfigurations/ipConfig"),
 	// 			Reason: to.Ptr("Up_Probe_Success"),
 	// 			State: to.Ptr("Up"),
 	// 	}},

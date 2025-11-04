@@ -27,12 +27,14 @@ type Client struct {
 // Retrieves the setting object of a specified setting name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 2025-07-01
 //   - settingName - The name of the account setting. Must be a valid settings option.
 //   - options - GetSettingOptions contains the optional parameters for the Client.GetSetting method.
 func (client *Client) GetSetting(ctx context.Context, settingName string, options *GetSettingOptions) (GetSettingResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "settings.Client.GetSetting", client.internal.Tracer(), nil)
+	const operationName = "Client.GetSetting"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getSettingCreateRequest(ctx, settingName, options)
 	if err != nil {
@@ -52,19 +54,17 @@ func (client *Client) GetSetting(ctx context.Context, settingName string, option
 
 // getSettingCreateRequest creates the GetSetting request.
 func (client *Client) getSettingCreateRequest(ctx context.Context, settingName string, _ *GetSettingOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/settings/{setting-name}"
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{setting-name}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -84,11 +84,13 @@ func (client *Client) getSettingHandleResponse(resp *http.Response) (GetSettingR
 // Retrieves a list of all the available account settings that can be configured.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 2025-07-01
 //   - options - GetSettingsOptions contains the optional parameters for the Client.GetSettings method.
 func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptions) (GetSettingsResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "settings.Client.GetSettings", client.internal.Tracer(), nil)
+	const operationName = "Client.GetSettings"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getSettingsCreateRequest(ctx, options)
 	if err != nil {
@@ -108,15 +110,13 @@ func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptio
 
 // getSettingsCreateRequest creates the GetSettings request.
 func (client *Client) getSettingsCreateRequest(ctx context.Context, _ *GetSettingsOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/settings"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -136,13 +136,15 @@ func (client *Client) getSettingsHandleResponse(resp *http.Response) (GetSetting
 // Description of the pool setting to be updated
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 7.6-preview.2
+// Generated from API version 2025-07-01
 //   - settingName - The name of the account setting. Must be a valid settings option.
 //   - parameters - The parameters to update an account setting.
 //   - options - UpdateSettingOptions contains the optional parameters for the Client.UpdateSetting method.
 func (client *Client) UpdateSetting(ctx context.Context, settingName string, parameters UpdateSettingRequest, options *UpdateSettingOptions) (UpdateSettingResponse, error) {
 	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "settings.Client.UpdateSetting", client.internal.Tracer(), nil)
+	const operationName = "Client.UpdateSetting"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateSettingCreateRequest(ctx, settingName, parameters, options)
 	if err != nil {
@@ -162,19 +164,17 @@ func (client *Client) UpdateSetting(ctx context.Context, settingName string, par
 
 // updateSettingCreateRequest creates the UpdateSetting request.
 func (client *Client) updateSettingCreateRequest(ctx context.Context, settingName string, parameters UpdateSettingRequest, _ *UpdateSettingOptions) (*policy.Request, error) {
-	host := "{vaultBaseUrl}"
-	host = strings.ReplaceAll(host, "{vaultBaseUrl}", client.vaultBaseUrl)
 	urlPath := "/settings/{setting-name}"
 	if settingName == "" {
 		return nil, errors.New("parameter settingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{setting-name}", url.PathEscape(settingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.6-preview.2")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

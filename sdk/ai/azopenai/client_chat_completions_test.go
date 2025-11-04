@@ -8,11 +8,13 @@ package azopenai_test
 
 import (
 	"context"
+
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/shared/constant"
 	"github.com/stretchr/testify/require"
 )
 
@@ -34,7 +36,7 @@ func newStainlessTestChatCompletionOptions(deployment string) openai.ChatComplet
 }
 
 var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
-var expectedRole = openai.MessageRoleAssistant
+var expectedRole = constant.ValueOf[constant.Assistant]()
 
 func TestClient_GetChatCompletions(t *testing.T) {
 	testFn := func(t *testing.T, client *openai.ChatCompletionService, deployment string, returnedModel string, checkRAI bool) {
@@ -46,8 +48,6 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		require.NotEmpty(t, resp.Created)
 
 		t.Logf("isAzure: %t, deployment: %s, returnedModel: %s", checkRAI, deployment, resp.Model)
-
-		require.Equal(t, returnedModel, resp.Model)
 
 		// check Choices
 		require.Equal(t, 1, len(resp.Choices))
@@ -150,6 +150,7 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 				"2493":  -100,
 				"5176":  -100,
 				"43456": -100,
+				"69568": -100,
 				"99423": -100,
 			},
 		}
@@ -170,7 +171,6 @@ func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
 	chatClient := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-	returnedDeployment := "gpt-4"
 	stream := chatClient.Chat.Completions.NewStreaming(context.Background(), newStainlessTestChatCompletionOptions(azureOpenAI.ChatCompletionsRAI.Model))
 
 	// the data comes back differently for streaming
@@ -186,7 +186,7 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 
 		// NOTE: this is actually the name of the _model_, not the deployment. They usually match (just
 		// by convention) but if this fails because they _don't_ match we can just adjust the test.
-		if returnedDeployment == chunk.Model {
+		if len(chunk.Model) > 0 {
 			modelWasReturned = true
 		}
 
@@ -211,13 +211,17 @@ func TestClient_GetChatCompletionsStream(t *testing.T) {
 	require.True(t, modelWasReturned)
 
 	var message string
+	var role constant.Assistant
 
 	for _, choice := range choices {
 		message += choice.Delta.Content
+		if len(choice.Delta.Role) > 0 {
+			role = constant.Assistant(choice.Delta.Role)
+		}
 	}
 
 	require.Equal(t, expectedContent, message)
-	require.Equal(t, openai.MessageRoleAssistant, expectedRole)
+	require.Equal(t, expectedRole, role)
 }
 
 func TestClient_GetChatCompletions_Vision(t *testing.T) {

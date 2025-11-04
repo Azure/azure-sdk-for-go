@@ -6,7 +6,11 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"net/url"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 )
 
 func TestAAD(t *testing.T) {
@@ -140,5 +144,85 @@ func TestAAD(t *testing.T) {
 
 	if len(itemResponse.Value) != 0 {
 		t.Fatalf("Expected empty response, got %v", itemResponse.Value)
+	}
+}
+
+func TestAAD_Emulator_UsesClientOptionsAudience(t *testing.T) {
+	em := newEmulatorTests(t)
+
+	keyClient := em.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
+	db := em.createDatabase(t, context.TODO(), keyClient, "aadClientOptionsAudienceTest")
+	defer em.deleteDatabase(t, context.TODO(), db)
+
+	props := ContainerProperties{
+		ID:                     "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{Paths: []string{"/id"}},
+	}
+	if _, err := db.CreateContainer(context.TODO(), props, nil); err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	customAudience := "https://custom.cosmos.azure.com"
+	cred := &emulatorTokenCredential{} // Use emulator credential for CI reliability
+
+	aadClient, err := NewClient(em.host, cred, &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Cloud: cloud.Configuration{
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					ServiceName: {Audience: customAudience},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("Failed to create AAD client: %v", err)
+	}
+
+	_, err = aadClient.NewContainer("aadClientOptionsAudienceTest", "aContainer")
+	if err != nil {
+		t.Fatalf("NewContainer: %v", err)
+	}
+}
+
+func TestAAD_Emulator_UsesAccountScope_WhenNoAudienceProvided(t *testing.T) {
+	em := newEmulatorTests(t)
+
+	keyClient := em.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
+	db := em.createDatabase(t, context.TODO(), keyClient, "aadAccountScopeTest")
+	defer em.deleteDatabase(t, context.TODO(), db)
+
+	props := ContainerProperties{
+		ID:                     "aContainer",
+		PartitionKeyDefinition: PartitionKeyDefinition{Paths: []string{"/id"}},
+	}
+	if _, err := db.CreateContainer(context.TODO(), props, nil); err != nil {
+		t.Fatalf("Failed to create container: %v", err)
+	}
+
+	cred := &emulatorTokenCredential{} // Use emulator credential for CI reliability
+
+	aadClient, err := NewClient(em.host, cred, &ClientOptions{
+		ClientOptions: azcore.ClientOptions{}, // No audience set
+	})
+	if err != nil {
+		t.Fatalf("Failed to create AAD client: %v", err)
+	}
+
+	container, err := aadClient.NewContainer("aadAccountScopeTest", "aContainer")
+	if err != nil {
+		t.Fatalf("NewContainer: %v", err)
+	}
+
+	item := map[string]string{"id": "2", "value": "200"}
+	body, _ := json.Marshal(item)
+	pk := NewPartitionKeyString("2")
+
+	if _, err := container.CreateItem(context.TODO(), pk, body, nil); err != nil {
+		t.Fatalf("CreateItem failed: %v", err)
+	}
+
+	_, err = url.Parse(em.host)
+	if err != nil {
+		t.Fatal(err)
 	}
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 2.0.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.0.0 (2025-10-15)
+
+### Features Added
+
+* Support assigning Tags and filtering by Tags
+  * Added `Tags` field to `AddSettingOptions` and `SetSettingOptions` structs, enabling users to assign key-value metadata tags when creating or updating configuration settings.
+  * Added `TagsFilter` field to `SettingSelector` struct, allowing retrieval of settings and revisions filtered by tags.
+
+### Breaking Changes
+
+* Changed `Tags` field type in `Setting` from `map[string]string` to `map[string]*string` to support null tag values and maintain compatibility with the Azure App Configuration service backend.
+
+## 1.2.0 (2025-05-06)
+
+### Other Changes
+* Updated dependencies.
 
 ## 1.2.0-beta.1 (2024-06-11)
 

@@ -1,5 +1,70 @@
 # Release History
 
+## 5.0.0-beta.1 (2025-05-23)
+### Breaking Changes
+
+- Function `*ClientFactory.NewPostgreSQLServerManagementClient` has been removed
+- Function `NewPostgreSQLServerManagementClient` has been removed
+- Function `*PostgreSQLServerManagementClient.CheckMigrationNameAvailability` has been removed
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+
+### Features Added
+
+- New value `ServerStateInaccessible`, `ServerStateProvisioning`, `ServerStateRestarting` added to enum type `ServerState`
+- New value `ServerVersionSeventeen` added to enum type `ServerVersion`
+- New value `SourceTypeApsaraDBRDS`, `SourceTypeCrunchyPostgreSQL`, `SourceTypeDigitalOceanDroplets`, `SourceTypeDigitalOceanPostgreSQL`, `SourceTypeEDBOracleServer`, `SourceTypeEDBPostgreSQL`, `SourceTypeHerokuPostgreSQL`, `SourceTypeHuaweiCompute`, `SourceTypeHuaweiRDS`, `SourceTypePostgreSQLCosmosDB`, `SourceTypePostgreSQLFlexibleServer`, `SourceTypeSupabasePostgreSQL` added to enum type `SourceType`
+- New value `StorageTypeUltraSSDLRS` added to enum type `StorageType`
+- New enum type `RecommendationType` with values `RecommendationTypeCreateIndex`, `RecommendationTypeDropIndex`
+- New enum type `RecommendationTypeEnum` with values `RecommendationTypeEnumCreateIndex`, `RecommendationTypeEnumDropIndex`, `RecommendationTypeEnumReIndex`
+- New enum type `SupportedFeatureStatusEnum` with values `SupportedFeatureStatusEnumDisabled`, `SupportedFeatureStatusEnumEnabled`
+- New enum type `TuningOptionEnum` with values `TuningOptionEnumConfiguration`, `TuningOptionEnumIndex`
+- New function `*ClientFactory.NewPostgreSQLManagementClient() *PostgreSQLManagementClient`
+- New function `*ClientFactory.NewQuotaUsagesClient() *QuotaUsagesClient`
+- New function `*ClientFactory.NewTuningConfigurationClient() *TuningConfigurationClient`
+- New function `*ClientFactory.NewTuningIndexClient() *TuningIndexClient`
+- New function `*ClientFactory.NewTuningOptionsClient() *TuningOptionsClient`
+- New function `NewPostgreSQLManagementClient(azcore.TokenCredential, *arm.ClientOptions) (*PostgreSQLManagementClient, error)`
+- New function `*PostgreSQLManagementClient.CheckMigrationNameAvailability(context.Context, string, string, string, MigrationNameAvailabilityResource, *PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions) (PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse, error)`
+- New function `NewQuotaUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*QuotaUsagesClient, error)`
+- New function `*QuotaUsagesClient.NewListPager(string, *QuotaUsagesClientListOptions) *runtime.Pager[QuotaUsagesClientListResponse]`
+- New function `NewTuningConfigurationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TuningConfigurationClient, error)`
+- New function `*TuningConfigurationClient.BeginDisable(context.Context, string, string, TuningOptionEnum, *TuningConfigurationClientBeginDisableOptions) (*runtime.Poller[TuningConfigurationClientDisableResponse], error)`
+- New function `*TuningConfigurationClient.BeginEnable(context.Context, string, string, TuningOptionEnum, *TuningConfigurationClientBeginEnableOptions) (*runtime.Poller[TuningConfigurationClientEnableResponse], error)`
+- New function `*TuningConfigurationClient.NewListSessionDetailsPager(string, string, TuningOptionEnum, string, *TuningConfigurationClientListSessionDetailsOptions) *runtime.Pager[TuningConfigurationClientListSessionDetailsResponse]`
+- New function `*TuningConfigurationClient.NewListSessionsPager(string, string, TuningOptionEnum, *TuningConfigurationClientListSessionsOptions) *runtime.Pager[TuningConfigurationClientListSessionsResponse]`
+- New function `*TuningConfigurationClient.BeginStartSession(context.Context, string, string, TuningOptionEnum, ConfigTuningRequestParameter, *TuningConfigurationClientBeginStartSessionOptions) (*runtime.Poller[TuningConfigurationClientStartSessionResponse], error)`
+- New function `*TuningConfigurationClient.BeginStopSession(context.Context, string, string, TuningOptionEnum, *TuningConfigurationClientBeginStopSessionOptions) (*runtime.Poller[TuningConfigurationClientStopSessionResponse], error)`
+- New function `NewTuningIndexClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TuningIndexClient, error)`
+- New function `*TuningIndexClient.NewListRecommendationsPager(string, string, TuningOptionEnum, *TuningIndexClientListRecommendationsOptions) *runtime.Pager[TuningIndexClientListRecommendationsResponse]`
+- New function `NewTuningOptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TuningOptionsClient, error)`
+- New function `*TuningOptionsClient.Get(context.Context, string, string, TuningOptionEnum, *TuningOptionsClientGetOptions) (TuningOptionsClientGetResponse, error)`
+- New function `*TuningOptionsClient.NewListByServerPager(string, string, *TuningOptionsClientListByServerOptions) *runtime.Pager[TuningOptionsClientListByServerResponse]`
+- New struct `Cluster`
+- New struct `ConfigTuningRequestParameter`
+- New struct `ImpactRecord`
+- New struct `IndexRecommendationDetails`
+- New struct `IndexRecommendationListResult`
+- New struct `IndexRecommendationResource`
+- New struct `IndexRecommendationResourceProperties`
+- New struct `IndexRecommendationResourcePropertiesAnalyzedWorkload`
+- New struct `IndexRecommendationResourcePropertiesImplementationDetails`
+- New struct `NameProperty`
+- New struct `QuotaUsage`
+- New struct `QuotaUsagesListResult`
+- New struct `SessionDetailsListResult`
+- New struct `SessionDetailsResource`
+- New struct `SessionResource`
+- New struct `SessionsListResult`
+- New struct `SupportedFeature`
+- New struct `TuningOptionsListResult`
+- New struct `TuningOptionsResource`
+- New field `SupportedFeatures` in struct `FlexibleServerCapability`
+- New field `Cluster` in struct `ServerProperties`
+- New field `Cluster` in struct `ServerPropertiesForUpdate`
+- New field `SecurityProfile`, `SupportedFeatures` in struct `ServerSKUCapability`
+- New field `SupportedFeatures` in struct `ServerVersionCapability`
+
+
 ## 4.1.0 (2025-03-17)
 ### Features Added
 

@@ -10,9 +10,11 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"math"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -961,4 +963,50 @@ func TestCalcDelay(t *testing.T) {
 			)
 		}
 	})
+}
+
+type retryLoggingChecker struct {
+	count int32
+}
+
+func (r *retryLoggingChecker) Do(req *policy.Request) (*http.Response, error) {
+	if r.count > 0 {
+		var opValues logPolicyOpValues
+		req.OperationValue(&opValues)
+		if reflect.ValueOf(opValues).IsZero() {
+			// the logging policy is after us. so it should have populated logPolicyOpValues
+			return nil, errors.New("unexpected zero-value for logPolicyOpValues")
+		}
+
+		// verify that the logging policy is updating the try in opValues
+		if r.count != opValues.try {
+			return nil, fmt.Errorf("expected count %d, got %d", r.count, opValues.try)
+		}
+	}
+	r.count++
+	return req.Next()
+}
+
+func TestRetryPolicyWithLoggingChecker(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBodyReadError())
+	srv.AppendResponse(mock.WithBodyReadError())
+	srv.AppendResponse()
+	pl := newTestPipeline(&policy.ClientOptions{
+		Transport: srv, Retry: *testRetryOptions(),
+		PerRetryPolicies: []policy.Policy{&retryLoggingChecker{}},
+	})
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+
+	body := newRewindTrackingBody("stuff")
+	require.NoError(t, req.SetBody(body, "text/plain"))
+
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, 3, srv.Requests())
+	require.EqualValues(t, 2, body.rcount)
+	require.True(t, body.closed)
 }

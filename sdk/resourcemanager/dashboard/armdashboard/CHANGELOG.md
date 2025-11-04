@@ -1,5 +1,87 @@
 # Release History
 
+## 2.0.0 (2025-10-10)
+### Breaking Changes
+
+- Operation `*GrafanaClient.Update` has been changed to LRO, use `*GrafanaClient.BeginUpdate` instead.
+
+### Features Added
+
+- New enum type `CreatorCanAdmin` with values `CreatorCanAdminDisabled`, `CreatorCanAdminEnabled`
+- New enum type `Size` with values `SizeX1`, `SizeX2`
+- New function `*ClientFactory.NewIntegrationFabricsClient() *IntegrationFabricsClient`
+- New function `*ClientFactory.NewManagedDashboardsClient() *ManagedDashboardsClient`
+- New function `NewIntegrationFabricsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IntegrationFabricsClient, error)`
+- New function `*IntegrationFabricsClient.BeginCreate(context.Context, string, string, string, IntegrationFabric, *IntegrationFabricsClientBeginCreateOptions) (*runtime.Poller[IntegrationFabricsClientCreateResponse], error)`
+- New function `*IntegrationFabricsClient.BeginDelete(context.Context, string, string, string, *IntegrationFabricsClientBeginDeleteOptions) (*runtime.Poller[IntegrationFabricsClientDeleteResponse], error)`
+- New function `*IntegrationFabricsClient.Get(context.Context, string, string, string, *IntegrationFabricsClientGetOptions) (IntegrationFabricsClientGetResponse, error)`
+- New function `*IntegrationFabricsClient.NewListPager(string, string, *IntegrationFabricsClientListOptions) *runtime.Pager[IntegrationFabricsClientListResponse]`
+- New function `*IntegrationFabricsClient.BeginUpdate(context.Context, string, string, string, IntegrationFabricUpdateParameters, *IntegrationFabricsClientBeginUpdateOptions) (*runtime.Poller[IntegrationFabricsClientUpdateResponse], error)`
+- New function `NewManagedDashboardsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedDashboardsClient, error)`
+- New function `*ManagedDashboardsClient.BeginCreate(context.Context, string, string, ManagedDashboard, *ManagedDashboardsClientBeginCreateOptions) (*runtime.Poller[ManagedDashboardsClientCreateResponse], error)`
+- New function `*ManagedDashboardsClient.Delete(context.Context, string, string, *ManagedDashboardsClientDeleteOptions) (ManagedDashboardsClientDeleteResponse, error)`
+- New function `*ManagedDashboardsClient.Get(context.Context, string, string, *ManagedDashboardsClientGetOptions) (ManagedDashboardsClientGetResponse, error)`
+- New function `*ManagedDashboardsClient.NewListBySubscriptionPager(*ManagedDashboardsClientListBySubscriptionOptions) *runtime.Pager[ManagedDashboardsClientListBySubscriptionResponse]`
+- New function `*ManagedDashboardsClient.NewListPager(string, *ManagedDashboardsClientListOptions) *runtime.Pager[ManagedDashboardsClientListResponse]`
+- New function `*ManagedDashboardsClient.Update(context.Context, string, string, ManagedDashboardUpdateParameters, *ManagedDashboardsClientUpdateOptions) (ManagedDashboardsClientUpdateResponse, error)`
+- New struct `IntegrationFabric`
+- New struct `IntegrationFabricListResponse`
+- New struct `IntegrationFabricProperties`
+- New struct `IntegrationFabricPropertiesUpdateParameters`
+- New struct `IntegrationFabricUpdateParameters`
+- New struct `ManagedDashboard`
+- New struct `ManagedDashboardListResponse`
+- New struct `ManagedDashboardProperties`
+- New struct `ManagedDashboardUpdateParameters`
+- New struct `Security`
+- New struct `Snapshots`
+- New struct `UnifiedAlertingScreenshots`
+- New struct `Users`
+- New field `Author`, `Type` in struct `GrafanaAvailablePlugin`
+- New field `Security`, `Snapshots`, `UnifiedAlertingScreenshots`, `Users` in struct `GrafanaConfigurations`
+- New field `CreatorCanAdmin` in struct `ManagedGrafanaProperties`
+- New field `CreatorCanAdmin` in struct `ManagedGrafanaPropertiesUpdateParameters`
+- New field `Size` in struct `ResourceSKU`
+
+
+## 2.0.0-beta.1 (2025-07-18)
+### Breaking Changes
+
+- Operation `*GrafanaClient.Update` has been changed to LRO, use `*GrafanaClient.BeginUpdate` instead.
+
+### Features Added
+
+- New function `*ClientFactory.NewIntegrationFabricsClient() *IntegrationFabricsClient`
+- New function `*ClientFactory.NewManagedDashboardsClient() *ManagedDashboardsClient`
+- New function `NewIntegrationFabricsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IntegrationFabricsClient, error)`
+- New function `*IntegrationFabricsClient.BeginCreate(context.Context, string, string, string, IntegrationFabric, *IntegrationFabricsClientBeginCreateOptions) (*runtime.Poller[IntegrationFabricsClientCreateResponse], error)`
+- New function `*IntegrationFabricsClient.BeginDelete(context.Context, string, string, string, *IntegrationFabricsClientBeginDeleteOptions) (*runtime.Poller[IntegrationFabricsClientDeleteResponse], error)`
+- New function `*IntegrationFabricsClient.Get(context.Context, string, string, string, *IntegrationFabricsClientGetOptions) (IntegrationFabricsClientGetResponse, error)`
+- New function `*IntegrationFabricsClient.NewListPager(string, string, *IntegrationFabricsClientListOptions) *runtime.Pager[IntegrationFabricsClientListResponse]`
+- New function `*IntegrationFabricsClient.BeginUpdate(context.Context, string, string, string, IntegrationFabricUpdateParameters, *IntegrationFabricsClientBeginUpdateOptions) (*runtime.Poller[IntegrationFabricsClientUpdateResponse], error)`
+- New function `NewManagedDashboardsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedDashboardsClient, error)`
+- New function `*ManagedDashboardsClient.BeginCreate(context.Context, string, string, ManagedDashboard, *ManagedDashboardsClientBeginCreateOptions) (*runtime.Poller[ManagedDashboardsClientCreateResponse], error)`
+- New function `*ManagedDashboardsClient.Delete(context.Context, string, string, *ManagedDashboardsClientDeleteOptions) (ManagedDashboardsClientDeleteResponse, error)`
+- New function `*ManagedDashboardsClient.Get(context.Context, string, string, *ManagedDashboardsClientGetOptions) (ManagedDashboardsClientGetResponse, error)`
+- New function `*ManagedDashboardsClient.NewListBySubscriptionPager(*ManagedDashboardsClientListBySubscriptionOptions) *runtime.Pager[ManagedDashboardsClientListBySubscriptionResponse]`
+- New function `*ManagedDashboardsClient.NewListPager(string, *ManagedDashboardsClientListOptions) *runtime.Pager[ManagedDashboardsClientListResponse]`
+- New function `*ManagedDashboardsClient.Update(context.Context, string, string, ManagedDashboardUpdateParameters, *ManagedDashboardsClientUpdateOptions) (ManagedDashboardsClientUpdateResponse, error)`
+- New struct `IntegrationFabric`
+- New struct `IntegrationFabricListResponse`
+- New struct `IntegrationFabricProperties`
+- New struct `IntegrationFabricPropertiesUpdateParameters`
+- New struct `IntegrationFabricUpdateParameters`
+- New struct `ManagedDashboard`
+- New struct `ManagedDashboardListResponse`
+- New struct `ManagedDashboardProperties`
+- New struct `ManagedDashboardUpdateParameters`
+- New struct `Security`
+- New struct `Snapshots`
+- New struct `UnifiedAlertingScreenshots`
+- New struct `Users`
+- New field `Security`, `Snapshots`, `UnifiedAlertingScreenshots`, `Users` in struct `GrafanaConfigurations`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

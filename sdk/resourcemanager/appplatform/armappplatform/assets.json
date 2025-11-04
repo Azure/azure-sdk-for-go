@@ -1,6 +1,0 @@
-{
-  "AssetsRepo": "Azure/azure-sdk-assets",
-  "AssetsRepoPrefixPath": "go",
-  "TagPrefix": "go/resourcemanager/appplatform/armappplatform",
-  "Tag": "go/resourcemanager/appplatform/armappplatform_1edc3822a7"
-}

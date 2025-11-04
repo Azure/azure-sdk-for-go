@@ -12,8 +12,8 @@ extends:
           - job:
 
             pool:
-              image: $(LINUXNEXTVMIMAGE)
-              name: $(LINUXNEXTPOOL)
+              image: $(LINUXVMIMAGE)
+              name: $(LINUXPOOL)
               os: linux
 
 
@@ -23,15 +23,15 @@ extends:
                 inputs:
                   command: 'custom'
                   customCommand: 'install -g autorest@latest'
-                  
+
               - task: Npm@1
                 inputs:
-                  command: 'custom'
-                  customCommand: 'install -g @azure-tools/typespec-client-generator-cli@v0.10.0'
-                  
+                  command: 'ci'
+                  workingDir: 'eng/common/tsp-client'
+
               - task: GoTool@0
                 inputs:
-                  version: '1.23.2'
+                  version: '1.24.7'
 
               - task: ShellScript@2
                 inputs:

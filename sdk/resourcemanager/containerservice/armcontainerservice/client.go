@@ -43,7 +43,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // NewListNodeImageVersionsPager - Only returns the latest version of each node image. For example there may be an AKSUbuntu-1804gen2containerd-2024.01.26,
 // but only AKSUbuntu-1804gen2containerd-2024.02.02 is visible in this list.
 //
-// Generated from API version 2025-02-02-preview
+// Generated from API version 2025-08-02-preview
 //   - location - The name of the Azure region.
 //   - options - ClientListNodeImageVersionsOptions contains the optional parameters for the Client.NewListNodeImageVersionsPager
 //     method.
@@ -86,7 +86,7 @@ func (client *Client) listNodeImageVersionsCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-02-preview")
+	reqQP.Set("api-version", "2025-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

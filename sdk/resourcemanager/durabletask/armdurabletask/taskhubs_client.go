@@ -26,7 +26,7 @@ type TaskHubsClient struct {
 // NewTaskHubsClient creates a new instance of TaskHubsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTaskHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TaskHubsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewTaskHubsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or Update a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - taskHubName - The name of the TaskHub
@@ -69,7 +69,7 @@ func (client *TaskHubsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or Update a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 func (client *TaskHubsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, resource TaskHub, options *TaskHubsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskHubsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *TaskHubsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *TaskHubsClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - taskHubName - The name of the TaskHub
@@ -153,7 +153,7 @@ func (client *TaskHubsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 func (client *TaskHubsClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, options *TaskHubsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskHubsClient.BeginDelete"
@@ -199,16 +199,15 @@ func (client *TaskHubsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - taskHubName - The name of the TaskHub
@@ -259,7 +258,7 @@ func (client *TaskHubsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +275,7 @@ func (client *TaskHubsClient) getHandleResponse(resp *http.Response) (TaskHubsCl
 
 // NewListBySchedulerPager - List Task Hubs
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - TaskHubsClientListBySchedulerOptions contains the optional parameters for the TaskHubsClient.NewListBySchedulerPager
@@ -324,7 +323,7 @@ func (client *TaskHubsClient) listBySchedulerCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,5 +1,15 @@
 # Release History
 
+## 3.3.0 (2025-05-08)
+### Features Added
+
+- New struct `FullTextPath`
+- New struct `FullTextPolicy`
+- New field `FullTextPolicy` in struct `RestorableSQLContainerPropertiesResourceContainer`
+- New field `FullTextPolicy` in struct `SQLContainerGetPropertiesResource`
+- New field `FullTextPolicy` in struct `SQLContainerResource`
+
+
 ## 4.0.0-beta.2 (2024-12-12)
 ### Breaking Changes
 

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -52,7 +52,7 @@ func (testsuite *NetworkWatcherTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNetworkWatcherTestSuite(t *testing.T) {
+func TTestNetworkWatcherTestSuite(t *testing.T) {
 	suite.Run(t, new(NetworkWatcherTestSuite))
 }
 

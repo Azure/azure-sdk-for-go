@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 
 	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/packages/respjson"
 )
 
 //
@@ -80,15 +81,8 @@ func (c CompletionChoice) ContentFilterResults() (*ContentFilterResultsForChoice
 	return unmarshalField[*ContentFilterResultsForChoice](c.JSON.ExtraFields["content_filter_results"])
 }
 
-// NOTE: this matches the apijson.Field structure from the Stainless OpenAI library. It's in their internal package
-// but the data structure is exposed in public APIs.
-type stainlessField interface {
-	Raw() string
-	IsPresent() bool
-}
-
 // unmarshalField is a generic way for us to unmarshal our 'extra' fields.
-func unmarshalField[T any](field stainlessField) (T, error) {
+func unmarshalField[T any](field respjson.Field) (T, error) {
 	var zero T
 
 	raw := field.Raw()

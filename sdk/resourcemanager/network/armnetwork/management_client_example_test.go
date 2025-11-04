@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionShareableLinkCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/BastionShareableLinkCreate.json
 func ExampleManagementClient_BeginPutBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionShareableLinkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/BastionShareableLinkDelete.json
 func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionShareableLinkDeleteByToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/BastionShareableLinkDeleteByToken.json
 func ExampleManagementClient_BeginDeleteBastionShareableLinkByToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleManagementClient_BeginDeleteBastionShareableLinkByToken() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionShareableLinkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/BastionShareableLinkGet.json
 func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionSessionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/BastionSessionsList.json
 func ExampleManagementClient_BeginGetActiveSessions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/BastionSessionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/BastionSessionDelete.json
 func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/CheckDnsNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/CheckDnsNameAvailability.json
 func ExampleManagementClient_CheckDNSNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,7 +305,7 @@ func ExampleManagementClient_CheckDNSNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/expressRouteProviderPort.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/expressRouteProviderPort.json
 func ExampleManagementClient_ExpressRouteProviderPort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleManagementClient_ExpressRouteProviderPort() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkManagerActiveConnectivityConfigurationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerActiveConnectivityConfigurationsList.json
 func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,7 +401,7 @@ func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkManagerActiveSecurityAdminRulesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerActiveSecurityAdminRulesList.json
 func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -472,7 +472,7 @@ func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkManagerEffectiveConnectivityConfigurationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerEffectiveConnectivityConfigurationsList.json
 func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,6 +514,11 @@ func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfiguratio
 	// 						NetworkGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/groups/group1"),
 	// 						UseHubGateway: to.Ptr(armnetwork.UseHubGatewayTrue),
 	// 				}},
+	// 				ConnectivityCapabilities: &armnetwork.ConnectivityConfigurationPropertiesConnectivityCapabilities{
+	// 					ConnectedGroupAddressOverlap: to.Ptr(armnetwork.ConnectedGroupAddressOverlapAllowed),
+	// 					ConnectedGroupPrivateEndpointsScale: to.Ptr(armnetwork.ConnectedGroupPrivateEndpointsScaleStandard),
+	// 					PeeringEnforcement: to.Ptr(armnetwork.PeeringEnforcementUnenforced),
+	// 				},
 	// 				ConnectivityTopology: to.Ptr(armnetwork.ConnectivityTopologyHubAndSpoke),
 	// 				DeleteExistingPeering: to.Ptr(armnetwork.DeleteExistingPeeringTrue),
 	// 				Hubs: []*armnetwork.Hub{
@@ -528,7 +533,7 @@ func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfiguratio
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkManagerEffectiveSecurityAdminRulesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerEffectiveSecurityAdminRulesList.json
 func ExampleManagementClient_ListNetworkManagerEffectiveSecurityAdminRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +600,7 @@ func ExampleManagementClient_ListNetworkManagerEffectiveSecurityAdminRules() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualWanSupportedSecurityProviders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VirtualWanSupportedSecurityProviders.json
 func ExampleManagementClient_SupportedSecurityProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +628,7 @@ func ExampleManagementClient_SupportedSecurityProviders() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ab04533261eff228f28e08900445d0edef3eb70c/specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
 func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnprofile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -5,11 +5,6 @@
 
 package armcompute
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
-	moduleVersion = "v6.4.0"
-)
-
 // AccessControlRulesMode - This property allows you to specify whether the access control rules are in Audit mode, in Enforce
 // mode or Disabled. Possible values are: 'Audit', 'Enforce' or 'Disabled'.
 type AccessControlRulesMode string
@@ -29,6 +24,7 @@ func PossibleAccessControlRulesModeValues() []AccessControlRulesMode {
 	}
 }
 
+// AccessLevel - The Access Level, accepted values include None, Read, Write.
 type AccessLevel string
 
 const (
@@ -43,6 +39,20 @@ func PossibleAccessLevelValues() []AccessLevel {
 		AccessLevelNone,
 		AccessLevelRead,
 		AccessLevelWrite,
+	}
+}
+
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
 	}
 }
 
@@ -103,7 +113,7 @@ func PossibleAlternativeTypeValues() []AlternativeType {
 	}
 }
 
-// Architecture - CPU architecture supported by an OS disk.
+// Architecture - The architecture of the image. Applicable to OS disks only.
 type Architecture string
 
 const (
@@ -135,20 +145,23 @@ func PossibleArchitectureTypesValues() []ArchitectureTypes {
 	}
 }
 
-// AvailabilitySetSKUTypes - Specifies the sku of an Availability Set. Use 'Aligned' for virtual machines with managed disks
-// and 'Classic' for virtual machines with unmanaged disks. Default value is 'Classic'.
-type AvailabilitySetSKUTypes string
+// AvailabilityPolicyDiskDelay - Determines on how to handle disks with slow I/O.
+type AvailabilityPolicyDiskDelay string
 
 const (
-	AvailabilitySetSKUTypesAligned AvailabilitySetSKUTypes = "Aligned"
-	AvailabilitySetSKUTypesClassic AvailabilitySetSKUTypes = "Classic"
+	// AvailabilityPolicyDiskDelayAutomaticReattach - Upon a disk io failure or slow response, try detaching then reattaching
+	// the disk.
+	AvailabilityPolicyDiskDelayAutomaticReattach AvailabilityPolicyDiskDelay = "AutomaticReattach"
+	// AvailabilityPolicyDiskDelayNone - Defaults to behavior without av policy specified, which is VM restart upon slow disk
+	// io.
+	AvailabilityPolicyDiskDelayNone AvailabilityPolicyDiskDelay = "None"
 )
 
-// PossibleAvailabilitySetSKUTypesValues returns the possible values for the AvailabilitySetSKUTypes const type.
-func PossibleAvailabilitySetSKUTypesValues() []AvailabilitySetSKUTypes {
-	return []AvailabilitySetSKUTypes{
-		AvailabilitySetSKUTypesAligned,
-		AvailabilitySetSKUTypesClassic,
+// PossibleAvailabilityPolicyDiskDelayValues returns the possible values for the AvailabilityPolicyDiskDelay const type.
+func PossibleAvailabilityPolicyDiskDelayValues() []AvailabilityPolicyDiskDelay {
+	return []AvailabilityPolicyDiskDelay{
+		AvailabilityPolicyDiskDelayAutomaticReattach,
+		AvailabilityPolicyDiskDelayNone,
 	}
 }
 
@@ -299,6 +312,26 @@ func PossibleCopyCompletionErrorReasonValues() []CopyCompletionErrorReason {
 	}
 }
 
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
 // DataAccessAuthMode - Additional authentication requirements when exporting or uploading to a disk or snapshot.
 type DataAccessAuthMode string
 
@@ -434,7 +467,9 @@ const (
 	// by storageAccountId.
 	DiskCreateOptionImport DiskCreateOption = "Import"
 	// DiskCreateOptionImportSecure - Similar to Import create option. Create a new Trusted Launch VM or Confidential VM supported
-	// disk by importing additional blob for VM guest state specified by securityDataUri in storage account specified by storageAccountId
+	// disk by importing additional blobs for VM guest state specified by securityDataUri and VM metadata specified by securityMetadataUri
+	// in storage account specified by storageAccountId. The VM metadata is optional and only required for certain Confidential
+	// VM configurations and not required for Trusted Launch VM.
 	DiskCreateOptionImportSecure DiskCreateOption = "ImportSecure"
 	// DiskCreateOptionRestore - Create a new disk by copying from a backup recovery point.
 	DiskCreateOptionRestore DiskCreateOption = "Restore"
@@ -442,7 +477,8 @@ const (
 	// disk.
 	DiskCreateOptionUpload DiskCreateOption = "Upload"
 	// DiskCreateOptionUploadPreparedSecure - Similar to Upload create option. Create a new Trusted Launch VM or Confidential
-	// VM supported disk and upload using write token in both disk and VM guest state
+	// VM supported disk and upload using write token in disk, VM guest state and VM metadata. The VM metadata is optional and
+	// only required for certain Confidential VM configurations and not required for Trusted Launch VM.
 	DiskCreateOptionUploadPreparedSecure DiskCreateOption = "UploadPreparedSecure"
 )
 
@@ -515,8 +551,8 @@ func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
 // is applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an
 // unexpected failure from the virtual machine and the disk is still not released
 // then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
-// when using this detach behavior. To force-detach a data disk update
-// toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+// when using this detach behavior. This feature is still in preview. To
+// force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
 type DiskDetachOptionTypes string
 
 const (
@@ -810,19 +846,6 @@ func PossibleExecutionStateValues() []ExecutionState {
 	}
 }
 
-type Expand string
-
-const (
-	ExpandProperties Expand = "Properties"
-)
-
-// PossibleExpandValues returns the possible values for the Expand const type.
-func PossibleExpandValues() []Expand {
-	return []Expand{
-		ExpandProperties,
-	}
-}
-
 type ExpandTypeForListVMs string
 
 const (
@@ -1031,6 +1054,24 @@ func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTyp
 	}
 }
 
+// HighSpeedInterconnectPlacement - Specifies the high speed interconnect placement for the virtual machine scale set.
+type HighSpeedInterconnectPlacement string
+
+const (
+	// HighSpeedInterconnectPlacementNone - No high speed interconnect placement
+	HighSpeedInterconnectPlacementNone HighSpeedInterconnectPlacement = "None"
+	// HighSpeedInterconnectPlacementTrunk - Trunk high speed interconnect placement
+	HighSpeedInterconnectPlacementTrunk HighSpeedInterconnectPlacement = "Trunk"
+)
+
+// PossibleHighSpeedInterconnectPlacementValues returns the possible values for the HighSpeedInterconnectPlacement const type.
+func PossibleHighSpeedInterconnectPlacementValues() []HighSpeedInterconnectPlacement {
+	return []HighSpeedInterconnectPlacement{
+		HighSpeedInterconnectPlacementNone,
+		HighSpeedInterconnectPlacementTrunk,
+	}
+}
+
 // HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
 type HostCaching string
 
@@ -1114,7 +1155,7 @@ func PossibleIPVersionValues() []IPVersion {
 	}
 }
 
-// IPVersions - Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4
+// IPVersions - Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4
 // or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 type IPVersions string
 
@@ -1267,8 +1308,9 @@ func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationR
 	}
 }
 
-// Mode - Specifies the mode that ProxyAgent will execute on. Warning: this property has been deprecated, please specify 'mode'
-// under particular hostendpoint setting.
+// Mode - Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent will start to audit or
+// monitor but not enforce access control over requests to host endpoints in Audit mode,
+// while in Enforce mode it will enforce access control. The default value is Enforce mode.
 type Mode string
 
 const (
@@ -1416,7 +1458,8 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 	}
 }
 
-// OperatingSystemTypes - The Operating System type.
+// OperatingSystemTypes - This property allows you to specify the supported type of the OS that application is built for.
+// Possible values are: Windows, Linux.
 type OperatingSystemTypes string
 
 const (
@@ -1453,12 +1496,33 @@ type OrchestrationServiceNames string
 
 const (
 	OrchestrationServiceNamesAutomaticRepairs OrchestrationServiceNames = "AutomaticRepairs"
+	// OrchestrationServiceNamesAutomaticZoneRebalancing - AutomaticZoneRebalancing orchestration service.
+	OrchestrationServiceNamesAutomaticZoneRebalancing OrchestrationServiceNames = "AutomaticZoneRebalancing"
 )
 
 // PossibleOrchestrationServiceNamesValues returns the possible values for the OrchestrationServiceNames const type.
 func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
 	return []OrchestrationServiceNames{
 		OrchestrationServiceNamesAutomaticRepairs,
+		OrchestrationServiceNamesAutomaticZoneRebalancing,
+	}
+}
+
+// OrchestrationServiceOperationStatus - The latest operation status of the service.
+type OrchestrationServiceOperationStatus string
+
+const (
+	// OrchestrationServiceOperationStatusCompleted - Completed orchestration service operation status.
+	OrchestrationServiceOperationStatusCompleted OrchestrationServiceOperationStatus = "Completed"
+	// OrchestrationServiceOperationStatusInProgress - InProgress orchestration service operation status.
+	OrchestrationServiceOperationStatusInProgress OrchestrationServiceOperationStatus = "InProgress"
+)
+
+// PossibleOrchestrationServiceOperationStatusValues returns the possible values for the OrchestrationServiceOperationStatus const type.
+func PossibleOrchestrationServiceOperationStatusValues() []OrchestrationServiceOperationStatus {
+	return []OrchestrationServiceOperationStatus{
+		OrchestrationServiceOperationStatusCompleted,
+		OrchestrationServiceOperationStatusInProgress,
 	}
 }
 
@@ -1493,6 +1557,25 @@ func PossibleOrchestrationServiceStateActionValues() []OrchestrationServiceState
 	return []OrchestrationServiceStateAction{
 		OrchestrationServiceStateActionResume,
 		OrchestrationServiceStateActionSuspend,
+	}
+}
+
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
 	}
 }
 
@@ -1838,6 +1921,26 @@ func PossibleReplicationStatusTypesValues() []ReplicationStatusTypes {
 	}
 }
 
+// ReservationType - Indicates the type of capacity reservation. Allowed values are 'Block' for block capacity reservations
+// and 'Targeted' for reservations that enable a VM to consume a specific capacity reservation when
+// a capacity reservation group is provided. The reservation type is immutable and cannot be changed after it is assigned.
+type ReservationType string
+
+const (
+	// ReservationTypeBlock - To consume scheduled allocated block capacity reservation when a capacity reservation group is provided.
+	ReservationTypeBlock ReservationType = "Block"
+	// ReservationTypeTargeted - To consume on demand allocated capacity reservation when a capacity reservation group is provided.
+	ReservationTypeTargeted ReservationType = "Targeted"
+)
+
+// PossibleReservationTypeValues returns the possible values for the ReservationType const type.
+func PossibleReservationTypeValues() []ReservationType {
+	return []ReservationType{
+		ReservationTypeBlock,
+		ReservationTypeTargeted,
+	}
+}
+
 // ResilientVMDeletionStatus - Specifies the resilient VM deletion status for the virtual machine.
 type ResilientVMDeletionStatus string
 
@@ -2050,6 +2153,24 @@ func PossibleSSHEncryptionTypesValues() []SSHEncryptionTypes {
 	}
 }
 
+// ScriptShellTypes - Script shell types.
+type ScriptShellTypes string
+
+const (
+	// ScriptShellTypesDefault - Default script shell type.
+	ScriptShellTypesDefault ScriptShellTypes = "Default"
+	// ScriptShellTypesPowershell7 - Powershell7 script shell type.
+	ScriptShellTypesPowershell7 ScriptShellTypes = "Powershell7"
+)
+
+// PossibleScriptShellTypesValues returns the possible values for the ScriptShellTypes const type.
+func PossibleScriptShellTypesValues() []ScriptShellTypes {
+	return []ScriptShellTypes{
+		ScriptShellTypesDefault,
+		ScriptShellTypesPowershell7,
+	}
+}
+
 // SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption
 // of the managed disk along with VMGuestState blob, VMGuestStateOnly for encryption of just the
 // VMGuestState blob, and NonPersistedTPM for not persisting firmware state in the VMGuestState blob.. Note: It can be set
@@ -2208,6 +2329,35 @@ func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
 	}
 }
 
+// SnapshotAccessState - The state of snapshot which determines the access availability of the snapshot.
+type SnapshotAccessState string
+
+const (
+	// SnapshotAccessStateAvailable - The snapshot can be used for restore, copy to different region, and download to offline.
+	SnapshotAccessStateAvailable SnapshotAccessState = "Available"
+	// SnapshotAccessStateAvailableWithInstantAccess - The snapshot can be used for restoring disks with fast performance, copied
+	// and downloaded.
+	SnapshotAccessStateAvailableWithInstantAccess SnapshotAccessState = "AvailableWithInstantAccess"
+	// SnapshotAccessStateInstantAccess - The snapshot can be used for restoring disks with fast performance but cannot be copied
+	// or downloaded.
+	SnapshotAccessStateInstantAccess SnapshotAccessState = "InstantAccess"
+	// SnapshotAccessStatePending - The snapshot cannot be used for restore, copy or download to offline.
+	SnapshotAccessStatePending SnapshotAccessState = "Pending"
+	// SnapshotAccessStateUnknown - Default value.
+	SnapshotAccessStateUnknown SnapshotAccessState = "Unknown"
+)
+
+// PossibleSnapshotAccessStateValues returns the possible values for the SnapshotAccessState const type.
+func PossibleSnapshotAccessStateValues() []SnapshotAccessState {
+	return []SnapshotAccessState{
+		SnapshotAccessStateAvailable,
+		SnapshotAccessStateAvailableWithInstantAccess,
+		SnapshotAccessStateInstantAccess,
+		SnapshotAccessStatePending,
+		SnapshotAccessStateUnknown,
+	}
+}
+
 // SnapshotStorageAccountTypes - The sku name.
 type SnapshotStorageAccountTypes string
 
@@ -2310,6 +2460,26 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 		StorageAccountTypesStandardSSDLRS,
 		StorageAccountTypesStandardSSDZRS,
 		StorageAccountTypesUltraSSDLRS,
+	}
+}
+
+// SupportedSecurityOption - Refers to the security capability of the disk supported to create a Trusted launch or Confidential
+// VM
+type SupportedSecurityOption string
+
+const (
+	// SupportedSecurityOptionTrustedLaunchAndConfidentialVMSupported - The disk supports creating both Trusted Launch and Confidential
+	// VMs.
+	SupportedSecurityOptionTrustedLaunchAndConfidentialVMSupported SupportedSecurityOption = "TrustedLaunchAndConfidentialVMSupported"
+	// SupportedSecurityOptionTrustedLaunchSupported - The disk supports creating Trusted Launch VMs.
+	SupportedSecurityOptionTrustedLaunchSupported SupportedSecurityOption = "TrustedLaunchSupported"
+)
+
+// PossibleSupportedSecurityOptionValues returns the possible values for the SupportedSecurityOption const type.
+func PossibleSupportedSecurityOptionValues() []SupportedSecurityOption {
+	return []SupportedSecurityOption{
+		SupportedSecurityOptionTrustedLaunchAndConfidentialVMSupported,
+		SupportedSecurityOptionTrustedLaunchSupported,
 	}
 }
 
@@ -3051,17 +3221,21 @@ func PossibleZonalPlatformFaultDomainAlignModeValues() []ZonalPlatformFaultDomai
 	}
 }
 
-// ZonePlacementPolicyType - Specifies the policy for virtual machine's placement in availability zone. Possible values are:
-// Any - An availability zone will be automatically picked by system as part of virtual machine creation.
+// ZonePlacementPolicyType - Specifies the policy for resource's placement in availability zone. Possible values are: Any
+// (used for Virtual Machines), Auto (used for Virtual Machine Scale Sets) - An availability zone will be
+// automatically picked by system as part of resource creation.
 type ZonePlacementPolicyType string
 
 const (
 	ZonePlacementPolicyTypeAny ZonePlacementPolicyType = "Any"
+	// ZonePlacementPolicyTypeAuto - Automatic zone placement in a Virtual Machine Scale Set.
+	ZonePlacementPolicyTypeAuto ZonePlacementPolicyType = "Auto"
 )
 
 // PossibleZonePlacementPolicyTypeValues returns the possible values for the ZonePlacementPolicyType const type.
 func PossibleZonePlacementPolicyTypeValues() []ZonePlacementPolicyType {
 	return []ZonePlacementPolicyType{
 		ZonePlacementPolicyTypeAny,
+		ZonePlacementPolicyTypeAuto,
 	}
 }

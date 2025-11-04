@@ -43,7 +43,7 @@ func NewLtrBackupOperationsClient(subscriptionID string, credential azcore.Token
 // Get - Gets the result of the give long term retention backup operation for the flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -94,7 +94,7 @@ func (client *LtrBackupOperationsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *LtrBackupOperationsClient) getHandleResponse(resp *http.Response) 
 
 // NewListByServerPager - Gets the result of the give long term retention backup operations for the flexible server.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2025-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - LtrBackupOperationsClientListByServerOptions contains the optional parameters for the LtrBackupOperationsClient.NewListByServerPager
@@ -159,7 +159,7 @@ func (client *LtrBackupOperationsClient) listByServerCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

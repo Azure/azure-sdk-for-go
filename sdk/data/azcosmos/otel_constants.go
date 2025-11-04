@@ -33,6 +33,7 @@ const (
 	otelSpanNameUpsertItem                  = "upsert_item"
 	otelSpanNamePatchItem                   = "patch_item"
 	otelSpanNameQueryItems                  = "query_items"
+	otelSpanNamePartitionKeyRanges          = "read_partition_key_ranges"
 )
 
 type span struct {
@@ -99,6 +100,10 @@ func getSpanNameForContainers(endpoint *url.URL, operationType operationType, re
 			spanName = otelSpanNameReplaceContainer
 		case operationTypeBatch:
 			spanName = otelSpanNameExecuteBatch
+		}
+	case resourceTypePartitionKeyRange:
+		if operationType == operationTypeRead {
+			spanName = otelSpanNamePartitionKeyRanges
 		}
 	case resourceTypeOffer:
 		switch operationType {

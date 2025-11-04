@@ -211,7 +211,7 @@ func Example_responsesApiStreaming() {
 	for stream.Next() {
 		event := stream.Current()
 		if event.Type == "response.output_text.delta" {
-			fmt.Fprintf(os.Stderr, "%s", event.Delta)
+			fmt.Fprintf(os.Stderr, "%s", event.Delta.OfString)
 		}
 	}
 

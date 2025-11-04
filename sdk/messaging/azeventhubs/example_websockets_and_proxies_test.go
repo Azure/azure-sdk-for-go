@@ -15,7 +15,7 @@ import (
 	"github.com/coder/websocket"
 )
 
-func ExampleNewClient_usingWebsocketsAndProxies() {
+func Example_usingWebsocketsAndProxies() {
 	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE") // <ex: myeventhubnamespace.servicebus.windows.net>
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 
@@ -56,8 +56,8 @@ func ExampleNewClient_usingWebsocketsAndProxies() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	// NOTE: For users of `nhooyr.io/websocket` there's an open discussion here:
-	//   https://github.com/nhooyr/websocket/discussions/380
+	// NOTE: For users of `coder/websocket` there's an open discussion here:
+	//   https://github.com/coder/websocket/issues/520
 	//
 	// An error ("failed to read frame header: EOF") can be returned when the
 	// websocket connection is closed. This error will be returned from the
@@ -65,3 +65,5 @@ func ExampleNewClient_usingWebsocketsAndProxies() {
 	// ignored, as the websocket "close handshake" has already completed.
 	defer consumerClient.Close(context.TODO())
 }
+
+var _ any // (ignore, used for docs)

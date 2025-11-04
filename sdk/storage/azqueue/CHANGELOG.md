@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.2-beta.1 (Unreleased)
+### 2.0.1-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,21 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.0.0 (2025-10-16)
+
+#### Other Changes
+* Updated service version to `2025-11-05`
+* Updated `azidentity` version to `1.13.0`
+* Updated `azcore` version to `1.19.1`
+
+### 2.0.0-beta.1 (2025-07-08)
+
+#### Breaking Changes
+* The type of ApproximateMessagesCount has changed from *int32 to *int64 to support large queues with more than int32 max value messages.
+
+### Other Changes
+* Updated `azidentity` version to `1.10.1`
 
 ### 1.0.1 (2025-04-30)
 

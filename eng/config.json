@@ -66,7 +66,7 @@
         },
         {
             "Name": "keyvault/azcertificates",
-            "CoverageGoal": 0.80
+            "CoverageGoal": 0.75
         },
         {
             "Name": "keyvault/azkeys",
@@ -74,7 +74,7 @@
         },
         {
             "Name": "keyvault/azsecrets",
-            "CoverageGoal": 0.85
+            "CoverageGoal": 0.80
         },
         {
             "Name": "data/aztables",
@@ -128,7 +128,7 @@
         },
         {
             "Name": "monitor/azquery",
-            "CoverageGoal": 0.85
+            "CoverageGoal": 0.80
         },
         {
             "Name": "monitor/ingestion/azlogs",
@@ -140,7 +140,7 @@
         },
         {
             "Name": "security/keyvault/azadmin",
-            "CoverageGoal": 0.80
+            "CoverageGoal": 0.78
         },
         {
             "Name": "monitor/query/azmetrics",

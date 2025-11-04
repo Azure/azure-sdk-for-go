@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ContainerAppsDiagnostics_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ContainerAppsDiagnostics_List.json
 func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleContainerAppsDiagnosticsClient_NewListDetectorsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ContainerAppsDiagnostics_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ContainerAppsDiagnostics_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleContainerAppsDiagnosticsClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Revisions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Revisions_List.json
 func ExampleContainerAppsDiagnosticsClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleContainerAppsDiagnosticsClient_NewListRevisionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Revisions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Revisions_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRevision() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ContainerApps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ContainerApps_Get.json
 func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,6 +299,13 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 	Properties: &armappcontainers.ContainerAppProperties{
 	// 		Configuration: &armappcontainers.Configuration{
 	// 			Dapr: &armappcontainers.Dapr{
+	// 				AppHealth: &armappcontainers.DaprAppHealth{
+	// 					Path: to.Ptr("/health"),
+	// 					Enabled: to.Ptr(true),
+	// 					ProbeIntervalSeconds: to.Ptr[int32](3),
+	// 					ProbeTimeoutMilliseconds: to.Ptr[int32](1000),
+	// 					Threshold: to.Ptr[int32](3),
+	// 				},
 	// 				AppPort: to.Ptr[int32](3000),
 	// 				AppProtocol: to.Ptr(armappcontainers.AppProtocolHTTP),
 	// 				EnableAPILogging: to.Ptr(true),
@@ -306,6 +313,7 @@ func ExampleContainerAppsDiagnosticsClient_GetRoot() {
 	// 				HTTPMaxRequestSize: to.Ptr[int32](10),
 	// 				HTTPReadBufferSize: to.Ptr[int32](30),
 	// 				LogLevel: to.Ptr(armappcontainers.LogLevelDebug),
+	// 				MaxConcurrency: to.Ptr[int32](10),
 	// 			},
 	// 			IdentitySettings: []*armappcontainers.IdentitySettings{
 	// 				{

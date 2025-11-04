@@ -279,9 +279,11 @@ func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	var respFromCtx *http.Response
 	ctxWithResp := shared.WithCaptureBlobResponse(ctx, &respFromCtx)
 	resp, err := d.blobClient().GetProperties(ctxWithResp, opts)
+	if err != nil {
+		return GetPropertiesResponse{}, exported.ConvertToDFSError(err)
+	}
 	newResp := path.FormatGetPropertiesResponse(&resp, respFromCtx)
-	err = exported.ConvertToDFSError(err)
-	return newResp, err
+	return newResp, nil
 }
 
 // Rename renames a directory. The original directory will no longer exist and the client will be stale.

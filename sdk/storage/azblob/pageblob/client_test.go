@@ -517,6 +517,61 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithCRC64Negative()
 	_require.Error(err) // TODO: UploadPagesFromURL should fail, but is currently not working due to service issue.
 }
 
+func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithRequestIntentHeader() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 * 1024 // 4MB
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	srcBlob := createNewPageBlobWithSize(context.Background(), _require, "srcblob"+testName, containerClient, int64(contentSize))
+	destBlob := createNewPageBlobWithSize(context.Background(), _require, "dstblob"+testName, containerClient, int64(contentSize))
+
+	// Prepare source pbClient for copy.
+	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
+	requestIntent := blob.FileRequestIntentTypeBackup
+
+	_, err = srcBlob.UploadPages(context.Background(), streaming.NopCloser(r), blob.HTTPRange{Offset: offset, Count: count}, nil)
+	_require.NoError(err)
+
+	// Get source pbClient URL with SAS for UploadPagesFromURL.
+	keyCredential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+
+	srcBlobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                      // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute), // 15 minutes before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true}).String(),
+	}.SignWithSharedKey(keyCredential)
+	_require.NoError(err)
+
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Upload page from URL with MD5.
+	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
+		FileRequestIntent: &requestIntent,
+	}
+	pResp1, err := destBlob.UploadPagesFromURL(context.Background(), srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	_require.NoError(err)
+	_require.NotNil(pResp1)
+
+	// Download blob.
+	downloadResp, err := destBlob.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	destData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(destData, sourceData)
+}
+
 func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

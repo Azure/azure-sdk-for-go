@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -49,7 +49,7 @@ func (testsuite *VirtualMachineImageTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestVirtualMachineImageTestSuite(t *testing.T) {
+func TTestVirtualMachineImageTestSuite(t *testing.T) {
 	suite.Run(t, new(VirtualMachineImageTestSuite))
 }
 

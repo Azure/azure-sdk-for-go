@@ -34,31 +34,31 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 	return client, nil
 }
 
-// List - Lists all of the available REST API operations.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Lists all of the available REST API operations.
 //
-// Generated from API version 2024-08-01
-//   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-func (client *OperationsClient) List(ctx context.Context, options *OperationsClientListOptions) (OperationsClientListResponse, error) {
-	var err error
-	const operationName = "OperationsClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return OperationsClientListResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return OperationsClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+// Generated from API version 2025-01-01-preview
+//   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
+		More: func(page OperationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
+			if err != nil {
+				return OperationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -69,7 +69,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", "2025-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

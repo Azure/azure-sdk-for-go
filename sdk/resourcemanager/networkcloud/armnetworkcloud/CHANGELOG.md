@@ -1,5 +1,93 @@
 # Release History
 
+## 1.3.0 (2025-06-13)
+### Features Added
+
+- New value `OsDiskCreateOptionPersistent` added to enum type `OsDiskCreateOption`
+- New value `StorageApplianceDetailedStatusDegraded` added to enum type `StorageApplianceDetailedStatus`
+- New value `VirtualMachineDeviceModelTypeT3` added to enum type `VirtualMachineDeviceModelType`
+- New enum type `VulnerabilityScanningSettingsContainerScan` with values `VulnerabilityScanningSettingsContainerScanDisabled`, `VulnerabilityScanningSettingsContainerScanEnabled`
+- New struct `AnalyticsOutputSettings`
+- New struct `SecretArchiveSettings`
+- New struct `VulnerabilityScanningSettings`
+- New struct `VulnerabilityScanningSettingsPatch`
+- New field `Etag` in struct `AgentPool`
+- New field `IfMatch`, `IfNoneMatch` in struct `AgentPoolsClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `AgentPoolsClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `AgentPoolsClientBeginUpdateOptions`
+- New field `Etag` in struct `BareMetalMachine`
+- New field `Etag` in struct `BareMetalMachineKeySet`
+- New field `IfMatch`, `IfNoneMatch` in struct `BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `BareMetalMachineKeySetsClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `BareMetalMachineKeySetsClientBeginUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `BareMetalMachinesClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `BareMetalMachinesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `BareMetalMachinesClientBeginUpdateOptions`
+- New field `Etag` in struct `BmcKeySet`
+- New field `IfMatch`, `IfNoneMatch` in struct `BmcKeySetsClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `BmcKeySetsClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `BmcKeySetsClientBeginUpdateOptions`
+- New field `Etag` in struct `CloudServicesNetwork`
+- New field `IfMatch`, `IfNoneMatch` in struct `CloudServicesNetworksClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `CloudServicesNetworksClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `CloudServicesNetworksClientBeginUpdateOptions`
+- New field `Etag` in struct `Cluster`
+- New field `Etag` in struct `ClusterManager`
+- New field `IfMatch`, `IfNoneMatch` in struct `ClusterManagersClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `ClusterManagersClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `ClusterManagersClientUpdateOptions`
+- New field `Etag` in struct `ClusterMetricsConfiguration`
+- New field `AnalyticsOutputSettings`, `SecretArchiveSettings`, `VulnerabilityScanningSettings` in struct `ClusterPatchProperties`
+- New field `AnalyticsOutputSettings`, `SecretArchiveSettings`, `VulnerabilityScanningSettings` in struct `ClusterProperties`
+- New field `IfMatch`, `IfNoneMatch` in struct `ClustersClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `ClustersClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `ClustersClientBeginUpdateOptions`
+- New field `Etag` in struct `Console`
+- New field `IfMatch`, `IfNoneMatch` in struct `ConsolesClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `ConsolesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `ConsolesClientBeginUpdateOptions`
+- New field `Etag` in struct `KubernetesCluster`
+- New field `Etag` in struct `KubernetesClusterFeature`
+- New field `IfMatch`, `IfNoneMatch` in struct `KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `KubernetesClusterFeaturesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `KubernetesClusterFeaturesClientBeginUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `KubernetesClustersClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `KubernetesClustersClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `KubernetesClustersClientBeginUpdateOptions`
+- New field `Etag` in struct `L2Network`
+- New field `IfMatch`, `IfNoneMatch` in struct `L2NetworksClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `L2NetworksClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `L2NetworksClientUpdateOptions`
+- New field `Etag` in struct `L3Network`
+- New field `IfMatch`, `IfNoneMatch` in struct `L3NetworksClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `L3NetworksClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `L3NetworksClientUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `MetricsConfigurationsClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `MetricsConfigurationsClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `MetricsConfigurationsClientBeginUpdateOptions`
+- New field `Etag` in struct `Rack`
+- New field `IfMatch`, `IfNoneMatch` in struct `RacksClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `RacksClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `RacksClientBeginUpdateOptions`
+- New field `Etag` in struct `StorageAppliance`
+- New field `IfMatch`, `IfNoneMatch` in struct `StorageAppliancesClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `StorageAppliancesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `StorageAppliancesClientBeginUpdateOptions`
+- New field `Etag` in struct `TrunkedNetwork`
+- New field `IfMatch`, `IfNoneMatch` in struct `TrunkedNetworksClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `TrunkedNetworksClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `TrunkedNetworksClientUpdateOptions`
+- New field `Etag` in struct `VirtualMachine`
+- New field `ConsoleExtendedLocation` in struct `VirtualMachineProperties`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachinesClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachinesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachinesClientBeginUpdateOptions`
+- New field `Etag` in struct `Volume`
+- New field `IfMatch`, `IfNoneMatch` in struct `VolumesClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VolumesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VolumesClientUpdateOptions`
+
+
 ## 1.3.0-beta.1 (2025-04-07)
 ### Features Added
 

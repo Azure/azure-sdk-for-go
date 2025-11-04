@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/msi/armmsi",
-  "Tag": "go/resourcemanager/msi/armmsi_9c237db2f0"
+  "Tag": "go/resourcemanager/msi/armmsi_dbfb7feb00"
 }

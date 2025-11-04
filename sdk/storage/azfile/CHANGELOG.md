@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.2-beta.1 (Unreleased)
+## 1.5.4-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,31 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.3 (2025-10-16)
+
+### Other Changes
+* Updated service version to `2025-11-05`
+* Updated `azidentity` version to `1.13.0`
+* Updated `azcore` version to `1.19.1`
+
+## 1.5.2 (2025-07-23)
+
+### Other Changes
+* Updated `azcore` version to `1.18.1`
+
+## 1.5.2-beta.2 (2025-07-08)
+
+### Bugs Fixed
+* Fixed bug where fileClient.Create API call was failing on passing permissionKey parameter. Fixes[#24632(https://github.com/Azure/azure-sdk-for-go/issues/24632)]
+
+### Other Changes
+* Updated `azidentity` version to `1.10.1`
+
+## 1.5.2-beta.1 (2025-05-08)
+
+### Features Added
+* Added new API for create symbolic link for NFS Over Rest.
 
 ## 1.5.1 (2025-04-16)
 

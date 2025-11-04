@@ -51,6 +51,13 @@ jobs:
       image: $(OSVmImage)
     os: ${{ parameters.OSName }}
 
+  # Only run CG on the linux build(s) so we don't run it on all the jobs.
+  ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.OSName, 'linux')) }}:
+    templateContext:
+      sdl:
+        componentgovernance:
+          enabled: true
+
   steps:
   - template: /eng/pipelines/templates/steps/sparse-checkout-for-servicedirectory.yml
     parameters:
@@ -77,9 +84,3 @@ jobs:
       EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
       EnvVars:
         AZURE_RECORD_MODE: 'playback'
-
-- ${{ if and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'), eq(parameters.OSName, 'linux')) }}:
-  - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
-    parameters:
-      ServiceDirectory: ${{ parameters.ServiceDirectory }}
-      OSName: ${{ parameters.OSName }}

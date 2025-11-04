@@ -26,7 +26,7 @@ type IspCacheNodesOperationsClient struct {
 // NewIspCacheNodesOperationsClient creates a new instance of IspCacheNodesOperationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIspCacheNodesOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IspCacheNodesOperationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -202,7 +202,6 @@ func (client *IspCacheNodesOperationsClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

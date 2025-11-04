@@ -26,8 +26,7 @@ type VirtualMachineImagesClient struct {
 }
 
 // NewVirtualMachineImagesClient creates a new instance of VirtualMachineImagesClient with the specified values.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualMachineImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineImagesClient, error) {
@@ -45,8 +44,8 @@ func NewVirtualMachineImagesClient(subscriptionID string, credential azcore.Toke
 // Get - Gets a virtual machine image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - location - The name of a supported Azure region.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - publisherName - A valid image publisher.
 //   - offer - A valid image publisher offer.
 //   - skus - A valid image SKU.
@@ -107,7 +106,7 @@ func (client *VirtualMachineImagesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -125,8 +124,8 @@ func (client *VirtualMachineImagesClient) getHandleResponse(resp *http.Response)
 // List - Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - location - The name of a supported Azure region.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - publisherName - A valid image publisher.
 //   - offer - A valid image publisher offer.
 //   - skus - A valid image SKU.
@@ -157,6 +156,10 @@ func (client *VirtualMachineImagesClient) List(ctx context.Context, location str
 // listCreateRequest creates the List request.
 func (client *VirtualMachineImagesClient) listCreateRequest(ctx context.Context, location string, publisherName string, offer string, skus string, options *VirtualMachineImagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -173,10 +176,6 @@ func (client *VirtualMachineImagesClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter skus cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{skus}", url.PathEscape(skus))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -191,7 +190,7 @@ func (client *VirtualMachineImagesClient) listCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,8 +208,8 @@ func (client *VirtualMachineImagesClient) listHandleResponse(resp *http.Response
 // ListByEdgeZone - Gets a list of all virtual machine image versions for the specified edge zone
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - location - The name of a supported Azure region.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - edgeZone - The name of the edge zone.
 //   - options - VirtualMachineImagesClientListByEdgeZoneOptions contains the optional parameters for the VirtualMachineImagesClient.ListByEdgeZone
 //     method.
@@ -239,6 +238,10 @@ func (client *VirtualMachineImagesClient) ListByEdgeZone(ctx context.Context, lo
 // listByEdgeZoneCreateRequest creates the ListByEdgeZone request.
 func (client *VirtualMachineImagesClient) listByEdgeZoneCreateRequest(ctx context.Context, location string, edgeZone string, _ *VirtualMachineImagesClientListByEdgeZoneOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}/vmimages"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -247,16 +250,12 @@ func (client *VirtualMachineImagesClient) listByEdgeZoneCreateRequest(ctx contex
 		return nil, errors.New("parameter edgeZone cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{edgeZone}", url.PathEscape(edgeZone))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,8 +273,8 @@ func (client *VirtualMachineImagesClient) listByEdgeZoneHandleResponse(resp *htt
 // ListOffers - Gets a list of virtual machine image offers for the specified location and publisher.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - location - The name of a supported Azure region.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - publisherName - A valid image publisher.
 //   - options - VirtualMachineImagesClientListOffersOptions contains the optional parameters for the VirtualMachineImagesClient.ListOffers
 //     method.
@@ -304,6 +303,10 @@ func (client *VirtualMachineImagesClient) ListOffers(ctx context.Context, locati
 // listOffersCreateRequest creates the ListOffers request.
 func (client *VirtualMachineImagesClient) listOffersCreateRequest(ctx context.Context, location string, publisherName string, _ *VirtualMachineImagesClientListOffersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -312,16 +315,12 @@ func (client *VirtualMachineImagesClient) listOffersCreateRequest(ctx context.Co
 		return nil, errors.New("parameter publisherName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{publisherName}", url.PathEscape(publisherName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,8 +338,8 @@ func (client *VirtualMachineImagesClient) listOffersHandleResponse(resp *http.Re
 // ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - location - The name of a supported Azure region.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - options - VirtualMachineImagesClientListPublishersOptions contains the optional parameters for the VirtualMachineImagesClient.ListPublishers
 //     method.
 func (client *VirtualMachineImagesClient) ListPublishers(ctx context.Context, location string, options *VirtualMachineImagesClientListPublishersOptions) (VirtualMachineImagesClientListPublishersResponse, error) {
@@ -368,20 +367,20 @@ func (client *VirtualMachineImagesClient) ListPublishers(ctx context.Context, lo
 // listPublishersCreateRequest creates the ListPublishers request.
 func (client *VirtualMachineImagesClient) listPublishersCreateRequest(ctx context.Context, location string, _ *VirtualMachineImagesClientListPublishersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -399,8 +398,8 @@ func (client *VirtualMachineImagesClient) listPublishersHandleResponse(resp *htt
 // ListSKUs - Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - location - The name of a supported Azure region.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - publisherName - A valid image publisher.
 //   - offer - A valid image publisher offer.
 //   - options - VirtualMachineImagesClientListSKUsOptions contains the optional parameters for the VirtualMachineImagesClient.ListSKUs
@@ -430,6 +429,10 @@ func (client *VirtualMachineImagesClient) ListSKUs(ctx context.Context, location
 // listSKUsCreateRequest creates the ListSKUs request.
 func (client *VirtualMachineImagesClient) listSKUsCreateRequest(ctx context.Context, location string, publisherName string, offer string, _ *VirtualMachineImagesClientListSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -442,16 +445,12 @@ func (client *VirtualMachineImagesClient) listSKUsCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter offer cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{offer}", url.PathEscape(offer))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -466,42 +465,46 @@ func (client *VirtualMachineImagesClient) listSKUsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListWithPropertiesPager -
+// ListWithProperties -
+// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
-//   - location - The name of a supported Azure region.
+// Generated from API version 2025-04-01
+//   - location - The name of Azure region.
 //   - publisherName - A valid image publisher.
 //   - offer - A valid image publisher offer.
 //   - skus - A valid image SKU.
 //   - expand - The expand expression to apply on the operation.
-//   - options - VirtualMachineImagesClientListWithPropertiesOptions contains the optional parameters for the VirtualMachineImagesClient.NewListWithPropertiesPager
+//   - options - VirtualMachineImagesClientListWithPropertiesOptions contains the optional parameters for the VirtualMachineImagesClient.ListWithProperties
 //     method.
-func (client *VirtualMachineImagesClient) NewListWithPropertiesPager(location string, publisherName string, offer string, skus string, expand Expand, options *VirtualMachineImagesClientListWithPropertiesOptions) *runtime.Pager[VirtualMachineImagesClientListWithPropertiesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VirtualMachineImagesClientListWithPropertiesResponse]{
-		More: func(page VirtualMachineImagesClientListWithPropertiesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualMachineImagesClientListWithPropertiesResponse) (VirtualMachineImagesClientListWithPropertiesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineImagesClient.NewListWithPropertiesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listWithPropertiesCreateRequest(ctx, location, publisherName, offer, skus, expand, options)
-			}, nil)
-			if err != nil {
-				return VirtualMachineImagesClientListWithPropertiesResponse{}, err
-			}
-			return client.listWithPropertiesHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *VirtualMachineImagesClient) ListWithProperties(ctx context.Context, location string, publisherName string, offer string, skus string, expand string, options *VirtualMachineImagesClientListWithPropertiesOptions) (VirtualMachineImagesClientListWithPropertiesResponse, error) {
+	var err error
+	const operationName = "VirtualMachineImagesClient.ListWithProperties"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listWithPropertiesCreateRequest(ctx, location, publisherName, offer, skus, expand, options)
+	if err != nil {
+		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
+	}
+	resp, err := client.listWithPropertiesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listWithPropertiesCreateRequest creates the ListWithProperties request.
-func (client *VirtualMachineImagesClient) listWithPropertiesCreateRequest(ctx context.Context, location string, publisherName string, offer string, skus string, expand Expand, options *VirtualMachineImagesClientListWithPropertiesOptions) (*policy.Request, error) {
+func (client *VirtualMachineImagesClient) listWithPropertiesCreateRequest(ctx context.Context, location string, publisherName string, offer string, skus string, expand string, options *VirtualMachineImagesClientListWithPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -518,23 +521,19 @@ func (client *VirtualMachineImagesClient) listWithPropertiesCreateRequest(ctx co
 		return nil, errors.New("parameter skus cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{skus}", url.PathEscape(skus))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$expand", string(expand))
+	reqQP.Set("$expand", expand)
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -543,7 +542,7 @@ func (client *VirtualMachineImagesClient) listWithPropertiesCreateRequest(ctx co
 // listWithPropertiesHandleResponse handles the ListWithProperties response.
 func (client *VirtualMachineImagesClient) listWithPropertiesHandleResponse(resp *http.Response) (VirtualMachineImagesClientListWithPropertiesResponse, error) {
 	result := VirtualMachineImagesClientListWithPropertiesResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImagesWithPropertiesListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageArray); err != nil {
 		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
 	}
 	return result, nil

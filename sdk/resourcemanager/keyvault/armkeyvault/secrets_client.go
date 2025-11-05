@@ -109,14 +109,6 @@ func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SecretsClient) createOrUpdateHandleResponse(resp *http.Response) (SecretsClientCreateOrUpdateResponse, error) {
 	result := SecretsClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return SecretsClientCreateOrUpdateResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Secret); err != nil {
 		return SecretsClientCreateOrUpdateResponse{}, err
 	}

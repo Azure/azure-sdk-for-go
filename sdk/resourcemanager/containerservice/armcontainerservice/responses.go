@@ -439,6 +439,29 @@ type ManagedNamespacesClientUpdateResponse struct {
 	ManagedNamespace
 }
 
+// MeshMembershipsClientCreateOrUpdateResponse contains the response from method MeshMembershipsClient.BeginCreateOrUpdate.
+type MeshMembershipsClientCreateOrUpdateResponse struct {
+	// Mesh membership of a managed cluster.
+	MeshMembership
+}
+
+// MeshMembershipsClientDeleteResponse contains the response from method MeshMembershipsClient.BeginDelete.
+type MeshMembershipsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MeshMembershipsClientGetResponse contains the response from method MeshMembershipsClient.Get.
+type MeshMembershipsClientGetResponse struct {
+	// Mesh membership of a managed cluster.
+	MeshMembership
+}
+
+// MeshMembershipsClientListByManagedClusterResponse contains the response from method MeshMembershipsClient.NewListByManagedClusterPager.
+type MeshMembershipsClientListByManagedClusterResponse struct {
+	// The result of a request to list mesh memberships in a managed cluster.
+	MeshMembershipsListResult
+}
+
 // OperationStatusResultClientGetByAgentPoolResponse contains the response from method OperationStatusResultClient.GetByAgentPool.
 type OperationStatusResultClientGetByAgentPoolResponse struct {
 	// The current status of an async operation.

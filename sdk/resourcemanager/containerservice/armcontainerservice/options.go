@@ -488,6 +488,30 @@ type ManagedNamespacesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MeshMembershipsClientBeginCreateOrUpdateOptions contains the optional parameters for the MeshMembershipsClient.BeginCreateOrUpdate
+// method.
+type MeshMembershipsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MeshMembershipsClientBeginDeleteOptions contains the optional parameters for the MeshMembershipsClient.BeginDelete method.
+type MeshMembershipsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MeshMembershipsClientGetOptions contains the optional parameters for the MeshMembershipsClient.Get method.
+type MeshMembershipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MeshMembershipsClientListByManagedClusterOptions contains the optional parameters for the MeshMembershipsClient.NewListByManagedClusterPager
+// method.
+type MeshMembershipsClientListByManagedClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationStatusResultClientGetByAgentPoolOptions contains the optional parameters for the OperationStatusResultClient.GetByAgentPool
 // method.
 type OperationStatusResultClientGetByAgentPoolOptions struct {

@@ -33,7 +33,8 @@ type ContainerClient struct {
 // composite/hierarchical set of values) the item was written with. For hierarchical
 // partition keys create the PartitionKey with NewPartitionKey* helpers (e.g.
 // NewPartitionKeyString, NewPartitionKeyInt, or NewPartitionKeyArray) following the
-// order defined in the container.
+// order defined in the container. For hierarchical partition keys, all of the
+// levels must be provided.
 type ItemIdentity struct {
 	ID           string       // Item id
 	PartitionKey PartitionKey // Partition key value for the item
@@ -454,12 +455,10 @@ func (c *ContainerClient) ReadItem(
 // o - Options for the operation.
 func (c *ContainerClient) ReadManyItems(
 	ctx context.Context,
-	partitionKey PartitionKey,
 	itemIdentities []ItemIdentity,
 	o *ReadManyOptions) (ReadManyItemsResponse, error) {
 	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{
-		partitionKey:         &partitionKey,
 		correlatedActivityId: &correlatedActivityId,
 	}
 
@@ -470,12 +469,16 @@ func (c *ContainerClient) ReadManyItems(
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:          resourceTypeDocument,
-		resourceAddress:       c.link,
-		headerOptionsOverride: &h,
+		resourceType:    resourceTypeDocument,
+		resourceAddress: c.link,
 	}
 
-	return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
+	if readManyOptions.QueryEngine != nil {
+		operationContext.headerOptionsOverride = &h
+		return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
+	}
+
+	return c.executeReadManyWithPointReads(itemIdentities, readManyOptions, operationContext, ctx)
 }
 
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.

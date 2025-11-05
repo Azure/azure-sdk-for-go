@@ -197,6 +197,18 @@ type AgentPoolNetworkProfile struct {
 	NodePublicIPTags []*IPTag
 }
 
+// AgentPoolRecentlyUsedVersion - A historical version that can be used for rollback operations.
+type AgentPoolRecentlyUsedVersion struct {
+	// The node image version available for rollback.
+	NodeImageVersion *string
+
+	// The Kubernetes version (major.minor.patch) available for rollback.
+	OrchestratorVersion *string
+
+	// The timestamp when this version was last used.
+	Timestamp *time.Time
+}
+
 // AgentPoolSecurityProfile - The security settings of an agent pool.
 type AgentPoolSecurityProfile struct {
 	// Secure Boot is a feature of Trusted Launch which ensures that only signed operating systems and drivers can boot. For more
@@ -251,6 +263,9 @@ type AgentPoolUpgradeProfileProperties struct {
 
 	// List of orchestrator types and versions available for upgrade.
 	Upgrades []*AgentPoolUpgradeProfilePropertiesUpgradesItem
+
+	// READ-ONLY; List of historical good versions for rollback operations.
+	RecentlyUsedVersions []*AgentPoolRecentlyUsedVersion
 }
 
 type AgentPoolUpgradeProfilePropertiesUpgradesItem struct {
@@ -585,7 +600,7 @@ type IdentityBinding struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -657,6 +672,9 @@ type IstioComponents struct {
 
 	// Istio ingress gateways.
 	IngressGateways []*IstioIngressGateway
+
+	// Mode of traffic redirection.
+	ProxyRedirectionMechanism *ProxyRedirectionMechanism
 }
 
 // IstioEgressGateway - Istio egress gateway configuration.
@@ -1264,7 +1282,7 @@ type MachineProperties struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
 	// READ-ONLY; The version of node image.
@@ -1395,7 +1413,7 @@ type ManagedCluster struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -1546,11 +1564,6 @@ type ManagedClusterAgentPoolProfile struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool
 
-	// Whether to enable Custom CA Trust feature. When set to true, AKS adds a label to the node indicating that the feature is
-	// enabled and deploys a daemonset along with host services to sync custom
-	// certificate authorities from user-provided list of base64 encoded certificates into node trust stores. Defaults to false.
-	EnableCustomCATrust *bool
-
 	// Whether to enable host based OS and data drive encryption. This is only supported on certain VM sizes and in certain Azure
 	// regions. For more information, see:
 	// https://docs.microsoft.com/azure/aks/enable-host-encryption
@@ -1622,6 +1635,12 @@ type ManagedClusterAgentPoolProfile struct {
 
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
+
+	// Settings to determine the node customization used to provision nodes in a pool.
+	NodeCustomizationProfile *NodeCustomizationProfile
+
+	// The version of node image
+	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
 	// and can be removed with a kubectl call. This field can be modified after node
@@ -1754,11 +1773,8 @@ type ManagedClusterAgentPoolProfile struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
-
-	// READ-ONLY; The version of node image
-	NodeImageVersion *string
 
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string
@@ -1786,11 +1802,6 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool
 
-	// Whether to enable Custom CA Trust feature. When set to true, AKS adds a label to the node indicating that the feature is
-	// enabled and deploys a daemonset along with host services to sync custom
-	// certificate authorities from user-provided list of base64 encoded certificates into node trust stores. Defaults to false.
-	EnableCustomCATrust *bool
-
 	// Whether to enable host based OS and data drive encryption. This is only supported on certain VM sizes and in certain Azure
 	// regions. For more information, see:
 	// https://docs.microsoft.com/azure/aks/enable-host-encryption
@@ -1862,6 +1873,12 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
+
+	// Settings to determine the node customization used to provision nodes in a pool.
+	NodeCustomizationProfile *NodeCustomizationProfile
+
+	// The version of node image
+	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
 	// and can be removed with a kubectl call. This field can be modified after node
@@ -1994,11 +2011,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
-
-	// READ-ONLY; The version of node image
-	NodeImageVersion *string
 
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string
@@ -2163,6 +2177,12 @@ type ManagedClusterHTTPProxyConfig struct {
 	// READ-ONLY; A read-only list of all endpoints for which traffic should not be sent to the proxy. This list is a superset
 	// of noProxy and values injected by AKS.
 	EffectiveNoProxy []*string
+}
+
+// ManagedClusterHostedSystemProfile - Settings for hosted system addons.
+type ManagedClusterHostedSystemProfile struct {
+	// Whether to enable hosted system addons for the cluster.
+	Enabled *bool
 }
 
 // ManagedClusterIdentity - Identity for the managed cluster.
@@ -2514,6 +2534,9 @@ type ManagedClusterProperties struct {
 
 	// Configurations for provisioning the cluster with HTTP proxy servers.
 	HTTPProxyConfig *ManagedClusterHTTPProxyConfig
+
+	// Settings for hosted system addons. For more information, see https://aka.ms/aks/automatic/systemcomponents.
+	HostedSystemProfile *ManagedClusterHostedSystemProfile
 
 	// The user identity associated with the managed cluster. This identity will be used by the kubelet. Only one user assigned
 	// identity is allowed. The only accepted key is "kubeletidentity", with value of
@@ -3053,7 +3076,7 @@ type ManagedNamespace struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
 	// READ-ONLY; Resource ID.
@@ -3093,6 +3116,55 @@ type ManualScaleProfile struct {
 
 	// VM size that AKS will use when creating and scaling e.g. 'StandardE4sv3', 'StandardE16sv3' or 'StandardD16sv5'.
 	Size *string
+}
+
+// MeshMembership - Mesh membership of a managed cluster.
+type MeshMembership struct {
+	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
+	// Azure resource. If this is present, complete mode deployment will not
+	// delete the resource if it is removed from the template since it is managed by another resource.
+	ManagedBy *string
+
+	// Mesh membership properties of a managed cluster.
+	Properties *MeshMembershipProperties
+
+	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
+	// is updated. Specify an if-match or if-none-match header with the eTag value for a
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MeshMembershipProperties - Mesh membership properties of a managed cluster.
+type MeshMembershipProperties struct {
+	// REQUIRED; The ARM resource id for the managed mesh member. This is of the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/applinks/{appLinkName}/appLinkMembers/{appLinkMemberName}'.
+	// Visit https://aka.ms/applink for more
+	// information.
+	ManagedMeshID *string
+
+	// READ-ONLY; The current provisioning state of the Mesh Membership.
+	ProvisioningState *MeshMembershipProvisioningState
+}
+
+// MeshMembershipsListResult - The result of a request to list mesh memberships in a managed cluster.
+type MeshMembershipsListResult struct {
+	// The list of mesh memberships.
+	Value []*MeshMembership
+
+	// READ-ONLY; The URL to get the next set of mesh membership results.
+	NextLink *string
 }
 
 // MeshRevision - Holds information on upgrades and compatibility for given major.minor mesh release.
@@ -3343,6 +3415,13 @@ type NetworkProfileKubeProxyConfigIpvsConfig struct {
 
 	// The timeout value used for IPVS UDP packets in seconds. Must be a positive integer value.
 	UDPTimeoutSeconds *int32
+}
+
+// NodeCustomizationProfile - Settings to determine the node customization used to provision nodes in a pool.
+type NodeCustomizationProfile struct {
+	// The resource ID of the node customization resource to use. This can be a version. Omitting the version will use the latest
+	// version of the node customization.
+	NodeCustomizationID *string
 }
 
 // NodeImageVersion - node image version profile for given major.minor.patch release.

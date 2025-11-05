@@ -1,5 +1,223 @@
 # Release History
 
+## 8.1.0-beta.1 (2025-10-23)
+### Features Added
+
+- New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
+- New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
+- New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUUbuntu2404`, `OSSKUWindows2025`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New value `SnapshotTypeManagedCluster` added to enum type `SnapshotType`
+- New value `WorkloadRuntimeKataMshvVMIsolation` added to enum type `WorkloadRuntime`
+- New enum type `AccelerationMode` with values `AccelerationModeBpfVeth`, `AccelerationModeNone`
+- New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
+- New enum type `AdoptionPolicy` with values `AdoptionPolicyAlways`, `AdoptionPolicyIfIdentical`, `AdoptionPolicyNever`
+- New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
+- New enum type `DeletePolicy` with values `DeletePolicyDelete`, `DeletePolicyKeep`
+- New enum type `DriftAction` with values `DriftActionRecreate`, `DriftActionSynced`
+- New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
+- New enum type `GuardrailsSupport` with values `GuardrailsSupportPreview`, `GuardrailsSupportStable`
+- New enum type `IdentityBindingProvisioningState` with values `IdentityBindingProvisioningStateCanceled`, `IdentityBindingProvisioningStateCreating`, `IdentityBindingProvisioningStateDeleting`, `IdentityBindingProvisioningStateFailed`, `IdentityBindingProvisioningStateSucceeded`, `IdentityBindingProvisioningStateUpdating`
+- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
+- New enum type `IpvsScheduler` with values `IpvsSchedulerLeastConnection`, `IpvsSchedulerRoundRobin`
+- New enum type `JWTAuthenticatorProvisioningState` with values `JWTAuthenticatorProvisioningStateCanceled`, `JWTAuthenticatorProvisioningStateCreating`, `JWTAuthenticatorProvisioningStateDeleting`, `JWTAuthenticatorProvisioningStateFailed`, `JWTAuthenticatorProvisioningStateSucceeded`, `JWTAuthenticatorProvisioningStateUpdating`
+- New enum type `LocalDNSForwardDestination` with values `LocalDNSForwardDestinationClusterCoreDNS`, `LocalDNSForwardDestinationVnetDNS`
+- New enum type `LocalDNSForwardPolicy` with values `LocalDNSForwardPolicyRandom`, `LocalDNSForwardPolicyRoundRobin`, `LocalDNSForwardPolicySequential`
+- New enum type `LocalDNSMode` with values `LocalDNSModeDisabled`, `LocalDNSModePreferred`, `LocalDNSModeRequired`
+- New enum type `LocalDNSProtocol` with values `LocalDNSProtocolForceTCP`, `LocalDNSProtocolPreferUDP`
+- New enum type `LocalDNSQueryLogging` with values `LocalDNSQueryLoggingError`, `LocalDNSQueryLoggingLog`
+- New enum type `LocalDNSServeStale` with values `LocalDNSServeStaleDisable`, `LocalDNSServeStaleImmediate`, `LocalDNSServeStaleVerify`
+- New enum type `LocalDNSState` with values `LocalDNSStateDisabled`, `LocalDNSStateEnabled`
+- New enum type `ManagedGatewayType` with values `ManagedGatewayTypeDisabled`, `ManagedGatewayTypeStandard`
+- New enum type `MeshMembershipProvisioningState` with values `MeshMembershipProvisioningStateCanceled`, `MeshMembershipProvisioningStateCreating`, `MeshMembershipProvisioningStateDeleting`, `MeshMembershipProvisioningStateFailed`, `MeshMembershipProvisioningStateSucceeded`, `MeshMembershipProvisioningStateUpdating`
+- New enum type `Mode` with values `ModeIPTABLES`, `ModeIPVS`
+- New enum type `NamespaceProvisioningState` with values `NamespaceProvisioningStateCanceled`, `NamespaceProvisioningStateCreating`, `NamespaceProvisioningStateDeleting`, `NamespaceProvisioningStateFailed`, `NamespaceProvisioningStateSucceeded`, `NamespaceProvisioningStateUpdating`
+- New enum type `Operator` with values `OperatorDoesNotExist`, `OperatorExists`, `OperatorIn`, `OperatorNotIn`
+- New enum type `PodLinkLocalAccess` with values `PodLinkLocalAccessIMDS`, `PodLinkLocalAccessNone`
+- New enum type `PolicyRule` with values `PolicyRuleAllowAll`, `PolicyRuleAllowSameNamespace`, `PolicyRuleDenyAll`
+- New enum type `ProxyRedirectionMechanism` with values `ProxyRedirectionMechanismCNIChaining`, `ProxyRedirectionMechanismInitContainers`
+- New enum type `SafeguardsSupport` with values `SafeguardsSupportPreview`, `SafeguardsSupportStable`
+- New enum type `SchedulerConfigMode` with values `SchedulerConfigModeDefault`, `SchedulerConfigModeManagedByCRD`
+- New enum type `SeccompDefault` with values `SeccompDefaultRuntimeDefault`, `SeccompDefaultUnconfined`
+- New enum type `TransitEncryptionType` with values `TransitEncryptionTypeNone`, `TransitEncryptionTypeWireGuard`
+- New enum type `UpgradeStrategy` with values `UpgradeStrategyBlueGreen`, `UpgradeStrategyRolling`
+- New enum type `VMState` with values `VMStateDeleted`, `VMStateRunning`
+- New function `*AgentPoolsClient.BeginCompleteUpgrade(context.Context, string, string, string, *AgentPoolsClientBeginCompleteUpgradeOptions) (*runtime.Poller[AgentPoolsClientCompleteUpgradeResponse], error)`
+- New function `NewClient(string, azcore.TokenCredential, *arm.ClientOptions) (*Client, error)`
+- New function `*Client.NewListNodeImageVersionsPager(string, *ClientListNodeImageVersionsOptions) *runtime.Pager[ClientListNodeImageVersionsResponse]`
+- New function `*ClientFactory.NewClient() *Client`
+- New function `*ClientFactory.NewIdentityBindingsClient() *IdentityBindingsClient`
+- New function `*ClientFactory.NewJWTAuthenticatorsClient() *JWTAuthenticatorsClient`
+- New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
+- New function `*ClientFactory.NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient`
+- New function `*ClientFactory.NewManagedNamespacesClient() *ManagedNamespacesClient`
+- New function `*ClientFactory.NewMeshMembershipsClient() *MeshMembershipsClient`
+- New function `*ClientFactory.NewOperationStatusResultClient() *OperationStatusResultClient`
+- New function `NewIdentityBindingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*IdentityBindingsClient, error)`
+- New function `*IdentityBindingsClient.BeginCreateOrUpdate(context.Context, string, string, string, IdentityBinding, *IdentityBindingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IdentityBindingsClientCreateOrUpdateResponse], error)`
+- New function `*IdentityBindingsClient.BeginDelete(context.Context, string, string, string, *IdentityBindingsClientBeginDeleteOptions) (*runtime.Poller[IdentityBindingsClientDeleteResponse], error)`
+- New function `*IdentityBindingsClient.Get(context.Context, string, string, string, *IdentityBindingsClientGetOptions) (IdentityBindingsClientGetResponse, error)`
+- New function `*IdentityBindingsClient.NewListByManagedClusterPager(string, string, *IdentityBindingsClientListByManagedClusterOptions) *runtime.Pager[IdentityBindingsClientListByManagedClusterResponse]`
+- New function `NewJWTAuthenticatorsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*JWTAuthenticatorsClient, error)`
+- New function `*JWTAuthenticatorsClient.BeginCreateOrUpdate(context.Context, string, string, string, JWTAuthenticator, *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JWTAuthenticatorsClientCreateOrUpdateResponse], error)`
+- New function `*JWTAuthenticatorsClient.BeginDelete(context.Context, string, string, string, *JWTAuthenticatorsClientBeginDeleteOptions) (*runtime.Poller[JWTAuthenticatorsClientDeleteResponse], error)`
+- New function `*JWTAuthenticatorsClient.Get(context.Context, string, string, string, *JWTAuthenticatorsClientGetOptions) (JWTAuthenticatorsClientGetResponse, error)`
+- New function `*JWTAuthenticatorsClient.NewListByManagedClusterPager(string, string, *JWTAuthenticatorsClientListByManagedClusterOptions) *runtime.Pager[JWTAuthenticatorsClientListByManagedClusterResponse]`
+- New function `NewLoadBalancersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LoadBalancersClient, error)`
+- New function `*LoadBalancersClient.CreateOrUpdate(context.Context, string, string, string, LoadBalancer, *LoadBalancersClientCreateOrUpdateOptions) (LoadBalancersClientCreateOrUpdateResponse, error)`
+- New function `*LoadBalancersClient.BeginDelete(context.Context, string, string, string, *LoadBalancersClientBeginDeleteOptions) (*runtime.Poller[LoadBalancersClientDeleteResponse], error)`
+- New function `*LoadBalancersClient.Get(context.Context, string, string, string, *LoadBalancersClientGetOptions) (LoadBalancersClientGetResponse, error)`
+- New function `*LoadBalancersClient.NewListByManagedClusterPager(string, string, *LoadBalancersClientListByManagedClusterOptions) *runtime.Pager[LoadBalancersClientListByManagedClusterResponse]`
+- New function `*MachinesClient.BeginCreateOrUpdate(context.Context, string, string, string, string, Machine, *MachinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachinesClientCreateOrUpdateResponse], error)`
+- New function `NewManagedClusterSnapshotsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedClusterSnapshotsClient, error)`
+- New function `*ManagedClusterSnapshotsClient.CreateOrUpdate(context.Context, string, string, ManagedClusterSnapshot, *ManagedClusterSnapshotsClientCreateOrUpdateOptions) (ManagedClusterSnapshotsClientCreateOrUpdateResponse, error)`
+- New function `*ManagedClusterSnapshotsClient.Delete(context.Context, string, string, *ManagedClusterSnapshotsClientDeleteOptions) (ManagedClusterSnapshotsClientDeleteResponse, error)`
+- New function `*ManagedClusterSnapshotsClient.Get(context.Context, string, string, *ManagedClusterSnapshotsClientGetOptions) (ManagedClusterSnapshotsClientGetResponse, error)`
+- New function `*ManagedClusterSnapshotsClient.NewListByResourceGroupPager(string, *ManagedClusterSnapshotsClientListByResourceGroupOptions) *runtime.Pager[ManagedClusterSnapshotsClientListByResourceGroupResponse]`
+- New function `*ManagedClusterSnapshotsClient.NewListPager(*ManagedClusterSnapshotsClientListOptions) *runtime.Pager[ManagedClusterSnapshotsClientListResponse]`
+- New function `*ManagedClusterSnapshotsClient.UpdateTags(context.Context, string, string, TagsObject, *ManagedClusterSnapshotsClientUpdateTagsOptions) (ManagedClusterSnapshotsClientUpdateTagsResponse, error)`
+- New function `*ManagedClustersClient.GetGuardrailsVersions(context.Context, string, string, *ManagedClustersClientGetGuardrailsVersionsOptions) (ManagedClustersClientGetGuardrailsVersionsResponse, error)`
+- New function `*ManagedClustersClient.GetSafeguardsVersions(context.Context, string, string, *ManagedClustersClientGetSafeguardsVersionsOptions) (ManagedClustersClientGetSafeguardsVersionsResponse, error)`
+- New function `*ManagedClustersClient.NewListGuardrailsVersionsPager(string, *ManagedClustersClientListGuardrailsVersionsOptions) *runtime.Pager[ManagedClustersClientListGuardrailsVersionsResponse]`
+- New function `*ManagedClustersClient.NewListSafeguardsVersionsPager(string, *ManagedClustersClientListSafeguardsVersionsOptions) *runtime.Pager[ManagedClustersClientListSafeguardsVersionsResponse]`
+- New function `*ManagedClustersClient.BeginRebalanceLoadBalancers(context.Context, string, string, RebalanceLoadBalancersRequestBody, *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*runtime.Poller[ManagedClustersClientRebalanceLoadBalancersResponse], error)`
+- New function `NewManagedNamespacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedNamespacesClient, error)`
+- New function `*ManagedNamespacesClient.BeginCreateOrUpdate(context.Context, string, string, string, ManagedNamespace, *ManagedNamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedNamespacesClientCreateOrUpdateResponse], error)`
+- New function `*ManagedNamespacesClient.BeginDelete(context.Context, string, string, string, *ManagedNamespacesClientBeginDeleteOptions) (*runtime.Poller[ManagedNamespacesClientDeleteResponse], error)`
+- New function `*ManagedNamespacesClient.Get(context.Context, string, string, string, *ManagedNamespacesClientGetOptions) (ManagedNamespacesClientGetResponse, error)`
+- New function `*ManagedNamespacesClient.NewListByManagedClusterPager(string, string, *ManagedNamespacesClientListByManagedClusterOptions) *runtime.Pager[ManagedNamespacesClientListByManagedClusterResponse]`
+- New function `*ManagedNamespacesClient.ListCredential(context.Context, string, string, string, *ManagedNamespacesClientListCredentialOptions) (ManagedNamespacesClientListCredentialResponse, error)`
+- New function `*ManagedNamespacesClient.Update(context.Context, string, string, string, TagsObject, *ManagedNamespacesClientUpdateOptions) (ManagedNamespacesClientUpdateResponse, error)`
+- New function `NewMeshMembershipsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MeshMembershipsClient, error)`
+- New function `*MeshMembershipsClient.BeginCreateOrUpdate(context.Context, string, string, string, MeshMembership, *MeshMembershipsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MeshMembershipsClientCreateOrUpdateResponse], error)`
+- New function `*MeshMembershipsClient.BeginDelete(context.Context, string, string, string, *MeshMembershipsClientBeginDeleteOptions) (*runtime.Poller[MeshMembershipsClientDeleteResponse], error)`
+- New function `*MeshMembershipsClient.Get(context.Context, string, string, string, *MeshMembershipsClientGetOptions) (MeshMembershipsClientGetResponse, error)`
+- New function `*MeshMembershipsClient.NewListByManagedClusterPager(string, string, *MeshMembershipsClientListByManagedClusterOptions) *runtime.Pager[MeshMembershipsClientListByManagedClusterResponse]`
+- New function `NewOperationStatusResultClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OperationStatusResultClient, error)`
+- New function `*OperationStatusResultClient.Get(context.Context, string, string, string, *OperationStatusResultClientGetOptions) (OperationStatusResultClientGetResponse, error)`
+- New function `*OperationStatusResultClient.GetByAgentPool(context.Context, string, string, string, string, *OperationStatusResultClientGetByAgentPoolOptions) (OperationStatusResultClientGetByAgentPoolResponse, error)`
+- New function `*OperationStatusResultClient.NewListPager(string, string, *OperationStatusResultClientListOptions) *runtime.Pager[OperationStatusResultClientListResponse]`
+- New struct `AdvancedNetworkingPerformance`
+- New struct `AdvancedNetworkingSecurityTransitEncryption`
+- New struct `AgentPoolArtifactStreamingProfile`
+- New struct `AgentPoolBlueGreenUpgradeSettings`
+- New struct `AgentPoolRecentlyUsedVersion`
+- New struct `AutoScaleProfile`
+- New struct `Component`
+- New struct `ComponentsByRelease`
+- New struct `GuardrailsAvailableVersion`
+- New struct `GuardrailsAvailableVersionsList`
+- New struct `GuardrailsAvailableVersionsProperties`
+- New struct `IdentityBinding`
+- New struct `IdentityBindingListResult`
+- New struct `IdentityBindingManagedIdentityProfile`
+- New struct `IdentityBindingOidcIssuerProfile`
+- New struct `IdentityBindingProperties`
+- New struct `JWTAuthenticator`
+- New struct `JWTAuthenticatorClaimMappingExpression`
+- New struct `JWTAuthenticatorClaimMappings`
+- New struct `JWTAuthenticatorExtraClaimMappingExpression`
+- New struct `JWTAuthenticatorIssuer`
+- New struct `JWTAuthenticatorListResult`
+- New struct `JWTAuthenticatorProperties`
+- New struct `JWTAuthenticatorValidationRule`
+- New struct `KubernetesResourceObjectEncryptionProfile`
+- New struct `LabelSelector`
+- New struct `LabelSelectorRequirement`
+- New struct `LoadBalancer`
+- New struct `LoadBalancerListResult`
+- New struct `LoadBalancerProperties`
+- New struct `LocalDNSOverride`
+- New struct `LocalDNSProfile`
+- New struct `MachineHardwareProfile`
+- New struct `MachineKubernetesProfile`
+- New struct `MachineOSProfile`
+- New struct `MachineOSProfileLinuxProfile`
+- New struct `MachineStatus`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
+- New struct `ManagedClusterAzureMonitorProfileContainerInsights`
+- New struct `ManagedClusterHostedSystemProfile`
+- New struct `ManagedClusterIngressProfileGatewayConfiguration`
+- New struct `ManagedClusterPropertiesForSnapshot`
+- New struct `ManagedClusterSecurityProfileDefenderSecurityGating`
+- New struct `ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem`
+- New struct `ManagedClusterSecurityProfileImageIntegrity`
+- New struct `ManagedClusterSecurityProfileNodeRestriction`
+- New struct `ManagedClusterSnapshot`
+- New struct `ManagedClusterSnapshotListResult`
+- New struct `ManagedClusterSnapshotProperties`
+- New struct `ManagedNamespace`
+- New struct `ManagedNamespaceListResult`
+- New struct `MeshMembership`
+- New struct `MeshMembershipProperties`
+- New struct `MeshMembershipsListResult`
+- New struct `NamespaceProperties`
+- New struct `NetworkPolicies`
+- New struct `NetworkProfileForSnapshot`
+- New struct `NetworkProfileKubeProxyConfig`
+- New struct `NetworkProfileKubeProxyConfigIpvsConfig`
+- New struct `NodeCustomizationProfile`
+- New struct `NodeImageVersion`
+- New struct `NodeImageVersionsListResult`
+- New struct `OperationStatusResult`
+- New struct `OperationStatusResultList`
+- New struct `RebalanceLoadBalancersRequestBody`
+- New struct `ResourceQuota`
+- New struct `SafeguardsAvailableVersion`
+- New struct `SafeguardsAvailableVersionsList`
+- New struct `SafeguardsAvailableVersionsProperties`
+- New struct `SchedulerInstanceProfile`
+- New struct `SchedulerProfile`
+- New struct `SchedulerProfileSchedulerInstanceProfiles`
+- New field `Performance` in struct `AdvancedNetworking`
+- New field `TransitEncryption` in struct `AdvancedNetworkingSecurity`
+- New field `ComponentsByReleases`, `RecentlyUsedVersions` in struct `AgentPoolUpgradeProfileProperties`
+- New field `IsOutOfSupport` in struct `AgentPoolUpgradeProfilePropertiesUpgradesItem`
+- New field `MaxBlockedNodes`, `MinSurge` in struct `AgentPoolUpgradeSettings`
+- New field `DriverType` in struct `GPUProfile`
+- New field `ProxyRedirectionMechanism` in struct `IstioComponents`
+- New field `GatewayConfigurationName`, `Name`, `Namespace` in struct `IstioEgressGateway`
+- New field `SeccompDefault` in struct `KubeletConfig`
+- New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
+- New field `ETag`, `Hardware`, `Kubernetes`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
+- New field `ArtifactStreamingProfile`, `LocalDNSProfile`, `NodeCustomizationProfile`, `NodeInitializationTaints`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
+- New field `ArtifactStreamingProfile`, `LocalDNSProfile`, `NodeCustomizationProfile`, `NodeInitializationTaints`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `AppMonitoring`, `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
+- New field `EffectiveNoProxy`, `Enabled` in struct `ManagedClusterHTTPProxyConfig`
+- New field `GatewayAPI` in struct `ManagedClusterIngressProfile`
+- New field `ClusterServiceLoadBalancerHealthProbeMode` in struct `ManagedClusterLoadBalancerProfile`
+- New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
+- New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
+- New field `CreationData`, `EnableNamespaceResources`, `HostedSystemProfile`, `SchedulerProfile` in struct `ManagedClusterProperties`
+- New field `ImageIntegrity`, `KubernetesResourceObjectEncryptionProfile`, `NodeRestriction` in struct `ManagedClusterSecurityProfile`
+- New field `SecurityGating` in struct `ManagedClusterSecurityProfileDefender`
+- New field `Version` in struct `ManagedClusterStorageProfileDiskCSIDriver`
+- New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
+- New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
+- New field `KubeProxyConfig`, `PodLinkLocalAccess` in struct `NetworkProfile`
+- New field `Autoscale` in struct `ScaleProfile`
+
+
+## 8.0.0 (2025-10-23)
+### Breaking Changes
+
+- Type of `AgentPoolStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
+- Type of `ManagedClusterStatus.ProvisioningError` has been changed from `*CloudErrorBody` to `*ErrorDetail`
+- Struct `CloudErrorBody` has been removed
+
+### Features Added
+
+- New enum type `AdvancedNetworkPolicies` with values `AdvancedNetworkPoliciesFQDN`, `AdvancedNetworkPoliciesL7`, `AdvancedNetworkPoliciesNone`
+- New enum type `AgentPoolSSHAccess` with values `AgentPoolSSHAccessDisabled`, `AgentPoolSSHAccessLocalUser`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New field `AdvancedNetworkPolicies` in struct `AdvancedNetworkingSecurity`
+- New field `SSHAccess` in struct `AgentPoolSecurityProfile`
+
+
 ## 8.0.0-beta.1 (2025-09-25)
 ### Breaking Changes
 

@@ -6,5 +6,5 @@ package azsystemevents
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
-	moduleVersion = "v1.0.1"
+	moduleVersion = "v1.0.1-beta.1"
 )

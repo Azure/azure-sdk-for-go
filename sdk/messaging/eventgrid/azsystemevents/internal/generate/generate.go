@@ -71,11 +71,11 @@ func main() {
 
 		deleteUnneededFiles()
 
-		if err := os.WriteFile(modelsGoFile, []byte(modelsGo), 0777); err != nil {
+		if err := os.WriteFile(modelsGoFile, []byte(modelsGo), 0644); err != nil {
 			return fmt.Errorf("failed to write %s: %w", modelsGoFile, err)
 		}
 
-		if err := os.WriteFile(modelsSerdeGoFile, []byte(modelsSerdeGo), 0777); err != nil {
+		if err := os.WriteFile(modelsSerdeGoFile, []byte(modelsSerdeGo), 0644); err != nil {
 			return fmt.Errorf("failed to write %s: %w", modelsSerdeGoFile, err)
 		}
 

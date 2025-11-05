@@ -8,9 +8,7 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"regexp"
@@ -41,14 +39,8 @@ type constant struct {
 	ConstantValue string
 }
 
-func getConstantValues(reader io.ReadCloser) (map[string]constant, error) {
-	data, err := io.ReadAll(reader)
-
-	if err != nil {
-		return nil, err
-	}
-
-	scanner := bufio.NewScanner(bytes.NewReader(data))
+func getConstantValues(modelsGo string) (map[string]constant, error) {
+	scanner := bufio.NewScanner(strings.NewReader(modelsGo))
 
 	var currentComment []string
 
@@ -131,7 +123,9 @@ func writeConstantsFile(path string, constants map[string]constant) error {
 		return err
 	}
 
-	defer writer.Close()
+	defer func() {
+		_ = writer.Close()
+	}()
 
 	if _, err := writer.Write([]byte(header)); err != nil {
 		return err
@@ -151,6 +145,10 @@ func writeConstantsFile(path string, constants map[string]constant) error {
 	}
 
 	if _, err := writer.Write([]byte(footer)); err != nil {
+		return err
+	}
+
+	if err := writer.Close(); err != nil {
 		return err
 	}
 

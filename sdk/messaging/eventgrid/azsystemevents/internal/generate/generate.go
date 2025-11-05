@@ -162,32 +162,11 @@ func swapErrorTypes(origModelsGo string, origModelsSerdeGo string) (newModelsGo 
 	// replace the types with the package level Error type that we use.
 	newModelsGo = strings.ReplaceAll(newModelsGo, "Error *internalACSMessageChannelEventError", "Error *Error")
 	newModelsGo = strings.ReplaceAll(newModelsGo, "Errors []internalACSRouterCommunicationError", "Errors []*Error")
-	//	newModelsGo = strings.ReplaceAll(newModelsGo, "Innererror *internalACSRouterCommunicationError", "Error *Error")
-	//newModelsGo = strings.ReplaceAll(newModelsGo, "Details []internalACSRouterCommunicationError", "Error []*Error")
 
 	newModelsSerdeGo = UseCustomUnpopulate(newModelsSerdeGo, "ACSMessageReceivedEventData.Error", "unmarshalInternalACSMessageChannelEventError")
 	newModelsSerdeGo = UseCustomUnpopulate(newModelsSerdeGo, "ACSMessageDeliveryStatusUpdatedEventData.Error", "unmarshalInternalACSMessageChannelEventError")
 
 	newModelsSerdeGo = UseCustomUnpopulate(newModelsSerdeGo, "ACSRouterJobClassificationFailedEventData.Errors.Errors", "unmarshalInternalACSRouterCommunicationError")
-
-	allowedErrs := map[string]bool{
-		"MediaJobError": true,
-	}
-
-	internalErrorsRE := regexp.MustCompile(`(?m)^type (Internal[A-Za-z0-9]+Error)$`)
-	matches := internalErrorsRE.FindAllStringSubmatch(origModelsGo, 0)
-
-	for _, subMatches := range matches {
-		errorName := subMatches[1]
-
-		if allowedErrs[errorName] {
-			continue
-		}
-
-		// If you hit this, just add your type to allowedErrs (if we're supposed to expose it)
-		// or
-		return "", "", fmt.Errorf("found error type which should have been deleted/renamed %q", errorName)
-	}
 
 	return newModelsGo, newModelsSerdeGo, nil
 }

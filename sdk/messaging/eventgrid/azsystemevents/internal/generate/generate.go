@@ -24,15 +24,15 @@ var filesToDelete = []string{
 func main() {
 	fn := func() error {
 		if err := swapErrorTypes(); err != nil {
-			return err
+			return fmt.Errorf("swapErrorTypes failed: %w", err)
 		}
 
 		if err := deleteUnneededTypes(); err != nil {
-			return err
+			return fmt.Errorf("deleteUnneededTypes failed: %w", err)
 		}
 
 		if err := generateSystemEventEnum(); err != nil {
-			return err
+			return fmt.Errorf("generateSystemEventEnum: %w", err)
 		}
 
 		deleteUnneededFiles()

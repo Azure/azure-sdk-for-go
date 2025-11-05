@@ -14,3 +14,7 @@ For detailed workflow instructions, see [SDK Release](../eng/common/instructions
 ### Changelog checking
 
 If the CHANGELOG.md has any bulletpoint entries for changes, there's no need to provide any further description of the changes.
+
+# SDK Workflow
+
+For anything related to SDK generation/development/verification/release see [here](../eng/common/instructions/azsdk-tools/).

@@ -3,7 +3,7 @@
 ## 1.5.0-beta.3 (Unreleased)
 
 ### Features Added
-* Added `ReadManyItems` API to read documents across partitions. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
+* Added client engine support for `ReadManyItems`. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
 
 * Adjusted the query engine abstraction to support future enhancements and optimizations. See [PR 25503](https://github.com/Azure/azure-sdk-for-go/pull/25503)
 

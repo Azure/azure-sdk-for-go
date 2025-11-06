@@ -20,11 +20,6 @@ import (
 func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
-	// if empty list of items, return empty list
-	if len(items) == 0 {
-		return ReadManyItemsResponse{}, nil
-	}
-
 	// get the partition key ranges for the container
 	rawPartitionKeyRanges, err := c.getPartitionKeyRangesRaw(ctx, operationContext)
 	if err != nil {
@@ -50,6 +45,7 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 			ID:                items[i].ID,
 		}
 	}
+
 	readManyPipeline, err := queryEngine.CreateReadManyPipeline(rawPartitionKeyRanges, newItemIdentities, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version))
 	if err != nil {
 		return ReadManyItemsResponse{}, err
@@ -254,10 +250,6 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 
 func (c *ContainerClient) executeReadManyWithPointReads(items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
 
-	// if empty list of items, return empty list
-	if len(items) == 0 {
-		return ReadManyItemsResponse{}, nil
-	}
 	// Determine concurrency: use provided MaxConcurrency or number of CPU cores
 	var concurrency int
 	if readManyOptions != nil && readManyOptions.MaxConcurrency != nil && *readManyOptions.MaxConcurrency > 0 {

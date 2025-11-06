@@ -83,25 +83,14 @@ func (m *MockQueryEngine) CreateQueryPipeline(query string, plan string, pkrange
 // serialized as JSON documents. This is a simplified pipeline used by tests to exercise the
 // SDK's ReadMany->QueryEngine glue without making network calls for each item.
 func (m *MockQueryEngine) CreateReadManyPipeline(partitionKeyRangesData []byte, items []queryengine.ItemIdentity, pkKind string, pkVersion int32) (queryengine.QueryPipeline, error) {
-	// Build serialized documents from the provided item identities.
-	docs := make([][]byte, 0, len(items))
-	for _, it := range items {
-		// The PartitionKeyValue is a JSON string representation of the value; we store it as-is
-		// under the "partitionKey" field for simplicity.
-		obj := map[string]interface{}{"id": it.ID, "partitionKey": it.PartitionKeyValue}
-		b, err := json.Marshal(obj)
-		if err != nil {
-			return nil, fmt.Errorf("failed to marshal readmany mock item: %w", err)
-		}
-		docs = append(docs, b)
-	}
-	return &MockReadManyPipeline{items: docs, completed: false}, nil
+	return &MockReadManyPipeline{items: items, completed: false, resultingItems: make([][]byte, 0, len(items))}, nil
 }
 
 // MockReadManyPipeline is a minimal QueryPipeline implementation for ReadMany tests.
 type MockReadManyPipeline struct {
-	items     [][]byte
-	completed bool
+	items          []queryengine.ItemIdentity
+	completed      bool
+	resultingItems [][]byte
 }
 
 func (m *MockReadManyPipeline) Close() {
@@ -114,26 +103,27 @@ func (m *MockReadManyPipeline) IsComplete() bool {
 
 func (m *MockReadManyPipeline) Run() (*queryengine.PipelineResult, error) {
 	if m.IsComplete() {
-		return &queryengine.PipelineResult{IsCompleted: true, Items: nil, Requests: nil}, nil
+		return &queryengine.PipelineResult{IsCompleted: true, Items: m.resultingItems, Requests: nil}, nil
 	}
 	// first run return queries to execute
-	requests = append(requests, queryengine.QueryRequest{
-		PartitionKeyRangeID: m.partitionState[i].ID,
-		Id:                  m.partitionState[i].nextIndex,
-		Continuation:        continuation,
-		Query:               q,
-		IncludeParameters:   includeParams,
-		Drain:               false,
-	})
+	requests := make([]queryengine.QueryRequest, 0, len(m.items))
+	for i := range m.items {
+		pk := m.items[i].PartitionKeyValue
+		create_query := fmt.Sprintf("Select * from c where c.id = '%s' and c.pk = '%s'", m.items[i].ID, pk)
+		requests = append(requests, queryengine.QueryRequest{
+			Query: create_query,
+		})
+	}
 
 	// second run return result
-	items := make([][]byte, len(m.items))
-	copy(items, m.items)
 	m.completed = true
-	return &queryengine.PipelineResult{IsCompleted: true, Items: items, Requests: nil}, nil
+	return &queryengine.PipelineResult{IsCompleted: true, Items: nil, Requests: requests}, nil
 }
 
 func (m *MockReadManyPipeline) ProvideData(data []queryengine.QueryResult) error {
+	for _, res := range data {
+		m.resultingItems = append(m.resultingItems, res.Data)
+	}
 	return nil
 }
 

@@ -81,6 +81,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 	var queryPipeline queryengine.QueryPipeline
 	var lastResponse Response
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	log.Writef(EventQueryEngine, "Executing query using query engine")
 	return azruntime.NewPager(azruntime.PagingHandler[QueryItemsResponse]{
 		More: func(page QueryItemsResponse) bool {
 			if queryPipeline == nil {

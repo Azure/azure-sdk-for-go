@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// Executes a query using the provided query engine.
+// executeReadManyWithEngine executes a query using the provided query engine.
 func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
@@ -49,7 +49,7 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 		pkVersion = int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version)
 	}
 
-	readManyPipeline, err := queryEngine.CreateReadManyPipeline(rawPartitionKeyRanges, newItemIdentities, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), pkVersion)
+	readManyPipeline, err := queryEngine.CreateReadManyPipeline(string(rawPartitionKeyRanges), newItemIdentities, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), pkVersion)
 	if err != nil {
 		return ReadManyItemsResponse{}, err
 	}

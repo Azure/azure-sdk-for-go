@@ -70,6 +70,7 @@ func (c *ContainerClient) getPartitionKeyRangesRaw(ctx context.Context, operatio
 	return buf.Bytes(), nil
 }
 
+// Executes a query using the provided query engine.
 func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEngine, query string, queryOptions *QueryOptions, operationContext pipelineRequestOptions) *azruntime.Pager[QueryItemsResponse] {
 	// NOTE: The current interface for runtime.Pager means we're probably going to risk leaking the pipeline, if it's provided by a native query engine.
 	// There's no "Close" method, which means we can't call `queryengine.QueryPipeline.Close()` when we're done.
@@ -126,9 +127,12 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 				if queryPipeline.IsComplete() {
 					log.Writef(EventQueryEngine, "Query pipeline is complete")
 					queryPipeline.Close()
-					return QueryItemsResponse{Response: lastResponse, Items: nil}, nil
+					return QueryItemsResponse{
+						Response: lastResponse,
+						Items:    nil,
+					}, nil
 				}
-
+				// Fetch more data from the pipeline
 				log.Writef(EventQueryEngine, "Fetching more data from query pipeline")
 				result, err := queryPipeline.Run()
 				if err != nil {
@@ -136,27 +140,35 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					return QueryItemsResponse{}, err
 				}
 
+				// If we got items, we can return them, and we should do so now, to avoid making unnecessary requests.
+				// Even if there are requests in the queue, the pipeline should return the same requests again on the next call to NextBatch.
 				if len(result.Items) > 0 {
 					log.Writef(EventQueryEngine, "Query pipeline returned %d items", len(result.Items))
-					return QueryItemsResponse{Response: lastResponse, Items: result.Items}, nil
+					return QueryItemsResponse{
+						Response: lastResponse,
+						Items:    result.Items,
+					}, nil
 				}
 
+				// If we didn't have any items to return, we need to make requests for the items in the queue.
+				// If there are no requests, the pipeline should return true for IsComplete, so we'll stop on the next iteration.
 				// Parallelize request execution using shared driver.
 				concurrency := determineConcurrency(nil)
 				charge, err := runEngineRequests(ctx, c, path, queryPipeline, operationContext, result.Requests, concurrency, func(req queryengine.QueryRequest) (string, []QueryParameter, bool) {
-					// Override query if present; decide parameters usage same as previous logic.
+					// Override query if present;
 					localQuery := query
 					if req.Query != "" {
 						localQuery = req.Query
 					}
 					var params []QueryParameter
 					if req.IncludeParameters || req.Query == "" {
+						// use query options parameters only if IncludeParameters is true or no override query is specified
 						params = queryOptions.QueryParameters
 					}
 					// Drain if request.Drain is true.
 					return localQuery, params, req.Drain
 				})
-				_ = charge // totalRequestCharge currently unused for query path; could accumulate into lastResponse later.
+				_ = charge // totalRequestCharge currently unused for query path;
 				if err != nil {
 					queryPipeline.Close()
 					return QueryItemsResponse{}, err
@@ -311,7 +323,7 @@ func runEngineRequests(
 		for _, r := range requests {
 			select {
 			case <-done:
-				break
+				return
 			default:
 			}
 			jobs <- r

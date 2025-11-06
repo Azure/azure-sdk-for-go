@@ -43,7 +43,7 @@ func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredentia
 // CheckNameAvailability - Checks if resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - environmentName - Name of the Managed Environment.
 //   - checkNameAvailabilityRequest - The check name availability request.
@@ -91,7 +91,7 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityRequest); err != nil {

@@ -26,7 +26,7 @@ type VirtualMachinesClient struct {
 // NewVirtualMachinesClient creates a new instance of VirtualMachinesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachinesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -266,7 +266,6 @@ func (client *VirtualMachinesClient) restrictMovementCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, restrictMovement); err != nil {
 		return nil, err

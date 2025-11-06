@@ -13,7 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )

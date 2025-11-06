@@ -78,11 +78,11 @@ type BrokerAuthenticationResource struct {
 	// The resource-specific properties for this resource.
 	Properties *BrokerAuthenticationProperties
 
-	// READ-ONLY; Name of Instance broker authentication resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -177,11 +177,11 @@ type BrokerAuthorizationResource struct {
 	// The resource-specific properties for this resource.
 	Properties *BrokerAuthorizationProperties
 
-	// READ-ONLY; Name of Instance broker authorization resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -238,11 +238,11 @@ type BrokerListenerResource struct {
 	// The resource-specific properties for this resource.
 	Properties *BrokerListenerProperties
 
-	// READ-ONLY; Name of Instance broker listener resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -294,11 +294,11 @@ type BrokerResource struct {
 	// The resource-specific properties for this resource.
 	Properties *BrokerProperties
 
-	// READ-ONLY; Name of broker.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -808,11 +808,11 @@ type DataflowEndpointResource struct {
 	// The resource-specific properties for this resource.
 	Properties *DataflowEndpointProperties
 
-	// READ-ONLY; Name of Instance dataflowEndpoint resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -868,11 +868,11 @@ type DataflowProfileResource struct {
 	// The resource-specific properties for this resource.
 	Properties *DataflowProfileProperties
 
-	// READ-ONLY; Name of Instance dataflowProfile resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -910,11 +910,11 @@ type DataflowResource struct {
 	// The resource-specific properties for this resource.
 	Properties *DataflowProperties
 
-	// READ-ONLY; Name of Instance dataflowProfile dataflow resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1029,20 +1029,20 @@ type InstanceResource struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
 	// The resource-specific properties for this resource.
 	Properties *InstanceProperties
 
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of instance.
-	Name *string
-
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1132,13 +1132,15 @@ type Metrics struct {
 	PrometheusPort *int32
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Localized display information for this particular operation.
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.

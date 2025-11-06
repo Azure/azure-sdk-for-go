@@ -7,10 +7,9 @@ package azcertificates
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AdministratorContact.
@@ -1237,6 +1236,8 @@ func (s SubjectAlternativeNames) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dns_names", s.DNSNames)
 	populate(objectMap, "emails", s.Emails)
+	populate(objectMap, "ipAddresses", s.IPAddresses)
+	populate(objectMap, "uris", s.URIs)
 	populate(objectMap, "upns", s.UserPrincipalNames)
 	return json.Marshal(objectMap)
 }
@@ -1255,6 +1256,12 @@ func (s *SubjectAlternativeNames) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "emails":
 			err = unpopulate(val, "Emails", &s.Emails)
+			delete(rawMsg, key)
+		case "ipAddresses":
+			err = unpopulate(val, "IPAddresses", &s.IPAddresses)
+			delete(rawMsg, key)
+		case "uris":
+			err = unpopulate(val, "URIs", &s.URIs)
 			delete(rawMsg, key)
 		case "upns":
 			err = unpopulate(val, "UserPrincipalNames", &s.UserPrincipalNames)

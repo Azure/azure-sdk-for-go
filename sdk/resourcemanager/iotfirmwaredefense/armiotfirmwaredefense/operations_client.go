@@ -21,7 +21,7 @@ type OperationsClient struct {
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // NewListPager - List the operations for the provider
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-02
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -68,7 +68,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

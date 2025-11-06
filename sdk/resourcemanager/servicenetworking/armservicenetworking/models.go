@@ -17,11 +17,11 @@ type Association struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of Association
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -92,11 +92,11 @@ type Frontend struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Frontends
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -169,7 +169,9 @@ type IPAccessRulesSecurityPolicy struct {
 	ID *string
 }
 
-// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
 	Display *OperationDisplay
@@ -235,11 +237,11 @@ type SecurityPolicy struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; SecurityPolicy
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -333,11 +335,11 @@ type TrafficController struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; traffic controller name for path
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

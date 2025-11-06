@@ -90,11 +90,11 @@ type AvsStorageContainer struct {
 	// The resource-specific properties for this resource.
 	Properties *AvsStorageContainerProperties
 
-	// READ-ONLY; Name of the storage container
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -137,11 +137,11 @@ type AvsStorageContainerVolume struct {
 	// The resource-specific properties for this resource.
 	Properties *VolumeProperties
 
-	// READ-ONLY; ID of the volume in the storage container
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -176,11 +176,11 @@ type AvsVM struct {
 	// The resource-specific properties for this resource.
 	Properties *AvsVMProperties
 
-	// READ-ONLY; ID of the AVS VM
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -260,11 +260,11 @@ type AvsVMVolume struct {
 	// The resource-specific properties for this resource.
 	Properties *VolumeProperties
 
-	// READ-ONLY; ID of the volume in the AVS VM
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -535,11 +535,11 @@ type Reservation struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Name of the reservation.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -701,9 +701,6 @@ type StoragePool struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the storage pool
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -715,6 +712,9 @@ type StoragePool struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

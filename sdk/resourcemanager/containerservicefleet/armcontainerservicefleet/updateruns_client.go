@@ -26,7 +26,7 @@ type UpdateRunsClient struct {
 // NewUpdateRunsClient creates a new instance of UpdateRunsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUpdateRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdateRunsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -208,7 +208,6 @@ func (client *UpdateRunsClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}

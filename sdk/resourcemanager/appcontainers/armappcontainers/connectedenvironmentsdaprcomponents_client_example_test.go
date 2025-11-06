@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ConnectedEnvironmentsDaprComponents_List.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,6 +67,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 		// 						Name: to.Ptr("masterkey"),
 		// 						SecretRef: to.Ptr("masterkey"),
 		// 				}},
+		// 				ProvisioningState: to.Ptr(armappcontainers.DaprComponentProvisioningStateSucceeded),
 		// 				Scopes: []*string{
 		// 					to.Ptr("container-app-1"),
 		// 					to.Ptr("container-app-2")},
@@ -81,7 +82,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ConnectedEnvironmentsDaprComponents_Get.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,6 +125,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	// 				Name: to.Ptr("masterkey"),
 	// 				SecretRef: to.Ptr("masterkey"),
 	// 		}},
+	// 		ProvisioningState: to.Ptr(armappcontainers.DaprComponentProvisioningStateSucceeded),
 	// 		Scopes: []*string{
 	// 			to.Ptr("container-app-1"),
 	// 			to.Ptr("container-app-2")},
@@ -136,8 +138,8 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
-func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ConnectedEnvironmentsDaprComponents_CreateOrUpdate.json
+func ExampleConnectedEnvironmentsDaprComponentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -147,7 +149,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewConnectedEnvironmentsDaprComponentsClient().CreateOrUpdate(ctx, "examplerg", "myenvironment", "reddog", armappcontainers.DaprComponent{
+	poller, err := clientFactory.NewConnectedEnvironmentsDaprComponentsClient().BeginCreateOrUpdate(ctx, "examplerg", "myenvironment", "reddog", armappcontainers.DaprComponent{
 		Properties: &armappcontainers.DaprComponentProperties{
 			ComponentType: to.Ptr("state.azure.cosmosdb"),
 			IgnoreErrors:  to.Ptr(false),
@@ -183,6 +185,10 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -211,6 +217,7 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	// 				Name: to.Ptr("masterkey"),
 	// 				SecretRef: to.Ptr("masterkey"),
 	// 		}},
+	// 		ProvisioningState: to.Ptr(armappcontainers.DaprComponentProvisioningStateSucceeded),
 	// 		Scopes: []*string{
 	// 			to.Ptr("container-app-1"),
 	// 			to.Ptr("container-app-2")},
@@ -223,8 +230,8 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_CreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_Delete.json
-func ExampleConnectedEnvironmentsDaprComponentsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ConnectedEnvironmentsDaprComponents_Delete.json
+func ExampleConnectedEnvironmentsDaprComponentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -234,13 +241,17 @@ func ExampleConnectedEnvironmentsDaprComponentsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewConnectedEnvironmentsDaprComponentsClient().Delete(ctx, "examplerg", "myenvironment", "reddog", nil)
+	poller, err := clientFactory.NewConnectedEnvironmentsDaprComponentsClient().BeginDelete(ctx, "examplerg", "myenvironment", "reddog", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironmentsDaprComponents_ListSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ConnectedEnvironmentsDaprComponents_ListSecrets.json
 func ExampleConnectedEnvironmentsDaprComponentsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

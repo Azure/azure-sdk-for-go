@@ -26,7 +26,7 @@ type CloudHsmClusterRestoreStatusClient struct {
 // NewCloudHsmClusterRestoreStatusClient creates a new instance of CloudHsmClusterRestoreStatusClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCloudHsmClusterRestoreStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudHsmClusterRestoreStatusClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -39,59 +39,39 @@ func NewCloudHsmClusterRestoreStatusClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// BeginGet - Gets the restore operation status of the specified Cloud HSM Cluster
+// Get - Gets the restore operation status of the specified Cloud HSM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudHsmClusterName - Name of the Cloud HSM Cluster
 //   - jobID - Identifier for the restore operation
-//   - options - CloudHsmClusterRestoreStatusClientBeginGetOptions contains the optional parameters for the CloudHsmClusterRestoreStatusClient.BeginGet
+//   - options - CloudHsmClusterRestoreStatusClientGetOptions contains the optional parameters for the CloudHsmClusterRestoreStatusClient.Get
 //     method.
-func (client *CloudHsmClusterRestoreStatusClient) BeginGet(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, jobID string, options *CloudHsmClusterRestoreStatusClientBeginGetOptions) (*runtime.Poller[CloudHsmClusterRestoreStatusClientGetResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.get(ctx, resourceGroupName, cloudHsmClusterName, jobID, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudHsmClusterRestoreStatusClientGetResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudHsmClusterRestoreStatusClientGetResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Get - Gets the restore operation status of the specified Cloud HSM Cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-31
-func (client *CloudHsmClusterRestoreStatusClient) get(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, jobID string, options *CloudHsmClusterRestoreStatusClientBeginGetOptions) (*http.Response, error) {
+func (client *CloudHsmClusterRestoreStatusClient) Get(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, jobID string, options *CloudHsmClusterRestoreStatusClientGetOptions) (CloudHsmClusterRestoreStatusClientGetResponse, error) {
 	var err error
-	const operationName = "CloudHsmClusterRestoreStatusClient.BeginGet"
+	const operationName = "CloudHsmClusterRestoreStatusClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, jobID, options)
 	if err != nil {
-		return nil, err
+		return CloudHsmClusterRestoreStatusClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return CloudHsmClusterRestoreStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return CloudHsmClusterRestoreStatusClientGetResponse{}, err
 	}
-	return httpResp, nil
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *CloudHsmClusterRestoreStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, jobID string, _ *CloudHsmClusterRestoreStatusClientBeginGetOptions) (*policy.Request, error) {
+func (client *CloudHsmClusterRestoreStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, jobID string, _ *CloudHsmClusterRestoreStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/restoreOperationStatus/{jobId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -118,4 +98,19 @@ func (client *CloudHsmClusterRestoreStatusClient) getCreateRequest(ctx context.C
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *CloudHsmClusterRestoreStatusClient) getHandleResponse(resp *http.Response) (CloudHsmClusterRestoreStatusClientGetResponse, error) {
+	result := CloudHsmClusterRestoreStatusClientGetResponse{}
+	if val := resp.Header.Get("Location"); val != "" {
+		result.Location = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.XMSRequestID = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreResult); err != nil {
+		return CloudHsmClusterRestoreStatusClientGetResponse{}, err
+	}
+	return result, nil
 }

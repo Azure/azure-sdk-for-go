@@ -26,7 +26,7 @@ type AssetsClient struct {
 // NewAssetsClient creates a new instance of AssetsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssetsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewAssetsClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreateOrReplace - Create a Asset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetName - Asset name parameter.
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *AssetsClient) BeginCreateOrReplace(ctx context.Context, resourceGr
 // CreateOrReplace - Create a Asset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 func (client *AssetsClient) createOrReplace(ctx context.Context, resourceGroupName string, assetName string, resource Asset, options *AssetsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssetsClient.BeginCreateOrReplace"
@@ -110,7 +110,7 @@ func (client *AssetsClient) createOrReplaceCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *AssetsClient) createOrReplaceCreateRequest(ctx context.Context, re
 // BeginDelete - Delete a Asset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetName - Asset name parameter.
 //   - options - AssetsClientBeginDeleteOptions contains the optional parameters for the AssetsClient.BeginDelete method.
@@ -147,7 +147,7 @@ func (client *AssetsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Delete - Delete a Asset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 func (client *AssetsClient) deleteOperation(ctx context.Context, resourceGroupName string, assetName string, options *AssetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssetsClient.BeginDelete"
@@ -189,16 +189,15 @@ func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Asset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetName - Asset name parameter.
 //   - options - AssetsClientGetOptions contains the optional parameters for the AssetsClient.Get method.
@@ -244,7 +243,7 @@ func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +260,7 @@ func (client *AssetsClient) getHandleResponse(resp *http.Response) (AssetsClient
 
 // NewListByResourceGroupPager - List Asset resources by resource group
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AssetsClientListByResourceGroupOptions contains the optional parameters for the AssetsClient.NewListByResourceGroupPager
 //     method.
@@ -304,7 +303,7 @@ func (client *AssetsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +320,7 @@ func (client *AssetsClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - List Asset resources by subscription ID
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - options - AssetsClientListBySubscriptionOptions contains the optional parameters for the AssetsClient.NewListBySubscriptionPager
 //     method.
 func (client *AssetsClient) NewListBySubscriptionPager(options *AssetsClientListBySubscriptionOptions) *runtime.Pager[AssetsClientListBySubscriptionResponse] {
@@ -359,7 +358,7 @@ func (client *AssetsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,7 +376,7 @@ func (client *AssetsClient) listBySubscriptionHandleResponse(resp *http.Response
 // BeginUpdate - Update a Asset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - assetName - Asset name parameter.
 //   - properties - The resource properties to be updated.
@@ -402,7 +401,7 @@ func (client *AssetsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 // Update - Update a Asset
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 func (client *AssetsClient) update(ctx context.Context, resourceGroupName string, assetName string, properties AssetUpdate, options *AssetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AssetsClient.BeginUpdate"
@@ -444,7 +443,7 @@ func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

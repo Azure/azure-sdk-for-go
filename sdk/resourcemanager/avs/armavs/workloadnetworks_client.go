@@ -26,7 +26,7 @@ type WorkloadNetworksClient struct {
 // NewWorkloadNetworksClient creates a new instance of WorkloadNetworksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadNetworksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -725,7 +725,6 @@ func (client *WorkloadNetworksClient) deleteDNSServiceCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -806,7 +805,6 @@ func (client *WorkloadNetworksClient) deleteDNSZoneCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -887,7 +885,6 @@ func (client *WorkloadNetworksClient) deleteDhcpCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -968,7 +965,6 @@ func (client *WorkloadNetworksClient) deletePortMirroringCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1049,7 +1045,6 @@ func (client *WorkloadNetworksClient) deletePublicIPCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1130,7 +1125,6 @@ func (client *WorkloadNetworksClient) deleteSegmentCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1211,7 +1205,6 @@ func (client *WorkloadNetworksClient) deleteVMGroupCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

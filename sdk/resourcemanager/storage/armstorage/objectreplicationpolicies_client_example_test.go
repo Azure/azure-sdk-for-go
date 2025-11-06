@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountListObjectReplicationPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountListObjectReplicationPolicies.json
 func ExampleObjectReplicationPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,6 +60,9 @@ func ExampleObjectReplicationPoliciesClient_NewListPager() {
 		// 				Metrics: &armstorage.ObjectReplicationPolicyPropertiesMetrics{
 		// 					Enabled: to.Ptr(true),
 		// 				},
+		// 				PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
+		// 					Enabled: to.Ptr(true),
+		// 				},
 		// 				SourceAccount: to.Ptr("sto2527"),
 		// 			},
 		// 	}},
@@ -67,7 +70,7 @@ func ExampleObjectReplicationPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountGetObjectReplicationPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountGetObjectReplicationPolicy.json
 func ExampleObjectReplicationPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,6 +99,9 @@ func ExampleObjectReplicationPoliciesClient_Get() {
 	// 			Enabled: to.Ptr(true),
 	// 		},
 	// 		PolicyID: to.Ptr("{objectReplicationPolicy-Id}"),
+	// 		PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
+	// 			Enabled: to.Ptr(true),
+	// 		},
 	// 		Rules: []*armstorage.ObjectReplicationPolicyRule{
 	// 			{
 	// 				DestinationContainer: to.Ptr("destContainer1"),
@@ -120,7 +126,7 @@ func ExampleObjectReplicationPoliciesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateObjectReplicationPolicyOnDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateObjectReplicationPolicyOnDestination.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateObjectReplicationPolicyOnDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,6 +141,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 		Properties: &armstorage.ObjectReplicationPolicyProperties{
 			DestinationAccount: to.Ptr("dst112"),
 			Metrics: &armstorage.ObjectReplicationPolicyPropertiesMetrics{
+				Enabled: to.Ptr(true),
+			},
+			PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
 				Enabled: to.Ptr(true),
 			},
 			Rules: []*armstorage.ObjectReplicationPolicyRule{
@@ -166,6 +175,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// 			Enabled: to.Ptr(true),
 	// 		},
 	// 		PolicyID: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
+	// 		PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
+	// 			Enabled: to.Ptr(true),
+	// 		},
 	// 		Rules: []*armstorage.ObjectReplicationPolicyRule{
 	// 			{
 	// 				DestinationContainer: to.Ptr("destContainer1"),
@@ -182,7 +194,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreateObjectReplicationPolicyOnSource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountCreateObjectReplicationPolicyOnSource.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateObjectReplicationPolicyOnSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,6 +209,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 		Properties: &armstorage.ObjectReplicationPolicyProperties{
 			DestinationAccount: to.Ptr("dst112"),
 			Metrics: &armstorage.ObjectReplicationPolicyPropertiesMetrics{
+				Enabled: to.Ptr(true),
+			},
+			PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
 				Enabled: to.Ptr(true),
 			},
 			Rules: []*armstorage.ObjectReplicationPolicyRule{
@@ -231,6 +246,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// 			Enabled: to.Ptr(true),
 	// 		},
 	// 		PolicyID: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
+	// 		PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
+	// 			Enabled: to.Ptr(true),
+	// 		},
 	// 		Rules: []*armstorage.ObjectReplicationPolicyRule{
 	// 			{
 	// 				DestinationContainer: to.Ptr("destContainer1"),
@@ -248,7 +266,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateObjectReplicationPolicyOnDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,6 +281,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 		Properties: &armstorage.ObjectReplicationPolicyProperties{
 			DestinationAccount: to.Ptr("dst112"),
 			Metrics: &armstorage.ObjectReplicationPolicyPropertiesMetrics{
+				Enabled: to.Ptr(true),
+			},
+			PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
 				Enabled: to.Ptr(true),
 			},
 			Rules: []*armstorage.ObjectReplicationPolicyRule{
@@ -299,6 +320,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// 			Enabled: to.Ptr(true),
 	// 		},
 	// 		PolicyID: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
+	// 		PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
+	// 			Enabled: to.Ptr(true),
+	// 		},
 	// 		Rules: []*armstorage.ObjectReplicationPolicyRule{
 	// 			{
 	// 				DestinationContainer: to.Ptr("destContainer1"),
@@ -320,7 +344,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdateObjectReplicationPolicyOnSource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountUpdateObjectReplicationPolicyOnSource.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateObjectReplicationPolicyOnSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,6 +359,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 		Properties: &armstorage.ObjectReplicationPolicyProperties{
 			DestinationAccount: to.Ptr("dst112"),
 			Metrics: &armstorage.ObjectReplicationPolicyPropertiesMetrics{
+				Enabled: to.Ptr(true),
+			},
+			PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
 				Enabled: to.Ptr(true),
 			},
 			Rules: []*armstorage.ObjectReplicationPolicyRule{
@@ -373,6 +400,9 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// 			Enabled: to.Ptr(true),
 	// 		},
 	// 		PolicyID: to.Ptr("2a20bb73-5717-4635-985a-5d4cf777438f"),
+	// 		PriorityReplication: &armstorage.ObjectReplicationPolicyPropertiesPriorityReplication{
+	// 			Enabled: to.Ptr(true),
+	// 		},
 	// 		Rules: []*armstorage.ObjectReplicationPolicyRule{
 	// 			{
 	// 				DestinationContainer: to.Ptr("destContainer1"),
@@ -394,7 +424,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/86c6306649b02e542117adb46c61e8019dbd78e9/specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountDeleteObjectReplicationPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4e9df3afd38a1cfa00a5d49419dce51bd014601f/specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/StorageAccountDeleteObjectReplicationPolicy.json
 func ExampleObjectReplicationPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

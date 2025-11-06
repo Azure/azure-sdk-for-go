@@ -160,6 +160,8 @@ func TestCRUD(t *testing.T) {
 				testSerde(t, &getResp.KeyBundle)
 
 				if mhsm {
+					t.Skip("Skipping MHSM attestation until it supports 2025-07-01")
+
 					getAttResp, err := client.GetKeyAttestation(context.Background(), keyName, "", nil)
 					require.NoError(t, err)
 					require.Equal(t, createResp.Key.KID.Name(), getAttResp.Key.KID.Name())

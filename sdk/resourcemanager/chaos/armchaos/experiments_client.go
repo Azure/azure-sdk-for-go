@@ -27,7 +27,7 @@ type ExperimentsClient struct {
 // NewExperimentsClient creates a new instance of ExperimentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExperimentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -111,7 +111,6 @@ func (client *ExperimentsClient) cancelCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -267,7 +266,6 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -304,7 +302,7 @@ func (client *ExperimentsClient) ExecutionDetails(ctx context.Context, resourceG
 
 // executionDetailsCreateRequest creates the ExecutionDetails request.
 func (client *ExperimentsClient) executionDetailsCreateRequest(ctx context.Context, resourceGroupName string, experimentName string, executionID string, _ *ExperimentsClientExecutionDetailsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions/{executionId}/executionDetails"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions/{executionId}/getExecutionDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -736,7 +734,6 @@ func (client *ExperimentsClient) startCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

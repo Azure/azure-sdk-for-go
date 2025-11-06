@@ -15,8 +15,8 @@ import (
 
 // ServerFactory is a fake server for instances of the armdeploymentsafeguards.ClientFactory type.
 type ServerFactory struct {
-	// DeploymentSafeguardsServer contains the fakes for client DeploymentSafeguardsClient
-	DeploymentSafeguardsServer DeploymentSafeguardsServer
+	// Server contains the fakes for client Client
+	Server Server
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
@@ -34,10 +34,10 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdeploymentsafeguards.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                          *ServerFactory
-	trMu                         sync.Mutex
-	trDeploymentSafeguardsServer *DeploymentSafeguardsServerTransport
-	trOperationsServer           *OperationsServerTransport
+	srv                *ServerFactory
+	trMu               sync.Mutex
+	trServer           *ServerTransport
+	trOperationsServer *OperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -53,11 +53,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "DeploymentSafeguardsClient":
-		initServer(s, &s.trDeploymentSafeguardsServer, func() *DeploymentSafeguardsServerTransport {
-			return NewDeploymentSafeguardsServerTransport(&s.srv.DeploymentSafeguardsServer)
-		})
-		resp, err = s.trDeploymentSafeguardsServer.Do(req)
+	case "Client":
+		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		resp, err = s.trServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

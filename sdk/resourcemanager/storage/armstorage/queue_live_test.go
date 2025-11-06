@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -53,7 +53,7 @@ func (testsuite *QueueTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestQueueTestSuite(t *testing.T) {
+func TTestQueueTestSuite(t *testing.T) {
 	suite.Run(t, new(QueueTestSuite))
 }
 

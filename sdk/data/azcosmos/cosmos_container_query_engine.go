@@ -1,16 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore Writef
+
 package azcosmos
 
 import (
 	"bytes"
 	"context"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
+
+// EventQueryEngine contains logs related to the query engine.
+const EventQueryEngine log.Event = "QueryEngine"
 
 func (c *ContainerClient) getQueryPlanFromGateway(ctx context.Context, query string, supportedFeatures string, queryOptions *QueryOptions, operationContext pipelineRequestOptions) ([]byte, error) {
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
@@ -72,6 +79,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 	var queryPipeline queryengine.QueryPipeline
 	var lastResponse Response
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	log.Writef(EventQueryEngine, "Executing query using query engine")
 	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
 		More: func(page QueryItemsResponse) bool {
 			if queryPipeline == nil {
@@ -107,6 +115,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 				if err != nil {
 					return QueryItemsResponse{}, err
 				}
+				log.Writef(EventQueryEngine, "Created query pipeline")
 
 				// The gateway may have rewritten the query, which would be encoded in the query plan.
 				// The pipeline parsed the query plan, so we can ask it for the rewritten query.
@@ -115,6 +124,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 
 			for {
 				if queryPipeline.IsComplete() {
+					log.Writef(EventQueryEngine, "Query pipeline is complete")
 					queryPipeline.Close()
 					return QueryItemsResponse{
 						Response: lastResponse,
@@ -122,6 +132,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					}, nil
 				}
 				// Fetch more data from the pipeline
+				log.Writef(EventQueryEngine, "Fetching more data from query pipeline")
 				result, err := queryPipeline.Run()
 				if err != nil {
 					queryPipeline.Close()
@@ -131,6 +142,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 				// If we got items, we can return them, and we should do so now, to avoid making unnecessary requests.
 				// Even if there are requests in the queue, the pipeline should return the same requests again on the next call to NextBatch.
 				if len(result.Items) > 0 {
+					log.Writef(EventQueryEngine, "Query pipeline returned %d items", len(result.Items))
 					return QueryItemsResponse{
 						Response: lastResponse,
 						Items:    result.Items,
@@ -139,42 +151,64 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 
 				// If we didn't have any items to return, we need to make requests for the items in the queue.
 				// If there are no requests, the pipeline should return true for IsComplete, so we'll stop on the next iteration.
+				// TODO: We can absolutely parallelize these requests
 				for _, request := range result.Requests {
+					log.Writef(azlog.EventRequest, "Query pipeline requested data for PKRange: %s", request.PartitionKeyRangeID)
 					// Make the single-partition query request
 					qryRequest := queryRequest(request) // Cast to our type, which has toHeaders defined on it.
-					azResponse, err := c.database.client.sendQueryRequest(
-						path,
-						ctx,
-						query,
-						queryOptions.QueryParameters,
-						operationContext,
-						&qryRequest,
-						nil)
-					if err != nil {
-						queryPipeline.Close()
-						return QueryItemsResponse{}, err
+					// if the query request has an override query, use it
+					if qryRequest.Query != "" {
+						query = qryRequest.Query
 					}
-					lastResponse = newResponse(azResponse)
 
-					// Load the data into a buffer to send it to the pipeline
-					buf := new(bytes.Buffer)
-					_, err = buf.ReadFrom(azResponse.Body)
-					if err != nil {
-						queryPipeline.Close()
-						return QueryItemsResponse{}, err
+					var queryParameters []QueryParameter
+					if qryRequest.IncludeParameters || qryRequest.Query == "" {
+						// use query options parameters only if IncludeParameters is true or no override query is specified
+						queryParameters = queryOptions.QueryParameters
 					}
-					data := buf.Bytes()
-					continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
 
-					// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
-					result := queryengine.QueryResult{
-						PartitionKeyRangeID: request.PartitionKeyRangeID,
-						NextContinuation:    continuation,
-						Data:                data,
-					}
-					if err = queryPipeline.ProvideData(result); err != nil {
-						queryPipeline.Close()
-						return QueryItemsResponse{}, err
+					fetchMorePages := true
+					for fetchMorePages {
+
+						azResponse, err := c.database.client.sendQueryRequest(
+							path,
+							ctx,
+							query,
+							queryParameters,
+							operationContext,
+							&qryRequest,
+							nil)
+						if err != nil {
+							queryPipeline.Close()
+							return QueryItemsResponse{}, err
+						}
+						lastResponse = newResponse(azResponse)
+
+						// Load the data into a buffer to send it to the pipeline
+						buf := new(bytes.Buffer)
+						_, err = buf.ReadFrom(azResponse.Body)
+						if err != nil {
+							queryPipeline.Close()
+							return QueryItemsResponse{}, err
+						}
+						data := buf.Bytes()
+						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
+
+						fetchMorePages = continuation != "" && request.Drain
+
+						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
+						result := queryengine.QueryResult{
+							PartitionKeyRangeID: request.PartitionKeyRangeID,
+							RequestId:           request.Id,
+							NextContinuation:    continuation,
+							Data:                data,
+						}
+						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", request.PartitionKeyRangeID, continuation != "")
+						results := []queryengine.QueryResult{result}
+						if err = queryPipeline.ProvideData(results); err != nil {
+							queryPipeline.Close()
+							return QueryItemsResponse{}, err
+						}
 					}
 				}
 

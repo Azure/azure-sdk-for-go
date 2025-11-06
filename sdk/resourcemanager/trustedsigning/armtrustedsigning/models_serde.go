@@ -38,10 +38,38 @@ func (a *AccountSKU) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AccountSKUPatch.
+func (a AccountSKUPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", a.Name)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccountSKUPatch.
+func (a *AccountSKUPatch) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &a.Name)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Certificate.
 func (c Certificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "createdDate", c.CreatedDate)
+	populate(objectMap, "enhancedKeyUsage", c.EnhancedKeyUsage)
 	populate(objectMap, "expiryDate", c.ExpiryDate)
 	populate(objectMap, "revocation", c.Revocation)
 	populate(objectMap, "serialNumber", c.SerialNumber)
@@ -62,6 +90,9 @@ func (c *Certificate) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "createdDate":
 			err = unpopulate(val, "CreatedDate", &c.CreatedDate)
+			delete(rawMsg, key)
+		case "enhancedKeyUsage":
+			err = unpopulate(val, "EnhancedKeyUsage", &c.EnhancedKeyUsage)
 			delete(rawMsg, key)
 		case "expiryDate":
 			err = unpopulate(val, "ExpiryDate", &c.ExpiryDate)
@@ -167,24 +198,15 @@ func (c *CertificateProfileListResult) UnmarshalJSON(data []byte) error {
 func (c CertificateProfileProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificates", c.Certificates)
-	populate(objectMap, "city", c.City)
-	populate(objectMap, "commonName", c.CommonName)
-	populate(objectMap, "country", c.Country)
-	populate(objectMap, "enhancedKeyUsage", c.EnhancedKeyUsage)
 	populate(objectMap, "identityValidationId", c.IdentityValidationID)
 	populate(objectMap, "includeCity", c.IncludeCity)
 	populate(objectMap, "includeCountry", c.IncludeCountry)
 	populate(objectMap, "includePostalCode", c.IncludePostalCode)
 	populate(objectMap, "includeState", c.IncludeState)
 	populate(objectMap, "includeStreetAddress", c.IncludeStreetAddress)
-	populate(objectMap, "organization", c.Organization)
-	populate(objectMap, "organizationUnit", c.OrganizationUnit)
-	populate(objectMap, "postalCode", c.PostalCode)
 	populate(objectMap, "profileType", c.ProfileType)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "state", c.State)
 	populate(objectMap, "status", c.Status)
-	populate(objectMap, "streetAddress", c.StreetAddress)
 	return json.Marshal(objectMap)
 }
 
@@ -199,18 +221,6 @@ func (c *CertificateProfileProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "certificates":
 			err = unpopulate(val, "Certificates", &c.Certificates)
-			delete(rawMsg, key)
-		case "city":
-			err = unpopulate(val, "City", &c.City)
-			delete(rawMsg, key)
-		case "commonName":
-			err = unpopulate(val, "CommonName", &c.CommonName)
-			delete(rawMsg, key)
-		case "country":
-			err = unpopulate(val, "Country", &c.Country)
-			delete(rawMsg, key)
-		case "enhancedKeyUsage":
-			err = unpopulate(val, "EnhancedKeyUsage", &c.EnhancedKeyUsage)
 			delete(rawMsg, key)
 		case "identityValidationId":
 			err = unpopulate(val, "IdentityValidationID", &c.IdentityValidationID)
@@ -230,29 +240,14 @@ func (c *CertificateProfileProperties) UnmarshalJSON(data []byte) error {
 		case "includeStreetAddress":
 			err = unpopulate(val, "IncludeStreetAddress", &c.IncludeStreetAddress)
 			delete(rawMsg, key)
-		case "organization":
-			err = unpopulate(val, "Organization", &c.Organization)
-			delete(rawMsg, key)
-		case "organizationUnit":
-			err = unpopulate(val, "OrganizationUnit", &c.OrganizationUnit)
-			delete(rawMsg, key)
-		case "postalCode":
-			err = unpopulate(val, "PostalCode", &c.PostalCode)
-			delete(rawMsg, key)
 		case "profileType":
 			err = unpopulate(val, "ProfileType", &c.ProfileType)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
 			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, "State", &c.State)
-			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &c.Status)
-			delete(rawMsg, key)
-		case "streetAddress":
-			err = unpopulate(val, "StreetAddress", &c.StreetAddress)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -266,6 +261,7 @@ func (c *CertificateProfileProperties) UnmarshalJSON(data []byte) error {
 func (c CheckNameAvailability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "name", c.Name)
+	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -280,6 +276,9 @@ func (c *CheckNameAvailability) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "name":
 			err = unpopulate(val, "Name", &c.Name)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &c.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

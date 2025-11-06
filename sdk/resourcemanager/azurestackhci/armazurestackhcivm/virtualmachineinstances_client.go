@@ -6,6 +6,7 @@ package armazurestackhcivm
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -22,7 +23,7 @@ type VirtualMachineInstancesClient struct {
 
 // NewVirtualMachineInstancesClient creates a new instance of VirtualMachineInstancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualMachineInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -90,6 +91,9 @@ func (client *VirtualMachineInstancesClient) createOrUpdate(ctx context.Context,
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *VirtualMachineInstancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, resource VirtualMachineInstance, _ *VirtualMachineInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -158,6 +162,9 @@ func (client *VirtualMachineInstancesClient) deleteOperation(ctx context.Context
 // deleteCreateRequest creates the Delete request.
 func (client *VirtualMachineInstancesClient) deleteCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -166,7 +173,6 @@ func (client *VirtualMachineInstancesClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -202,6 +208,9 @@ func (client *VirtualMachineInstancesClient) Get(ctx context.Context, resourceUR
 // getCreateRequest creates the Get request.
 func (client *VirtualMachineInstancesClient) getCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -255,6 +264,9 @@ func (client *VirtualMachineInstancesClient) NewListPager(resourceURI string, op
 // listCreateRequest creates the List request.
 func (client *VirtualMachineInstancesClient) listCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -328,6 +340,9 @@ func (client *VirtualMachineInstancesClient) pause(ctx context.Context, resource
 // pauseCreateRequest creates the Pause request.
 func (client *VirtualMachineInstancesClient) pauseCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginPauseOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/pause"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -336,7 +351,6 @@ func (client *VirtualMachineInstancesClient) pauseCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -392,6 +406,9 @@ func (client *VirtualMachineInstancesClient) restart(ctx context.Context, resour
 // restartCreateRequest creates the Restart request.
 func (client *VirtualMachineInstancesClient) restartCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/restart"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -400,7 +417,6 @@ func (client *VirtualMachineInstancesClient) restartCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -456,6 +472,9 @@ func (client *VirtualMachineInstancesClient) save(ctx context.Context, resourceU
 // saveCreateRequest creates the Save request.
 func (client *VirtualMachineInstancesClient) saveCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginSaveOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/save"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -464,7 +483,6 @@ func (client *VirtualMachineInstancesClient) saveCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -520,6 +538,9 @@ func (client *VirtualMachineInstancesClient) start(ctx context.Context, resource
 // startCreateRequest creates the Start request.
 func (client *VirtualMachineInstancesClient) startCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/start"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -528,7 +549,6 @@ func (client *VirtualMachineInstancesClient) startCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -584,6 +604,9 @@ func (client *VirtualMachineInstancesClient) stop(ctx context.Context, resourceU
 // stopCreateRequest creates the Stop request.
 func (client *VirtualMachineInstancesClient) stopCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/stop"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -592,7 +615,6 @@ func (client *VirtualMachineInstancesClient) stopCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -649,6 +671,9 @@ func (client *VirtualMachineInstancesClient) update(ctx context.Context, resourc
 // updateCreateRequest creates the Update request.
 func (client *VirtualMachineInstancesClient) updateCreateRequest(ctx context.Context, resourceURI string, properties VirtualMachineInstanceUpdateRequest, _ *VirtualMachineInstancesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

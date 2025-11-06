@@ -26,7 +26,7 @@ type StorageTasksClient struct {
 // NewStorageTasksClient creates a new instance of StorageTasksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageTasksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -202,7 +202,6 @@ func (client *StorageTasksClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

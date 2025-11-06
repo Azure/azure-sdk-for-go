@@ -50,15 +50,7 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.16
-        },
-        {
-            "Name": "ai/azopenaiassistants",
-            "CoverageGoal": 0.00
-        },
-        {
-            "Name": "ai/azopenaiextensions",
-            "CoverageGoal": 0.00
+            "CoverageGoal": 0.10
         },
         {
             "Name": "aztemplate",

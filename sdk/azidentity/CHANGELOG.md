@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- `AzureCLICredential` quoted arguments incorrectly on Windows
+
 ### Other Changes
 
 ## 1.13.0 (2025-10-07)

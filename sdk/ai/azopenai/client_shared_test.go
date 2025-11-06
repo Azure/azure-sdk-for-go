@@ -230,7 +230,7 @@ type stainlessTestClientOptions struct {
 	UseAPIKey bool
 	// UseV1Endpoint controls which endpoint style we use for the created client.
 	//    - If true, we use the /openai/v1 style endpoint. See the [api-doc] for what parts of the OpenAI are implemented.
-	//    - If false, we use the older older style Azure OpenAI endpoints, which contain a deployment in the URL
+	//    - If false, we use the older style Azure OpenAI endpoints, which contain a deployment in the URL
 	//
 	// [api-doc]: https://github.com/MicrosoftDocs/azure-ai-docs/blob/main/articles/ai-foundry/openai/latest.md
 	UseV1Endpoint bool

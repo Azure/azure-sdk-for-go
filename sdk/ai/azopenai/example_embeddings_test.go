@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_embeddings demonstrates how to generate text embeddings using Azure OpenAI's embedding models.

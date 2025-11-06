@@ -1,6 +1,7 @@
 # Migration Guide from Azure OpenAI SDK v0.7.x to v0.8.0+
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Summary of Major Changes](#summary-of-major-changes)
 - [Key Changes](#key-changes)
@@ -13,20 +14,20 @@
 
 Azure OpenAI has adopted the official OpenAI library for Go as its supported client library for the Go programming language. This shift ensures maximum code reuse, the fastest possible access to new models and features, and clear integration points between Azure-specific components and OpenAI API capabilities.
 
-The `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
+The `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go/v3). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
 
 > [!NOTE]
 > This document is a work-in-progress and may change to reflect updates to the package. We value your feedback—please [create an issue](https://github.com/Azure/azure-sdk-for-go/issues/new/choose) to suggest improvements or report problems with this guide or the package.
 
 ## Summary of Major Changes
 
-| Area                | v0.7.x Approach                | v0.8.0+ Approach (Recommended)         |
-|---------------------|--------------------------------|----------------------------------------|
-| Client              | `azopenai.Client`              | `openai.Client`                        |
-| Assistants          | `azopenaiassistants`           | **No longer available**                |
-| Azure Extensions    | Built-in                       | Use `azopenai` as a companion          |
-| API Structure       | Flat methods                   | Subclients per service category        |
-| Authentication      | Azure-specific                 | Use `azure.With...` options            |
+| Area             | v0.7.x Approach      | v0.8.0+ Approach (Recommended)  |
+| ---------------- | -------------------- | ------------------------------- |
+| Client           | `azopenai.Client`    | `openai.Client`                 |
+| Assistants       | `azopenaiassistants` | **No longer available**         |
+| Azure Extensions | Built-in             | Use `azopenai` as a companion   |
+| API Structure    | Flat methods         | Subclients per service category |
+| Authentication   | Azure-specific       | Use `azure.With...` options     |
 
 > [!IMPORTANT]
 > The Assistants API is no longer available in the `openai-go` package. If you require Assistants functionality, please refer to the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/assistants) for alternative approaches or use the HTTP API directly.
@@ -39,7 +40,7 @@ Your projects must now include the official OpenAI Go client:
 
 ```go
 import (
-    "github.com/openai/openai-go"
+    "github.com/openai/openai-go/v3"
 )
 ```
 
@@ -47,23 +48,24 @@ If you need Azure-specific extensions (for instance, Azure OpenAI On Your Data o
 
 ```go
 import (
-    "github.com/openai/openai-go"
+    "github.com/openai/openai-go/v3"
     "github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 )
 ```
 
-> [!NOTE]
-> **Azure extensions** refer to features unique to the Azure OpenAI Service (e.g., Azure OpenAI On Your Data, or content filtering). Authentication for Azure resources is available in the `openai-go` package, and does not require this package.
+> [!NOTE] > **Azure extensions** refer to features unique to the Azure OpenAI Service (e.g., Azure OpenAI On Your Data, or content filtering). Authentication for Azure resources is available in the `openai-go` package, and does not require this package.
 
 ## Authentication and Client Creation
 
 Instead of using the Azure OpenAI client directly for all operations, you'll now:
+
 - Create an OpenAI client configured for the Azure OpenAI Service.
 - Use the Azure OpenAI companion library for Azure-specific extensions.
 
 ### Azure OpenAI with API Key
 
 **Before:**
+
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 key := os.Getenv("AZURE_OPENAI_API_KEY")
@@ -74,6 +76,7 @@ if err != nil {
 ```
 
 **After:**
+
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 // Information on Azure OpenAI API versions can be found here: https://aka.ms/oai/docs/api-lifecycle
@@ -89,6 +92,7 @@ client := openai.NewClient(
 ### Azure OpenAI with Token Credentials
 
 **Before:**
+
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 
@@ -103,6 +107,7 @@ if err != nil {
 ```
 
 **After:**
+
 ```go
 endpoint := os.Getenv("AZURE_OPENAI_ENDPOINT")
 // Information on Azure OpenAI API versions can be found here: https://aka.ms/oai/docs/api-lifecycle
@@ -121,6 +126,7 @@ client := openai.NewClient(
 ### OpenAI v1 (not using Azure OpenAI Service)
 
 **Before:**
+
 ```go
 key := os.Getenv("OPENAI_API_KEY")
 
@@ -131,6 +137,7 @@ if err != nil {
 ```
 
 **After:**
+
 ```go
 key := os.Getenv("OPENAI_API_KEY")
 client := openai.NewClient(
@@ -142,26 +149,25 @@ client := openai.NewClient(
 
 The official OpenAI Go client organizes operations into subclients for each service category, rather than providing all operations on a single client.
 
-| Service               | Description |
-|-----------------------|-------------|
-| `client.Completions`  | [Completions API](https://platform.openai.com/docs/api-reference/completions) |
-| `client.Chat`         | [Chat Completions API](https://platform.openai.com/docs/api-reference/chat) |
-| `client.Embeddings`   | [Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) |
-| `client.Files`        | [Files API](https://platform.openai.com/docs/api-reference/files) |
-| `client.Images`       | [Images API](https://platform.openai.com/docs/api-reference/images) |
-| `client.Audio`        | [Audio API](https://platform.openai.com/docs/api-reference/audio) |
-| `client.Moderations`  | [Moderations API](https://platform.openai.com/docs/api-reference/moderations) |
-| `client.Models`       | [Models API](https://platform.openai.com/docs/api-reference/models) |
-| `client.FineTuning`   | [Fine-tuning API](https://platform.openai.com/docs/api-reference/fine-tuning) |
+| Service               | Description                                                                       |
+| --------------------- | --------------------------------------------------------------------------------- |
+| `client.Completions`  | [Completions API](https://platform.openai.com/docs/api-reference/completions)     |
+| `client.Chat`         | [Chat Completions API](https://platform.openai.com/docs/api-reference/chat)       |
+| `client.Embeddings`   | [Embeddings API](https://platform.openai.com/docs/api-reference/embeddings)       |
+| `client.Files`        | [Files API](https://platform.openai.com/docs/api-reference/files)                 |
+| `client.Images`       | [Images API](https://platform.openai.com/docs/api-reference/images)               |
+| `client.Audio`        | [Audio API](https://platform.openai.com/docs/api-reference/audio)                 |
+| `client.Moderations`  | [Moderations API](https://platform.openai.com/docs/api-reference/moderations)     |
+| `client.Models`       | [Models API](https://platform.openai.com/docs/api-reference/models)               |
+| `client.FineTuning`   | [Fine-tuning API](https://platform.openai.com/docs/api-reference/fine-tuning)     |
 | `client.VectorStores` | [Vector Stores API](https://platform.openai.com/docs/api-reference/vector-stores) |
-| `client.Batches`      | [Batch API](https://platform.openai.com/docs/api-reference/batch) |
-| `client.Uploads`      | [Uploads API](https://platform.openai.com/docs/api-reference/uploads) |
-| `client.Responses`    | [Responses API](https://platform.openai.com/docs/api-reference/responses) |
+| `client.Batches`      | [Batch API](https://platform.openai.com/docs/api-reference/batch)                 |
+| `client.Uploads`      | [Uploads API](https://platform.openai.com/docs/api-reference/uploads)             |
+| `client.Responses`    | [Responses API](https://platform.openai.com/docs/api-reference/responses)         |
 
-Refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go) for details.
+Refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go/v3) for details.
 
-> [!NOTE]
-> **Assistants API:** As of v1.0.0, the Assistants API is not supported in the `openai-go` package. There is currently no official Go SDK support for Assistants. You may need to use direct HTTP requests for this functionality.
+> [!NOTE] > **Assistants API:** As of v1.0.0, the Assistants API is not supported in the `openai-go` package. There is currently no official Go SDK support for Assistants. You may need to use direct HTTP requests for this functionality.
 
 For Azure-specific extensions, see the reference documentation and examples in this companion library.
 
@@ -170,6 +176,7 @@ For Azure-specific extensions, see the reference documentation and examples in t
 ### Chat Completions
 
 **Before:**
+
 ```go
 resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
     // DeploymentName: "gpt-4o", // This only applies for the OpenAI service.
@@ -189,6 +196,7 @@ for _, choice := range resp.Choices {
 ```
 
 **After:**
+
 ```go
 deployment := os.Getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 resp, err := client.Chat.Completions.New(context.TODO(), openai.ChatCompletionNewParams{
@@ -218,6 +226,7 @@ for _, choice := range resp.Choices {
 #### Streaming Chat Completions
 
 **Before:**
+
 ```go
 resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsStreamOptions{
     // DeploymentName: "gpt-4o", // This only applies for the OpenAI service.
@@ -251,6 +260,7 @@ for {
 ```
 
 **After:**
+
 ```go
 deployment := os.Getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 stream := client.Chat.Completions.NewStreaming(context.TODO(), openai.ChatCompletionNewParams{
@@ -280,6 +290,7 @@ for stream.Next() {
 ### Chat Completions (On Your Data)
 
 **Before:**
+
 ```go
 resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
     Messages: []azopenai.ChatRequestMessageClassification{
@@ -314,6 +325,7 @@ for _, choice := range resp.Choices {
 ```
 
 **After:**
+
 ```go
 // Create Azure Search data source configuration
 azureSearchDataSource := &azopenai.AzureSearchChatExtensionConfiguration{
@@ -360,6 +372,7 @@ for _, choice := range resp.Choices {
 ### Embeddings
 
 **Before:**
+
 ```go
 resp, err := client.GetEmbeddings(context.TODO(), azopenai.EmbeddingsOptions{
     // DeploymentName: to.Ptr("text-embedding-3-large"), // This only applies for the OpenAI service.
@@ -375,6 +388,7 @@ for _, embedding := range resp.Data {
 ```
 
 **After:**
+
 ```go
 resp, err := client.Embeddings.New(context.TODO(), openai.EmbeddingNewParams{
     Model: openai.EmbeddingModel("my-deployment"), // Azure deployment name here
@@ -397,6 +411,7 @@ for _, embedding := range resp.Data {
 ### Legacy Completions
 
 **Before:**
+
 ```go
 resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
     Prompt:         []string{"What is Azure OpenAI, in 20 words or less"},
@@ -416,6 +431,7 @@ for _, choice := range resp.Choices {
 ```
 
 **After:**
+
 ```go
 resp, err := client.Completions.New(context.TODO(), openai.CompletionNewParams{
     Model: openai.CompletionNewParamsModel(model), // Azure deployment name here
@@ -440,6 +456,7 @@ for _, choice := range resp.Choices {
 #### Transcription
 
 **Before:**
+
 ```go
 mp3Bytes, err := os.ReadFile("audio.mp3")
 if err != nil {
@@ -462,6 +479,7 @@ if err != nil {
 ```
 
 **After:**
+
 ```go
 audio_file, err := os.Open("audio.mp3")
 if err != nil {
@@ -484,6 +502,7 @@ if err != nil {
 #### Text to speech
 
 **Before:**
+
 ```go
 audioResp, err := client.GenerateSpeechFromText(context.Background(), azopenai.SpeechGenerationOptions{
     Input:          to.Ptr("i am a computer"),
@@ -508,6 +527,7 @@ if err != nil {
 ```
 
 **After:**
+
 ```go
 audioResp, err := client.Audio.Speech.New(context.Background(), openai.AudioSpeechNewParams{
     Model:          openai.SpeechModel(model),
@@ -535,6 +555,7 @@ if err != nil {
 #### Translation
 
 **Before:**
+
 ```go
 resp, err := client.GetAudioTranslation(context.TODO(), azopenai.AudioTranslationOptions{
     File:           mp3Bytes,
@@ -550,6 +571,7 @@ if err != nil {
 ```
 
 **After:**
+
 ```go
 resp, err := client.Audio.Translations.New(context.TODO(), openai.AudioTranslationNewParams{
     Model:  openai.AudioModel(model),
@@ -567,6 +589,7 @@ if err != nil {
 ### Image
 
 **Before:**
+
 ```go
 resp, err := client.GetImageGenerations(context.TODO(), azopenai.ImageGenerationOptions{
     Prompt:         to.Ptr("a cat"),
@@ -602,6 +625,7 @@ for _, generatedImage := range resp.Data {
 ```
 
 **After:**
+
 ```go
 resp, err := client.Images.Generate(context.TODO(), openai.ImageGenerateParams{
     Prompt:         "a cat",
@@ -640,6 +664,7 @@ for _, generatedImage := range resp.Data {
 ### Vision
 
 **Before:**
+
 ```go
 imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 
@@ -679,6 +704,7 @@ for _, choice := range resp.Choices {
 ```
 
 **After:**
+
 ```go
 imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 
@@ -725,5 +751,5 @@ for _, choice := range resp.Choices {
 
 ## Additional Resources
 
-- [OpenAI Go Client Documentation](https://github.com/openai/openai-go)
+- [OpenAI Go Client Documentation](https://github.com/openai/openai-go/v3)
 - [Azure OpenAI Service Documentation](https://learn.microsoft.com/azure/ai-services/openai/)

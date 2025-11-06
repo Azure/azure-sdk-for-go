@@ -10,7 +10,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_getChatCompletions demonstrates how to use Azure OpenAI's Chat Completions API.
@@ -166,14 +166,15 @@ func Example_chatCompletionsFunctions() {
 				},
 			},
 		},
-		Tools: []openai.ChatCompletionToolParam{
+		Tools: []openai.ChatCompletionToolUnionParam{
 			{
-				Function: openai.FunctionDefinitionParam{
-					Name:        "get_current_weather",
-					Description: openai.String("Get the current weather in a given location"),
-					Parameters:  functionSchema,
+				OfFunction: &openai.ChatCompletionFunctionToolParam{
+					Function: openai.FunctionDefinitionParam{
+						Name:        "get_current_weather",
+						Description: openai.String("Get the current weather in a given location"),
+						Parameters:  functionSchema,
+					},
 				},
-				Type: "function",
 			},
 		},
 		Temperature: openai.Float(0.0),
@@ -265,13 +266,14 @@ func Example_chatCompletionsLegacyFunctions() {
 			},
 		},
 		// Note: Legacy functions are supported through the Tools API in the OpenAI Go SDK
-		Tools: []openai.ChatCompletionToolParam{
+		Tools: []openai.ChatCompletionToolUnionParam{
 			{
-				Type: "function",
-				Function: openai.FunctionDefinitionParam{
-					Name:        "get_current_weather",
-					Description: openai.String("Get the current weather in a given location"),
-					Parameters:  parametersJSON,
+				OfFunction: &openai.ChatCompletionFunctionToolParam{
+					Function: openai.FunctionDefinitionParam{
+						Name:        "get_current_weather",
+						Description: openai.String("Get the current weather in a given location"),
+						Parameters:  parametersJSON,
+					},
 				},
 			},
 		},
@@ -506,12 +508,13 @@ func Example_chatCompletionsStructuredOutputs() {
 				},
 			},
 		},
-		Tools: []openai.ChatCompletionToolParam{
+		Tools: []openai.ChatCompletionToolUnionParam{
 			{
-				Type: "function",
-				Function: openai.FunctionDefinitionParam{
-					Name:       "query",
-					Parameters: structuredJSONSchema,
+				OfFunction: &openai.ChatCompletionFunctionToolParam{
+					Function: openai.FunctionDefinitionParam{
+						Name:       "query",
+						Parameters: structuredJSONSchema,
+					},
 				},
 			},
 		},

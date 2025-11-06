@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_usingAzureContentFiltering demonstrates how to use Azure OpenAI's content filtering capabilities.

@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_createImage demonstrates how to generate images using Azure OpenAI's DALL-E model.

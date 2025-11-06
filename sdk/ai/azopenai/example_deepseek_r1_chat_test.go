@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_deepseekReasoningBasic demonstrates basic chat completions using DeepSeek-R1 reasoning model.

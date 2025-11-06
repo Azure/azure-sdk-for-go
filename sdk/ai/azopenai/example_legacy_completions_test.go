@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_completions demonstrates how to use Azure OpenAI's legacy Completions API.

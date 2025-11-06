@@ -10,6 +10,7 @@ type QueryEngine interface {
 	SupportedFeatures() string
 }
 
+// ItemIdentity contains the unique identifiers for an item in a container.
 type ItemIdentity struct {
 	// json string representation of the partition key value
 	PartitionKeyValue string

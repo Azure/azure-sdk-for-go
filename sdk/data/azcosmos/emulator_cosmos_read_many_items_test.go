@@ -168,9 +168,10 @@ func TestReadMany_WithQueryEngine_ReturnsItems(t *testing.T) {
 	defer emulator.deleteDatabase(t, context.Background(), db)
 
 	// create container and some items
-	db.CreateContainer(context.Background(), ContainerProperties{ID: "c", PartitionKeyDefinition: PartitionKeyDefinition{
+	_, err := db.CreateContainer(context.Background(), ContainerProperties{ID: "c", PartitionKeyDefinition: PartitionKeyDefinition{
 		Paths: []string{"/pk"},
 	}}, nil)
+	require.NoError(t, err)
 	container, err := db.NewContainer("c")
 	require.NoError(t, err)
 
